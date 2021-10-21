@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>cog &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/cog/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Cog, l&#8217;anti langage de template Python</title>
+		<link>http://sametmax.com/cog-lanti-langage-de-template-python/</link>
+		<comments>http://sametmax.com/cog-lanti-langage-de-template-python/#comments</comments>
+		<pubDate>Mon, 27 Jan 2014 17:45:38 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cog]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[template]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8903</guid>
+		<description><![CDATA[<a href="http://nedbatchelder.com/code/cog/">Cog</a> est un outil Python en ligne de commande qui permet d'insérer du code Python dans un fichier, afin qu'il génère une partie de ce fichier]]></description>
+				<content:encoded><![CDATA[<p><a href="http://nedbatchelder.com/code/cog/">Cog</a> est un outil Python en ligne de commande qui permet d&#8217;insérer du code Python dans un fichier, afin qu&#8217;il génère une partie de ce fichier.</p>
+<p>A priori, ça ressemble à un langage de template. Là où ça diffère, c&#8217;est que cog ne cherche pas à générer un fichier différent, il insère le code généré dans le fichier original, et garde le code de génération.</p>
+<p>Exemple, vous avez envie d&#8217;insérer un warning en haut de plusieurs fichiers de code. Vos choix :</p>
+<ul>
+<li>Copier-coller le warning.</li>
+<li>Créer un script de build qui insère le warning.</li>
+</ul>
+<p>L&#8217;alternative des bricoleurs qui ont juste besoin de quelques insertions, c&#8217;est Cog. Par exemple, votre fichier contient :</p>
+<pre lang="python"># [[[cog for l in open('warning.txt'): cog.out("# " + l) ]]]
+# [[[end]]]
+
+import vostrucs
+
+vostrucs.faire_vos_machins()</pre>
+<p>Après un <code>cog.py -r votre_fichier.py</code>, votre fichier sera :</p>
+<pre lang="python"># [[[cog for l in open('warning.txt'): cog.out("# " + l) ]]]
+# Attention, ceci est un avertissmement super important.
+# Ce logiciel ne vient avec aucune garantie. Il vomira dans votre salon.
+# Violera votre femme, lui collera l'hépatite C et offrira un CD de one direction
+# à vos enfants.
+# [[[end]]]
+
+import vostrucs
+
+vostrucs.faire_vos_machins()</pre>
+<p>cog vient avec plusieurs options, par exemple la possibilité de retirer le code de génération ou de lire le précédent texte généré depuis le code de génération.</p>
+<p>La véritable force de l&#8217;outil c&#8217;est qu&#8217;il peut utiliser n&#8217;importe quel module Python, et donc générer du texte à partir d&#8217;un contenu en ligne ou un fichier CSV. Il est d&#8217;ailleurs né parce que l&#8217;auteur était codeur C et avait besoin de générer du code à partir d&#8217;un fichier XML.</p>
+<p>Le seul défaut de Cog, c&#8217;est que c&#8217;est verbeux. Et moche.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/cog-lanti-langage-de-template-python/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8903</post-id>	</item>
+	</channel>
+</rss>

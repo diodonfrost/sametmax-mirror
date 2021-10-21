@@ -1,0 +1,803 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>json &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/json/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Accepter un ID mais retourner un objet pour les liens de Django Rest Framework</title>
+		<link>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/</link>
+		<comments>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/#comments</comments>
+		<pubDate>Thu, 08 Jun 2017 07:50:00 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[api]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[django-rest-framework]]></category>
+		<category><![CDATA[drf]]></category>
+		<category><![CDATA[json]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[rest]]></category>
+		<category><![CDATA[serializer]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=23385</guid>
+		<description><![CDATA[DRF est une des perles de Django. De Python même. Comme marshmallow, requests, jupyter, pandas, SQLAlchemy ou l'admin Django. Python a tellement de libs extraordinaires.
+
+Mais aucune n'est parfaite.]]></description>
+				<content:encoded><![CDATA[<p><a href="http://www.django-rest-framework.org/">DRF</a> est une des perles de Django. De Python même. Comme <a href="https://marshmallow.readthedocs.io/en/latest/">marshmallow</a>, <a href="http://docs.python-requests.org/en/master/">requests</a>, <a href="http://jupyter.org/">jupyter</a>, <a href="http://pandas.pydata.org/">pandas</a>, <a href="https://www.sqlalchemy.org/">SQLAlchemy</a> ou l&#8217;<a href="https://docs.djangoproject.com/fr/1.11/ref/contrib/admin/">admin Django</a>. Python a tellement d&#8217;outils extraordinaires.</p>
+<p>Mais aucune n&#8217;est parfaite, et une chose qui m&#8217;a toujours emmerdé avec celle-ci, c&#8217;est que si j&#8217;ai un modèle du genre:</p>
+<pre lang="python">class Foo(models.Model):
+    name = models.CharField(max_length=64)
+    bar = models.ForeignKey(Bar)</pre>
+<p>Et le serializer:</p>
+<pre lang="python">class FooSerialize(serilizers.ModelSerializer):
+
+    class Meta:
+        model = Foo</pre>
+<p>J&#8217;ai le choix entre soit avoir que des ID&#8230;</p>
+<p>En lecture (chiant) :</p>
+<pre>GET /api/foos/1/
+
+{
+    name: "toto",
+    bar: 2
+}</pre>
+<p>Et en écriture (pratique) :</p>
+<pre>POST /api/foos/
+{
+    name: "tata",
+    bar: 2
+}</pre>
+<p>Soit avoir que des objets.</p>
+<p>En lecture (pratique):</p>
+<pre>GET /api/foos/1/
+
+{
+    name: "toto",
+    bar: {
+       // tout l'objet bar disponible en lecture
+    }
+}
+</pre>
+<pre>
+Et en écriture (chiant) :
+
+POST /api/foos/
+{
+    name: "tata",
+    bar: {
+       // tout l'objet bar à se taper à écrire
+    }
+}</pre>
+<p>Il y a aussi la version hypermedia où l&#8217;id est remplacé par une URL. Mais vous voyez le genre : mon API REST est soit pratique en lecture mais relou à écrire, soit pratique en écriture (je fournis juste une référence), mais relou en lecture, puisque je dois ensuite fetcher chaque référence.</p>
+<p>GraphQL répond particulièrement bien à ce problème, mais bon, la techno est encore jeune, et il y a encore plein d&#8217;API REST à coder pour les années à venir.</p>
+<p>Comment donc résoudre ce casse-tête, Oh Sam! &#8211; sauveur de la pythonitude ?</p>
+<h2>Solution 1, utiliser un serializer à la place du field</h2>
+<pre lang="python">class FooSerializer(serilizers.ModelSerializer):
+
+    bar = BarSerializer()
+
+    class Meta:
+        model = Foo</pre>
+<p>Et là j&#8217;ai bien l&#8217;objet complet qui m&#8217;est retourné. Mais je suis en lecture seule, et il faut que je fasse l&#8217;écriture à la main. Youpi.</p>
+<p>Pas la bonne solution donc.</p>
+<h2>Solution 2, écrire deux serializers</h2>
+<p>Ben ça marche mais il faut 2 routings, ça duplique l&#8217;API, la doc, les tests. Moche. Next.</p>
+<h2>Solution 3, un petit hack</h2>
+<p>En lisant le code source de DRF (ouais j&#8217;ai conscience que tout le monde à pas la foi de faire ça), j&#8217;ai noté que <code>ModelSerializer</code> génère automatiquement pour les relations un <code>PrimaryKeyRelatedField</code>, qui lui même fait le lien via l&#8217;ID. On a des classes similaires pour la version full de l&#8217;objet et celle avec l&#8217;hyperlien.</p>
+<p>En héritant de cette classe, on peut créer une variante qui fait ce qu&#8217;on veut:</p>
+<pre lang="python">from collections import OrderedDict
+
+from rest_framework import serializers
+
+
+class AsymetricRelatedField(serializers.PrimaryKeyRelatedField):
+
+    # en lecture, je veux l'objet complet, pas juste l'id
+    def to_representation(self, value):
+        # le self.serializer_class.serializer_class est redondant
+        # mais obligatoire
+        return self.serializer_class.serializer_class(value).data
+
+    # petite astuce perso et pas obligatoire pour permettre de taper moins 
+    # de code: lui faire prendre le queryset du model du serializer 
+    # automatiquement. Je suis lazy
+    def get_queryset(self):
+        if self.queryset:
+            return self.queryset
+        return self.serializer_class.serializer_class.Meta.model.objects.all()
+
+    # Get choices est utilisé par l'autodoc DRF et s'attend à ce que 
+    # to_representation() retourne un ID ce qui fait tout planter. On 
+    # réécrit le truc pour utiliser item.pk au lieu de to_representation()
+    def get_choices(self, cutoff=None):
+        queryset = self.get_queryset()
+        if queryset is None:
+            return {}
+
+        if cutoff is not None:
+            queryset = queryset[:cutoff]
+
+        return OrderedDict([
+            (
+                item.pk,
+                self.display_value(item)
+            )
+            for item in queryset
+        ])
+
+    # DRF saute certaines validations quand il n'y a que l'id, et comme ce 
+    # n'est pas le cas ici, tout plante. On désactive ça.
+    def use_pk_only_optimization(self):
+        return False
+
+    # Un petit constructeur pour générer le field depuis un serializer. lazy,
+    # lazy, lazy...
+    @classmethod
+    def from_serializer(cls, serializer, name=None, args=(), kwargs={}):
+        if name is None:
+            name = f"{serializer.__class__.__name__}AsymetricAutoField"
+
+        return type(name, (cls,), {"serializer_class": serializer})(*args, **kwargs)
+</pre>
+<p>Et du coup:</p>
+<pre lang="python">class FooSerializer(serializers.ModelSerializer):
+
+    bar = AsymetricRelatedField.from_serializer(BarSerializer)
+
+    class Meta:
+        model = Foo</pre>
+<p>Et voilà, on peut maintenant faire:</p>
+<pre>
+GET /api/foos/1/
+
+{
+    name: "toto",
+    bar: {
+       // tout l'objet bar disponible en lecture
+    }
+}
+
+POST /api/foos/
+{
+    name: "tata",
+    bar: 2
+}</pre>
+<p>Elle est pas belle la vie ?</p>
+<p>Ca serait bien cool que ce soit rajouté officiellement dans DRF tout ça. Je crois que je vais <a href="https://github.com/encode/django-rest-framework/issues/5206">ouvrir un ticket</a>&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">23385</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/06/4A8GZ9k.gif" length="213204" type="image/jpg" />	</item>
+		<item>
+		<title>Faire manger du datetime à JSON en Python</title>
+		<link>http://sametmax.com/faire-manger-du-datetime-a-json-en-python/</link>
+		<comments>http://sametmax.com/faire-manger-du-datetime-a-json-en-python/#comments</comments>
+		<pubDate>Sun, 09 Mar 2014 20:32:12 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[date]]></category>
+		<category><![CDATA[datetime]]></category>
+		<category><![CDATA[json]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9731</guid>
+		<description><![CDATA[Le JSON ne permet pas de sauvegarder des dates, seulement des chaînes, des entiers, des booléens et null. Heureusement on peut créer son propre dialecte au dessus de JSON pour y remédier, mais il faut avoir un parseur qui le gère.]]></description>
+				<content:encoded><![CDATA[<p>La guerre de la <a href="http://sametmax.com/yaml-xml-json-csv-ini-quest-ce-que-cest-et-a-quoi-ca-sert/">sérialisation</a> a plus ou moins été gagnée par JSON. Le XML est relégué aux documents très riches et aux systèmes legacy. Le YML est cantonné a des niches (et en plus souvent des niches en Ruby, c&#8217;est dire !). Et les formats binaires, sont gardés pour les besoins de perf. Le reste, c&#8217;est du JSON, du JSON et du JSON.</p>
+<p>Seulement le JSON ne permet pas de sauvegarder des dates, seulement des chaînes, des entiers, des booléens et null. Heureusement on peut créer son propre dialecte au dessus de JSON pour y remédier, mais il faut avoir un un parseur qui le gère.</p>
+<p>En Python on peut créer sa propre classe d&#8217;encodeur et décodeur de JSON et donc techniquement ajouter n&#8217;importe quel type.</p>
+<p>Voici une recette pour en créer un qui gère le type <code>datetime</code> de manière transparente :</p>
+<pre lang="python">
+import re
+import json
+
+from datetime import datetime
+
+# On hérite simplement de l'encodeur de base pour faire son propre encodeur
+class JSONEncoder(json.JSONEncoder):
+
+    # Cette méthode est appelée pour serialiser les objets en JSON
+    def default(self, obj):
+        # Si l'objet est de type datetime, on retourne une chaîne formatée
+        # représentant l'instant de manière classique
+        # ex: "2014-03-09 19:51:32.7689"
+        if isinstance(obj, datetime):
+            return obj.strftime('%Y-%m-%d %H:%M:%S.%f')
+        return json.JSONEncoder.default(self, obj)
+
+
+# On fait l'opération exactement inverse pour le décodeur
+class JSONDecoder(json.JSONDecoder):
+
+
+    # On écrase la méthode qui permet de décoder les paires clé / valeur
+    # du format JSON afin que chaque valeur passe par notre moulinette
+    def object_pairs_hook(self, obj):
+        return dict((k, self.decode_on_match(v)) for k, v in obj)
+
+
+    # notre moulinette
+    def decode_on_match(self, obj):
+
+        # une petite regex permet de savoir si la chaine est une date
+        # sérialisée selon notre format précédent
+        match = re.search(r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{6}', unicode(obj))
+        # si oui, on parse et on retourne le datetime
+        if match:
+            return datetime.strptime(match.string, self.datetime_format)
+
+        # sinon on retourne l'objet tel quel
+        return obj
+
+# On se fait des raccourcis pour loader et dumper le json
+
+def json_dumps(data):
+    return JSONEncoder().encode(data)
+
+
+def json_loads(string):
+    return JSONDecoder().decode(string)
+
+</pre>
+<p>Usage :</p>
+<pre lang="python">>>> res = json_dumps({'test': datetime(2000, 1, 1, 1, 1, 1), 'autre': [True, 1]})
+>>> print(type(res), res)
+(<type 'str'>, '{"test": "2000-01-01 01:01:01.000000", "autre": [true, 1]}')
+>>> res = json_loads(res)
+>>> print(type(res), res)
+(<type 'dict'>, {u'test': u'2000-01-01 01:01:01.000000', u'autre': [True, 1]})</pre>
+<p><a href="http://sametmax.com/minibelt-la-petite-soeur-de-batbelt/">Minibelt</a> contient une version un peu plus élaborée de ce code qui prend en compte les types <code>date</code>, <code>time</code> et <code>timedelta</code> ainsi que pas mal d&#8217;options de configuration.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/faire-manger-du-datetime-a-json-en-python/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">9731</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/03/QyKCRfS.gif" length="829473" type="image/jpg" />	</item>
+		<item>
+		<title>plist, pickle, hdf5, protocol buffers&#8230; : les formats binaires</title>
+		<link>http://sametmax.com/plist-pickle-hdf5-protocol-buffer-les-formats-binaires/</link>
+		<comments>http://sametmax.com/plist-pickle-hdf5-protocol-buffer-les-formats-binaires/#comments</comments>
+		<pubDate>Mon, 15 Jul 2013 19:24:18 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[binaire]]></category>
+		<category><![CDATA[bson]]></category>
+		<category><![CDATA[format]]></category>
+		<category><![CDATA[hdf5]]></category>
+		<category><![CDATA[json]]></category>
+		<category><![CDATA[msgpack]]></category>
+		<category><![CDATA[pickle]]></category>
+		<category><![CDATA[plist]]></category>
+		<category><![CDATA[protocol buffer]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[serialisation]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6654</guid>
+		<description><![CDATA[Dans un article précédent, on avait fait un petit tour des formats texte, et j'avais promis qu'on verrait les formats binaires.
+
+Contrairement à cette fois là, je vais faire un peu plus technique, et donc <strong>il est probable que ça ne parle pas aux non informaticiens</strong>.]]></description>
+				<content:encoded><![CDATA[<p>Dans <a href="http://sametmax.com/yaml-xml-json-csv-ini-quest-ce-que-cest-et-a-quoi-ca-sert/">un article précédent</a>, on avait fait un petit tour des formats texte, et j&#8217;avais promis qu&#8217;on verrait les formats binaires.</p>
+<p>Contrairement à cette fois là, je vais faire un peu plus technique, et donc <strong>il est probable que ça ne parle pas aux non informaticiens</strong>.</p>
+<p>Avant toute chose, il faut faire un peu de ménage. En effet, tous les formats de données sont des formats binaires, même les formats texte. Quand bien même on retire les formats texte par convention, tout le reste sont des formats binaires.</p>
+<p>tar.gz, zip, 7zip, rar, iso, dmg et compagnie sont des formats binaires. Il servent à l&#8217;archivage.</p>
+<p>doc, xls, ppt, pps, etc. sont des formats binaires. Ils servent à sauvegarder un document édité sous une suite Microsoft Office.</p>
+<p>jpg, tiff, png, gif ou webp sont des formats binaires. Ils servent à représenter des images.</p>
+<p>wav, mp3, ogg, acc, opus et monkey sont des formats binaires. Ils servent à stocker des données sonores.</p>
+<p>mkv, avi, mov, mp4, ogm, webm&#8230; sont des formats binaires. Ils servent à contenir des informations vidéos.</p>
+<p>Bref, tout fichier est un format binaire, toute donnée transmise d&#8217;un système informatique à un autre est un format binaire.</p>
+<p>Alors qu&#8217;est-ce qu&#8217;on entend ici par &#8220;format binaire&#8221; ?</p>
+<p>Principalement, format de <strong>sérialisation</strong> binaire.</p>
+<p>En effet JSON, XML ou CSV sont avant tout, bien que pas uniquement, des formats de sérialisation, et nous allons donc voir des équivalents dans le monde du binaire. Attention cependant, il existe de centaines de formats, et beaucoup sont très utilisés même si je n&#8217;en ai jamais entendu parler. Les formats de sérialisation binaires sont en effet moins universels, c&#8217;est à dire qu&#8217;on les retrouve plus souvent liés à un usage ou un corps de métier. Les scientifiques ont les leurs, les industriels les leurs, les concepteurs d&#8217;OS les leurs, les constructeur de matériel les leurs, etc. Le fait que je ne les connaisse pas ne veut pas du tout dire qu&#8217;ils ne sont pas massivement utilisés. Cela veut juste dire que je ne les ai jamais croisés dans mon activité.</p>
+<p>Par ailleurs je ne présenterai pas tous ceux que j&#8217;ai effectivement croisés. Voyez l&#8217;article comme une base de travail qui va vous permettre d&#8217;évaluer les autres formats binaires plutôt qu&#8217;un listing exhaustif.</p>
+<p>En théorie, on distingue des données binaires, et des données encodées en binaire. En pratique, on s&#8217;en branle.</p>
+<h2>Séria-quoi ?</h2>
+<p>A la conception d&#8217;un programme se pose la question de savoir comment stocker ses données dans un fichier ou les transmettre par le réseau. Vous avez vos données sous forme de code, par exemple en Python une collections d&#8217;instances de vos propres classes, des dictionnaires, des listes, des entiers, des chaînes, etc. Ces objets, il va falloir les transformer en quelque chose qui puisse sauvegardé dans un fichier. Ou envoyé sur le réseau.</p>
+<p>Cette opération de transformation, c&#8217;est ce qu&#8217;on appelle la sérialisation.</p>
+<p>Quand on lit le fichier ou que l&#8217;on récupère la donnée via un réseau, on doit la transformer pour obtenir des objets manipulables sous forme de code : les collections d&#8217;instances de vos propres classes, des dictionnaires, des listes, des entiers, des chaînes qui étaient là à l&#8217;origine.</p>
+<p>Cette opération de transformation, c&#8217;est ce qu&#8217;on appelle la dé-sérialisation.</p>
+<p>Prenons un exemple en Python. J&#8217;ai une classe <code>Personne()</code> :</p>
+<pre lang="python">>>> class Personne(object):
+...    def __init__(nom, age):
+...         self.nom = nom
+...         self.age = age</pre>
+<p>Et j&#8217;ai un calendrier qui liste les personnes présentes selon les jours de la semaine :</p>
+<pre lang="python">>>> gertrude = Personne("Gertrude", 18)
+>>> monique = Personne("Monique", 12)
+>>> jenifer = Personne("Jenifer", 97)
+>>> cal = {
+"lundi": [gertrude],
+"mardi": [gertrude, monique],
+"mercredi": [],
+"jeudi": [monique],
+"vendredi": [gertrude, jenifer],
+"samedi": [gertrude, monique, jenifer],
+"dimanche": [gertrude]
+}
+</pre>
+<p>On a donc un format riche ici, avec plusieurs types imbriqués : du dico, de la liste, de l&#8217;instance de classe perso, de l&#8217;entier et des strings. On a donc des primitives, des données associatives, des séquences ordonnées et un structure complexe.</p>
+<p>Pour sauvegarder ça dans un fichier ou le faire passer sur un réseau, il va falloir écrire un sacré bout de code. Par exemple si vous voulez le transformer en XML ou en JSON, il n&#8217;y a pas de type &#8220;Personne&#8221; dans ces formats. Il va donc falloir vous mettre d&#8217;accord sur une convention, écrire le code qui génère les données formatées selon cette convention, et également le code qui permet de lire ces données formatées et recréer les bons objets derrière. Sans parler du fait que la techno qui écrit ne va peut être pas être celle qui lit. C&#8217;est ça, la problématique de la sérialisation.</p>
+<p>Les formats binaires se prêtent bien au jeu de la sérialisation, bien qu&#8217;ils puissent, eux aussi, servir à bien d&#8217;autre chose. Il sont compacts, et non limités par un besoin de lisibilité, ils contiennent souvent des moyens de contenir des données au format complexe. Ils sont aussi en général rapides à traiter, et prennent peu de place.</p>
+<h2>Pickle</h2>
+<p><a href="http://docs.python.org/2/library/pickle.html?highlight=pickle#pickle">Pickle</a> est un format de sérialisation spécialisé pour Python. Seul un programme Python peut écrire et lire du Pickle, même si <a href="https://github.com/terryf/Phpickle">des projets existent</a> pour faire le pont avec d&#8217;autres langages.</p>
+<p>Voilà ce que ça donne à l&#8217;usage, en reprenant notre calendrier précédent :</p>
+<pre lang="python">>>> import pickle
+>>> pickle.dumps(cal)
+"(dp0\nVmardi\np1\n(lp2\nccopy_reg\n_reconstructor\np3\n(c__main__\nPersonne\np4\nc__builtin__\nobject\np5\nNtp6\nRp7\n(dp8\nS'nom'\np9\nVGertrude\np10\nsS'age'\np11\nI18\nsbag3\n(g4\ng5\nNtp12\nRp13\n(dp14\ng9\nVMonique\np15\nsg11\nI12\nsbasVsamedi\np16\n(lp17\ng7\nag13\nag3\n(g4\ng5\nNtp18\nRp19\n(dp20\ng9\nVJenifer\np21\nsg11\nI97\nsbasVvendredi\np22\n(lp23\ng7\nag19\nasVjeudi\np24\n(lp25\ng13\nasVlundi\np26\n(lp27\ng7\nasVdimanche\np28\n(lp29\ng7\nasVmercredi\np30\n(lp31\ns."</pre>
+<p>Ce blougi blouga est une représentation sérialisée de notre calendrier. Si vous le sauvegardez dans un fichier ou que vous l&#8217;envoyez à un autre programme Python, il peut récupérer les objets initiaux :</p>
+<pre lang="python">>>> cal2 = pickle.loads("(dp0\nVmardi\np1\n(lp2\nccopy_reg\n_reconstructor\np3\n(c__main__\nPersonne\np4\nc__builtin__\nobject\np5\nNtp6\nRp7\n(dp8\nS'nom'\np9\nVGertrude\np10\nsS'age'\np11\nI18\nsbag3\n(g4\ng5\nNtp12\nRp13\n(dp14\ng9\nVMonique\np15\nsg11\nI12\nsbasVsamedi\np16\n(lp17\ng7\nag13\nag3\n(g4\ng5\nNtp18\nRp19\n(dp20\ng9\nVJenifer\np21\nsg11\nI97\nsbasVvendredi\np22\n(lp23\ng7\nag19\nasVjeudi\np24\n(lp25\ng13\nasVlundi\np26\n(lp27\ng7\nasVdimanche\np28\n(lp29\ng7\nasVmercredi\np30\n(lp31\ns.")
+>>> type(cal2)
+<type 'dict'>
+>>> for jour, personnes in cal2.items():
+...     print(jour)
+...     for personne in personnes:
+...         print("\t- {}".format(personne.nom))
+...
+mardi
+    - Gertrude
+    - Monique
+samedi
+    - Gertrude
+    - Monique
+    - Jenifer
+vendredi
+    - Gertrude
+    - Jenifer
+jeudi
+    - Monique
+lundi
+    - Gertrude
+dimanche
+    - Gertrude
+mercredi</pre>
+<p>On utilisera Pickle essentiellement par fainéantise, quand on veut sauvegarder des objets Python et qu&#8217;on souhaite les récupérer plus tard, mais qu&#8217;on ne veut pas coder un code de sérialisation. Il existe des formes hybrides de cette approche, comme <a href="http://jsonpickle.github.io/">cette lib</a> qui essaye de mélanger JSON et une forme de sérialisation d&#8217;objets complexes.</p>
+<p>Quel que soit l&#8217;approche choisit, restaurer des objets complets, et non juste des primitives, comporte sont lot de risques de sécurité. En effet, un fichier Pickle malicieux sera exécuté comme code Python valide sans aucune vérification.</p>
+<p>A noter que Python vient avec un autre format de sérialisation : <a href="http://docs.python.org/2/library/marshal.html">marshall</a>. Il est utilisé par Python en interne pour les fichiers .pyc et n&#8217;est pas recommandé pour un usage de persistance de données car le format évolue avec les versions de Python.</p>
+<h2>plist</h2>
+<p>Il existe de nombreux formats binaires qu&#8217;utilisent les OS comme .DS_store ou Thumbs.db. plist est l&#8217;un deux, et on va le voir parce qu&#8217;il est relativement simple à comprendre par rapport aux autres. Le principe est le même pour tous : on a des données, on les stock dans le fichier.</p>
+<p>plist est un format qui existe aujourd&#8217;hui en XML, preuve que le même rôle peut très bien être rempli par deux formats différents. Il sert à stocker les réglages qu&#8217;on effectue dans le finder de Mac OS X, et ceux pour chaque dossier. Il sait représenter les types suivant : string, nombre, boolean, date, array, dictionnaire et des données arbitraires en base64 (un encodage binaire représentable sous forme de texte. Qu&#8217;est-ce qu&#8217;on se marre ^^).</p>
+<p>Ce qui signifie par exemple, qu&#8217;il n&#8217;est pas capable de représenter un objet <strong>Personne()</strong> tel quel. Par contre il a des équivalents des types list, int, str, etc, ce qui en fait un format facile à manipuler en Python, surtout étant donné que la lib standard contient <a href="http://docs.python.org/2/library/plistlib.html?highlight=plist#plistlib">un module pour ça</a> :</p>
+<pre lang="python">gertrude = ("Gertrude", 18)
+monique = ("Monique", 12)
+jenifer = ("Jenifer", 97)
+cal = {
+"lundi": [gertrude],
+"mardi": [gertrude, monique],
+"mercredi": [],
+"jeudi": [monique],
+"vendredi": [gertrude, jenifer],
+"samedi": [gertrude, monique, jenifer],
+"dimanche": [gertrude]
+}
+
+>>> gertrude = ("Gertrude", 18)
+>>> monique = ("Monique", 12)
+>>> jenifer = ("Jenifer", 97)
+>>> cal = {
+... "lundi": [gertrude],
+... "mardi": [gertrude, monique],
+... "mercredi": [],
+... "jeudi": [monique],
+... "vendredi": [gertrude, jenifer],
+... "samedi": [gertrude, monique, jenifer],
+... "dimanche": [gertrude]
+... }
+>>> plistlib.writePlistToString(cal)
+'<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0">\n<dict>\n\t<key>dimanche</key>\n\t<array>\n\t\t<array>\n\t\t\t<string>Gertrude</string>\n\t\t\t<integer>18</integer>\n\t\t</array>\n\t</array>\n\t<key>jeudi</key>\n\t<array>\n\t\t<array>\n\t\t\t<string>Monique</string>\n\t\t\t<integer>12</integer>\n\t\t</array>\n\t</array>\n\t<key>lundi</key>\n\t<array>\n\t\t<array>\n\t\t\t<string>Gertrude</string>\n\t\t\t<integer>18</integer>\n\t\t</array>\n\t</array>\n\t<key>mardi</key>\n\t<array>\n\t\t<array>\n\t\t\t<string>Gertrude</string>\n\t\t\t<integer>18</integer>\n\t\t</array>\n\t\t<array>\n\t\t\t<string>Monique</string>\n\t\t\t<integer>12</integer>\n\t\t</array>\n\t</array>\n\t<key>mercredi</key>\n\t<array>\n\t</array>\n\t<key>samedi</key>\n\t<array>\n\t\t<array>\n\t\t\t<string>Gertrude</string>\n\t\t\t<integer>18</integer>\n\t\t</array>\n\t\t<array>\n\t\t\t<string>Monique</string>\n\t\t\t<integer>12</integer>\n\t\t</array>\n\t\t<array>\n\t\t\t<string>Jenifer</string>\n\t\t\t<integer>97</integer>\n\t\t</array>\n\t</array>\n\t<key>vendredi</key>\n\t<array>\n\t\t<array>\n\t\t\t<string>Gertrude</string>\n\t\t\t<integer>18</integer>\n\t\t</array>\n\t\t<array>\n\t\t\t<string>Jenifer</string>\n\t\t\t<integer>97</integer>\n\t\t</array>\n\t</array>\n</dict>\n</plist>\n'</pre>
+<p>Bon, là j&#8217;ai un peu foiré mon exemple parce que la lib standard, elle pond la version XML (puisque la version binaire est obsolète), pas la version binaire de plist, et maintenant que j&#8217;ai écris tout ça, ça me fait chier de tout refaire. Heureusement j&#8217;ai trouvé <a href="https://github.com/wooster/biplist">une lib sur le net</a> qui va sauver mon honneur :</p>
+<pre lang="python">>>> biplist.writePlistToString(cal)
+'bplist00bybiplist1.0\x00\xd7\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0ee\x00m\x00a\x00r\x00d\x00if\x00s\x00a\x00m\x00e\x00d\x00ih\x00v\x00e\x00n\x00d\x00r\x00e\x00d\x00ie\x00j\x00e\x00u\x00d\x00ie\x00l\x00u\x00n\x00d\x00ih\x00d\x00i\x00m\x00a\x00n\x00c\x00h\x00eh\x00m\x00e\x00r\x00c\x00r\x00e\x00d\x00i\xa2\x0f\x10\xa2\x11\x12h\x00G\x00e\x00r\x00t\x00r\x00u\x00d\x00e\x10\x12\xa2\x13\x14g\x00M\x00o\x00n\x00i\x00q\x00u\x00e\x10\x0c\xa3\x15\x16\x17\xa2\x11\x12\xa2\x13\x14\xa2\x18\x19g\x00J\x00e\x00n\x00i\x00f\x00e\x00r\x10a\xa2\x1a\x1b\xa2\x11\x12\xa2\x18\x19\xa1\x1c\xa2\x13\x14\xa1\x1d\xa2\x11\x12\xa1\x1e\xa2\x11\x12\xa0\x15$/<MXct\x85\xb2\xd0\xd9\xde\xe3\xe8\x88\x9e\x8b\x9c\xa1\xb0\xb6\xb9\xbc\xbf\xce\xd3\xd6\xdb\xe0\xe5\x00\x00\x00\x00\x00\x00\x01\x01\x00\x00\x00\x00\x00\x00\x00\x1f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xe9'
+>>> biplist.readPlistFromString(r'bplist00bybiplist1.0\x00\xd7\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0ee\x00m\x00a\x00r\x00d\x00if\x00s\x00a\x00m\x00e\x00d\x00ih\x00v\x00e\x00n\x00d\x00r\x00e\x00d\x00ie\x00j\x00e\x00u\x00d\x00ie\x00l\x00u\x00n\x00d\x00ih\x00d\x00i\x00m\x00a\x00n\x00c\x00h\x00eh\x00m\x00e\x00r\x00c\x00r\x00e\x00d\x00i\xa2\x0f\x10\xa2\x11\x12h\x00G\x00e\x00r\x00t\x00r\x00u\x00d\x00e\x10\x12\xa2\x13\x14g\x00M\x00o\x00n\x00i\x00q\x00u\x00e\x10\x0c\xa3\x15\x16\x17\xa2\x11\x12\xa2\x13\x14\xa2\x18\x19g\x00J\x00e\x00n\x00i\x00f\x00e\x00r\x10a\xa2\x1a\x1b\xa2\x11\x12\xa2\x18\x19\xa1\x1c\xa2\x13\x14\xa1\x1d\xa2\x11\x12\xa1\x1e\xa2\x11\x12\xa0\x15$/<MXct\x85\xb2\xd0\xd9\xde\xe3\xe8\x88\x9e\x8b\x9c\xa1\xb0\xb6\xb9\xbc\xbf\xce\xd3\xd6\xdb\xe0\xe5\x00\x00\x00\x00\x00\x00\x01\x01\x00\x00\x00\x00\x00\x00\x00\x1f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xe9')
+{u'mardi': [('Gertrude', 18), ('Monique', 12)], 'samedi': [('Gertrude', 18), ('Monique', 12), ('Jenifer', 97)], 'vendredi': [('Gertrude', 18), ('Jenifer', 97)], 'jeudi': [('Monique', 12)], 'lundi': [('Gertrude', 18)], 'dimanche': [('Gertrude', 18)], 'mercredi': []}</pre>
+<p>Pourquoi utiliser plist ? A part quand on est en Objectif-C où c'est le format le plus simple à parser ou si on veut communiquer avec finder, il n'y a pas vraiment de raison. C'est le cas typique d'un format qui a été créé parce qu'à l'époque il n'y avait rien d'aussi bien, les parsers XML étaient alors trop lents pour scanner toutes les plist de tous les dossiers récursivement.</p>
+<h2>hdf5</h2>
+<p>hdf5 est très intéressant, c'est le cas typique d'un format qui existe pour un usage très très particulier, et que des formats ordinaires ne comblent pas, ne peuvent pas par nature combler. C'est un format cross-plateforme qui peut contenir de très grosses quantités de données numériques (un fichier peut avoir une taille virtuellement illimitée), et les manipuler pour faire des calculs complexes. Cela ressemble à un système de fichiers... qui tient dans un fichier. En effet, il peut contenir une arborescence de données, et gère la compression transparente, mais les données sont essentiellement des arrays à plusieurs dimensions, appelés ici datasets.</p>
+<p>On peut y mettre des arrays, des labels, des attributs, organiser tout ça par groupe et même avoir des références vers des données extérieures. L'avantage c'est qu'on peut bosser dessus presque de manière transparente, comme si c'était en RAM. Tout ce qui est array est stocké tel quel, et donc très rapide d'accès (bien plus qu'une colonne de base SQL), pour le reste, c'est indexé avec arbre binaire, donc facilement triable.</p>
+<p>Pour manipuler ce format avec Python, on va utiliser la lib <a href="http://www.h5py.org">h5py</a> :</p>
+<pre lang="python">sudo apt-get install libhdf5-serial-dev python-dev # sur ubuntu en tout cas
+pip install numpy
+pip install h5py</pre>
+<p>La normalement, ça compile à mort pendant 10 minutes.</p>
+<p>Et pif paf pouf :</p>
+<p>>>> import numpy # hdf5 s'utilise beaucoup avec les libs scientifiques type numpy<br />
+>>> import h5py<br />
+>>> array = numpy.ones((1000000000, 1000000000)) # une grosse matrice<br />
+>>> f = h5py.File('data.hdf5')<br />
+>>> dset = f.create_dataset("Nom du dataset", data=array)<br />
+>>> dset<br />
+<HDF5 dataset "Nom du dataset": shape (100, 100), type "<i8"><br />
+>>> f.close()</p>
+<p>Et voilà, on vient de créer array contenant 1000000000 lignes de 1000000000 de 1000000000 de int ayant pour valeur "1", et stocké tout ça dans un fichier au format hdf5. Ca prend quelques secondes, et le fichier fait quand même 800 Mo !</p>
+<p>On le voit ici, hdf5 est entre le format de sérialisation et la base de données, et il est très orienté chiffre. Il existe tout un tas de formats binaires spécialisés pour un usage en particulier comme hdf5, à votre charge, donc, de chercher si il en existe un pour le votre. Ou même si vous en avez besoin d'un.</p>
+<p>Des libs de haut niveau ont été construite en utilisant hdf5, telles que <a href="http://www.pytables.org/">pytables</a>, qui permettent de traiter très facilement d'énormes jeux de données tabulaires.</p>
+<h2>Protocol Buffers</h2>
+<p>Aussi appelé protobuf par ses amis, c'est un format de sérialisation <a href="https://developers.google.com/protocol-buffers/">inventé par Google</a> qu'il utilise pour communiquer entre ses machines. On a donc vu un format de sérialisation orienté persistance avec Pickle, un orienté configuration, un orienté "grosse quantité de données" et voilà un dernier orienté communication réseau.</p>
+<p>Protocol Buffers est un espèce d'hybride, puisqu'il utilise une description du schéma pour générer du code qui va sérialiser les donner en binaire. Vous suivez ? Non ?</p>
+<p>Attendez ça va devenir plus clair.</p>
+<p>Reprenons notre bonne vielle personne. Pour utiliser protobuf, vous allez décrire à quoi ressemble votre personne, dans un <strong>format texte</strong> spécialement conçu :</p>
+<pre lang="java">message Personne {
+  required string nom = 1;
+  required int32 age = 2;
+}</pre>
+<p>Vous constatez qu'on décrit ici un message, qui va devoir contenir au minimum un nom et un age, de type string et entier. Les chiffres représentent des identifiants uniques de champs qui seront utilisés dans le message binaire.</p>
+<p>Ceci n'est pas du code d'un langage particulier, c'est la syntaxe de modèle de protobuf.</p>
+<p>On sauvegarde tout ça dans un fichier <em>personne.proto</em>, et on utilise la commande <code>protoc</code> pour transformer cette description en code dans le langage de son choix. C++ et Java sont supportés, nous on va utiliser Python :</p>
+<pre lang="bash">protoc personne.proto --python_out=.</pre>
+<p>Et il va nous pondre un fichier <em>personne_pb2.py</em>, qui est un module Python valide qui va contenir une classe <code>Personne</code> :</p>
+<pre lang="python">>>> from personne_pb2 import Personne
+>>> p = Personne(nom="Gertrude", age=12)
+>>> p.SerializeToString()
+'\n\x08Gertrude\x10\x0c'</pre>
+<p>Il vous suffit d'envoyer ça par un socket, et de l'autre côté, une machine qui possède le même fichier .proto peut le lire et récupérer la donnée sous forme d'un objet Python, Java ou C++. Il a donc l'avantage d'un pickle, multi langages.</p>
+<p>Parmi les bénéfices de protobuf, il y a que sa sortie est assez courte :</p>
+<pre lang="python">>>> json.dumps({"nom":"Gertrude", "age":12})
+'{"nom": "Gertrude", "age": 12}'
+>>> pickle.dumps({"nom":"Gertrude", "age":12})
+'(dp0\nVnom\np1\nVGertrude\np2\nsVage\np3\nI12\ns.'</pre>
+<p>Ca fait moins de données à envoyer par le réseau.</p>
+<p>Et en prime on a la validation des données :</p>
+<pre lang="python">>>> p.age = "12"
+Traceback (most recent call last):
+  File "<ipython-input-4-d897accc3848>", line 1, in <module>
+    p.age = "12"
+  File "/usr/lib/python2.7/dist-packages/google/protobuf/internal/python_message.py", line 435, in setter
+    type_checker.CheckValue(new_value)
+  File "/usr/lib/python2.7/dist-packages/google/protobuf/internal/type_checkers.py", line 104, in CheckValue
+    raise TypeError(message)
+TypeError: u'12' has type <type 'unicode'>, but expected one of: (<type 'int'>, <type 'long'>)</pre>
+<p>Du coup on peut utiliser protobuf en lieu et place d'un XML + DTD, en tout cas pour les cas simples.</p>
+<p>Normalement, c'est aussi un format très rapide à parser.</p>
+<p>Bref, Google a voulu le format pour les utilisations industrielles : c'est un peu chiant à mettre en place, mais c'est performant, robuste et ça marche avec les 3 langages qu'ils utilisent en interne.</p>
+<p>Néanmoins ce n'est pas le seul à avoir pensé à ça : <a lang="http://msgpack.org/">msgpack</a> est une sorte de JSON binaire plus rapide à parser et qui prend moins de place. Il est assez utilisé avec les outils de file d'attente genre celery ou de communication type ZeroMq. Mais il perd un intérêt fort du JSON : sa transparence pour javascript, et n'a pas la vérification des données comme protobuf. <a href="http://bsonspec.org/">BSON</a> existe aussi dans le même genre, et sert de format de stockage pour mongodb, en supportant nativement des types avancées comme les dates.</p>
+<p>Comme je vous le disais, des formats binaire, il y en a <a href="http://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Pastiches/Pifom%C3%A8tre#Les_unit.C3.A9s_du_syst.C3.A8me_pifom.C3.A8trique">une bonne chiée</a>.</p>
+<p>La prochaine et dernière session, on se fera un petit tour des bases de données SQL et NoSQL.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/plist-pickle-hdf5-protocol-buffer-les-formats-binaires/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">6654</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/07/xzGrVLH.png" length="466059" type="image/jpg" />	</item>
+		<item>
+		<title>  YAML, XML, JSON, CSV, INI&#8230; Qu&#8217;est-ce que c&#8217;est et à quoi ça sert ?</title>
+		<link>http://sametmax.com/yaml-xml-json-csv-ini-quest-ce-que-cest-et-a-quoi-ca-sert/</link>
+		<comments>http://sametmax.com/yaml-xml-json-csv-ini-quest-ce-que-cest-et-a-quoi-ca-sert/#comments</comments>
+		<pubDate>Sat, 06 Jul 2013 05:23:09 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[csv]]></category>
+		<category><![CDATA[format]]></category>
+		<category><![CDATA[ini]]></category>
+		<category><![CDATA[json]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[xml]]></category>
+		<category><![CDATA[yaml]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6576</guid>
+		<description><![CDATA[Quand j'ai débuté la programmation, je les rencontrais partout sur le net. On en parlait comme si on parlait d'acheter du pain. Apparemment c'était <a href="http://sametmax.com/bien-expliquer-quelque-chose-les-regles-de-base/">évident</a> pour tout le monde...]]></description>
+				<content:encoded><![CDATA[<p>Que voilà de jolis acronymes !</p>
+<p>Quand j&#8217;ai débuté la programmation, je les rencontrais partout sur le net. On en parlait comme si on parlait d&#8217;acheter du pain. Apparemment c&#8217;était <a href="http://sametmax.com/bien-expliquer-quelque-chose-les-regles-de-base/">évident</a> pour tout le monde.</p>
+<p>Ça m&#8217;a énervé, mais ça m&#8217;a énervé !</p>
+<p>Et puis j&#8217;ai oublié. C&#8217;est devenu tellement le quotidien pour moi, tellement banal&#8230; Jusqu&#8217;à ce que je reçoive ce mail :</p>
+<blockquote><p>Je viens vous quémander un article</p>
+<p>Il y a une question que je me pose assez souvent avant de coder quelque chose et bien que j&#8217;ai pu me faire quelques opinions au fil du temps, je n&#8217;ai jamais trouvé un article ou une conf ou que sais-je qui explique ça clairement.</p>
+<p>Ma question concerne le format d&#8217;écriture des données.<br />
+Entre les fichiers textes genre ini, json, xml, yaml (que j&#8217;aime bien), les formats binaires (pickle, voir hdf5 pour les scientifiques et j&#8217;en ignore peut être d&#8217;autre&#8230;), les bases de données mysql, postgre, sqlite.</p>
+<p>Je n&#8217;ai pas les idées claires sur :<br />
+* cas typique d&#8217;utilisation<br />
+* les plus et les moins<br />
+* la corruptibilité<br />
+* la sécurité (point fourre-tout)</p>
+<p>En gros, mon raisonnement de béotien dit : binaire plus performant que texte mais texte lisible par l&#8217;éditeur et ça, ça rassure.</p>
+<p>A prendre ou à jeter </p></blockquote>
+<p>Aujourd&#8217;hui, je vais donc parler des formats texte, et je ferai un article sur les formats binaires plus tard.</p>
+<h2>Formats</h2>
+<p>YAML, XML, JSON, CSV, INI sont des noms de formats de données texte. Il y a plusieurs choses à comprendre ici:</p>
+<dl>
+<dt>Donnés : </dt>
+<dd>Ca peut être n&#8217;importe quoi que vous vouliez sauvegarder ou transmettre : carnet d&#8217;adresses, configuration d&#8217;un logiciel, contenu d&#8217;une base de données, nom/prenom/age/mensurations, etc. Bref, tout groupe d&#8217;informations que vous souhaitez pourvoir communiquer, ou relire plus tard. </dd>
+<dt>Format  :</dt>
+<dd>Comment sont organisées ces données. Comme on manipule les données avec un ordinateur, il est nécessaire de les ranger données d&#8217;une certaine façons. En les rangeant de cette façon, l&#8217;ordinateur, si il connait le &#8220;format&#8221;, est capable d&#8217;analyser les données qu&#8217;il reçoit. Sinon pour lui elles ne veulent rien dire.</dd>
+<dt>Texte : </dt>
+<dd>En opposition à &#8220;binaire&#8221; (ce qui est un abus de langage, puisque du texte en informatique, c&#8217;est du binaire). Cela signifie que votre format est organisé autour d&#8217;un texte lisible par les humains. C&#8217;est ce texte qui va dire &#8220;ceci est l&#8217;age&#8221;, &#8220;ceci est le nom&#8221;, &#8220;ceci est la taille de ses ganglions&#8221;, etc.</dd>
+</dl>
+<p>En résumé, un format de données texte, c&#8217;est une convention textuelle pour que des ordinateurs puissent échanger des données entre eux et que celui qui reçoit puisse retrouver la même chose que ce que l&#8217;on lui a envoyé.</p>
+<h2>Exemples</h2>
+<p>Le format XML est une convention qui dit qu&#8217;on va mettre les données (les informations qu&#8217;on transmet) entre des balises.</p>
+<p>Les balises ont la forme suivante : <code>< nomDeBalise ></ nomDeBalise ></code>.</p>
+<p>Une balise peut contenir une données, ou d&#8217;autres balises.</p>
+<p>Le choix des balises est laissé à la personne qui créer le XML. Celui qui reçoit le XML doit connaître ces balises pour récupérer les données.</p>
+<p>Imaginez un carnet d&#8217;adresses avec chaque personne ayant un nom et un numéro de téléphone. Il existe de nombreux moyens de représenter ce carnet d&#8217;adresses. L&#8217;UN des moyens de possibles, est d&#8217;écrire un fichier XML. Par exemple :</p>
+<pre lang="xml"><?xml version="1.0" encoding="utf8"?>
+<personnes>
+    <personne>
+        <nom>Sam</nom>
+        <numero>555-555-555</numero>
+    </personne>
+    <personne>
+        <nom>Max</nom>
+        <numero>1234567890</numero>
+    </personne>
+    <personne>
+        <nom>Bob</nom>
+        <numero>666</numero>
+    </personne>
+</personnes></pre>
+<p>Pour vous en tant qu&#8217;humain, ça n&#8217;apporte rien.</p>
+<p>Mais quand vous avez besoin de créer un programme qui peut sauvegarder / lire ces données ou les transmettre à un autre programme (car oui, les programmes doivent pourvoir se parler entre eux, comment vous croyez que cet article arrive sur votre ordinateur ?), il va falloir choisir un format pour ces données.</p>
+<p>Chaque format et différent, et possède des avantages et des inconvénients. <strong>On peut très bien représenter les mêmes données avec deux formats différents.</strong> Ainsi, voici le même carnet d&#8217;adresses, mais au format CSV :</p>
+<pre lang="csv">"nom";"numero"
+"Sam";"555-555-555"
+"Max";"1234567890"
+"Bob";"666" </pre>
+<h2>Quel format est le meilleur ?</h2>
+<p>Il n&#8217;existe pas de &#8220;meilleur&#8221; format.</p>
+<p>Chaque format a ses caractéristiques, et il existe de nombreux formats. En fait, il existe même des formats dans les formats, des XML avec des balises qui ont des noms standardisés par exemple. Pire, vous pouvez inventer vos propres formats. Mais à moins d&#8217;être très bon et de combler un besoin qui ne l&#8217;est pas encore, je ne vous le recommande pas.</p>
+<p>Aussi il va vous falloir choisir un format selon votre situation. En général, on choisira parmi ces caractéristiques :</p>
+<ul>
+<li><strong>Facilité de manipulation</strong> : votre code va traiter ce format, donc si c&#8217;est galère à manipuler, vous allez vous faire du travail en plus.</li>
+<li><strong>Expressivité </strong>: certains formats permettent de &#8220;dire&#8221; plus de de choses que d&#8217;autres. Selon la complexité de vos données, certains seront trop simples ou trop complexes.</li>
+<li><strong>Pérennité </strong>: combien de temps ce format doit être lisible ? Et-il un standard reconnu ? Est-il beaucoup utilisé ? Est-il ouvert ? Avez-vous le droit d&#8217;utiliser ce format (car oui, il y a des questions légales) ?</li>
+<li><strong>Performance </strong>: le temps de traitement de ce format convient-il à votre usage ? La place qu&#8217;il prend sur le disque ? En RAM ? Le temps de transfert par un réseau ?</li>
+</ul>
+<p>Dans notre cas, nous allons étudier des formats textes ouverts qui sont tous des standards, et lisibles par un humain. Aussi la pérennité de vos données est le moindre de vos soucis, si tant est que le créateur du format est compétent et bienveillant.</p>
+<p>Dans cet article, nous allons en effet voir uniquement les formats texte. Je garderai les formats binaires pou un article suivant, et un dernier pour les bases de données.</p>
+<p>Au passage, les formats textes ont tous ces caractéristiques en commun:</p>
+<ul>
+<li>Ils sont lisibles et modifiables facilement et avec peu de moyen par les humains.</li>
+<li>On peut debugger, et même bidouiller un format texte sans trop de souci, même si on a pas de lib faite pour ça.</li>
+<li>Ils sont plus lents et prennent plus de place que les formats binaires.</li>
+<li>On les utilisent souvent pour les exports / imports de données, les fichiers de configurations, et dans la transmission d&#8217;informations sur le Web entre deux machines.</li>
+</ul>
+<p>A noter qu&#8217;au passage la sécurité et la corruptibilité ne sont pas des questions liées au format, mais à la méthode de manipulation de ces formats. Donc le choix du format ne prend pas en compte ces questions.</p>
+<h2>Le format CSV</h2>
+<p>L&#8217;acronyme CSV signifie Coma Separated Values, littéralement valeurs séparées par des virgules. C&#8217;est un des formats les plus simples que l&#8217;on puisse trouver.</p>
+<p>Dans sa version la plus basique, c&#8217;est un format ligne à ligne, et chaque ligne représente une entrée (par exemple une personne dans un carnet d&#8217;adresses, un objet dans un catalogue, des groupes d&#8217;ingrédients dans une liste de recettes, etc).</p>
+<p>Pour chaque entrée, il y a une série de valeur, chaque valeur est séparée par des virgules. Reprenons l&#8217;exemple du carnet d&#8217;adresse :</p>
+<pre lang="csv">
+sam,555-555-555,5 rue des lilas
+max,1234567890,thailande
+bob,666,7eme cercle </pre>
+<p>Mais il peut se complexifier dès qu&#8217;on veut rajouter des valeurs plus complexes. Par exemple si elles contiennent des virgules, alors il est d&#8217;usage d&#8217;entourer les valeurs de quotes :</p>
+<pre lang="csv">
+"sam","555-555-555","5, rue des lilas"
+"max,"1234567890","Patong, thailande"
+"bob","666","7eme cercle" </pre>
+<p>Le séparateur (la virgule) et les quotes peuvent être aussi un point-virgule et un quote simple, et on peut avoir n&#8217;importe quelle combinaison :</p>
+<pre lang="csv">
+'sam','555-555-555','5, rue des lilas'
+'max,'1234567890','Patong, thailande'
+'bob','666','7eme cercle' </pre>
+<pre lang="csv">
+'sam';'555-555-555';'5, rue des lilas'
+'max;'1234567890';'Patong, thailande'
+'bob';'666';'7eme cercle' </pre>
+<pre lang="csv">
+sam;555-555-555;5, rue des lilas
+max;1234567890;Patong, thailande
+bob;666;7eme cercle </pre>
+<p>Il existe aussi des caractères d&#8217;échappement, des exceptions de retour à la ligne, et des programmes qui produisent des lignes avec un séparateur, puis des lignes avec un autre. Autant dire que d&#8217;un format simple, on arrive parfois à quelque chose de complexe. C&#8217;est d&#8217;ailleurs pour ça que je recommande de ne pas traiter le CSV à la main, mais d&#8217;utiliser des modules spécialisés comme <a ahref="http://docs.python.org/2/library/csv.html?highlight=csv#csv">csv</a> en Python.</p>
+<p>Sachez néanmoins que le format le plus courant est celui supporté par les tableurs (Excel, LibreOffice Calc&#8230;) utilisant des guillemets doubles et des point-virgules :</p>
+<pre lang="csv">
+"Sam";"555-555-555";"5, rue des lilas"
+"Max";"1234567890";"Patong, thailande"
+"Bob";"666";"7eme cercle"</pre>
+<p>C&#8217;est donc ce format que je recommande car il est du coup très facile à lire et à modifier. Il est aussi possible de donner un nom à chaque colonne sur la première ligne :</p>
+<pre lang="csv">"nom";"numero";"adresse"
+"Sam";"555-555-555";"5, rue des lilas"
+"Max";"1234567890";"Patong, thailande"
+"Bob";"666";"7eme cercle"</pre>
+<p>Vous voudrez utiliser ce format quand :</p>
+<ul>
+<li>Vos données sont simples et facile à représentées sous forme de tableau.</li>
+<li>Vous avez pas envie de vous faire chier (TRES bonne raison).</li>
+<li>Il n&#8217;y a pas d&#8217;imbrication dans vos données.</li>
+<li>Vos données sont statiques (pas de vérification, pas de calculs, pas de transtypage). Bref, on les lis tel quel.</li>
+<li>Vous voulez que ce soit lisible dans un tableur. Pratique pour les néophytes.</li>
+</ul>
+<h2>Le format INI</h2>
+<p>Le format INI, utilisé pour l&#8217;INItialisation, est surtout un format pour stocker des configurations de logiciel. On le trouve souvent dans des fichiers avec des paramètres, portant l&#8217;extension .ini, .cfg, .conf ou .txt.</p>
+<p>Il est constitué de deux types d&#8217;élément :</p>
+<ul>
+<li>Les en-têtes, ou sections, qui s&#8217;écrivent [nom_de_l_en_tete]. Ils servent à nommer et délimiter des groupes de valeurs.</li>
+<li>Les valeurs, qui s&#8217;écrivent nom=valeur.</li>
+</ul>
+<p>Les fichiers INI ne sont pas fait pour stocker des données répétitives comme des personnes d&#8217;un carnet d&#8217;adresses. Généralement, chaque entrée est unique, et représente un paramètre du programme :</p>
+<pre lang="ini">[utilisateur]
+nom=Sam
+dossier=/home/sam
+
+[dernier_acces]
+jour=2013-07-06
+fichier='le_plus_dur_est_derriere_toi.avi'</pre>
+<p>C&#8217;est un format simple à manipuler (et <a href="http://docs.python.org/2/library/configparser.html?highlight=config#ConfigParser">il existe un module Python pour ça</a>) et généralement on le lit, on modifie une valeur, et on la sauvegarde.</p>
+<p>Vous voudrez utiliser ce format quand :</p>
+<ul>
+<li>Vous voulez sauvegarder l&#8217;état ou la configuration de votre programme.</li>
+<li>Vos données sont très simples.</li>
+<li>Vous êtes sous une vieille machine Windows.</li>
+<li>Vous voulez <a href="http://www.vaulscastle.com/games/bg/bgcheathelp1.htm">tricher à Baldur&#8217;s Gate</a>.</li>
+</ul>
+<h2>Le format JSON</h2>
+<p>A la base JSON, qui signifie JavaScript Object Notation, n&#8217;était pas un format destiné à être échangé, mais seulement la représentation textuelle des objets Javascript.</p>
+<p>Il se trouve qu&#8217;avec l&#8217;age d&#8217;or du Web, et l&#8217;utilisation massive d&#8217;AJAX, il a été utilisé pour communiquer entre le navigateur et le serveur, et les gens se sont apperçu qu&#8217;il était en fait très très très pratique.</p>
+<p>Aujourd&#8217;hui, JSON est utilisé un peu pour tout, et si vous ne savez pas trop quoi choisir comme format, choisissez JSON, il y a peu de chance de se planter.</p>
+<p>Voilà à quoi ressemble le carnet d&#8217;adresses en JSON:</p>
+<pre lang="javascript">
+[
+    {
+        'nom': 'Sam',
+        'numero': '555-555-555',
+        'adresse': '5, rue des lilas'
+    },
+    {
+        'nom': 'Max',
+        'numero': '1234567890',
+        'adresse': 'Patong, thailande'
+    },
+    {
+        'nom': 'Bob',
+        'numero': '666',
+        'adresse': '7eme cercle'
+    }
+]
+</pre>
+<p>JSON est extrêmement facile à manipuler de nos jours, et l&#8217;immense majorité des langages ont un module pour ça. <a href="http://docs.python.org/2/library/json.html?highlight=json#json">Python n&#8217;échappe pas à la règle</a>.</p>
+<p>Il est rare que JSON soit une mauvaise idée, donc je vais plutôt faire une liste de quand vous ne voulez PAS utiliser JSON :</p>
+<ul>
+<li>Vos données vont être lues souvent pas des humains sans connaissance techniques (le CSV est plus adapté).</li>
+<li>La plupart des systèmes qui vont lire ces données ont de mauvaises bibliothèques pour lire le JSON, mais de grosses facilités pour d&#8217;autres formats.</li>
+<li>Le reste du système communique avec un autre format (pas la peine de cumuler 40000 formats).</li>
+<li>Vous avez besoin de performances extrêmes (dans ce cas cherchez du côté des formats binaires).</li>
+<li>Vous voulez stocker de grosses quantités de données ou faire des analyses complexes dessus (dans ces cas cherchez du côté des bases de données).</li>
+<li>Il existe un standard qui correspond à votre usage qui n&#8217;est pas en JSON (ex: notifications : Utilisez RSS, qui est du XML, ou les emails, carnet d&#8217;adresses : utilisez ldif ou vcard, etc.) </li>
+<li>Vos données sont très très complexes et demande un format plus riche, des vérifications automatiques, un typage avancé, etc. Préférez XML.</li>
+</ul>
+<p>Sinon, allez-y, prenez du JSON. On peut l&#8217;utiliser pour les fichiers de configuration (comme le fait Sublime Text), comme API pour son service (ce que font presque tous les grands services du monde), pour communiquer entre plusieurs sites Web (JSONP), pour exporter / importer ses données (fixtures Django)&#8230;</p>
+<h2>Le format YAML</h2>
+<p>YAML, l&#8217;humoristique &#8220;Yet Another Markup Language&#8221; a des buts et qualités similaires au JSON, mais avec un format différent.</p>
+<p>Voici le fichier INI, traduit en YAML (les espaces sont significatifs) :</p>
+<pre lang="yaml">
+---
+utilisateur:
+    nom: Sam
+    dossier: /home/sam
+
+dernier_acces:
+    jour: 2013-07-06
+    fichier: 'le_plus_dur_est_derriere_toi.avi'
+...
+</pre>
+<p>Le format YAML est néanmoins plus riche que le JSON:</p>
+<ul>
+<li>Il permet d&#8217;inclure plusieurs document dans un seul fichier en les séparant par <code>---</code></li>
+<li>Il contient des types avancés comme les dates.</li>
+<li>Il possède plusieurs manières d&#8217;écrire les textes multi-lignes</li>
+</ul>
+<p>Globalement le YAML a été créé pour être facilement lisible et éditable par un humain, et pour cette raison la communauté Ruby l&#8217;a adopté pour ses fichiers de configuration. On retrouve donc YAML dans RubyOnRail.</p>
+<p>Utilisez YAML quand :</p>
+<ul>
+<li>Votre fichier est destiné à être aussi souvent lu par une machine qu&#8217;un humain et contient des types complexes.</li>
+<li>Vous êtes dans un environnement Ruby (à Rome&#8230;).</li>
+</ul>
+<p>Contrairement à JSON, on utilisera donc plus YAML pour la configuration que l&#8217;envoie de données.</p>
+<p>Personnellement je ne suis pas un aficionado de YAML. Mon expérience est que sa syntaxe complexe (j&#8217;admet que l&#8217;exemple ne le laisse pas paraitre) amène souvent des grattements de tête suite à une édition malheureuse. Frustrant pour un simple fichier de config.. De plus, il faut souvent installer <a href="https://pypi.python.org/pypi/pyaml/13.07.0">une lib additionnelle</a> pour le lire. Par ailleurs, JSON &#8211; qui est en fait un subset de YAML &#8211; fait généralement très bien le boulot.</p>
+<h2>Le format XML</h2>
+<p>La fameux eXtensible Markup Language. Je ne vais pas vous faire un cours complet sur XML, car on pourrait y passer des mois, au sens propre. Ce format, aux apparences simples, a été utilisé pour des choses extrêmement complexes.</p>
+<p>Revenons à notre exemple :</p>
+<pre lang="xml"><?xml version="1.0" encoding="utf8"?>
+<personnes>
+    <personne>
+        <nom>Sam</nom>
+        <numero>555-555-555</numero>
+    </personne>
+    <personne>
+        <nom>Max</nom>
+        <numero>1234567890</numero>
+    </personne>
+    <personne>
+        <nom>Bob</nom>
+        <numero>666</numero>
+    </personne>
+</personnes>
+</pre>
+<p><code>< ?xml version="1.0" encoding="utf8"? ></code> est l&#8217;en-tête du fichier, il annonce quel format de XML on va utiliser, le reste est le contenu.</p>
+<p>Ici nous n&#8217;avons que quelques balises, mais bien entendu, les balises peuvent contenir des balises qui peuvent contenir des balises&#8230; En prime, XML autorise des attributs (nom=&#8221;valeur&#8221;), c&#8217;est à dire des valeurs sur les balises qui modifient la signification de celle-ci. Par exemple :</p>
+<pre lang="xml">
+...
+<personne>
+    <nom>Bob</nom>
+    <numero type="shortcode">666</numero>
+</personne>
+...
+</pre>
+<p>Enfin, XML permet ce qu&#8217;on appelle des namespaces, afin de dire que les balises correspondent à un dialecte et pas un autre.</p>
+<p>Exemple, j&#8217;ai deux fois nom dans ce XML :</p>
+<pre lang="xml"><?xml version="1.0" encoding="utf8"?>
+<personnes>
+    <personne>
+        <nom>Sam</nom>
+        <numero>555-555-555</numero>
+        <ville>
+            <nom>Metro peau lisse</nom>
+            <coord>3.14,6.56</coord>
+        </ville>
+    </personne>
+    <personne>
+        <nom>Max</nom>
+        <numero>1234567890</numero>
+        <ville>
+            <nom>Patong</nom>
+            <coord>4.2,6.9</coord>
+        </ville>
+    </personne>
+    <personne>
+        <nom>Bob</nom>
+        <numero>666</numero>
+        <ville>
+            <nom>Sodome</nom>
+            <coord>-12,-13</coord>
+        </ville>
+    </personne>
+</personnes></pre>
+<p>Comment savoir pour ma machine ce que signifie, &#8220;nom&#8221; ?</p>
+<p>Et bien je peux les namespacer, c&#8217;est à dire les lier à une URL qui pointe vers la documentation qui dit ce que signifie chaque balise, ou au moins le site de l&#8217;auteur du XML.</p>
+<pre lang="xml"><?xml version="1.0" encoding="utf8"?>
+<personnes xmlns:sm="http://sametmax.com" xmlns:osm="http://openstreetmap.org">
+    <sm:personne>
+        <sm:nom>Sam</sm:nom>
+        <sm:numero>555-555-555</sm:numero>
+        <sm:ville>
+            <osm:nom>Metro peau lisse</osm:nom>
+            <osm:coord>3.14,6.56</osm:coord>
+        </sm:ville>
+    </sm:personne>
+    <sm:personne>
+        <sm:nom>Max</sm:nom>
+        <sm:numero>1234567890</sm:numero>
+        <sm:ville>
+            <osm:nom>Patong</osm:nom>
+            <osm:coord>4.2,6.9</osm:coord>
+        </sm:ville>
+    </sm:personne>
+    <sm:personne>
+        <sm:nom>Bob</sm:nom>
+        <sm:numero>666</sm:numero>
+        <sm:ville>
+            <osm:nom>Sodome</osm:nom>
+            <osm:coord>-12,-13</osm:coord>
+        </sm:ville>
+    </sm:personne>
+</personnes></pre>
+<p>Et si on veut se marrer un peu plus, on peut utiliser ce qu&#8217;on appelle des DTD (ou le format plus moderne XSD) : un XML, qui définit comment doit être formé un autre XML et qui permet de vérifier cela automatiquement. Il existe également un format appelé XSLT, qui permet de définir, en XML, comment transformer un autre document XML, en un document dans un troisième format de votre choix.</p>
+<p>Bref, le XML peut devenir très très compliqué. Si compliqué en fait, que des formats en XML, même avec leurs spécifications, <a href="http://ooxmlisdefectivebydesign.blogspot.fr/">deviennent difficiles à lire</a>.</p>
+<p>XML a été historiquement le premier format texte à être souple, extensible et interopérable. Aussi a-t-il été longtemps un format de choix pour communiquer entre machines et pour sauvegarder les configurations complexes. Aujourd&#8217;hui, sa verbosité et sa complexité ont amener les gens à se tourner massivement vers JSON, et XML n&#8217;est maintenant plus utilisé que pour les données très riches ou des raisons historiques (RSS, SOAP, etc).</p>
+<p>Il reste un terrain où XML brille, c&#8217;est la validation de données. En effet, grâce au DTD / XSD, on peut publier un document qui permet à tout langage avec <a href="https://pypi.python.org/pypi/pyxsd/0.1">la bibliothèque appropriée</a>, de vérifier si un XML est valide, comme un formulaire. On publie les besoins de validation une fois, et plein de langages peuvent en faire usage. C&#8217;est un vrai plus.</p>
+<p>Je recommande rarement d&#8217;utiliser XML, c&#8217;est lourd, difficile à manipuler (malgré un très <a href="http://docs.python.org/2/library/xml.etree.elementtree.html?highlight=xml#xml.etree.ElementTree">bon support général</a> de la plupart des langages), verbeux&#8230; Difficile à un débutant de mettre les mains dans votre système quand la courbe d&#8217;apprentissage est aussi hardos.</p>
+<p>Utilisez XML si :</p>
+<ul>
+<li>Un des dialectes XML correspond à un standard pour votre usage (RSS / Atom).</li>
+<li>Vous visez des systèmes qui utilisent historiquement XML : serveurs SOAP, environnement Java&#8230;</li>
+<li>La validation des données est importante et elles seront lues par de multiples langages.</li>
+</ul>
+<h2>Maintenance, versioning, documentation</h2>
+<p>Ce n&#8217;est pas le tout de choisir un format, il faut maintenant s&#8217;assurer qu&#8217;on puisse l&#8217;utiliser.</p>
+<p>Car mettre des labels à ses données, c&#8217;est bien beau, mais si le mec qui reçoit vos données ne sait pas ce que signifie ces labels, il ne peut rien en faire.</p>
+<p>Il va donc falloir écrire une documentation pour cela. Et oui, on ne documente pas seulement son code, mais aussi ses formats !</p>
+<p>Je vous invite aussi fortement à versionner vos formats, c&#8217;est à dire à toujours accompagner vos données (dans le fichier, via le protocole d&#8217;échange, ou dans le changelog de votre application) d&#8217;un numéro de version, ceci afin que les utilisateurs / développeurs / admin système ne se retrouvent pas couillonnés quand vous décider de modifier un peu votre format.</p>
+<p>Sur le long terme, comme les commentaires de code, cela va vous aider vous. Mais cela rendra aussi votre projet plus accessible et attirant pour les gens de l&#8217;extérieur, ou tout simplement vos collègues.</p>
+<p>En écrivant cela je viens de m’apercevoir que l&#8217;on a rien fait de tout cela pour <a href="https://github.com/sametmax/0bin/tree/master/zerobin">0bin</a>. La honte&#8230;</p>
+<p>Prochainement, <a href="http://sametmax.com/plist-pickle-hdf5-protocol-buffer-les-formats-binaires/">les formats binaires</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/yaml-xml-json-csv-ini-quest-ce-que-cest-et-a-quoi-ca-sert/feed/</wfw:commentRss>
+		<slash:comments>29</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">6576</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/07/sfxLsjC.jpg" length="34156" type="image/jpg" />	</item>
+	</channel>
+</rss>

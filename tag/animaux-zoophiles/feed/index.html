@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>animaux zoophiles &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/animaux-zoophiles/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Faire des enums en python</title>
+		<link>http://sametmax.com/faire-des-enums-en-python/</link>
+		<comments>http://sametmax.com/faire-des-enums-en-python/#comments</comments>
+		<pubDate>Wed, 19 Dec 2012 17:41:10 +0000</pubDate>
+		<dc:creator><![CDATA[recher]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[animaux zoophiles]]></category>
+		<category><![CDATA[bbw]]></category>
+		<category><![CDATA[enum]]></category>
+		<category><![CDATA[fesses]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[seins]]></category>
+		<category><![CDATA[type]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3741</guid>
+		<description><![CDATA[Dans le C++, il existe quelque chose que j'avais trouvé bien sympa : les enums. Nous allons voir dans cet article comment créer des variables de ce type en python. Cet article comporte des nichons, des feux rouges et des chanteurs pas encore morts.]]></description>
+				<content:encoded><![CDATA[<blockquote><p>Ceci est un post invité de <a href="http://recher.wordpress.com/" target="_blank">Réchèr </a>posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">creative common 3.0 unported</a>.</p></blockquote>
+<p><em>&#8220;Moi, je viens du C++&#8221;</em></p>
+<p>Voilà un propos qui fait classe. Ça donne un air de vieux de la vieille, à qui on ne la fait pas, et qui connaît des langages que c&#8217;est pas des langages de taffioles. &#8220;<em>De mon temps, fallait savoir ce qu&#8217;on faisait, sinon tout plantait. On ciselait notre code à la main dans des blocs de granit. Vous les gosses de maintenant, vous connaissez plus rien. Eh ! Sale jeune, au lieu d&#8217;importer des lib de feignasses, vient donc me changer ma poche à urine.</em>&#8221;</p>
+<p>Ça aurait été encore plus classe de dire que je viens de l&#8217;Assembleur, mais je suis pas assez vieux pour ça. Et de toutes façons, en vrai, je viens du Pascal. Bref, passons.</p>
+<p>Tout ça pour dire que dans le C++, il existe quelque chose que j&#8217;avais trouvé bien sympa : les enums.</p>
+<h3>Comment ça marche ?</h3>
+<p>Un enum est un type de variables ayant un domaine de valeur fixe et prédéfini, que l&#8217;on spécifie lors de la déclaration du type.</p>
+<pre lang="C">typedef enum
+{
+     Pique,
+     Coeur,
+     Trefle,
+     Carreau
+} ECouleursCartes;</pre>
+<p>Ensuite, on peut déclarer une variable de ce type, et lui affecter l&#8217;une des valeurs autorisées.</p>
+<pre lang="C">ECouleursCartes vMaCouleurCarte;
+vMaCouleurCarte = Trefle;</pre>
+<p>Concrètement, chaque valeur correspond à un entier. Le compilateur fait les correspondances tout seul comme un grand.</p>
+<h3>À quoi ça sert ?</h3>
+<p>À avoir du code plus parlant quand on veut représenter des notions concrètes de la vraie vie, ou quand on implémente une machine à état. </p>
+<p>Par exemple, vous créez une classe <code>FeuCirculation</code>. Vous avez besoin d&#8217;une variable renseignant sa couleur. Vous pouvez utiliser un int à l&#8217;arrache, et noter en commentaire quelque part : &#8220;0 c&#8217;est rouge, 1 c&#8217;est vert, 2 c&#8217;est orange.&#8221;. Mais c&#8217;est chiant. Il faut toujours garder en tête les correspondances. On risque d&#8217;attribuer des valeurs non documentées. Bref, y&#8217;a n&#8217;importe quoi dedans et ça pue, (un peu comme une poche à urine).</p>
+<p>Avec un enum, tout est plus clair, aussi bien dans le code définissant la classe <code>FeuCirculation</code>, que dans le code qui l&#8217;utilise. Et c&#8217;est plus robuste.</p>
+<p>L&#8217;exemple qui est donné très souvent dans les tutoriaux, c&#8217;est un enum <code>Animal</code>, contenant les valeurs <code>chien, chat, bœuf musqué, ...</code> Ça fonctionne, mais personnellement cet exemple me gêne un peu. Chaque animal est un objet à part entière. Dans ce cas, il vaudrait mieux créer une classe générique <code>Animal</code>, et la faire hériter. Ce qui permettra ensuite de créer des méthodes telles que <code>manger(), crier(), péter(), ...</code></p>
+<p><a href="http://sametmax.com/faire-des-enums-en-python/fuck-a-duck/" rel="attachment wp-att-3744"><img src="http://sametmax.com/wp-content/uploads/2012/12/fuck-a-duck.jpg" class="grouped_elements" rel="tc-fancybox-group3741" alt="If it quacks like a duck, it may have noticed you are fucking it." title="If it quacks like a duck, it may have noticed you are fucking it." width="320" height="240" class="alignnone size-full wp-image-3744" /></a></p>
+<p>Pour décrire plusieurs objets, utilisez des classes. Pour décrire les différents états d&#8217;un même objet, utilisez un enum. Pour décrire plusieurs objets simples, utilisez l&#8217;un ou l&#8217;autre, c&#8217;est à vous de choisir.</p>
+<h3>Comment faire un enum en python ?</h3>
+<p>Il n&#8217;y a, à ma connaissance, pas de structure syntaxique dédiée. Mais c&#8217;est pas grave, on va bien trouver quelque chose.</p>
+<p>Le plus simple, pour commencer, c&#8217;est de garder l&#8217;idée de la correspondance avec des entiers. Ça offre plein d&#8217;avantages :</p>
+<ul>
+<li>On sait exactement comment ça marche à l&#8217;intérieur.</li>
+<li>On peut très facilement enregistrer des enums dans un fichier ou une base de donnée, puisque ce ne sont que des nombres.</li>
+<li>On peut ordonner les valeurs. À utiliser avec prudence, car ça n&#8217;a pas toujours de sens. (Dire que l&#8217;état &#8220;feu rouge&#8221; est inférieur à l&#8217;état &#8220;feu vert&#8221;, qu&#8217;est-ce que cela signifie exactement ?)</li>
+</ul>
+<p>La première idée qui vient à l&#8217;esprit, c&#8217;est de créer une classe avec les valeurs dedans, et de ne plus jamais les changer par la suite.</p>
+<pre lang="python"># On l'appelle FeuCirculation et non pas FeuRouge. 
+# Parce qu'un feu n'est pas forcément rouge.
+# (Putain de langue française à la con qui fait n'importe quoi).
+class FeuCirculation:
+    ROUGE = 0
+    ORANGE = 1
+    VERT = 2
+    ORANGE_CLIGNOTANT = 3
+    TOUT_ETEINT = 4
+
+feuActuel = FeuCirculation.ORANGE</pre>
+<p>C&#8217;est bien, mais chiant à maintenir. Si on veut ajouter un autre état (par exemple, <code>FLECHE_DROITE_ORANGE_CLIGNOTANTE</code>), et qu&#8217;on se plante dans les valeurs numériques, il y a un risque d&#8217;avoir des doublons, et ça fiche tout en l&#8217;air.</p>
+<p>Voici un petit peu mieux :</p>
+<pre lang="python">class FeuCirculation:
+    (ROUGE,
+     ORANGE,
+     VERT,
+     ORANGE_CLIGNOTANT,
+     TOUT_ETEINT,
+    ) = range(5)</pre>
+<p><code>range(5)</code> renvoie un tuple (0, 1, 2, 3, 4). Des entiers différents sont attribués aux valeurs de l&#8217;enum. Si on veut en rajouter une et qu&#8217;on oublie de remplacer <code>range(5)</code> par <code>range(6)</code>, ça va balancer une exception. Tout va bien.</p>
+<p>Au cas où vous demanderiez : &#8220;qu&#8217;est-ce qui m&#8217;empêche de redéfinir l&#8217;une des valeurs, à un autre endroit du code, et de foutre le bordel ?&#8221;, je répondrais <em>&#8220;We are all consenting adults here&#8221;</em>. (Se référer à la philosophie du python. Si besoin, ce sera l&#8217;occasion d&#8217;un autre article).</p>
+<p><a href="http://sametmax.com/wp-content/uploads/2012/12/Lexxxi_Luxe_Sapphire_Cotton_Candi_2394hsp_10.jpg" class="grouped_elements" rel="tc-fancybox-group3741"><img src="http://sametmax.com/wp-content/uploads/2012/12/Lexxxi_Luxe_Sapphire_Cotton_Candi_2394hsp_10.jpg" alt="Some consenting adults. (Je peux venir ?)" title="Some consenting adults. (Je peux venir ?)" width="375" height="250" class="alignnone size-full wp-image-3765" /></a></p>
+<h3>Le code est beau, mais pour débugger ?</h3>
+<p>C&#8217;est un peu lourdingue. Lorsqu&#8217;on fait <code>print feuActuel</code> (ou lorsqu&#8217;on tape directement <code>feuActuel</code> dans <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/" target="_blank">une console pdb</a>), c&#8217;est une valeur numérique pas claire qui va s&#8217;afficher, au lieu d&#8217;un joli &#8220;ORANGE&#8221;, &#8220;ROUGE&#8221;, &#8230;</p>
+<p>Un petit dictionnaire de correspondance &#8220;valeur numérique&#8221; -> &#8220;nom à afficher&#8221; serait de bon aloi. Quelque chose de ce genre, à placer dans la définiton de la classe <code>FeuCirculation </code>:</p>
+<pre lang="python">    dictReverse = {
+        ROUGE : "ROUGE",
+        ORANGE : "ORANGE",
+        VERT : "VERT",
+        ORANGE_CLIGNOTANT : "ORANGE_CLIGNOTANT",
+        TOUT_ETEINT : "TOUT_ETEINT",
+    }</pre>
+<p>Fort bien. Mais n&#8217;est-ce pas un peu casse-couille ? Eh si. Des répétitions à la pelle, et dictReverse doit rester synchro avec les définitions des valeurs. C&#8217;est redevenu chiant à maintenir.</p>
+<p><a href="http://sametmax.com/wp-content/uploads/2012/12/dick_rivers2.jpg" class="grouped_elements" rel="tc-fancybox-group3741"><img src="http://sametmax.com/wp-content/uploads/2012/12/dick_rivers2.jpg" alt="Hey, je suis Dict-Reverse, et je suis chiant à maintenir. bi-boppe eu loulaaaa." title="Hey, je suis Dict-Reverse, et je suis chiant à maintenir. bi-boppe eu loulaaaa." width="240" height="333" class="alignnone size-full wp-image-3766" /></a></p>
+<h3>Définition dynamique de nouveaux types</h3>
+<p>Soyons franc, j&#8217;ai piqué cette astuce ici :<br />
+<a href="http://stackoverflow.com/questions/36932/whats-the-best-way-to-implement-an-enum-in-python" target="_blank">http://stackoverflow.com/questions/36932/whats-the-best-way-to-implement-an-enum-in-python</a></p>
+<p>Vous connaissez certainement déjà la fonction native <code>type()</code>. Elle renvoie le type du truc passé en paramètre. Youpi.</p>
+<p>Mais saviez-vous qu&#8217;elle permet également de créer de nouveaux types ? Pour ce faire, il faut l&#8217;appeler avec 3 paramètres : </p>
+<ul>
+<li>Le nom.</li>
+<li>Une liste indiquant les types de base (dans le cas où on veut que le type soit hérité).</li>
+<li>Un dictionnaire contenant les attributs. Les clés sont des chaînes de caractère, et correspondront aux noms des attributs.</li>
+</ul>
+<p>La création de l&#8217;enum <code>FeuCirculation </code>pourrait donc se faire de cette manière :</p>
+<pre lang="python">FeuCirculation = type(
+    "FeuCirculation",
+    (),
+    {
+        "ROUGE" : 0, 
+        "ORANGE" : 1, 
+        "VERT" : 2, 
+        "ORANGE_CLIGNOTANT" : 3, 
+        "TOUT_ETEINT" : 4
+    })
+
+>>> FeuCirculation
+<class '__main__.FeuCirculation'>
+>>> FeuCirculation.VERT
+2</pre>
+<p>On peut également ajouter le dictReverse dans le dictionnaire des attributs. (Ça fait un dictionnaire dans un dictionnaire, c&#8217;est lol).</p>
+<pre lang="python">FeuCirculation = type(
+    "FeuCirculation",
+    (),
+    {
+        "ROUGE" : 0,
+        "ORANGE" : 1,
+        "VERT" : 2,
+        "ORANGE_CLIGNOTANT" : 3,
+        "TOUT_ETEINT" : 4,
+        "dictReverse" : {
+            0 : "ROUGE",
+            1 : "ORANGE",
+            2 : "VERT",
+            3 : "ORANGE_CLIGNOTANT",
+            4 : "TOUT_ETEINT"}
+    })
+
+>>> FeuCirculation
+<class '__main__.FeuCirculation'>
+>>> feuxActuel = FeuCirculation.VERT
+>>> feuxActuel
+2
+>>> FeuCirculation.dictReverse[feuxActuel]
+'VERT'</pre>
+<p>Et maintenant y&#8217;a plus qu&#8217;à coder une petite fonction qui fait tout ça génériquement.</p>
+<pre lang="python">def enum(enumName, *listValueNames):
+    # Une suite d'entiers, on en crée autant
+    # qu'il y a de valeurs dans l'enum.
+    listValueNumbers = range(len(listValueNames))
+    # création du dictionaire des attributs.
+    # Remplissage initial avec les correspondances : valeur d'enum -> entier
+    dictAttrib = dict( zip(listValueNames, listValueNumbers) )
+    # création du dictionnaire inverse. entier -> valeur d'enum
+    dictReverse = dict( zip(listValueNumbers, listValueNames) )
+    # ajout du dictionnaire inverse dans les attributs
+    dictAttrib["dictReverse"] = dictReverse
+    # création et renvoyage du type
+    mainType = type(enumName, (), dictAttrib)
+    return mainType
+
+>>> FeuCirculation = enum(
+        "FeuCirculation",
+        "ROUGE", "ORANGE", "VERT",
+        "ORANGE_CLIGNOTANT", "TOUT_ETEINT")
+>>> FeuCirculation.TOUT_ETEINT
+4
+>>> FeuCirculation.dictReverse[FeuCirculation.TOUT_ETEINT]
+'TOUT_ETEINT'</pre>
+<p>Une petite précision : d&#8217;habitude, quand on crée des classes ou des types, c&#8217;est pour les instancier. Là on ne le fait pas, on se contente d&#8217;utiliser des valeurs statiques contenues dans le type. Vous pourriez faire <code>feuDuCarrefour = FeuCirculation()</code>. Ça va fonctionner, mais ça ne vous servira à rien.</p>
+<p><a href="http://sametmax.com/wp-content/uploads/2012/12/weird_stuff_cool_crazy_offbeat_traffic-light-tree-06_200907241442222897.jpg" class="grouped_elements" rel="tc-fancybox-group3741"><img src="http://sametmax.com/wp-content/uploads/2012/12/weird_stuff_cool_crazy_offbeat_traffic-light-tree-06_200907241442222897.jpg" alt="Le code de la route a parfois besoin de refactoring" title="Le code de la route a parfois besoin de refactoring" width="400" height="300" class="alignnone size-full wp-image-3767" /></a></p>
+<h3>Mais si on mélange les enums ?</h3>
+<pre lang="python">>>> FeuCirculation = enum(
+        "FeuCirculation",
+        "ROUGE", "ORANGE", "VERT",
+        "ORANGE_CLIGNOTANT", "TOUT_ETEINT")
+>>> etatMatiere = enum(
+        "etatMatiere", 
+        "SOLIDE", "LIQUIDE", "GAZEUX")
+>>> etatMatiere.dictReverse[FeuCirculation.VERT]
+'GAZEUX'</pre>
+<p>Mince alors. Ça fait n&#8217;importe quoi, sans signaler aucune erreur. C&#8217;est normal. D&#8217;un enum à l&#8217;autre, on ne fait que manipuler des entiers, qui restent les mêmes. Les correspondances se font joyeusement, même si ça n&#8217;a aucun sens. Dans le même ordre d&#8217;idée : <code>FeuCirculation.ROUGE == etatMatiere.SOLIDE</code> renverra <code>True</code>, ce qui ne veut rien dire. Comment régler ce problème ?</p>
+<p><a href="http://sametmax.com/wp-content/uploads/2012/12/iced_traffic_lights.jpg" class="grouped_elements" rel="tc-fancybox-group3741"><img src="http://sametmax.com/wp-content/uploads/2012/12/iced_traffic_lights.jpg" alt="Better have traffic ice than traffic jam." title="Better have traffic ice than traffic jam." width="426" height="284" class="alignnone size-full wp-image-3772" /></a></p>
+<h3>Solution 1 : ne pas régler le problème</h3>
+<p><em>&#8220;We are all consenting adults here&#8221;</em>, on ne va donc pas compliquer le code en rajoutant des sécurités de partout, sous prétexte d&#8217;empêcher des erreurs. Le seule moyen valable de se prémunir de faire n&#8217;importe quoi quand on code, c&#8217;est tout bêtement de rester concentré et de faire gaffe à ce qu&#8217;on fait.</p>
+<p>Honnêtement, ça ne m&#8217;est jamais arrivé de mélanger des enums entre eux. Pourtant, je n&#8217;ai pas la prétention de tout faire juste et sans bugs du premier coup. Parmi mes bourdes préférées : copier-coller la ligne du dessus et ne pas faire les bons remplacements (les &#8220;x&#8221; par des &#8220;y&#8221;, les &#8220;1&#8221; par des &#8220;2&#8221;, etc.), ou encore : déclarer une fonction, lui faire renvoyer un résultat bidon parce que je préfère la coder plus tard, et oublier que je ne l&#8217;ai pas codé.</p>
+<pre lang="python">def calculDist(point1, point2):
+    distX = point1.x - point1.x
+    distY = point2.x - point2.x
+    return math.sqrt(distX * distX + distY * distY)
+    # ami lecteur, sauras-tu trouver tous les fails
+    # présents dans cette fonction ?
+
+def RemoveDoubleLetters(strValue):
+    # TODO : coder le truc. Mais là, j'ai la flemme.
+    return strValue</pre>
+<p><a href="http://sametmax.com/wp-content/uploads/2012/12/bsod.jpg" class="grouped_elements" rel="tc-fancybox-group3741"><img src="http://sametmax.com/wp-content/uploads/2012/12/bsod.jpg" alt="BSOD !!" title="BSOD !!" width="351" height="461" class="alignnone size-full wp-image-3773" /></a></p>
+<p>Pour limiter les risques de mélange, voici quelques conseils :</p>
+<ul>
+<li>Préfixez les variables contenant une valeur d&#8217;enum : <code>feu</code> pour <code>FeuCirculation</code>, <code>emat</code> pour <code>etatMatiere</code>, etc. De cette manière, les erreurs de code sautent aux yeux. (<a href="http://www.joelonsoftware.com/articles/Wrong.html" target="_blank">making wrong code look wrong</a>, tout ça&#8230;)
+</li>
+<li>Il est important de ne pas polluer inutilement l&#8217;espace de nommage. Dans un fichier donné, n&#8217;importez pas les enums dont vous n&#8217;avez pas besoin. De cette manière, une erreur sera renvoyée si jamais vous utilisez une valeur d&#8217;enum imprévue. Je doute que vous ayez besoin, dans un même fichier de code, de renseigner des états de feux rouge et des états de matière.
+</li>
+<li>Si vous faites exprès de mélanger des enums, en pensant que vous n&#8217;avez aucun moyen de faire autrement, c&#8217;est qu&#8217;il y a, dès l&#8217;origine, un problème de conception dans votre code.</li>
+</ul>
+<p><a href="http://sametmax.com/wp-content/uploads/2012/12/cabrel.jpg" class="grouped_elements" rel="tc-fancybox-group3741"><img src="http://sametmax.com/wp-content/uploads/2012/12/cabrel.jpg" alt="Vieng fayre toi-même leu mélainge des enums, sur les muuuurs deu la cabaneu du côdeur. Vieng t&#039;assouar." title="Vieng fayre toi-même leu mélainge des enums, sur les muuuurs deu la cabaneu du côdeur. Vieng t&#039;assouar." width="350" height="238" class="alignnone size-full wp-image-3774" /></a></p>
+<h3>Solution 2 : des enums fortement typés.</h3>
+<p>Au lieu que les valeurs internes des enums soient de simples entiers, on crée un type pour chacune d&#8217;elle. Comme ça, on est sûr que ça renverra une erreur si on se confusionne. Par contre, on perd en simplicité, et ce n&#8217;est plus aussi simple pour la sérialisation.</p>
+<p>Soyons fous, et voyons ce que ça donne !</p>
+<pre lang="python">def strongTypedEnum(enumName, *listValueNames):
+    # création d'une liste de type. sans attribut, sans héritage.
+    # le nom du type est composé du nom de l'enum et du nom de la valeur,
+    # séparés par un point.
+    listValueTyped = [ type(".".join((enumName, nameValue)), (), {})
+                       for nameValue in listValueNames ]
+    # Ensuite, c'est tout pareil que la fonction d'avant.
+    dictAttrib = dict( zip(listValueNames, listValueTyped) )
+    dictReverse = dict( zip(listValueTyped, listValueNames) )
+    dictAttrib["dictReverse"] = dictReverse
+    mainType = type(enumName, (), dictAttrib)
+    return mainType
+
+>>> FeuCirculation = strongTypedEnum("FeuCirculation",
+        "ROUGE", "ORANGE", "VERT",
+        "ORANGE_CLIGNOTANT", "TOUT_ETEINT")
+>>> etatMatiere = strongTypedEnum(
+        "etatMatiere", 
+        "SOLIDE", "LIQUIDE", "GAZEUX")
+>>> etatMatiere.LIQUIDE
+<class '__main__.etatMatiere.LIQUIDE'>
+>>> etatMatiere.dictReverse[FeuCirculation.ROUGE]
+Traceback (most recent call last):
+  File "<pyshell#20>", line 1, in <module>
+    etatMatiere.dictReverse[FeuCirculation.ROUGE]
+KeyError: <class '__main__.FeuCirculation.ROUGE'></pre>
+<p>Mais est-ce bien nécessaire ?</p>
+<h3>Y&#8217;a une lib pour ça</h3>
+<p>Comme toujours, avec cette foutue prolifération de code libre, dès que quelque chose de cool peut potentiellement exister, un connard de geek l&#8217;a déjà fait, vous privant de l&#8217;occasion de le faire vous-même et de retirer la gloire qui en décombe. <a href="http://packages.python.org/flufl.enum/README.html" target="_blank">La lib flufl.enum</a> permet donc de créer et manipuler des enums, avec autant et même plus de fonctionnalités que ce que je viens de décrire ici. (Connards de geeks qui viennent manger le pain des français).</p>
+<p>Par contre, j&#8217;ai regardé le code, et j&#8217;ai pas pigé comment ça fonctionnait à l&#8217;intérieur. Ça fera peut-être l&#8217;objet d&#8217;un autre article, si j&#8217;ai le courage de me plonger dedans, et que je trouve ça intéressant et rigolo.</p>
+<p>De toutes façons, les libs c&#8217;est chiant, ça ajoute des dépendances, <a href="http://sametmax.com/vous-en-pensez-quoi-de-cette-idee/" target="_blank">il vaut mieux tout coder à la main</a>.</p>
+<h3>Disgression 1 : quelle classe ce type !</h3>
+<p>Déclarer un type avec la fonction <code>type()</code>, et déclarer une classe, ça ne fait pas exactement la même chose.</p>
+<pre lang="python">>>> class MaClasse:
+	pass
+
+>>> MaClasse
+<class __main__.MaClasse at 0x011CB270>
+>>> instanceClasse = MaClasse()
+>>> instanceClasse
+<__main__.MaClasse instance at 0x011C8BC0>
+
+>>> MonType = type("Le_Nom_De_Mon_Type", (), {})
+>>> MonType
+<class '__main__.Le_Nom_De_Mon_Type'>
+# Hey ! Le nom est dans une string, et y'a pas d'adresse mémoire !
+
+>>> instanceType = MonType()
+>>> instanceType
+<__main__.Le_Nom_De_Mon_Type object at 0x011C1B30>
+# Hey ! C'est un object, et pas une instance !
+</pre>
+<p>Ça a peut-être quelque chose à voir avec une histoire de old-style class et new-style class. J&#8217;ai pas cherché plus loin pour l&#8217;instant. Ça fera peut-être l&#8217;objet d&#8217;un autre-autre article, si j&#8217;ai le courage de me plonger dedans, et que je trouve ça intéressant et rigolo.</p>
+<h3>Disgression 2 : Restons dans les règles</h3>
+<p>J&#8217;avais trouvé un autre exemple de machine à état, plus rigolo que des feux de circulation ou de la matière. Je ne m&#8217;en suis pas servi durant mes explications, parce que ça aurait distrait le lecteur / la lectrice (<a href="http://sametmax.com/bien-expliquer-quelque-chose-les-regles-de-base/" target="_blank">charge cérébrale</a>, tout ça&#8230;). Mais ce serait vraiment dommage de ne pas vous en faire profiter. Le voici donc :</p>
+<pre lang="python">>>> PhaseCycleUterin = enum(
+        "PhaseCycleUterin",
+        "PREPUBERE", "MENSTRUELLE", 
+        "OVULATION", "PROLIPERATIVE", "SECRETRICE"
+        "ENCEINTE", "MENOPAUSE")
+
+>>> etatMatiere.dictReverse[PhaseCycleUterin.MENSTRUELLE]
+'LIQUIDE'</pre>
+<p>Voilà, ce sera tout pour aujourd&#8217;hui. La prochaine fois, nous redéfinirons le type &#8220;object&#8221; en utilisant uniquement les picots du langage Braille.</p>
+<p><a href="http://sametmax.com/wp-content/uploads/2012/12/femme_avec_regles.jpg" class="grouped_elements" rel="tc-fancybox-group3741"><img src="http://sametmax.com/wp-content/uploads/2012/12/femme_avec_regles.jpg" alt="Une femme qui a ses règles." title="Une femme qui a ses règles." width="470" height="671" class="alignnone size-full wp-image-3775" /></a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/faire-des-enums-en-python/feed/</wfw:commentRss>
+		<slash:comments>59</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">3741</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/12/numismate.jpg" length="48256" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>theora &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/theora/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>installer ffmpeg avec x264 et support mp3</title>
+		<link>http://sametmax.com/installer-ffmpeg-avec-x264-et-support-mp3/</link>
+		<comments>http://sametmax.com/installer-ffmpeg-avec-x264-et-support-mp3/#comments</comments>
+		<pubDate>Thu, 17 May 2012 15:11:32 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[compilation]]></category>
+		<category><![CDATA[ffmpeg]]></category>
+		<category><![CDATA[h264]]></category>
+		<category><![CDATA[lame]]></category>
+		<category><![CDATA[mp3]]></category>
+		<category><![CDATA[theora]]></category>
+		<category><![CDATA[vorbis]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=383</guid>
+		<description><![CDATA[FFmpeg est sans doute l'un des meilleurs outil d'encodage / decodage video à l'heure actuelle, seul hic, il y a des centaines de versions dispo avec pas toujours ce que l'on veut (support mp3, h264, etc). Alors un petit tuto pour compiler une version de ffmpeg supportant mp3/vorbis/theora/aac/h264.]]></description>
+				<content:encoded><![CDATA[<p>ffmpeg n&#8217;est plus à présenter, c&#8217;est génial, ça fait tout et même le café. On peut trouver des versions executables ou choisir de compiler la sienne (souvent parceque les version exe sont sans support mp3 ou/et x264 pour des raisons de droits). Compiler ffmpeg avec les libs dont on a besoin relève du défi de Spartiate, je le HAIS du plus profond de mon âme juste pour ça.</p>
+<p>Voici une manière de s&#8217;installer un petit ffmpeg sympatoche (si vous y arrivez) avec un max d&#8217;options, toutes ne vous seront pas utiles mais même si y en a trop je vous la met quand même comme j&#8217;ai coutume de dire à ces dames&#8230;</p>
+<p>D&#8217;abord le truc chiant, trouver les libs, je mets les liens que j&#8217;ai à l&#8217;heure actuelle mais ça change souvent.<br />
+Attention il faut être root pour pouvoir installer les libs.</p>
+<p>JE TIENS A PRECISER QUE JE HAIS FFMPEG POUR LA COMPILATION ! CA VA PLANTER !</p>
+<p><strong>support mp3 : </strong> <a href="http://lame.sourceforge.net/download.php" target="_blank">libmp3lame</a></p>
+<pre lang="bash">
+wget http://cdnetworks-kr-2.dl.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
+tar xvf lame-3.99.5.tar.gz
+cd lame-3.99.5
+./configure --enable-shared
+make & make install
+</pre>
+<p>JE HAIS FFMPEG (rappel)</p>
+<p><strong>support h264 : </strong> <a href="http://www.videolan.org/developers/x264.html" target="_blank">libx264</a></p>
+<pre lang="bash">
+wget ftp://ftp.videolan.org/pub/x264/snapshots/last_x264.tar.bz2
+tar xvf last_x264.tar.bz2
+cd x264-snapshot-20120516-2245
+./configure --enable-shared
+make & make install
+</pre>
+<p>JE HAIS FFMPEG (je vous l&#8217;ai déjà dit ?)</p>
+<p><strong>support Theora : </strong> <a href="http://www.theora.org/downloads/" target="_blank">libtheora</a></p>
+<pre lang="bash">
+wget http://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.bz2
+tar xvf libtheora-1.1.1.tar.bz2
+cd  libtheora-1.1.1
+./configure --enable-shared
+make & make install
+</pre>
+<p>JE HAIS FFMPEG (jamais 2 sans 3)</p>
+<p><strong>support Vorbis : </strong> <a href="http://www.theora.org/downloads/" target="_blank">libvorbis</a></p>
+<pre lang="bash">
+wget http://downloads.xiph.org/releases/vorbis/libvorbis-1.2.3.tar.gz
+tar xvf libvorbis-1.2.3.tar.gz
+cd  libvorbis-1.2.3
+./configure --enable-shared
+make & make install
+</pre>
+<p>JE HAIS FFMPEG (un dernier pour la route)</p>
+<p><strong>Enfin FFMPEG (on prend la derniere version sur Git): </strong> <a href="http://ffmpeg.org/download.html" target="_blank">ffmpeg</a></p>
+<pre lang="bash">
+git clone git://source.ffmpeg.org/ffmpeg.git 
+./configure --prefix=/usr --bindir=/usr/bin --datadir=/usr/share/ffmpeg --incdir=/usr/include/ffmpeg --libdir=/usr/lib --mandir=/usr/share/man  --enable-bzlib --disable-libdirac --enable-libfaac --enable-nonfree --enable-libmp3lame  --enable-libschroedinger --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libxvid --enable-x11grab --enable-avfilter --enable-postproc --enable-pthreads --disable-static --enable-shared --enable-gpl --disable-debug --disable-stripping --shlibdir=/usr/lib --enable-runtime-cpudetect 
+make & make install
+</pre>
+<p><strong>Les problèmes à la compilation:</strong><br />
+ça ne marche JAMAIS du premier coup ! Celui qui vous dit que ça s&#8217;est passé sans problème vous ment, vous méprise, vous pouvez l&#8217;égorger.<br />
+Quelques trucs pour essayer de debuger:<br />
+ &#8211; si à la compilation de ffmpeg il vous dit qu&#8217;il ne trouve pas la librairie vérifier que le chemin vers celle-ci est présent dans le <a href="http://www.troubleshooters.com/linux/prepostpath.htm" target="_blank">PATH</a> de votre système, vous pouvez savoir où se trouve la lib en tapant locate (ou whereis) le_nom_de_la_lib<br />
+ &#8211; si vous changez un paramètre dans configure pensez à faire un &#8216;make clear&#8217;<br />
+ &#8211; éteindre l&#8217;ordi et aller vous coucher<br />
+ &#8211; vérifier que le paramètre &#8216;enable-shared&#8217; est bien dans le configure à la compilation des libs, par défaut il est activé mais on sait jamais</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/installer-ffmpeg-avec-x264-et-support-mp3/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">383</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/05/moulin_legumes-d541a.jpg" length="8384" type="image/jpg" />	</item>
+	</channel>
+</rss>

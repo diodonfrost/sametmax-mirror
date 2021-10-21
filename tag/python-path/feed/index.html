@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>python path &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/python-path/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Se faciliter les imports avec les fichiers *.pth</title>
+		<link>http://sametmax.com/se-faciliter-les-imports-avec-les-fichiers-pth/</link>
+		<comments>http://sametmax.com/se-faciliter-les-imports-avec-les-fichiers-pth/#comments</comments>
+		<pubDate>Mon, 10 Sep 2012 16:49:24 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[import]]></category>
+		<category><![CDATA[path]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[python path]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2082</guid>
+		<description><![CDATA[Dans un article, nous parlions des extensions alternatives en Python, et notamment de l'usage des fichiers <em>*.pth</em>. Néanmoins cette extension est souvent mal comprise, et voici un comment en profiter au maximum.]]></description>
+				<content:encoded><![CDATA[<p>Dans un article, nous parlions des <a href="http://sametmax.com/astuces-python-en-vrac/">extensions alternatives en Python</a>, et notamment de l&#8217;usage des fichiers <em>*.pth</em>. Néanmoins cette extension est souvent mal comprise, et voici un comment en profiter au maximum.</p>
+<p>En Python, on a souvent des problèmes d&#8217;import: la lib est dans un dossier au dessous, ou à côté, ou à l&#8217;autre bout du disque dur, et ça plantouille parceque Python ne trouve pas le module.</p>
+<p>Il existe plein de moyens de jouer avec le fameux <code>PYTHON_PATH</code> qui contient la liste des dossiers dans lesquelles chercher les libs, et la plupart sont fort verbeuses et répétitives, du genre:</p>
+<pre lang="python">import os
+import sys
+
+CUR_DIR = os.path.dirname(os.path.realpath(__file__))
+sys.path.extend([
+    os.path.join(CUR_DIR, 'apps'),
+    os.path.join(os.path.dirname(CUR_DIR), 'libs'),
+    os.path.join(os.path.realpath('~'), '.local_libs')
+]]}</pre>
+<p>Une manière simple est d&#8217;utiliser un fichier <em>*.pth</em>: on créé un fichier texte, on le nomme <em>comme-on-veut.pth</em> (moi je me fais pas chier, je le nomme .pth comme ça c&#8217;est court et c&#8217;est caché sous nunux), et on liste tous les dossiers qu&#8217;on veut ajouter au <code>PYTHON_PATH</code>, y compris avec des chemins relatifs.</p>
+<p>Oui mais, argh parmi les argh, la première fois qu&#8217;on le fait, ça ne marche pas. Alors on cherche dans la doc, et là, fustration, on apprend que les fichiers <em>*.pth</em> ne sont parsés que dans les sites directories, c&#8217;est à dire les dossiers officiels du système dans lesquels sont censés être les libs de la bibliothèque standard. Donc pas le dossier courant.</p>
+<p>Eh oui, ces fichiers ont été conçus pour faciliter les déploiements, du genre quand on fait un setup.py pour son app, pas pour nous, pauvres mortels.</p>
+<p>Heureusement il y a une solution Sam et Max à tout, et ici elle consiste à faire:</p>
+<pre lang="python">import os
+import site
+
+CUR_DIR = os.path.dirname(os.path.realpath(__file__))
+site.addsitedir(CUR_DIR)</pre>
+<p>Quelque part dans son code n&#8217;importe où qui est sûr d&#8217;être éxécuté tôt, par exemple dans Django, dans le <em>settings.py</em>. Ca ajoute le dossier du projet en tant que site directory, et donc le fichier <em>.pth</em> est parsé. On peut alors dumper son listing dedans sans avoir à le répéter dans tous les scripts et fichiers qui doivent l&#8217;utiliser (et ainsi modifier cette liste facilement).</p>
+<p>Attention cependant, celà rajoute votre dossier de projet dans le <code>PYTHON_PATH</code>, rendant tout ce qu&#8217;il contient importable. Normalement, c&#8217;est ce que vous voulez, mais si ce n&#8217;est pas le cas, vous pouvez avoir une gestion plus fine en ajoutant juste le fichier .pth avec <code>site.addpackage(CUR_DIR, 'fichier.pth', set())</code></p>
+<h2>La feature de magie noire</h2>
+<p>Dans les fichiers <em>*.pth</em>, il y a un support limité de la syntaxe Python: on peut commenter des lignes avec <code>#</code> et faire des <code>import truc</code>. </p>
+<p>Sauf que si vous êtes curieux, vous verrez le détail qui tue dans l&#8217;implémentation:</p>
+<pre lang="python">if line.startswith(("import ", "import\t")):
+    exec line</pre>
+<p>On peut donc virtuellement mettre n&#8217;importe quel code Python dans les fichiers <em>*.pth</em>. Par exemple:</p>
+<pre lang="python">
+../foo
+import sys; print "Foo a été ajouté au PYTHON PATH"
+</pre>
+<p>Va afficher &#8220;Foo a été ajouté au PYTHON PATH&#8221; au démarrage du programme. Amusant. Et tellement de potentiels pour faire des trucs tordus !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/se-faciliter-les-imports-avec-les-fichiers-pth/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">2082</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/09/yoda-vs-hulk.jpg" length="118963" type="image/jpg" />	</item>
+	</channel>
+</rss>

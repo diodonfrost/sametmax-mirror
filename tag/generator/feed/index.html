@@ -1,0 +1,1074 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>generator &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/generator/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Views VS generators</title>
+		<link>http://sametmax.com/views-vs-generators/</link>
+		<comments>http://sametmax.com/views-vs-generators/#comments</comments>
+		<pubDate>Wed, 25 Mar 2015 18:57:20 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dict]]></category>
+		<category><![CDATA[generator]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[view]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=15993</guid>
+		<description><![CDATA[Avec Python 2.7, un outil appelé les "views" (les "vues") est apparu. Une vue est juste un enrobage qui permet de voir un objet d'une certaine façon, et de le manipuler d'une certaine façon (avec une autre API), sans changer cet objet.]]></description>
+				<content:encoded><![CDATA[<p>Avec Python 2.7, un outil appelé les &#8220;views&#8221; (les &#8220;vues&#8221;) est apparu. Une vue est juste un enrobage qui permet de voir un objet d&#8217;une certaine façon, et de le manipuler d&#8217;une certaine façon (avec une autre API), sans changer cet objet.</p>
+<p>Les vues ont surtout été notables pour leur apparition dans les dictionnaires avec Python 2.7:</p>
+<pre lang="python">    >>> scores = {"sam": 1, "max": 0}
+    >>> scores.items() # retourne une lsite
+    [('max', 0), ('sam', 1)]
+    >>> scores.iteritems() # retourne un générateur
+    <dictionary-itemiterator object at 0x7f8782a26628>
+    >>> list(scores.iteritems()) # sans views
+    [('max', 0), ('sam', 1)]
+    >>> scores.viewsitems() # avec views
+    Traceback (most recent call last):
+      File "<ipython-input-12-dc0b08011047>", line 1, in <module>
+        scores.viewsitems() # avec views
+    AttributeError: 'dict' object has no attribute 'viewsitems'
+
+    >>> scores.viewitems() # retourne une vue
+    dict_items([('max', 0), ('sam', 1)])</pre>
+<p>Néanmoins personne ne les a vraiment utilisé, et c&#8217;est un tort. Elles sont en effet très performantes, et pour cette raison sont retournées par défaut avec <code>items()</code> en Python 3.</p>
+<p>En effet, les vues ne sont qu&#8217;un enrobage : elles ne contiennent rien, et donc ne prennent pas beaucoup mémoire, tout comme les générateurs.</p>
+<p>Mais contrairement aux générateurs, les vues ne se vident pas et peuvent exposer une API plus complète que les générateurs, comme par exemple déclarer une taille :</p>
+<pre lang="python">>>> items = scores.iteritems()
+>>> list(items)
+[('max', 0), ('sam', 1)]
+>>> list(items) # woops
+[]
+>>> items = scores.viewitems()
+>>> list(items)
+[('max', 0), ('sam', 1)]
+>>> list(items)
+[('max', 0), ('sam', 1)]
+>>> len(scores.iteritems()) # nope
+Traceback (most recent call last):
+  File "<ipython-input-21-9c7f250da51d>", line 1, in <module>
+    len(scores.iteritems())
+TypeError: object of type 'dictionary-itemiterator' has no len()
+
+>>> len(scores.viewitems())
+2
+</pre>
+<p>Alors certes, on ne peut pas mettre des vues partout, et les générateurs restent utiles. Mais quand il est possible de les utiliser, et à moins d&#8217;avoir besoin d&#8217;une liste afin de modifier les valeurs in place, il n&#8217;y pas de raison de ne pas le faire : c&#8217;est le meilleur des deux mondes. </p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/views-vs-generators/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">15993</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/03/magic-realism-paintings-illusions-rob-gonsalves-11.jpg" length="398794" type="image/jpg" />	</item>
+		<item>
+		<title>Aplatir un iterable like a boss en Python</title>
+		<link>http://sametmax.com/applatir-un-iterable-like-a-boss-en-python/</link>
+		<comments>http://sametmax.com/applatir-un-iterable-like-a-boss-en-python/#comments</comments>
+		<pubDate>Fri, 23 Aug 2013 10:08:55 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[generator]]></category>
+		<category><![CDATA[nesting]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7172</guid>
+		<description><![CDATA[Des structures un peu imbriquées ne sont pas trop difficiles à traiter en Python.
+
+Par exemple, avec une liste en intention imbriquée :
+
+<pre lang="python">
+>>> l = [(1, 2), (3, 4), (5, 6)]
+>>> [y for x in l for y in x]
+[1, 2, 3, 4, 5, 6]
+</pre>
+
+Mais quand on a beaucoup de niveaux...]]></description>
+				<content:encoded><![CDATA[<p>Des structures un peu imbriquées ne sont pas trop difficiles à traiter en Python.</p>
+<p>Par exemple, avec une liste en intention imbriquée :</p>
+<pre lang="python">
+>>> l = [(1, 2), (3, 4), (5, 6)]
+>>> [y for x in l for y in x]
+[1, 2, 3, 4, 5, 6]
+</pre>
+<p>Mais quand on a beaucoup de niveaux, par exemple&#8230;</p>
+<pre>
+a = []
+for i in xrange(500):
+    a = [a, i]
+print(a)
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[], 0], 1], 2], 3], 4], 5], 6], 7], 8], 9], 10], 11], 12], 13], 14], 15], 16], 17], 18], 19], 20], 21], 22], 23], 24], 25], 26], 27], 28], 29], 30], 31], 32], 33], 34], 35], 36], 37], 38], 39], 40], 41], 42], 43], 44], 45], 46], 47], 48], 49], 50], 51], 52], 53], 54], 55], 56], 57], 58], 59], 60], 61], 62], 63], 64], 65], 66], 67], 68], 69], 70], 71], 72], 73], 74], 75], 76], 77], 78], 79], 80], 81], 82], 83], 84], 85], 86], 87], 88], 89], 90], 91], 92], 93], 94], 95], 96], 97], 98], 99], 100], 101], 102], 103], 104], 105], 106], 107], 108], 109], 110], 111], 112], 113], 114], 115], 116], 117], 118], 119], 120], 121], 122], 123], 124], 125], 126], 127], 128], 129], 130], 131], 132], 133], 134], 135], 136], 137], 138], 139], 140], 141], 142], 143], 144], 145], 146], 147], 148], 149], 150], 151], 152], 153], 154], 155], 156], 157], 158], 159], 160], 161], 162], 163], 164], 165], 166], 167], 168], 169], 170], 171], 172], 173], 174], 175], 176], 177], 178], 179], 180], 181], 182], 183], 184], 185], 186], 187], 188], 189], 190], 191], 192], 193], 194], 195], 196], 197], 198], 199], 200], 201], 202], 203], 204], 205], 206], 207], 208], 209], 210], 211], 212], 213], 214], 215], 216], 217], 218], 219], 220], 221], 222], 223], 224], 225], 226], 227], 228], 229], 230], 231], 232], 233], 234], 235], 236], 237], 238], 239], 240], 241], 242], 243], 244], 245], 246], 247], 248], 249], 250], 251], 252], 253], 254], 255], 256], 257], 258], 259], 260], 261], 262], 263], 264], 265], 266], 267], 268], 269], 270], 271], 272], 273], 274], 275], 276], 277], 278], 279], 280], 281], 282], 283], 284], 285], 286], 287], 288], 289], 290], 291], 292], 293], 294], 295], 296], 297], 298], 299], 300], 301], 302], 303], 304], 305], 306], 307], 308], 309], 310], 311], 312], 313], 314], 315], 316], 317], 318], 319], 320], 321], 322], 323], 324], 325], 326], 327], 328], 329], 330], 331], 332], 333], 334], 335], 336], 337], 338], 339], 340], 341], 342], 343], 344], 345], 346], 347], 348], 349], 350], 351], 352], 353], 354], 355], 356], 357], 358], 359], 360], 361], 362], 363], 364], 365], 366], 367], 368], 369], 370], 371], 372], 373], 374], 375], 376], 377], 378], 379], 380], 381], 382], 383], 384], 385], 386], 387], 388], 389], 390], 391], 392], 393], 394], 395], 396], 397], 398], 399], 400], 401], 402], 403], 404], 405], 406], 407], 408], 409], 410], 411], 412], 413], 414], 415], 416], 417], 418], 419], 420], 421], 422], 423], 424], 425], 426], 427], 428], 429], 430], 431], 432], 433], 434], 435], 436], 437], 438], 439], 440], 441], 442], 443], 444], 445], 446], 447], 448], 449], 450], 451], 452], 453], 454], 455], 456], 457], 458], 459], 460], 461], 462], 463], 464], 465], 466], 467], 468], 469], 470], 471], 472], 473], 474], 475], 476], 477], 478], 479], 480], 481], 482], 483], 484], 485], 486], 487], 488], 489], 490], 491], 492], 493], 494], 495], 496], 497], 498], 499]
+</pre>
+<p>Là je désactive la coloration syntaxique du blog parce que le snippet a fait planté sublime :-D Heureusement, il reste VI.</p>
+<p>Bref, quand on a ce genre de truc, comment on fait ? Pire, comment on traite un flux de données de types hétérogènes, et dont on ne connait pas la taille, ou de longueur infinie ? C&#8217;est une caractéristique de Python : on a des générateurs plein de duck typing partout !</p>
+<p>Voici un petit snippet un peu tordu, mais qui fait des merveilles :</p>
+<pre lang="python">
+from collections import deque, OrderedDict, MutableSet, defaultdict
+
+
+class Flattener(object):
+
+    # les types qu'on va aplatir, c'est à dire la plupart
+    # des iterables sauf les hashmaps
+    DEFAULT_FLATTEN_TYPES = (
+        list,
+        tuple,
+        set,
+        (x for x in ()).__class__,
+        xrange,
+        deque,
+        MutableSet,
+    )
+
+    # par défaut, on utilise DEFAULT_FLATTEN_TYPES et
+    # aucun iterable_getters (on verra ce que c'est plus bas)
+    # puisque c'est le cas le plus courant d'utilisation
+    def __init__(self, flatten_types=None, iterable_getters={}):
+        self.flatten_types = flatten_types or self.DEFAULT_FLATTEN_TYPES
+        self.iterable_getters = iterable_getters
+
+
+    # Retourne True si on doit aplatir l'objet.
+    # Par défaut, vérifie dans si l'objet est d'un des types
+    # DEFAULT_FLATTEN_TYPE.
+    def should_flatten(self, obj):
+        return isinstance(obj, self.flatten_types)
+
+    # Si avant d'aplatir l'objet, l'objet a besoin d'une transformation
+    # (par exemple appeler items() sur un dico), on l'applique. 
+    # Par défaut il n'y a aucune transformation appliquée, quelque soit le 
+    # type.
+    def transform_iterable(self, obj):
+        if obj.__class__ in self.iterable_getters:
+            return self.iterable_getters[obj.__class__](obj)
+        return obj
+
+
+    # Permet d'appeler une instance de Flatener, comme si c'était une fonction
+    def __call__(self, iterable):
+        for e in:
+            # Si un élément est à aplatir, on fait un appel récursif
+            if self.should_flatten(e):
+                # Appel récursif, et yielding du résultat de cet appel.
+                for f in self(self.transform_iterable(e)):
+                    yield f
+            # On ne doit pas aplatir l'element (genre un int, un str...)
+            # donc on le yield directement
+            else:
+                yield e
+
+
+# fabrique un flattener, ici on prend la config par défaut
+flatten = Flattener()
+
+# et pouf
+
+a = []
+for i in xrange(500):
+    a = [a, i]
+
+applatie = list(flatten(a))
+
+print(len(applatie))
+print(applatie[:10])
+5500
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+</pre>
+<p>Ca gère une longeur infinie, et une imbrication de centaines de niveaux. Comme Python a une limite de recursions (1000 par défaut), on est quand même bridé, mais c&#8217;est une situation rare d&#8217;avoir autant de nesting. Et dans les cas extrêmes, on peut allouer une plus grande stack avec <code>sys.setrecursionlimit()</code>.</p>
+<p>Via <code>flatten_types</code>, on peut créer différentes politiques d&#8217;aplatissement, bien que celle par défaut soit assez saine. Par exemple décider d&#8217;aplatir les strings, ou ne pas aplatir les tuples : il suffit de passer la bonne liste de types en paramètres. Comme le Flattener est une classe qui permet de créer <code>flatten()</code>, on peut la sous-classer et mettre à disposition plusieurs aplatisseurs personnalisés dans sa lib.</p>
+<p>La partie :</p>
+<pre lang="python">
+                if e.__class__ in self.iterable_getters:
+                    e = self.iterable_getters[e.__class__](e)
+</pre>
+<p>Permet de gérer des cas ambigüs, comme par exemple les dicos. Comment itérer dessus ? Par clé, par valeur ? Par défaut on ne les aplatit pas</p>
+<p>On peut par exemple choisir d&#8217;aplatir complètement les dictionnaires. :</p>
+<pre lang="python">
+a = []
+for i in xrange(2):
+    a = [a, i] + [{'a': 1., 'b': {'c': 3.}}]
+print(a)
+
+[[[], 0, {'a': 1.0, 'b': {'c': 3.0}}], 1, {'a': 1.0, 'b': {'c': 3.0}}]
+
+# on rajoute les dictionnaires aux types à aplatir
+new_ft = Flattener.DEFAULT_FLATTEN_TYPES + (dict,)
+
+dico_flatten = Flattener(flatten_types=new_ft,
+                         # on dit qu'un dico rencontré doit être transformé
+                         # via items() avant iteration
+                         iterable_getters={dict: lambda x: x.items()})
+
+print(list(dico_flatten(a)))
+
+[0, u'a', 1.0, u'b', u'c', 3.0, 1, u'a', 1.0, u'b', u'c', 3.0]
+</pre>
+<p>On peut même overrider <code>should_flatten</code> et <code>transform_iterable</code> si des besoins plus importants se font sentir.</p>
+<p>Attention tout de même à ce que vous mettez dans <code>flatten_types</code>. Par exemple, une string d&#8217;un caractère est à la fois yieldable comme valeur et itérable, ce qui va provoquer une recursion infinie. Adaptez toujours <code>iterable_getters</code> en conséquence.</p>
+<p>Hop, dans <a href="sametmax.com/batbelt-la-lib-des-petits-outils-python-qui-vont-bien/">batbelt</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/applatir-un-iterable-like-a-boss-en-python/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">7172</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/08/28-manipulations-photographiques-brillantes-qui-vous-feront-rever20.jpg" length="133782" type="image/jpg" />	</item>
+		<item>
+		<title>S&#8217;affranchir des doublons d&#8217;un itérable en Python</title>
+		<link>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/</link>
+		<comments>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/#comments</comments>
+		<pubDate>Tue, 20 Aug 2013 10:10:32 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dublon]]></category>
+		<category><![CDATA[generator]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[lambda]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[yield]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7143</guid>
+		<description><![CDATA[Supprimer ou ignorer les doublons d'un itérable tel qu'une liste ou un array est un challenge dans tous les langages.]]></description>
+				<content:encoded><![CDATA[<p>Supprimer ou ignorer les doublons d&#8217;un itérable tel qu&#8217;une liste ou un array est un challenge dans tous les langages. Il faut se poser les questions suivantes :</p>
+<ul>
+<li>Qu&#8217;est-ce qu&#8217;un doublon ?</li>
+<li>Quels types d&#8217;itérables traite-t-on ?</li>
+<li>Quel est la taille de l&#8217;itérable ?</li>
+<li>Et niveau perfs ?</li>
+</ul>
+<p>En Python, on a des structures de données qui suppriment automatiquement les doublons : les sets et les dictionnaires. Mais elles ne conservent pas l&#8217;ordre des élements.</p>
+<p>Il y a aussi le fait qu&#8217;un itérable en Python peut avoir une taille inconnue, ou infinie.</p>
+<p>Le post est long, donc&#8230;</p>
+
+<!-- iframe plugin v.4.3 wordpress.org/plugins/iframe/ -->
+<iframe width="420" height="315" src="//www.youtube.com/embed/HsX4M-by5OY" frameborder="0" 0="allowfullscreen" scrolling="yes" class="iframe-class"></iframe>
+
+<h2>Solution 1 : générateur et hashing</h2>
+<p>En utilisant conjointement les générateurs, les sets et une petite injection de dépendance, on peut trouver un compromis entre flexibilité et performances :</p>
+<pre lang="python">def skip_duplicates(iterable, key=lambda x: x):
+
+    # on va mettre l’empreinte unique de chaque élément dans ce set
+    fingerprints = set()
+
+    for x in iterable:
+        # chaque élement voit son emprunte calculée. Par défaut l’empreinte
+        # est l'élément lui même, ce qui fait qu'il n'y a pas besoin de
+        # spécifier 'key' pour des primitives comme les ints ou les strings.
+        fingerprint = key(x)
+
+        # On vérifie que l'empreinte est dans la liste des empreintes  des
+        # éléments précédents. Si ce n'est pas le cas, on yield l'élément, et on
+        # rajoute sont empreinte ans la liste de ceux trouvés, donc il ne sera
+        # pas yieldé si on ne le yieldera pas une seconde fois si on le
+        # rencontre à nouveau
+        if fingerprint not in fingerprints:
+            yield x
+            fingerprints.add(fingerprint)</pre>
+<p>La fonction s&#8217;appelle <code>skip_duplicates</code> car c&#8217;est ce qu&#8217;elle fait. Elle ne retire pas vraiment les doublons, elle produit un flux de d&#8217;éléments qui ne comporte pas de doublons en ignorant tout doublons présent dans l&#8217;itérable initial.</p>
+<p>Cette approche a plusieurs avantages :</p>
+<ul>
+<li>Les doublons sont bien retirés, et l&#8217;ordre est conservé.</li>
+<li>La complexité est de 0(n).</li>
+<li>L&#8217;utilisateur peut choisir ce qui fait qu&#8217;un élément est unique : un attribut, un sous-élément, l&#8217;affichage sous forme de string&#8230;</li>
+<li>C&#8217;est un générateur, est cela fonctionne donc avec des itérables de toute taille, même inconnue ou infinie.</li>
+</ul>
+<p>Il faut néanmoins que l&#8217;ensemble des éléments uniques tiennent au moins une fois en mémoire en plus de l&#8217;itérable initial, et potentiellement d&#8217;un stockage à la sortie du générateur. On fait donc un trade-off sur la mémoire.</p>
+<p>Comme la valeur de <code>key</code> par défaut est une valeur saine, ça fonctionne comme on s&#8217;y attend pour les cas simples :</p>
+<pre lang="python">>>> list(skip_duplicates([1, 2, 3, 4, 4, 2, 1, 3 , 4]))
+[1, 2, 3, 4]
+>>> list(skip_duplicates('fjsqlkdmfjsklqmdfjdmsl'))
+[u'f', u'j', u's', u'q', u'l', u'k', u'd', u'm']
+>>> list(skip_duplicates(((1, 2), (2, 1), (1, 2), (1, 1))))
+[(1, 2), (2, 1), (1, 1)]</pre>
+<p>Pourvoir spécifier &#8216;key&#8217; permet de faire des choix dans ce qu&#8217;est un doublon :</p>
+<pre lang="python">>>> list(skip_duplicates((1, 2, '1', '1', 2, 3, '3')))
+[1, 2, u'1', 3, u'3']
+>>> list(skip_duplicates((1, 2, '1', '1', 2, 3, '3'), key=lambda x: str(x)))
+[1, 2, 3]</pre>
+<p>Et si on s&#8217;attaque à des cas plus complexes, le fonction vous force à préciser votre pensée :</p>
+<pre lang="python">>>> list(skip_duplicates(([], [], (), [1, 2], (1, 2)))
+... )
+Traceback (most recent call last):
+  File "<ipython-input-20-ed44f170c634>", line 1, in <module>
+    list(skip_duplicates(([], [], (), [1, 2], (1, 2)))
+  File "<ipython-input-18-42dbb94f03f8>", line 7, in skip_duplicates
+    if fingerprint not in fingerprints:
+TypeError: unhashable type: 'list'</pre>
+<p>En effet les listes ne sont pas des types hashables en Python, on ne peut donc pas les stocker dans un <code>set</code>.</p>
+<p>Mais on peut caster la liste, et faire ainsi le choix de savoir sur quel critère on base notre égalité. Par exemle, considère-t-on que deux itérables ayant le même contenu sont égaux, où alors doivent-ils avoir le même type ?</p>
+<pre lang="python">>>> list(skip_duplicates(([], [], (), [1, 2], (1, 2)), lambda x: tuple(x)))
+[[], [1, 2]]
+>>> list(skip_duplicates(([], [], (), [1, 2], (1, 2)), lambda x: (type(x), tuple(x))))
+[[], (), [1, 2], (1, 2)]</pre>
+<p>Nous utilisons le fait que :</p>
+<pre lang="python">>>> tuple([1, 2]) == (1, 2)
+True
+>>> (type([1, 2]), tuple([1, 2])) == (type((1, 2)), (1, 2))
+False
+</pre>
+<p>Puisque :</p>
+<pre lang="python">>>> (type([1, 2]), tuple([1, 2]))
+(<type 'list'>, (1, 2))
+>>> (type((1, 2)), (1, 2))
+(<type 'tuple'>, (1, 2))</pre>
+<p>Dans le cas où nous ne sommes pas capables de déterminer ce qu&#8217;est un doublon, la fonction ne retire simplement rien :</p>
+<pre lang="python">class Test(object):
+    def __init__(self, foo='bar'):
+        self.foo = foo
+    def __repr__(self):
+        return "Test('%s')" % self.foo
+
+>>> list(skip_duplicates([Test(), Test(), Test('other')]))
+[Test('bar'), Test('bar'), Test('other')]</pre>
+<p>Mais permet encore une fois de faire le choix de quoi retirer :</p>
+<pre lang="python">>>> list(skip_duplicates([Test(), Test(), Test('other')], key=lambda x: x.foo))
+[Test('bar'), Test('other')]</pre>
+<p>Ce principe de la fonction <code>key</code>, on le retrouve dans <code>sorted()</code>, donc les habitués seront déjà à l&#8217;aise. Et j&#8217;aime beaucoup ce pattern, car il est très puissant. On peut avoir la fonction <code>key</code> qui renvoit des choses très simples :</p>
+<ul>
+<li>Un attribut.</li>
+<li>Un element (<code>x[2]</code>, <code>x['cle']</code>&#8230;)</li>
+<li>Une version castée avec <code>int()</code>, <code>str()</code>, <code>tuple()</code>, etc</li>
+</ul>
+<p>Mais on peut aussi faire des choses très complexes. En effet, rien ne nous oblige à utiliser une lambda, on peut mettre une fonction complète et lui faire retourner :</p>
+<ul>
+<li>Un hash md5.</li>
+<li>Une entrée en base de données.</li>
+<li>Un nouvel objet customisé.</li>
+<li>Un tuple de tuples d&#8217;objets custos avec des dictionnaires en attributs&#8230;</li>
+<li>Le contenu d&#8217;un fichier.</li>
+</ul>
+<p>Python sait naturellement comparer tout ça.</p>
+<p>Notez que nous trichons un peu, puisque nous retirons les doublons en nous basant sur un <code>set</code> qui va calculer un hash de l&#8217;objet, et pas véritablement vérifier l&#8217;égalité. La fonction en fonctionnera donc pas si l&#8217;utilisateur définie <code>__eq__</code> et s&#8217;attend à ce que les doublons soient retirés. Ce qui nous amène à &#8230;</p>
+<h2>Solution 2 : iterateur et comparaison</h2>
+<p>Pour ce genre de chose, un autre algo, qui ne fontionerait que sur les itérables de taille finie, et qui serait bien plus lent (complexité n log(n)), peut être utilisé :</p>
+<pre lang="python">def strip_duplicates(iterable, equals=lambda x, y: x == y):
+
+    # On transforme l'itérable en iterateur sur lui même, cela va nous
+    # permettre d'appeler next() dessus et récupérer le premier élément,
+    # même sur un objet non indexable (sur lequel on ne peut utiliser [0])
+    iterable = iter(iterable)
+
+    res = []
+    # Une petite boucle infinie est nécessaire car la boucle 'for' ne nous
+    # permet pas de récupérer le premier élément indépendamment des autres,
+    # et la boucle 'while' attend une condition de sortie, ce que nous n'avons
+    # pas forcément (il n'est pas possible de vérifier le nombre d'éléments
+    # restant dans un générateur).
+    while True:
+
+        # on récupère le premier élément de l'iterable restant, si il n'y en
+        # a plus, on sort de la boucle.
+        try:
+            elem = next(iterable)
+        except StopIteration:
+            break
+
+        # Le premier élément est ajouté au résultat sans doublons. Maintenant
+        # on va recréer l'itérable, mais en retirant tout ce qui était égal
+        # au premier élément. Notez que 'être égal' est une condition modifiable
+        # en passant une fonction en paramètre, comme l'était 'key' précédemment.
+        res.append(elem)
+
+        iterable = iter([x for x in iterable if not equals(elem, x)])
+
+    return res</pre>
+<p>La fonction s&#8217;appelle <code>strip_duplicates</code> car elle produit une nouvelle liste, mais sans les éléments indésirables, comme le fait <code>strip()</code> sur une chaîne (produit une nouvelle chaîne, sans les éléments indésirables).</p>
+<p>Ce type de fonction peut être utile dans plusieurs cas :</p>
+<ul>
+<li>On a pas envie de se poser la question de savoir si nos types à comparer sont hashable ou pas, et on est prêt à payer un peu de CPU pour cela.</li>
+<li>On a besoin de retirer les doublons sur la base d&#8217;une égalité, par exemple sur l&#8217;existence de la méthode <code>__eq__</code>.</li>
+<li>On a besoin de retirer les doublons sur la base d&#8217;une logique complexe qui dépend du contexte.</li>
+</ul>
+<p>A première vu cela fonctionne presque de la même manière que <code>skip_duplicates</code>, mais en retournant une liste plutôt qu&#8217;un générateur :</p>
+<pre lang="python">>>> strip_duplicates('fdjqkslfjdmkfdsqjkfmjqsdmlkfjqslkmfjsdklfl')
+['f', 'd', 'j', 'q', 'k', 's', 'l', 'm']</pre>
+<p>Mais déjà il n&#8217;y a pas à se soucier de savoir si une structure de données est hashable :</p>
+<pre lang="python">>>> strip_duplicates(([], [], (), [1, 2], (1, 2)))
+[[], (), [1, 2], (1, 2)]</pre>
+<p>Même si on garde la même flexibilité, bien que la fonction à passer ait une signature légèrement différente :</p>
+<pre lang="python">>>> strip_duplicates(([], [], (), [1, 2], (1, 2)), lambda x, y: tuple(x) == tuple(y))
+[[], [1, 2]]</pre>
+<p>Le plus interessant reste que cela fonctionne sur l&#8217;égalité, et donc cela marche d&#8217;office avec les objets qui déclarent <code>__eq__</code> ce qui est le cas dans de nombreuses libs, comme les ORM :</p>
+<pre lang="python">class Test(object):
+    def __init__(self, foo='bar'):
+        self.foo = foo
+    def __repr__(self):
+        return "Test('%s')" % self.foo
+    def __eq__(self, other):
+        return self.foo == other.foo
+
+>>> strip_duplicates([Test(), Test(), Test('other')])
+[Test('bar'), Test('other')]
+</pre>
+<p>Dans certains cas, notamment dans le cas où le point de comparaison est un object non hashable de très grosse taille (par exemple un dico très long), on peut espérer aussi pas mal économiser en mémoire. Mais on est qu&#8217;en est-il des besoins en mémoire et en CPU ?</p>
+<h2>Solution 3 : retirer les doublons, in place</h2>
+<p>Enfin, pour ceux qui ont de grosses contraintes de mémoire et qui veulent un algo rapide au prix de la flexibilité du code, voici une solution qui oblige à travailler sur des listes et à modifier la liste sur place :</p>
+<pre lang="python">def remove_duplicates(lst, equals=lambda x, y: x == y):
+
+    # Normalement en Python on adore le duck typing, mais là cet algo suppose
+    # l'usage d'une liste, donc on met un gardefou.
+    if not isinstance(lst, list):
+        raise TypeError('This function works only with lists.')
+
+    # là on est sur quelque chose qui ressemble vachement plus à du code C ^^
+    i1 = 0
+    l = (len(lst) - 1)
+
+    # on itère mécaniquement sur la liste, à l'ancienne, avec nos petites
+    # mains potelées.
+    while i1 < l:
+
+        # on récupère chaque élément de la liste, sauf le dernier
+        elem = lst[i1]
+
+        # on le compare à l'élément suivant, et chaque élément après
+        # l'élément suivant
+        i2 = i1 + 1
+        while i2 <= l:
+            # en cas d'égalité, on retire l'élément de la liste, et on
+            # décrément la longueur de la liste ainsi amputée
+            if equals(elem, lst[i2]):
+                del lst[i2]
+                l -= 1
+            i2 += 1
+
+        i1 += 1
+
+    return lst
+
+</pre>
+<p>Et là on est bien dans de la modification sur place :</p>
+<pre lang="python">>>> lst = list('fjdsklmqfjskdfjmld')
+>>> lst
+[u'f', u'j', u'd', u's', u'k', u'l', u'm', u'q', u'f', u'j', u's', u'k', u'd', u'f', u'j', u'm', u'l', u'd']
+>>> remove_duplicates(lst)
+[u'f', u'j', u'd', u's', u'k', u'l', u'm', u'q']
+>>> lst
+[u'f', u'j', u'd', u's', u'k', u'l', u'm', u'q']</pre>
+<p>La fonction s'appelle cette fois bien <code>remove_duplicates</code> puisque c'est ce qu'elle fait : retirer les doublons de la liste originale.</p>
+<h2>Et maintenant, c'est l'heure du benchmark à deux balles !</h2>
+<p>skip_duplicates :</p>
+<pre lang="python">setup = """
+def skip_duplicates(iterable, key=lambda x: x):
+        fingerprints = set()
+        for x in iterable:
+                fingerprint = key(x)
+                if fingerprint not in fingerprints:
+                        yield x
+                        fingerprints.add(fingerprint)
+import string
+lst = list(string.ascii_letters * 100)"""
+>>> timeit.timeit('list(skip_duplicates(lst))', setup=setup, number=1000)
+0.9810519218444824</pre>
+<p>strip_duplicates :</p>
+<pre lang="python">>>> setup = """
+def strip_duplicates(iterable, equals=lambda x, y: x == y):
+    iterable = iter(iterable)
+    res = []
+    while True:
+        try:
+            elem = next(iterable)
+        except StopIteration:
+            break
+        res.append(elem)
+
+        iterable = iter([x for x in iterable if not equals(elem, x)])
+
+    return res
+
+import string
+lst = list(string.ascii_letters * 100)"""
+>>> timeit.timeit('list(strip_duplicates(lst))', setup=setup, number=1000)
+41.462974071502686</pre>
+<p>remove_duplicates :</p>
+<pre lang="python">setup = """
+def remove_duplicates(lst, equals=lambda x, y: x == y):
+    if not isinstance(lst, list):
+        raise TypeError('This function works only with lists.')
+    i1 = 0
+    l = (len(lst) - 1)
+    while i1 < l:
+        elem = lst[i1]
+        i2 = i1 + 1
+        while i2 <= l:
+            if equals(elem, lst[i2]):
+                del lst[i2]
+                l -= 1
+            i2 += 1
+        i1 += 1
+    return lst
+
+import string
+lst = list(string.ascii_letters * 100)"""
+>>> timeit.timeit('list(remove_duplicates(lst))', setup=setup, number=1000)
+0.37493896484375</pre>
+<p>Sans surprise, la version inplace est la plus rapide puisque la plus restrictive. En second vient notre strip_duplicates, beaucoup fois plus lente. Et en dernier, 50 fois plus lente, le compromis entre les deux : souple, consomme moins de mémoire que skip, mais plus que remove.</p>
+<p>Mais ce n'est pas très juste pour strip, puisque que skip n'a pas à faire un gros travail de conversion. Essayons avec des clés plus grosses :</p>
+<p>skip_duplicates :</p>
+<pre lang="python">setup = """
+def skip_duplicates(iterable, key=lambda x: x):
+        fingerprints = set()
+        for x in iterable:
+                fingerprint = key(x)
+                if fingerprint not in fingerprints:
+                        yield x
+                        fingerprints.add(fingerprint)
+import string, random
+lst = [list(string.ascii_letters * 100) for x in xrange(100)]
+for x in lst:
+    x.pop(random.randint(0, len(x) - 1))"""
+>>> timeit.timeit('list(skip_duplicates(lst, lambda x: tuple(x)))', setup=setup, number=1000)
+15.516181945800781</pre>
+<p>strip_duplicates :</p>
+<pre lang="python">>>> setup = """
+def strip_duplicates(iterable, equals=lambda x, y: x == y):
+    iterable = iter(iterable)
+    res = []
+    while True:
+        try:
+            elem = next(iterable)
+        except StopIteration:
+            break
+        res.append(elem)
+
+        iterable = iter([x for x in iterable if not equals(elem, x)])
+
+    return res
+
+import string, random
+lst = [list(string.ascii_letters * 100) for x in xrange(100)]
+for x in lst:
+    x.pop(random.randint(0, len(x) - 1))"""
+>>> timeit.timeit('list(strip_duplicates(lst))', setup=setup, number=1000)
+22.047110080718994</pre>
+<p>remove_duplicates :</p>
+<pre lang="python">setup = """
+def remove_duplicates(lst, equals=lambda x, y: x == y):
+    if not isinstance(lst, list):
+        raise TypeError('This function works only with lists.')
+    i1 = 0
+    l = (len(lst) - 1)
+    while i1 < l:
+        elem = lst[i1]
+        i2 = i1 + 1
+        while i2 <= l:
+            if equals(elem, lst[i2]):
+                del lst[i2]
+                l -= 1
+            i2 += 1
+        i1 += 1
+    return lst
+
+import string, random
+lst = [list(string.ascii_letters * 100) for x in xrange(100)]
+for x in lst:
+    x.pop(random.randint(0, len(x) - 1))"""
+>>> timeit.timeit('list(remove_duplicates(lst))', setup=setup, number=1000)
+14.763166904449463
+</pre>
+<p>Comme souvent les résultats sont contre untuitifs, car bien que remove garde son avance, elle s'est largement réduite. A l'inverse, skip n'est pas tant à la ramasse que ça, et strip reste le plus lent.</p>
+<p>Il faudrait aussi mesurer la consommation mémoire, je suis certain que ce serait interessant.</p>
+<p>Bon, il est temps de mettre tout ça dans <a href="http://sametmax.com/batbelt-la-lib-des-petits-outils-python-qui-vont-bien/">batbelt</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">7143</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/08/NFDSpXq.gif" length="464024" type="image/jpg" />	</item>
+		<item>
+		<title>Comment utiliser yield et les générateurs en Python ?</title>
+		<link>http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/</link>
+		<comments>http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/#comments</comments>
+		<pubDate>Tue, 02 Oct 2012 12:09:42 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[generator]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[yield]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2416</guid>
+		<description><![CDATA[Les générateurs sont une fonctionalité fabuleuse de Python, et une étape indispensable dans la maîtrise du langage. Une fois compris, vous ne pourrez plus vous en passer.]]></description>
+				<content:encoded><![CDATA[<p>Les générateurs sont une fonctionalité fabuleuse de Python, et une étape indispensable dans la maîtrise du langage. Une fois compris, <a href="http://sametmax.com/parcourir-un-iterable-par-morceaux-en-python/">vous ne pourrez plus vous en passer</a>.</p>
+<h2>Rappel sur les itérables</h2>
+<p>Quand vous lisez des éléments un par un d&#8217;une liste, on appelle cela l&#8217;itération:</p>
+<pre lang="python">lst = [1, 2, 3]
+>>> for i in lst :
+...     print(i)
+1
+2
+3</pre>
+<p>Et quand on utilise une liste en intension, on créé une liste, donc un itérable. Encore une fois, avec une boucle <code>for</code>, on prend ses éléments un par un, donc on <em>itère</em> dessus:</p>
+<pre lang="python">lst = [x*x for x in range(3)]
+>>> for i in lst :
+...     print(i)
+0
+1
+4</pre>
+<p>À chaque fois qu&#8217;on peut utiliser &#8220;<code>for</code>… <code>in</code>…&#8221; sur quelque chose, c&#8217;est un itérable : lists, strings, files…</p>
+<p>Ces itérables sont pratiques car on peut les lire autant qu&#8217;on veut, mais ce n&#8217;est pas toujours idéal car on doit stocker tous les éléments en mémoire. </p>
+<h2>Les générateurs</h2>
+<p>Si vous vous souvenez de l&#8217;article sur <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">les comprehension lists</a>, on peut également créer des expressions génératrices:</p>
+<pre lang="python">generateur = (x*x for x in range(3))
+>>> for i in generateur :
+...     print(i)
+0
+1
+4</pre>
+<p>La seule différence avec précédemment, c&#8217;est qu&#8217;on utilise <code>()</code> au lieu de <code>[]</code>. Mais on ne peut pas lire <code>generateur</code> une seconde fois car le principe des générateurs, c&#8217;est justement qu&#8217;ils génèrent tout à la volée: ici il calcule <code>0</code>, puis l&#8217;oublie, puis calcule <code>1</code>, et l&#8217;oublie, et calcule <code>4</code>. Tout ça un par un.</p>
+<h2>Le mot clé yield</h2>
+<p><code>yield</code> est un mot clé utilisé en lieu et place de <code>return</code>, à la différence près qu&#8217;on va récupérer un générateur.</p>
+<pre lang="python">>>> def creerGenerateur() :
+...     mylist = range(3)
+...     for i in mylist:
+...         yield i*i
+...
+>>> generateur = creerGenerateur() # crée un générateur
+>>> print(generateur) # generateur est un objet !
+< generator object creerGenerateur at 0x2b484b9addc0>
+>>> for i in generateur:
+...     print(i)
+0
+1
+4</pre>
+<p>Ici c&#8217;est un exemple inutile, mais dans la vraie vie vivante, c&#8217;est pratique quand on sait que la fonction va retourner de nombreuses valeurs qu&#8217;on ne souhaite lire qu&#8217;une seule fois.</p>
+<p>Le secret des maîtres Zen qui ont acquis la compréhension transcendantale de <code>yield</code>, c&#8217;est de savoir que <strong>quand on appelle la fonction, le code de la fonction n&#8217;est pas exécute</strong>. A la place, la fonction va retourner un objet générateur.</p>
+<p>C&#8217;est pas évident à comprendre, alors relisez plusieurs fois cette partie.</p>
+<p><code>creerGenerateur()</code> n’exécute pas le code de <code>creerGenerateur</code>. </p>
+<p><code>creerGenerateur()</code> retourne un objet générateur.</p>
+<p>En fait, <strong>tant qu&#8217;on ne touche pas au générateur, il ne se passe rien</strong>. Puis, <strong>dès qu&#8217;on commence à itérer sur le générateur, le code de la fonction s’exécute</strong>.</p>
+<p>La première fois que le code s&#8217;éxécute, il va partir du début de la fonction, arriver jusqu&#8217;à <code>yield</code>, et retourner la première valeur. Ensuite, à chaque nouveau tour de boucle, le code va reprendre de la où il s&#8217;est arrêté (oui, Python sauvegarde l&#8217;état du code du générateur entre chaque appel), et exécuter le code à nouveau jusqu&#8217;à ce qu&#8217;il rencontre <code>yield</code>. Donc dans notre cas, il va faire un tour de boucle. </p>
+<p>Il va continuer comme ça jusqu&#8217;à ce que le code ne rencontre plus <code>yield</code>, et donc qu&#8217;il n&#8217;y a plus de valeur à retourner. Le générateur est alors considéré comme définitivement vide. Il ne peut pas être &#8220;rembobiné&#8221;, il faut en créer un autre.</p>
+<p>La raison pour laquelle le code ne rencontre plus yield est celle de votre choix: condition <code>if</code>/<code>else</code>, boucle, recursion&#8230; Vous pouvez même yielder à l&#8217;infini.</p>
+<h2>Un exemple concret et un café, plz</h2>
+<p><code>yield</code> permet non seulement d&#8217;économiser de la mémoire, mais surtout de masquer la complexité d&#8217;un algo derrière une API classique d&#8217;itération.</p>
+<p>Supposez que vous ayez une fonction qui &#8211; tada ! &#8211; extrait les mots de plus de 3 caractères de tous les fichiers d&#8217;un dossier.</p>
+<p>Elle pourrait ressembler à ça:</p>
+<pre lang="python">import os
+
+def extraire_mots(dossier):
+    for fichier in os.listdir(dossier):
+        with open(os.path.join(dossier, fichier)) as f:
+            for ligne in f:
+                for mot in ligne.split():
+                    if len(mot) > 3:
+                        yield mot</pre>
+<p>Vous avez là un algo dont on masque complètement la complexité, car du point de vue de l&#8217;utilisateur, il fait juste ça:</p>
+<pre lang="python">for mot in extraire_mots(dossier):
+    print mot</pre>
+<p>Et pour lui c&#8217;est transparent. En plus, il peut utiliser tous les outils qu&#8217;on utilise sur les itérables d&#8217;habitude. Toutes les fonctions qui acceptent les itérables acceptent donc le résultat de la fonction en paramètre grâce à la magie du duck typing. On créé ainsi une merveilleuse toolbox.</p>
+<h2>Controller yield</h2>
+<pre lang="python">>>> class DistributeurDeCapote():
+    stock = True
+    def allumer(self):
+        while self.stock:
+            yield "capote"
+...</pre>
+<p>Tant qu&#8217;il y a du stock, on peut récupérer autant de capotes que l&#8217;on veut.</p>
+<pre lang="python">>>> distributeur_en_bas_de_la_rue = DistributeurDeCapote()
+>>> distribuer = distributeur_en_bas_de_la_rue.allumer()
+>>> print distribuer.next()
+capote
+>>> print distribuer.next()
+capote
+>>> print([distribuer.next() for c in range(4)])
+['capote', 'capote', 'capote', 'capote']
+</pre>
+<p>Dès qu&#8217;il n&#8217;y a plus de stock&#8230;</p>
+<pre lang="python">
+>>> distributeur_en_bas_de_la_rue.stock = False
+>>> distribuer.next()
+Traceback (most recent call last):
+  File "<ipython-input-22-389e61418395>", line 1, in <module>
+    distribuer.next()
+StopIteration
+< type 'exceptions.StopIteration'></pre>
+<p>Et c&#8217;est vrai pour tout nouveau générateur:</p>
+<pre lang="python">>>> distribuer = distributeur_en_bas_de_la_rue.allumer()
+>>> distribuer.next()
+Traceback (most recent call last):
+  File "<ipython-input-24-389e61418395>", line 1, in <module>
+    distribuer.next()
+StopIteration</pre>
+<p>Allumer une machine vide n&#8217;a jamais permis de remplir le stock ;-) Mais il suffit de remplir le stock pour repartir comme en 40:</p>
+<pre lang="python">>>> distributeur_en_bas_de_la_rue.stock = True
+>>> distribuer = distributeur_en_bas_de_la_rue.allumer()
+>>> for c in distribuer :
+...     print c
+capote
+capote
+capote
+capote
+capote
+capote
+capote
+capote
+capote
+capote
+capote
+capote
+...</pre>
+<h2><code>itertools</code>: votre nouveau module favori</h2>
+<p>Le truc avec les générateurs, c&#8217;est qu&#8217;il faut les manipuler en prenant en compte leur nature: on ne peut les lire qu&#8217;une fois, et on ne peut pas déterminer leur longeur à l&#8217;avance. <code>itertools</code> est un module spécialisé là-dedans: <code>map</code>, <code>zip</code>, <code>slice</code>&#8230; Il contient des fonctions qui marchent sur tous les itérables, y compris les générateurs.</p>
+<p>Et rappelez-vous, les strings, les listes, les sets et même les fichiers sont itérables.</p>
+<p>Chaîner deux itérables, et prendre les 10 premiers caractères ? Piece of cake !</p>
+<pre lang="python">>>> import itertools
+>>> d = DistributeurDeCapote().allumer()
+>>> generateur = itertools.chain("12345", d)
+>>> generateur = itertools.islice(generateur, 0, 10)
+>>> for x in generateur:
+...     print x
+...     
+1
+2
+3
+4
+5
+capote
+capote
+capote
+capote
+capote</pre>
+<h2>Les dessous de l&#8217;itération</h2>
+<p>Sous le capot, tous les itérables utilisent un générateur appelé &#8220;itérateur&#8221;. On peut récupérer l&#8217;itérateur en utiliser la fonction <code>iter()</code> sur un itérable:</p>
+<pre lang="python">>>> iter([1, 2, 3])
+< listiterator object at 0x7f58b9735dd0>
+>>> iter((1, 2, 3))
+< tupleiterator object at 0x7f58b9735e10>
+>>> iter(x*x for x in (1, 2, 3))
+< generator object  at 0x7f58b9723820></pre>
+<p>Les itérateurs ont une méthode next() qui retourne une valeur pour chaque appel de la méthode. Quand il n&#8217;y a plus de valeur, ils lèvent l&#8217;exception <code>StopIteration</code>:</p>
+<pre lang="python">>>> gen = iter([1, 2, 3])
+>>> gen.next()
+1
+>>> gen.next()
+2
+>>> gen.next()
+3
+>>> gen.next()
+Traceback (most recent call last):
+  File "< stdin>", line 1, in < module>
+StopIteration</pre>
+<p>Message à tous ceux qui pensent que je fabule quand je dis qu&#8217;en Python on utilise les exceptions pour contrôler le flux d&#8217;un programme (sacrilège !): ceci est le mécanisme des boucles internes en Python. Les boucles <code>for</code> utilisent <strong>iter()</strong> pour créer un générateur, puis attrappent une exception pour s&#8217;arrêter. <strong>À chaque boucle <code>for</code>, vous levez une exception sans le savoir</strong>.</p>
+<p>Pour la petite histoire, l&#8217;implémentation actuelle est que <strong>iter()</strong> appelle la méthode <strong>__iter__()</strong> sur l&#8217;objet passé en paramètre. Donc ça veut dire que vous pouvez créer vos propres itérables:</p>
+<pre lang="python">>>> class MonIterableRienQuaMoi(object):
+...     def __iter__(self):
+...         yield 'Python'
+...         yield "ça"
+...         yield 'déchire'
+...
+>>> gen = iter(MonIterableRienQuaMoi())
+>>> gen.next()
+'Python'
+>>> gen.next()
+'ça'
+>>> gen.next()
+'déchire'
+>>> gen.next()
+Traceback (most recent call last):
+  File "< stdin>", line 1, in < module>
+StopIteration
+>>> for x in MonIterableRienQuaMoi():
+...     print x
+...
+Python
+ça
+déchire</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/feed/</wfw:commentRss>
+		<slash:comments>24</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">2416</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/10/200808301718_zoom.jpg" length="37594" type="image/jpg" />	</item>
+		<item>
+		<title>Quelques erreurs tordues et leurs solutions en Python</title>
+		<link>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/</link>
+		<comments>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/#comments</comments>
+		<pubDate>Sun, 24 Jun 2012 02:29:56 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[encodage]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[erreur]]></category>
+		<category><![CDATA[error]]></category>
+		<category><![CDATA[generator]]></category>
+		<category><![CDATA[import]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=995</guid>
+		<description><![CDATA[Bien que Python soit un langage dont l'une des grandes qualités est la cohérence, voici une liste d'erreurs et leurs solutions qui ont tendance à énerver.
+]]></description>
+				<content:encoded><![CDATA[<p>Quand vous débuggez, rappelez-vous que <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">pdb est votre ami</a>, et qu&#8217;il est souvent bon de <a href="http://sametmax.com/purger-les-fichiers-pyc-et-un-hook-git-en-bonus/">supprimer tous les fichiers <code>.pyc</code></a> pour éviter la confusion. Mais parfois l&#8217;erreur semble n&#8217;avoir aucun sens. Bien que Python soit un langage dont l&#8217;une des grandes qualités soit la cohérence, voici une liste d&#8217;erreurs et leurs solutions qui ont tendance à énerver (les erreurs hein, pas les solutions).</p>
+<h2><code>NameError: name 'x' is not defined</code></h2>
+<p>Python plante en annonçant que la variable n&#8217;est pas définie. Vous allez à la ligne donnée, et elle est là. Vous vérifiez qu&#8217;il n&#8217;y a pas de faute de frappe (genre un zéro mélangé avec la lettre O), ni une majuscule ou une minuscule échangée quelque part (Python est sensible à la casse).</p>
+<p>Et rien.</p>
+<p>Tout est niquel.</p>
+<p>Alors pourquoi ça plante bordel de merde ?</p>
+<p>Et bien ce message qui n&#8217;aide absolument pas peut venir du fait que <a href="http://sametmax.com/closure-en-python-et-javascript/">les closures sont en lecture seule en Python</a>. En résumé, vous avez essayé de faire un truc comme ça:</p>
+<pre lang="python">chose = 'truc'
+def fonction():
+    chose = 'machin'
+    # ou chose += machin ou une variante</pre>
+<p>La solution est simple: ne modifiez pas <code>chose</code>. Si vous avez besoin de modifier son contenu, utilisez une variable intermédiaire:</p>
+<pre lang="python">chose = 'truc'
+def fonction():
+    bidule = chose
+    bidule += 'machin' # je sais c'est bidon, c'est pour l'exemple</pre>
+<p>En Python 3.0, vous pouvez utiliser le mot clé <code>nonlocal</code> pour y palier: vous modifierez alors la variable du scope du dessus. </p>
+<pre lang="python">chose = 'truc'
+def fonction():
+    nonlocal chose
+    chose += 'machin' # je sais c'est bidon, c'est pour l'exemple</pre>
+<p>Évitez d&#8217;utiliser <code>global</code>, qui a un fort potentiel d&#8217;effet de bord.</p>
+<h2><code>ImportError: cannot import name bidule</code> et <code>ImportError: No module named truc</code></h2>
+<p>Une fois que vous avez vérifié qu&#8217;un module existe bien avec ce nom (regardez de près, parfois c&#8217;est subtile), voici 3 possibilités:</p>
+<h3>Pas de fichier __init__.py</h3>
+<p>Un dossier n&#8217;est pas un module importable si il ne contient pas de fichier <code>__init__.py</code>. Vérifiez qu&#8217;il y en a un, et dans le cas contraire, créez en un vide.</p>
+<p><H3>Erreur de Python Path</H3></p>
+<p>Quand vous faites <code>import bidule</code>, <code>bidule</code> ne peut être importé que si le dossier qui le contient est dans le <strong>Python Path</strong>. Le Python Path est une variable qui contient une liste de dossiers dans lesquels chercher les modules à importer.</p>
+<p>Le dossier courrant, le dossier contenant la bibliothèque standard de Python et le dossier où sont installés les bibliotèques Python de votre système d&#8217;exploitation sont automatiquement présents dans le Python Path.</p>
+<p>Première chose: assurez-vous d&#8217;être à la racine du projet que vous lancez (erreur typique quand on utilise la commande <code>./manage.py</code> avec Django par exemple).</p>
+<p>Deuxième chose: si vous utilisez une bibliothèque qui n&#8217;est pas dans le Python Path (ça arrive assez souvent avec les tests unitaires: on éxécute les tests depuis le dossier de test, et le projet est dans un dossier à côté, donc pas dans le Python Path), vous pouvez ajouter manuellement un chemin dans le Python Path.</p>
+<p>Pour se faire, avant l&#8217;import qui va foirer:</p>
+<pre lang="python">import sys
+sys.path.append('/chemin/vers/le/dossier/parent/du/module/a/importer')</pre>
+<p>On peut tout à fait spécifier un dossier relativement au dossier courant. Il n&#8217;est pas rare d&#8217;ajouter le dossier parent du dossier courrant au Python Path:</p>
+<pre lang="python">import sys
+import os
+
+DOSSIER_COURRANT = os.path.dirname(os.path.abspath(__file__))
+DOSSIER_PARENT = os.path.dirname(DOSSIER_COURRANT)
+sys.path.append(DOSSIER_PARENT)
+</pre>
+<p>Par exemple, souvent dans le dossier d&#8217;un projet Django je fais un sous-dossier &#8216;apps&#8217;, puis je rajoute ceci au fichier <code>settings.py</code>:</p>
+<pre lang="python">import sys
+import os
+
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(PROJECT_DIR, 'apps'))</pre>
+<p>Il y a deux avantages à cela:</p>
+<ul>
+<li>Mes applications sont regroupées dans un dossier et pas en vrac à la racine du projet, mais je peux quand même les importer en faisant <code>import nom</code> et pas <code>import apps.nom</code>.</li>
+<li> J&#8217;ai maintenant une variable <code>PROJECT_DIR</code> que je peux utiliser partout, notamment pour définir où sont certains dossiers comme le dossiers des fichiers statiques:</li>
+</ul>
+<pre lang="python">STATIC = os.path.join(PROJECT_DIR, 'static')</pre>
+<h3>Imports circulaires</h3>
+<p>Si vous importez <code>poisson.rouge</code> dans <code>force.py</code>, et <code>force.bleu</code> dans <code>poisson.py</code>, vous aurez aussi ce message d&#8217;erreur (qui n&#8217;aide pas beaucoup, on est d&#8217;accord).</p>
+<p>Il n&#8217;y a pas vraiment de façon élégante de s&#8217;en sortir, c&#8217;est une des plus grosses couillasses en Python.</p>
+<p>Solution 1: vous refactorez votre code pour avoir <code>bleu</code> et <code>rouge</code> dans un fichier <code>couleur.py</code>, lequel est importé dans <code>poisson.py</code> et <code>force.py</code>. C&#8217;est propre, mais parfois ça n&#8217;a aucun sens, et parfois ce n&#8217;est juste pas possible.<br />
+Solution 2: vous mettez l&#8217;import dans une fonctions ou une méthode dans un des deux modules (n&#8217;importe lequel):</p>
+<pre lang="python">def make_bouillabaisse():
+    from poisson import rouge</pre>
+<p>C&#8217;est moche, mais c&#8217;est facile. Et je le répète, je n&#8217;ai jamais vu quelqu&#8217;un en 10 ans de Python proposer une solution élégante à ce problème. C&#8217;est un What The Fuck d&#8217;or.</p>
+<h2><code>UnicodeDecodeError: 'ascii' codec can't decode byte 0xc3 in position 0: ordinal not in range(128)</code></h2>
+<p>Arf. L&#8217;erreur à la con. Parce que généralement elle vient du fait que l&#8217;on ne comprend pas vraiment ce qu&#8217;on fait. Or difficile de résoudre un problème quand on ne comprend pas de quoi il est question. Ne vous sentez pas mal, on s&#8217;est tous retrouvé comme un demeuré devant un problème d&#8217;encodage.</p>
+<p>A noter que ce n&#8217;est pas une erreur spécifique à Python, mais si vous venez d&#8217;un langage comme PHP qui passe silencieusement ce genre d&#8217;erreur et affiche en prod des texts illisibles, voire une grosse erreur à l&#8217;écran peut surprendre.</p>
+<p>Voici des causes très fréquentes:</p>
+<h3>Encodage du fichier.py</h3>
+<p>Comme il peut y avoir 1 million de possibilités, forcez vous à:</p>
+<p>&#8211; TOUJOURS avoir votre éditeur de texte réglé pour utiliser UTF-8. Surtout sur Windows. Si votre chef vous l&#8217;interdit parce que &#8220;ça pose des problèmes d&#8217;encodage&#8221; (sic), quittez votre job (meilleur choix) ou faites vous former pour comprendre comment marchent les encodages et travailler dans cet environnement hostile.<br />
+&#8211; TOUJOURS avoir votre encodage (UTF-8 j&#8217;ai dis !) déclaré en haut du <code>fichier.py</code>: <code># -*- coding: utf-8 -*-</code></p>
+<h3>Vérifiez que les textes en entrée sont dans l&#8217;encodage prévu</h3>
+<p>Le contenu des bases de données ne sont parfois pas dans l&#8217;encodage déclaré de la table ou de la base. Le contenu d&#8217;une page HTML n&#8217;est parfois pas encodé dans l&#8217;encodage déclaré dans le HEAD. Le contenu d&#8217;un fichier n&#8217;est parfois pas encodé dans l&#8217;encodage par défaut de votre OS.</p>
+<p>Il n&#8217;y a pas de secret. Pas de moyen infaillible de détection automatique. Il faut vérifier.</p>
+<h3>Vous confondez encodage et décodage (Python 2.7 et moins)</h3>
+<p>En Python, on DECODE pour passer d&#8217;un texte en encodé (UTF8, ISO-8859, CP1552, etc) et donc de type &#8216;str&#8217; c&#8217;est à dire un flux de bits, à un texte unicode, une représentation interne, un objet non imprimable. Il est recommandé de décoder tout texte venant d&#8217;une source extérieur à votre programme, pour tout uniformiser.</p>
+<p>A l&#8217;inverse, on ENCODE pour passer du type &#8216;unicode&#8217; à un type &#8216;str&#8217;. Il <strong>obligatoire</strong> d&#8217;encoder un texte pour le communiquer au monde extérieur. Si vous ne le faites pas manuellement, Python le fera automatiquement, en essayant de deviner. Il n&#8217;est pas excellent à deviner.</p>
+<p>En résumé:</p>
+<pre lang="python">In [7]: texte = open('/etc/fstab').read() # ou un téléchargement, ou une requete SQL...
+In [8]: type(texte)
+Out[8]: str
+In [9]: texte = texte.decode('UTF8')
+In [10]: type(texte)
+Out[10]: unicode
+In [11]: print texte # encode automatiquement le texte car votre terminal ne comprend qu'un text encodé
+# /etc/fstab: static file system information.
+#
+[.............]
+In [12]: type(texte.encode('UTF8')) # à faire avant de faire un write
+Out[12]: str</pre>
+<p>Si ça continue de foirer, prenez tous les fichiers de votre application un par un: changez toutes les strings en unicode (les précéder d&#8217;un &#8220;u&#8221;), assurez vous que tout ce qui entre est converti en unicode (unicode() après urllib, open, etc) et tout ce qui sort est converti dans un encodage adapté (souvent UTF8) (encode(&#8216;UTF-8&#8217;) avant send(), write() ou print).</p>
+<p>Si ça ne marche toujours pas, embauchez un mec comme moi qui est payé cher pour se taper la tête contre les murs à la place des autres.</p>
+<h2>TypeError: &#8216;int&#8217; object has no attribute &#8216;__getitem__&#8217; et autres erreurs sur les tuples</h2>
+<h3>Tuples d&#8217;un seul élément</h3>
+<p>CECI N&#8217;EST PAS UN TUPLE: (1)</p>
+<p>Ceci est un tuple: (1,)</p>
+<pre lang="python">>>> type((1))
+<type 'int'>
+>>> type((1,))
+<type 'tuple'>
+>>> t = (1,)
+>>> t[0]
+1
+>>> t = (1)
+>>> t[0]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'int' object has no attribute '__getitem__'</pre>
+<p>Et il y a plus vicieux:</p>
+<pre lang="python">
+>>> a = ("12345")
+>>> b = ("12345",)
+>>> a[0]
+'1'
+>>> b[0]
+'12345'
+</pre>
+<p>C&#8217;est très dur à débugguer car on dans les deux cas il n&#8217;y a pas d&#8217;erreur étant donné que c&#8217;est une opération tout à fait légitime.</p>
+<h3>Concaténation automatique</h3>
+<p>Python vient avec une fonctionnalité qui concatène automatiquement les descriptions littérales de chaînes de caractères:</p>
+<pre lang="python">>>> "Ceci est un"                                  " test"
+'Ceci est un test'</pre>
+<p>C&#8217;est très pratique pour les chaînes longues:</p>
+<pre lang="python">>>> print ("Ceci est une chaîne longue "
+... "et je peux la diviser sur plusieurs lignes"
+... " sans me fouler")
+'Ceci est une chaîne longue et je peux la diviser sur plusieurs lignes sans me fouler'</pre>
+<p>Mais si vous oubliez une virgule dans un tuple (par exemple dans <code>INSTALLED_APPS</code> dans le fichier de <code>settings.py</code> de Django):</p>
+<pre lang="python">>>> REGLES = (
+...     "Ne jamais parler du fight club",
+...     "Ne jamais croiser les effluves",
+...     "Ne jamais appuyer sur le petit bouton rouge" # <===== virgule oubliée !
+...     "Ne jamais goûter"
+... )
+>>> print REGLES[3]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+IndexError: tuple index out of range
+>>> print REGLES[-1]
+Ne jamais appuyer sur le petit bouton rougeNe jamais goûter</pre>
+<h2>Le fichier/la liste est vide</h2>
+<p><a href="http://sametmax.com/python-love-les-listes-en-intention-partie-2/">On ne peut lire qu&#8217;une seule fois les générateurs en Python</a>.</p>
+<p>Si vous faites:</p>
+<pre lang="python">toto = (blague.title() for blague in histoire)</pre>
+<p>ou</p>
+<pre lang="python">toto = open('histoire.txt')</pre>
+<p>Et ensuite:</p>
+<pre lang="python">for blague in toto:
+    print toto
+
+len(list(toto))</pre>
+<p>La dernière ligne ne marchera pas. Toto aura été vidé par la première boucle for. Si vous souhaitez utiliser plusieurs fois le résultat de votre générateur, il faut le transformer en liste:</p>
+<pre lang="python">toto = list(toto)
+for blague in toto:
+    print toto
+
+len(list(toto))</pre>
+<p>Attention, car vous avez maintenant l&#8217;intégralité des données chargées en RAM.</p>
+<h2>TypeError: ma_function() takes exactly x argument (y given)</h2>
+<p>Cette erreur est très explicite, et la plupart du temps ne pose aucun problème: vérifiez que vous passez le bon nombre d&#8217;arguments à la fonction. Faites particulièrement attention si vous utilisez <a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">l&#8217;opérateur splat</a>.</p>
+<p>Il existe néanmoins un cas particulier un peu taquin:</p>
+<pre lang="python">
+>>> class Americaine(object):
+...     def dernier_mot(mot):
+...         print mot
+... 
+>>> homme_le_plus_classe_du_monde = Americaine()
+>>> homme_le_plus_classe_du_monde.dernier_mot("Monde de merde !")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: dernier_mot() takes exactly 1 argument (2 given)
+</pre>
+<p>On définie une seul argument (<code>mot</code>) et on en passe un seul (<code>"Monde de merdes !"</code>), alors pourquoi Python n&#8217;est pas d&#8217;accord ?</p>
+<p>C&#8217;est parce que l&#8217;on déclare une méthode sans <code>self</code> dans la signature. Or Python va passer automatiquement (et de manière invisible) la référence à l&#8217;objet courrant en premier argument, du coup la méthode reçoit deux arguments: la référence à <code>homme_le_plus_classe_du_monde</code> et <code>"Monde de merde !"</code>. Ca ne marche pas puisque la méthode est déclarée pour n&#8217;accepter qu&#8217;un seul argument.</p>
+<p>Il y a deux solutions. La plus simple, ajoutez <code>self</code>:</p>
+<pre lang="python">
+>>> class Americaine(object):
+...     def dernier_mot(self, mot):
+...         print mot
+... 
+>>> homme_le_plus_classe_du_monde = Americaine()
+>>> homme_le_plus_classe_du_monde.dernier_mot("Monde de merde !")
+Monde de merde !
+</pre>
+<p>Une seconde solution consiste à déclarer une méthode statique. Du coup on a plus besoin d&#8217;instance:</p>
+<pre lang="python">
+>>> class Americaine(object):
+...     @staticmethod
+...     def dernier_mot(mot):
+...         print mot
+... 
+>>> Americaine.dernier_mot("Monde de merde !")
+Monde de merde !
+</pre>
+<h2>Ma structure de données par défaut n&#8217;est pas la bonne</h2>
+<p>Piège classique en Python, qu&#8217;il est important de répéter encore et encore tant il est la source de frustration chez les personnes qui ne le connaissent pas.</p>
+<pre lang="python">
+>>> from random import choice
+>>> def bioman(forces=['rouge', 'bleu', 'vert', 'rose', 'jaune devant, marron derriere'], invite=None):
+...     if invite is not None:
+...         forces.append(invite)
+...     return choice(forces)
+... 
+>>> bioman()
+'rose'
+>>> bioman()
+'rouge'
+>>> bioman(invite='magenta a pois gris')
+'vert'
+>>> bioman()
+'jaune devant, marron derriere'
+>>> bioman() # WTF ??????????
+'magenta a pois gris'
+</pre>
+<p>Dans le dernier appel &#8216;magenta a pois gris&#8217; est tiré au sort alors qu&#8217;on ne l&#8217;a pas passé en paramètre. Comment cela est-il possible ?</p>
+<p>Cela vient du fait que les paramètres par défaut sont initialisés <strong>une seule fois</strong> pour tout le programme: dès que le module est chargé.</p>
+<p>Si vous utilisez un objet mutable (liste, set, dico) et que vous le modifiez (ici avec <code>append</code>), le prochain appel de la fonction utilisera toujours la référence de cet objet, et donc de sa versio modifiée.</p>
+<p>La solution est soit de ne pas utiliser d&#8217;objet mutable (tuple, strings, int, etc), soit de ne pas modifier l&#8217;objet:</p>
+<pre lang="python">
+>>> def bioman(forces=('rouge', 'bleu', 'vert', 'rose', 'jaune devant, marron derriere'), invite=None):
+...     if invite is not None:
+...         forces += (invite,) # ne modifie pas l'ancien objet
+...     return choice(forces)
+</pre>
+<p>Ou alors (et ceci est souvent utilisé même si c&#8217;est moche):</p>
+<pre lang="python">
+>>> def bioman(forces=None, invite=None):
+...     if forces is None:
+...        forces = ['rouge', 'bleu', 'vert', 'rose', 'jaune devant, marron derriere']
+...     if invite is not None:
+...         forces.append(invite)
+...     return choice(forces)
+</pre>
+<p>Toutes les parties qui sont éxécutées à l&#8217;inialisation du code (en opposition à celles qui le sont à l&#8217;appel du code) sont concernées par ce problème: les paramètres par défaut, les variables à la racine des modules, les attributs de classe déclarés <strong>en dehors</strong> d&#8217;une méthode, etc.</p>
+<p><strong>ItZ naute a beuhgue, Itse fitiure</strong></p>
+<p>Néanmoins cela a aussi son utilité. On peut en effet l&#8217;utiliser pour partager des états:</p>
+<pre lang="python">
+class Model(object):
+    _pool = {
+        'mysql': MySQL().connect('test'),
+        'sqlite': Sqlite.open('test.db')
+    }
+    default_connection = 'mysql'
+
+    def query(self, connection=default_connection, *params):
+        connection.super_query(*params)
+</pre>
+<p>Et vous avez maintenant une classe de modèle qui gère plusieurs connections. Si vous l&#8217;étendez, les enfants de la classe et toutes les instances partageront le même objet connection, mais tout le reste sera unique à chacun d&#8217;eux. Cela évite un effet de bord du singleton qui oblige à partager un état et une identité. Ici on ne partage que la partie de l&#8217;état que l&#8217;on souhaite, et pas l&#8217;identité.</p>
+<p>On gagne sur les deux tableaux: si on update la connection MySQL (par exemple parcequ&#8217;on a détecté qu&#8217;elle était stale), toutes les instances ont accès à l&#8217;objet modifé. Mais si on veut overrider la connection pour une seule classe, on peut le faire sans affecter les autres simplement en remplaçant l&#8217;objet à la déclaration de la classe.</p>
+<p>On peut aussi utiliser cette fonctionnalité pour créer un cache. On appelle ça &#8220;mémoiser&#8221;:</p>
+<pre lang="python">
+def fonction_lente(param1, param2, _cache={}):
+    # les tuples peuvent être des clés de dico \o/
+    key = (param1, param2)
+    if key not in _cache:
+        _cache[key] = process_lent(param1, param2)
+    return _cache[key]
+</pre>
+<p>Tous les résultats sont alors stockés en mémoire vive.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/feed/</wfw:commentRss>
+		<slash:comments>23</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">995</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/06/Funny-Batman-Pictures-103.jpg" length="69437" type="image/jpg" />	</item>
+	</channel>
+</rss>

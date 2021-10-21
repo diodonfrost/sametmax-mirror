@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>udp &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/udp/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Savoir quels programmes écoutent sur quels ports de votre serveur avec Netstat </title>
+		<link>http://sametmax.com/savoir-quels-programmes-ecoutent-sur-quels-ports-de-votre-serveur-avec-netstat/</link>
+		<comments>http://sametmax.com/savoir-quels-programmes-ecoutent-sur-quels-ports-de-votre-serveur-avec-netstat/#comments</comments>
+		<pubDate>Fri, 18 May 2012 17:21:03 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[listen]]></category>
+		<category><![CDATA[netstat]]></category>
+		<category><![CDATA[port]]></category>
+		<category><![CDATA[tcp]]></category>
+		<category><![CDATA[udp]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=633</guid>
+		<description><![CDATA[Il peut être pratique d'avoir cette information dans certains cas, ça évite de se demande pourquoi on arrive pas à lancer Apache alors que Nginx écoute sur le même port. etc...
+]]></description>
+				<content:encoded><![CDATA[<p>Comme je teste pas mal d&#8217;applications je me retrouve souvent à avoir nginx, apache, cherokee installés sur la même machine, or des fois j&#8217;oublie sur quels ports ils écoutent et m&#8217;étonne de ne pouvoir lancer ma nouvelle config nginx toute fraîche alors que l&#8217;un des deux autres écoute sur le même port.</p>
+<p>Heureusement la plupart des applications vous préviennent que quelqu&#8217;un est déjà sur ce port, oui mais qui ?</p>
+<p><strong>Pour avoir un rapide coup d&#8217;oeil sur les ports utilisés faites:</strong></p>
+<pre lang="bash">netstat -ntpul
+
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address               Foreign Address             State       PID/Program name
+tcp        0      0 0.0.0.0:80                  0.0.0.0:*                   LISTEN      26586/lighttpd
+tcp        0      0 0.0.0.0:22                  0.0.0.0:*                   LISTEN      30945/sshd
+tcp        0      0 127.0.0.1:199               0.0.0.0:*                   LISTEN      715/snmpd
+tcp        0      0 88.234.212.132:3306         0.0.0.0:*                   LISTEN      15186/mysqld
+tcp        0      0 127.0.0.1:6379              0.0.0.0:*                   LISTEN      31841/redis-server
+tcp        0      0 :::8080                     :::*                        LISTEN      6951/java
+tcp        0      0 :::8181                     :::*                        LISTEN      29022/cherokee-work
+tcp        0      0 :::22                       :::*                        LISTEN      30945/sshd
+tcp        0      0 :::3399                     :::*                        LISTEN      11438/(squid)
+udp        0      0 0.0.0.0:161                 0.0.0.0:*                               715/snmpd
+udp        0      0 0.0.0.0:50931               0.0.0.0:*                               11438/(squid)
+udp        0      0 :::43815                    :::*                                    11438/(squid)</pre>
+<p><strong>les options:</strong></p>
+<p>-n, &#8211;numeric</p>
+<p>affiche les adresses en format numérique au lieu d&#8217;essayer de déterminer le nom symbolique d&#8217;hôte, de port ou d&#8217;utilisateur.</p>
+<p>-p, &#8211;programs</p>
+<p>affiche le nom et le PID des processus propriétaires de chaque socket décrite. Vous devez être le propriétaire d&#8217;un processus pour visualiser les sockets qui lui appartiennent ou être l&#8217;utilisateur root pour disposer de toutes les informations.</p>
+<p>-l, &#8211;listening</p>
+<p>Affiche les sockets en écoute</p>
+<p>-t</p>
+<p>Affiche les connexion TCP</p>
+<p>-u</p>
+<p>Affiche les connexion UDP</p>
+<p><strong>EDIT: On me signale un super moyen mémotechnique de retenir un panel d&#8217;options (merci Gardouille): </strong></p>
+<pre lang="bash">
+netstat -lapute
+</pre>
+<p>A vous Cognack-Jay</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/savoir-quels-programmes-ecoutent-sur-quels-ports-de-votre-serveur-avec-netstat/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">633</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/05/listening-at-the-door-dont-get-scammed.jpg" length="115465" type="image/jpg" />	</item>
+	</channel>
+</rss>

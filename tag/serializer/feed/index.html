@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>serializer &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/serializer/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Accepter un ID mais retourner un objet pour les liens de Django Rest Framework</title>
+		<link>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/</link>
+		<comments>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/#comments</comments>
+		<pubDate>Thu, 08 Jun 2017 07:50:00 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[api]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[django-rest-framework]]></category>
+		<category><![CDATA[drf]]></category>
+		<category><![CDATA[json]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[rest]]></category>
+		<category><![CDATA[serializer]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=23385</guid>
+		<description><![CDATA[DRF est une des perles de Django. De Python même. Comme marshmallow, requests, jupyter, pandas, SQLAlchemy ou l'admin Django. Python a tellement de libs extraordinaires.
+
+Mais aucune n'est parfaite.]]></description>
+				<content:encoded><![CDATA[<p><a href="http://www.django-rest-framework.org/">DRF</a> est une des perles de Django. De Python même. Comme <a href="https://marshmallow.readthedocs.io/en/latest/">marshmallow</a>, <a href="http://docs.python-requests.org/en/master/">requests</a>, <a href="http://jupyter.org/">jupyter</a>, <a href="http://pandas.pydata.org/">pandas</a>, <a href="https://www.sqlalchemy.org/">SQLAlchemy</a> ou l&#8217;<a href="https://docs.djangoproject.com/fr/1.11/ref/contrib/admin/">admin Django</a>. Python a tellement d&#8217;outils extraordinaires.</p>
+<p>Mais aucune n&#8217;est parfaite, et une chose qui m&#8217;a toujours emmerdé avec celle-ci, c&#8217;est que si j&#8217;ai un modèle du genre:</p>
+<pre lang="python">class Foo(models.Model):
+    name = models.CharField(max_length=64)
+    bar = models.ForeignKey(Bar)</pre>
+<p>Et le serializer:</p>
+<pre lang="python">class FooSerialize(serilizers.ModelSerializer):
+
+    class Meta:
+        model = Foo</pre>
+<p>J&#8217;ai le choix entre soit avoir que des ID&#8230;</p>
+<p>En lecture (chiant) :</p>
+<pre>GET /api/foos/1/
+
+{
+    name: "toto",
+    bar: 2
+}</pre>
+<p>Et en écriture (pratique) :</p>
+<pre>POST /api/foos/
+{
+    name: "tata",
+    bar: 2
+}</pre>
+<p>Soit avoir que des objets.</p>
+<p>En lecture (pratique):</p>
+<pre>GET /api/foos/1/
+
+{
+    name: "toto",
+    bar: {
+       // tout l'objet bar disponible en lecture
+    }
+}
+</pre>
+<pre>
+Et en écriture (chiant) :
+
+POST /api/foos/
+{
+    name: "tata",
+    bar: {
+       // tout l'objet bar à se taper à écrire
+    }
+}</pre>
+<p>Il y a aussi la version hypermedia où l&#8217;id est remplacé par une URL. Mais vous voyez le genre : mon API REST est soit pratique en lecture mais relou à écrire, soit pratique en écriture (je fournis juste une référence), mais relou en lecture, puisque je dois ensuite fetcher chaque référence.</p>
+<p>GraphQL répond particulièrement bien à ce problème, mais bon, la techno est encore jeune, et il y a encore plein d&#8217;API REST à coder pour les années à venir.</p>
+<p>Comment donc résoudre ce casse-tête, Oh Sam! &#8211; sauveur de la pythonitude ?</p>
+<h2>Solution 1, utiliser un serializer à la place du field</h2>
+<pre lang="python">class FooSerializer(serilizers.ModelSerializer):
+
+    bar = BarSerializer()
+
+    class Meta:
+        model = Foo</pre>
+<p>Et là j&#8217;ai bien l&#8217;objet complet qui m&#8217;est retourné. Mais je suis en lecture seule, et il faut que je fasse l&#8217;écriture à la main. Youpi.</p>
+<p>Pas la bonne solution donc.</p>
+<h2>Solution 2, écrire deux serializers</h2>
+<p>Ben ça marche mais il faut 2 routings, ça duplique l&#8217;API, la doc, les tests. Moche. Next.</p>
+<h2>Solution 3, un petit hack</h2>
+<p>En lisant le code source de DRF (ouais j&#8217;ai conscience que tout le monde à pas la foi de faire ça), j&#8217;ai noté que <code>ModelSerializer</code> génère automatiquement pour les relations un <code>PrimaryKeyRelatedField</code>, qui lui même fait le lien via l&#8217;ID. On a des classes similaires pour la version full de l&#8217;objet et celle avec l&#8217;hyperlien.</p>
+<p>En héritant de cette classe, on peut créer une variante qui fait ce qu&#8217;on veut:</p>
+<pre lang="python">from collections import OrderedDict
+
+from rest_framework import serializers
+
+
+class AsymetricRelatedField(serializers.PrimaryKeyRelatedField):
+
+    # en lecture, je veux l'objet complet, pas juste l'id
+    def to_representation(self, value):
+        # le self.serializer_class.serializer_class est redondant
+        # mais obligatoire
+        return self.serializer_class.serializer_class(value).data
+
+    # petite astuce perso et pas obligatoire pour permettre de taper moins 
+    # de code: lui faire prendre le queryset du model du serializer 
+    # automatiquement. Je suis lazy
+    def get_queryset(self):
+        if self.queryset:
+            return self.queryset
+        return self.serializer_class.serializer_class.Meta.model.objects.all()
+
+    # Get choices est utilisé par l'autodoc DRF et s'attend à ce que 
+    # to_representation() retourne un ID ce qui fait tout planter. On 
+    # réécrit le truc pour utiliser item.pk au lieu de to_representation()
+    def get_choices(self, cutoff=None):
+        queryset = self.get_queryset()
+        if queryset is None:
+            return {}
+
+        if cutoff is not None:
+            queryset = queryset[:cutoff]
+
+        return OrderedDict([
+            (
+                item.pk,
+                self.display_value(item)
+            )
+            for item in queryset
+        ])
+
+    # DRF saute certaines validations quand il n'y a que l'id, et comme ce 
+    # n'est pas le cas ici, tout plante. On désactive ça.
+    def use_pk_only_optimization(self):
+        return False
+
+    # Un petit constructeur pour générer le field depuis un serializer. lazy,
+    # lazy, lazy...
+    @classmethod
+    def from_serializer(cls, serializer, name=None, args=(), kwargs={}):
+        if name is None:
+            name = f"{serializer.__class__.__name__}AsymetricAutoField"
+
+        return type(name, (cls,), {"serializer_class": serializer})(*args, **kwargs)
+</pre>
+<p>Et du coup:</p>
+<pre lang="python">class FooSerializer(serializers.ModelSerializer):
+
+    bar = AsymetricRelatedField.from_serializer(BarSerializer)
+
+    class Meta:
+        model = Foo</pre>
+<p>Et voilà, on peut maintenant faire:</p>
+<pre>
+GET /api/foos/1/
+
+{
+    name: "toto",
+    bar: {
+       // tout l'objet bar disponible en lecture
+    }
+}
+
+POST /api/foos/
+{
+    name: "tata",
+    bar: 2
+}</pre>
+<p>Elle est pas belle la vie ?</p>
+<p>Ca serait bien cool que ce soit rajouté officiellement dans DRF tout ça. Je crois que je vais <a href="https://github.com/encode/django-rest-framework/issues/5206">ouvrir un ticket</a>&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">23385</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/06/4A8GZ9k.gif" length="213204" type="image/jpg" />	</item>
+	</channel>
+</rss>

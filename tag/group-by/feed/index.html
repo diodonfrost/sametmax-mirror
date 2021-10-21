@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>group by &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/group-by/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Compter les doublons avec l&#8217;ORM Django</title>
+		<link>http://sametmax.com/compter-les-doublons-avec-lorm-django/</link>
+		<comments>http://sametmax.com/compter-les-doublons-avec-lorm-django/#comments</comments>
+		<pubDate>Fri, 22 Nov 2013 08:28:48 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[group by]]></category>
+		<category><![CDATA[orm]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7761</guid>
+		<description><![CDATA[<code>GROUP BY </code>et <code>HAVING</code> sont assez peu intuitifs en SQL, et encore moins avec l'ORM Django.]]></description>
+				<content:encoded><![CDATA[<p><code>GROUP BY </code>et <code>HAVING</code> sont assez peu intuitifs en SQL, et encore moins avec l&#8217;ORM Django.</p>
+<p>Voici donc la recette pour compter le nombre d’occurrences des valeurs d&#8217;un champ, pour par exemple trouver les doublons.</p>
+<p>En supposant une table <code>Massage</code> avec une valeur <code>finish</code> :</p>
+<pre>
+ID         FINISH
+1          manuel
+2          oral
+3          oral
+4          oral
+</pre>
+<pre lang="python">>>> Massage.objects.values('finish').annotate(count=Count('id'))
+{'manuel': 2, 'oral': '9': 'rectal': 1, 'paradoxal': -1}</pre>
+<p>Pour obtenir uniquement les doublons, il suffit de filtrer pour avoir les valeurs qui ont un <code>count</code> plus grand que 1 :</p>
+<pre lang="python">Massage.objects.values('finish').annotate(count=Count('id')).filter(count__gt=1)</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/compter-les-doublons-avec-lorm-django/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">7761</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/11/91390283.png" length="434902" type="image/jpg" />	</item>
+	</channel>
+</rss>

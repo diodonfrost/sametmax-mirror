@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Créer un setup.py et mettre sa bibliothèque Python en ligne sur Pypi</title>
+	<atom:link href="http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/#comment-193852</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 23 Apr 2018 15:27:17 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3102#comment-193852</guid>
+		<description><![CDATA[&lt;p&gt;Plusieurs choix:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;créer un décorateur et l&#039;appliquer à chaque fonction&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;créer une fonction qui parse locals(), et retourne une liste de fonctions en filtrant celles avec un différent chemin d&#039;import&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;créer un import hook qui fait ça avec l&#039;ast&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Mais honnêtement &lt;strong&gt;all&lt;/strong&gt; n&#039;est utile que pour &quot;*&quot;, donc pas certain que ça vaille le coup de s&#039;emmerder.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Plusieurs choix:</p>
+<ul>
+<li>
+<p>créer un décorateur et l&#8217;appliquer à chaque fonction</p>
+</li>
+<li>
+<p>créer une fonction qui parse locals(), et retourne une liste de fonctions en filtrant celles avec un différent chemin d&#8217;import</p>
+</li>
+<li>
+<p>créer un import hook qui fait ça avec l&#8217;ast</p>
+</li>
+</ul>
+<p>Mais honnêtement <strong>all</strong> n&#8217;est utile que pour &#8220;*&#8221;, donc pas certain que ça vaille le coup de s&#8217;emmerder.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Frankfourre</title>
+		<link>http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/#comment-193735</link>
+		<dc:creator><![CDATA[Frankfourre]]></dc:creator>
+		<pubDate>Thu, 19 Apr 2018 13:16:13 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3102#comment-193735</guid>
+		<description><![CDATA[Salut les gars !
+
+Vraiment fan de votre blog, ma principale source d&#039;information pour tous les petits tips en python ;)
+
+J&#039;aimerais quelques précisions sur le &lt;code&gt; __all__&lt;/code&gt; : y a t il moyen de lui assigner automatiquement la liste des fonctions définies dans le fichier, &lt;strong&gt;et uniquement ceux là &lt;/strong&gt; ? Ca me parait laborieux de devoir maintenir à jour cette liste à la main dans tous les fichiers d&#039;un gros projet...
+
+Merci beaucoup !
+]]></description>
+		<content:encoded><![CDATA[<p>Salut les gars !</p>
+<p>Vraiment fan de votre blog, ma principale source d&#8217;information pour tous les petits tips en python ;)</p>
+<p>J&#8217;aimerais quelques précisions sur le <code> __all__</code> : y a t il moyen de lui assigner automatiquement la liste des fonctions définies dans le fichier, <strong>et uniquement ceux là </strong> ? Ca me parait laborieux de devoir maintenir à jour cette liste à la main dans tous les fichiers d&#8217;un gros projet&#8230;</p>
+<p>Merci beaucoup !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/#comment-191327</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Tue, 12 Dec 2017 14:01:48 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3102#comment-191327</guid>
+		<description><![CDATA[&lt;p&gt;C&#039;est un vieil article valable uniquement pour Python 2 qu&#039;il faudra un jour que j&#039;update.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>C&#8217;est un vieil article valable uniquement pour Python 2 qu&#8217;il faudra un jour que j&#8217;update.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: ygnobl</title>
+		<link>http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/#comment-191192</link>
+		<dc:creator><![CDATA[ygnobl]]></dc:creator>
+		<pubDate>Tue, 05 Dec 2017 01:50:57 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3102#comment-191192</guid>
+		<description><![CDATA[Bonsoir, je viens de tenter de faire l&#039;install de sm-lib via pip et j&#039;ai eu l&#039;erreur suivante :
+
+&lt;code&gt;Collecting sm_lib
+
+Using cached sm_lib-0.0.1.tar.gz
+
+Complete output from command python setup.py egg_info:
+
+Traceback (most recent call last):
+
+File &quot;&quot;, line 1, in 
+
+File &quot;C:&#092;Users&#092;ygnobl&#092;AppData&#092;Local&#092;Temp&#092;pip-build-wsia0zhr&#092;sm-lib&#092;setup.py&quot;, line 8, in 
+
+import sm_lib
+
+File &quot;C:&#092;Users&#092;ygnobl&#092;AppData&#092;Local&#092;Temp&#092;pip-build-wsia0zhr&#092;sm-lib&#092;sm_lib&#092;__init__.py&quot;, line 12, in 
+
+from core import proclamer
+
+ModuleNotFoundError: No module named &#039;core&#039;
+
+&lt;pre&gt;&lt;code&gt;----------------------------------------
+&lt;/code&gt;&lt;/pre&gt;
+
+Command &quot;python setup.py egg_info&quot; failed with error code 1 in C:&#092;Users&#092;ygnobl&#092;AppData&#092;Local&#092;Temp&#092;pip-build-_dlgmx13&#092;sm-lib&#092;&lt;/code&gt;
+
+Comme malgré l&#039;heure je ne suis pas trop idiot, bien qu&#039;étant sous windows, il s&#039;agit de la réponse que j&#039;eûs sur un terminal ouvert en admin, après l&#039;avoir eue en utilisateur. Vu que j&#039;ai déjà installé des modules pour bricoler, je me dis que l&#039;info mérite d&#039;être remontée.
+
+Au passage, gros merci pour ce blog. Je m&#039;autoforme à python en dilettante, et c&#039;est une énorme (cmb) source d&#039;infos pour essayer d&#039;apprendre les bonnes manières.
+]]></description>
+		<content:encoded><![CDATA[<p>Bonsoir, je viens de tenter de faire l&#8217;install de sm-lib via pip et j&#8217;ai eu l&#8217;erreur suivante :</p>
+<p><code>Collecting sm_lib</p>
+<p>Using cached sm_lib-0.0.1.tar.gz</p>
+<p>Complete output from command python setup.py egg_info:</p>
+<p>Traceback (most recent call last):</p>
+<p>File "", line 1, in </p>
+<p>File "C:&#092;Users&#092;ygnobl&#092;AppData&#092;Local&#092;Temp&#092;pip-build-wsia0zhr&#092;sm-lib&#092;setup.py", line 8, in </p>
+<p>import sm_lib</p>
+<p>File "C:&#092;Users&#092;ygnobl&#092;AppData&#092;Local&#092;Temp&#092;pip-build-wsia0zhr&#092;sm-lib&#092;sm_lib&#092;__init__.py", line 12, in </p>
+<p>from core import proclamer</p>
+<p>ModuleNotFoundError: No module named 'core'</p>
+<pre><code>----------------------------------------
+</code></pre>
+<p>Command "python setup.py egg_info" failed with error code 1 in C:&#092;Users&#092;ygnobl&#092;AppData&#092;Local&#092;Temp&#092;pip-build-_dlgmx13&#092;sm-lib&#092;</code></p>
+<p>Comme malgré l&#8217;heure je ne suis pas trop idiot, bien qu&#8217;étant sous windows, il s&#8217;agit de la réponse que j&#8217;eûs sur un terminal ouvert en admin, après l&#8217;avoir eue en utilisateur. Vu que j&#8217;ai déjà installé des modules pour bricoler, je me dis que l&#8217;info mérite d&#8217;être remontée.</p>
+<p>Au passage, gros merci pour ce blog. Je m&#8217;autoforme à python en dilettante, et c&#8217;est une énorme (cmb) source d&#8217;infos pour essayer d&#8217;apprendre les bonnes manières.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/#comment-190057</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Tue, 10 Oct 2017 11:28:40 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3102#comment-190057</guid>
+		<description><![CDATA[&lt;p&gt;Les programmes cmd sont ok&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Les programmes cmd sont ok</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Yann</title>
+		<link>http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/#comment-190050</link>
+		<dc:creator><![CDATA[Yann]]></dc:creator>
+		<pubDate>Mon, 09 Oct 2017 18:53:08 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3102#comment-190050</guid>
+		<description><![CDATA[Bonjour, et merci pour cet article ! Et pour votre site !
+
+J&#039;ai bien réussi à créér une petite lib test, et à l&#039;installer avec setup.py... je ne suis pas encore allé jusqu&#039;à la mettre sur pypi car je n&#039;ai pas envie de polluer pypi avec une lib qui ne sert pas à grand chose, mais j&#039;aurais deux questions à ce sujet:
+
+
+peut on publier sur pypi que des lib (dans le sens &quot;module&quot; python) ou bien peut on s&#039;en servir pour distribuer des programmes en python qui ne soient pas des modules au sens strict ?
+j&#039;ai un programme en python qui s&#039;utilise en ligne de commande (j&#039;ai fait ca avec argparse) ; quand je veux l&#039;installer chez moi, je modifie les droits pour qu&#039;il soit exécutable et je le place dans /usr/local/bin ... et ca marche très bien. Mais je voudrais distribuer ce programme et qu&#039;il puisse s&#039;installer plus facilement. Du coup j&#039;ai essayé de faire comme pour ma lib en suivant ce tuto, mais au final impossible d&#039;installer le setup.py ! Je sais que le entry_point permet de créér des commandes, mais sans arguments, ce qui ne me convient pas... du coup, y&#039;a -t -il une autre solution... ou bien suis je complètement a coté de la plaque, et setuptools n&#039;est pas fait pour ca ?
+
+
+Merci :-)
+]]></description>
+		<content:encoded><![CDATA[<p>Bonjour, et merci pour cet article ! Et pour votre site !</p>
+<p>J&#8217;ai bien réussi à créér une petite lib test, et à l&#8217;installer avec setup.py&#8230; je ne suis pas encore allé jusqu&#8217;à la mettre sur pypi car je n&#8217;ai pas envie de polluer pypi avec une lib qui ne sert pas à grand chose, mais j&#8217;aurais deux questions à ce sujet:</p>
+<p>peut on publier sur pypi que des lib (dans le sens &#8220;module&#8221; python) ou bien peut on s&#8217;en servir pour distribuer des programmes en python qui ne soient pas des modules au sens strict ?<br />
+j&#8217;ai un programme en python qui s&#8217;utilise en ligne de commande (j&#8217;ai fait ca avec argparse) ; quand je veux l&#8217;installer chez moi, je modifie les droits pour qu&#8217;il soit exécutable et je le place dans /usr/local/bin &#8230; et ca marche très bien. Mais je voudrais distribuer ce programme et qu&#8217;il puisse s&#8217;installer plus facilement. Du coup j&#8217;ai essayé de faire comme pour ma lib en suivant ce tuto, mais au final impossible d&#8217;installer le setup.py ! Je sais que le entry_point permet de créér des commandes, mais sans arguments, ce qui ne me convient pas&#8230; du coup, y&#8217;a -t -il une autre solution&#8230; ou bien suis je complètement a coté de la plaque, et setuptools n&#8217;est pas fait pour ca ?</p>
+<p>Merci :-)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: jehl</title>
+		<link>http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/#comment-187797</link>
+		<dc:creator><![CDATA[jehl]]></dc:creator>
+		<pubDate>Mon, 19 Jun 2017 11:12:00 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3102#comment-187797</guid>
+		<description><![CDATA[En effet, register &quot; is no longer supported&quot; mais sdist upload fonctionne toujours. Il est donc possible de s&#039;en tirer en rajoutant un fichier .pypirc dans $HOME et avec le contenu suivant :
+
+[distutils]
+
+index-servers =
+
+pypi
+
+[pypi]
+
+repository: https://upload.pypi.org/legacy/
+
+username: moi
+]]></description>
+		<content:encoded><![CDATA[<p>En effet, register &#8221; is no longer supported&#8221; mais sdist upload fonctionne toujours. Il est donc possible de s&#8217;en tirer en rajoutant un fichier .pypirc dans $HOME et avec le contenu suivant :</p>
+<p>[distutils]</p>
+<p>index-servers =</p>
+<p>pypi</p>
+<p>[pypi]</p>
+<p>repository: <a href="https://upload.pypi.org/legacy/" rel="nofollow">https://upload.pypi.org/legacy/</a></p>
+<p>username: moi</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/#comment-186082</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sun, 05 Mar 2017 15:11:14 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3102#comment-186082</guid>
+		<description><![CDATA[&lt;p&gt;Voila qui est interessant.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Voila qui est interessant.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Nicolas Rouviere</title>
+		<link>http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/#comment-186069</link>
+		<dc:creator><![CDATA[Nicolas Rouviere]]></dc:creator>
+		<pubDate>Sun, 05 Mar 2017 05:29:00 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3102#comment-186069</guid>
+		<description><![CDATA[La méthode par &lt;code&gt;python setup.py register&lt;/code&gt; ne fonctionne plus:
+
+&lt;code&gt;
+
+Registering zesk06 to https://upload.pypi.org/legacy/
+
+Server response (404): Not Found
+
+&lt;/code&gt;
+
+Maintenant il &lt;i&gt;semble&lt;/i&gt; obligatoire de passer par twine:
+
+&lt;code&gt;
+
+$ pip install twine
+
+$ twine upload sdist/*.tar.gz -u USERNAME -p PASSWORD
+
+&lt;/code&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>La méthode par <code>python setup.py register</code> ne fonctionne plus:</p>
+<p><code></p>
+<p>Registering zesk06 to https://upload.pypi.org/legacy/</p>
+<p>Server response (404): Not Found</p>
+<p></code></p>
+<p>Maintenant il <i>semble</i> obligatoire de passer par twine:</p>
+<p><code></p>
+<p>$ pip install twine</p>
+<p>$ twine upload sdist/*.tar.gz -u USERNAME -p PASSWORD</p>
+<p></code></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Vanil</title>
+		<link>http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/#comment-181557</link>
+		<dc:creator><![CDATA[Vanil]]></dc:creator>
+		<pubDate>Mon, 03 Oct 2016 18:26:28 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3102#comment-181557</guid>
+		<description><![CDATA[Cool
+]]></description>
+		<content:encoded><![CDATA[<p>Cool</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

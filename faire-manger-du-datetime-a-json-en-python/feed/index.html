@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Faire manger du datetime à JSON en Python</title>
+	<atom:link href="http://sametmax.com/faire-manger-du-datetime-a-json-en-python/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/faire-manger-du-datetime-a-json-en-python/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Will</title>
+		<link>http://sametmax.com/faire-manger-du-datetime-a-json-en-python/#comment-190911</link>
+		<dc:creator><![CDATA[Will]]></dc:creator>
+		<pubDate>Mon, 20 Nov 2017 12:30:43 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9731#comment-190911</guid>
+		<description><![CDATA[Une autre solution que je trouve simple et lisible :
+
+&#060;
+
+pre&#062;from datetime import datetime
+
+def json_encoder(o):
+
+if isinstance(o, datetime):
+
+return {&quot;isoformat&quot;: o.isoformat(), &quot;&lt;strong&gt;class&lt;/strong&gt;&quot;: str(o.&lt;strong&gt;class&lt;/strong&gt;)}
+
+if isinstance(o, (CustomClass1, CustomClass2)):
+
+dic = o.&lt;strong&gt;dict&lt;/strong&gt;
+
+dic[&quot;&lt;strong&gt;class&lt;/strong&gt;&quot;] = str(o.&lt;strong&gt;class&lt;/strong&gt;)
+
+return dic
+
+raise TypeError(&quot;CustomClass or datetime expected.&quot;)
+
+&lt;/code&gt;
+
+&lt;pre&gt;   
+def json_decoder(dic):
+    if &quot;__class__&quot; in dic:
+        if dic[&quot;__class__&quot;] == str(CustomClass1):
+            return CustomClass1(**dic)
+        if dic[&quot;__class__&quot;] == str(datetime):
+            return datetime.strptime(dic[&quot;isoformat&quot;], &quot;%Y-%m-%dT%H:%M:%S&quot;)  # ajoutez &quot;.%f&quot; pour les ms
+        raise TypeError(&quot;CustomClass or datetime expected.&quot;)
+
+#main
+with open(&quot;test.json&quot;, &quot;w&quot;) as f:
+        json.dump(myobject, f, default=json_encoder, indent=4)
+with open(&quot;test.json&quot;, &quot;r&quot;) as f:
+    myobject = json.load(f, object_hook=json_decoder)
+&lt;/pre&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Une autre solution que je trouve simple et lisible :</p>
+<p>&lt;</p>
+<p>pre&gt;from datetime import datetime</p>
+<p>def json_encoder(o):</p>
+<p>if isinstance(o, datetime):</p>
+<p>return {&#8220;isoformat&#8221;: o.isoformat(), &#8220;<strong>class</strong>&#8220;: str(o.<strong>class</strong>)}</p>
+<p>if isinstance(o, (CustomClass1, CustomClass2)):</p>
+<p>dic = o.<strong>dict</strong></p>
+<p>dic[&#8220;<strong>class</strong>&#8220;] = str(o.<strong>class</strong>)</p>
+<p>return dic</p>
+<p>raise TypeError(&#8220;CustomClass or datetime expected.&#8221;)</p>
+<pre>   
+def json_decoder(dic):
+    if "__class__" in dic:
+        if dic["__class__"] == str(CustomClass1):
+            return CustomClass1(**dic)
+        if dic["__class__"] == str(datetime):
+            return datetime.strptime(dic["isoformat"], "%Y-%m-%dT%H:%M:%S")  # ajoutez ".%f" pour les ms
+        raise TypeError("CustomClass or datetime expected.")
+
+#main
+with open("test.json", "w") as f:
+        json.dump(myobject, f, default=json_encoder, indent=4)
+with open("test.json", "r") as f:
+    myobject = json.load(f, object_hook=json_decoder)
+</pre>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: OlyGrim</title>
+		<link>http://sametmax.com/faire-manger-du-datetime-a-json-en-python/#comment-177622</link>
+		<dc:creator><![CDATA[OlyGrim]]></dc:creator>
+		<pubDate>Wed, 06 Apr 2016 15:53:03 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9731#comment-177622</guid>
+		<description><![CDATA[Dans l&#039;exemple, la désérialisation de la date ne renvoie pas un &lt;code&gt;datetime&lt;/code&gt;. C&#039;est toujours une chaîne de caractère.
+
+J&#039;ai pas trop compris pourquoi (peut-être en as-tu parlé dans le guide ultime et définitif sur la POO) mais apparemment la méthode &lt;code&gt;decode&lt;/code&gt; n&#039;utilise pas l&#039;attribut &lt;code&gt;object_pairs_hook&lt;/code&gt; de l&#039;instance mais de la classe parente. Pour corriger le tir, j&#039;ai fait ceci:
+
+&lt;pre&gt;import json
+
+class Decoder(json.JSONDecoder):
+    def __init__(self, format, **kwargs):
+        if not kwargs.get(&quot;object_pairs_hook&quot;, None):
+            kwargs[&quot;object_pairs_hook&quot;] = self.object_pairs_hook
+        super().__init__(**kwargs)
+        self.format = format
+
+
+#main
+donnees = {&quot;date&quot;: datetime.now(), &quot;valeur&quot;: 160}
+donnees_dumps = JSONEncoder().encode(donnees)
+donnees_loads = Decoder(format=&#039;%Y-%m-%d&#039;).decode(donnees_dumps)&lt;/pre&gt;
+
+Avec ça, le &lt;code&gt;print(donnees_loads)&lt;/code&gt; renvoie bien un&lt;code&gt;datetime&lt;/code&gt;.
+
+Mais j&#039;avoue ne pas comprendre pourquoi cet attribut n&#039;est pas pris en compte, alors que si je redéfini l&#039;attribut &lt;code&gt;indent&lt;/code&gt; dans l&#039;encodeur, lui est bien pris en compte.
+
+Juste 2 petites remarques: Dans la méthode &lt;code&gt;decode_on_match&lt;/code&gt; de ton &lt;code&gt;JSONDecoder&lt;/code&gt;, tu n&#039;as pas défini &lt;code&gt;self.datetime_format&lt;/code&gt;. Et &lt;code&gt;object_pairs_hook&lt;/code&gt; n&#039;est pas à la base une méthode mais un attribut (qui attend un callable).
+
+PS: Désolé pour le formatage de mon code. J&#039;ai bien utilisé les balises &lt;code&gt;pre&lt;/code&gt; mais dans le pré-visualiseur le code n&#039;apparaît pas correctement.
+]]></description>
+		<content:encoded><![CDATA[<p>Dans l&#8217;exemple, la désérialisation de la date ne renvoie pas un <code>datetime</code>. C&#8217;est toujours une chaîne de caractère.</p>
+<p>J&#8217;ai pas trop compris pourquoi (peut-être en as-tu parlé dans le guide ultime et définitif sur la POO) mais apparemment la méthode <code>decode</code> n&#8217;utilise pas l&#8217;attribut <code>object_pairs_hook</code> de l&#8217;instance mais de la classe parente. Pour corriger le tir, j&#8217;ai fait ceci:</p>
+<pre>import json
+
+class Decoder(json.JSONDecoder):
+    def __init__(self, format, **kwargs):
+        if not kwargs.get("object_pairs_hook", None):
+            kwargs["object_pairs_hook"] = self.object_pairs_hook
+        super().__init__(**kwargs)
+        self.format = format
+
+
+#main
+donnees = {"date": datetime.now(), "valeur": 160}
+donnees_dumps = JSONEncoder().encode(donnees)
+donnees_loads = Decoder(format='%Y-%m-%d').decode(donnees_dumps)</pre>
+<p>Avec ça, le <code>print(donnees_loads)</code> renvoie bien un<code>datetime</code>.</p>
+<p>Mais j&#8217;avoue ne pas comprendre pourquoi cet attribut n&#8217;est pas pris en compte, alors que si je redéfini l&#8217;attribut <code>indent</code> dans l&#8217;encodeur, lui est bien pris en compte.</p>
+<p>Juste 2 petites remarques: Dans la méthode <code>decode_on_match</code> de ton <code>JSONDecoder</code>, tu n&#8217;as pas défini <code>self.datetime_format</code>. Et <code>object_pairs_hook</code> n&#8217;est pas à la base une méthode mais un attribut (qui attend un callable).</p>
+<p>PS: Désolé pour le formatage de mon code. J&#8217;ai bien utilisé les balises <code>pre</code> mais dans le pré-visualiseur le code n&#8217;apparaît pas correctement.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/faire-manger-du-datetime-a-json-en-python/#comment-20982</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 10 Mar 2014 12:12:20 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9731#comment-20982</guid>
+		<description><![CDATA[Tous des points parfaitement valides. Effectivement, ce seraient de bonnes améliorations.]]></description>
+		<content:encoded><![CDATA[<p>Tous des points parfaitement valides. Effectivement, ce seraient de bonnes améliorations.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Mathieu</title>
+		<link>http://sametmax.com/faire-manger-du-datetime-a-json-en-python/#comment-20981</link>
+		<dc:creator><![CDATA[Mathieu]]></dc:creator>
+		<pubDate>Mon, 10 Mar 2014 09:59:25 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9731#comment-20981</guid>
+		<description><![CDATA[+1, mieux vaut s&#039;en tenir à isoformat, surtout qu&#039;avec la méthode actuelle on perdrait les timezone des datetime conscient, ce qui est grave.]]></description>
+		<content:encoded><![CDATA[<p>+1, mieux vaut s&#8217;en tenir à isoformat, surtout qu&#8217;avec la méthode actuelle on perdrait les timezone des datetime conscient, ce qui est grave.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: floweb</title>
+		<link>http://sametmax.com/faire-manger-du-datetime-a-json-en-python/#comment-20980</link>
+		<dc:creator><![CDATA[floweb]]></dc:creator>
+		<pubDate>Mon, 10 Mar 2014 09:46:08 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9731#comment-20980</guid>
+		<description><![CDATA[Comme Badu, je préfère la méthode .isoformat(), il vaut mieux garder les standards... ISO 8601 (UTC format)]]></description>
+		<content:encoded><![CDATA[<p>Comme Badu, je préfère la méthode .isoformat(), il vaut mieux garder les standards&#8230; ISO 8601 (UTC format)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Badeu</title>
+		<link>http://sametmax.com/faire-manger-du-datetime-a-json-en-python/#comment-20970</link>
+		<dc:creator><![CDATA[Badeu]]></dc:creator>
+		<pubDate>Sun, 09 Mar 2014 22:30:32 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9731#comment-20970</guid>
+		<description><![CDATA[&lt;code&gt;isinstance&lt;/code&gt; ? Erf...
+
+Pourquoi ne pas utiliser ça dans le sérialiseur plutôt ?
+
+&lt;pre lang=&quot;python&quot;&gt;
+if hasattr(obj, &#039;isoformat&#039;):
+    return obj.isoformat()
+&lt;/pre&gt;
+
+Rapide, pas cher, standard ... et ça se fait bien manger par toutes les libs de tous les langages. Et puis après, il suffit d&#039;avoir le désérialiseur idoine.]]></description>
+		<content:encoded><![CDATA[<p><code>isinstance</code> ? Erf&#8230;</p>
+<p>Pourquoi ne pas utiliser ça dans le sérialiseur plutôt ?</p>
+<pre lang="python">
+if hasattr(obj, 'isoformat'):
+    return obj.isoformat()
+</pre>
+<p>Rapide, pas cher, standard &#8230; et ça se fait bien manger par toutes les libs de tous les langages. Et puis après, il suffit d&#8217;avoir le désérialiseur idoine.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

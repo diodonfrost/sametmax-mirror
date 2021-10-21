@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>factory &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/factory/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Service, factory et provider dans AngularJS</title>
+		<link>http://sametmax.com/service-factory-et-provider-dans-angularjs/</link>
+		<comments>http://sametmax.com/service-factory-et-provider-dans-angularjs/#comments</comments>
+		<pubDate>Tue, 29 Apr 2014 09:07:41 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[angularjs]]></category>
+		<category><![CDATA[factory]]></category>
+		<category><![CDATA[javascript]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10095</guid>
+		<description><![CDATA[Tuto long et chiant sur un concept de base d'angularjs.]]></description>
+				<content:encoded><![CDATA[<p>AngularJS est un framework difficile à prendre en main. Pas parce qu&#8217;il est particulièrement compliqué, mais parce que ses concepts sont vraiment différents de ceux qu&#8217;on a l&#8217;habitude de rencontrer dans les frameworks habituels. Le pire, c&#8217;est quand on vient de jQuery, car Angular est un peu l&#8217;anti-jQuery et il faut littéralement désapprendre ses habitudes.</p>
+<p>Généralement, les gens s&#8217;en sortent avec les contrôleurs. Ils ne mettent pas le bon code dedans, ils ne savent pas comment rendre les bouts de code indépendants et réutilisables, mais ils arrivent à en faire quelque chose. Les directives, ils n&#8217;y touchent pas, mais ils peuvent s&#8217;en passer pendant un certain temps et juste réutiliser du code trouvé sur Github.</p>
+<p>Par contre le côté service/factory/provider, ça c&#8217;est un gros problème. On ne peut pas faire sans, mais peu de gens savent faire avec. En codant <a href="http://allthatcounts.net">All that counts</a>, j&#8217;ai réalisé que c&#8217;était un bon tuto à faire. Donc en avant.</p>
+<p>Article long = musique, évidement.</p>
+
+<!-- iframe plugin v.4.3 wordpress.org/plugins/iframe/ -->
+<iframe width="420" height="315" src="//www.youtube.com/embed/lMLnDuzgkjo" frameborder="0" 0="allowfullscreen" scrolling="yes" class="iframe-class"></iframe>
+
+<p>On m&#8217;a très justement demandé les prérequis pour suivre cet article : il faut avoir fait des tutos de base sur Angular et notamment comprendre l&#8217;injection de dépendance et le data binding.</p>
+<h2>Que font ces trucs là ?</h2>
+<p>Techniquement, un service, une factory ou un provider, dans AngularJS, <strong>ça sert à la même chose</strong>. Un service est juste une manière plus facile d&#8217;écrire une factory, qui est juste une manière plus simple d&#8217;écrire un provider.</p>
+<p><strong>Les 3 servent à créer un objet Javascript ordinaire, c&#8217;est tout.</strong></p>
+<p>Oui, oui, c&#8217;est vraiment tout. C&#8217;est le seul et unique but de cela. Vous allez me dire, mais alors pourquoi se faire chier à les utiliser alors qu&#8217;on peut écrire un objet à la main ? Tout simplement parce qu&#8217;ils permettent d&#8217;encapsuler cette création, l&#8217;isoler du reste du code, un problème toujours difficile en Javascript.</p>
+<p>Ils sont là pour éviter de pourrir le namespace global, tout en n&#8217;utilisant pas la technique bien connu de &#8220;je met un gros conteneur avec tout dedans et tout le monde y accède&#8221;, qu&#8217;on a tendance à voir dans la plupart des projets JS. Le code est ainsi plus maintenable et testable.</p>
+<p>Chaque service/factory/provider permet d&#8217;avoir un groupe de fonctionnalités séparé du reste. On peut utiliser celui-ci facilement partout ailleurs en utilisant l&#8217;injection de dépendance. <strong>Si vous ne savez pas ce que c&#8217;est, arrêtez-vous tout de suite, c&#8217;est le principe de fonctionnement de base d&#8217;Angular, il faut quitter cet article et prendre un tuto pour débutant.</strong> Revenez ensuite.</p>
+<p>Dans un service/factory/provider, on va donc mettre du code métier et/ou des données de l&#8217;app, mais groupés par thème.</p>
+<p>Par exemple, sur une app video, on peut en faire un qui va contenir le code pour gérer le profile utilisateur et un pour gérer la playlist.</p>
+<p>On aura donc deux services/factories/providers, qui vont créer au final deux objets. Chaque objet va contenir des méthodes et des données. Pour le profile, on peut imaginer qu&#8217;il va contenir le nom d&#8217;utilisateur, son ID, et une méthode de login et de logout :</p>
+<pre lang="javascript">{
+    "name": "Hodor",
+    "Id": 7898,
+    "login": function(){
+        // faire un truc pour se loger
+    },
+    "logout": function(){
+        // faire un truc pour se deco
+    }
+}</pre>
+<p>Pour la playlist, on peut imaginer que ça va contenir la liste des videos, la video en cours de lecture et de quoi passer à la suivante et précédente :</p>
+<pre lang="javascript">{
+    "name" : "Super playlist"
+    "videos": [
+        {"title": "video 1", "url": "http://..."},
+        {"title": "video 2", "url": "http://..."}
+    ],
+    "currentVideo": 1,
+    "next": function(){
+        // passer à la vid suivante
+    },
+    "previous": function(){
+        // passer à la vid précédente
+    }
+
+}</pre>
+<p>Et c&#8217;est tout. Ce n&#8217;est ni plus ni moins que ça, des objets normaux dans lesquels ont va mettre nos données et nos méthodes. <strong>Ce qui est &#8220;special&#8221;, c&#8217;est comment ils sont créés et utilisés.</strong> Et c&#8217;est ça qu&#8217;on va voir tout de suite.</p>
+<h2>Créer un objet via un service/factory/provider</h2>
+<p>Voyons le plus compliqué d&#8217;abord : le provider. Les deux autres ne sont que des raccourcis pour écrire un provider, de toute façon.</p>
+<p>Le rôle du provider, c&#8217;est de créer et mettre à disposition un objet. C&#8217;est tout. Il n&#8217;y a rien de plus. Je répète, ça ne sert qu&#8217;à ça. &#8220;provider&#8221;, ça veut dire &#8220;fournisseur&#8221; en anglais. Et c&#8217;est ce que ça fait : ça fournit un objet. Supposons que vous avez déjà créé une app &#8220;monApp&#8221;. Écrire un provider pour créer l&#8217;objet &#8220;profile&#8221; ressemble à ça :</p>
+<pre lang="javascript">
+// On appelle notre objet qui sera créé "profile". Ce qui signifie que l'on
+// pourra ensuite utiliser le nom "profile" pour annoncer quand
+// on souhaite utiliser l'objet issu de ce provider.
+monApp.provider("profile", function(){
+
+    // Un provider, au final, c'est juste une fonction anonyme qu'on relie
+    // à un nom :)
+
+    // Cette fonction DOIT avoir une méthode nommé "$get" attachée à son "this"
+    this.$get = function() {
+
+        // Et la méthode "$get" DOIT retourner l'objet qu'on veut créer.
+        return {
+            "name": "Anonymous",
+            "Id": null,
+            "login": function(){
+                // faire un truc pour se loger
+            },
+            "logout": function(){
+                // faire un truc pour se deco
+            }
+        }
+    }
+});
+</pre>
+<p>C&#8217;est tout. Je vous jure que c&#8217;est tout. C&#8217;est juste une boîte qu&#8217;Angular va prendre, et appeler la méthode <code>$get</code> pour obtenir un objet. En plus, un seul objet, car la méthode ne sera appelée qu&#8217;une fois : l&#8217;objet sera un singleton.</p>
+<p>Plus tard dans le code, quand vous ferez un controller :</p>
+<pre lang="javascript">mymonAppApp.controller('UnControlleurCommeUnAutre', function($scope, profile) {
+    $scope.profile = profile;
+});</pre>
+<p>Vous utiliserez <code>profile</code> en paramètre, il va donc être injecté automatiquement. C&#8217;est tout le principe d&#8217;angular, des tas de boîtes qui déclarent quelles autres boîtes elles utilisent via l&#8217;injection de dépendance.</p>
+<p>Ici, l&#8217;objet va être créé (si ce n&#8217;est pas déjà fait ailleurs), et c&#8217;est tout. Le boulot d&#8217;un controller, c&#8217;est essentiellement de mettre des objets issus des providers dans le scope pour que le HTML puisse les utiliser. Je vous promet, c&#8217;est 90% des use cases.</p>
+<p>Votre objet sera le conteneur que l&#8217;on va manipuler pour changer le nom du profile, se logger, etc. C&#8217;est juste une boîte qui rend un service. D&#8217;ailleurs on appelle souvent les objets issus des providers des &#8220;services&#8221;.</p>
+<p>Utiliser des providers évite de créer tout une logique de classes, de gérer des namespaces, des instanciations : on est obligé de faire de l&#8217;encapsulation et de la composition. Ca rend le code (javascript) plus propre et plus testable, bien décomposé et découplé. <strong>Avoir un code propre est le but principal des providers, ils ne fournissent rien comme fonctionnalités qu&#8217;on ne puisse faire autrement</strong>.</p>
+<p>Maintenant voyons ce qu&#8217;est une factory. En fait, c&#8217;est juste un raccourci pour écrire un provider :</p>
+<pre lang="javascript">monApp.factory('profile', function() {
+    return {
+        "name": "Anonymous",
+        "Id": null,
+        "login": function(){
+            // faire un truc pour se loger
+        },
+        "logout": function(){
+            // faire un truc pour se deco
+        }
+    }
+});</pre>
+<p>Ça fait exactement la même chose, et on l&#8217;utilise exactement pareil. C&#8217;est juste plus court. Pas de méthode <code>$get</code> à écrire, on retourne l&#8217;objet cash pistache.</p>
+<p>Pourquoi on utilise un provider alors ? Parce que c&#8217;est plus pratique à configurer, comme on le verra plus bas. Mais la factory est suffisante la plupart du temps. Ce qui est marrant, c&#8217;est qu&#8217;en terme informatique, un provider est un design pattern &#8220;factory&#8221;, ce qui m&#8217;a vachement rendu confus au début&#8230;</p>
+<p>Et le service alors ? C&#8217;est une syntaxe alternative :</p>
+<pre lang="javascript">monApp.service('profile', function() {
+    this.name = "Anonymous";
+    this.id = null;
+    this.login = function(){
+        // faire un truc pour se loger
+    }
+    this.logout = function(){
+        // faire un truc pour se deco
+    }
+});</pre>
+<p>La fonction va être utilisée directement (avec <code>new</code>) pour créer l&#8217;objet, donc pas besoin de <code>return</code> : on attache tout à <code>this</code>. Mais le résultat est strictement le même. Le choix entre une factory et un service est vraiment une question de goût. Personnellement je vous conseille d&#8217;utiliser des factories car ça vous évite le casse-tête de la portée de <code>this</code>, grande cause d&#8217;erreurs en JS.</p>
+<h2>Dépendances et injections</h2>
+<p>Souvenez-vous qu&#8217;on peut faire ça :</p>
+<pre lang="javascript">mymonAppApp.controller('UnControlleurCommeUnAutre', function($scope, profile) {
+    $scope.profile = profile;
+});</pre>
+<p>Pour dire &#8220;mon controller dépend de profile, donc s&#8217;il te plait Angular, crée l&#8217;objet et passe le moi&#8221;.</p>
+<p>Et bien ça marche aussi entre les providers/factories/services. Par exemple, si je fais un provider pour ma playlist, mais que la playlist dépend du profile :</p>
+<pre lang="javascript">monApp.provider("playlist", function(){
+
+    // En utilisant le nom de l'autre provider ici, je demande à ce qu'il
+    // soit injecté ici, et donc disponible ici. Je dis "ce provider
+    // est dépendant de l'objet fournit par cet autre provider."
+    this.$get = function(profile) {
+
+        return {
+            // Et du coup je peux accéder aux attributs de l'objet.
+            "name": "Playlist de " + profile.name
+            "videos": [],
+            "currentVideo": 1,
+            "next": function(){
+                // passer à la vid suivante
+            },
+            "previous": function(){
+                // passer à la vid précédente
+            }
+        }
+    }
+});</pre>
+<p>Si je le faisais avec une factory, se serait pareil, mais en plus simple :</p>
+<pre lang="javascript">
+// l'injection de dépendance se fait au niveau de la fonction anonyme
+// car il n'y a pas de méthode "$get"
+monApp.factory("playlist", function(profile){
+    return {
+        "name": "Playlist de " + profile.name
+        "videos": [],
+        "currentVideo": 1,
+        "next": function(){
+            // passer à la vid suivante
+        },
+        "previous": function(){
+            // passer à la vid précédente
+        }
+    }
+});</pre>
+<h2>L&#8217;interêt des providers</h2>
+<p>L&#8217;interêt principal d&#8217;utiliser un provider plutôt qu&#8217;une factory, c&#8217;est qu&#8217;on peut le rendre configurable.</p>
+<p>Par exemple, je veux que ma playlist ne soit jamais vide, alors si elle l&#8217;en, on met deux vidéos par défaut dedans :</p>
+<pre lang="javascript">monApp.factory("playlist", function(profile){
+
+    // je ne retourne pas l'objet tout de suite, je vais le modifier
+    var playlist = {
+        "name": "Playlist de " + profile.name
+        "videos": [],
+        "currentVideo": 1,
+        "next": function(){
+            // passer à la vid suivante
+        },
+        "previous": function(){
+            // passer à la vid précédente
+        }
+    };
+
+    // hop, je m'assure que la playlist n'est jamais vide en modifiant
+    // l'objet
+    if (playlist.videos.length === 0){
+        playlist.videos = [
+            {"title": "video 1", "url": "http://..."},
+            {"title": "video 2", "url": "http://..."}
+        ]
+    }
+
+    // ne pas oublier de retourner l'objet à la fin quand même :)
+    return playlist;
+});</pre>
+<p>Tout ça sera largement suffisant dans la plupart des cas. Mais dans le rare cas où je veux faire une lib réutilisable, je veux que ces vidéos par défaut soient configurables. Comment alors permettre que l&#8217;utilisateur de ma lib les choisisse ?</p>
+<p>En utilisant un provider :</p>
+<pre lang="javascript">monApp.provider("playlist", function(){
+
+    // On déclare des données attachée sur le provider. PAS sur l'objet que
+    // le provider va créer, attention. Sur le provider lui-même.
+    // Le provider, je le rappelle, c'est cette fonction anonyme qui retourne
+    // un objet via sa méthode "$get" (oui, les fonctions sont des objets
+    // en JS, et peuvent avoir des méthodes. Ce langage est très clair.)
+    this.defaultVideos = [
+            {"title": "video 1", "url": "http://..."},
+            {"title": "video 2", "url": "http://..."}
+    ]
+
+    // ensuite je fais ma méthode "$get" qui va retourner l'objet voulu,
+    // comme d'hab
+    this.$get = function(profile) {
+
+        var playlist = {
+            "name": "Playlist de " + profile.name
+            "videos": [],
+            "currentVideo": 1,
+            "next": function(){
+                // passer à la vid suivante
+            },
+            "previous": function(){
+                // passer à la vid précédente
+            }
+        }
+
+        // Au moment de la création de l'objet, j'utilise les données
+        // attachées au provider pour fournir la valeur par défaut.
+        if (playlist.videos.length === 0){
+            playlist.videos = this.defaultVideos;
+        }
+
+        return playlist;
+    }
+});</pre>
+<p>Jusqu&#8217;ici, vous allez me dire, mais quelle est la différence avec le précédent ? Et bien il se trouve qu&#8217;Angular met à votre disposition automatiquement <code>playlist</code>, <strong>mais également <code>playlistProvider</code></strong>, une référence sur le provider qui va créer l&#8217;objet <code>playlist</code>.</p>
+<p>ATTENTION : quand vous déclarez ici &#8220;playlist&#8221;, &#8220;playlist&#8221; est le nom de l&#8217;objet créé par le provider. Angular, lui, va automagiquement attacher le nom &#8220;playlistProvider&#8221; au provider qui a créé l&#8217;objet. Vous n&#8217;avez rien à faire pour cela, il va automatiquement s&#8217;appeler &#8220;nomDeVotreObjetProvider&#8221; et sera mis à votre disposition.</p>
+<p>Du coup :</p>
+<pre lang="javascript">// On peut utiliser "config" pour lancer du code avant la création des objets
+// par les providers. Tout le code dans des blocs "config" est toujours lancé en premier,
+// avant tous les providers/factories/services de cette app.
+monApp.config(function(playlistProvider){
+    // ici l'utilisateur de votre lib a accès au provider avant la création de
+    // l'objet, et à donc le loisir de changer les valeurs par défaut
+    playlistProvider.defaultVideos = [
+            {"title": "Autre video", "url": "http://..."},
+    ]
+});</pre>
+<p>Ce n&#8217;est pas un cas courant, et la plupart du temps, utiliser une factory marchera très bien.</p>
+<h2>Et tout ça, je m&#8217;en sers pour quoi ?</h2>
+<p>On met dans les providers/services/factories, tout le code qui n&#8217;est pas lié à la navigation ou à la manipulation de DOM. Bref, tout le code de la logique de votre app. Le code qui n&#8217;est pas lié au Web. Un profile n&#8217;a rien à avoir avec le Web. Une playlist n&#8217;a rien à voir avec le Web. Mais il faut un code pour les gérer, et des variables vont devoir êtres mises quelque part.</p>
+<p>Généralement, ces providers/services/factories sont utilisés :</p>
+<ul>
+<li>Par un controller.</li>
+<li>Par une directive.</li>
+<li>Par d&#8217;autres providers/services/factories.</li>
+</ul>
+<p>Mais aussi, directement dans le HTML.</p>
+<p>En effet, quand vous allez faire ça :</p>
+<pre lang="javascript">
+// le boulot du controller, c'est essentiellement d'attacher les bons
+// services au scope, je vous dis !
+mymonAppApp.controller('VideoCtrl', function($scope, playlist) {
+    $scope.playlist = playlist;
+});</pre>
+<p>Vous allez ensuite pouvoir déclarer votre controller dans votre HTML. Dans un<br />
+bloc de HTML couvert par un controller, vous avez accès à toutes les attributs<br />
+du scope, donc à votre service &#8220;playlist&#8221;. Et du coup, paf, à tout son code :</p>
+<pre lang="html">
+<div ng-controller="VideoCtrl">
+    ...
+    <p>Playlist :</p>
+    <ul>
+       <li ng-repeat="vid for playlist.videos">{{ vid.title }}</li>
+    </ul>
+    <p>
+    <button ng-click="playlist.next()">Next</button>
+    </p>
+</div></pre>
+<p>Et c&#8217;est ça la beauté d&#8217;Angular : tout est bien séparé, et bien rangé. Votre code métier dans les providers, votre code d&#8217;interface dans le HTML, votre liaison entre le HTML et les providers à travers les controllers&#8230; Enfin du code JS qui ne ressemble pas à des spaghetti trop cuites par un enfant de 6 ans scatoman.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/service-factory-et-provider-dans-angularjs/feed/</wfw:commentRss>
+		<slash:comments>29</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">10095</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/04/o3eChX7.jpg" length="69390" type="image/jpg" />	</item>
+	</channel>
+</rss>

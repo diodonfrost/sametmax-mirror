@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>ppa &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/ppa/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>&#8220;BlockingIOError: [Errno 11] Resource temporarily unavailable&#8221; pour Python 3.6</title>
+		<link>http://sametmax.com/blockingioerror-errno-11-resource-temporarily-unavailable-pour-python-3-6/</link>
+		<comments>http://sametmax.com/blockingioerror-errno-11-resource-temporarily-unavailable-pour-python-3-6/#comments</comments>
+		<pubDate>Tue, 28 Feb 2017 09:39:18 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[bug]]></category>
+		<category><![CDATA[ppa]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[ubuntu]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=22573</guid>
+		<description><![CDATA[La toute première version de Python 3.6 avait <a href="https://bugs.python.org/issue29208">un bug</a> assez vicieux qui ne se manifestait que sous certaines conditions, généralement dans un daemon sur un serveur, et en important certains modules qui finissent par déclencher par réaction en chaîne l'usage de <code>random</code>.
+]]></description>
+				<content:encoded><![CDATA[<p>La toute première version de Python 3.6 avait <a href="https://bugs.python.org/issue29208">un bug</a> assez vicieux qui ne se manifestait que sous certaines conditions, généralement dans un daemon sur un serveur, et en important certains modules qui finissent par déclencher par réaction en chaîne l&#8217;usage de <code>random</code>.</p>
+<p><code>django</code> est concerné.</p>
+<p>On tombait dessus généralement assez tard, à la mise en prod, avec un message cryptique:</p>
+<pre> 
+BlockingIOError: [Errno 11] Resource temporarily unavailable 
+  
+ The above exception was the direct cause of the following exception: 
+
+Traceback (most recent call last): 
+   .... <- des imports de votre code qui ne font rien de mal
+   File "/usr/local/lib/python3.6/site-packages/pkg_resources/__init__.py", line 36, in <module> 
+     import email.parser 
+   File "/usr/local/lib/python3.6/email/parser.py", line 12, in <module> 
+     from email.feedparser import FeedParser, BytesFeedParser 
+   File "/usr/local/lib/python3.6/email/feedparser.py", line 27, in <module> 
+     from email._policybase import compat32 
+   File "/usr/local/lib/python3.6/email/_policybase.py", line 9, in <module> 
+     from email.utils import _has_surrogates 
+   File "/usr/local/lib/python3.6/email/utils.py", line 28, in <module> 
+     import random 
+   File "/usr/local/lib/python3.6/random.py", line 742, in <module> 
+     _inst = Random() 
+ SystemError: <class 'random.Random'> returned a result with an error set 
+</pre>
+<p>Cela a été corrigé rapidement, et le binaire patché ajoute juste un &#8220;+&#8221; à sa version:</p>
+<pre lang="bash">$ python --version
+Python 3.6.0+</pre>
+<p>En théorie vous ne pouvez pas tomber dessus, tous les liens de téléchargement ont été mis à jour, les distributions ont changé leurs dépôts, etc.</p>
+<p>Mais hier je me suis fait bien niqué, et j&#8217;ai perdu 1h à debugguer cette surprise qui n&#8217;avait aucun sens (puisque mon code allait bien) : les bugs dans les binaires officiels sont rares et c&#8217;est le dernier endroit où je cherche.</p>
+<p>En effet, certaines sources non-officielles pour installer Python n&#8217;ont pas été mises à jour, et c&#8217;est le cas du très populaire PPA <code>deadsnakes</code>.</p>
+<p>Si vous avez installé Python 3.6 en faisant :</p>
+<pre lang="bash">sudo add-apt-repository ppa:fkrull/deadsnakes
+sudo apt-get update
+sudo apt-get install python3.6</pre>
+<p>vous l&#8217;avez dans le cul.</p>
+<p>Il existe un PPA plus à jour si vous avez besoin de corriger le tir :</p>
+<pre lang="bash">sudo add-apt-repository ppa:jonathonf/python-3.6
+sudo apt-get update
+sudo apt-get install python3.6</pre>
+<p>Donc si vous avez compilé Python à la main ou utilisé un PPA, assurez-vous bien d&#8217;avoir la bonne version, et sinon upgradez. En attendant j&#8217;ai un bug report à faire à <code>deadsnakes</code>&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/blockingioerror-errno-11-resource-temporarily-unavailable-pour-python-3-6/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">22573</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/02/HGk9X0b.jpg" length="82072" type="image/jpg" />	</item>
+	</channel>
+</rss>

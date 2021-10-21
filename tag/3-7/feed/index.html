@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>3.7 &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/3-7/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>La débâcle de async en 3.7</title>
+		<link>http://sametmax.com/la-debacle-de-async-en-3-7/</link>
+		<comments>http://sametmax.com/la-debacle-de-async-en-3-7/#comments</comments>
+		<pubDate>Tue, 07 Aug 2018 13:14:40 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[3.7]]></category>
+		<category><![CDATA[async]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=24891</guid>
+		<description><![CDATA[Quand les nouveaux mots clés <code>async</code> et <code>await</code> ont été introduits en Python 3.5, tout le monde a trouvé l'idée formidable. D'ailleurs, ça a été intégré à JavaScript.
+
+Malheureusement, introduire des mots clés dans un langage est une opération très délicate.]]></description>
+				<content:encoded><![CDATA[<p>Quand les nouveaux mots clés <code>async</code> et <code>await</code> ont été introduits en Python 3.5, tout le monde a trouvé l&#8217;idée formidable. D&#8217;ailleurs, ça a été intégré à JavaScript.</p>
+<p>Malheureusement, introduire des mots clés dans un langage est une opération très délicate.</p>
+<h2>Limites et contournements des mots clés</h2>
+<p>En Python les mots clés ont une caractéristique importante : on ne peut pas les utiliser pour quoi que ce soit d&#8217;autre.</p>
+<p>Par exemple, <code>class</code> est un mot clé, donc je ne peux pas créer une variable, un attribut, ou une fonction appelé <code>class</code>. Ceci lève une  erreur:</p>
+<pre lang="python">>>> class = 1
+  File "<stdin>", line 1
+    class = 1
+          ^
+SyntaxError: invalid syntax
+>>> class Foo: pass
+... 
+>>> Foo.class = 1
+  File "<stdin>", line 1
+    Foo.class = 1
+            ^
+SyntaxError: invalid syntax
+>>> </pre>
+<p>Pour cette raison, quand on veut qu&#8217;une variable contienne une classe en Python, on la nomme <code>cls</code>:</p>
+<pre lang="python">>>> class Bar:
+...     @classmethod
+...     def wololo(cls):
+...         print(cls, 'wololo')
+... 
+>>> 
+>>> Bar.wololo()
+<class '__main__.Bar'> wololo
+>>> </pre>
+<p>C&#8217;est aussi pour cela que vous voyez parfois des variables nommées <code>truc_</code>. Souvent <code>from_</code> par exemple, parce que <code>from</code> est un mot clé.</p>
+<p>(pro tip: plutôt que <code>from</code> et <code>to</code>, utilisez <code>src</code> et <code>dest</code>)</p>
+<p>Quand en Python 2 on a introduit <code>True</code> et <code>False</code>, un gros problème s&#8217;ensuivit: soit on en faisait des mots clés, et on pétait tout le code précédent qui utilisait ces mots, soit on en faisait des variables globales.</p>
+<p>Le choix a été de garder la stabilité jusqu&#8217;à la prochaine version majeure, et c&#8217;est pour cela que:</p>
+<ul>
+<li>On peut faire <code>True = False</code> en Python 2. Ouch.</li>
+<li>Python 3 casse ce comportement, et donc ça fait une chose de plus à laquelle il faut penser quand on migre.</li>
+</ul>
+<p>Pour la 3.5, on avait donc ce même problème, avec une cerise sur le gâteau: la lib standard utilisait elle-même la fonction <code>asyncio.async</code>.</p>
+<p>Le choix a donc de faire de <code>async</code> / <code>await</code> des variables globales, et de les transformer en mot clé en 3.7.</p>
+<p>En 3.6, un warning a été ajouté pour rappeler aux gens de migrer leur code.</p>
+<p>C&#8217;est un sacré taf, et ça comporte des risques comme nous allons le voir plus loin. C&#8217;est pour cette raison que l&#8217;ajout d&#8217;un mot clé dans Python est une des choses les plus difficiles à faire passer sur la mailling list python-idea.</p>
+<h2>Arrive la 3.7</h2>
+<p>La 3.7 est sortie avec <a href="http://sametmax.com/python-3-7-sort-de-sa-coquille/">tout un tas de goodies</a>. Youpi. Mais aussi avec le passage de <code>async/await</code> de variables globales à mots clés, cassant la compatibilité ascendante. Quelque chose de rare en Python, et que personnellement j&#8217;aurais réservé pour Python 4, ne serait-ce que pour respecter semver.</p>
+<p>Le résultat, tout un tas de systèmes ont pété: des linux en rolling release, des gens qui ont fait l&#8217;update de Python à la main, des gens qui maintiennent des libs compatibles 3.5 a 3.7&#8230;</p>
+<p>D&#8217;autant que la 3.5 a <code>asyncio.async</code>, mais 3.7 considère ça une erreur.</p>
+<p>Petit exemple avec <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=902788">l&#8217;impact sur debian</a>.</p>
+<h2>Comment on aurait pu éviter ce merdier ?</h2>
+<p>D&#8217;abord, il aurait fallu ne pas introduire asyncio à l&#8217;arrache. Dans mon <a href="http://sametmax.com/guido-van-rossum-soffre-des-vacances-permanentes/">&#8220;au revoir&#8221; à Guido</a>, je disais que je trouvais que les dernières fonctionnalités majeures de Python avaient été mises en oeuvre de manière précipitée.</p>
+<p>Cela se vérifie encore et encore avec asyncio, dont il faudra que je fasse un article pour dire tout ce qui a mal tourné.</p>
+<p>Casser la compatibilité ascendante dans une version mineure n&#8217;est pas acceptable, même si les dégâts sont limités et qu&#8217;on y survivra très bien. </p>
+<p>Le fait qu&#8217;asyncio soit une API marquée comme &#8220;provisional&#8221; n&#8217;a jamais empêché quelqu&#8217;un d&#8217;appeler ses variables <code>async</code>. Après tout on utilise les threads depuis bien longtemps.</p>
+<p>L&#8217;autre problème vient de l&#8217;amateurisme qui se glisse de plus en plus dans le dev. </p>
+<p>C&#8217;est une bonne chose, parce que ça veut dire que la programmation est de plus en plus accessible et accueille de plus en plus de monde. </p>
+<p>Mais cela veut dire aussi qu&#8217;une grosse part la population de programmeurs est aujourd&#8217;hui constituée de personnes qui n&#8217;ont ni les connaissances, compétences ou ressources pour faire les choses correctement.</p>
+<p>On le voit particulièrement dans le monde JavaScript, ou c&#8217;est l&#8217;explosion (là encore, ça mérite un nouvel article). Mais l&#8217;exemple de la 3.7 nous montre que la communauté Python n&#8217;est pas immunisée, et je pense que le problème va s&#8217;amplifier.</p>
+<p>Que veux-je dire par là ?</p>
+<p>Et bien il y a 30 ans, cela ne serait pas venu à l&#8217;esprit de la plupart des devs de compiler quelques choses sans mettre les flags en mode parano pour voir ce qui allait péter. Après tout, quand on code en C, on sait que tout peut imploser à tout moment, alors la prudence est une question de culture.</p>
+<p>Aujourd&#8217;hui par contre, la majorité des devs des langages haut niveau écrivent du code, font quelques tests à la main, et publient ça. D&#8217;autres les utilisent. Font des mises à jour en masse. Aucun ne prennent le temps ne serait-ce que d&#8217;activer les warnings les plus basiques.</p>
+<p>Comme tout est facile à première vue, et c&#8217;est quelque chose dont on fait la promotion pédagogiquement parlant, car ça incite les gens à se lancer, on oublie la complexité inhérente à la programmation.</p>
+<p>Mais il y a une différence colossale entre avoir un code qui marche une fois sur sa machine, et un code prêt pour la production.</p>
+<p>Par exemple en Python, vous pouvez demander l&#8217;activation des <a href="http://sametmax.com/warning-technique-a-un-autre-developpeur-en-python/">warning</a> pour chaque appel avec:</p>
+<pre lang="bash">python -Wd</pre>
+<p>En 3.6, ça implique ceci:</p>
+<pre lang="python">>>> def async():
+...     pass
+... 
+<stdin>:1: DeprecationWarning: 'async' and 'await' will become reserved keywords in Python 3.7</pre>
+<p>L&#8217;info a toujours été là. Prête à être utilisée.</p>
+<p>Mais alors pourquoi ne pas afficher tous les warnings, tout le temps ?</p>
+<p>Et bien si je le fais:</p>
+<pre lang="bash">python -Wa</pre>
+<p>Voilà ce que ça donne quand je lance juste le shell de python 3.6:</p>
+<p><a href="https://0bin.net/paste/ArazA4+bjJ4V06Ql#8A0m+PI7EJcVhN6rwp76HwDbOQ2MWLRayO8IeArGr2N">Voir le code sur 0bin.</a></p>
+<p>Vous comprenez donc bien que ce n&#8217;est PAS activé par défaut. En fait, originalement le message était dans le corps de l&#8217;article, mais j&#8217;ai du le mettre sur 0bin parce que ça faisait planter WordPress. Si.</p>
+<p>A chaque upgrade, il est important de vérifier les warnings pour préparer ses migrations futures.</p>
+<p>Oui, c&#8217;est du boulot.</p>
+<p>En fait&#8230;</p>
+<h2>La programmation, c&#8217;est BEAUCOUP de boulot</h2>
+<p>Même si on arrive maintenant à extraire une frame vidéo en gif en une ligne de commande. </p>
+<p>Surtout maintenant qu&#8217;on y arrive en fait, car on multiplie les agencements hétérogènes de boites noires pour créer nos merveilleux programmes qui font le café.</p>
+<p>Alors on prend des raccourcis. </p>
+<p>Et puis aussi, parce qu&#8217;on ne sait pas. Qui parmi les lecteurs du blog, pourtant du coup appartenant à la toute petite bulle des gens très intéressés par la technique, connaissaient le rôle des warnings et comment les activer ?</p>
+<p>Mais ce n&#8217;est pas le seul problème. Il y a clairement une question d&#8217;attentes et de moyen. </p>
+<p>L&#8217;utilisateur (ou le client) final veut toujours plus, pour moins cher, et plus vite !</p>
+<p>Et le programmeur veut se faire chier le moins possible.</p>
+<p>Comme la complexité des empilements d&#8217;abstractions augmente, cela conduit à ignorer ce sur quoi on se base pour créer ce qui doit combler notre satisfaction immédiate.</p>
+<p>J&#8217;ai parlé d&#8217;amateurs plus haut.</p>
+<p>Mais je ne parle pas simplement de mes élèves. De mes lecteurs.</p>
+<p>Je parle aussi de moi.</p>
+<p>Prenez <a href="https://github.com/sametmax/0bin">0bin</a> par exemple.</p>
+<p>Il n&#8217;est plus à jour. Il n&#8217;a pas de tests unitaires. Il a des bugs ouverts depuis <stong>des années</stong>.</p>
+<p>Ce n&#8217;est pas pro du tout.</p>
+<p>Sauf que je ne suis pas payé pour m&#8217;en occuper, et c&#8217;est bien une partie du problème: nous sommes de nombreux bénévoles à faire tourner la machine a produire du logiciel aujourd&#8217;hui. Donc si je n&#8217;ai pas envie, fuck it !</p>
+<p>Vous imaginez si l&#8217;industrie du bâtiment ou celle de l&#8217;automobile tournaient sur les mêmes principes ?</p>
+<p>La moitié des dessins industriels faits par des bloggers, des étudiants, des retraités, des profs de lycées, des géographes, de biologistes et des postes administratifs ?</p>
+<p>Des immeubles et des voitures dont des pièces sont fabriquées par des potes qui chattent sur IRC et s&#8217;en occupent quand ils ont le temps ? Gratuitement. Y compris le service après-vente.</p>
+<p>Alors que les usagers veulent toujours plus: des normes sismiques et de la conduite autonome. Tout le monde le fait, alors la maison de campagne et la fiat punto, c&#8217;est mort, personne ne l&#8217;utilisera. </p>
+<p>Difficile de maintenir la qualité à cette échelle. </p>
+<p>Il y a tellement de demandes de dev, jamais assez d&#8217;offres, de ressources toujours limitées. </p>
+<p>Et ça grossit. Ça grossit !</p>
+<h2>Aides techniques</h2>
+<p>Ceci dit, à l&#8217;échelle de la PSF, ça aurait dû être évité.</p>
+<p>Avant d&#8217;aborder les aides techniques, il serait bon d&#8217;arrêter les conneries. Je me répète, mais c&#8217;était une vaste dauberie de faire passer <code>async/await</code> en mot clé avant Python 4.</p>
+<p>J&#8217;ai parfaitement conscience du besoin de faire progresser un langage pour ne pas rester coincé dans le passé. Je suis pour <code>async/await</code>, très bonne idée, superbe ajout. Mettre un warning ? Parfait ! Mais on respecte semver s&#8217;il vous plait. Si vous avez envie de faciliter la transition, mettre un import <code>__future__</code>, et inciter les linters à faire leur taff.</p>
+<p>En attendant, pour la suite, Python va faciliter le debuggage.</p>
+<p>Par exemple, depuis la 3.7, les <code>DeprecationWarning</code> sont activés par défaut au moins dans le module <code>__main__</code>. Donc un développeur verra ses conneries bien plus rapidement.</p>
+<p>E.G:</p>
+<p>Imp est déprécié en 3.6, mais sans -Wd, on ne le voit pas:</p>
+<pre lang="bash">$ python3.6
+Python 3.6.5 (default, May  3 2018, 10:08:28) 
+[GCC 5.4.0 20160609] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import imp</pre>
+<p>En 3.7, plein de modules importent <code>imp</code>, mais les <code>DeprecationWarning</code> ne sont pas montrés, car ça arrive dans des codes importés. En revanche, si dans le module principal, vous importez <code>imp</code>:</p>
+<pre lang="bash">$ python3.7 
+Python 3.7.0+ (default, Jun 28 2018, 14:08:14) 
+[GCC 5.4.0 20160609] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import imp
+__main__:1: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses
+</pre>
+<p>Ça donne une info importante, sans foutre un mur de warnings à chaque lancement.</p>
+<p>Une autre aide est l&#8217;apparition, toujours en 3.7, du mode développement de Python avec <code>-X dev</code> qui active tout un tas de comportements aidant au développement:</p>
+<ul>
+<li>active <code>-Wd</code></li>
+<li>appelle <code>PyMem_SetupDebugHooks</code></li>
+<li>active <code>faulthandler</code></li>
+<li>active le mode debug de asyncio</li>
+<li>met <code>sys.flags.dev_mode</code> sur <code>True</code></li>
+</ul>
+<p>Évidemment, tout ça ne sert pas à grand-chose si on ne sait pas ce qu&#8217;il faut en faire. Et ça demande du temps et du travail, ce que l&#8217;amateurisme ne permet pas forcément.</p>
+<p>Enfin je dis ça. La plupart des employeurs s&#8217;attendent à tout, tout de suite également. Donc au final, n&#8217;est-ce pas la culture générale de notre industrie qui est en train de virer dangereusement vers le vite fait mal fait ?</p>
+<p>Même si il y a clairement une question de compétence (un prof de maths est généralement compétent en maths, alors que j&#8217;attends toujours de rencontrer un prof d&#8217;info qui est capable de mettre quelque chose en prod), la pression du marché a créé des attentes impossibles&#8230;</p>
+<p>L&#8217;informatique n&#8217;existe comme secteur économique que depuis quelques décennies, contre des siècles pour la plupart des autres disciplines scientifiques. Pourtant on exige d&#8217;elle le même niveau de productivité. Il a bien fallut rogner quelque part, et c&#8217;est la fiabilité qu&#8217;on a choisit.</p>
+<p>Quand il y 20 ans, on rigolait en comparant le debuggage de Windows a la réparation d&#8217;une voiture, et la punchline sur le redémarrage, ce n&#8217;était pas grave: un peu de virtuel dans un monde plein d&#8217;encyclopédies papier, de cabines ou bottins téléphoniques et autres cartes routières.</p>
+<p>Aujourd&#8217;hui que notre monde entier dépend du fonctionnement de nos conneries codées à l&#8217;arrache, c&#8217;est plus emmerdant. Et ça explique aussi pourquoi le téléphone de ma grand mère fonctionne toujours mieux pour faire des appels que mon putain de smartphone a 600 euros. Mais je peux draguer une meuf par texto en faisant caca à l&#8217;aéroport. Tout a un prix.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-debacle-de-async-en-3-7/feed/</wfw:commentRss>
+		<slash:comments>27</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">24891</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/08/WSwts2q.jpg" length="25573" type="image/jpg" />	</item>
+		<item>
+		<title>Python 3.7 sort de sa coquille</title>
+		<link>http://sametmax.com/python-3-7-sort-de-sa-coquille/</link>
+		<comments>http://sametmax.com/python-3-7-sort-de-sa-coquille/#comments</comments>
+		<pubDate>Thu, 28 Jun 2018 16:54:41 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[3.7]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=24711</guid>
+		<description><![CDATA[Alors que vaut cette 3.7, et est-ce qu'il faut migrer ?]]></description>
+				<content:encoded><![CDATA[<p>La 3.4 était la première version 3 à valoir le coup, et a donc été le déclencheur de la migration 2->3 qui trainait depuis si longtemps.</p>
+<p>La 3.5(.3) a rendu <code>asyncio</code> utilisable, incluant <code>async</code> / <code>await</code> et corrigeant <a href="https://github.com/aio-libs/aiojobs/issues/14">le bug abusé de get_event_loop()</a>.</p>
+<p>La 3.6 est mon chouchou. <a href="https://www.python.org/dev/peps/pep-0519/">Sa meilleure intégration de Pathlib</a> et les <a href="https://www.python.org/dev/peps/pep-0498/?">f-strings</a> en font un plaisir total à utiliser. En plus <a href="http://sametmax.com/once-you-go-black-you-never-go-back/">black</a> ne tourne que dessus. Je suis autant que possible en 3.6, je l&#8217;ai même installée sur une vieille centos 7 chez un client.</p>
+<p>Alors que vaut cette 3.7, et est-ce qu&#8217;il faut migrer ?</p>
+<p>Et bien avec des améliorations de perfs partout et une syntaxe simplifiée pour les classes, c&#8217;est une belle release. La 3.6 va être bien plus facile à avoir sous linux pendant un bon bout de temps et suffit amplement, donc je ne vais pas forcer le pas. Mais bon je l&#8217;ai quand même compilée par acquis de conscience. </p>
+<p>Regardons ce qu&#8217;il y a au menu.</p>
+<h2>Les data classes</h2>
+<p>Clairement la feature phare de la release, les data classes sont une manière plus concise d&#8217;écrire des classes, s&#8217;inspirant de la bibliothèque <a href="http://www.attrs.org/en/stable/">attrs</a> dont elles n&#8217;implémentent qu&#8217;un sous-ensemble.</p>
+<p>Une très bonne nouvelle, car je n&#8217;installais jamais attrs: dépendre d&#8217;une lib juste pour ça, m&#8217;embêtait et pour la sérialisation/validation j&#8217;utilise <a href="https://marshmallow.readthedocs.io/en/latest/">marshmallow</a>.</p>
+<p>Par exemple:</p>
+<pre lang="python">from dataclasses import dataclass
+
+@dataclass
+class Achat:
+    produit: str
+    prix: float
+    quantite: int = 0
+</pre>
+<p>Ce qui va générer une classe toute ce qui a de plus normale, mais dont le <code>__init__</code>, <code>__repr__</code> et <code>__eq__</code> sont automatiquement créés. Vous pouvez bien entendu ajouter les méthodes que vous voulez, comme d&#8217;habitude.</p>
+<p>Il ne reste plus qu&#8217;à faire:</p>
+<pre lang="python">
+>>> print(Achat("foo", 2))
+Achat(produit='foo', prix=2, quantite=0)</pre>
+<p>Toute la magie est sélectivement désactivable, et une méthode <code>__post_init__</code> est ajoutée à la classe qui fait exactement ce que vous pensez que ça fait.</p>
+<p>En prime, on a aussi <code>dataclasses.field</code> qui permet de fournir une factory pour un paramètre (typiquement <code>list</code>, <code>tuple</code>, <code>dict</code>&#8230;).</p>
+<p>Puis, comme un bonheur ne vient jamais seul:</p>
+<pre lang="python">
+>>> from dataclasses import asdict, astuple
+>>> print(asdict(Achat("foo", 2)))
+{'produit': 'foo', 'prix': 2, 'quantite': 0}
+>>> print(astuple(Achat("foo", 2)))
+('foo', 2, 0)
+</pre>
+<p>C&#8217;est récursif sur les dicts, lists, tuples et dataclasses \o/</p>
+<p>Enfin, pour finir:</p>
+<pre lang="python">>>> from dataclasses import replace
+>>> a = Achat("foo", 2)
+>>> b = replace(a, quantite=3, prix=1)
+>>> print(a, id(a))
+Achat(produit='foo', prix=2, quantite=0) 140275795603296
+>>> print(b, id(b))
+Achat(produit='foo', prix=1, quantite=3) 140275775561456</pre>
+<p>Ouai ça déchire.</p>
+<p>P.S: <a href="https://pypi.org/project/dataclasses/">y un backport pour la 3.6</a></p>
+<h2>asyncio++</h2>
+<p>Much love to asyncio dans cette version.</p>
+<p>Déjà, un truc qui aurait dû être là dès le début, la nouvelle fonction asyncio.run(), qui masque le setup de l&#8217;event loop pour vous.</p>
+<p>On passe de :</p>
+<pre lang="python">
+loop = asyncio.get_event_loop() 
+loop.run_until_complete(coro)</pre>
+<p>à:</p>
+<pre lang="python">asyncio.run(coro)</pre>
+<p>Juste ça, ça fait vachement moins peur aux gens. Et en prime ça évite qu&#8217;ils commencent à chercher la merde avec un setup custom de loop.</p>
+<p><code>asyncio.current_task()</code> retourne la tâche dans laquelle on est. D&#8217;ailleurs, un détail, mais on a maintenant l&#8217;équivalent de thread local, <a href="https://docs.python.org/3.7/whatsnew/3.7.html#whatsnew37-pep567">mais pour la coroutine en cours</a>.</p>
+<p><code>asyncio.get_running_loop()</code> retourne la boucle courante, mais seulement si elle existe. Elle lève une exception plutôt que de créer une loop comme <code>get_event_loop()</code> si aucune loop n&#8217;est présente.</p>
+<p><code>StreamWriter.wait_closed()</code> permet d&#8217;attendre qu&#8217;un stream se ferme. Les gars de <code>aiohttp</code> doivent être contents.</p>
+<p><code>Task.get_loop()</code> retourne la boucle de la tâche. Pour le multi-threading avec plusieurs loops, c&#8217;est cool.</p>
+<p><code>loop.create_server()</code> a maintenant un argument <code>start_serving</code> qui contrôle si on veut le lancer immédiatement. J&#8217;ai toujours du mal à croire que des dev qui sont capables de participer à la stdlib ont pu commiter un code qui instancie et enchaine sur un effet de bord. Heureusement c&#8217;est corrigé.</p>
+<p>Les handlers retournés par <code>loop.call_later()</code> retournent leur ETA avec <code>.when()</code> et ont une méthode <code>.cancelled()</code>.</p>
+<p><a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">Les intensions</a> acceptent maintenant <code>async/await</code>.</p>
+<p>Et enfin, les exceptions des tâches annulées ne sont plus loggées. Parce que forcément quand on crashait tout, le log devenait un peu chargé&#8230;</p>
+<p>Bon, asyncio était déjà très utilisable en 3.6, n&#8217;exagérons pas. L&#8217;important étant d&#8217;utiliser le mode debug, <code>gather()</code> et <code>run_until_complete()</code>, ce qui devrait être écrit en gros, en rouge dans la doc.</p>
+<p>Mais toutes ces modifications sont bienvenues.</p>
+<p>Ah, oui, les perfs ont été aussi améliorées&#8230; Mais c&#8217;est le cas partout.</p>
+<h2>Des perfs</h2>
+<p>Le focus sur les perfs de Python augmente doucement. La 3.6 avait amorcé la tendance, et <a href="https://docs.python.org/3.7/whatsnew/3.7.html#whatsnew37-perf">ça se confirme</a>. J&#8217;attends d&#8217;avoir des retours sur des mises en prod un peu serieuses pour savoir si ça a payé.</p>
+<p>Le temps de démarrage de Python est d&#8217;ailleurs pas mal pointé du doigt. Certes, on est pas au niveau de loutre sclérosée que constitue nodejs au réveil, mais c&#8217;est pas une référence. Donc, des choses sont mises en place. Notamment <code>python -X importtime</code> qui <a href="https://docs.python.org/3.7/using/cmdline.html#envvar-PYTHONPROFILEIMPORTTIME">va afficher le temps que prend chaque import</a>.</p>
+<p>Des aménagements ont aussi <a href="https://docs.python.org/3.7/whatsnew/3.7.html#whatsnew37-pep560">été faits</a> pour accélérer le module <code>typing</code>, maintenant que l&#8217;usage des type hints pour les annotations est entériné. Un side effect sympa est que les classes que vous allez écrire seront plus rapides à instancier, et les méthodes plus rapides à résoudre.</p>
+<p>D&#8217;ailleurs, les type hints sont maintenant <a href="https://docs.python.org/3.7/whatsnew/3.7.html#whatsnew37-pep563">résolus paresseusement</a>, à la fois pour améliorer la vitesse de chargement et pour faciliter l&#8217;auto-référencement. </p>
+<h2>breakpoint()</h2>
+<p><a href="https://www.python.org/dev/peps/pep-0553/">breakpoint()</a> est techniquement un alias configurable à <code>import pdb; pdb.set_trace()</code>. Ça a l&#8217;air de rien, mais c&#8217;est super:</p>
+<ul>
+<li>C&#8217;est dans les builtins, donc plus facile à découvrir. Les débutants utilisent très peu <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">pdb</a> alors que c&#8217;est un outil formidable.</li>
+<li>Plein de gens oublient cette incantation mystique ou font des fautes de frappe.</li>
+<li>C&#8217;est facile à spotter dans le code, on peut l&#8217;highlither différement.</li>
+<li>C&#8217;est uniforme. Si on veut utiliser un autre débuggeur, on le plug. Mais on utilise toujours la même fonction. On peut même désactiver cette fonction pour éviter de balancer un break point en prod.</li>
+<li>C&#8217;est clair. Les débutants n&#8217;ont aucun mal avec <code>debugger</code> en JS parce que c&#8217;est simple de comprendre ce que ça fait au premier coup d&#8217;oeil.</li>
+</ul>
+<p>Ça vient, bien entendu avec une variable d&#8217;environnement et d&#8217;un hook dans <code>sys</code> pour custo le comportement.</p>
+<h2>Quelques détails</h2>
+<h3>Dicts ordonnés</h3>
+<p>La spec garantit que les clés vont garder leur ordre d&#8217;insertion. C&#8217;était déjà le cas en 3.6, la 3.7 rend juste la mesure officielle.</p>
+<p>Ne jetez pas OrderedDict à la poubelle pour autant, car il préserve l&#8217;ordre des clés après suppression également.</p>
+<h3>async/await sont des mots clés</h3>
+<p>Et ne peuvent donc plus être écrasés par erreur. C&#8217;est juste l&#8217;application de l&#8217;annonce faite à l&#8217;introduction de ces mots clés.</p>
+<h3>Des sœurs pour __getitem__ et __getattr__</h3>
+<p>On va pouvoir définir un <code>__getattr__</code> sur les modules (surtout utile pour le lazy loading) et un <code>__class_getitem__</code> pour pouvoir faire <code>MaClass[]</code> sans utiliser de metaclass.</p>
+<h3>Traduction de la doc</h3>
+<p>Le processus pour avoir des docs dans d&#8217;autres langues est maintenant officiel. Pour l&#8217;instant <a href="https://docs.python.org/3.7/whatsnew/3.7.html#whatsnew37-pep545">le jap, le koréen et le kokorico</a></p>
+<h3>DeprecationWarning plus visibles</h2>
+<p>La connerie de les cacher <a href="https://docs.python.org/3.7/whatsnew/3.7.html#whatsnew37-pep565">a été corrigée</a>. Qui a pensé que c&#8217;était une bonne idée ? Mais seulement pour le script principal, ce qui va permettre aux dev des libs de les voir sans faire chier les utilisateurs.</p>
+<h3>Debug mode</h3>
+<p><code>python -X dev</code> va devenir votre nouvel ami, <a href="https://docs.python.org/3.7/whatsnew/3.7.html#whatsnew37-devmode">activant</a> tout un tas de fonctions de debug coûteuses en production. Notamment plus de warning, asyncio debug mode, le faulthandler qui dump la stacktrace en cas de catastrophe, etc.</p>
+<h3>Des pyc reproductibles</h3>
+<p>Un même fichier <a href="https://docs.python.org/3.7/whatsnew/3.7.html#whatsnew37-pep552">donnera maintenant toujours</a> un même .pyc. C&#8217;est pour les packagers et les amateurs de sécu.</p>
+<h3>Meilleur ImportError</h3>
+<p>L&#8217;exception <a href="https://docs.python.org/3.7/whatsnew/3.7.html#importlib-resources">va maintenant</a> afficher le nom du module et son <code>__file__</code> path si <code>from ... import</code> broute. Ça va rendre les imports circulaires, la plaie des gros projets Python, plus faciles à debugger.</p>
+<h3>packaging</h3>
+<p>Introduction de importlib.resources, <a href="https://docs.python.org/3.7/library/importlib.html#module-importlib.resources">un remplacement</a> pour le détestable <code>pkg_resource</code> qui va rendre sans regret <a href="http://sametmax.com/embarquer-un-fichier-non-python-proprement/">mon article</a> obsolète.</p>
+<p>Autre ajout notable: <code>README.rst</code> est maintenant reconnu et ajouté automatiquement quand on fait son paquet cadeau. Puisque maintenant pypi accepte le markdown, ça aurait été cool de le faire avec les <code>.md</code> également.</p>
+<h3>time est plus précis</h3>
+<p><a href="https://docs.python.org/3.7/whatsnew/3.7.html#whatsnew37-pep564">Sensible à la nanoseconde</a>. Perso je m&#8217;en bats les steaks mais je me suis dit que je ferai passer l&#8217;info.</p>
+<h3>unittest -k</h3>
+<p><a href="https://docs.pytest.org/en/latest/usage.html">Copieurs.</a></p>
+<h3>namedtuple supporte les valeurs par defaut</h3>
+<p>Rien à ajouter, si ce n&#8217;est qu&#8217;entre SimpleNamespace et les dataclasses, je crois qu&#8217;on a de quoi voir venir. Même si j&#8217;aimerais avoir un literal pour les namedtuples sous la forme de <code>(foo=1, bar=2)</code> mais ça a été refusé.</p>
+<h3>Ajouts à Contexlib</h3>
+<p>Quelques <a href="https://docs.python.org/3.7/whatsnew/3.7.html#contextlib">outils en plus</a>, dont un context manager qui ne fait rien (rigolez pas, c&#8217;est super utile !), et des contexts managers async.</p>
+<h3>lifting pour subprocess</h3>
+<p>Ok, plutôt bottox. <a href="https://docs.python.org/3.7/whatsnew/3.7.html#subprocess">C&#8217;est cosmétique</a>, mais c&#8217;est bienvenu: des aménagements pour rendre les appels un poil plus courts, notamment dans le cas de la capture des stdx.</p>
+<p>&#8230;<br />
+&#8230;<br />
+&#8230;</p>
+<p>Et encore plein <a href="https://docs.python.org/3.7/whatsnew/3.7.html#">d&#8217;autres mini trucs</a>.</p>
+<p>C&#8217;est dispo en DL pour <a href="https://www.python.org/downloads/release/python-370/">windows et mac</a>. Pour linux, comme d&#8217;hab, soit on attend la mise à jour des depôts/ppa/etc, soit on compile à la main (étonnamment facile, si on se rappelle de faire <code>make altinstall</code> et pas <code>make install</code>), soit on utilise l&#8217;excellent pyenv et <code>pyenv install 3.7</code>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/python-3-7-sort-de-sa-coquille/feed/</wfw:commentRss>
+		<slash:comments>20</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">24711</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/06/eIvvTbS.jpg" length="252535" type="image/jpg" />	</item>
+	</channel>
+</rss>

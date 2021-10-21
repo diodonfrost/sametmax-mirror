@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>errors &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/errors/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Pourquoi utiliser un mécanisme d&#8217;exceptions ?</title>
+		<link>http://sametmax.com/pourquoi-utiliser-un-mecanisme-dexceptions/</link>
+		<comments>http://sametmax.com/pourquoi-utiliser-un-mecanisme-dexceptions/#comments</comments>
+		<pubDate>Wed, 06 Jan 2016 00:17:27 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[erreurs]]></category>
+		<category><![CDATA[errors]]></category>
+		<category><![CDATA[except]]></category>
+		<category><![CDATA[exceptions]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[try]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=17365</guid>
+		<description><![CDATA[L'article ne vient pas de nul part. En fait j'ai du dans la même journée répondre sur le subreddit Python a cette question et à un lecteur par email, alors je me suis dis qu'il serait bon de faire le point ici.]]></description>
+				<content:encoded><![CDATA[<p>L&#8217;article ne vient pas de nulle part. En fait j&#8217;ai dû dans la même journée répondre sur le subreddit Python à cette question et à un lecteur par email, alors je me suis dit qu&#8217;il serait bon de faire le point ici.</p>
+<p>Avant de lire l&#8217;article, assurez-vous de bien avoir compris <a href="http://sametmax.com/gestion-des-erreurs-en-python/">la gestion des erreurs en Python</a>.</p>
+<h2>La réponse simple, courte, et définitive</h2>
+<p>&#8220;Pourquoi utiliser un mécanisme d&#8217;exceptions ?&#8221; </p>
+<p>Parce que c&#8217;est la manière de faire de la communauté du langage que vous utilisez.</p>
+<p>Si vous êtes dans un langage qui utilise des codes de retour comme C, alors gérez les erreurs avec des codes de retour. Si vous avez du pattern matching comme en Rust, utilisez le pattern matching. Si vous avez des exceptions comme en Java, utilisez les exceptions. Si vous avez des guards comme en swift, vous utilisez des guards.</p>
+<p>Je crois que vous avez pigé.</p>
+<p>Ceci est la règle, qui est complètement indépendante de la qualité du système de gestion des erreurs : codez dans le style approprié pour le langage et n&#8217;essayez pas de bricoler votre solution perso dans votre coin. Si ça vous fait chier, changez de langage. Mais ne faites pas du pseudo-Go en Erlang, ça n&#8217;a pas de sens, et ça va saoûler tous vos collègues, en plus de diminuer l&#8217;intégration avec l&#8217;écosystème de la techno.</p>
+<p>En Python, les erreurs (et même plus) sont gérées via un mécanisme à base d&#8217;exceptions, et c&#8217;est donc ce qu&#8217;il faut utiliser.</p>
+<p>Maintenant, un mécanisme de gestion d&#8217;erreurs est vraiment une question de goût. Il n&#8217;y en a pas de parfait, mais il peut être intéressant de connaitre les points forts de celui qu&#8217;utilise Python.</p>
+<p>Quels sont donc les points forts d&#8217;un mécanisme à base d&#8217;exceptions ?</p>
+<h2>Cela évite les races conditions</h2>
+<p>En informatique, dès qu&#8217;un système peut faire plusieurs choses à la fois, plusieurs choses peuvent arriver simultanément et créer ce qu&#8217;on appelle une race condition.</p>
+<p>Par exemple, si je fais ceci:</p>
+<pre lang="python"># on vérifie que le fichier existe avant de l'ouvrir
+if os.path.isfile('monfichier'): 
+    with open('monfichier') as f:
+        print(f.read())
+else:
+    print('pouet')</pre>
+<p>Entre la première ligne et la seconde ligne s&#8217;écoule un temps très court pendant lequel un autre processus peut supprimer le fichier et faire planter mon programme.</p>
+<p>En utilisant la philosophie &#8220;il est plus facile de demander pardon que la permission&#8221;, on évite ce problème:</p>
+<pre lang="python">try:
+    # on s'en bat les couilles, on essaye
+    # de l'ouvrir à sec
+    with open('monfichier') as f:
+        print(f.read())
+except OSError:
+    print('pouet')</pre>
+<p>Dans ce cas on tente d&#8217;ouvrir le fichier de toute façon, et si l&#8217;ouverture déclenche une erreur, alors on la gère. Pas de race condition.</p>
+<h2>Finally et with pour les opérations de nettoyage</h2>
+<p>En ouvrant mon fichier, je dois m&#8217;assurer de le fermer après. Mais je peux avoir une erreur à l&#8217;ouverture du fichier, ou pendant sa lecture, qui fasse planter mon programme et que je n&#8217;avais pas prévue.</p>
+<p>Comme les exceptions remontent la file d&#8217;appel, on peut les attraper à plusieurs niveaux. Grâce à <code>finally</code> (et <code>with</code> qui enrobe finally), on peut donc très élégamment s&#8217;assurer que les opérations de nettoyage sont lancées automatiquement, même si tout pête:</p>
+<pre lang="python"># ouvrir un fichier avec with garantit sa fermeture
+with open('monfichier') as f:
+    print(f.read())</pre>
+<h2>Les exceptions sont très explicites</h2>
+<p>Des mécanismes comme le pattern matching ou le retour de codes sont génériques, et peuvent être utilisés pour à peu près tout.</p>
+<p>Les exceptions, à l&#8217;image des guards, ont un champ d&#8217;usage plus restreint, et quand on en voit, on sait donc généralement à quoi s&#8217;en tenir. Cela facilite la lecture en diagonale du code.</p>
+<h2>Les exceptions décrivent une hiérarchie d&#8217;erreurs</h2>
+<p>Ceci permet non seulement de choisir de gérer plusieurs erreurs d&#8217;un coup, ou alors séparément, mais également de documenter par le type quel est le problème. Une fois qu&#8217;on connait les exceptions les plus courantes en Python (<code>ValueError</code>, <code>OSError</code>, <code>KeyError</code>, <code>TypeError</code>, etc.), on identifie vite l&#8217;idée générale d&#8217;un message d&#8217;erreur ou d&#8217;un code attrapant une erreur.</p>
+<p>Comme on peut créer ses propres types d&#8217;exceptions, on peut permettre le ciblage des erreurs d&#8217;une lib en particulier, ou d&#8217;un sous ensemble d&#8217;une lib ou d&#8217;une opération. Et c&#8217;est aussi une forme de documentation par le code.</p>
+<p>Tout cela autorise une fine granularité sur ce qu&#8217;on veut gérer ou pas : tout d&#8217;un coup, au cas par cas, seulement sur une partie du code, etc.</p>
+<h2>Les exceptions bubblent</h2>
+<p>Sous ce terme barbare se cache le fait que les exceptions se déclenchent localement dans un bloc de code, et l&#8217;interrompent, mais ne font pas planter le programme tout de suite. À la place, l&#8217;exception monte d&#8217;un niveau dans la file d&#8217;appels, et casse tout, puis remonte d&#8217;un cran, et casse tout, <a href="http://sametmax.com/sortir-de-plusieurs-boucles-for-imbriquees-en-python/">et ainsi de suite, jusqu&#8217;en haut</a>.</p>
+<p>Ce mécanisme permet de choisir exactement où on veut arrêter l&#8217;exception, et ce que l&#8217;on souhaite qu&#8217;elle puisse interrompre. Cela laisse le choix de gérer des erreurs de manière macroscopique ou microscopique.</p>
+<p>Par exemple, si j&#8217;utilise un <code>try</code> en dehors d&#8217;une boucle :</p>
+<pre lang="python">print('start')
+try:
+    for x in range(0, 10):
+        print(1 / (x - 2))
+except ZeroDivisionError:
+    pass
+
+print('fin')
+## Affiche :
+## start
+## -0.5
+## -1.0
+## fin</pre>
+<p>Et un dans une boucle :</p>
+<pre lang="python">print('start')
+for x in range(0, 10):
+    try:
+        print(1 / x)
+    except ZeroDivisionError:
+        print('ERROR !')
+    else:
+        print("Pas d'erreur :)")
+    finally:
+        print('TOUJOURS')
+print('fin')
+## Affiche:
+## start
+## ERROR !
+## TOUJOURS
+## 1.0
+## Pas d'erreur :)
+## TOUJOURS
+## 0.5
+## Pas d'erreur :)
+## TOUJOURS
+## 0.3333333333333333
+## Pas d'erreur :)
+## TOUJOURS
+## 0.25
+## Pas d'erreur :)
+## TOUJOURS
+## 0.2
+## Pas d'erreur :)
+## TOUJOURS
+## 0.16666666666666666
+## Pas d'erreur :)
+## TOUJOURS
+## 0.14285714285714285
+## Pas d'erreur :)
+## TOUJOURS
+## 0.125
+## Pas d'erreur :)
+## TOUJOURS
+## 0.1111111111111111
+## Pas d'erreur :)
+## TOUJOURS
+## fin</pre>
+<p>J&#8217;obtiens un résultat radicalement différent. On peut choisir facilement l&#8217;étendue de la propagation de l&#8217;erreur.</p>
+<h2>Les exceptions ont des données attachées</h2>
+<p>Les exceptions sont des objets riches, qui viennent avec un message d&#8217;erreur, un contexte qui permet de générer une stack trace, et parfois des attributs en plus comme le code d&#8217;erreur fourni par l&#8217;OS.</p>
+<p>C&#8217;est un point d&#8217;entrée capable de concentrer en un seul endroit tout ce dont on a besoin pour le debug.</p>
+<h2>Pas cher mon fils</h2>
+<p>En Python, les exceptions sont particulièrement peu couteuses à utiliser. En fait, <a href="http://sametmax.com/dis-papa-dis-papa-dis-moi-dis-moi-comment-cest-fait-dans-une-boucle-for/">Python les utilise pour le contrôle de flux</a> (<code>StopIteration</code>, <code>GeneratorExit</code>, etc) donc elles sont au coeur du fonctionnement du langage, et pas juste pour les erreurs.</p>
+<p>Faire un <code>try</code>/<code>except</code> n&#8217;a pas le coût qu&#8217;on a en Java ni en terme de performance du code, ni en terme de verbosité car il n&#8217;y a pas de <code>throw</code> à déclarer.</p>
+<p>Le truc le plus ennuyeux, c&#8217;est bien entendu de trouver le nom de l&#8217;exception qu&#8217;on veut gérer et comment l&#8217;importer. Afin d&#8217;éviter cette chose affreuse:</p>
+<pre lang="python">    try:
+        meh()
+    except: # YOLO
+        print("Il s'est passé un truc, mais je sais pas quoi")</pre>
+<p>Il y a à peine quelques heures j&#8217;étais avec un client qui avait des utilisateurs se plaignant que le système ne marchait pas sans vraiment pouvoir diagnostiquer pourquoi. </p>
+<p>Vous voyez, pas besoin d&#8217;inventer, j&#8217;ai les exemples qui me tombent tout cru dans le bec.</p>
+<p>Voici ce qu&#8217;il avait, <code>en prod</code> :</p>
+<pre lang="python"># je vous pseudo code, mais c'est l'idée
+def get_dbs():
+    try:
+        # connection, listing, filtrage, casting
+        # nahhh, que pourrait-il arriver de grave ?
+        con = Connect()
+        dbs = con.get_databases()
+        dbs = fitler_system_db(dbs)
+        return tuple(dbs)
+    except: # double combo: catch all ET silence
+        return ()</pre>
+<p>Oui, j&#8217;ai bien dit en prod. La base de données gère des listings de médecins. Ouch.</p>
+<p>Le code utilisant cette fonction faisait (avant que j&#8217;arrive avec mon fouet de zorro et corrige tout ce bordel):</p>
+<pre lang="python">dbs = get_dbs()
+if not dbs:
+    display_error("Mongo ne tourne pas, ou la connection a échoué, ou aucune table n'est créé")</pre>
+<p>Vous imaginez comme l&#8217;utilisateur final pouvait facilement décrire son problème&#8230; Ouai alors soit t&#8217;as pas un truc, soit le truc marche pas, soit tu te sers pas du truc. Ouai ça couvre à peut prêt l&#8217;ensemble des erreurs possibles sur tous systèmes, comme ça on peut pas avoir fondamentalement tort. </p>
+<p><strong>EDIT:</strong></p>
+<p>Histoire de mettre fin au débat sur le code final qui va immanquablement envahir les coms:</p>
+<ul>
+<li>La connexion n&#8217;a juste rien à foutre dans la fonction qui liste les dbs. Cela doit être deux fonctions séparées.</li>
+<li>On attrape pas d&#8217;exception au niveau de la connexion. On attrape une exception au niveau du code qui déclenche la connexion afin de pouvoir donner un rapport d&#8217;erreur à l&#8217;utilisateur depuis le code qui gère l&#8217;UI.</li>
+<li>On attrape pas une exception, mais 3-4, avec des messages d&#8217;erreur distincts pour chaque cas donnant une action claire à l&#8217;utilisateur qu&#8217;il puisse mettre en œuvre pour résoudre ce problème en particulier.</li>
+<li>Oui, on peut retourner un tuple vide pour indiquer qu&#8217;on a rien trouvé (comme ça on retourne toujours un itérable) mais certainement pas pour signaler une erreur.</li>
+<li>La fonction ne permet pas d&#8217;être unit testée facilement car non seulement elle fait trop de choses, mais en plus elle a plein d&#8217;entrées implicites (settings de connexion, liste des choses à fitrer, etc.). </li>
+</ul>
+<p>Bref, faut tout réécrire. Ça tombe bien, il me paie pour ça.</p>
+<p>Notez que face à ce genre de code, le comportement à adopter n&#8217;est pas de mettre la misère à son client, mais simplement de lister les améliorations possibles, les justifier et estimer le coût et les bénéfices des changements. On est pas la pour fanfaronner, juste pour s&#8217;assurer qu&#8217;il puisse faire son taff.</p>
+<p>Là je me permet de faire le clown parce que ça rend l&#8217;article plus léger, et parce qu&#8217;il est américain, et ne sera donc pas impacté par l&#8217;article. De l’intérêt également d&#8217;être un blogger anonyme et francophone&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/pourquoi-utiliser-un-mecanisme-dexceptions/feed/</wfw:commentRss>
+		<slash:comments>20</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">17365</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/01/tumblr_nzyvq77XEi1r539hzo1_500.jpg" length="46065" type="image/jpg" />	</item>
+	</channel>
+</rss>

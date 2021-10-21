@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Valider une adresse email avec une regex en Python</title>
+	<atom:link href="http://sametmax.com/valider-une-adresse-email-avec-une-regex-en-python/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/valider-une-adresse-email-avec-une-regex-en-python/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/valider-une-adresse-email-avec-une-regex-en-python/#comment-1091</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Tue, 07 Aug 2012 14:19:24 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=253#comment-1091</guid>
+		<description><![CDATA[Un truc dans le genre :
+&lt;pre lang=&quot;python&quot;&gt;
+&gt;&gt;&gt; pattern = re.compile(r&quot;&quot;&quot;(?i)\b((?:[a-z][\w-]+:(?:/{1,3}&#124;[a-z0-9%])&#124;www\d{0,3}[.]&#124;[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()&lt;&gt;]+&#124;\(([^\s()&lt;&gt;]+&#124;(\([^\s()&lt;&gt;]+\)))*\))+(?:\(([^\s()&lt;&gt;]+&#124;(\([^\s()&lt;&gt;]+\)))*\)&#124;[^\s`!()\[\]{};:&#039;&quot;.,&lt;&gt;?«»“”‘’]))&quot;&quot;&quot;)
+&gt;&gt;&gt; res = pattern.findall(text)&lt;/pre&gt;
+
+?
+
+Ca retourne un tuple de tuple de 4 éléments dont le premier est une URL.
+
+Mais attention, aucune regex ne permet un matching parfait.]]></description>
+		<content:encoded><![CDATA[<p>Un truc dans le genre :</p>
+<pre lang="python">
+>>> pattern = re.compile(r"""(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))""")
+>>> res = pattern.findall(text)</pre>
+<p>?</p>
+<p>Ca retourne un tuple de tuple de 4 éléments dont le premier est une URL.</p>
+<p>Mais attention, aucune regex ne permet un matching parfait.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Guts</title>
+		<link>http://sametmax.com/valider-une-adresse-email-avec-une-regex-en-python/#comment-1084</link>
+		<dc:creator><![CDATA[Guts]]></dc:creator>
+		<pubDate>Tue, 07 Aug 2012 08:54:25 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=253#comment-1084</guid>
+		<description><![CDATA[Hola
+
+Gracias pour cette petite regex qui va bien :)
+La même pour une URL et je brûle un ou deux cierges sur l&#039;autel du python pour vous ^^
+
+J]]></description>
+		<content:encoded><![CDATA[<p>Hola</p>
+<p>Gracias pour cette petite regex qui va bien :)<br />
+La même pour une URL et je brûle un ou deux cierges sur l&#8217;autel du python pour vous ^^</p>
+<p>J</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

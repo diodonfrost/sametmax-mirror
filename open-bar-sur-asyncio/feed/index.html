@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Open bar sur asyncio</title>
+	<atom:link href="http://sametmax.com/open-bar-sur-asyncio/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/open-bar-sur-asyncio/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Vincent</title>
+		<link>http://sametmax.com/open-bar-sur-asyncio/#comment-178286</link>
+		<dc:creator><![CDATA[Vincent]]></dc:creator>
+		<pubDate>Thu, 19 May 2016 21:56:13 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=18443#comment-178286</guid>
+		<description><![CDATA[C&#039;est marrant j&#039;ai écrit un truc similaire pour un &lt;a title=&quot;apython&quot; rel=&quot;nofollow&quot;&gt;projet annexe&lt;/a&gt;, c&#039;est une coroutine qui rend des &lt;code&gt;asyncio.Stream&lt;/code&gt;:
+
+&lt;code&gt; stdin_stream, stdout_stream = await get_standard_streams()&lt;/code&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>C&#8217;est marrant j&#8217;ai écrit un truc similaire pour un <a title="apython" rel="nofollow">projet annexe</a>, c&#8217;est une coroutine qui rend des <code>asyncio.Stream</code>:</p>
+<p><code> stdin_stream, stdout_stream = await get_standard_streams()</code></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver</title>
+		<link>http://sametmax.com/open-bar-sur-asyncio/#comment-178034</link>
+		<dc:creator><![CDATA[Oliver]]></dc:creator>
+		<pubDate>Wed, 04 May 2016 16:38:37 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=18443#comment-178034</guid>
+		<description><![CDATA[really nice!
+]]></description>
+		<content:encoded><![CDATA[<p>really nice!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Gilles Lenfant</title>
+		<link>http://sametmax.com/open-bar-sur-asyncio/#comment-177337</link>
+		<dc:creator><![CDATA[Gilles Lenfant]]></dc:creator>
+		<pubDate>Thu, 24 Mar 2016 10:58:15 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=18443#comment-177337</guid>
+		<description><![CDATA[Merci pour ces quelques éclaircissements.
+
+L&#039;absence de tutoriel, la doc de références officielle brute de fonderie, ainsi que la culture &quot;synchrone&quot; des devs Python ne rendent pas la chose aisée à comprendre.
+]]></description>
+		<content:encoded><![CDATA[<p>Merci pour ces quelques éclaircissements.</p>
+<p>L&#8217;absence de tutoriel, la doc de références officielle brute de fonderie, ainsi que la culture &#8220;synchrone&#8221; des devs Python ne rendent pas la chose aisée à comprendre.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/open-bar-sur-asyncio/#comment-176630</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Tue, 01 Mar 2016 17:36:03 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=18443#comment-176630</guid>
+		<description><![CDATA[&lt;p&gt;Non, ça a toujours marché comme ça : &quot;or&quot; retourne la première valeur vraie rencontrée ou la dernière valeur fausse. Tandis que &quot;and&quot; retourne la première valeur fausse rencontrée ou la dernière valeur vraie. C&#039;est juste que quand on enseigne Python on explique pas ce genre de chose car les conditions c&#039;est déjà un gros morceaux.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Non, ça a toujours marché comme ça : &#8220;or&#8221; retourne la première valeur vraie rencontrée ou la dernière valeur fausse. Tandis que &#8220;and&#8221; retourne la première valeur fausse rencontrée ou la dernière valeur vraie. C&#8217;est juste que quand on enseigne Python on explique pas ce genre de chose car les conditions c&#8217;est déjà un gros morceaux.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Arkot</title>
+		<link>http://sametmax.com/open-bar-sur-asyncio/#comment-176623</link>
+		<dc:creator><![CDATA[Arkot]]></dc:creator>
+		<pubDate>Tue, 01 Mar 2016 14:54:04 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=18443#comment-176623</guid>
+		<description><![CDATA[Salut Sam,
+
+&lt;code&gt;self.loop = loop or asyncio.get_event_loop()&lt;/code&gt;
+
+C&#039;est une nouveauté de python 3 ça? Ça équivaut à un
+
+&lt;code&gt;
+
+if loop is not None: self.loop = loop
+
+else: self.loop = asyncio.get_event_loop()
+
+&lt;/code&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Salut Sam,</p>
+<p><code>self.loop = loop or asyncio.get_event_loop()</code></p>
+<p>C&#8217;est une nouveauté de python 3 ça? Ça équivaut à un</p>
+<p><code></p>
+<p>if loop is not None: self.loop = loop</p>
+<p>else: self.loop = asyncio.get_event_loop()</p>
+<p></code></p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

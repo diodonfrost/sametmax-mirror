@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>cookie &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/cookie/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title> La protection CSRF de Django et les requêtes Ajax</title>
+		<link>http://sametmax.com/la-protection-csrf-de-django-et-les-requetes-ajax/</link>
+		<comments>http://sametmax.com/la-protection-csrf-de-django-et-les-requetes-ajax/#comments</comments>
+		<pubDate>Tue, 10 Jun 2014 04:18:36 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[ajax]]></category>
+		<category><![CDATA[angularjs]]></category>
+		<category><![CDATA[cookie]]></category>
+		<category><![CDATA[csrf]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[header]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[jquery]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10438</guid>
+		<description><![CDATA[La protection contre les <a href="https://fr.wikipedia.org/wiki/CSRF">attaques CSRF</a> est dans le top 10 des erreurs les plus chiantes en Django, main dans la main avec les fichiers statiques qui ne marchent pas, les URL qui ne matchent pas et les CBV qui nheuuuu, juste pas.]]></description>
+				<content:encoded><![CDATA[<p>La protection contre les <a href="https://fr.wikipedia.org/wiki/CSRF">attaques CSRF</a> est dans le top 10 des erreurs les plus chiantes en Django, main dans la main avec les fichiers statiques qui ne marchent pas, les URL qui ne matchent pas et les CBV qui nheuuuu, juste pas.</p>
+<p>Une fois qu&#8217;on a compris le principe, ça va pour la prog normal, mais un jour on a besoin de faire un POST en Ajax, et on se retrouve avec une erreur invisible. Après avoir dégainé Firebug, on comprend qu&#8217;on a une 403 forbidden, et votre cerveau finit (la durée galérienne est plus ou moins longue selon les profiles, les heures de sommeil et les phases de la lune) par réaliser qu&#8217;on n&#8217;a pas envoyé le token CSRF. Merde.</p>
+<p>C&#8217;est là que généralement les gens sortent du <code>@csrf_exempt</code>, ou carrément, en finissent avec cette solution radicale :</p>
+<pre lang="python">MIDDLEWARE_CLASSES = (
+    'django.middleware.gzip.GZipMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+)</pre>
+<p>Mais c&#8217;est quand même dommage d&#8217;en arriver là alors qu&#8217;on peut le faire proprement.</p>
+<p>D&#8217;abord, le token est sauvegardé dans un cookie. Il faut donc le récupérer.</p>
+<pre lang="javascript">
+// ue petite fonction pour récupérer la valeur d'un cookie,
+// puisque bien entendu, comme toutes les APIS javascripts,
+// les choses qu'on fait le plus souvent ne sont pas incluses
+// en natif. Oui je suis aigri.
+function getCookie(name) {
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                return decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+}</pre>
+<p>Sinon, pour les fainéants, il y a y a un <a href="https://github.com/carhartl/jquery-cookie">plugin jquery</a> qui permet de faire <code>$.cookie('nom')</code>.</p>
+<p>Ensuite, on attache cette valeur en header avec toutes les requêtes POST. Comme ça, plus besoin de l'inclure manuellement, on peut faire ses requêtes sans y penser.</p>
+<p>Avec jQuery :</p>
+<pre lang="javascript">$.ajaxSetup({
+    // fonction appelée avant d'envoyer une requête AJAX
+    beforeSend: function(xhr, settings) {
+         // on ajoute le header que si la requête est pour le site en cours
+         // (URL relative) et est de type POST
+         if (!/^https?:.*/.test(settings.url)  && settings.type == "POST") {
+             // attachement du token dans le header
+             xhr.setRequestHeader("X-CSRFToken",  getCookie('csrftoken'));
+         }
+     }
+});</pre>
+<p>Avec AngularJs :</p>
+<pre lang="javascript">
+// interception de la configuration du provider HTTP
+// qui possède un mécanisme déjà tout prêt pour ça
+votre_app.config(function($httpProvider) {
+    $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+});
+</pre>
+<p>Attention, si l'app n'est pas servie par Django (template statique avec uniquement des appels Ajax), il faut faire au moins un GET avant de faire son premier POST afin d'obtenir le cookie.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-protection-csrf-de-django-et-les-requetes-ajax/feed/</wfw:commentRss>
+		<slash:comments>19</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">10438</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/06/tumblr_n68oe9Se2S1r539hzo1_500.jpg" length="39875" type="image/jpg" />	</item>
+		<item>
+		<title>Simuler un cookie avec Mechanize en python</title>
+		<link>http://sametmax.com/simuler-un-cookie-avec-mechanize-en-python/</link>
+		<pubDate>Sun, 20 May 2012 19:46:51 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cookie]]></category>
+		<category><![CDATA[jar]]></category>
+		<category><![CDATA[mechanize]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=667</guid>
+		<description><![CDATA[Comment simuler la présence d'un cookie lorsque l'on veut se connecter à un site via Mechanize. ]]></description>
+				<content:encoded><![CDATA[<p>Il peut arriver que l&#8217;on ai besoin de simuler la présence d&#8217;un cookie lors de l&#8217;exploration d&#8217;un site avec <a href="http://wwwsearch.sourceforge.net/mechanize/">Mechanize</a> .<br />
+Un exemple tout bête l&#8217;autre jour j&#8217;essayais de me connecter à un site qui demandait une vérif d&#8217;âge, impossible de simuler le click sur &#8220;ENTER&#8221; car le bouton était géré par Jquery (et Mechanize ne fait pas de js).<br />
+Après quelques debug je me suis aperçu que le site stockait dans un cookie la confirmation d&#8217;âge sous la forme &#8220;age_verified&#8221;, valeur 1.</p>
+<p>il suffisait donc d&#8217;avoir ce cookie et le site nous laissait tranquille.<br />
+Avec Mechanize il est possible d&#8217;ajouter un cookie dans son cookie jar, voici comment:</p>
+<pre lang="bash">
+import mechanize
+
+# Browser use mechanize
+br = mechanize.Browser()
+
+# Cookie Jar
+cj = cookielib.LWPCookieJar()
+br.set_cookiejar(cj)
+
+# add a cookie to cookie jar
+cj.set_cookie(cookielib.Cookie(0, 'age_verified', '1', '80', False, 'www.nom_de_domaine.com', True, False, '/', True, False, None, False, None, None, None))
+
+# Browser options
+br.set_handle_redirect(True)
+</pre>
+<p><strong>Où:</strong><br />
+age_verified : SID du cookie<br />
+1: valeur<br />
+80: port<br />
+www.nom_de_domaine.com : le nom de domaine du site auquel le cookie appartient<br />
+/: path du cookie</p>
+<p><strong>Un peu plus sur les options:</strong></p>
+<pre lang="python">cookielib.Cookie(version=0, name='SID', value=self._sid, port=None, port_specified=False, domain='.google.com', domain_specified=True, domain_initial_dot=True, path='/', path_specified=True, secure=False, expires='1600000000', discard=False, comment=None, comment_url=None, rest={})</lang></p>
+<p><strong>Quelques liens:</strong><br />
+<a href="http://nullege.com/codes/search/cookielib.Cookie">http://nullege.com/codes/search/cookielib.Cookie</a><br />
+<a href="http://docs.python.org/library/cookielib.html ">http://docs.python.org/library/cookielib.html</a><br />
+<a href="http://wwwsearch.sourceforge.net/mechanize/hints.html ">http://wwwsearch.sourceforge.net/mechanize/hints.html<br />
+</a></p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">667</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/05/cookiejar.jpg" length="43489" type="image/jpg" />	</item>
+	</channel>
+</rss>

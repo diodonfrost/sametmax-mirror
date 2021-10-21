@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<!--[if IE 7]>
+<html class="ie ie7" lang="en-US">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8" lang="en-US">
+<![endif]-->
+<!--[if !(IE 7) | !(IE 8)  ]><!-->
+<html lang="en-US">                          
+<!--<![endif]-->
+					<head>
+				    <meta charset="UTF-8" />
+				    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+            				    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+				    <link rel="profile" href="http://gmpg.org/xfn/11" />
+				    <link rel="pingback" href="http://sametmax.com/xmlrpc.php" />
+
+				   <!-- Icons font support for IE6-7  -->
+				    <!--[if lt IE 8]>
+				      <script src="http://sametmax.com/wp-content/themes/customizr/inc/assets/css/fonts/lte-ie7.js"></script>
+				    <![endif]-->
+				    <style type="text/css" id="customizr-inline-fonts">@font-face{font-family:genericons;src:url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.eot');src:url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.eot%3F') format('embedded-opentype'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.woff') format('woff'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.ttf') format('truetype'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.svg') format('svg')}@font-face{font-family:entypo;src:url('http://sametmax.com/wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.eot);src:url(http://sametmax.com/wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.eot?#iefix') format('embedded-opentype'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.woff') format('woff'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.ttf') format('truetype'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.svg') format('svg')}</style><title>Sept petites libs qui changent la vie d&#8217;un dev Python &#8211; Sam &amp; Max</title>
+<link rel='dns-prefetch' href='http://s0.wp.com/' />
+<link rel='dns-prefetch' href='http://secure.gravatar.com/' />
+<link rel='dns-prefetch' href='http://s.w.org/' />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max &raquo; Feed" href="../feed.1" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max &raquo; Comments Feed" href="../comments/feed/index.html" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max &raquo; Sept petites libs qui changent la vie d&#8217;un dev Python Comments Feed" href="feed/index.html" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.4\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.4\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/sametmax.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.9.7"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55357,56692,8205,9792,65039],[55357,56692,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='contact-form-7-css'  href='../wp-content/plugins/contact-form-7/includes/css/styles.css%3Fver=5.0.2.css' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-polls-css'  href='../wp-content/plugins/wp-polls/polls-css.css%3Fver=2.73.8.css' type='text/css' media='all' />
+<style id='wp-polls-inline-css' type='text/css'>
+.wp-polls .pollbar {
+	margin: 1px;
+	font-size: 6px;
+	line-height: 8px;
+	height: 8px;
+	background-image: url('../wp-content/plugins/wp-polls/images/default/pollbg.gif');
+	border: 1px solid #c8c8c8;
+}
+
+</style>
+<link rel='stylesheet' id='wp-syntax-css-css'  href='../wp-content/plugins/wp-syntax/css/wp-syntax.css%3Fver=1.1.css' type='text/css' media='all' />
+<link rel='stylesheet' id='dashicons-css'  href='../wp-includes/css/dashicons.min.css%3Fver=4.9.7.css' type='text/css' media='all' />
+<link rel='stylesheet' id='customizr-skin-css'  href='../wp-content/themes/customizr/inc/assets/css/black2.min.css%3Fver=3.2.10.css' type='text/css' media='all' />
+<style id='customizr-skin-inline-css' type='text/css'>
+
+.sticky-enabled .tc-shrink-on .site-logo img {
+						height:30px!important;width:auto!important
+					}
+
+					.sticky-enabled .tc-shrink-on .brand .site-title {
+						font-size:0.6em;opacity:0.8;line-height:1.2em
+					}
+
+.tc-rectangular-thumb {
+            max-height: 250px;
+            height :250px
+          }
+
+          .single .tc-rectangular-thumb {
+            max-height: 250px;
+            height :250px
+          }
+
+
+</style>
+<link rel='stylesheet' id='customizr-style-css'  href='../wp-content/themes/customizr/style.css%3Fver=3.2.10.css' type='text/css' media='all' />
+<link rel='stylesheet' id='fancyboxcss-css'  href='../wp-content/themes/customizr/inc/assets/js/fancybox/jquery.fancybox-1.3.4.min.css%3Fver=4.9.7.css' type='text/css' media='all' />
+<link rel='stylesheet' id='jetpack-widget-social-icons-styles-css'  href='../wp-content/plugins/jetpack/modules/widgets/social-icons/social-icons.css%3Fver=20170506.css' type='text/css' media='all' />
+<link rel='stylesheet' id='social-logos-css'  href='../wp-content/plugins/jetpack/_inc/social-logos/social-logos.min.css%3Fver=1.css' type='text/css' media='all' />
+<link rel='stylesheet' id='jetpack_css-css'  href='../wp-content/plugins/jetpack/css/jetpack.css%3Fver=6.3.2.css' type='text/css' media='all' />
+<script type='text/javascript' src='../wp-includes/js/jquery/jquery.js%3Fver=1.12.4'></script>
+<script type='text/javascript' src='../wp-includes/js/jquery/jquery-migrate.min.js%3Fver=1.4.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var TCParams = {"FancyBoxState":"1","FancyBoxAutoscale":"1","SliderName":"","SliderDelay":"","SliderHover":"1","SmoothScroll":"linear","ReorderBlocks":"1","CenterSlides":"1","HasComments":"","LeftSidebarClass":".span3.left.tc-sidebar","RightSidebarClass":".span3.right.tc-sidebar","LoadModernizr":"1","stickyCustomOffset":"0","stickyHeader":"1","dropdowntoViewport":"0","timerOnScrollAllBrowsers":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/themes/customizr/inc/assets/js/tc-scripts.min.js%3Fver=3.2.10'></script>
+<link rel='https://api.w.org/' href='../wp-json/index.html' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://sametmax.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='For each en bash' href='../for-each-en-bash/index.html' />
+<link rel='next' title='Schéma de fonctionnement général de Django' href='../schema-de-fonctionnement-general-de-django/index.html' />
+<meta name="generator" content="WordPress 4.9.7" />
+<link rel="canonical" href="index.html" />
+<link rel='shortlink' href='https://wp.me/p2ckfk-ft' />
+<link rel="alternate" type="application/json+oembed" href="../wp-json/oembed/1.0/embed%3Furl=http:%252F%252Fsametmax.com%252Fsept-petites-libs-qui-changent-la-vie-dun-dev-python%252F" />
+<link rel="alternate" type="text/xml+oembed" href="../wp-json/oembed/1.0/embed%3Furl=http:%252F%252Fsametmax.com%252Fsept-petites-libs-qui-changent-la-vie-dun-dev-python%252F&amp;format=xml" />
+
+<link rel='dns-prefetch' href='http://v0.wordpress.com/'/>
+<style type="text/css" media="all">
+/* <![CDATA[ */
+@import url("../wp-content/plugins/wp-table-reloaded/css/plugin.css%3Fver=1.9.4.css");
+@import url("../wp-content/plugins/wp-table-reloaded/css/datatables.css%3Fver=1.9.4.css");
+/* ]]> */
+</style><link rel="shortcut icon" href="../wp-content/uploads/2015/06/favicon.png" type="image/png">
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Sept petites libs qui changent la vie d&#8217;un dev Python" />
+<meta property="og:url" content="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/" />
+<meta property="og:description" content="Des libs fabuleuses qui vont ensemble comme les 7 doigts de la main." />
+<meta property="article:published_time" content="2012-06-20T21:13:01+00:00" />
+<meta property="article:modified_time" content="2015-09-10T15:22:05+00:00" />
+<meta property="og:site_name" content="Sam &amp; Max" />
+<meta property="og:image" content="https://s0.wp.com/i/blank.jpg" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:text:title" content="Sept petites libs qui changent la vie d&#8217;un dev Python" />
+<meta name="twitter:card" content="summary" />
+
+<!-- End Jetpack Open Graph Tags -->
+			<link rel="stylesheet" type="text/css" id="wp-custom-css" href="../index.html%3Fcustom-css=3b3670f11a.css" />
+						    <!--Icons size hack for IE8 and less -->
+				    <!--[if lt IE 9]>
+				      <link href="http://sametmax.com/wp-content/themes/customizr/inc/assets/css/fonts/ie8-hacks.css" rel="stylesheet" type="text/css"/>
+				    <![endif]-->
+				</head>
+				
+	<body class="post-template-default single single-post postid-959 single-format-standard tc-fade-hover-links tc-sticky-header tc-transparent-on-scroll" itemscope itemtype="http://schema.org/WebPage">
+		
+		
+	   	<header class="tc-header clearfix row-fluid tc-tagline-off tc-title-logo-on  tc-shrink-on tc-menu-on logo-left" role="banner">
+			      <div class="brand span3 pull-left ">
+
+        <h1><a class="site-title" href="../index.html" title="Sam &amp; Max | Du code, du cul">Sam &amp; Max</a></h1>
+      </div> <!-- brand span3 pull-left -->
+      <div class="container outside"><h2 class="site-description">Du code, du cul</h2></div>      	<div class="navbar-wrapper clearfix span9 tc-submenu-fade tc-submenu-move tc-open-on-hover left">
+        	<div class="navbar resp">
+          		<div class="navbar-inner" role="navigation">
+            		<div class="row-fluid">
+              		<div class="social-block span5" ><a class="social-icon icon-feed" href="../feed/rss/index.html" title="Subscribe to my rss feed"  ></a></div><h2 class="span7 inside site-description">Du code, du cul</h2><button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><div class="nav-collapse collapse tc-hover-menu-wrapper"><div class="menu-top-menu-container"><ul id="menu-top-menu-2" class="nav tc-hover-menu"><li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-1702"><a href="../category/programmation/index.html">Prog</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1703"><a href="../category/administration-system/index.html">Admin Sys</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1704"><a href="../category/philo-et-culture/index.html">Philo &#038; culture</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1706"><a href="../category/cul/index.html">Cul</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3340"><a href="../cours-et-tutos/index.html">Cours &#038; tutos</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1707"><a title="Les meilleurs blogs du Web" href="http://multiboards.net/">Multiboards</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12415"><a href="../planet-python-fr/index.html">Veille Python Fr</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15634"><a href="http://indexerror.net">Questions Python</a></li>
+</ul></div></div>          			</div>
+          		</div><!-- /.navbar-inner -->
+        	</div><!-- /.navbar resp -->
+      	</div><!-- /.navbar-wrapper -->
+    			</header>
+		<div id="tc-reset-margin-top" class="container-fluid" style="margin-top:103px"></div><div id="main-wrapper" class="container">
+
+        
+    <div class="container" role="main">
+        <div class="row column-content-wrapper">
+
+                            
+                <div id="content" class="span9 article-container">
+                    
+                    
+                        
+                                                                                    
+                                                                    <article id="post-959" class="row-fluid post-959 post type-post status-publish format-standard has-post-thumbnail hentry category-programmation tag-python">
+                                                <header class="entry-header">
+          <h1 class="entry-title format-icon">Sept petites libs qui changent la vie d&#8217;un dev Python</h1>            <div class="entry-meta">
+                This entry was posted in <a class="btn btn-mini" href="../category/programmation/index.html" title="View all posts in Programmation"> Programmation </a> and tagged <a class="btn btn-mini btn-tag" href="../tag/python/index.html" title="View all posts in python"> python </a> on <a href="../2012/06/20/index.html" title="16:13" rel="bookmark"><time class="entry-date updated" datetime="2012-06-20T16:13:01+00:00">20/06/2012</time></a> <span class="by-author">by <span class="author vcard"><a class="url fn n" href="../author/sam/index.html" title="View all posts by Sam" rel="author">Sam</a></span></span>             </div><!-- .entry-meta -->
+            <hr class="featurette-divider __before_content">        </header>
+            
+
+          <section class="entry-content ">
+              <aside style="text-align:center; font-size:60%"><em>Cet article a été mis à jour et contient maintenant du code Python en version 3</em></aside>
+<p>Toutes ces libs sont, bien entendu, installables avec <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a>.</p>
+<h2>begins</h2>
+<p><code>optparse</code> est deprecated, <code>argparse</code> est imbuvable et <code>sys.argv</code> limité. Avant de vous tirer une balle dans la tête au moment de parser les arguments passés à votre script :</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> begins</pre></td></tr></table><p class="theCode" style="display:none;">pip install begins</p></div>
+
+<p>Et voilà, définir des paramètres est aussi simple qu’écrire une fonction :</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> begin <span style="color: #808080; font-style: italic;"># pas de 's' ici </span>
+&nbsp;
+<span style="color: #66cc66;">@</span>begin.<span style="color: black;">start</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> main<span style="color: black;">&#40;</span>argument_obligatoire<span style="color: #66cc66;">,</span> argument_optionnel<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;valeur_par_defaut&quot;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot; La docstring est transformée en message d'usage.&quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>argument_obligatoire<span style="color: #66cc66;">,</span> argument_optionnel<span style="color: black;">&#41;</span></pre></td></tr></table><p class="theCode" style="display:none;">import begin # pas de 's' ici 
+
+@begin.start
+def main(argument_obligatoire, argument_optionnel=&quot;valeur_par_defaut&quot;):
+    &quot;&quot;&quot; La docstring est transformée en message d'usage.&quot;&quot;&quot;
+    print(argument_obligatoire, argument_optionnel)</p></div>
+
+<p>Votre programme accepte maintenant <code>--argument-obligatoire</code> et <code>--argument-optionnel</code> qui seront automatiquement passés à la fonction. <code>--help</code> affichera les options et la docstring :</p>
+<pre>
+$ python script.py --help
+usage: script.py [-h] [--argument-optionnel ARGUMENT_OPTIONNEL]
+               ARGUMENT_OBLIGATOIRE
+
+La docstring est transformée en message d'usage.
+
+positional arguments:
+  ARGUMENT_OBLIGATOIRE
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --argument-optionnel ARGUMENT_OPTIONNEL, -a ARGUMENT_OPTIONNEL
+                        (default: valeur_par_defaut)
+</pre>
+<p>On peut faire bien plus avec <a href="https://pypi.python.org/pypi/begins/0.9">begins </a>: caster les arguments, créer des subcommandes, etc.</p>
+<h2>arrow</h2>
+<p>Contrairement à Max, j’adore la gestion des dates en Python. Mais <a href="http://crsmithdev.com/arrow/">arrow</a> la propulse au niveau supérieur :</p>
+<p><code>pip install arrow</code></p>
+<p>Et hop :</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> arrow
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> arrow.<span style="color: black;">utcnow</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+             <span style="color: #66cc66;">&lt;</span>Arrow <span style="color: black;">&#91;</span><span style="color: #ff4500;">2015</span>-<span style="color: #ff4500;">09</span>-07T18:<span style="color: #ff4500;">24</span>:<span style="color: #ff4500;">50.735465</span>+<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> arrow.<span style="color: black;">utcnow</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">replace</span><span style="color: black;">&#40;</span>months<span style="color: #66cc66;">=</span>+<span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> weeks<span style="color: #66cc66;">=</span>-<span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> hours<span style="color: #66cc66;">=</span>+<span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+             <span style="color: #66cc66;">&lt;</span>Arrow <span style="color: black;">&#91;</span><span style="color: #ff4500;">2015</span>-<span style="color: #ff4500;">11</span>-30T19:<span style="color: #ff4500;">25</span>:<span style="color: #ff4500;">03.887149</span>+<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> arrow.<span style="color: black;">utcnow</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">to</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'US/Pacific'</span><span style="color: black;">&#41;</span>
+             <span style="color: #66cc66;">&lt;</span>Arrow <span style="color: black;">&#91;</span><span style="color: #ff4500;">2015</span>-<span style="color: #ff4500;">09</span>-07T11:<span style="color: #ff4500;">25</span>:<span style="color: #ff4500;">44.859458</span>-<span style="color: #ff4500;">07</span>:<span style="color: #ff4500;">00</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> arrow.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">replace</span><span style="color: black;">&#40;</span>minutes<span style="color: #66cc66;">=</span>-<span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>.<span style="color: black;">humanize</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">locale</span><span style="color: #66cc66;">=</span><span style="color: #483d8b;">'fr'</span><span style="color: black;">&#41;</span>
+             <span style="color: #483d8b;">'il y a 3 minutes'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> arrow.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'2013-09-29T01:26:43.830580'</span><span style="color: black;">&#41;</span>
+             <span style="color: #66cc66;">&lt;</span>Arrow <span style="color: black;">&#91;</span><span style="color: #ff4500;">2013</span>-<span style="color: #ff4500;">09</span>-29T01:<span style="color: #ff4500;">26</span>:<span style="color: #ff4500;">43.830580</span>+<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">&gt;</span></pre></td></tr></table><p class="theCode" style="display:none;">&gt;&gt;&gt; import arrow
+&gt;&gt;&gt; arrow.utcnow()
+             &lt;Arrow [2015-09-07T18:24:50.735465+00:00]&gt;
+&gt;&gt;&gt; arrow.utcnow().replace(months=+3, weeks=-1, hours=+1)
+             &lt;Arrow [2015-11-30T19:25:03.887149+00:00]&gt;
+&gt;&gt;&gt; arrow.utcnow().to('US/Pacific')
+             &lt;Arrow [2015-09-07T11:25:44.859458-07:00]&gt;
+&gt;&gt;&gt; arrow.now().replace(minutes=-3).humanize(locale='fr')
+             'il y a 3 minutes'
+&gt;&gt;&gt; arrow.get('2013-09-29T01:26:43.830580')
+             &lt;Arrow [2013-09-29T01:26:43.830580+00:00]&gt;</p></div>
+
+<p>Ouai.</p>
+<h2>Requests</h2>
+<p>Urllib, ça va 5 minutes. Ça vous dit une API simplissime pour faire des requêtes ?</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> requests</pre></td></tr></table><p class="theCode" style="display:none;">pip install requests</p></div>
+
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> requests
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> requests.<span style="color: black;">post</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'http://urldelamortquitue.com/magicform/'</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#123;</span>u<span style="color: #483d8b;">'champ1'</span>:u<span style="color: #483d8b;">&quot;valeur1&quot;</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'champ2'</span>:u<span style="color: #483d8b;">&quot;valeur2&quot;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span></pre></td></tr></table><p class="theCode" style="display:none;">&gt;&gt;&gt; import requests
+&gt;&gt;&gt; requests.post('http://urldelamortquitue.com/magicform/', {u'champ1':u&quot;valeur1&quot;, u'champ2':u&quot;valeur2&quot;})</p></div>
+
+<p><a href="http://docs.python-requests.org/en/latest/index.html">requests</a> gère automamagiquement l’encoding, l’escaping, les cookies, le suivie des redirections et les embouteillages du périph les jours impairs. On peut facilement modifier les headers et cookies, faire des authentifications HTTP, des requêtes HEAD, GET, OPTIONS, PUT, FINGER, NOSE, ASS, ETC.</p>
+<h2>Bottle</h2>
+<p>Besoin de monter <a href="../creer-un-site-avec-bottle-en-5-minutes-parceque-7-cest-impossible-voyons/index.html">un mini site Web en 5 minutes</a> ? <a href="http://bottlepy.org/docs/dev/">Bottle</a> est un micro framework Web qui tient en un fichier.</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">pip install bottle</pre></td></tr></table><p class="theCode" style="display:none;">pip install bottle</p></div>
+
+<p>Et dans un fichier <em>monsite.py</em>:</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> bottle <span style="color: #ff7700;font-weight:bold;">import</span> Bottle<span style="color: #66cc66;">,</span> run<span style="color: #66cc66;">,</span> static_file<span style="color: #66cc66;">,</span> view
+&nbsp;
+app <span style="color: #66cc66;">=</span> Bottle<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># une page d'acceuil statique</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">route</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">@</span>view<span style="color: black;">&#40;</span><span style="color: #483d8b;">'home'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> index<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># une page de formulaire</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">route</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/truc/create'</span><span style="color: #66cc66;">,</span> method<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'POST'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> create_truc<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    nom_du_truc <span style="color: #66cc66;">=</span> request.<span style="color: black;">forms</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'name'</span><span style="color: black;">&#93;</span>
+    <span style="color: #808080; font-style: italic;"># ici faire un machin avec le truc</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'name'</span>: nom_du_truc<span style="color: black;">&#125;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># afficher un truc en particulier</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">route</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/truc/:truc_id'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">@</span>view<span style="color: black;">&#40;</span><span style="color: #483d8b;">'truc'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> display_truc<span style="color: black;">&#40;</span>truc_id<span style="color: black;">&#41;</span>:
+    truc <span style="color: #66cc66;">=</span> getTrucFromTrucId<span style="color: black;">&#40;</span>truc_id<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'truc'</span>: truc<span style="color: black;">&#125;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># servir les fichiers statiques</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">route</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/static/&lt;filename:path&gt;'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> server_static<span style="color: black;">&#40;</span>filename<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> static_file<span style="color: black;">&#40;</span>filename<span style="color: #66cc66;">,</span> root<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'/chemin/vers/dossier/des/fichiers/statiques'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">&quot;__main__&quot;</span>:
+    run<span style="color: black;">&#40;</span>app<span style="color: black;">&#41;</span></pre></td></tr></table><p class="theCode" style="display:none;">from bottle import Bottle, run, static_file, view
+
+app = Bottle()
+
+# une page d'acceuil statique
+@app.route('/')
+@view('home')
+def index():
+    return {}
+
+# une page de formulaire
+@app.route('/truc/create', method='POST')
+def create_truc():
+    nom_du_truc = request.forms['name']
+    # ici faire un machin avec le truc
+    return {'name': nom_du_truc}
+
+# afficher un truc en particulier
+@app.route('/truc/:truc_id')
+@view('truc')
+def display_truc(truc_id):
+    truc = getTrucFromTrucId(truc_id)
+    return {'truc': truc}
+
+# servir les fichiers statiques
+@app.route('/static/&lt;filename:path&gt;')
+def server_static(filename):
+    return static_file(filename, root='/chemin/vers/dossier/des/fichiers/statiques')
+
+if __name__ == &quot;__main__&quot;:
+    run(app)</p></div>
+
+<p>On met les templates dans le sous-dossier &#8220;<em>views</em>&#8221; et les CSS dans &#8220;<em>/chemin/vers/dossier/des/fichiers/statiques/css</em>&#8221; et<br />
+on a un mini site Web qui tourne :</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">python monsite.py</pre></td></tr></table><p class="theCode" style="display:none;">python monsite.py</p></div>
+
+<p>C’est ce qui fait tourner <a href="http://0bin.net/">0bin</a>.</p>
+<h2>Peewee</h2>
+<p><a href="http://peewee.readthedocs.org/en/latest/index.html">Un ORM qui tient dans un mouchoir de poche</a>, fabuleux pour attaquer une base de données PostgreSQL, MySql ou Sqlite sans avoir à sortir l’artillerie lourde :</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> peewee</pre></td></tr></table><p class="theCode" style="display:none;">pip install peewee</p></div>
+
+<p>Il y a plusieurs syntaxes pour décrire ses modèles et faire ses queries. L’une d’elles ressemble à celle de l’ORM Django :</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> peewee
+&nbsp;
+<span style="color: #808080; font-style: italic;"># exemple avec sqlite</span>
+DATABASE_CONNECTION <span style="color: #66cc66;">=</span> peewee.<span style="color: black;">SqliteDatabase</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/chemin/vers/db.sqlite'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> BaseModel<span style="color: black;">&#40;</span>peewee.<span style="color: black;">Model</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">class</span> Meta:
+        database <span style="color: #66cc66;">=</span> DATABASE_CONNECTION
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Truc<span style="color: black;">&#40;</span>BaseModel<span style="color: black;">&#41;</span>:
+    name <span style="color: #66cc66;">=</span> peewee.<span style="color: black;">CharField</span><span style="color: black;">&#40;</span>max_length<span style="color: #66cc66;">=</span><span style="color: #ff4500;">256</span><span style="color: black;">&#41;</span>  <span style="color: #808080; font-style: italic;"># un champ texte limité à 256 chars</span>
+    description <span style="color: #66cc66;">=</span> peewee.<span style="color: black;">TextField</span><span style="color: black;">&#40;</span>null<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># un blob de texte de taille illimitée</span>
+    last_update <span style="color: #66cc66;">=</span> peewee.<span style="color: black;">DateTimeField</span><span style="color: black;">&#40;</span>null<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># un champ date qui peut être nul</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Bidule<span style="color: black;">&#40;</span>BaseModel<span style="color: black;">&#41;</span>:
+    name <span style="color: #66cc66;">=</span> peewee.<span style="color: black;">CharField</span><span style="color: black;">&#40;</span>max_length<span style="color: #66cc66;">=</span><span style="color: #ff4500;">64</span><span style="color: #66cc66;">,</span> help_text<span style="color: #66cc66;">=</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;Le nom du bidule&quot;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+    truc <span style="color: #66cc66;">=</span> peewee.<span style="color: black;">ForeignKeyField</span><span style="color: black;">&#40;</span>Truc<span style="color: #66cc66;">,</span> related_name<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'bidules'</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># chaque bidule est lié à un truc</span>
+    valid <span style="color: #66cc66;">=</span> peewee.<span style="color: black;">BooleanField</span><span style="color: black;">&#40;</span>default<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># un champ vrai/faux</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">for</span> model <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: black;">&#40;</span>Truc<span style="color: #66cc66;">,</span> Bidule<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        model.<span style="color: black;">create_table</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span>:
+       <span style="color: #ff7700;font-weight:bold;">pass</span></pre></td></tr></table><p class="theCode" style="display:none;">import peewee
+
+# exemple avec sqlite
+DATABASE_CONNECTION = peewee.SqliteDatabase('/chemin/vers/db.sqlite')
+
+class BaseModel(peewee.Model):
+    class Meta:
+        database = DATABASE_CONNECTION
+
+class Truc(BaseModel):
+    name = peewee.CharField(max_length=256)  # un champ texte limité à 256 chars
+    description = peewee.TextField(null=True) # un blob de texte de taille illimitée
+    last_update = peewee.DateTimeField(null=True) # un champ date qui peut être nul
+
+class Bidule(BaseModel):
+    name = peewee.CharField(max_length=64, help_text=(u&quot;Le nom du bidule&quot;))
+    truc = peewee.ForeignKeyField(Truc, related_name='bidules') # chaque bidule est lié à un truc
+    valid = peewee.BooleanField(default=False) # un champ vrai/faux
+
+for model in (Truc, Bidule):
+    try:
+        model.create_table()
+    except:
+       pass</p></div>
+
+<p>A l’usage :</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Fabrication des trucs et des bidules</span>
+Truc.<span style="color: black;">create</span><span style="color: black;">&#40;</span>name<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;cool&quot;</span><span style="color: black;">&#41;</span>
+Bidule.<span style="color: black;">create</span><span style="color: black;">&#40;</span>name<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;machin&quot;</span><span style="color: #66cc66;">,</span> truc<span style="color: #66cc66;">=</span>Truc.<span style="color: black;">get</span><span style="color: black;">&#40;</span>name<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;cool&quot;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># et récupération </span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Nombre de trucs: %s&quot;</span> % Truc.<span style="color: #dc143c;">select</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">count</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+bidules_du_truc_cool <span style="color: #66cc66;">=</span> Truc.<span style="color: black;">get</span><span style="color: black;">&#40;</span>name<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;cool&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">bidules</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">for</span> bidule <span style="color: #ff7700;font-weight:bold;">in</span> bidules_du_truc_cool:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>bidule.<span style="color: black;">name</span><span style="color: black;">&#41;</span>
+    bidule.<span style="color: black;">valid</span> <span style="color: #66cc66;">=</span> <span style="color: #008000;">True</span>
+    bidule.<span style="color: black;">save</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table><p class="theCode" style="display:none;"># Fabrication des trucs et des bidules
+Truc.create(name=&quot;cool&quot;)
+Bidule.create(name=&quot;machin&quot;, truc=Truc.get(name=&quot;cool&quot;))
+
+# et récupération 
+print(&quot;Nombre de trucs: %s&quot; % Truc.select().count())
+bidules_du_truc_cool = Truc.get(name=&quot;cool&quot;).bidules
+
+for bidule in bidules_du_truc_cool:
+    print(bidule.name)
+    bidule.valid = True
+    bidule.save()</p></div>
+
+<h2>Beautiful soup</h2>
+<p>On en a <a href="../traduire-du-texte-avec-urllib-beautifulsoup-et-google-translation/index.html">déjà parlé,</a> mais comme parser du HTML à la main est une plaie, il faut absolument citer <a href="http://www.crummy.com/software/BeautifulSoup/">cette lib</a> dans cet article.</p>
+<pre blang="bash">pip install beautifulsoup</pre>
+<p>Récupérer toutes les URL des balises scripts qui sont dans le tag HEAD :</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">head <span style="color: #66cc66;">=</span> BeautifulSoup<span style="color: black;">&#40;</span>html<span style="color: black;">&#41;</span>.<span style="color: black;">find</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'head'</span><span style="color: black;">&#41;</span>
+links <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> link <span style="color: #ff7700;font-weight:bold;">in</span> head.<span style="color: black;">findAll</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'link'</span><span style="color: black;">&#41;</span>:
+    href <span style="color: #66cc66;">=</span> <span style="color: #008000;">dict</span><span style="color: black;">&#40;</span>link.<span style="color: black;">attrs</span><span style="color: black;">&#41;</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'href'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">''</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> href:
+        links.<span style="color: black;">append</span><span style="color: black;">&#40;</span>link.<span style="color: black;">attrs</span><span style="color: black;">&#41;</span></pre></td></tr></table><p class="theCode" style="display:none;">head = BeautifulSoup(html).find('head')
+links = []
+for link in head.findAll('link'):
+    href = dict(link.attrs).get('href', '')
+    if href:
+        links.append(link.attrs)</p></div>
+
+<h2>path.py</h2>
+<p>La manipulation de fichiers simplifiée :</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> path.py</pre></td></tr></table><p class="theCode" style="display:none;">pip install path.py</p></div>
+
+<p>Il y en a des concurrents de <a href="https://github.com/jaraco/path.py">path.py</a> ! De nombreux ! En fait même dans la stdlib il y a maintenant <a href="https://www.python.org/dev/peps/pep-0428/">pathlib</a> qui essaye de se hisser à son niveau.</p>
+<p>Et aucun n’y arrive.</p>
+<p>La raison principale et qu’ils copient uniquement les fonctionnalités principales, en oubliant tous les petits outils en plus :</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> path <span style="color: #ff7700;font-weight:bold;">import</span> Path
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> root <span style="color: #66cc66;">=</span> Path<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;/etc&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> root / <span style="color: #483d8b;">'fstab'</span>
+    Path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/etc/fstab'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#40;</span>root / <span style="color: #483d8b;">&quot;nginx&quot;</span> / <span style="color: #483d8b;">&quot;nginx.conf&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">ext</span>
+    <span style="color: #483d8b;">'.conf'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> Path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/foo.txt'</span><span style="color: black;">&#41;</span>.<span style="color: black;">write_text</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;mouahha&quot;</span><span style="color: #66cc66;">,</span> encoding<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;utf8&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> Path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/foo.txt'</span><span style="color: black;">&#41;</span>.<span style="color: black;">text</span><span style="color: black;">&#40;</span>encoding<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;utf8&quot;</span><span style="color: black;">&#41;</span>
+    <span style="color: #483d8b;">'mouahha'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> Path.<span style="color: black;">special</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: #dc143c;">user</span>.<span style="color: black;">config</span>
+    Path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/home/sam/.config'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> Path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/bar'</span><span style="color: black;">&#41;</span>.<span style="color: black;">touch</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">getmtime</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff4500;">1441651642.537244</span></pre></td></tr></table><p class="theCode" style="display:none;">&gt;&gt;&gt; from path import Path
+&gt;&gt;&gt; root = Path(&quot;/etc&quot;)
+&gt;&gt;&gt; root / 'fstab'
+    Path('/etc/fstab')
+&gt;&gt;&gt; (root / &quot;nginx&quot; / &quot;nginx.conf&quot;).ext
+    '.conf'
+&gt;&gt;&gt; Path('/tmp/foo.txt').write_text(&quot;mouahha&quot;, encoding=&quot;utf8&quot;)
+&gt;&gt;&gt; Path('/tmp/foo.txt').text(encoding=&quot;utf8&quot;)
+    'mouahha'
+&gt;&gt;&gt; Path.special().user.config
+    Path('/home/sam/.config')
+&gt;&gt;&gt; Path('/tmp/bar').touch().getmtime()
+    1441651642.537244</p></div>
+
+<div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-official sd-sharing"><h3 class="sd-title">Partager:</h3><div class="sd-content"><ul><li class="share-twitter"><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/" data-text="Sept petites libs qui changent la vie d&#039;un dev Python"  >Tweet</a></li><li class="share-facebook"><div class="fb-share-button" data-href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/" data-layout="button_count"></div></li><li class="share-google-plus-1"><div class="googleplus1_button"><div class="g-plus" data-action="share" data-annotation="bubble" data-href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/"></div></div></li><li class="share-email"><a rel="nofollow" data-shared="" class="share-email sd-button" href="index.html%3Fshare=email.html" rel="noopener noreferrer" target="_blank" title="Click to email this to a friend"><span>Email</span></a></li><li><a href="index.html%3Fshare=email.html#" class="sharing-anchor sd-button share-more"><span>More</span></a></li><li class="share-end"></li></ul><div class="sharing-hidden"><div class="inner" style="display: none;"><ul><li class="share-reddit"><div class="reddit_button"><iframe src="http://www.reddit.com/static/button/button1.html?newwindow=true&width=120&amp;url=http%3A%2F%2Fsametmax.com%2Fsept-petites-libs-qui-changent-la-vie-dun-dev-python%2F&amp;title=Sept%20petites%20libs%20qui%20changent%20la%20vie%20d%27un%20dev%20Python" height="22" width="120" scrolling="no" frameborder="0"></iframe></div></li><li class="share-pinterest"><div class="pinterest_button"><a href="https://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fsametmax.com%2Fsept-petites-libs-qui-changent-la-vie-dun-dev-python%2F&#038;media=http%3A%2F%2F2.gravatar.com%2Favatar%2Fbf9ecde8f5e286de6ce5c80206cf9dd6%3Fs%3D96%26d%3Dretro%26r%3Dx&#038;description=Sept%20petites%20libs%20qui%20changent%20la%20vie%20d%27un%20dev%20Python" data-pin-do="buttonPin" data-pin-config="beside"><img src="http://assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png" /></a></div></li><li class="share-end"></li><li class="share-tumblr"><a target="_blank" href="https://www.tumblr.com/share/link/?url=http%3A%2F%2Fsametmax.com%2Fsept-petites-libs-qui-changent-la-vie-dun-dev-python%2F&name=Sept%20petites%20libs%20qui%20changent%20la%20vie%20d%27un%20dev%20Python" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:62px; height:20px; background:url('https://platform.tumblr.com/v1/share_2.png') top left no-repeat transparent;">Share on Tumblr</a></li><li class="share-pocket"><div class="pocket_button"><a href="https://getpocket.com/save" class="pocket-btn" data-lang="en" data-save-url="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/" data-pocket-count="horizontal" >Pocket</a></div></li><li class="share-end"></li><li class="share-end"></li></ul></div></div></div></div></div>                        </section><!-- .entry-content -->
+
+        <footer class="entry-meta"><hr class="featurette-divider"><div class="author-info"><div class="row-fluid"><div class="comment-avatar author-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=100&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=200&#038;d=retro&#038;r=x 2x' class='avatar avatar-100 photo' height='100' width='100' /></div> <div class="author-description span10"><h3>About Sam</h3><p>Waf !</p><div class="author-link"><a href="../author/sam/index.html" rel="author">View all posts by Sam <span class="meta-nav">&rarr;</span></a></div></div></div></div></footer>                                    </article>
+                                
+                            
+                        
+                    
+<div id="comments" class="comments-area" >
+	<h2 id="tc-comment-title" class="comments-title">38 thoughts on &ldquo;<span>Sept petites libs qui changent la vie d&#8217;un dev Python</span>&rdquo;</h2>              <ul class="commentlist">
+                        <li class="comment even thread-even depth-1" id="li-comment-440">
+          
+            <article id="comment-440" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://www.desfrenes.com/' rel='external nofollow' class='url'>desfrenes</a>  </cite> <a class="comment-date" href="index.html#comment-440"><time datetime="2012-06-20T16:14:31+00:00">20/06/2012 at 16:14</time></a></header>  <section class="comment-content comment"><p>Bonjour,</p>
+<p>Comment se situe Clize par rapport à Argh ? (<a href="http://packages.python.org/argh/" rel="nofollow">http://packages.python.org/argh/</a>)</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-441">
+          
+            <article id="comment-441" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://www.desfrenes.com/' rel='external nofollow' class='url'>desfrenes</a>  </cite> <a class="comment-date" href="index.html#comment-441"><time datetime="2012-06-20T16:19:10+00:00">20/06/2012 at 16:19</time></a></header>  <section class="comment-content comment"><p>En parlant d&#8217;ORM léger, j&#8217;ai bricolé ça: <a href="https://github.com/desfrenes/PyBean" rel="nofollow">https://github.com/desfrenes/PyBean</a></p>
+<p>ça marche pour sqlite et ça s&#8217;occupe de créer le schéma à la volée, dans l&#8217;esprit de ce que fait redbeanphp.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-442">
+          
+            <article id="comment-442" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-442"><time datetime="2012-06-20T16:52:50+00:00">20/06/2012 at 16:52</time></a></header>  <section class="comment-content comment"><p>@desfrenes</p>
+<p>Clize fait à peu prêt la même chose que Argh, mais à l&#8217;usage j&#8217;ai trouvé Clize plus intuitif, et le code tient dans un tout petit fichier.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-445">
+          
+            <article id="comment-445" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/502f55b818f01ac589d5708616e6bfd8?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/502f55b818f01ac589d5708616e6bfd8?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">François  </cite> <a class="comment-date" href="index.html#comment-445"><time datetime="2012-06-20T19:47:54+00:00">20/06/2012 at 19:47</time></a></header>  <section class="comment-content comment"><p>Merci, je vais pouvoir améliorer mes codes :)</p>
+</section></div></div></article>          <!-- #comment-## -->
+        <ul class="children">
+        <li class="comment byuser comment-author-sam bypostauthor even depth-2" id="li-comment-446">
+          
+            <article id="comment-446" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-446"><time datetime="2012-06-20T21:52:37+00:00">20/06/2012 at 21:52</time></a></header>  <section class="comment-content comment"><p>Wow un mec de l&#8217;april ?</p>
+<p>Bienvenu :-) J&#8217;adore ce que vous faites. Je suis donateur. Longue vie à l&#8217;APRIL, tout ça.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+        <li class="comment odd alt thread-even depth-1" id="li-comment-448">
+          
+            <article id="comment-448" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/312e00031bcf80bf523bf7704f1dd12b?s=80&#038;d=retro&#038;r=x' srcset='http://0.gravatar.com/avatar/312e00031bcf80bf523bf7704f1dd12b?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Luigi  </cite> <a class="comment-date" href="index.html#comment-448"><time datetime="2012-06-21T09:17:44+00:00">21/06/2012 at 09:17</time></a></header>  <section class="comment-content comment"><p>S&amp;M toujours aussi intéressant.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-odd thread-alt depth-1" id="li-comment-451">
+          
+            <article id="comment-451" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/502f55b818f01ac589d5708616e6bfd8?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/502f55b818f01ac589d5708616e6bfd8?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://www.sciunto.org' rel='external nofollow' class='url'>François</a>  </cite> <a class="comment-date" href="index.html#comment-451"><time datetime="2012-06-21T13:12:25+00:00">21/06/2012 at 13:12</time></a></header>  <section class="comment-content comment"><p><span class="mention"></span>oui, je suis de l&#8217;April :)</p>
+<p>Merci de nous encourager, c&#8217;est cool.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-even depth-1" id="li-comment-458">
+          
+            <article id="comment-458" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/467598a4323c35c61dedf10893c105ed?s=80&#038;d=retro&#038;r=x' srcset='http://1.gravatar.com/avatar/467598a4323c35c61dedf10893c105ed?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://renoult-jonathan.tilde3.eu' rel='external nofollow' class='url'>Muchos</a>  </cite> <a class="comment-date" href="index.html#comment-458"><time datetime="2012-06-22T05:31:44+00:00">22/06/2012 at 05:31</time></a></header>  <section class="comment-content comment"><p>C&#8217;est vraiment génial Python ! Je n&#8217;y connais rien dans ce langage, mais son nom est *sur* et *dans* tous les projets informatiques que je lorgne çà et là…</p>
+<p>En plus, la syntaxe est visiblement réussie et les &#8220;piles incluses&#8221; excellentes :) Grâce à vous, je carbure au <code>python -m "SimpleHTTPServer"</code> pour tester mon site en local… mais ça ne fonctionne pas avec php…</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-odd thread-alt depth-1" id="li-comment-459">
+          
+            <article id="comment-459" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/daac2028dd52a4cda7c9133b5c22a0db?s=80&#038;d=retro&#038;r=x' srcset='http://1.gravatar.com/avatar/daac2028dd52a4cda7c9133b5c22a0db?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='https://larlet.fr/david/' rel='external nofollow' class='url'>David Larlet</a>  </cite> <a class="comment-date" href="index.html#comment-459"><time datetime="2012-06-22T06:07:57+00:00">22/06/2012 at 06:07</time></a></header>  <section class="comment-content comment"><p>Pour les arguments, il y a également <a href="http://docopt.org/" rel="nofollow">http://docopt.org/</a> qui dispose d&#8217;une implémentation Python.</p>
+<p>Au niveau des petites libs sympa il y a aussi <a href="http://httpie.org" rel="nofollow">http://httpie.org</a></p>
+<p>(si vous utilisez fabric, ne pas oublier de jeter un œil à fabtools et fabulous)</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-even depth-1" id="li-comment-460">
+          
+            <article id="comment-460" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://www.desfrenes.com/' rel='external nofollow' class='url'>desfrenes</a>  </cite> <a class="comment-date" href="index.html#comment-460"><time datetime="2012-06-22T08:16:23+00:00">22/06/2012 at 08:16</time></a></header>  <section class="comment-content comment"><p>&#8220;mais ça ne fonctionne pas avec php…&#8221;</p>
+<p>php -S localhost:80</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-odd thread-alt depth-1" id="li-comment-461">
+          
+            <article id="comment-461" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/2ffc5f0f11cd0e8e4d015be543dd2c99?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/2ffc5f0f11cd0e8e4d015be543dd2c99?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://recher.wordpress.com' rel='external nofollow' class='url'>Recher</a>  </cite> <a class="comment-date" href="index.html#comment-461"><time datetime="2012-06-22T10:22:05+00:00">22/06/2012 at 10:22</time></a></header>  <section class="comment-content comment"><p>Ouah cool. Merci beaucoup ! </p>
+<p>Clize est une super bonne idée. Maintenant que je l&#8217;ai sous les yeux, je me rends compte que y&#8217;avait effectivement un manque, pour un problème aussi con que la récupération d&#8217;arguments.</p>
+<p>Sinon, comme librairie top classe, j&#8217;aime bien logging.<br />
+ &#8211; Formatage de message de log.<br />
+ &#8211; Définition de niveaux (error, warning, info, blabla, &#8230;)<br />
+ &#8211; Emission vers stdout, fichier texte, mail, etc.<br />
+ &#8211; Thread safe<br />
+ &#8211; Morceau de brennek rôti.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-even depth-1" id="li-comment-464">
+          
+            <article id="comment-464" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-464"><time datetime="2012-06-22T12:41:41+00:00">22/06/2012 at 12:41</time></a></header>  <section class="comment-content comment"><p>@desfrenes et @Recher: Attention avec PHP -S, c&#8217;est un ajout très récent (PHP 5.4.0) et donc n&#8217;est pour l&#8217;instant pas disponible partout. Par exemple le PHP des dépots de la dernière Ubuntu (Precise Pangoline) est en version en 5.3. Inutile de dire que les hébergeurs ne seront pas à jour de si tôt.</p>
+<p>Néanmoins si vous utilisez un framework PHP (comme Symphony ou CakePHP), il y a fort probablement un server de dev fourni avec comme c&#8217;est le cas pour Django et Bottle en Python</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-odd thread-alt depth-1" id="li-comment-466">
+          
+            <article id="comment-466" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://www.desfrenes.com/' rel='external nofollow' class='url'>desfrenes</a>  </cite> <a class="comment-date" href="index.html#comment-466"><time datetime="2012-06-22T12:51:18+00:00">22/06/2012 at 12:51</time></a></header>  <section class="comment-content comment"><p>@sam: dotdeb est là pour ça: <a href="http://www.dotdeb.org/instructions/" rel="nofollow">http://www.dotdeb.org/instructions/</a></p>
+<p>quant au fait que les hébergeurs ne soient pas à jours&#8230; étant donné que cette feature n&#8217;a d&#8217;intérêt qu&#8217;en développement ce n&#8217;est pas bien grave :-)</p>
+</section></div></div></article>          <!-- #comment-## -->
+        <ul class="children">
+        <li class="comment byuser comment-author-sam bypostauthor odd alt depth-2" id="li-comment-467">
+          
+            <article id="comment-467" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-467"><time datetime="2012-06-22T13:05:09+00:00">22/06/2012 at 13:05</time></a></header>  <section class="comment-content comment"><p>Pas exactement. En fait un serveur de dev est un moyen fabuleux de débugger en ligne sur un autre port en 2 secondes un problème en prod qu&#8217;on ne peut débugger en local. Ca permet de faire le debuggage sans perturber l&#8217;expérience utilisateur, et même activer les modes DEBUG sans que ça se voit, voir carrément tester 4 setup avec 4 settings différents sur 4 autres ports en parallèle. Ces petits serveurs de dev sont fabuleux.</p>
+<p>Excellent pour dotdeb, je connaissais pas.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-470">
+          
+            <article id="comment-470" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://www.desfrenes.com/' rel='external nofollow' class='url'>desfrenes</a>  </cite> <a class="comment-date" href="index.html#comment-470"><time datetime="2012-06-22T13:15:36+00:00">22/06/2012 at 13:15</time></a></header>  <section class="comment-content comment"><p>C&#8217;est pas une mauvaise idée effectivement.</p>
+<p>Pour les frameworks, à ma connaissance il n&#8217;y a pas de framework php qui fournisse son serveur de dev, pas avant php5.4, même si on connait des projets visant à faire un serveur web en php (à grands coups de pcntl souvent).</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-max odd alt thread-odd thread-alt depth-1" id="li-comment-512">
+          
+            <article id="comment-512" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/eb8e400eec222e2b09bd901aba2cb2dc?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/eb8e400eec222e2b09bd901aba2cb2dc?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Max  </cite> <a class="comment-date" href="index.html#comment-512"><time datetime="2012-06-24T20:48:08+00:00">24/06/2012 at 20:48</time></a></header>  <section class="comment-content comment"><p>Moi chui du mois de Mai mais je pense que tout le monde s&#8217;en fout&#8230;</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-534">
+          
+            <article id="comment-534" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://www.desfrenes.com/' rel='external nofollow' class='url'>desfrenes</a>  </cite> <a class="comment-date" href="index.html#comment-534"><time datetime="2012-06-26T14:13:22+00:00">26/06/2012 at 14:13</time></a></header>  <section class="comment-content comment"><p>Mais qu&#8217;il est con ce max !</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-971">
+          
+            <article id="comment-971" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/ca6da2e6e4ecb920ef89639e74be03cc?s=80&#038;d=retro&#038;r=x' srcset='http://0.gravatar.com/avatar/ca6da2e6e4ecb920ef89639e74be03cc?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sébastien  </cite> <a class="comment-date" href="index.html#comment-971"><time datetime="2012-08-01T18:09:44+00:00">01/08/2012 at 18:09</time></a></header>  <section class="comment-content comment"><p><span class="merci"></span>paramiko est un peu en cours d&#8217;abandon. Mais vive ssh, le nouveau module ssh pour python qui est un fork de paramiko : </p>
+<p><a href="http://wiki.python.org/moin/SecureShell" rel="nofollow">http://wiki.python.org/moin/SecureShell</a></p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-1017">
+          
+            <article id="comment-1017" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/167e04c7d854e7034acbcad6d1066dbc?s=80&#038;d=retro&#038;r=x' srcset='http://1.gravatar.com/avatar/167e04c7d854e7034acbcad6d1066dbc?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Pilu  </cite> <a class="comment-date" href="index.html#comment-1017"><time datetime="2012-08-03T00:15:35+00:00">03/08/2012 at 00:15</time></a></header>  <section class="comment-content comment"><p>Sinon il y a aussi <a href="http://lxml.de/" rel="nofollow">lxml</a> pour parser du HTML facilement (<a href="http://blog.dispatched.ch/2010/08/16/beautifulsoup-vs-lxml-performance/" rel="nofollow">et plus rapidement que BeautifulSoup apparemment</a>)<br />
+En tout cas il semble beaucoup mieux gérer le HTML malformé d&#8217;après mes tests </p>
+<p>Sinon merci pour Bottle, faut que je teste!</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-1020">
+          
+            <article id="comment-1020" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-1020"><time datetime="2012-08-03T07:08:26+00:00">03/08/2012 at 07:08</time></a></header>  <section class="comment-content comment"><p>lxml ne gère pas du tout le HTML. Il gère le xml. Du coup pour tout ce qui est HTML 4 et HTML 5, lxml est à la ramasse, surtout sur du mal formé.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-6135">
+          
+            <article id="comment-6135" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/5a35252bd6ec896f47d9b2c532e3f9ca?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/5a35252bd6ec896f47d9b2c532e3f9ca?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">askiz  </cite> <a class="comment-date" href="index.html#comment-6135"><time datetime="2013-02-13T09:13:29+00:00">13/02/2013 at 09:13</time></a></header>  <section class="comment-content comment"><p>@Sam: tu y vas un peu fort avec lxml en disant qu&#8217;il ne gère pas du tout le <a href="http://lxml.de/parsing.html#parsing-html" rel="nofollow">HTML</a>..</p>
+<p>Je l&#8217;utilise pour quelques tools pour parser des pages HTML et exécuter des query XPATH. Je n&#8217;ai jamais eu de problème :).</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-6138">
+          
+            <article id="comment-6138" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-6138"><time datetime="2013-02-13T11:08:30+00:00">13/02/2013 at 11:08</time></a></header>  <section class="comment-content comment"><p>C&#8217;est parce que tu travaille sur des pages bien formées (ou du xHTML). Mais parser des pages en HTML4 ou 5 fait avec la méthode rache, ça pardonne vachement moins.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-6141">
+          
+            <article id="comment-6141" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/5a35252bd6ec896f47d9b2c532e3f9ca?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/5a35252bd6ec896f47d9b2c532e3f9ca?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">askiz  </cite> <a class="comment-date" href="index.html#comment-6141"><time datetime="2013-02-13T11:25:15+00:00">13/02/2013 at 11:25</time></a></header>  <section class="comment-content comment"><p>@sam: C&#8217;est fort probable. Je check ce soir.</p>
+<p>Dans tous les cas, c&#8217;est tout de même possible et, au moment ou j&#8217;ai fais mes scripts (2/3 ans), c&#8217;était bien pratique pour effectuer des requêtes XPATH non gérées par Beautiful Soup (c&#8217;est le cas maintenant ?).</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-6142">
+          
+            <article id="comment-6142" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-6142"><time datetime="2013-02-13T11:31:50+00:00">13/02/2013 at 11:31</time></a></header>  <section class="comment-content comment"><p>Je ne crois pas.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-6917">
+          
+            <article id="comment-6917" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/337428a6e34734f07be5de0c8ae454cb?s=80&#038;d=retro&#038;r=x' srcset='http://0.gravatar.com/avatar/337428a6e34734f07be5de0c8ae454cb?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Etienne  </cite> <a class="comment-date" href="index.html#comment-6917"><time datetime="2013-03-13T21:22:11+00:00">13/03/2013 at 21:22</time></a></header>  <section class="comment-content comment"><p>C&#8217;est peut-être un peu hors sujet, mais j&#8217;ai un problème ennuyeux avec peewee. Y&#8217;a quelqu&#8217;un qui peut me dire où je peux poster ça?</p>
+<p>J&#8217;ai posté sur google groups, mais c&#8217;est un peu mort&#8230;</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-6918">
+          
+            <article id="comment-6918" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-6918"><time datetime="2013-03-13T22:21:13+00:00">13/03/2013 at 22:21</time></a></header>  <section class="comment-content comment"><p>Si c&#8217;est un bug: sur le bug tracker de peewee (je pense qu&#8217;il est sur github). Si c&#8217;est une demande d&#8217;aide, sur le forum de l&#8217;afpy pour du fr, et sur stackoverflow pour du en de haut niveau.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-11661">
+          
+            <article id="comment-11661" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/b010183705f121ef96331f4c1e5d8d76?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/b010183705f121ef96331f4c1e5d8d76?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Syl  </cite> <a class="comment-date" href="index.html#comment-11661"><time datetime="2013-07-25T14:00:30+00:00">25/07/2013 at 14:00</time></a></header>  <section class="comment-content comment"><p>Waaaa! Grace à vous, je découvre Clize, et ça me fout la larme à l&#8217;oeil!! J&#8217;attendais ça depuis si longtemps! </p>
+<p><a href="http://www.youtube.com/watch?v=Zu8dtg6bvKE" rel="nofollow">http://www.youtube.com/watch?v=Zu8dtg6bvKE</a></p>
+<p>P.S: &#8220;Contrairement <strong>à</strong> Max&#8221;</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-11664">
+          
+            <article id="comment-11664" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-11664"><time datetime="2013-07-25T14:11:37+00:00">25/07/2013 at 14:11</time></a></header>  <section class="comment-content comment"><p>D&#8217;ici un an ou deux, on aura éradiqué toutes les fautes de tous les articles, mouahahaha !</p>
+<p>Après on s&#8217;attaquera aux comments.</p>
+<p>Nan je déconne&#8230;</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-164275">
+          
+            <article id="comment-164275" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/959c93d802fd4124e3601d1c4dda8a07?s=80&#038;d=retro&#038;r=x' srcset='http://0.gravatar.com/avatar/959c93d802fd4124e3601d1c4dda8a07?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">s13d  </cite> <a class="comment-date" href="index.html#comment-164275"><time datetime="2015-09-07T19:27:53+00:00">07/09/2015 at 19:27</time></a></header>  <section class="comment-content comment"><p>Je connaissais pas <code>begins</code>, merci ! J&#8217;utilisais plutôt <code>docopt</code> jusqu&#8217;à présent, mais je vais peut-être essayer cette trouvaille ;-)</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-164276">
+          
+            <article id="comment-164276" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/8ad997539ab078990b8de3bb0899b8d3?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/8ad997539ab078990b8de3bb0899b8d3?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">blop  </cite> <a class="comment-date" href="index.html#comment-164276"><time datetime="2015-09-07T19:50:14+00:00">07/09/2015 at 19:50</time></a></header>  <section class="comment-content comment"><p>Merci pour l&#8217;update, sinon, dans quels cas vous utilisez botlle et dans quels cas Flask ? C&#8217;est quoi l’intérêt de bottle par rapport à Flask si ce n&#8217;est d&#8217;être embarquable dans un projet en un seul fichier, et éviter un nouvelle dépendance ?</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-164277">
+          
+            <article id="comment-164277" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-164277"><time datetime="2015-09-07T19:51:49+00:00">07/09/2015 at 19:51</time></a></header>  <section class="comment-content comment"><p>C&#8217;est le seul avantage. Je n&#8217;utilise jamais flask. Soit j&#8217;ai besoin d&#8217;un tout petit truc, et je fais du bottle, soit j&#8217;ai besoin de plus, et je fais du django. flask représente un niveau intermédiaire donc je n&#8217;ai jamais eu besoin.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-164280">
+          
+            <article id="comment-164280" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/be71a93256497bd3b3f043e89b7aac13?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/be71a93256497bd3b3f043e89b7aac13?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Christophe31  </cite> <a class="comment-date" href="index.html#comment-164280"><time datetime="2015-09-07T21:12:03+00:00">07/09/2015 at 21:12</time></a></header>  <section class="comment-content comment"><p>Click m&#8217;a l&#8217;air plus puissant que begins, mais bon, faut dire qu&#8217;Armin a ma confiance…</p>
+<p><a href="http://click.pocoo.org/5/quickstart/" rel="nofollow">Click QuickStart</a></p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-164293">
+          
+            <article id="comment-164293" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/9d831ff4e27c0abf12672ac5e2143b76?s=80&#038;d=retro&#038;r=x' srcset='http://0.gravatar.com/avatar/9d831ff4e27c0abf12672ac5e2143b76?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Laurent  </cite> <a class="comment-date" href="index.html#comment-164293"><time datetime="2015-09-08T07:57:28+00:00">08/09/2015 at 07:57</time></a></header>  <section class="comment-content comment"><p>Salut !</p>
+<p>Je suis un graaaand fan du site</p>
+<p>Pourriez-vous juste rajouter dans la section &#8220;path.py&#8221; qu&#8217;il s&#8217;installe avec un</p>
+<p>pip install path.py</p>
+<p>histoire de capitaliser et d&#8217;être homogène avec les autres libs :)</p>
+<p>Et si ça vous plait, j&#8217;adorerai lire sur les bonnes pratiques, quelques exemple typiques un peu barbus et que tout le monde échange sur les moyens d&#8217;implémenter&#8230; Avec des moyens de voter sur la meilleure solution (perfo/reuse/élégance, etc.)</p>
+<p>Merci pour votre partage !!</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-164296">
+          
+            <article id="comment-164296" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-164296"><time datetime="2015-09-08T08:33:12+00:00">08/09/2015 at 08:33</time></a></header>  <section class="comment-content comment"><blockquote>
+<p>Pourriez-vous juste rajouter dans la section “path.py” qu’il s’installe avec un</p>
+</blockquote>
+<p>Yes !</p>
+<blockquote>
+<p>quelques exemple typiques un peu barbus et que tout le monde échange sur les moyens d’implémenter</p>
+</blockquote>
+<p>Les moyens d&#8217;implémenter quoi ? Les bonnes pratiques sur quoi ?</p>
+<blockquote>
+<p>Avec des moyens de voter sur la meilleure solution (perfo/reuse/élégance, etc.)</p>
+</blockquote>
+<p>Ca c&#8217;est pas pour demain :) On va pas modifier le code de wordpress, et je doute qu&#8217;il y est un plugin solide pour ça.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-164298">
+          
+            <article id="comment-164298" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/6b8876c19601526760f7371627c99db6?s=80&#038;d=retro&#038;r=x' srcset='http://0.gravatar.com/avatar/6b8876c19601526760f7371627c99db6?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Louis  </cite> <a class="comment-date" href="index.html#comment-164298"><time datetime="2015-09-08T09:30:03+00:00">08/09/2015 at 09:30</time></a></header>  <section class="comment-content comment"><p>ça fait un peu télé-achat quand même</p>
+<p>;-)</p>
+</section></div></div></article>          <!-- #comment-## -->
+        <ul class="children">
+        <li class="comment byuser comment-author-sam bypostauthor odd alt depth-2" id="li-comment-164300">
+          
+            <article id="comment-164300" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-164300"><time datetime="2015-09-08T10:20:55+00:00">08/09/2015 at 10:20</time></a></header>  <section class="comment-content comment"><p>C&#8217;est le but ma chère valérie, c&#8217;est la but !</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+        <li class="comment even thread-odd thread-alt depth-1" id="li-comment-164332">
+          
+            <article id="comment-164332" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/b5909d29a068ec5ce58f2317b082b954?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/b5909d29a068ec5ce58f2317b082b954?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Anne Onyme  </cite> <a class="comment-date" href="index.html#comment-164332"><time datetime="2015-09-10T08:49:23+00:00">10/09/2015 at 08:49</time></a></header>  <section class="comment-content comment"><p>Plop</p>
+<p>&#8220;page d&#8217;acceuil&#8221; -&gt; &#8220;page d&#8217;accueil&#8221;;<br />
+&#8220;/chemin/vers/dossier/des/fichiers/statiques/cs&#8221; -&gt; &#8220;/chemin/vers/dossier/des/fichiers/statiques/css&#8221;;<br />
+&#8220;text&#8221; -&gt; &#8220;texte&#8221; (2 fois);<br />
+&#8220;En a déjà parlé&#8221; -&gt; &#8220;On en a déjà parlé&#8221;.</p>
+<p>Sinon, je ne comprend toujours pas bien l&#8217;intérêt de Bottle alors qu&#8217;il y a Flask, qui n&#8217;est pas plus compliqué à prendre en main et permet aussi de monter son site web en 5 minutes chrono. Dit autrement, en quoi Flask est-il moins intéressant que Bottle pour les petits projets?</p>
+<p>Sinon, pour ceux que ça intéresse, une comparaison d&#8217;autres libs pour parser des arguments: <a href="https://realpython.com/blog/python/comparing-python-command-line-parsing-libraries-argparse-docopt-click/" rel="nofollow">https://realpython.com/blog/python/comparing-python-command-line-parsing-libraries-argparse-docopt-click/</a>.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-even depth-1" id="li-comment-164340">
+          
+            <article id="comment-164340" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-164340"><time datetime="2015-09-10T15:22:39+00:00">10/09/2015 at 15:22</time></a></header>  <section class="comment-content comment"><p>bottle tient dans un fichier, donc tu peux l&#8217;embed, c&#8217;est tout. Le reste n&#8217;est pas mieux. Mais si je veux plus, je prendrais django de toute façon.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+              </ul><!-- .commentlist -->
+            <p class="nocomments">Comments are closed.</p></div><!-- #comments .comments-area -->
+
+
+<div class="ie-comment">
+Des questions Python sans rapport avec l'article ? Posez-les sur <a href="http://indexerror.net">IndexError</a>.
+
+</div>
+        
+          <hr class="featurette-divider __after_loop">
+          <nav id="nav-below" class="navigation" role="navigation">
+
+              <h3 class="assistive-text">
+                Post navigation              </h3>
+
+              <ul class="pager">
+                                  <li class="previous">
+                    <span class="nav-previous">
+                      <a href="../for-each-en-bash/index.html" rel="prev"><span class="meta-nav">&larr;</span> <code>For each</code> en bash</a>                    </span>
+                  </li>
+                                                  <li class="next">
+                    <span class="nav-next">
+                        <a href="../schema-de-fonctionnement-general-de-django/index.html" rel="next">Schéma de fonctionnement général de Django <span class="meta-nav">&rarr;</span></a>                    </span>
+                  </li>
+                              </ul>
+
+          </nav><!-- #nav-below .navigation -->
+
+        
+        
+                </div><!--.article-container -->
+
+                    
+        <div class="span3 right tc-sidebar">
+           <div id="right" class="widget-area" role="complementary">
+                                                      <aside id="text-9" class="widget widget_text">			<div class="textwidget"><p style="font-size:1.3em"><a href="../mais-ou-je-suis-tombee-la/index.html">Mais où je suis tombé(e) là ?</a></p></div>
+		</aside><aside id="text-7" class="widget widget_text">			<div class="textwidget"><img src="http://www.adobe.com/images/pdficon_small.png" width="16" height="16"/> <a href="http://pdfcrowd.com/url_to_pdf/">Télécharger cette page en PDF</a> </div>
+		</aside><aside id="text-4" class="widget widget_text">			<div class="textwidget"><br><br><a href="../appel-a-contributeurs-impertinents/index.html"><img src="../wp-content/uploads/2012/07/contributeur.png" width="288px" style="vertical-align: middle;margin-top:-40px;margin-bottom:10px;"></a> </div>
+		</aside><aside id="blog_subscription-4" class="widget jetpack_subscription_widget"><h3 class="widget-title">Souscrire à nos conneries</h3>
+			<form action="index.html%3Fshare=email.html#" method="post" accept-charset="utf-8" id="subscribe-blog-blog_subscription-4">
+				<div id="subscribe-text"><p>Entrez votre adresse mail et vous recevrez une notification à chaque nouvel article.</p>
+</div><p>Join 1,492 other subscribers</p>
+					<p id="subscribe-email">
+						<label id="jetpack-subscribe-label" for="subscribe-field-blog_subscription-4">
+							Email Address						</label>
+						<input type="email" name="email" required="required" class="required" value="" id="subscribe-field-blog_subscription-4" placeholder="Email Address" />
+					</p>
+
+					<p id="subscribe-submit">
+						<input type="hidden" name="action" value="subscribe" />
+						<input type="hidden" name="source" value="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/?shared=email&#038;msg=fail" />
+						<input type="hidden" name="sub-type" value="widget" />
+						<input type="hidden" name="redirect_fragment" value="blog_subscription-4" />
+												<input type="submit" value="J&#039;adhère, bon dieu !" name="jetpack_subscriptions_widget" />
+					</p>
+							</form>
+
+			<script>
+			/*
+			Custom functionality for safari and IE
+			 */
+			(function( d ) {
+				// In case the placeholder functionality is available we remove labels
+				if ( ( 'placeholder' in d.createElement( 'input' ) ) ) {
+					var label = d.querySelector( 'label[for=subscribe-field-blog_subscription-4]' );
+						label.style.clip 	 = 'rect(1px, 1px, 1px, 1px)';
+						label.style.position = 'absolute';
+						label.style.height   = '1px';
+						label.style.width    = '1px';
+						label.style.overflow = 'hidden';
+				}
+
+				// Make sure the email value is filled in before allowing submit
+				var form = d.getElementById('subscribe-blog-blog_subscription-4'),
+					input = d.getElementById('subscribe-field-blog_subscription-4'),
+					handler = function( event ) {
+						if ( '' === input.value ) {
+							input.focus();
+
+							if ( event.preventDefault ){
+								event.preventDefault();
+							}
+
+							return false;
+						}
+					};
+
+				if ( window.addEventListener ) {
+					form.addEventListener( 'submit', handler, false );
+				} else {
+					form.attachEvent( 'onsubmit', handler );
+				}
+			})( document );
+			</script>
+				
+</aside><aside id="tag_cloud-3" class="widget widget_tag_cloud"><h3 class="widget-title">TagCloud</h3><div class="tagcloud"><a href="../tag/0bin/index.html" class="tag-cloud-link tag-link-148 tag-link-position-1" style="font-size: 9.04pt;" aria-label="0bin (11 items)">0bin</a>
+<a href="../tag/angularjs/index.html" class="tag-cloud-link tag-link-443 tag-link-position-2" style="font-size: 8.4pt;" aria-label="angularjs (9 items)">angularjs</a>
+<a href="../tag/asyncio/index.html" class="tag-cloud-link tag-link-922 tag-link-position-3" style="font-size: 9.04pt;" aria-label="asyncio (11 items)">asyncio</a>
+<a href="../tag/autobahn/index.html" class="tag-cloud-link tag-link-979 tag-link-position-4" style="font-size: 8.4pt;" aria-label="autobahn (9 items)">autobahn</a>
+<a href="../tag/bash/index.html" class="tag-cloud-link tag-link-14 tag-link-position-5" style="font-size: 10.8pt;" aria-label="bash (19 items)">bash</a>
+<a href="../tag/bitcoin/index.html" class="tag-cloud-link tag-link-320 tag-link-position-6" style="font-size: 8.4pt;" aria-label="bitcoin (9 items)">bitcoin</a>
+<a href="../tag/blog/index.html" class="tag-cloud-link tag-link-107 tag-link-position-7" style="font-size: 11.84pt;" aria-label="blog (26 items)">blog</a>
+<a href="../tag/cache/index.html" class="tag-cloud-link tag-link-333 tag-link-position-8" style="font-size: 8.72pt;" aria-label="cache (10 items)">cache</a>
+<a href="../tag/comprehension-lists/index.html" class="tag-cloud-link tag-link-20 tag-link-position-9" style="font-size: 8pt;" aria-label="comprehension-lists (8 items)">comprehension-lists</a>
+<a href="../tag/crossbar/index.html" class="tag-cloud-link tag-link-1046 tag-link-position-10" style="font-size: 8.4pt;" aria-label="crossbar (9 items)">crossbar</a>
+<a href="../tag/css/index.html" class="tag-cloud-link tag-link-188 tag-link-position-11" style="font-size: 8.4pt;" aria-label="css (9 items)">css</a>
+<a href="../tag/cul-2/index.html" class="tag-cloud-link tag-link-33 tag-link-position-12" style="font-size: 9.28pt;" aria-label="cul (12 items)">cul</a>
+<a href="../tag/dict/index.html" class="tag-cloud-link tag-link-435 tag-link-position-13" style="font-size: 8pt;" aria-label="dict (8 items)">dict</a>
+<a href="../tag/django/index.html" class="tag-cloud-link tag-link-28 tag-link-position-14" style="font-size: 16pt;" aria-label="django (89 items)">django</a>
+<a href="../tag/don/index.html" class="tag-cloud-link tag-link-1210 tag-link-position-15" style="font-size: 10.48pt;" aria-label="don (17 items)">don</a>
+<a href="../tag/encoding/index.html" class="tag-cloud-link tag-link-54 tag-link-position-16" style="font-size: 8.72pt;" aria-label="encoding (10 items)">encoding</a>
+<a href="../tag/git/index.html" class="tag-cloud-link tag-link-18 tag-link-position-17" style="font-size: 12.88pt;" aria-label="git (35 items)">git</a>
+<a href="../tag/http/index.html" class="tag-cloud-link tag-link-204 tag-link-position-18" style="font-size: 9.6pt;" aria-label="http (13 items)">http</a>
+<a href="../tag/import/index.html" class="tag-cloud-link tag-link-215 tag-link-position-19" style="font-size: 8.4pt;" aria-label="import (9 items)">import</a>
+<a href="../tag/ipython/index.html" class="tag-cloud-link tag-link-164 tag-link-position-20" style="font-size: 8.72pt;" aria-label="ipython (10 items)">ipython</a>
+<a href="../tag/iterable/index.html" class="tag-cloud-link tag-link-217 tag-link-position-21" style="font-size: 9.84pt;" aria-label="iterable (14 items)">iterable</a>
+<a href="../tag/javascript/index.html" class="tag-cloud-link tag-link-96 tag-link-position-22" style="font-size: 14.08pt;" aria-label="javascript (50 items)">javascript</a>
+<a href="../tag/jquery/index.html" class="tag-cloud-link tag-link-112 tag-link-position-23" style="font-size: 8pt;" aria-label="jquery (8 items)">jquery</a>
+<a href="../tag/linux/index.html" class="tag-cloud-link tag-link-238 tag-link-position-24" style="font-size: 9.04pt;" aria-label="linux (11 items)">linux</a>
+<a href="../tag/meta/index.html" class="tag-cloud-link tag-link-102 tag-link-position-25" style="font-size: 17.52pt;" aria-label="meta (138 items)">meta</a>
+<a href="../tag/mysql/index.html" class="tag-cloud-link tag-link-82 tag-link-position-26" style="font-size: 8pt;" aria-label="mysql (8 items)">mysql</a>
+<a href="../tag/nginx/index.html" class="tag-cloud-link tag-link-183 tag-link-position-27" style="font-size: 9.84pt;" aria-label="nginx (14 items)">nginx</a>
+<a href="../tag/nsfw/index.html" class="tag-cloud-link tag-link-319 tag-link-position-28" style="font-size: 9.84pt;" aria-label="nsfw (14 items)">nsfw</a>
+<a href="../tag/pep8/index.html" class="tag-cloud-link tag-link-552 tag-link-position-29" style="font-size: 8pt;" aria-label="pep8 (8 items)">pep8</a>
+<a href="../tag/pip/index.html" class="tag-cloud-link tag-link-344 tag-link-position-30" style="font-size: 8.72pt;" aria-label="pip (10 items)">pip</a>
+<a href="../tag/poo/index.html" class="tag-cloud-link tag-link-549 tag-link-position-31" style="font-size: 10pt;" aria-label="poo (15 items)">poo</a>
+<a href="../tag/python/index.html" class="tag-cloud-link tag-link-4 tag-link-position-32" style="font-size: 22pt;" aria-label="python (496 items)">python</a>
+<a href="../tag/python-3/index.html" class="tag-cloud-link tag-link-365 tag-link-position-33" style="font-size: 8.4pt;" aria-label="python 3 (9 items)">python 3</a>
+<a href="../tag/redis/index.html" class="tag-cloud-link tag-link-196 tag-link-position-34" style="font-size: 8.72pt;" aria-label="redis (10 items)">redis</a>
+<a href="../tag/ruby/index.html" class="tag-cloud-link tag-link-325 tag-link-position-35" style="font-size: 8pt;" aria-label="ruby (8 items)">ruby</a>
+<a href="../tag/shell/index.html" class="tag-cloud-link tag-link-202 tag-link-position-36" style="font-size: 8.72pt;" aria-label="shell (10 items)">shell</a>
+<a href="../tag/sublime-text/index.html" class="tag-cloud-link tag-link-76 tag-link-position-37" style="font-size: 8.4pt;" aria-label="sublime text (9 items)">sublime text</a>
+<a href="../tag/ubuntu/index.html" class="tag-cloud-link tag-link-255 tag-link-position-38" style="font-size: 10.24pt;" aria-label="ubuntu (16 items)">ubuntu</a>
+<a href="../tag/unicode/index.html" class="tag-cloud-link tag-link-53 tag-link-position-39" style="font-size: 8.4pt;" aria-label="unicode (9 items)">unicode</a>
+<a href="../tag/unit-tests/index.html" class="tag-cloud-link tag-link-302 tag-link-position-40" style="font-size: 8.72pt;" aria-label="unit tests (10 items)">unit tests</a>
+<a href="../tag/unpacking/index.html" class="tag-cloud-link tag-link-180 tag-link-position-41" style="font-size: 8pt;" aria-label="unpacking (8 items)">unpacking</a>
+<a href="../tag/virtualenv/index.html" class="tag-cloud-link tag-link-259 tag-link-position-42" style="font-size: 9.04pt;" aria-label="virtualenv (11 items)">virtualenv</a>
+<a href="../tag/wamp/index.html" class="tag-cloud-link tag-link-1039 tag-link-position-43" style="font-size: 10pt;" aria-label="wamp (15 items)">wamp</a>
+<a href="../tag/web-2/index.html" class="tag-cloud-link tag-link-758 tag-link-position-44" style="font-size: 8pt;" aria-label="web (8 items)">web</a>
+<a href="../tag/yield/index.html" class="tag-cloud-link tag-link-287 tag-link-position-45" style="font-size: 8.4pt;" aria-label="yield (9 items)">yield</a></div>
+</aside><aside id="text-5" class="widget widget_text"><h3 class="widget-title"> Envoyez des sioux</h3>			<div class="textwidget"><p><img src="../wp-content/uploads/2013/07/bitcoin.png" width="16" height="16"/> On adooooore les bitcoins :</p>
+
+<p>
+
+<a href="bitcoin:19zAHPPuce4BAhsdy9KaFwVLurEJXMhMAn?amount=1X8&label=SamEtMax">19zAHPPuce4BAhsdy9KaFwVLurEJXMhMAn</a>
+
+</p></div>
+		</aside><aside id="nav_menu-3" class="widget widget_nav_menu"><h3 class="widget-title">Nos projets</h3><div class="menu-nos-projets-container"><ul id="menu-nos-projets" class="menu"><li id="menu-item-15841" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15841"><a href="http://multiboards.net/">Multiboards &#8211; l&#8217;actu geek fr en une page</a></li>
+<li id="menu-item-15837" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15837"><a href="http://0bin.net">0bin &#8211; le pastebin chiffré</a></li>
+<li id="menu-item-15838" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15838"><a href="http://allthatcounts.net">All that counts &#8211; compteur pour jeux</a></li>
+<li id="menu-item-15839" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15839"><a href="https://github.com/sametmax/django-quicky">Django quicky &#8211; quick views for Django</a></li>
+<li id="menu-item-15840" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15840"><a href="https://github.com/sametmax/VizHash.js">VizHash.js &#8211; Hash visuels</a></li>
+<li id="menu-item-15842" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15842"><a href="https://github.com/sametmax/codes-des-articles">Code des articles du blog</a></li>
+</ul></div></aside><aside id="text-11" class="widget widget_text"><h3 class="widget-title"> </h3>			<div class="textwidget"> </div>
+		</aside><aside id="meta-3" class="widget widget_meta"><h3 class="widget-title">Meta</h3>			<ul>
+						<li><a href="../wp-login.php.html">Log in</a></li>
+			<li><a href="../feed.1">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="../comments/feed/index.html">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://wordpress.org/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.org</a></li>			</ul>
+			</aside>                                              </div><!-- #left or #right-->
+        </div><!--.tc-sidebar -->
+
+        
+        </div><!--.row -->
+    </div><!-- .container role: main -->
+
+    
+</div><!--#main-wrapper"-->
+
+		<!-- FOOTER -->
+		<footer id="footer" class="">
+		 					<div class="container footer-widgets ">
+					<div class="row widget-area" role="complementary">
+												
+							<div id="footer_one" class="span4">
+																
+										<aside id="nav_menu-2" class="widget widget_nav_menu"><h3 class="widget-title">Hors du blog</h3><div class="menu-bottom-menu-container"><ul id="menu-bottom-menu" class="menu"><li id="menu-item-2391" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2391"><a href="../contactez-nous/index.html">Page de contact</a></li>
+<li id="menu-item-12230" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12230"><a href="http://twitter.com/sam_et_max">@sam_et_max sur twitter</a></li>
+<li id="menu-item-12285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12285"><a href="http://bridge.suumitsu.eu/?action=display&#038;bridge=TwitterBridge&#038;u=sam_et_max&#038;format=AtomFormat">Nos tweets en RSS</a></li>
+<li id="menu-item-12231" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12231"><a href="https://github.com/sametmax/">Fork me, I&#8217;m famous (github)</a></li>
+</ul></div></aside>
+																							</div><!-- .{$key}_widget_class -->
+
+						
+							<div id="footer_two" class="span4">
+																
+										<aside id="text-8" class="widget widget_text">			<div class="textwidget">Tous les textes de ce blog, sauf signalement contraire, sont sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</div>
+		</aside>
+																							</div><!-- .{$key}_widget_class -->
+
+						
+							<div id="footer_three" class="span4">
+																
+										<aside id="archives-2" class="widget widget_archive"><h3 class="widget-title">Toi aussi, trouve un article obsolète sur notre blog</h3>		<ul>
+			<li><a href='../2019/09/index.html'>September 2019</a>&nbsp;(1)</li>
+	<li><a href='../2019/06/index.html'>June 2019</a>&nbsp;(1)</li>
+	<li><a href='../2019/02/index.html'>February 2019</a>&nbsp;(1)</li>
+	<li><a href='../2019/01/index.html'>January 2019</a>&nbsp;(3)</li>
+	<li><a href='../2018/12/index.html'>December 2018</a>&nbsp;(1)</li>
+	<li><a href='../2018/09/index.html'>September 2018</a>&nbsp;(2)</li>
+	<li><a href='../2018/08/index.html'>August 2018</a>&nbsp;(1)</li>
+	<li><a href='../2018/07/index.html'>July 2018</a>&nbsp;(3)</li>
+	<li><a href='../2018/06/index.html'>June 2018</a>&nbsp;(4)</li>
+	<li><a href='../2018/05/index.html'>May 2018</a>&nbsp;(2)</li>
+	<li><a href='../2018/03/index.html'>March 2018</a>&nbsp;(2)</li>
+	<li><a href='../2018/02/index.html'>February 2018</a>&nbsp;(1)</li>
+	<li><a href='../2017/12/index.html'>December 2017</a>&nbsp;(4)</li>
+	<li><a href='../2017/11/index.html'>November 2017</a>&nbsp;(5)</li>
+	<li><a href='../2017/10/index.html'>October 2017</a>&nbsp;(2)</li>
+	<li><a href='../2017/09/index.html'>September 2017</a>&nbsp;(1)</li>
+	<li><a href='../2017/07/index.html'>July 2017</a>&nbsp;(5)</li>
+	<li><a href='../2017/06/index.html'>June 2017</a>&nbsp;(3)</li>
+	<li><a href='../2017/05/index.html'>May 2017</a>&nbsp;(3)</li>
+	<li><a href='../2017/04/index.html'>April 2017</a>&nbsp;(2)</li>
+	<li><a href='../2017/03/index.html'>March 2017</a>&nbsp;(3)</li>
+	<li><a href='../2017/02/index.html'>February 2017</a>&nbsp;(5)</li>
+	<li><a href='../2017/01/index.html'>January 2017</a>&nbsp;(5)</li>
+	<li><a href='../2016/10/index.html'>October 2016</a>&nbsp;(2)</li>
+	<li><a href='../2016/09/index.html'>September 2016</a>&nbsp;(5)</li>
+	<li><a href='../2016/08/index.html'>August 2016</a>&nbsp;(2)</li>
+	<li><a href='../2016/03/index.html'>March 2016</a>&nbsp;(8)</li>
+	<li><a href='../2016/02/index.html'>February 2016</a>&nbsp;(9)</li>
+	<li><a href='../2016/01/index.html'>January 2016</a>&nbsp;(16)</li>
+	<li><a href='../2015/12/index.html'>December 2015</a>&nbsp;(6)</li>
+	<li><a href='../2015/11/index.html'>November 2015</a>&nbsp;(7)</li>
+	<li><a href='../2015/10/index.html'>October 2015</a>&nbsp;(2)</li>
+	<li><a href='../2015/09/index.html'>September 2015</a>&nbsp;(6)</li>
+	<li><a href='../2015/08/index.html'>August 2015</a>&nbsp;(10)</li>
+	<li><a href='../2015/07/index.html'>July 2015</a>&nbsp;(18)</li>
+	<li><a href='../2015/06/index.html'>June 2015</a>&nbsp;(13)</li>
+	<li><a href='../2015/05/index.html'>May 2015</a>&nbsp;(12)</li>
+	<li><a href='../2015/04/index.html'>April 2015</a>&nbsp;(13)</li>
+	<li><a href='../2015/03/index.html'>March 2015</a>&nbsp;(8)</li>
+	<li><a href='../2015/02/index.html'>February 2015</a>&nbsp;(4)</li>
+	<li><a href='../2015/01/index.html'>January 2015</a>&nbsp;(21)</li>
+	<li><a href='../2014/12/index.html'>December 2014</a>&nbsp;(24)</li>
+	<li><a href='../2014/11/index.html'>November 2014</a>&nbsp;(6)</li>
+	<li><a href='../2014/10/index.html'>October 2014</a>&nbsp;(18)</li>
+	<li><a href='../2014/09/index.html'>September 2014</a>&nbsp;(10)</li>
+	<li><a href='../2014/08/index.html'>August 2014</a>&nbsp;(5)</li>
+	<li><a href='../2014/07/index.html'>July 2014</a>&nbsp;(11)</li>
+	<li><a href='../2014/06/index.html'>June 2014</a>&nbsp;(25)</li>
+	<li><a href='../2014/05/index.html'>May 2014</a>&nbsp;(14)</li>
+	<li><a href='../2014/04/index.html'>April 2014</a>&nbsp;(10)</li>
+	<li><a href='../2014/03/index.html'>March 2014</a>&nbsp;(23)</li>
+	<li><a href='../2014/02/index.html'>February 2014</a>&nbsp;(27)</li>
+	<li><a href='../2014/01/index.html'>January 2014</a>&nbsp;(17)</li>
+	<li><a href='../2013/12/index.html'>December 2013</a>&nbsp;(27)</li>
+	<li><a href='../2013/11/index.html'>November 2013</a>&nbsp;(25)</li>
+	<li><a href='../2013/10/index.html'>October 2013</a>&nbsp;(27)</li>
+	<li><a href='../2013/09/index.html'>September 2013</a>&nbsp;(1)</li>
+	<li><a href='../2013/08/index.html'>August 2013</a>&nbsp;(31)</li>
+	<li><a href='../2013/07/index.html'>July 2013</a>&nbsp;(32)</li>
+	<li><a href='../2013/06/index.html'>June 2013</a>&nbsp;(24)</li>
+	<li><a href='../2013/05/index.html'>May 2013</a>&nbsp;(30)</li>
+	<li><a href='../2013/04/index.html'>April 2013</a>&nbsp;(31)</li>
+	<li><a href='../2013/03/index.html'>March 2013</a>&nbsp;(33)</li>
+	<li><a href='../2013/02/index.html'>February 2013</a>&nbsp;(29)</li>
+	<li><a href='../2013/01/index.html'>January 2013</a>&nbsp;(34)</li>
+	<li><a href='../2012/12/index.html'>December 2012</a>&nbsp;(32)</li>
+	<li><a href='../2012/11/index.html'>November 2012</a>&nbsp;(36)</li>
+	<li><a href='../2012/10/index.html'>October 2012</a>&nbsp;(35)</li>
+	<li><a href='../2012/09/index.html'>September 2012</a>&nbsp;(36)</li>
+	<li><a href='../2012/08/index.html'>August 2012</a>&nbsp;(37)</li>
+	<li><a href='../2012/07/index.html'>July 2012</a>&nbsp;(33)</li>
+	<li><a href='../2012/06/index.html'>June 2012</a>&nbsp;(24)</li>
+	<li><a href='../2012/05/index.html'>May 2012</a>&nbsp;(31)</li>
+	<li><a href='../2012/04/index.html'>April 2012</a>&nbsp;(20)</li>
+	<li><a href='../2012/03/index.html'>March 2012</a>&nbsp;(10)</li>
+	<li><a href='../2012/02/index.html'>February 2012</a>&nbsp;(14)</li>
+		</ul>
+		</aside>
+																							</div><!-- .{$key}_widget_class -->
+
+																	</div><!-- .row.widget-area -->
+				</div><!--.footer-widgets -->
+				    				 <div class="colophon">
+			 	<div class="container">
+			 		<div class="row-fluid">
+					    <div class="span4 social-block pull-left"><span class="tc-footer-social-links-wrapper" ><a class="social-icon icon-feed" href="../feed/rss/index.html" title="Subscribe to my rss feed"  ></a></span></div><div class="span4 credits"><p>&middot; &copy; 2019 <a href="../index.html" title="Sam &amp; Max" rel="bookmark">Sam &amp; Max</a> &middot; Designed by <a href="http://themesandco.com/">Themes &amp; Co</a> &middot;</p></div><div class="span4 backtop"><p class="pull-right"><a class="back-to-top" href="index.html%3Fshare=email.html#">Back to top</a></p></div>	      			</div><!-- .row-fluid -->
+	      		</div><!-- .container -->
+	      	</div><!-- .colophon -->
+	    			</footer>
+			<div style="display:none">
+	<div class="grofile-hash-map-bf9ecde8f5e286de6ce5c80206cf9dd6">
+	</div>
+	<div class="grofile-hash-map-83b27f6ff2301ca0f4ed1c7628620757">
+	</div>
+	<div class="grofile-hash-map-bf9ecde8f5e286de6ce5c80206cf9dd6">
+	</div>
+	<div class="grofile-hash-map-502f55b818f01ac589d5708616e6bfd8">
+	</div>
+	<div class="grofile-hash-map-312e00031bcf80bf523bf7704f1dd12b">
+	</div>
+	<div class="grofile-hash-map-467598a4323c35c61dedf10893c105ed">
+	</div>
+	<div class="grofile-hash-map-daac2028dd52a4cda7c9133b5c22a0db">
+	</div>
+	<div class="grofile-hash-map-2ffc5f0f11cd0e8e4d015be543dd2c99">
+	</div>
+	<div class="grofile-hash-map-eb8e400eec222e2b09bd901aba2cb2dc">
+	</div>
+	<div class="grofile-hash-map-ca6da2e6e4ecb920ef89639e74be03cc">
+	</div>
+	<div class="grofile-hash-map-167e04c7d854e7034acbcad6d1066dbc">
+	</div>
+	<div class="grofile-hash-map-5a35252bd6ec896f47d9b2c532e3f9ca">
+	</div>
+	<div class="grofile-hash-map-337428a6e34734f07be5de0c8ae454cb">
+	</div>
+	<div class="grofile-hash-map-b010183705f121ef96331f4c1e5d8d76">
+	</div>
+	<div class="grofile-hash-map-959c93d802fd4124e3601d1c4dda8a07">
+	</div>
+	<div class="grofile-hash-map-8ad997539ab078990b8de3bb0899b8d3">
+	</div>
+	<div class="grofile-hash-map-be71a93256497bd3b3f043e89b7aac13">
+	</div>
+	<div class="grofile-hash-map-9d831ff4e27c0abf12672ac5e2143b76">
+	</div>
+	<div class="grofile-hash-map-6b8876c19601526760f7371627c99db6">
+	</div>
+	<div class="grofile-hash-map-b5909d29a068ec5ce58f2317b082b954">
+	</div>
+	</div>
+
+	<script type="text/javascript">
+		window.WPCOM_sharing_counts = {"http:\/\/sametmax.com\/sept-petites-libs-qui-changent-la-vie-dun-dev-python\/":959};
+	</script>
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+			<div id="fb-root"></div>
+			<script>(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&appId=249643311490&version=v2.3'; fjs.parentNode.insertBefore(js, fjs); }(document, 'script', 'facebook-jssdk'));</script>
+			<script>
+			jQuery( document.body ).on( 'post-load', function() {
+				if ( 'undefined' !== typeof FB ) {
+					FB.XFBML.parse();
+				}
+			} );
+			</script>
+						<script>
+			function renderGooglePlus1() {
+				if ( 'undefined' === typeof gapi ) {
+					return;
+				}
+
+				jQuery( '.g-plus' ).each(function() {
+					var $button = jQuery( this );
+
+					if ( ! $button.data( 'gplus-rendered' ) ) {
+						gapi.plusone.render( this, {
+							href: $button.attr( 'data-href' ),
+							size: $button.attr( 'data-size' ),
+							annotation: $button.attr( 'data-annotation' )
+						});
+
+						$button.data( 'gplus-rendered', true );
+					}
+				});
+			}
+
+			(function() {
+				var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+				po.src = 'https://apis.google.com/js/platform.js';
+				po.innerHTML = '{"parsetags": "explicit"}';
+				po.onload = renderGooglePlus1;
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+			})();
+
+			jQuery( document.body ).on( 'post-load', renderGooglePlus1 );
+			</script>
+				<div id="sharing_email" style="display: none;">
+		<form action="index.html%3Fshare=email.html" method="post">
+			<label for="target_email">Send to Email Address</label>
+			<input type="email" name="target_email" id="target_email" value="" />
+
+			
+				<label for="source_name">Your Name</label>
+				<input type="text" name="source_name" id="source_name" value="" />
+
+				<label for="source_email">Your Email Address</label>
+				<input type="email" name="source_email" id="source_email" value="" />
+
+						<input type="text" id="jetpack-source_f_name" name="source_f_name" class="input" value="" size="25" autocomplete="off" title="This field is for validation and should not be changed" />
+			
+			<img style="float: right; display: none" class="loading" src="../wp-content/plugins/jetpack/modules/sharedaddy/images/loading.gif" alt="loading" width="16" height="16" />
+			<input type="submit" value="Send Email" class="sharing_send" />
+			<a rel="nofollow" href="index.html%3Fshare=email.html#cancel" class="sharing_cancel">Cancel</a>
+
+			<div class="errors errors-1" style="display: none;">
+				Post was not sent - check your email addresses!			</div>
+
+			<div class="errors errors-2" style="display: none;">
+				Email check failed, please try again			</div>
+
+			<div class="errors errors-3" style="display: none;">
+				Sorry, your blog cannot share posts by email.			</div>
+		</form>
+	</div>
+					<script type="text/javascript">
+				// Pinterest shared resources
+				var s = document.createElement("script");
+				s.type = "text/javascript";
+				s.async = true;
+				s.setAttribute('data-pin-hover', true);				s.src = window.location.protocol + "//assets.pinterest.com/js/pinit.js";
+				var x = document.getElementsByTagName("script")[0];
+				x.parentNode.insertBefore(s, x);
+				// if 'Pin it' button has 'counts' make container wider
+				jQuery(window).load( function(){ jQuery( 'li.share-pinterest a span:visible' ).closest( '.share-pinterest' ).width( '80px' ); } );
+			</script>
+		<script type="text/javascript" src="https://platform.tumblr.com/v1/share.js"></script>		<script>
+		// Don't use Pocket's default JS as it we need to force init new Pocket share buttons loaded via JS.
+		function jetpack_sharing_pocket_init() {
+			jQuery.getScript( 'https://widgets.getpocket.com/v1/j/btn.js?v=1' );
+		}
+		jQuery( document ).ready( jetpack_sharing_pocket_init );
+		jQuery( document.body ).on( 'post-load', jetpack_sharing_pocket_init );
+		</script>
+		<script type='text/javascript'>
+/* <![CDATA[ */
+var wpcf7 = {"apiSettings":{"root":"http:\/\/sametmax.com\/wp-json\/contact-form-7\/v1","namespace":"contact-form-7\/v1"},"recaptcha":{"messages":{"empty":"Please verify that you are not a robot."}}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/contact-form-7/includes/js/scripts.js%3Fver=5.0.2'></script>
+<script type='text/javascript' src='https://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201937'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var pollsL10n = {"ajax_url":"http:\/\/sametmax.com\/wp-admin\/admin-ajax.php","text_wait":"Your last request is still being processed. Please wait a while ...","text_valid":"Please choose a valid poll answer.","text_multiple":"Maximum number of choices allowed: ","show_loading":"1","show_fading":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/wp-polls/polls-js.js%3Fver=2.73.8'></script>
+<script type='text/javascript' src='../wp-content/plugins/wp-syntax/js/wp-syntax.js%3Fver=1.1'></script>
+<script type='text/javascript' src='https://secure.gravatar.com/js/gprofiles.js?ver=2019Sepaa'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/jetpack/modules/wpgroho.js%3Fver=4.9.7'></script>
+<script type='text/javascript' src='../wp-includes/js/comment-reply.min.js%3Fver=4.9.7'></script>
+<script type='text/javascript' src='../wp-includes/js/jquery/ui/core.min.js%3Fver=1.11.4'></script>
+<script type='text/javascript' src='../wp-content/themes/customizr/inc/assets/js/modernizr.min.js%3Fver=3.2.10'></script>
+<script type='text/javascript' src='../wp-content/themes/customizr/inc/assets/js/retina.min.js%3Fver=3.2.10'></script>
+<script type='text/javascript' src='../wp-includes/js/wp-embed.min.js%3Fver=4.9.7'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var sharing_js_options = {"lang":"en","counts":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/jetpack/_inc/build/sharedaddy/sharing.min.js%3Fver=6.3.2'></script>
+<script type='text/javascript'>
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-facebook', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+				return false;
+			});
+</script>
+<script type='text/javascript' src='https://stats.wp.com/e-201937.js' async='async' defer='defer'></script>
+<script type='text/javascript'>
+	_stq = window._stq || [];
+	_stq.push([ 'view', {v:'ext',j:'1:6.3.2',blog:'32490438',post:'959',tz:'0',srv:'sametmax.com'} ]);
+	_stq.push([ 'clickTrackerInit', '32490438', '959' ]);
+</script>
+<div class="tc-btt-wrapper"><i class="btt-arrow" style="color:#394143"></i></div>	</body>
+	</html>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>observer &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/observer/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Le pattern observer en utilisant des décorateurs</title>
+		<link>http://sametmax.com/le-pattern-observer-en-utilisant-des-decorateurs/</link>
+		<comments>http://sametmax.com/le-pattern-observer-en-utilisant-des-decorateurs/#comments</comments>
+		<pubDate>Sun, 14 Oct 2012 15:03:07 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[decorator]]></category>
+		<category><![CDATA[design pattern]]></category>
+		<category><![CDATA[observer]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2591</guid>
+		<description><![CDATA[Nous avons vu précédemment que les décorateurs permettaient d’exécuter du code avant et après une fonction, sans modifier la fonction. La plupart du temps on retourne ainsi une nouvelle fonction embarquant un nouveau code.
+
+Mais il existe d'autres usages pour les décorateurs, et notamment un qui est au cœur du fonctionnement de django-quicky: l'abonnement.
+]]></description>
+				<content:encoded><![CDATA[<p>Nous avons vu précédemment que les <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">décorateurs</a> permettaient d’exécuter du code avant et après une fonction, sans modifier la fonction. La plupart du temps on retourne ainsi une nouvelle fonction avec un comportement différent.</p>
+<p>Mais il existe d&#8217;autres usages pour les décorateurs, et notamment un qui est au cœur du fonctionnement de <a href="http://sametmax.com/django-quicky-labolition-des-preliminaires-par-sam-et-max/">django-quicky</a>: l&#8217;abonnement.</p>
+<pre lang="python">
+def evenement(nom):
+
+    # on assure que la liste des events et callabcks est initialisae
+    evenement.abonnements = getattr(evenement, 'abonnements', {})
+
+    # on ajoute un moyen d'appeler tous les callbacks pour un event
+    evenement.trigger = lambda e: [f(e) for f in evenement.abonnements[e]] 
+
+    # définition du décorateur lui-même
+    def decorateur(func):
+
+        # on ajoute la fonction comme callback pour cet event
+        evenement.abonnements.setdefault(nom, []).append(func)
+
+        # et on retourne la fonction telle qu'elle, sans la modifier
+        return func
+
+    return decorateur</pre>
+<p>Ce morceaux de code s&#8217;utilise ainsi:</p>
+<pre lang="python">
+# a chaque fois qu'on met le decorateur
+# la fonction est liae à un événement
+@evenement('evenement1')
+@evenement('evenement2')
+def reagir_a_evenement(evenement):
+    # la fonction doit acccepter l'evenement en paramètre
+    print "Oh, evenement '%s' a eu lieu" % evenement
+
+@evenement('evenement1')
+def moi_aussi(evenement):
+    print "Cool, moi aussi j'ai reagit a l'evenement '%s'" % evenement
+
+# ici on déclenche l'événement sans raison
+# mais dans du vrai code on le déclenche à la suite
+# d'une action réelle
+evenement.trigger('evenement1')
+evenement.trigger('evenement2')</pre>
+<p>Ici c&#8217;est un exemple simplifié, mais le principe y est: chaque fois qu&#8217;on utilise un décorateur, on associe la fonction décorée à un nom (ici le nom de notre événement, mais dans django-quicky, c&#8217;est l&#8217;url). Et quand l&#8217;événement se produit, on appelle toutes les fonctions enregistrées, en leur passant l&#8217;objet événement (ici une simple string) en paramètres.</p>
+<p>Avec ce design pattern appelé &#8216;observer&#8217;, on découple complètement le code qui déclenche un événement (la lecture d&#8217;un fichier, une erreur, un entrée utilisateur, etc) et le code qui réagit à cet événement (qui peut très bien être celui d&#8217;une lib complètement séparée).</p>
+<p>Le décorateur Python est un moyen particulièrement pratique de déclarer un abonnement d&#8217;une fonction à un événement, et ne demande quasiment aucun effort de la part du développeur qui l&#8217;utilise à part d&#8217;avoir une fonction qui accepte les bons paramètres pour réagir à tous les événements que peuvent produire votre library. </p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-pattern-observer-en-utilisant-des-decorateurs/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">2591</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/10/erection.jpg" length="12928" type="image/jpg" />	</item>
+	</channel>
+</rss>

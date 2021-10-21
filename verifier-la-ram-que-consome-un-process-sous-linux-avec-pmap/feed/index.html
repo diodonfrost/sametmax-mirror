@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Vérifier la RAM que consomme un process sous Linux avec pmap</title>
+	<atom:link href="http://sametmax.com/verifier-la-ram-que-consome-un-process-sous-linux-avec-pmap/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/verifier-la-ram-que-consome-un-process-sous-linux-avec-pmap/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/verifier-la-ram-que-consome-un-process-sous-linux-avec-pmap/#comment-186466</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 27 Mar 2017 13:49:14 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=583#comment-186466</guid>
+		<description><![CDATA[&lt;p&gt;:)&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>:)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: JoHn</title>
+		<link>http://sametmax.com/verifier-la-ram-que-consome-un-process-sous-linux-avec-pmap/#comment-186462</link>
+		<dc:creator><![CDATA[JoHn]]></dc:creator>
+		<pubDate>Mon, 27 Mar 2017 09:02:52 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=583#comment-186462</guid>
+		<description><![CDATA[Marrant, on retrouve exactement le nombre affiché avec &quot;ps -ef&quot; ..
+
+ps -ef &#124; grep ipdb
+
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+
+john     22534  6.7  0.6 149780 27120 pts/29   Sl+  11:00   0:00 /usr/bin/python /usr/local/bin/ipdb p65
+
+pmap 22534&#124;tail -1
+
+total           149780K
+
+..C&#039;est pas dingue, ça ?..
+]]></description>
+		<content:encoded><![CDATA[<p>Marrant, on retrouve exactement le nombre affiché avec &#8220;ps -ef&#8221; ..</p>
+<p>ps -ef | grep ipdb</p>
+<p>USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND</p>
+<p>john     22534  6.7  0.6 149780 27120 pts/29   Sl+  11:00   0:00 /usr/bin/python /usr/local/bin/ipdb p65</p>
+<p>pmap 22534|tail -1</p>
+<p>total           149780K</p>
+<p>..C&#8217;est pas dingue, ça ?..</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/verifier-la-ram-que-consome-un-process-sous-linux-avec-pmap/#comment-157</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 10 May 2012 00:45:55 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=583#comment-157</guid>
+		<description><![CDATA[Hyper pratique. Si vous êtes une grosse feignasse comme moi, faites un one liner: pmap $(ps aux &#124; grep redis-server &#124; grep -v grep &#124; awk &#039;{ print $2 }&#039;)
+
+Ou alors une petite fonction dans le .bashrc:
+
+function get_memory() {
+pmap $(ps aux &#124; grep $1 &#124; grep -v grep &#124; awk &#039;{ print $2 }&#039;)
+}]]></description>
+		<content:encoded><![CDATA[<p>Hyper pratique. Si vous êtes une grosse feignasse comme moi, faites un one liner: pmap $(ps aux | grep redis-server | grep -v grep | awk &#8216;{ print $2 }&#8217;)</p>
+<p>Ou alors une petite fonction dans le .bashrc:</p>
+<p>function get_memory() {<br />
+pmap $(ps aux | grep $1 | grep -v grep | awk &#8216;{ print $2 }&#8217;)<br />
+}</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

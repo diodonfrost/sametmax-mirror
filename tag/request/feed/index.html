@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>request &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/request/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Requests fait partie de la lib standard !</title>
+		<link>http://sametmax.com/requests-fait-partie-de-la-lib-standard/</link>
+		<comments>http://sametmax.com/requests-fait-partie-de-la-lib-standard/#comments</comments>
+		<pubDate>Thu, 29 May 2014 05:07:29 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Gadgets]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[request]]></category>
+		<category><![CDATA[stdlib]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10360</guid>
+		<description><![CDATA[Enfin, presque :)]]></description>
+				<content:encoded><![CDATA[<p>Enfin, presque :)</p>
+<p>J&#8217;étais en train d&#8217;installer en vieux requirements.txt quand soudain :</p>
+<pre lang="python">  File "
+
+/usr/lib/python2.7/dist-packages/pip/download.py", line 23, in <module>
+    from requests.adapters import BaseAdapter
+ImportError: No module named adapters
+</pre>
+<p>Wut ?</p>
+<p>Mon erreur était due à une version de requests trop ancienne. J&#8217;upgrade et ça remarche. Mais ça m&#8217;a intrigué :</p>
+<pre lang="bash">⟩ grin "requests"  /usr/lib/python2.7/dist-packages/pip/
+/usr/lib/python2.7/dist-packages/pip/download.py:
+   22 : import requests, six
+   23 : from requests.adapters import BaseAdapter
+   24 : from requests.auth import AuthBase, HTTPBasicAuth
+   25 : from requests.compat import IncompleteRead
+   26 : from requests.exceptions import InvalidURL, ChunkedEncodingError
+   27 : from requests.models import Response
+   28 : from requests.structures import CaseInsensitiveDict
+  120 :         # Store the new username and password to use for future requests
+  182 :         # We only work for requests with a host of localhost
+  211 : class PipSession(requests.Session):
+  548 :         except requests.HTTPError as exc:
+/usr/lib/python2.7/dist-packages/pip/index.py:
+   17 : import html5lib, requests, pkg_resources
+   18 : from requests.exceptions import SSLError
+   80 :         # The Session we'll use to make requests
+  689 :         except requests.HTTPError as exc:
+  692 :         except requests.ConnectionError as exc:
+  697 :         except requests.Timeout:
+</pre>
+<p>Je regarde le code source github, qui <a href="https://github.com/pypa/pip/blob/develop/pip/download.py">diffère</a> de celui de mon système :</p>
+<pre lang="python">from pip._vendor.requests.adapters import BaseAdapter, HTTPAdapter
+from pip._vendor.requests.auth import AuthBase, HTTPBasicAuth
+from pip._vendor.requests.compat import IncompleteRead
+from pip._vendor.requests.exceptions import ChunkedEncodingError</pre>
+<p>Mais ça reste bien requests.</p>
+<p>Donc, si vous avez la 3.4, vous avez pip installé, qui maintenant embed requests. Donc Python 3.4 vient forcément avec requests \o/</p>
+<p>Si vous supportez uniquement cette plateforme, vous pouvez faire :</p>
+<pre lang="python">try:
+    import requests
+except ImportError:
+    import pip._vendor.requests as requests</pre>
+<p>Et bénéficier de requests sans rien installer.</p>
+<p>Tout ça pour ça.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/requests-fait-partie-de-la-lib-standard/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">10360</post-id>	</item>
+	</channel>
+</rss>

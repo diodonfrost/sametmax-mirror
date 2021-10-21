@@ -1,0 +1,1125 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>lambda &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/lambda/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Introduction au currying </title>
+		<link>http://sametmax.com/introduction-au-currying/</link>
+		<comments>http://sametmax.com/introduction-au-currying/#comments</comments>
+		<pubDate>Fri, 12 Dec 2014 19:37:00 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[comprehension-lists]]></category>
+		<category><![CDATA[currying]]></category>
+		<category><![CDATA[fonction]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[lambda]]></category>
+		<category><![CDATA[listes en intention]]></category>
+		<category><![CDATA[programmation functionelle]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12693</guid>
+		<description><![CDATA[Le currying (ou Curryfication pour les frencofans) est le nom donné à une technique de programmation qui consiste à créer une fonction à partir d'une autre fonction et d'une liste partielle de paramètres destinés à celle-ci. On retrouve massivement cette technique en programmation fonctionnelle puisqu'elle permet de créer une fonction pure à partir d'une autre fonction pure. C'est une forme de réutilisabilité de code.]]></description>
+				<content:encoded><![CDATA[<p>Le currying (ou Curryfication pour les frencofans) est le nom donné à une technique de programmation qui consiste à créer une fonction à partir d&#8217;une autre fonction et d&#8217;une liste partielle de paramètres destinés à celle-ci. On retrouve massivement cette technique en programmation fonctionnelle puisqu&#8217;elle permet de créer une fonction pure à partir d&#8217;une autre fonction pure. C&#8217;est une forme de réutilisabilité de code.</p>
+<p>La forme la plus simple de currying est de réécrire une fonction appelant l&#8217;autre. Par exemple, soit une fonction pour multiplier tous les éléments d&#8217;un itérable :</p>
+<pre lang="python">def multiply(iterable, number):
+    """ Multiplie tous les éléments d'un itérable par un nombre.
+
+        Exemple :
+
+            >>> list(multiply([1, 2, 3], 2))
+            [2, 4, 6]
+    """
+    return (x * number for x in iterable)</pre>
+<p>On peut ensuite créer une fonction qui multipliera par 2 tous les éléments d&#8217;un itérable :</p>
+<pre lang="python">def doubled(iterable):
+    """ Multiplie tous les éléments d'un itérable par un 2.
+
+        Exemple :
+
+            >>> list(doubled([1, 2, 3]))
+            [2, 4, 6]
+    """
+    return multiply(iterable, 2)</pre>
+<p>C&#8217;est une forme de currying. On créé une fonction qui fait ce que fait une autre fonction, mais avec des arguments par défaut.</p>
+<p>Python possède une fonction pour faire ça automatiquement avec n&#8217;importe quelle fonction :</p>
+<pre lang="python">>>> from functools import partial 
+>>> tripled = partial(multiply, number=3) # on curryfie ici
+>>> list(tripled([1, 2, 3])) # nouvelle fonction avec un seul argument
+[3, 6, 9]</pre>
+<p>Cela marche car, je vous le rappelle, les fonctions sont des objets en Python. On peut mettre une fonction (je ne parle pas de son résultat) dans une variable, passer une fonction en paramètre ou retourner une fonction dans une autre fonction. <strong>Les fonctions sont manipulables</strong>.</p>
+<p>Il n&#8217;est pas rare d&#8217;utiliser les fonctions anonymes comme outils curryfication. En Python, on ferait ça avec une <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">lambda</a> :</p>
+<pre lang="python">
+>>> tripled = lambda x: multiple(x, 3) 
+>>> list(tripled([1, 2, 3]))
+[3, 6, 9]</pre>
+<p>Certains outils, comme <a href="http://buzzdecafe.github.io/code/2014/05/16/introducing-ramda/">Ramda</a> en Javascript, vont plus loin, et exposent des fonctions qui se curryfient automatiquement.</p>
+<p>Pour ce faire, il faut inverser l&#8217;ordre qu&#8217;on mettrait intuitivement aux arguments dans la déclaration d&#8217;une fonction :</p>
+<pre lang="python">
+# au lieu de multiply(iterable, number), on a :
+def multiply(number, iterable=None):
+    # Si on a pas d'itérable passé, on curryfie
+    if iterable is None:
+        return partial(multiply, number=number)
+    return (x * number for x in iterable)</pre>
+<p>Ainsi :</p>
+<pre lang="python">>>> list(multiply(2, [1, 2, 3])) # pas de currying
+[2, 4, 6]
+>>> quintuple = multiply(5) # currying automatique
+>>> list(quintuple([1, 2, 3]))
+[5, 10, 15]
+</pre>
+<p>L’intérêt de ce style, c&#8217;est qu&#8217;on peut composer des traitements à partir de plusieurs sous traitements, presque déclarativement :</p>
+<pre lang="python">
+def remove(filter, iterable=None):
+    """ Retire tous les éléments d'un itérable correspondant au filtre.
+
+        Exemple :
+
+            >>> list(remove(lambda x: x >= 4, [1, 2, 3, 4, 5]))
+            [1, 2, 3]
+    """
+    if iterable is None:
+        return partial(remove, filter)
+
+    return (x for x in iterable if not filter(x))
+
+>>> smalls = remove(lambda x: x >= 4)
+>>> list(smalls(tripled([0, 1, 2, 3, 4]))) # le traitement est auto descriptif
+[0, 3]
+</pre>
+<p>Néanmoins, il faut savoir que ce style n&#8217;est pas pythonique. En effet, en Python on préférera généralement utiliser des suites suite de générateurs. Soit par <a href="http://sametmax.com/python-love-les-listes-en-intention-partie-2/">intention</a>, soit via <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">yield</a>.</p>
+<p>Notre exemple serait alors :</p>
+<pre lang="python">>>> tripled = (x * 3 for x in [0, 1, 2, 3, 4])
+>>> smalls = (x for x in tripled if x <= 4)
+>>> list(smalls)
+[0, 3]</pre>
+<p>De plus, cette technique suppose qu&#8217;on ne profitera pas de certaines fonctionnalités, comme les paramètres par défaut des fonctions Python.</p>
+<p>C&#8217;est toutefois une bonne chose à connaître. C&#8217;est occasionnellement utile en Python et peut produire des solutions très élégantes. C&#8217;est également une bonne chose à comprendre pour aborder d&#8217;autres langages plus fonctionnels qui les utilisent bien plus comme le Javascript, le Lisp, ou carrément le Haskell.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/introduction-au-currying/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">12693</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/12/tumblr_n5zg0woqTQ1r539hzo1_500.jpg" length="68286" type="image/jpg" />	</item>
+		<item>
+		<title>map(), filter() et reduce () ?</title>
+		<link>http://sametmax.com/map-filter-et-reduce/</link>
+		<comments>http://sametmax.com/map-filter-et-reduce/#comments</comments>
+		<pubDate>Thu, 14 Nov 2013 09:44:58 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[comprehension-lists]]></category>
+		<category><![CDATA[filter]]></category>
+		<category><![CDATA[lambda]]></category>
+		<category><![CDATA[map]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[reduce]]></category>
+		<category><![CDATA[yield]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7791</guid>
+		<description><![CDATA[<code>map()</code>, <code>filter()</code> et <code>reduce()</code> sont des fonctions de traitement d'itérables typiques de la programmation fonctionnelle, qui <a href="http://www.artima.com/weblogs/viewpost.jsp?thread=98196">ont été marquées comme à retirer des builtins</a> pour Python 3. Finalement, seule <code>reduce()</code> sera déplacée dans le module <code>functools</code> pour Python 3.]]></description>
+				<content:encoded><![CDATA[<p><code>map()</code>, <code>filter()</code> et <code>reduce()</code> sont des fonctions de traitement d&#8217;itérables typiques de la programmation fonctionnelle, qui <a href="http://www.artima.com/weblogs/viewpost.jsp?thread=98196">ont été marquées comme à retirer des builtins</a> pour Python 3. Finalement, seule <code>reduce()</code> sera déplacée dans le module <code>functools</code> pour Python 3.</p>
+<p>Les opérations que font ces fonctions sont typiquement quelque chose que l&#8217;ont peut faire sans elles, et nous allons les passer en revue pour voir dans quels cas elles sont pertinentes, dans quel cas une alternative est meilleure. L&#8217;alternative étant, dans 90% des cas, une <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">liste en intention</a>.</p>
+<h2>filter()</h2>
+<p><code>filter()</code> prend une fonction en paramètre, souvent une <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">lambda</a>, comme ses deux soeurs puisqu&#8217;on est dans le paradigme fonctionnel. Elle doit renvoyer <code>True</code> si on garde un élément, et <code>False</code> sinon.</p>
+<p>L&#8217;usage typique est celui-ci :</p>
+<pre lang="python">ages = range(30)
+majeurs = filter(lambda x: x > 18, ages)
+print(majeurs)
+## [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
+</pre>
+<p>Typiquement, ce code peut être remplacé par une liste en intention dans le pur style Python :</p>
+<pre lang="python">majeurs = [a for a in ages if a > 18]</pre>
+<p>Le code est plus court, et fait usage d&#8217;une des fonctionalités les plus importantes du langage. On peut en plus ajouter une transformation à <code>a</code> facilement si on le désire, au lieu de devoir coller un <code>map()</code> derrière.</p>
+<p><code>filter()</code> est vraiment la moins utile des 3, et sera une question de style, surtout pour les nostalgiques de Lisp. Je répète souvent que quand on code avec un autre langage, on doit essayer de se tenir au style du nouveau et pas faire un mix avec ses anciennes habitudes. Quand je code en Java, je fais des getter et setter, même si j&#8217;ai horreur de ça.</p>
+<p>Il existe quand même UNE astuce pour laquelle filter est utile : garder uniquement les éléments vrais d&#8217;une liste.</p>
+<p>Typiquement :</p>
+<pre lang="python">
+l = [1, 0, None, [], True]
+print filter(bool, l)
+[1, True]
+</pre>
+<p>Ca marche si la fonction pre-existe et qu&#8217;on a pas à faire une lambda, mais c&#8217;est vraiment le seul usage potable. Un peu plus court qu&#8217;une liste en intention.</p>
+<h2>map()</h2>
+<p>Si <code>filter()</code> est l&#8217;équivalent de la partie de droite d&#8217;une liste en intention, <code>map()</code> est l&#8217;équivalent de la partie de gauche. La fonction passée retourne un résultat qui permet de transformer la liste.</p>
+<p>Typiquement :</p>
+<pre lang="python">memes = ["It's over 9000 !", "All your base are belong to us."]
+print(map(unicode.upper, memes))</pre>
+<p>Ce qui peut se traduire par :</p>
+<pre lang="python">print(s.upper() for s in memes)</pre>
+<p><code>map()</code> est un peu plus utile, dans le sens où sa syntaxe peut être plus concise dans certains cas, comme le casting de types. Par exemple si je reçois une heure sous forme de string :</p>
+<pre lang="python">h, m, s = map(int, '8:19:22'.split(':'))</pre>
+<p>sera plus court et plus concis, et plus clair que :</p>
+<pre lang="python">h, m, s = (int(i) for i in '8:19:22'.split(':'))</pre>
+<p>Mais bon, la différence n&#8217;est pas non plus incroyable au point d&#8217;en faire une fonctionnalitéé clé. Je l&#8217;utilise de temps à autre par soucis de brièveté, mais vraiment c&#8217;est tout.</p>
+<h2>reduce()</h2>
+<p><code>reduce()</code> est plus tordu. La fonction doit prendre deux paramètres en entrée, et retourner une valeur. Au  premier appel, les deux premiers éléments de l&#8217;itérable sont passés en paramètres. Ensuite, le résultat de cet appel et l&#8217;élément suivant sont passés en paramètre, et ainsi de suite.</p>
+<p>Vous n&#8217;avez rien pigé ? C&#8217;est normal. <code>reduce()</code> est parfaitement cryptique. Voici ce que ça donne en pratique :</p>
+<pre lang="python">def afficher(a, b):
+    print("Entrée :", a, b)
+    print("Sortie :", a + b)
+    return a + b
+
+res = reduce(afficher, range(10))
+print("Résultat final", res)
+
+## Entrée : 0 1
+## Sortie : 1
+## Entrée : 1 2
+## Sortie : 3
+## Entrée : 3 3
+## Sortie : 6
+## Entrée : 6 4
+## Sortie : 10
+## Entrée : 10 5
+## Sortie : 15
+## Entrée : 15 6
+## Sortie : 21
+## Entrée : 21 7
+## Sortie : 28
+## Entrée : 28 8
+## Sortie : 36
+## Entrée : 36 9
+## Sortie : 45
+## Résultat final 45</pre>
+<p>Vous allez me dire, à quoi ça sert ? Et bien par exemple à appliquer des opérateurs commutatifs, ici nous l&#8217;avons fait avec <code>+</code>, nous avons fait la somme de tous les éléments retournés par <code>range(10)</code>. La preuve :</p>
+<pre lang="python">print(sum(range(10)))
+## 45</pre>
+<p>Il n&#8217;y a pas, en Python, de fonction équivalent à <code>sum()</code> pour la multiplication. Donc on ferait :</p>
+<pre lang="python">print(reduce(lambda a, b: a * b, range(1, 11)))
+## 3628800</pre>
+<p>Ce qui multiplie tous les éléments entre eux. Comme l&#8217;ordre dans lequel les éléments sont multipliés n&#8217;a pas d&#8217;important (d&#8217;où le &#8216;commutatif&#8217;), ça fonctionne.</p>
+<p><code>reduce()</code> peut prendre un troisième paramètre, <code>initial</code>, qui sera la valeur passée en premier au premier appel de la fonction. Cela permet de travailler sur des calculs en cascade qui ne fonctionneraient sinon pas. Revenons à notre exemple de temps :</p>
+<pre lang="python">temps = map(int, '8:19:22'.split(':'))
+print(reduce(lambda a, b: a * 60 + b, temps, 0))
+## 29962</pre>
+<p>Ce qui peut se traduire par :</p>
+<pre lang="python">h, m, s = map(int, '8:19:22'.split(':'))
+print(h * 3600 + m * 60 + s)
+## 29962</pre>
+<p>Bien sûr, cette conversion ne fonctionnerait pas si le calcul était sur un itérable plus long. Mais une version itérative est facile à faire :</p>
+<pre lang="python">res = 0
+for i in map(int, '8:19:22'.split(':')):
+    res = res * 60 + i
+print(res)
+## 29962</pre>
+<p>Maintenant, autant les deux dernières versions sont faciles à comprendre, autant la première prend quelques secondes. Et c&#8217;est la raison pour laquelle <code>reduce()</code> a été retirée des builtins, pour encourager l&#8217;usage des alternatives. En effet, cette fonction donne toujours un résultat très peu lisible. Je cite et approuve Guido là dessus:</p>
+<blockquote><p>C&#8217;est en fait celle que je déteste le plus, car, à part pour quelques exemples impliquant + ou *, presque chaque fois que je vois un appel à reduce() avec une fonction non-triviale passée en argument, j&#8217;ai besoin de prendre un crayon et un papier pour faire le diagramme de ce qui est effectivement entrée dans la fonction avant que je comprenne ce qu&#8217;est supposé faire reduce(). Donc à mes yeux, l&#8217;application de reduce() est plutôt limitée à des opérateurs associatifs, et <strong>dans d&#8217;autres cas il est mieux d&#8217;écrire une boucle d&#8217;accumulation explicitement.</strong>
+</p></blockquote>
+<p>Graissage maison.</p>
+<p>Bref, <code>reduce()</code> est dur à lire, et une boucle ne l&#8217;est pas. Écrivez 3 lignes de plus, ça ne va pas vous tuer. Relire votre one-liner dans un mois par contre&#8230;</p>
+<p>Cette fonction a été beaucoup utilisée avec les opérateurs <code>or</code> et <code>and</code> pour savoir si tous les éléments étaient vrais au moins un élément vrai dans une liste :</p>
+<pre lang="python">tout_est_vrai = [1, 1, 1, 1]
+certains_sont_vrais = [1, 0, 1, 0]
+tout_est_faux = [0, 0, 0, 0]
+
+# Retourne True si tout est vrai
+print(bool(reduce(lambda a, b: a and b, tout_est_vrai)))
+## True
+print(bool(reduce(lambda a, b: a and b, certains_sont_vrais)))
+## False
+print(bool(reduce(lambda a, b: a and b, tout_est_faux)))
+## False
+ 
+# Retourne True si au moins un élément est vrai
+print(bool(reduce(lambda a, b: a or b, tout_est_vrai)))
+## True
+print(bool(reduce(lambda a, b: a or b, certains_sont_vrais)))
+## True
+print(bool(reduce(lambda a, b: a or b, tout_est_faux)))
+## False</pre>
+<p>Mais aujourd&#8217;hui, c&#8217;est parfaitement inutile puisque nous avons les fonctions built-in <strong>all()</strong> et <strong>any()</strong>, qui font ça en plus court et plus rapide :</p>
+<pre lang="python"># Retourne True si tout est vrai
+print(all(tout_est_vrai))
+## True
+print(all(certains_sont_vrais))
+## False
+print(all(tout_est_faux))
+## False
+ 
+# Retourne True si au moins un élément est vrai
+print(any(tout_est_vrai))
+## True
+print(any(certains_sont_vrais))
+## True
+print(any(tout_est_faux))
+## False</pre>
+<h2>Petite astuce finale</h2>
+<p>Souvenez-vous également que les fonctions Python peuvent être déclarées n&#8217;importe où à la volée, même dans une autre fonction, une classe, une méthode, un context manager, etc. Or une fonction peut retourner un générateur grâce à <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">yield</a>, ce qui vous permet de déclarer des gros bouts de logique, et de les plugger dans votre process itérative a posteriori :</p>
+<pre lang="python">def traitement_complexe(iterable):
+    for x in iterable:
+        if x not in (1, 3, 7) and x % 2 != 0:
+            if x + x < 13 :
+                yield x
+            else: 
+                yield x - 2
+
+print("-".join(map(str, traitement_complexe(range(20)))))
+## 5-7-9-11-13-15-17</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/map-filter-et-reduce/feed/</wfw:commentRss>
+		<slash:comments>22</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">7791</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/11/Bl18TZa.gif" length="66881" type="image/jpg" />	</item>
+		<item>
+		<title>S&#8217;affranchir des doublons d&#8217;un itérable en Python</title>
+		<link>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/</link>
+		<comments>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/#comments</comments>
+		<pubDate>Tue, 20 Aug 2013 10:10:32 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dublon]]></category>
+		<category><![CDATA[generator]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[lambda]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[yield]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7143</guid>
+		<description><![CDATA[Supprimer ou ignorer les doublons d'un itérable tel qu'une liste ou un array est un challenge dans tous les langages.]]></description>
+				<content:encoded><![CDATA[<p>Supprimer ou ignorer les doublons d&#8217;un itérable tel qu&#8217;une liste ou un array est un challenge dans tous les langages. Il faut se poser les questions suivantes :</p>
+<ul>
+<li>Qu&#8217;est-ce qu&#8217;un doublon ?</li>
+<li>Quels types d&#8217;itérables traite-t-on ?</li>
+<li>Quel est la taille de l&#8217;itérable ?</li>
+<li>Et niveau perfs ?</li>
+</ul>
+<p>En Python, on a des structures de données qui suppriment automatiquement les doublons : les sets et les dictionnaires. Mais elles ne conservent pas l&#8217;ordre des élements.</p>
+<p>Il y a aussi le fait qu&#8217;un itérable en Python peut avoir une taille inconnue, ou infinie.</p>
+<p>Le post est long, donc&#8230;</p>
+
+<!-- iframe plugin v.4.3 wordpress.org/plugins/iframe/ -->
+<iframe width="420" height="315" src="//www.youtube.com/embed/HsX4M-by5OY" frameborder="0" 0="allowfullscreen" scrolling="yes" class="iframe-class"></iframe>
+
+<h2>Solution 1 : générateur et hashing</h2>
+<p>En utilisant conjointement les générateurs, les sets et une petite injection de dépendance, on peut trouver un compromis entre flexibilité et performances :</p>
+<pre lang="python">def skip_duplicates(iterable, key=lambda x: x):
+
+    # on va mettre l’empreinte unique de chaque élément dans ce set
+    fingerprints = set()
+
+    for x in iterable:
+        # chaque élement voit son emprunte calculée. Par défaut l’empreinte
+        # est l'élément lui même, ce qui fait qu'il n'y a pas besoin de
+        # spécifier 'key' pour des primitives comme les ints ou les strings.
+        fingerprint = key(x)
+
+        # On vérifie que l'empreinte est dans la liste des empreintes  des
+        # éléments précédents. Si ce n'est pas le cas, on yield l'élément, et on
+        # rajoute sont empreinte ans la liste de ceux trouvés, donc il ne sera
+        # pas yieldé si on ne le yieldera pas une seconde fois si on le
+        # rencontre à nouveau
+        if fingerprint not in fingerprints:
+            yield x
+            fingerprints.add(fingerprint)</pre>
+<p>La fonction s&#8217;appelle <code>skip_duplicates</code> car c&#8217;est ce qu&#8217;elle fait. Elle ne retire pas vraiment les doublons, elle produit un flux de d&#8217;éléments qui ne comporte pas de doublons en ignorant tout doublons présent dans l&#8217;itérable initial.</p>
+<p>Cette approche a plusieurs avantages :</p>
+<ul>
+<li>Les doublons sont bien retirés, et l&#8217;ordre est conservé.</li>
+<li>La complexité est de 0(n).</li>
+<li>L&#8217;utilisateur peut choisir ce qui fait qu&#8217;un élément est unique : un attribut, un sous-élément, l&#8217;affichage sous forme de string&#8230;</li>
+<li>C&#8217;est un générateur, est cela fonctionne donc avec des itérables de toute taille, même inconnue ou infinie.</li>
+</ul>
+<p>Il faut néanmoins que l&#8217;ensemble des éléments uniques tiennent au moins une fois en mémoire en plus de l&#8217;itérable initial, et potentiellement d&#8217;un stockage à la sortie du générateur. On fait donc un trade-off sur la mémoire.</p>
+<p>Comme la valeur de <code>key</code> par défaut est une valeur saine, ça fonctionne comme on s&#8217;y attend pour les cas simples :</p>
+<pre lang="python">>>> list(skip_duplicates([1, 2, 3, 4, 4, 2, 1, 3 , 4]))
+[1, 2, 3, 4]
+>>> list(skip_duplicates('fjsqlkdmfjsklqmdfjdmsl'))
+[u'f', u'j', u's', u'q', u'l', u'k', u'd', u'm']
+>>> list(skip_duplicates(((1, 2), (2, 1), (1, 2), (1, 1))))
+[(1, 2), (2, 1), (1, 1)]</pre>
+<p>Pourvoir spécifier &#8216;key&#8217; permet de faire des choix dans ce qu&#8217;est un doublon :</p>
+<pre lang="python">>>> list(skip_duplicates((1, 2, '1', '1', 2, 3, '3')))
+[1, 2, u'1', 3, u'3']
+>>> list(skip_duplicates((1, 2, '1', '1', 2, 3, '3'), key=lambda x: str(x)))
+[1, 2, 3]</pre>
+<p>Et si on s&#8217;attaque à des cas plus complexes, le fonction vous force à préciser votre pensée :</p>
+<pre lang="python">>>> list(skip_duplicates(([], [], (), [1, 2], (1, 2)))
+... )
+Traceback (most recent call last):
+  File "<ipython-input-20-ed44f170c634>", line 1, in <module>
+    list(skip_duplicates(([], [], (), [1, 2], (1, 2)))
+  File "<ipython-input-18-42dbb94f03f8>", line 7, in skip_duplicates
+    if fingerprint not in fingerprints:
+TypeError: unhashable type: 'list'</pre>
+<p>En effet les listes ne sont pas des types hashables en Python, on ne peut donc pas les stocker dans un <code>set</code>.</p>
+<p>Mais on peut caster la liste, et faire ainsi le choix de savoir sur quel critère on base notre égalité. Par exemle, considère-t-on que deux itérables ayant le même contenu sont égaux, où alors doivent-ils avoir le même type ?</p>
+<pre lang="python">>>> list(skip_duplicates(([], [], (), [1, 2], (1, 2)), lambda x: tuple(x)))
+[[], [1, 2]]
+>>> list(skip_duplicates(([], [], (), [1, 2], (1, 2)), lambda x: (type(x), tuple(x))))
+[[], (), [1, 2], (1, 2)]</pre>
+<p>Nous utilisons le fait que :</p>
+<pre lang="python">>>> tuple([1, 2]) == (1, 2)
+True
+>>> (type([1, 2]), tuple([1, 2])) == (type((1, 2)), (1, 2))
+False
+</pre>
+<p>Puisque :</p>
+<pre lang="python">>>> (type([1, 2]), tuple([1, 2]))
+(<type 'list'>, (1, 2))
+>>> (type((1, 2)), (1, 2))
+(<type 'tuple'>, (1, 2))</pre>
+<p>Dans le cas où nous ne sommes pas capables de déterminer ce qu&#8217;est un doublon, la fonction ne retire simplement rien :</p>
+<pre lang="python">class Test(object):
+    def __init__(self, foo='bar'):
+        self.foo = foo
+    def __repr__(self):
+        return "Test('%s')" % self.foo
+
+>>> list(skip_duplicates([Test(), Test(), Test('other')]))
+[Test('bar'), Test('bar'), Test('other')]</pre>
+<p>Mais permet encore une fois de faire le choix de quoi retirer :</p>
+<pre lang="python">>>> list(skip_duplicates([Test(), Test(), Test('other')], key=lambda x: x.foo))
+[Test('bar'), Test('other')]</pre>
+<p>Ce principe de la fonction <code>key</code>, on le retrouve dans <code>sorted()</code>, donc les habitués seront déjà à l&#8217;aise. Et j&#8217;aime beaucoup ce pattern, car il est très puissant. On peut avoir la fonction <code>key</code> qui renvoit des choses très simples :</p>
+<ul>
+<li>Un attribut.</li>
+<li>Un element (<code>x[2]</code>, <code>x['cle']</code>&#8230;)</li>
+<li>Une version castée avec <code>int()</code>, <code>str()</code>, <code>tuple()</code>, etc</li>
+</ul>
+<p>Mais on peut aussi faire des choses très complexes. En effet, rien ne nous oblige à utiliser une lambda, on peut mettre une fonction complète et lui faire retourner :</p>
+<ul>
+<li>Un hash md5.</li>
+<li>Une entrée en base de données.</li>
+<li>Un nouvel objet customisé.</li>
+<li>Un tuple de tuples d&#8217;objets custos avec des dictionnaires en attributs&#8230;</li>
+<li>Le contenu d&#8217;un fichier.</li>
+</ul>
+<p>Python sait naturellement comparer tout ça.</p>
+<p>Notez que nous trichons un peu, puisque nous retirons les doublons en nous basant sur un <code>set</code> qui va calculer un hash de l&#8217;objet, et pas véritablement vérifier l&#8217;égalité. La fonction en fonctionnera donc pas si l&#8217;utilisateur définie <code>__eq__</code> et s&#8217;attend à ce que les doublons soient retirés. Ce qui nous amène à &#8230;</p>
+<h2>Solution 2 : iterateur et comparaison</h2>
+<p>Pour ce genre de chose, un autre algo, qui ne fontionerait que sur les itérables de taille finie, et qui serait bien plus lent (complexité n log(n)), peut être utilisé :</p>
+<pre lang="python">def strip_duplicates(iterable, equals=lambda x, y: x == y):
+
+    # On transforme l'itérable en iterateur sur lui même, cela va nous
+    # permettre d'appeler next() dessus et récupérer le premier élément,
+    # même sur un objet non indexable (sur lequel on ne peut utiliser [0])
+    iterable = iter(iterable)
+
+    res = []
+    # Une petite boucle infinie est nécessaire car la boucle 'for' ne nous
+    # permet pas de récupérer le premier élément indépendamment des autres,
+    # et la boucle 'while' attend une condition de sortie, ce que nous n'avons
+    # pas forcément (il n'est pas possible de vérifier le nombre d'éléments
+    # restant dans un générateur).
+    while True:
+
+        # on récupère le premier élément de l'iterable restant, si il n'y en
+        # a plus, on sort de la boucle.
+        try:
+            elem = next(iterable)
+        except StopIteration:
+            break
+
+        # Le premier élément est ajouté au résultat sans doublons. Maintenant
+        # on va recréer l'itérable, mais en retirant tout ce qui était égal
+        # au premier élément. Notez que 'être égal' est une condition modifiable
+        # en passant une fonction en paramètre, comme l'était 'key' précédemment.
+        res.append(elem)
+
+        iterable = iter([x for x in iterable if not equals(elem, x)])
+
+    return res</pre>
+<p>La fonction s&#8217;appelle <code>strip_duplicates</code> car elle produit une nouvelle liste, mais sans les éléments indésirables, comme le fait <code>strip()</code> sur une chaîne (produit une nouvelle chaîne, sans les éléments indésirables).</p>
+<p>Ce type de fonction peut être utile dans plusieurs cas :</p>
+<ul>
+<li>On a pas envie de se poser la question de savoir si nos types à comparer sont hashable ou pas, et on est prêt à payer un peu de CPU pour cela.</li>
+<li>On a besoin de retirer les doublons sur la base d&#8217;une égalité, par exemple sur l&#8217;existence de la méthode <code>__eq__</code>.</li>
+<li>On a besoin de retirer les doublons sur la base d&#8217;une logique complexe qui dépend du contexte.</li>
+</ul>
+<p>A première vu cela fonctionne presque de la même manière que <code>skip_duplicates</code>, mais en retournant une liste plutôt qu&#8217;un générateur :</p>
+<pre lang="python">>>> strip_duplicates('fdjqkslfjdmkfdsqjkfmjqsdmlkfjqslkmfjsdklfl')
+['f', 'd', 'j', 'q', 'k', 's', 'l', 'm']</pre>
+<p>Mais déjà il n&#8217;y a pas à se soucier de savoir si une structure de données est hashable :</p>
+<pre lang="python">>>> strip_duplicates(([], [], (), [1, 2], (1, 2)))
+[[], (), [1, 2], (1, 2)]</pre>
+<p>Même si on garde la même flexibilité, bien que la fonction à passer ait une signature légèrement différente :</p>
+<pre lang="python">>>> strip_duplicates(([], [], (), [1, 2], (1, 2)), lambda x, y: tuple(x) == tuple(y))
+[[], [1, 2]]</pre>
+<p>Le plus interessant reste que cela fonctionne sur l&#8217;égalité, et donc cela marche d&#8217;office avec les objets qui déclarent <code>__eq__</code> ce qui est le cas dans de nombreuses libs, comme les ORM :</p>
+<pre lang="python">class Test(object):
+    def __init__(self, foo='bar'):
+        self.foo = foo
+    def __repr__(self):
+        return "Test('%s')" % self.foo
+    def __eq__(self, other):
+        return self.foo == other.foo
+
+>>> strip_duplicates([Test(), Test(), Test('other')])
+[Test('bar'), Test('other')]
+</pre>
+<p>Dans certains cas, notamment dans le cas où le point de comparaison est un object non hashable de très grosse taille (par exemple un dico très long), on peut espérer aussi pas mal économiser en mémoire. Mais on est qu&#8217;en est-il des besoins en mémoire et en CPU ?</p>
+<h2>Solution 3 : retirer les doublons, in place</h2>
+<p>Enfin, pour ceux qui ont de grosses contraintes de mémoire et qui veulent un algo rapide au prix de la flexibilité du code, voici une solution qui oblige à travailler sur des listes et à modifier la liste sur place :</p>
+<pre lang="python">def remove_duplicates(lst, equals=lambda x, y: x == y):
+
+    # Normalement en Python on adore le duck typing, mais là cet algo suppose
+    # l'usage d'une liste, donc on met un gardefou.
+    if not isinstance(lst, list):
+        raise TypeError('This function works only with lists.')
+
+    # là on est sur quelque chose qui ressemble vachement plus à du code C ^^
+    i1 = 0
+    l = (len(lst) - 1)
+
+    # on itère mécaniquement sur la liste, à l'ancienne, avec nos petites
+    # mains potelées.
+    while i1 < l:
+
+        # on récupère chaque élément de la liste, sauf le dernier
+        elem = lst[i1]
+
+        # on le compare à l'élément suivant, et chaque élément après
+        # l'élément suivant
+        i2 = i1 + 1
+        while i2 <= l:
+            # en cas d'égalité, on retire l'élément de la liste, et on
+            # décrément la longueur de la liste ainsi amputée
+            if equals(elem, lst[i2]):
+                del lst[i2]
+                l -= 1
+            i2 += 1
+
+        i1 += 1
+
+    return lst
+
+</pre>
+<p>Et là on est bien dans de la modification sur place :</p>
+<pre lang="python">>>> lst = list('fjdsklmqfjskdfjmld')
+>>> lst
+[u'f', u'j', u'd', u's', u'k', u'l', u'm', u'q', u'f', u'j', u's', u'k', u'd', u'f', u'j', u'm', u'l', u'd']
+>>> remove_duplicates(lst)
+[u'f', u'j', u'd', u's', u'k', u'l', u'm', u'q']
+>>> lst
+[u'f', u'j', u'd', u's', u'k', u'l', u'm', u'q']</pre>
+<p>La fonction s'appelle cette fois bien <code>remove_duplicates</code> puisque c'est ce qu'elle fait : retirer les doublons de la liste originale.</p>
+<h2>Et maintenant, c'est l'heure du benchmark à deux balles !</h2>
+<p>skip_duplicates :</p>
+<pre lang="python">setup = """
+def skip_duplicates(iterable, key=lambda x: x):
+        fingerprints = set()
+        for x in iterable:
+                fingerprint = key(x)
+                if fingerprint not in fingerprints:
+                        yield x
+                        fingerprints.add(fingerprint)
+import string
+lst = list(string.ascii_letters * 100)"""
+>>> timeit.timeit('list(skip_duplicates(lst))', setup=setup, number=1000)
+0.9810519218444824</pre>
+<p>strip_duplicates :</p>
+<pre lang="python">>>> setup = """
+def strip_duplicates(iterable, equals=lambda x, y: x == y):
+    iterable = iter(iterable)
+    res = []
+    while True:
+        try:
+            elem = next(iterable)
+        except StopIteration:
+            break
+        res.append(elem)
+
+        iterable = iter([x for x in iterable if not equals(elem, x)])
+
+    return res
+
+import string
+lst = list(string.ascii_letters * 100)"""
+>>> timeit.timeit('list(strip_duplicates(lst))', setup=setup, number=1000)
+41.462974071502686</pre>
+<p>remove_duplicates :</p>
+<pre lang="python">setup = """
+def remove_duplicates(lst, equals=lambda x, y: x == y):
+    if not isinstance(lst, list):
+        raise TypeError('This function works only with lists.')
+    i1 = 0
+    l = (len(lst) - 1)
+    while i1 < l:
+        elem = lst[i1]
+        i2 = i1 + 1
+        while i2 <= l:
+            if equals(elem, lst[i2]):
+                del lst[i2]
+                l -= 1
+            i2 += 1
+        i1 += 1
+    return lst
+
+import string
+lst = list(string.ascii_letters * 100)"""
+>>> timeit.timeit('list(remove_duplicates(lst))', setup=setup, number=1000)
+0.37493896484375</pre>
+<p>Sans surprise, la version inplace est la plus rapide puisque la plus restrictive. En second vient notre strip_duplicates, beaucoup fois plus lente. Et en dernier, 50 fois plus lente, le compromis entre les deux : souple, consomme moins de mémoire que skip, mais plus que remove.</p>
+<p>Mais ce n'est pas très juste pour strip, puisque que skip n'a pas à faire un gros travail de conversion. Essayons avec des clés plus grosses :</p>
+<p>skip_duplicates :</p>
+<pre lang="python">setup = """
+def skip_duplicates(iterable, key=lambda x: x):
+        fingerprints = set()
+        for x in iterable:
+                fingerprint = key(x)
+                if fingerprint not in fingerprints:
+                        yield x
+                        fingerprints.add(fingerprint)
+import string, random
+lst = [list(string.ascii_letters * 100) for x in xrange(100)]
+for x in lst:
+    x.pop(random.randint(0, len(x) - 1))"""
+>>> timeit.timeit('list(skip_duplicates(lst, lambda x: tuple(x)))', setup=setup, number=1000)
+15.516181945800781</pre>
+<p>strip_duplicates :</p>
+<pre lang="python">>>> setup = """
+def strip_duplicates(iterable, equals=lambda x, y: x == y):
+    iterable = iter(iterable)
+    res = []
+    while True:
+        try:
+            elem = next(iterable)
+        except StopIteration:
+            break
+        res.append(elem)
+
+        iterable = iter([x for x in iterable if not equals(elem, x)])
+
+    return res
+
+import string, random
+lst = [list(string.ascii_letters * 100) for x in xrange(100)]
+for x in lst:
+    x.pop(random.randint(0, len(x) - 1))"""
+>>> timeit.timeit('list(strip_duplicates(lst))', setup=setup, number=1000)
+22.047110080718994</pre>
+<p>remove_duplicates :</p>
+<pre lang="python">setup = """
+def remove_duplicates(lst, equals=lambda x, y: x == y):
+    if not isinstance(lst, list):
+        raise TypeError('This function works only with lists.')
+    i1 = 0
+    l = (len(lst) - 1)
+    while i1 < l:
+        elem = lst[i1]
+        i2 = i1 + 1
+        while i2 <= l:
+            if equals(elem, lst[i2]):
+                del lst[i2]
+                l -= 1
+            i2 += 1
+        i1 += 1
+    return lst
+
+import string, random
+lst = [list(string.ascii_letters * 100) for x in xrange(100)]
+for x in lst:
+    x.pop(random.randint(0, len(x) - 1))"""
+>>> timeit.timeit('list(remove_duplicates(lst))', setup=setup, number=1000)
+14.763166904449463
+</pre>
+<p>Comme souvent les résultats sont contre untuitifs, car bien que remove garde son avance, elle s'est largement réduite. A l'inverse, skip n'est pas tant à la ramasse que ça, et strip reste le plus lent.</p>
+<p>Il faudrait aussi mesurer la consommation mémoire, je suis certain que ce serait interessant.</p>
+<p>Bon, il est temps de mettre tout ça dans <a href="http://sametmax.com/batbelt-la-lib-des-petits-outils-python-qui-vont-bien/">batbelt</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">7143</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/08/NFDSpXq.gif" length="464024" type="image/jpg" />	</item>
+		<item>
+		<title>Ordonner en Python</title>
+		<link>http://sametmax.com/ordonner-en-python/</link>
+		<comments>http://sametmax.com/ordonner-en-python/#comments</comments>
+		<pubDate>Mon, 21 Jan 2013 13:37:37 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[lambda]]></category>
+		<category><![CDATA[operator]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sort]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4107</guid>
+		<description><![CDATA[Python possède une manière de mettre les choses dans l'ordre qui est à la fois simple et puissante.]]></description>
+				<content:encoded><![CDATA[<p>Python possède une manière de mettre les choses dans l&#8217;ordre qui est à la fois simple et puissante.</p>
+<h2>Tout est ordonnable</h2>
+<p>Pour comprendre comment marche le tri en Python, il faut comprendre que presque tout en Python est ordonnable car comparable :</p>
+<pre lang="python">>>> 1 > 0 # les nombres sont comparables
+True
+>>> 1 < 0
+False
+>>> "a" < "b" # les lettres, par ordre alphabetique
+True
+>>> True > False # les booléan (!)
+True
+>>> (1, 2) > (2, 1) # les iterables comparés, élément par élément dans l'ordre
+False
+>>> (1, 2) > [2, 1] # mais ils doivent être du même type
+True
+>>> {1:1} < {1:1, 0:0} # les dictionnaires, par nombre d'éléments
+True
+>>> "a" > 2 # si on mélange des types ça peut vide devenir bizarre
+True
+>>> 1j > 1 # j'ai dis PRESQUE tout est ordonnable
+Traceback (most recent call last):
+  File "<ipython-input-11-ed3c013d3df8>", line 1, in <module>
+    1j > 1
+TypeError: no ordering relation is defined for complex numbers</pre>
+<p>C&#8217;est ce qu&#8217;on appelle l&#8217;ordre naturel des éléments. Quand il n&#8217;y a pas d&#8217;ordre naturel évident (et que ce n&#8217;est pas une opération explicitement interdite comme avec les complexes), Python va comparer l&#8217;id (imaginez l&#8217;adresse en mémoire):</p>
+<pre lang="python">>>> class PersonnageDeLost(object):
+...     pass
+... 
+>>> mort1 = PersonnageDeLost()
+>>> mort2 = PersonnageDeLost()
+>>> mort1 < mort2
+True
+>>> id(mort1) # son id est plus petit, donc il est inférieur
+39611408
+>>> id(mort2)
+41720976</pre>
+<p>Mais on peut définir un ordre naturel pour un élément personnalisé en implémentant les méthodes suivantes:</p>
+<ul>
+<li><code>object.__lt__(self, other)</code></li>
+<li><code>object.__le__(self, other)</code></li>
+<li><code>object.__eq__(self, other)</code></li>
+<li><code>object.__ne__(self, other)</code></li>
+<li><code>object.__gt__(self, other)</code></li>
+<li><code>object.__ge__(self, other)</code></li>
+</ul>
+<p>N&#8217;implémentez plus <code>__cmp__</code>, elle est dépréciée.</p>
+<p>Par exemple:</p>
+<pre lang="python">class PersonnageDeCityHunter(object):
+
+    def __init__(self, nom, erectopouvoir):
+        self.nom = nom
+        self.erectopouvoir = erectopouvoir
+
+
+    def __lt__(self, other):
+        # on doit retourner un booléan qui confirme ou infirme 
+        # l'opération "lt" ("lower than", c'est à dire "plus petit que")
+        return self.erectopouvoir < other.erectopouvoir
+
+    def __gt__(self, other):
+        # on doit retourner un booléan qui confirme ou infirme 
+        # l'opération "gt" ("greater than", c'est à dire "plus grand que")
+        return self.erectopouvoir > other.erectopouvoir
+
+    # on peut faire la même chose pour les autres méthodes qui 
+    # concernent les opérateurs <=, >=, == et !=
+
+>>> PersonnageDeCityHunter('Ryo Saeba', 99999) > PersonnageDeCityHunter('Mamouth', 1)
+True
+>>> PersonnageDeCityHunter('Ryo Saeba', 99999) < PersonnageDeCityHunter('Mamouth', 1)
+False</pre>
+<h2>Ordonner une liste</h2>
+<p>Une liste est ce qu'on ordonne le plus souvent. Elle possède pour cela une méthode <code>sort()</code> qui est la méthode de tri la plus rapide qui existe avec la lib standard.</p>
+<p><code>sort()</code> trie une liste sur place (elle modifie donc la liste), et <strong>retourne None</strong>.</p>
+<pre lang="python">>>> l = [1, 7, 3, 8]
+>>> res = l.sort()
+>>> print res # n'assignez jamais le résultat de sort(), ça ne sert à rien !
+None
+>>> l
+[1, 3, 7, 8]</pre>
+<p>Les éléments sont triés dans leur ordre naturel automatiquement, <strong>du plus petit au plus grand</strong>:</p>
+<pre lang="python">>>> l = ['b', 'a', 'c']
+>>> l.sort()
+>>> l
+['a', 'b', 'c']
+>>> l = [(2, 1), (1, 2), (7, 8), (2, 2), (2, 0), (2, 3)]
+>>> l.sort()
+>>> l # ordonne sur le premier élément, puis le second si il y a égalité
+[(1, 2), (2, 0), (2, 1), (2, 2), (2, 3), (7, 8)]
+>>> persos = [PersonnageDeCityHunter('Ryo Saeba', 99999), PersonnageDeCityHunter('Mamouth', 1), PersonnageDeCityHunter('Kaori', 0)]
+>>> persos.sort()
+>>> for perso in persos:
+...     print perso.nom
+...     
+Kaori
+Mamouth
+Ryo Saeba</pre>
+<p>On peut demander à inverser l'odre de tri en passant l'argument <code>reverse</code>:</p>
+<pre lang="python">>>> l = [1, 7, 3, 8]
+>>> l.sort(reverse=True)
+>>> l
+[8, 7, 3, 1]</pre>
+<h2>Il n'y a pas que les listes dans la vie</h2>
+<p>Tout itérable est ordonnable, et la fonction <code>sorted()</code> permet justement d'ordonner n'importe quel itérable de taille finie. </p>
+<pre lang="python">>>> sorted([1, 7, 3, 8]) # une liste
+[1, 3, 7, 8]
+>>> sorted(set([1, 7, 3, 8])) # un set
+[1, 3, 7, 8]
+>>> sorted((1, 7, 3, 8)) # un tuple
+[1, 3, 7, 8]
+>>> sorted('Un clavier azerty en vaut deux') # une chaîne
+[' ', ' ', ' ', ' ', ' ', 'U', 'a', 'a', 'a', 'c', 'd', 'e', 'e', 'e', 'e', 'i', 'l', 'n', 'n', 'r', 'r', 't', 't, 'u', 'u', 'v', 'v', 'x', 'y', 'z']
+>>> sorted(open('/etc/fstab'))[:3] # un fichier
+['#\n', '#\n', '# / was on /dev/sda5 during installation\n']
+>>> import random # plus ou moins n'importe quoi
+>>> sorted([random.randint(0, 100) for x in range(random.randint(0, 20)) if x * 2 not in (42, 69)])
+[2, 4, 21, 35, 37, 41, 48, 48, 54, 58, 58, 59, 62, 76, 82, 94]</pre>
+<p><code>sort()</code> et <code>sorted()</code> <strong>acceptent toutes les deux les mêmes arguments</strong>. Ce que vous apprenez pour l'un vaut pour l'autre. La seul différence est que <code>sort()</code> retourne <code>None</code> et modifie sur place, tandis que <code>sorted()</code> retourne une nouvelle liste. <code>sorted()</code> est un peu moins performant.</p>
+<pre lang="python">>>> sorted((1, 7, 3, 8), reverse=True)
+[8, 7, 3, 1]</pre>
+<h2>Tri personnalisé avec <code>key</code></h2>
+<p>Parfois on a besoin de trier sur quelque chose de plus complexe qu'une lettre ou un chiffre. Par exemple, vous avez des scores dans un dictionnaires. Un dictionnaire n'est pas ordonné. Si vous imprimez un classement, il faut en faire une liste de tuples :</p>
+<pre lang="python">>>> scores = {'Robert': 2, 'Roger': 1, 'Gertrude': 4, 'Cunegonde': 3}
+>>> scores.items()
+[('Gertrude', 4), ('Cunegonde', 3), ('Robert', 2), ('Roger', 1)]</pre>
+<p>Et il faut maintenant ordonner ça sur le deuxième élément de chaque tuple : le score. Seulement si on appelle <code>sorted()</code>, il va trier sur l'ordre naturel, donc il va commencer par le premier élément, ça ne marchera pas :</p>
+<pre lang="python">>>> sorted(scores.items())
+[('Cunegonde', 3), ('Gertrude', 4), ('Robert', 2), ('Roger', 1)]</pre>
+<p>C'est là qu'intervient le paramètre <code>key</code>. <code>key</code> est très particulier, c'est un paramètre qui attend qu'on lui passe un <a href="http://sametmax.com/quest-ce-quun-callback/">callback</a>, donc <code>key</code> attend qu'on lui passe <strong>une fonction</strong>. </p>
+<p>Pas le résultat d'une fonction. La fonction elle même.</p>
+<p>Cette fonction doit attendre en paramètre un élément, et en <strong>extraire la partie sur laquelle on veut trier</strong>.</p>
+<p>Par exemple dans le cas des scores, on doit passer à <code>key</code> une fonction qui attend un tuple en paramètre, et retourne le score :</p>
+<pre lang="python">>>> def get_score(nom_et_score):
+...     return nom_et_score[1] # retourne le 2nd element du tuple
+... 
+>>> sorted(scores.items(), key=get_score) # on passe la fonction a key
+[('Roger', 1), ('Robert', 2), ('Cunegonde', 3), ('Gertrude', 4)]</pre>
+<p>Et voilà, c'est trié dans le bon ordre car <code>sorted()</code> va utiliser <code>get_score()</code> pour récupérer la valeur de chaque élément un par un,  sur laquelle on va trier la liste (selon l'ordre naturel de cette valeur).</p>
+<p>On peut utiliser <code>key</code> pour faire des choses beaucoup plus complexes, comme comparer sur des valeurs qui n'existent pas, mais que l'on calcule :</p>
+<pre lang="python">>>> def carre(val): # on va ordonner par valeur de carré
+...     return val * val 
+... 
+>>> sorted([-1, -2, 0, 3], key=carre)
+[0, -1, -2, 3]</pre>
+<p>Ici, un carré est toujours positif, du coup on retrouve -1 et -2 devant 0, car leurs carrés 1 et 4 sont plus grands que le carré 0 de 0.</p>
+<p>Ne vous embrouillez pas : la valeur retournée par <code>carre()</code> n'est pas MISE dans la liste, elle est juste utilisée pour choisir l'ordre d'un élément dans la liste.</p>
+<p>On peut même faire des comparaisons très avancées, comme par exemple comparer sur plusieurs attributs d'un objet. Imaginez, je veux ordonner des objets voitures selon leur coût d'entretien d'abord, et ensuite par coût d'achat.</p>
+<pre lang="python">class Voiture(object):
+    
+    def __init__(self, cout_entretien, cout_achat):
+        self.cout_entretien = cout_entretien
+        self.cout_achat = cout_achat
+
+    def __repr__(self):
+        return "<Voiture E-{} / A-{}>".format(self.cout_entretien, self.cout_achat)
+
+>>> voitures = [Voiture(10000, 10000), Voiture(50000, 10000), Voiture(10000, 60000)]
+>>> voitures
+[<Voiture E-10000 / A-10000>, <Voiture E-50000 / A-10000>, <Voiture E-10000 / A-60000>]
+>>> def get_entretien_achat(voiture): 
+...         return (voiture.cout_entretien, voiture.cout_achat)
+... 
+>>> sorted(voitures, key=get_entretien_achat)
+[<Voiture E-10000 / A-10000>, <Voiture E-10000 / A-60000>, <Voiture E-50000 / A-10000>]</pre>
+<p><code>get_entretien_achat()</code> retourne un tuple de deux valeurs. Python va donc ordonner sur ce tuple, dans l'odre naturel du tuple en prenant la première valeur comme point de comparaison (coût d'entretien), puis la seconde (coût d'achat) si les valeurs sont égales. </p>
+<p>On peut donc comparer des objets arbitraires sur des critères arbitraires.</p>
+<p>La plupart du temps, vous voudrez juste comparer sur un élément ou un attribut, donc dans ce cas le module <a href="http://sametmax.com/le-module-operator-en-python/">operator</a> (ou une <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">lambda</a>) est votre ami :</p>
+<pre lang="python">>>> from operator import attrgetter, itemgetter
+>>> sorted(voitures, key=attrgetter('cout_achat')) # ordonner par cout d'achat
+[<Voiture E-10000 / A-10000>, <Voiture E-50000 / A-10000>, <Voiture E-10000 / A-60000>]
+>>> sorted(scores.items(), key=itemgetter(1)) # ordonner par score
+[('Roger', 1), ('Robert', 2), ('Cunegonde', 3), ('Gertrude', 4)]
+>>> sorted(scores.items(), key=itemgetter(1), reverse=True) 
+[('Gertrude', 4), ('Cunegonde', 3), ('Robert', 2), ('Roger', 1)]</pre>
+<p>Pour finir, je vous invite à lire l'<a href="http://sametmax.com/heapq-le-module-python-incompris/">article sur le module heapq</a> qui lui permet de faire des tris sur des flux de données sans taille définie.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ordonner-en-python/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">4107</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/01/XY7FXMW76PIX1300732739015.jpg" length="476380" type="image/jpg" />	</item>
+		<item>
+		<title>Les listes en intension VS map() en Python</title>
+		<link>http://sametmax.com/les-listes-en-intentions-vs-map-en-python/</link>
+		<comments>http://sametmax.com/les-listes-en-intentions-vs-map-en-python/#comments</comments>
+		<pubDate>Thu, 04 Oct 2012 13:26:27 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[comprehension-lists]]></category>
+		<category><![CDATA[lambda]]></category>
+		<category><![CDATA[map]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2452</guid>
+		<description><![CDATA[Les adeptes de la programmation fonctionnelle connaissent bien le principe de la fonction <a href="http://docs.python.org/library/functions.html#map">map()</a> et sont souvent plus à l'aise avec elle qu'avec les listes en intention en Python.
+
+Les deux font pourtant la même chose, tant et si bien que Python 3 voit <code>map()</code> retiré de ses built-in.]]></description>
+				<content:encoded><![CDATA[<p>sLes adeptes de la programmation fonctionnelle connaissent bien le principe de la fonction <a href="http://docs.python.org/library/functions.html#map">map()</a> et sont souvent plus à l&#8217;aise avec elle qu&#8217;avec les listes en intension en Python.</p>
+<p>Les deux font pourtant la même chose, <del datetime="2012-10-04T08:33:03+00:00">tant et si bien que Python 3 voit <code>map()</code> retiré de ses built-in</del>. Ouuuups. Dérapage un-con-trollé de Sam.</p>
+<p>C&#8217;est plutôt une nouvelle chose car dans un language orienté objet comme Python, il y a une subtile différence entre <code>map()</code> et les <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">comprehension lists</a>. Quand on utilise une méthode plutôt qu&#8217;une fonction, <code>map()</code> tue le duck tuping:</p>
+<pre lang="python">>>> l = [u'      Le choix dans la date     ', '     Les nouilles cuisent au jus de canne     ']
+>>> map(str.strip, l)
+Traceback (most recent call last):
+  File "<ipython-input-14-41df8a735feb>", line 1, in <module>
+    map(str.strip, l)
+TypeError: descriptor 'strip' requires a 'str' object but received a 'unicode'
+
+>>> map(unicode.strip, l)
+Traceback (most recent call last):
+  File "<ipython-input-15-fc0fc8fef32d>", line 1, in <module>
+    map(unicode.strip, l)
+TypeError: descriptor 'strip' requires a 'unicode' object but received a 'str'
+
+>>> [x.strip() for x in l]
+[u'Le choix dans la date', 'Les nouilles cuisent au jus de canne']
+</pre>
+<p>Notez que je vous recomande d&#8217;éviter à tout prix de mélanger des chaînes encodées, et des chaînes unicode, de toute façon. J&#8217;utilise ceci uniquement parce que c&#8217;est un cas simple à comprendre.</p>
+<p>Mais ici, le problème peut être résumé ainsi: nous avons une collection hétérogène d&#8217;objets (qui pourraient être de n&#8217;importe quels autres types, il y a des cas beaucoup plus légitimes), et nous appliquons la méthode de l&#8217;objet. Qui ne correspond pas forcément à son type.</p>
+<p>Avoir des types différents avec la même interface est courant en Python pour profiter du duck typing, donc ce genre de chose n&#8217;est pas un edge case.</p>
+<p>La solution est bien entendu de wrapper l&#8217;appel dans une <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">fonction anonyme</a>:</p>
+<pre lang="python">>>> map(lambda x: x.strip(), l)
+[u'Le choix dans la date', 'Les nouilles cuisent au jus de canne']
+</pre>
+<p>Mais à ce stade, <code>[x.strip() for x in l]</code> est beaucoup plus lisible et rapide. Sans compter qu&#8217;il peut être transformé en générateur juste en changeant les <code>[]</code> en <code>()</code>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-listes-en-intentions-vs-map-en-python/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">2452</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/10/Asashoryu_fight_Jan08.jpg" length="119610" type="image/jpg" />	</item>
+		<item>
+		<title>Qu&#8217;est-ce qu&#8217;un callback ?</title>
+		<link>http://sametmax.com/quest-ce-quun-callback/</link>
+		<comments>http://sametmax.com/quest-ce-quun-callback/#comments</comments>
+		<pubDate>Wed, 22 Aug 2012 17:19:07 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[callback]]></category>
+		<category><![CDATA[lambda]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1831</guid>
+		<description><![CDATA[Un jour vous vous baladez avec vos premiers succès en prog, vous vous chauffer à utiliser une library externe (ce qui fait toujours peur au début) et il y a un truc que vous ne savez pas faire. Vous posez la question sur un forum, et on vous répond: "<q>mais c'est simple, il suffit de passer un callback</q>".]]></description>
+				<content:encoded><![CDATA[<p>mettreOn nous a parfois reproché de ne pas faire assez de tutos pour débutant. C&#8217;est pas faux, d&#8217;autant que quand j&#8217;ai commencé j&#8217;étais bien content que le <a href="http://www.siteduzero.com/">site du zéro</a> ait choisi de se spécialiser là dedans. Les tutos pour débutant sont vraiment la pierre angulaire de l&#8217;attractivité d&#8217;une techno.</p>
+<p>Donc, un jour vous vous baladez avec vos premiers succès en prog, vous vous chauffer à utiliser une library externe (ce qui fait toujours peur au début) et il y a un truc que vous ne savez pas faire. Vous posez la question sur un forum, et on vous répond: &#8220;<q>mais c&#8217;est simple, il suffit de passer un callback</q>&#8220;.</p>
+<p>Doh.</p>
+<h2>
+Rappel: on peut passer des fonctions en argument</h2>
+<p>Une fonction, ce n&#8217;est pas juste un bout de code auquel on donne un nom. C&#8217;est une unité de programmation à elle toute seule, en tout cas dans les langages modernes, et on dit dans ce cas qu&#8217;elles sont des &#8220;first class citizen&#8221; (citoyen de première catégorie, quoi, du vrai, du dur, du pur).</p>
+<p>En pratique, ça veut dire qu&#8217;on peut manipuler la fonction sans l&#8217;éxécuter. En python ça donne ça:</p>
+<pre lang="python">>>> def dis_bonjour():
+...     print "bonjour"
+...
+>>> print dis_bonjour # afficher l'objet fonction
+<function dis_bonjour at 0x7f8cc6fce578>
+>>> dis_bonjour.func_name # afficher le nom de la fonction
+'dis_bonjour'</pre>
+<p>Ca veut dire aussi qu&#8217;on peut passer une fonction comme argument:</p>
+<pre lang="python">>>> def fonction_qui_appelle_une_fonction(fonction_a_appeler):
+...     fonction_a_appeler()
+...
+>>> fonction_qui_appelle_une_fonction(dis_bonjour)
+bonjour</pre>
+<h2>Mais Za Koi ça sert ?</h2>
+<p>Et bien à dire qu&#8217;on va exécuter du code, même si on ne sait pas encore à l&#8217;avance quel est ce code. C&#8217;est très utile quand on code soit-même une bibliothèque pour permettre aux utilisateurs de celle-ci d’exécuter du code durant le fonctionnement de notre algo, sans avoir à mettre la main dedans.</p>
+<p>C&#8217;est exactement ce que font les callback (ou appel en retour, traduit grossièrement).</p>
+<p>Un callback, c&#8217;est une fonction passée en paramètre, qui va être appelée à une condition. La condition est la plus souvent &#8220;quand ceci arrive&#8221; et &#8220;ceci&#8221; est le plus souvent &#8220;quand le traitement est terminé&#8221;. Donc la grande majorité des callbacks sont des fonctions qu&#8217;on passe à d&#8217;autres fonctions pour qu&#8217;elles soient exécutées quand le traitement est terminé.</p>
+<h2>Des exemples, des exemples !</h2>
+<p>Si vous faites une interface graphique, vous voulez qu&#8217;un clic sur un bouton déclenche une action. Cette action est souvent passée comme un callback.</p>
+<p>Exemple avec ce petit programme Tkinter (la lib d&#8217;UI installée par défaut avec Python):</p>
+<pre lang="python">>> from Tkinter import * # import de tout TK
+>>> root = Tk() # création de la fenêtre
+>>> def crie_ta_joie(): # notre callback
+...     print "Yo !"
+...
+>>> b = Button(root, text="Go", command=crie_ta_joie) # création d'un bouton
+>>> b.pack() # placement du bouton
+>>> root.mainloop() # mise en route de l'UI</pre>
+<p><code>crie_ta_joie</code> est passée à la classe <code>Button</code> via le paramètre <code>command</code>. Quand on cliquera sur le bouton &#8216;Go&#8217;, le callback <code>crie_ta_joie</code> sera donc appelé. &#8216;Yo !&#8217; sera affiché dans le terminal.</p>
+<p>C&#8217;est ce qu&#8217;on appelle la programmation événementielle: on écrit des fonctions qui sont appelées quand des événements arrivent, ici le clic sur un bouton.</p>
+<h2>Et en javascript&#8230;</h2>
+<p>Si vous utilisez jQuery, vous utilisez déjà des callbacks partout.</p>
+<p>Ainsi, si vous faites:</p>
+<pre lang="javascript">$.get('/arretez/ou/ma/mere/va/tirer', function(){
+    alert('Bang !');
+});</pre>
+<p>jQuery va faire une requête ajax sur l&#8217;url, et le programme va continuer de fonctionner car les appels réseaux sont non bloquant. Mais quand la réponse arrivera, le callabck sera appelé, et fera <code>alert(Bang !)</code>.</p>
+<p>Les callbacks sont donc très utilisés pour la programmation asynchrone, c&#8217;est à dire quand on ne connaît pas le temps que vont mettre des opérations à s&#8217;effectuer mais qu&#8217;on veut réagir une fois qu&#8217;elle sont terminées.</p>
+<h2>L&#8217;injection de dépendances</h2>
+<p>Les callbacks sont aussi très utilisés pour une technique de programmation appelée &#8220;injection de dépendances&#8221; qui consiste à permettre à ceux qui utilisent votre code de choisir ce que feront certains bouts de code.</p>
+<p>Imaginez une fonction (ici assez simplifiée) de téléchargement qui permet d&#8217;afficher la progression de celui-ci:</p>
+<pre lang="python">
+import urllib2, sys
+def download(truc_a_telecharger, fichier_de_destination):
+
+    # on ouvre la connection
+    u = urllib2.urlopen(truc_a_telecharger)
+
+    taille_des_bouts = 8192
+    total_telecharge = 0
+
+    # on ouvre le fichier pour écrire ce qu'on télécharge
+    with open(fichier_de_destination, 'w') as f:
+
+        # while True / if : break est un palliatif Python
+        # pour l'absence d'instruction "until"
+        while True:
+
+            # on télécharge un petit bout du fichier
+            bout = u.read(taille_des_bouts)
+            total_telecharge += taille_des_bouts
+
+            if not bout: # plus rien à télécharge: on sort
+                break
+
+            # on écrit le bout de fichier téléchargé
+            f.write(bout)
+
+            # on écrit un point sur le terminal pour noter qu'un bout a été
+            # téléchargé
+            sys.stdout.write('.')</pre>
+<p>Qui s&#8217;utilise comme ça:</p>
+<pre lang="python">download('http://download.ted.com/talks/SirKenRobinson_2006.mp4', 'ted_talk_education.mp4')</pre>
+<p>On pourrait faire beaucoup mieux que juste afficher un point pour chaque bout de fichier téléchargé.  On pourrait par exemple afficher un pourcentage d&#8217;avancement. Ou écrire dans un log. Ou ne rien faire, et supprimer tout affichage.</p>
+<p>Mais on veut garder le comportement par défaut car on pense que la plupart des gens l&#8217;utiliseront ainsi, et qu&#8217;il n&#8217;y a pas de raison qu&#8217;ils le recodent.</p>
+<p>En modifiant la fonction, et en permettant de passer un callback, on permet cette flexibilité:</p>
+<pre lang="python">def download(truc_a_telecharger, fichier_de_destination,
+             # on attend un callback en paramètre
+             # mais on en passe un par défaut
+             afficher_le_progres=lambda *x, **y: sys.stdout.write('.')):
+
+    u = urllib2.urlopen(truc_a_telecharger)
+    # on chope la taille du fichier, ça permettra plus de choses
+    taille_du_fichier = int(u.info().getheaders("Content-Length")[0])
+    taille_de_bloc = 8192
+    total_telecharge = 0
+
+    with open(fichier_de_destination, 'w') as f:
+
+        while True:
+
+            # ici on appelle le callback en lui passant un maximum de paramètres
+            # pour qu'il puisse faire le plus de chose possible
+            afficher_le_progres(truc_a_telecharger, fichier_de_destination,
+                                taille_du_fichier, total_telecharge)
+
+            bout = u.read(taille_de_bloc)
+            total_telecharge += taille_de_bloc
+
+            if not bout:
+                break
+
+            f.write(bout)</pre>
+<p>Et on l&#8217;utilise comme avant:</p>
+<pre lang="python">download('http://download.ted.com/talks/SirKenRobinson_2006.mp4', 'ted_talk_education.mp4')</pre>
+<p>Ou avec plus de puissance:</p>
+<pre lang="python">def log(truc_a_telecharger, fichier_de_destination,
+       taille_du_fichier, total_telecharge):
+    with open('progress.log', 'w') as f:
+        pourcentage = str(total_telecharge * 100 / taille_du_fichier)
+        f.write(pourcentage)
+
+download('http://download.ted.com/talks/SirKenRobinson_2006.mp4', 'ted_talk_education.mp4', log)</pre>
+<p>Et si on veut supprimer tout affichage, on peut passe une fonction qui ne fait rien:</p>
+<pre lang="python">download('http://download.ted.com/talks/SirKenRobinson_2006.mp4', 'ted_talk_education.mp4', lambda *x: None)</pre>
+<p>Il y a plusieurs choses importantes ici:</p>
+<ul>
+<li>on accepte un callback en paramètre</li>
+<li>le paramètre possède une valeur par défaut. Hé oui, on peut mettre une fonction en valeur par défaut !</li>
+<li>la fonction est une fonction anonyme. Ce n&#8217;est pas obligatoire, mais c&#8217;est pratique.</li>
+<li>la fonction par défaut utilise l&#8217;<a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">opérateur splat</a> pour accepter un nombre illimité de paramètres, même si elle ne va pas les utiliser.</li>
+<li>on délègue le comportement de l&#8217;algo lors de l&#8217;affichage du progrès à la fonction passée en paramètre.</li>
+<li>on passe un max de paramètres à cette fonction pour lui donner le plus de libertés possible. C&#8217;est aussi pour ça que notre fonction accepte par défaut un nombre illimité de paramètres: sinon ça ferait une erreur</li>
+</ul>
+<p>Ce système est l&#8217;injection de dépendance: on délègue une partie du travail à du code injecté depuis l&#8217;extérieur. Cela permet une extensibilité de notre fonction, sans sacrifier sa simplicité puisqu&#8217;on a une valeur par défaut.</p>
+<p>On peut pousser l&#8217;injection très loin: en passant carrément des listes de fonctions, et toutes les appeler, ou des objets, et appeler plusieurs méthodes de l&#8217;objet (ce dernier point est une extension de l&#8217;injection de dépendance appelé le <a href="https://fr.wikipedia.org/wiki/Strat%C3%A9gie_%28patron_de_conception%29">pattern strategy</a>).</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quest-ce-quun-callback/feed/</wfw:commentRss>
+		<slash:comments>24</slash:comments>
+<enclosure url="http://download.ted.com/talks/SirKenRobinson_2006.mp4" length="0" type="video/mp4" />
+	<post-id xmlns="com-wordpress:feed-additions:1">1831</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/08/th1.jpeg" length="7984" type="image/jpg" />	</item>
+		<item>
+		<title>Comment ne PAS utiliser une fonction anonyme (ou lambda) en Python</title>
+		<link>http://sametmax.com/comment-ne-pas-utiliser-une-fonction-anonyme-ou-lambda-en-python/</link>
+		<comments>http://sametmax.com/comment-ne-pas-utiliser-une-fonction-anonyme-ou-lambda-en-python/#comments</comments>
+		<pubDate>Sun, 05 Aug 2012 13:56:44 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[lambda]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1457</guid>
+		<description><![CDATA[Je ne suis pas un allergique aux lambdas, et je les utilisent assez souvent, mais il est bon de savoir qu'il existe des alternatives.]]></description>
+				<content:encoded><![CDATA[<p>Dans le <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">dernier article sur les lambdas</a>, j&#8217;avais précisé que les lambdas étaient une question de style et qu&#8217;on pouvait faire sans. Voici différentes stratégies pour s&#8217;en passer.</p>
+<h2>Utiliser une inner function</h2>
+<p>En python on peut définir et exécuter à la volée une fonction dans une autre fonction/méthode ou une classe.</p>
+<pre lang="python">class Banane(object):
+    
+    def blougou(): # pas de self :-)
+        print "Sens giratoir inversé"
+
+    blougou() # on peut appeler une fonction en dehors d'une méthode
+
+    def methode(self): # une vraie méthode
+        print "Vive Edgar Morin"
+
+        # on peut définir une fonction dans une méthode
+        def moukrene():
+            print "A la glaviouse"
+
+        moukrene()</pre>
+<p>Et ça donne:</p>
+<pre lang="python">
+Sens giratoir inversé # affichage à l'import
+>>> Banane().methode()
+Vive Edgar Morin
+A la glaviouse</pre>
+<h2>Préremplissez des arguments</h2>
+<p>Le module <code>functools</code> fournit tout un tas de goodies pour faire mumuse avec les fonctions, et notamment la fonction <code>partial()</code> qui prend <strong>une fonction</strong> en argument, et des arguments à passer à la fonction qu&#8217;on lui a passé en argument. Vous suivez ?</p>
+<p>On s&#8217;en sert quand on veut utiliser une fonction, mais qu&#8217;on sait d&#8217;avance quels arguments on va lui passer:</p>
+<pre lang="python">>>> from functools import partial
+>>> sum
+<built-in function sum>
+>>> sum([2, 2])
+4
+>>> mini_sum = partial(sum, [2, 2])
+>>> mini_sum()
+4</pre>
+<p>On pas besoin de donner tous les arguments de la fonction à enrober: on peut passer les autres après.</p>
+<p>Comme <code>partial()</code> retourne une fonction prête à être appelée, on peut l&#8217;utiliser là où on utiliserait une lambda:</p>
+<pre lang="python">>>> from __future__ import print_function
+>>> def profit(etape1="On vol des caleçons", etape2=lambda: print('...')):
+...         print(etape1)
+...         etape2()
+...     
+>>> profit()
+On vol des caleçons
+...</pre>
+<p>Se tranforme en:</p>
+<pre lang="python">>>> def profit(etape1="On vol des caleçons", etape2=partial(print, '...')):
+...         print(etape1)
+...         etape2()
+...     
+>>> profit()
+On vol des caleçons
+...</pre>
+<h2>Utiliser les fonctions derrières les opérations de base</h2>
+<p>Quand vous utilisez un <code>+</code> ou un <code>[]</code>, il s&#8217;agit ni plus ni moins d&#8217;une syntaxe raccourcie pour l&#8217;appel d&#8217;une fonction. Et Python vous laisse accéder à ces fonctions à travers le module <code>operator</code>.</p>
+<pre lang="python">>>> for operation in (lambda x: x[0], lambda x: x * 3):
+    print(operation(ls))
+...     
+a
+['a', 3, 'a', 3, 'a', 3]</pre>
+<pre lang="python">>>> from operator import itemgetter, mul
+>>> for operation in (itemgetter(0), partial(mul, 3)):
+    print(operation(ls))
+...     
+a
+['a', 3, 'a', 3, 'a', 3]</pre>
+<p>Le module <code>operator</code> est très riche: opérations logiques (incluant la négation), manipulation de slices, maths de base, set/get d&#8217;attributs/de clés/d&#8217;index&#8230; Il y a de quoi faire.</p>
+<h2>Mettez à la poubelle <code>map</code> et <code>filter</code></h2>
+<p><code>Map</code> permet d&#8217;appliquer une fonction a un itérable. <code>Filter</code> permet de choisir les éléments d&#8217;un itérable selon un critère pour former un autre itérable.</p>
+<pre lang="python">>>> nombres = range(10)
+>>> paires = filter(lambda x: not x % 2, nombres)
+>>> paires
+[0, 2, 4, 6, 8]
+>>> paires_au_carres = map(lambda x: x * x, paires)
+>>> paires_au_carres
+[0, 4, 16, 36, 64]</pre>
+<p>Les <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">listes en intention</a> remplacent avantageusement ces deux fonctions (je crois d&#8217;ailleurs qu&#8217;elles sont retirées des built-in en Python 3):</p>
+<pre lang="python">>>> [x * x for x in range(10) if not x % 2]
+[0, 4, 16, 36, 64]</pre>
+<p>Je ne suis pas un allergique aux lambdas, et je les utilise assez souvent, mais il est bon de savoir qu&#8217;il existe des alternatives.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comment-ne-pas-utiliser-une-fonction-anonyme-ou-lambda-en-python/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1457</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/08/no_to_lambda.png" length="17781" type="image/jpg" />	</item>
+	</channel>
+</rss>

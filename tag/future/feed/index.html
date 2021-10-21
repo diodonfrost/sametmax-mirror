@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>future &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/future/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Deferred, Future et Promise : le pourquoi, le comment, et quand est-ce qu&#8217;on mange</title>
+		<link>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/</link>
+		<comments>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/#comments</comments>
+		<pubDate>Wed, 04 Jun 2014 13:19:22 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asynchrone]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[deferred]]></category>
+		<category><![CDATA[future]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[jquery]]></category>
+		<category><![CDATA[promise]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[twisted]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10418</guid>
+		<description><![CDATA[Les promesses sont une des manières de rendre un code asynchrone plus facile à gérer. On dit : ce groupe de fonctions doit s'exécuter dans un ordre. Elles sont dépendantes les unes des autres.]]></description>
+				<content:encoded><![CDATA[<p>Si vous avez plongé dans le monde de la programmation asynchrone non bloquante, vous avez du vous heurter aux <a href="http://sametmax.com/quest-ce-quun-callback/">callbacks</a>. Si ce n&#8217;est pas le cas, aller lire l&#8217;article, et faites vos armes sur jQuery, je vais m&#8217;en servir en exemple.</p>
+<p>Signalement de rigueur que l&#8217;article est long :</p>
+
+<!-- iframe plugin v.4.3 wordpress.org/plugins/iframe/ -->
+<iframe width="560" height="315" src="//www.youtube.com/embed/E8b4xYbEugo" frameborder="0" 0="allowfullscreen" scrolling="yes" class="iframe-class"></iframe>
+
+<p>Un callback, ça va.</p>
+<p>Deux callbacks, pour un seul appel, ça commence à être chiant, mais c&#8217;est compréhensible.</p>
+<p>Quand les callbacks appellent eux aussi des callbacks, ça donne des codes imbitables :</p>
+<pre lang="javascript">$(function(){
+  $.post('/auth/token', function(token){
+    saveToken(token);
+    $.get('/sessions/last', function(session){
+      if (session.device != currentDevice){
+        $.get('/session/ ' + session.id + '/context', function(context){
+          loadContext(function(){
+            startApp(function(){
+              initUi()
+            })
+          })}
+        )}
+      else {
+        startApp(function(){
+          initUi()
+        })
+      }}
+    )
+  })
+});</pre>
+<p>Il y a pire que de lire ce code : le modifier ! Retirez un bloc, pour voir. Oh, et histoire de vous faire partager l&#8217;expérience complète, j&#8217;ai volontairement déplacé l&#8217;indentation d&#8217;une parenthèse et de deux brackets.</p>
+<p>Or les codes asynchrones ont besoin de callback afin d’enchainer certaines opérations dans le bon ordre, sinon on ne peut pas récupérer le résultat d&#8217;une fonction et l&#8217;utiliser dans une autre, puisqu&#8217;on ne sait pas quand l&#8217;opération se termine.</p>
+<p>Dans notre exemple, <code>$.post</code> et <code>$.get</code> font des requêtes POST et GET, et comme on ne sait pas quand le serveur va répondre, il faut mettre un callback pour gérer la réponse quand elle arrive. C&#8217;est plus performant que de bloquer jusqu&#8217;à ce que la première requête soit terminée car pendant ce temps, notre programme peut faire autre chose. Mais c&#8217;est aussi super relou à écrire et comprendre.</p>
+<p>Entrent en jeu les promesses (promises). Ou les deferred. Ou les futures.</p>
+<p>Typiquement, on retrouve des deferreds dans <a href="https://twistedmatrix.com/trac/">Twisted</a>, des promises pour <a href="http://api.jquery.com/jquery.ajax/">l&#8217;AJAX avec jQuery,</a> des futures pour <a href="http://docs.python.org/3.4/library/asyncio-protocol.html">asyncio</a>&#8230; Mais il y en a un peu partout de nos jours, et une lib peut utiliser plusieurs de ces concepts.</p>
+<p>En fait c&#8217;est la même chose, un nom différent donné au même concept, par des gens qui l&#8217;ont réinventé dans leur coin. Les puristes vous diront qu&#8217;il y a des différences dans l&#8217;implémentation, ou alors que la promesse est l&#8217;interface tandis que le deferred est l&#8217;objet retourné, bla, bla, bla.</p>
+<p>Fuck it, on va considérer que c&#8217;est tout pareil.</p>
+<p>Les promesses sont une des manières de rendre un code asynchrone plus facile à gérer. On dit : ce groupe de fonctions doit s&#8217;exécuter dans un ordre car elles sont dépendantes les unes des autres.</p>
+<p>Il y a d&#8217;autres moyens de gérer le problème de l&#8217;asynchrone: des événements, des queues, etc. L&#8217;avantage des promesses c&#8217;est que c&#8217;est assez simple, et ça marche là où on utilisait des callbacks avant, donc on a pu les rajouter aux libs qui étaient blindées de callbacks.</p>
+<h2>Le principe</h2>
+<p>La promesse est un moyen de dire que certaines fonctions, bien que non bloquantes et asynchrones, sont liées entre elles, et doivent s&#8217;exécuter les unes à la suite des autres. Cela permet de donner un ordre d&#8217;exécution à un groupe de fonctions, et surtout, que chaque fonction puisse accéder au résultat de la fonction précédente. Tout ceci sans bloquer le reste du système asynchrone.</p>
+<p>En résumé, <strong>cela donne un gout de programmation synchrone, à quelque chose qui ne l&#8217;est pas.</strong></p>
+<p>Cela se passe ainsi :</p>
+<ul>
+<li>La fonction asynchrone retourne un objet immédiatement : la promesse.</li>
+<li>On ne passe pas de callback à la fonction. On rajoute un callback à la promesse.</li>
+<li>Le callback prend en paramètre le résultat de la fonction asynchrone.</li>
+<li>Le callback retourne le résultat de son traitement.</li>
+<li>On peut rajouter autant de callbacks qu&#8217;on veut à la promesse, chacun devant accepter le résultat du callback précédent et retourner son propre résultat.</li>
+<li>Si un des callbacks retourne une promesse, elle est fusionnée avec la promesse initiale, et c&#8217;est son résultat que le prochain callback va récupérer</li>
+</ul>
+<p>Voilà un exemple :</p>
+<pre lang="javascript">// $.get est asynchrone. On a pas le résultat tout de suite, mais en attendant
+// on a une promesse tout de suite.
+var $promesse = $.get('/truc/machin');
+
+// premier callback. Il sera appelé quand $.get aura récupéré son
+// résultat
+$promesse.then(function(resultat){
+  // faire un truc avec le résultat
+  // puis on retourne le nouveau résultat
+  return nouveau_resultat;
+});
+
+// deuxième callback. Il sera appelé quand le premier callback
+// aura retourné son résultat.
+$promesse.then(function(nouveau_resultat){
+  // faire un truc
+});</pre>
+<p>Notez bien que c&#8217;est TRES différent de ça (en Python):</p>
+<pre lang="python">resultat = request.get('/truc/marchin')
+
+def function(resultat):
+  # faire un truc
+  return nouveau_resultat
+nouveau_resultat = function(resultat)
+
+def autre_function(nouveau_resultat):
+  # faire un truc
+autre_function(nouveau_resultat)</pre>
+<p>En Python, le code est bloquant par défaut. Ça va marcher, mais pendant que le code attend la réponse du serveur, votre ordinateur est en pause et ne travaille pas.</p>
+<h2>Un plus beau code</h2>
+<p>On se retrouve avec un code asynchrone, mais qui s&#8217;exécute dans l&#8217;ordre de lecture. Et comme on peut chainer les <code>then()</code> et donc ne pas réécrire <code>$promesse</code> à chaque fois, on obtient quelque chose de beaucoup plus lisible :</p>
+<pre lang="javascript">$.get('/truc/machin')
+.then(function(resultat){
+  // faire un truc
+  return nouveau_resultat;
+})
+.then(function(nouveau_resultat){
+  // faire un truc
+});</pre>
+<p>Si on reprend notre premier exemple, ça donne ça :</p>
+<pre lang="javascript">
+$(function(){
+
+// create new token
+$.post('/auth/token')
+
+// then save token and get last session
+.then(function(token){
+  saveToken(token);
+  return $.get('/sessions/last');
+})
+
+// then init session
+.then(function(session){
+  if (session.device != currentDevice){
+    
+    $.get('/session/ ' + session.id + '/context')
+    .then(function(context){
+      loadContext(function(){
+        startApp(function(){
+          initUi()
+        })
+      })
+    })
+
+  }
+  else {
+    startApp(function(){
+      initUi()
+    })
+  }}
+})
+
+});
+</pre>
+<p>Tout ça s’exécute de manière non bloquante (d&#8217;autres fonctions ailleurs dans le programme peuvent s&#8217;exécuter pendant qu&#8217;on attend la réponse du serveur), mais dans l&#8217;ordre de lecture, donc on comprend bien ce qui se passe. Si on veut retirer un bloc, c&#8217;est beaucoup plus facile.</p>
+<h2>Comment ça marche à l&#8217;intérieur ?</h2>
+<p>Histoire d&#8217;avoir une idée de comment une promise marche, on va faire une implémentation, simpliste et naïve, mais compréhensible, d&#8217;une promesse en Python. Pour rendre l&#8217;API un peu sympa,je vais utiliser <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">les décorateurs.</a></p>
+<pre lang="python">class Promise:
+
+    # La promesse contient une liste de callbacks, donc une liste de fonctions.
+    # Pas le résultat des fonctions, mais bien les fonctions elles mêmes,
+    # puisque les fonctions sont manipulables en Python.
+    def __init__(self):
+        self.callbacks = []
+
+    # Point d'entrée pour ajouter un callback à la promesse
+    def then(self, callback):
+        self.callbacks.append(callback)
+
+    # Cette méthode est celle qui sera appelée par le code asynchrone
+    # quand il reçoit son résultat.
+    def resolve(self, resultat):
+
+        # Ici, on obtient le résultat du code asycnhrone, donc on boucle
+        # sur les callbacks pour les appeler
+        while self.callbacks:
+            # On retire le premier callback de la liste, et on l'appelle
+            # avec le résultat
+            resultat = self.callbacks.pop(0)(resultat)
+
+            # Si le resultat est une promesse, on dit à cette nouvelle promesse
+            # de nous rappeler quand elle a reçu ses résultats à elle avant
+            # d'aller le reste de nos callbacks à nous : on fusionne les deux
+            # promesses :
+            # Promesse 1
+            #  - callback1
+            #  - callback2
+            #  - Promesse 2
+            #      * callback 1
+            #      * callback 2
+            #  - callback 3
+            if isinstance(resultat, Promise):
+                resultat.then(self.resolve)
+                break</pre>
+<p>Maintenant, créons un code asynchrone:</p>
+<pre lang="python">from threading import Timer
+
+def func1(v1):
+    # On dit complètement artificiellement d'afficher le résultat
+    # de la fonction dans 3 secondes, sans bloquer histoire d'avoir
+    # un peu de nonbloquitude dans notre code et justifier l'asynchrone.
+    def callback1():
+        print(v1)
+    t = Timer(3, callback1)
+    t.start()
+
+def func2(v2):
+    # Le même, mais pour 2 secondes
+    def callback2():
+        print(v2)
+    t = Timer(2, callback2)
+    t.start()
+
+# Deux fonctions normales
+def func3(v3):
+    print(v3)
+
+def func4(v4):
+    print(v4)
+
+# Et si on les enchaines...
+print('Je commence')
+func1(1)
+print('Juste après')
+func2(2)
+func3(3)
+func4(4)
+
+# ... le résultat est bien désordonné :
+
+## Je commence
+## Juste après
+## 3
+## 4
+## 2
+## 1</pre>
+<p>Parfois c&#8217;est ce que l&#8217;on veut, que les choses s’exécutent dans le désordre, sans bloquer.</p>
+<p>Mais quand on a des fonctions qui dépendent les unes des autres, au milieu d&#8217;un code asynchrone, on veut qu&#8217;elles se transmettent le résultat les unes aux autres au bon moment. Pour cela, utilisons notre promesse :</p>
+<pre lang="python">
+from threading import Timer
+
+
+# La mise en place de promesses suppose que le code 
+# écrit en fasse explicitement usage. Notre code est
+# définitivement lié à cette manière de faire.
+
+def func1(v1):
+    # Notre fonction doit créer la promesse et la retourner
+    p = Promise()
+    def callback1():
+        print(v1)
+        # Dans le callback, elle doit dire quand la promesse est tenue
+        p.resolve(v1)
+    t = Timer(3, callback1)
+    t.start()
+    return p
+
+# On lance la première fonction.
+print('Je commence')
+promise = func1(1)
+print('Juste après')
+
+# On ajoute des callbacks à notre promesse.
+
+@promise.then
+def func2(v2):
+    p = Promise()
+    def callback2():
+        # Pour justifier l’enchainement des fonctions, on fait en sorte que
+        # chaque fonction attend le résultat de la précédente, et
+        # l'incrémente de 1.
+        print(v2 + 1)
+        p.resolve(v2 + 1)
+    t = Timer(2, callback2)
+    t.start()
+    # Ce callback retourne lui-même une promesse, qui sera fusionnée
+    return p
+
+# Ces callbacks ne retournent pas de promesses, et seront chainés
+# normalement
+@promise.then
+def func3(v3):
+    print(v3 + 1)
+    return v3 + 1
+
+@promise.then
+def func4(v4):
+    print(v4 + 1)
+
+# Nos fonctions s'exécutent dans le bon ordre, mais bien de manière
+# asynchrone par rapport au reste du programme.
+
+## Je commence
+## Juste après
+## 1
+## 2
+## 3
+## 4
+</pre>
+<p>Notez bien :</p>
+<ul>
+<li>Le résultat &#8220;1&#8221; n&#8217;apparait que trois secondes après &#8220;Juste après&#8221;. Les fonctions sont donc bien non bloquantes.</li>
+<li>Le resultat &#8220;2&#8221; apparait deux secondes après &#8220;1&#8221;: c&#8217;est aussi asynchrone, MAIS, n&#8217;est lancé que quand la première fonction a terminé son travail.</li>
+<li>La deuxième fonction retourne une promesse, qui est fusionnée: tous ses callbacks vont s&#8217;exécuter en file avant que <code>func3</code> soit lancé. </li>
+</ul>
+<p>Évidement, n&#8217;utilisez pas cette implémentation de promise à la maison, c&#8217;est pédagogique. Ça ne gère pas les erreurs, ni le cas où le callback est enregistré après l&#8217;arrivée du résultat, et tout un tas d&#8217;autres cas tordus.</p>
+<h2>Syntaxe alternative</h2>
+<p>En Python, beaucoup de frameworks ont une approche plus agréable pour gérer les promesses à grand coup de <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">yield</a>. Twisted fait ça avec son <code>@inlineCallback</code>, <code>asyncio</code> avec <code>@coroutine</code>. C&#8217;est juste du sucre syntaxique pour vous rendre la vie plus facile.</p>
+<p>Il s&#8217;agit de transformer une fonction en générateur, et à chaque fois qu&#8217;on appelle <code>yield</code> sur une promesse, elle est fusionnée avec la précédente. Ça donne presque l&#8217;impression d&#8217;écrire un code bloquant normal :</p>
+<pre lang="python"># un appel de fonction asyncrone typique de twisted
+@inlineCallback
+def une_fonction(data):
+  data = yield func1(data)
+  data = yield func2(data)
+  data = yield func3(data)
+
+une_fonction(truc)</pre>
+<p>Les fonctions 1, 2 et 3 vont ainsi être appelées de manière asynchrone par rapport au reste du programme, mais bien s’enchainer les unes à la suite des autres.</p>
+<p>Ouai, tout ce bordel parce que l&#8217;asynchrone, c&#8217;est dur, donc on essaye de le faire ressembler à du code synchrone, qui lui est facile.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/feed/</wfw:commentRss>
+		<slash:comments>19</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">10418</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/06/D8GwE.png" length="222229" type="image/jpg" />	</item>
+		<item>
+		<title>En attendant asyncio</title>
+		<link>http://sametmax.com/en-attendant-asyncio/</link>
+		<comments>http://sametmax.com/en-attendant-asyncio/#comments</comments>
+		<pubDate>Fri, 17 Jan 2014 14:09:59 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asynchrone]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[future]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8781</guid>
+		<description><![CDATA[La programmation asynchrone arrive en force avec la version 3.4, mais celle-ci n'est pas encore en version stable. En attendant, Python 3 possède déjà de quoi faire de la programmation asynchrone, et même parallèle, avec une bien plus grande facilité qu'en Python 2.]]></description>
+				<content:encoded><![CDATA[<p>La programmation asynchrone arrive en force avec la version 3.4, mais celle-ci n&#8217;est pas encore en version stable. En attendant, Python 3 possède déjà de quoi faire de la programmation asynchrone, et même parallèle, avec une bien plus grande facilité qu&#8217;en Python 2.</p>
+<p>Si vous avez oublié le principe ou l’intérêt de la programmation asynchrone, <a href="http://sametmax.com/la-difference-entre-la-programmation-asynchrone-parallele-et-concurrente/">il y a un article pour ça</a> ©.</p>
+<p>Pour montrer l’intérêt de la chose, nous allons utiliser un bout de code pour télécharger le code HTML de pages Web.</p>
+<h2>Sans programmation asynchrone</h2>
+<p>Le code est simple et sans chichi :</p>
+<pre lang="python"># -*- coding: utf-8 -*-
+
+import datetime
+from urllib.request import urlopen
+
+start_time = datetime.datetime.now()
+
+URLS = ['http://sebsauvage.net/',
+        'http://github.com/',
+        'http://sametmax.com/',
+        'http://duckduckgo.com/',
+        'http://0bin.net/',
+        'http://bitstamp.net/']
+
+for url in URLS:
+    try:
+        # j'ignore volontairement toute gestion d'erreur évoluée
+        result = urlopen(url).read()
+        print('%s page: %s bytes' % (url, len(result)))
+    except Exception as e:
+        print('%s generated an exception: %s' % (url, e))
+
+elsapsed_time = datetime.datetime.now() - start_time
+
+print("Elapsed time: %ss" % elsapsed_time.total_seconds())
+
+</pre>
+<p>Ce qui nous donne:</p>
+<pre lang="bash">python sans_future.py
+http://sebsauvage.net/ page: 9036 bytes
+http://github.com/ page: 12582 bytes
+http://sametmax.com/ generated an exception: HTTP Error 502: Bad Gateway
+http://duckduckgo.com/ page: 8826 bytes
+http://0bin.net/ page: 5551 bytes
+http://bitstamp.net/ page: 51996 bytes
+Elapsed time: 25.536095s</pre>
+<p>Erreur 500 sur S&#038;M&#8230; Mon script qui se fout de ma gueule en plus&#8230;</p>
+<h2>Avec programmation asynchrone</h2>
+<p>On utilise le module <a href="http://docs.python.org/3.2/library/concurrent.futures.html">future</a>, qui, comme sont nom l&#8217;indique, implémente des outils pour manipuler des &#8220;futures&#8221; en Python. Il inclut notamment un context manager pour créer, lancer et arrêter des workers automatiquement, et leur envoyer des tâches, puis récupérer les résultats de ces tâches sous forme de &#8220;futures&#8221;.</p>
+<p>Pour rappel, une &#8220;future&#8221; est juste un objet qui représente le résultat d&#8217;une opération asynchrone (puisqu&#8217;on ne sait pas quand elle se termine). Cet objet contient des méthodes pour vérifier si le résultat est disponible à un instant t, et obtenir ce résultat si c&#8217;est le cas.</p>
+<pre lang="python">
+# -*- coding: utf-8 -*-
+
+import datetime
+import concurrent.futures
+
+from urllib.request import urlopen
+from concurrent.futures import ProcessPoolExecutor, as_completed
+
+start_time = datetime.datetime.now()
+
+URLS = ['http://sebsauvage.net/',
+        'http://github.com/',
+        'http://sametmax.com/',
+        'http://duckduckgo.com/',
+        'http://0bin.net/',
+        'http://bitstamp.net/']
+
+
+def load_url(url):
+    """
+        Le callback que vont appeler les workers pour télécharger le contenu
+        d'un site. On peut appeler cela une 'tâche'
+    """
+    return urlopen(url).read()
+
+# Un pool executor est un context manager qui va automatiquement créer des
+# processus Python séparés et répartir les tâches qu'on va lui envoyer entre
+# ces processus (appelés workers, ici on en utilise 5).
+with ProcessPoolExecutor(max_workers=5) as e:
+
+    # On e.submit() envoie les tâches à l'executor qui les dispatch aux
+    # workers. Ces derniers appelleront "load_url(url)". "e.submit()" retourne
+    # une structure de données appelées "future", qui représente  un accès au
+    # résultat asynchrone, qu'il soit résolu ou non.
+    futures_and_url = {e.submit(load_url, url): url for url in URLS}
+
+    # "as_completed()" prend un iterable de future, et retourne un générateur
+    # qui itère sur les futures au fur et à mesures que celles
+    # ci sont résolues. Les premiers résultats sont donc les premiers arrivés,
+    # donc on récupère le contenu des sites qui ont été les premiers à répondre
+    # en premier, et non dans l'ordre des URLS.
+    for future in as_completed(futures_and_url):
+
+        # Une future est hashable, et peut donc être une clé de dictionnaire.
+        # On s'en sert ici pour récupérer l'URL correspondant à cette future.
+        url = futures_and_url[future]
+
+        # On affiche le résultats contenu des sites si les futures le contienne.
+        # Si elles contiennent une exception, on affiche l'exception.
+        if future.exception() is not None:
+            print('%s generated an exception: %s' % (url, future.exception()))
+        else:
+            print('%s page: %s bytes' % (url, len(future.result())))
+
+
+elsapsed_time = datetime.datetime.now() - start_time
+
+print("Elapsed time: %ss" % elsapsed_time.total_seconds())</pre>
+<p>Et c&#8217;est quand même vachement plus rapide :</p>
+<pre lang="python">python3 avec_future.py # notez qu'on utilise Python 3 cette fois
+http://duckduckgo.com/ page: 8826 bytes
+http://sebsauvage.net/ page: 9036 bytes
+http://github.com/ page: 12582 bytes
+http://sametmax.com/ page: 50998 bytes
+http://0bin.net/ page: 5551 bytes
+http://bitstamp.net/ page: 52001 bytes
+Elapsed time: 3.480596s
+</pre>
+<p>Même si vous retirez les commentaires, le code est encore très verbeux, ce qui explique pourquoi j&#8217;attends avec impatience <a href="http://www.python.org/dev/peps/pep-3156/">asyncio</a> qui, grâce à <code>yield from</code>, va intégrer l&#8217;asynchrone de manière plus naturelle au langage.</p>
+<p>Mais ça reste beaucoup plus simple que de créer son process à la main, créer une queue, envoyer les tâches dans la queue, s&#8217;assurer que le process est arrêté, gérer les erreurs et le clean up, etc.</p>
+<p>Notez qu&#8217;on peut remplacer <code>ProcessPoolExecutor</code> par <code>ThreadPoolExecutor</code> si vous n&#8217;avez pas besoin d&#8217;un process séparé mais juste de l&#8217;IO non bloquant.</p>
+<hr />
+<p>Télécharger le code de larticle : <a href="https://github.com/sametmax/codes-des-articles/blob/master/2014/janvier/avec_future.py">avec future</a> / <a href="https://github.com/sametmax/codes-des-articles/blob/master/2014/janvier/sans_future.py">sans future</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/en-attendant-asyncio/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8781</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/01/IMG_7832.jpg" length="84993" type="image/jpg" />	</item>
+	</channel>
+</rss>

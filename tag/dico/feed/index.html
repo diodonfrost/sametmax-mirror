@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>dico &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/dico/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>L&#8217;ordre des choses</title>
+		<link>http://sametmax.com/lordre-des-choses/</link>
+		<comments>http://sametmax.com/lordre-des-choses/#comments</comments>
+		<pubDate>Tue, 16 Aug 2016 14:45:23 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dico]]></category>
+		<category><![CDATA[dict]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=19982</guid>
+		<description><![CDATA[Des mois et des mois que je n’ai pas écrit :) Je ne compte même pas Max, qui à l’heure où je vous parle est en train découvrir les joies de la sidérurgie et qui ne se souvient du blog que quand on en parle dans le jacuzzi d’un FKK. Ça va faire 4 ans [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Des mois et des mois que je n’ai pas écrit :) Je ne compte même pas Max, qui à l’heure où je vous parle est en train découvrir les joies de la sidérurgie et qui ne se souvient du blog que quand on en parle dans le jacuzzi d’un FKK. </p>
+<p>Ça va faire 4 ans qu’on a ce truc.</p>
+<p>Entre temps lui et moi avons déménagé plusieurs fois, séparément, puis réaménagé ensemble, on a pris des responsabilités comme l’achat d’une machine à glaçons et la culture de plantes carnivores (la mienne est morte, mais il a la main verte apparemment).</p>
+<p>Je vais être franc avec vous, l’écriture ne m’a pas manqué. Pas du tout.</p>
+<p>Et puis aujourd’hui, j’ai eu envie. Ça ne m’avait pas pris depuis pas mal de temps, mais c’est une bonne chose : le sens du devoir avait depuis longtemps perdu son influence sur ma motivation éditoriale.</p>
+<p>Est-ce que ça va durer un article ? 10 ? Un an ?</p>
+<p>On va voir.</p>
+<p>Mais ce ne sont pas les sujets qui manquent. En fait Python 3.6 est droit devant nous, avec plein de trucs chouettes à la clé. J’ai aussi beaucoup joué avec asyncio, jusqu’à trouver des bugs dedans et les reporter aux core-dev direct.</p>
+<p>Pour le cul par contre, je ne sais pas encore, je vais laisser traîner jusqu’à ce que, tel Rocco dans Omar et Fred, ma bite me parle.</p>
+<p>Python pour commencer donc.</p>
+<p>Plein de changements de perfs, en vitesse, occupation mémoire, etc, prévus pour la prochaine version. Parmi eux, un changement majeur sur <a href="https://bugs.python.org/issue27350">l’implémentation des dictionnaires</a> inspiré directement de Pypy, qui les rendront plus compacts et plus rapides.</p>
+<p>Et surtout, ordonnés par défaut. </p>
+<p>Yep, plus besoin de <a href="http://sametmax.com/ce-que-vous-ne-saviez-pas-sur-les-collections-en-python/">collections.OrderedDict</a>, qui restera malgré tout pour des raisons de compatibilité.</p>
+<p>Enfin s’ils décident que ça fait maintenant partie de la specs et n’est pas juste un détail d’implémentation.</p>
+<p>Ca veut dire aussi que <a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">**kwargs</a> et <code>__dict__</code> deviendront ordonnés, ce qui va arranger beaucoup de monde.</p>
+<p>Mais l’article, en plus de prêcher la bonne nouvelle, est aussi là pour vous parler d’un petit hack sympa qui peut être pratique dans votre <a href="http://sametmax.com/variables-denvironnement-utilisees-par-python/">PYTHONSTARTUP</a> pour des sessions shellifiantes : donner l’impression d’avoir un <code>OrderedDict</code> builtin par défaut.</p>
+<pre lang="python">from textwrap import dedent
+from collections import OrderedDict
+
+class OrderedDictFactory(object):
+
+    # __getitem__ est la méthode magique appelée quand on fait objet[trucs]
+    # et keys contient la liste des trucs
+    def __getitem__(self, keys):
+
+        for key in keys:
+
+            # slice est un objet builtin fabriqué par Python quand on fait 
+            # objet[debut:fin], qui contient le debut et la fin
+            if not isinstance(key, slice):
+
+                # on check qu’on a bien une liste de slices
+                raise SyntaxError(dedent("""
+                    One element of the dict is not a key/value pair: {!r}.
+
+                    The syntax is d["key1": "value", "key2": "value", ...].
+                    Check if you haven't missed a semicolon somewhere.
+                """.format(key)))
+
+        # et on retourne juste un ordered dict classique
+        return OrderedDict([(k.start, k.stop) for k in keys])
+
+# instance de référence pour notre factory abrégé pour des raisons de 
+# facilité
+d = OrderedDictFactory()</pre>
+<p>Et hop, on abuse la notation du slicing :</p>
+<pre lang="python">>>> menu = d[
+   "Samurai pizza cats" : "fruits de mer", # un slice
+   "Tortue ninja" : "4 saisons", # un autre slice 
+   'Max': "paysanne" # do you wanna slice ?
+]
+
+>>> menu
+OrderedDict([('Samurai pizza cats', 'fruits de mer'), ('Tortues ninjsa', '4 saisons'), ('Max', 'paysanne')])</pre>
+<p>Rien à voir avec la choucroute, mais certaines personnes m’ont parlé de faire un miroir SFW du blog. Je vous rappelle que le blog est sous creative common, alors faites-vous plaiz, vous pouvez tout réutiliser.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/lordre-des-choses/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">19982</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/08/1w6WcsT.jpg" length="116685" type="image/jpg" />	</item>
+		<item>
+		<title>Chercher dans plusieurs dicts à la fois avec ChainMap</title>
+		<link>http://sametmax.com/chercher-dans-plusieurs-dicts-a-la-fois-avec-chainmap/</link>
+		<comments>http://sametmax.com/chercher-dans-plusieurs-dicts-a-la-fois-avec-chainmap/#comments</comments>
+		<pubDate>Fri, 11 Jul 2014 08:09:25 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dico]]></category>
+		<category><![CDATA[dict]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=11382</guid>
+		<description><![CDATA[Depuis Python 3.3 existe un nouvel outil pour travailler avec les dicos et j'étais complètement passé à côté : <a href="https://docs.python.org/3.3/library/collections.html#collections.ChainMap">ChainMap</a>.]]></description>
+				<content:encoded><![CDATA[<p>Depuis Python 3.3 existe un nouvel outil pour travailler avec les dicos et j&#8217;étais complètement passé à côté : <a href="https://docs.python.org/3.3/library/collections.html#collections.ChainMap">ChainMap</a>.</p>
+<p>Il permet de créer un objet qui se comporte comme un <a href="http://sametmax.com/aller-plus-loin-avec-les-hash-maps-en-python/">dict</a>, mais qui va chercher dans plusieurs dictionnaires.</p>
+<p>Un exemple sera plus clair.</p>
+<p>Imaginez que vous ayez un système de configuration avec des valeurs par défaut :</p>
+<pre lang="python">default_config = {'DEBUG': False, 'HOST': 'localhost', 'PORT': 8080}</pre>
+<p>Puis votre utilisateur peut fournir un fichier de configuration <code>settings.py</code> qui contient :</p>
+<pre lang="python">DEBUG = True
+PORT = 8000</pre>
+<p>Et avec un peu de parsing, vous le récupérez sous forme de dico :</p>
+<pre lang="python">import settings
+user_config = {k: v for k, v in vars(settings).items() if k.isupper()}
+## {'DEBUG': True, 'PORT': 8000}</pre>
+<p>Puis l&#8217;utilisateur peut passer la config via la ligne de commande, et une fois il fait :</p>
+<pre lang="python">--host 0.0.0.0</pre>
+<p>Et vous récupérez la config :</p>
+<pre lang="python">cmd_config = {"HOST": "0.0.0.0"}</pre>
+<p>Maintenant il faut prendre tout ça en compte. La ligne de commande écrase le fichier de config qui écrase les valeurs par défaut :</p>
+<pre lang="python">conf = {}
+conf.update(default_config)
+conf.update(user_config)
+conf.update(cmd_config)
+print(conf) # configuration finale
+## {'DEBUG': True, 'HOST': '0.0.0.0', 'PORT': 8000}</pre>
+<p>Ça va marcher, mais ça a plusieurs défauts : </p>
+<ul>
+<li>Si vos dicos sont très grands, vous prenez encore plus de place en mémoire.</li>
+<li>Si vous modifiez <code>conf</code>, impossible de savoir quelle était sa valeur initiale.</li>
+<li>Si vous modifiez <code>user_config</code>, il faut tout refusionner. Mais si vous avez modifié <code>conf</code> entre temps, comment vous assurer que vous n&#8217;allez pas écraser ces modifications ?</li>
+<li>Si vous voulez temporairement faire une modification à conf, il faut de nouveau créer un dico en plus avec tout dedans.</li>
+</ul>
+<p>ChainMap résout ce problème en cherchant une clé dans une liste de dicos sous-jacent, mais en appliquant les modifications uniquement sur le premier dico.</p>
+<pre lang="python">>>> from collections import ChainMap
+
+>>> conf = ChainMap({}, # <- ce mapping sera le seul modifié
+                    # les clés seront cherchées dans cet ordre :
+                    cmd_config, 
+                    user_config, 
+                    default_config)
+
+>>> conf['HOST']
+>>> '0.0.0.0'
+>>> conf['DEBUG']
+>>> True
+>>> conf['PORT']
+>>> 8000</pre>
+<p>Les dicos sont ici stockés par référence, ça ne prend pas de mémoire en plus, et si on modifie un dico :</p>
+<pre lang="python">user_config['DEBUG'] = False</pre>
+<p>Alors c&#8217;est reflété par <code>ChainMap</code>:</p>
+<pre lang="python">>>> conf['DEBUG']
+False</pre>
+<p>Si on fait une modification, seul le dico le plus haut dans la chaine (ici notre dico vide), est modifié :</p>
+<pre lang="python">>>> conf["PORT"] = 7777
+>>> conf
+ChainMap({'PORT': 7777}, {'HOST': '0.0.0.0'}, {'DEBUG': False, 'PORT': 8000}, {'DEBUG': False, 'HOST': 'localhost', 'PORT': 8080})</pre>
+<p>Et si on a besoin d&#8217;un contexte temporaire, on peut créer un enfant :</p>
+<pre lang="python">>>> sub_conf = conf.new_child()
+>>> sub_conf
+ChainMap({}, {'PORT': 7777}, {'HOST': '0.0.0.0'}, {'DEBUG': False, 'PORT': 8000}, {'DEBUG': False, 'HOST': 'localhost', 'PORT': 8080})</pre>
+<p>Cela crée un nouveau ChainMap, avec un dico vide en haut de la chaîne, qui permet donc de travailler temporairement avec de nouvelles valeurs, sans toucher au ChainMap d&#8217;origine. </p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/chercher-dans-plusieurs-dicts-a-la-fois-avec-chainmap/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">11382</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/07/tumblr_n5nx1iJWNQ1r539hzo1_500.jpg" length="184953" type="image/jpg" />	</item>
+		<item>
+		<title>Aller plus loin avec les hash maps en Python</title>
+		<link>http://sametmax.com/aller-plus-loin-avec-les-hash-maps-en-python/</link>
+		<comments>http://sametmax.com/aller-plus-loin-avec-les-hash-maps-en-python/#comments</comments>
+		<pubDate>Mon, 30 Jun 2014 03:28:26 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dico]]></category>
+		<category><![CDATA[dict]]></category>
+		<category><![CDATA[dictionnaire]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=11217</guid>
+		<description><![CDATA[Les hash map sont souvent sous-utilisés, surtout par les personnes venant d'un autre langage avec implémentation vraiment batardes du concept. Les array en PHP et les objet en Javascript étant parmi les pires exemples.]]></description>
+				<content:encoded><![CDATA[<p>Les hash map sont souvent sous-utilisés, surtout par les personnes venant d&#8217;un autre langage avec implémentation vraiment batarde du concept. Les arrays en PHP et les objets en Javascript étant parmi les pires exemples.</p>
+<p>Le point d&#8217;entrée pour les hash maps en Python, c&#8217;est le dictionnaire. Et la plupart des gens ont pigé le principe de l&#8217;association clé / valeur :</p>
+<pre lang="python">>>> d = {}
+>>> d['cle'] = 'valeur'
+>>> d['cle']
+'valeur'
+>>> d['pas cle']
+Traceback (most recent call last):
+  File "<ipython-input-12-eed7cf6f5344>", line 1, in <module>
+    d['pas cle']
+KeyError: 'pas cle'</pre>
+<p>L’intérêt du dictionnaire étant qu&#8217;accéder à une clé est très rapide (c&#8217;est <a href="http://sametmax.com/complexite-algorithmique-pourquoi-tant-de-n/">une opération O(1)</a>), tout comme vérifier qu&#8217;une clé est présente dans le dico :</p>
+<pre lang="python">>>> 'cle' in d
+True</pre>
+<p>Mais généralement les gens s&#8217;arrêtent là.</p>
+<h2>Itération</h2>
+<p>Parfois, ils vont plus loin, et tentent l&#8217;itération dessus :</p>
+<pre lang="python">>>> scores = {"Joe": 1, "Jonh": 5, "Jack": 3, "Jenny": 7, "Jeanne": 0, "July": 3}
+>>> for score in scores:
+    print(score)
+...
+Jenny
+Jack
+Joe
+July
+Jonh
+Jeanne</pre>
+<p>Ils s’aperçoivent qu&#8217;on peut uniquement récupérer les clés, et essayent de faire ça :</p>
+<pre lang="python">>>> for nom in scores:
+    print(nom, scores[nom])
+...
+Jenny 7
+Jack 3
+Joe 1
+July 3
+Jonh 5
+Jeanne 0</pre>
+<p>Rapidement ils sont corrigés par quelques collègues qui leur expliquent qu&#8217;on peut faire ceci :</p>
+<pre lang="python">>>> for nom, score in scores.items():
+    print(nom, score)
+...
+Jenny 7
+Jack 3
+Joe 1
+July 3
+Jonh 5
+Jeanne 0</pre>
+<p>Sans vraiment expliquer pourquoi. Si vous êtes curieux, cela marche grâce à l&#8217;<a href="http://sametmax.com/tag/unpacking/">unpacking</a>.</p>
+<p>Ensuite ils vont chercher à afficher des choses dans l&#8217;ordre, mais un dictionnaire n&#8217;est pas ordonné. Là commencent les embrouilles : dans l&#8217;ordre des clés, des valeurs ou dans l&#8217;ordre d&#8217;insertion ?</p>
+<p>Dans l&#8217;ordre des clés ou des valeurs, il faut se taper le <a href="http://sametmax.com/ordonner-en-python/">tri</a> à chaque fois :</p>
+<pre lang="python">>>> for nom, score in sorted(scores.items()):
+    print(nom, score)
+...
+Jack 3
+Jeanne 0
+Jenny 7
+Joe 1
+Jonh 5
+July 3
+>>> for nom, score in sorted(scores.items(), key=lambda x: x[1]):
+    print(nom, score)
+...
+Jeanne 0
+Joe 1
+Jack 3
+July 3
+Jonh 5
+Jenny 7</pre>
+<p>Dans l&#8217;ordre d&#8217;insertion par contre, ce n&#8217;est pas possible avec le dictionnaire. Mais voilà l&#8217;astuce : le hash map en Python, ce n&#8217;est pas QUE le type <code>dict</code>.</p>
+<p>Pour ce problème, on peut utiliser <code>collections.OrderedDict</code> :</p>
+<pre lang="python">>>> from collections import OrderedDict
+>>> d = OrderedDict()
+>>> d['Jeanne'] = 3
+>>> d['Jack'] = 2
+>>> d['July'] = 6
+>>> for nom, score in d.items():
+        print(nom, score)
+...
+Jeanne 3
+Jack 2
+July 6</pre>
+<p>Après il y a le rare problème, mais tout de même existant, de la très très grosse structure de données que l&#8217;on veut itérer dans l&#8217;ordre de clés :</p>
+<pre lang="python">>>> import random
+>>> l = range(10000000)
+>>> random.shuffle(l)</pre>
+<p>Si on fait un sort dessus, ça prend plusieurs secondes :</p>
+<pre lang="python">>>> l.sort()</pre>
+<p>Imaginez avec un dico qui contient un million de clés sous forme de texte. La lecture dans l&#8217;ordre sera très, très lente. Parfois ce n&#8217;est pas grave, et parfois c&#8217;est très emmerdant.</p>
+<p>La stdlib de Python ne permet pas de répondre à ce problème facilement. On pourrait bricoler quelque chose avec <a href="http://sametmax.com/heapq-le-module-python-incompris/">heapq</a>, mais franchement, c&#8217;est se casser la tête pour rien.</p>
+<p>Le plus simple est d&#8217;utiliser une lib externe, par exemple l&#8217;excellente <a href="https://github.com/grantjenks/sorted_containers">sorted_container</a>, qui en plus d&#8217;être très rapide, est en pur Python. Du coup, un peu de <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> :</p>
+<p><code>pip install sortedcontainer</code></p>
+<p>Et on est bon.</p>
+<pre lang="python">>>> from sortedcontainers import SortedDict
+>>> d = SortedDict()
+>>> d['Joe'] = 1
+>>> d['Jeanne'] = 6
+>>> d['July'] = 3
+>>> d['John'] = 3
+>>> for nom, score in d.items():
+    print(nom, score)
+...
+Jeanne 6
+Joe 1
+John 3
+July 3</pre>
+<p>SortedDict s&#8217;assure que le dictionnaire reste ordonné à chaque insertion d&#8217;un élément, et ainsi, vous évite de devoir faire un tri tout à la fin.</p>
+<h2>Initialisation</h2>
+<p>La plupart du temps, on utilise la notation littérale. Mais le constructeur <code>dict</code> trouve son utilité dans le fait qu&#8217;il accepte un itérable de tuples en paramètre :</p>
+<pre lang="python">>>> dict([("a", 1), ("b", 2)])
+{'a': 1, 'b': 2}</pre>
+<p>La plupart du temps, les gens n&#8217;en voient pas l&#8217;utilité. Mais il faut se rappeler que tout le langage Python est organisé autour de l&#8217;itération. Je ne cesse de le répéter, en Python, l&#8217;itération est tout.</p>
+<p>De fait, cette particularité du constructeur du dico vous permet de créer des dictionnaires à partir de structures existantes inattendues&#8230;</p>
+<p>Prendre deux séquences et les pairer :</p>
+<pre lang="python">>>> personnes = ('Joe', 'John', 'Jean-Michel')
+>>> scores = (4, 10, 34)
+>>> zip(personnes, scores)
+[('Joe', 4), ('John', 10), ('Jean-michel', 34)]
+>>> dict(zip(personnes, scores))
+{'Jean-michel': 34, 'John': 10, 'Joe': 4}</pre>
+<p>Pairer les deux derniers champs du résultat d&#8217;une commande :</p>
+<pre lang="python">>>> import subprocess
+>>> df = subprocess.check_output('df')
+>>> print(df)
+Sys. de fichiers       blocks de 1K  Utilisé Disponible Uti% Monté sur
+/dev/sda7                   7972000  6614840     929156  88% /
+none                              4        0          4   0% /sys/fs/cgroup
+udev                        1968688        4    1968684   1% /dev
+tmpfs                        395896     1112     394784   1% /run
+none                           5120        0       5120   0% /run/lock
+none                        1979472      160    1979312   1% /run/shm
+none                         102400       44     102356   1% /run/user
+/dev/sda5                  65438480 57693436    4397852  93% /media/sam/
+>>> dict(l.split()[-2:] for l in  list(df.split('\n'))[1:] if l)
+{'31%': '/media/truecrypt1', '1%': '/run/user', '93%': '/media/sam', '88%': '/', '0%': '/run/lock'}</pre>
+<p>Depuis Python 2.7, cette fonctionnalité est partiellement phagocytée par la syntaxe pour <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">les intentions</a> sur les dicos :</p>
+<pre lang="python">>>> from pprint import pprint
+>>> pprint( {line: num for num, line in enumerate(open('/etc/fstab'), 1)})
+{'#\n': 6,
+ '# / was on /dev/sda7 during installation\n': 8,
+ '# /etc/fstab: static file system information.\n': 1,
+ '# <file system> <mount point>   <type>  <options>       <dump>  <pass>\n': 7,
+ "# Use 'blkid' to print the universally unique identifier for a\n": 3,
+ '# device; this may be used with UUID= as a more robust way to name devices\n': 4,
+ '# swap was on /dev/sda6 during installation\n': 10,
+ '# that works even if disks are added and removed. See fstab(5).\n': 5,
+ 'UUID=4c0455fb-ff57-466a-8d1f-22b575129f4f none            swap    sw              0       0\n': 11,
+ 'UUID=4f560031-1058-4eb6-a51e-b7991dfc6db7 /               ext4    errors=remount-ro 0       1\n': 9,
+ 'UUID=b27f7e93-60c0-4efa-bfae-5ac21a8f4e3c /media/sam ext4 auto,user,rw,exec 0 0\n': 12}</pre>
+<p>Cela dit, on n&#8217;a pas toujours besoin de clés ET de valeurs pour créer un dictionnaire. Ainsi, si on a une liste de n&#8217;clés qu&#8217;on veut toutes initialiser à la même valeur, la très peu connue méthode <code>fromkeys</code> nous rendra bien service :</p>
+<pre lang="python">>>> personnes = ('Joe', 'John', 'Jean-michel')
+>>> dict.fromkeys(personnes, 0)
+{'Jean-michel': 0, 'John': 0, 'Joe': 0}</pre>
+<p>De même, on peut ne pas vouloir initialiser un dico, mais vouloir une valeur par défaut pour toutes les clés.  <code>collections.defaultdict</code> est fait pour ça. En plus, les valeurs peuvent être dynamiques :</p>
+<pre lang="python">>>> from collections import defaultdict
+>>> scores = defaultdict(lambda: 0)
+>>> scores['Joe']
+0
+>>> scores['Joe'] = 1
+>>> scores['Joe']
+1
+>>> scores['July']
+0
+>>> import datetime
+>>> naissances = defaultdict(datetime.datetime.utcnow)
+>>> naissances['Joe']
+datetime.datetime(2014, 6, 29, 6, 58, 11, 412202)</pre>
+<p>Enfin, je sais que tous les tutos du monde en Python utilisent le dictionnaire pour montrer une forme ou une aute de compteur. Mais si vous avez VRAIMENT besoin d&#8217;un compteur, utilisez <code>collections.Counter</code> qui est un objet avec l&#8217;interface d&#8217;un dictionnaire mais avec tout ce qu&#8217;il faut pour compter :</p>
+<pre lang="python">>>> from collections import Counter
+>>> c = Counter('abbbac') # comptage automatique
+>>> c
+Counter({'b': 3, 'a': 2, 'c': 1})
+>>> c['c']
+1
+>>> c['d'] # pas de KeyError
+0
+>>> c['z'] += 1 # pas de KeyError
+>>> c['z']
+>>> c.most_common(2) # et en bonus
+[('b', 3), ('a', 2)]
+</pre>
+<h2>Clé en main</h2>
+<p>Récupérer une clé si on ne sait pas si elle est présente est une opération courante, et la documentation montre généralement ça :</p>
+<pre lang="python">try:
+   val = dico['cle']
+except KeyError:
+   val = 'valeur par defaut'</pre>
+<p>Bien que ce soit parfaitement valide, c&#8217;est généralement se faire chier pour rien puisqu&#8217;on peut faire ça en une ligne :</p>
+<pre lang="python">   val = dico.get('cle', 'valeur par defaut')</pre>
+<p>Néanmoins la méthode <code>get()</code> est très connue. Moins connue est la méthode <code>setdefault</code>. En effet, parfois on veut faire plutôt ceci :</p>
+<pre lang="python">try:
+   val = dico['cle']
+except KeyError:
+   dico['cle'] = 'valeur par defaut'
+   val = 'valeur par defaut'</pre>
+<p>Et ça peut également se faire en une ligne :</p>
+<pre lang="python">   val = dico.setdefault('cle', valeur par defaut)</pre>
+<p>J&#8217;aimerais aussi en profiter pour rappeler que les clés des dicos peuvent être n&#8217;importe quel objet hashable, pas juste une string ou un int. Notamment, <a href="http://sametmax.com/de-linteret-des-tuples-comme-cle-de-dictionnaire/">les tuples sont des clés valides</a>, et comme l&#8217;opérateur tuple <a href="http://sametmax.com/10-trucs-que-je-deteste-en-python/">est la virgule et non la parenthèse</a>, cette syntaxe est parfaitement valide :</p>
+<pre lang="python">>>> d = {}
+>>> d[1, 2] = 'tresor'
+>>> d[3, 3] = 'mine'
+>>> d
+{(1, 2): 'tresor', (3, 3): 'mine'}
+>>> d[3, 3]
+'mine'</pre>
+<p>Parmi les objets utilisables comme clés :</p>
+<ul>
+<li>Les frozenset.</li>
+<li>Les <a href="http://sametmax.com/le-namedtuple-la-structure-mal-aimee/">namedtuples</a></li>
+<li>Les instances de <a href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-1/">vos classes</a></li>
+</ul>
+<p>Si vous avez un doute, il est facile de savoir si un objet est hashable ou pas :</p>
+<pre lang="python">>>> import collections
+>>> isinstance({}, collections.Hashable)
+False
+>> isinstance(0, collections.Hashable)
+True</pre>
+<h2>Mon dico à moi, c&#8217;est le meilleur</h2>
+<p>On peut tout à fait hériter du type dictionnaire pour obtenir un type qui a des fonctionnalités que le type original n&#8217;a pas :</p>
+<pre lang="python">>>> class MonDico(dict):
+...     def __add__(self, other):
+...         new = {}
+...         new.update(self)
+...         new.update(other)
+...         return new
+...
+>>> d1 = MonDico(a=1, b=2)
+>>> d2 = MonDico(b=3, c=3)
+>>> d1 + d2
+{'a': 1, 'c': 3, 'b': 3}</pre>
+<p>Mais c&#8217;est assez rare. La plupart du temps on veut plutôt rajouter des fonctionnalités de conteneur à un type existant. Dans ce cas, les <a href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-6/">méthodes magiques</a> viennent à la rescousse. Par exemple :</p>
+<pre lang="python">class Phrase(object):
+
+   def __init__(self, string):
+      self.words = string.split()
+
+   def __getitem__(self, word):
+      return [i for i, w in enumerate(self.words) if w == word]
+
+>>> p = Phrase("Une petite puce pique plus qu'une grosse puce ne pique")
+>>> p['petite']
+[1]
+>>> p['puce']
+[2, 7]
+</pre>
+<p>Hey oui, les hash maps en Python, c&#8217;est un sujet qui peut aller très, très loin. C&#8217;est ce qui est merveilleux avec ce langage, on peut rapidement programmer en effleurant juste la surface, sans se noyer. Et si on a besoin d&#8217;aller plus loin, des profondeurs abyssales de features nous attendent.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/aller-plus-loin-avec-les-hash-maps-en-python/feed/</wfw:commentRss>
+		<slash:comments>22</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">11217</post-id>	</item>
+	</channel>
+</rss>

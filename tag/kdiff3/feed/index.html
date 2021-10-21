@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>kdiff3 &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/kdiff3/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Configurer un outil de merge pour git sous Windows</title>
+		<link>http://sametmax.com/configurer-un-outil-de-merge-pour-git-sous-windows/</link>
+		<comments>http://sametmax.com/configurer-un-outil-de-merge-pour-git-sous-windows/#comments</comments>
+		<pubDate>Sat, 08 Mar 2014 23:04:12 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[kdiff3]]></category>
+		<category><![CDATA[merge]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9725</guid>
+		<description><![CDATA[Si vous utilisez msysgit, il n'y a pas d'outil pratique préinstallé pour gérer ce qui suit un  <code>git mergetool</code>. Le plus simple à configurer est kdiff3.]]></description>
+				<content:encoded><![CDATA[<p>Si vous utilisez msysgit, il n&#8217;y a pas d&#8217;outil pratique préinstallé pour gérer ce qui suit un  <code>git mergetool</code>. Le plus simple à configurer est kdiff3. Il suffit de le <a href="http://sourceforge.net/projects/kdiff3/files/">télécharger</a> et installer, puis de rajouter ceci dans votre fichier .gitconfig :</p>
+<pre lang="ini">[diff]
+    tool = kdiff3
+	keepBackup = false
+	prompt = false
+[merge]
+    tool = kdiff3
+	keepBackup = false
+	prompt = false
+[mergetool "kdiff3"]
+    path = C:/Program Files (x86)/KDiff3/kdiff3.exe
+    trustExitCode = false
+</pre>
+<p>Remplacez &#8220;C:/Program Files (x86)/KDiff3/kdiff3.exe&#8221; par le bon chemin selon votre système, bien entendu.</p>
+<p>kdiff3 a tendance à laisser trainer des fichiers *.orig après le merge, et ça peut se régler dans <code>Configure/Options > Directory Merge > Backup Files (*.orig).<br />
+</code><br />
+Ainsi votre prochain merge ouvrira tranquilement kdiff3 pour chaque conflit.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/configurer-un-outil-de-merge-pour-git-sous-windows/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">9725</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/03/tumblr_n22jp0n5kN1r539hzo1_500.jpg" length="78874" type="image/jpg" />	</item>
+	</channel>
+</rss>

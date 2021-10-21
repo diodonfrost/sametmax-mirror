@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>timedelta &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/timedelta/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Manipuler les dates et les durées en Python</title>
+		<link>http://sametmax.com/manipuler-les-dates-et-les-durees-en-python/</link>
+		<comments>http://sametmax.com/manipuler-les-dates-et-les-durees-en-python/#comments</comments>
+		<pubDate>Wed, 26 Dec 2012 16:09:47 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[date]]></category>
+		<category><![CDATA[datetime]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[timedelta]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3875</guid>
+		<description><![CDATA[Manipuler des dates, c'est chaud. Le calendrier, c'est plein de subtilités comme les années bisextiles, les mois qui ont 4 possibilités de nombre de jours, les semaines qui commencent un dimanche aux US et un lundi en France... Autant dire que faire ça à la mano, c'est pas marrant, marrant.
+
+Avec les modules <code>datetimes</code> et <code>calendar</code>, c'est déjà plus cool.]]></description>
+				<content:encoded><![CDATA[<p>Manipuler des dates, c&#8217;est chaud. Le calendrier, c&#8217;est plein de subtilités comme les années bissextiles, les mois qui ont 4 possibilités de nombre de jours, les semaines qui commencent un dimanche aux US et un lundi en France&#8230; Autant dire que faire ça à la mano, c&#8217;est pas marrant, marrant.</p>
+<p>Avec les modules <code>datetimes</code> et <code>calendar</code>, c&#8217;est déjà plus cool.</p>
+<h2>Date et heure</h2>
+<p><code>Datetime</code> est un module qui permet de manipuler des dates et des durées sous forme d&#8217;objets. L&#8217;idée est simple: vous manipulez l&#8217;objet pour faire tous vos calculs, et quand vous avez besoin de l&#8217;afficher, vous formatez l&#8217;objet en chaîne de caractères.</p>
+<p>On peut créer artificiellement un objet <code>datetime</code>, ses paramètres sont:</p>
+<p><code>datetime(année, mois, jour, heure, minute, seconde, microseconde, fuseau horaire)</code></p>
+<p>Mais seuls &#8220;année&#8221;, &#8220;mois&#8221; et &#8220;jour&#8221; sont obligatoires.</p>
+<pre lang="python">>>> from datetime import datetime
+>>> datetime(2000, 1, 1)
+datetime.datetime(2000, 1, 1, 0, 0)</pre>
+<p>Nous sommes ici le premier janvier 2000, à la seconde et la minute zéro, de l&#8217;heure zéro.</p>
+<p>On peut bien entendu récupérer l&#8217;heure et la date du jour:</p>
+<pre lang="python">>>> maintenant = datetime.now()
+>>> maintenant
+datetime.datetime(2012, 12, 24, 18, 20, 4, 534918)
+>>> maintenant.year
+2012
+>>> maintenant.month
+12
+>>> maintenant.day
+24
+>>> maintenant.hour
+18
+>>> maintenant.minute
+20
+>>> maintenant.second
+4
+>>> maintenant.microsecond
+534918
+>>> maintenant.isocalendar() # année, semaine, jour
+(2012, 52, 2)
+</pre>
+<p>Enfin, si vous souhaitez uniquement vous occuper de la date ou de l&#8217;heure:</p>
+<pre lang="python">>>> from datetime import date, time, datetime
+>>> date(2000, 1, 1)
+datetime.date(2000, 1, 1)
+>>> time(12, 12, 12)
+datetime.time(12, 12, 12)
+>>> maintenant = datetime.now()
+>>> maintenant.date()
+datetime.date(2012, 12, 25)
+>>> maintenant.time()
+datetime.time(15, 2, 16, 704000)</pre>
+<p>Notez que j&#8217;écris cet article le jour de Noël, en famille. Et que là mon frangin est en train d&#8217;aider ma mère à éplucher des pommes tandis que je les regarde de loin. C&#8217;est mal. Je vais leur donner un coup de main et je reviens.</p>
+<p>*Sam épluche les pommes et s&#8217;efforce de se tenir éloigné du débat sur la condition des canards gavés pour leur foie. Il quitte la table discrètement dès le premier usage de wikipédia pour défendre les volatiles*</p>
+<p>Back.</p>
+<p>Je disais donc&#8230;</p>
+<h2>Durée</h2>
+<p>En plus de pouvoir récupérer la date du jour, on peut calculer la différence entre deux dates. Par exemple, combien de temps y a-t-il entre aujourd&#8217;hui et le premier jour de l&#8217;an 2000 ?</p>
+<pre lang="python">>>> duree = datetime.now() - datetime(2000, 1, 1)
+>>> duree
+datetime.timedelta(4741, 66999, 829132)</pre>
+<p>Et vous découvrez ici un autre objet: le <code>timedelta</code>. Cet objet représente une durée en jours, secondes et microsecondes.</p>
+<pre lang="python">>>> duree.days
+4741
+>>> duree.seconds
+67007
+>>> duree.mi
+duree.microseconds  duree.min
+>>> duree.microseconds
+943760
+>>> duree.total_seconds() # addition de toutes les secondes + les jours
+409689407.94376</pre>
+<p>On peut créer son propre <code>timedelta</code>:</p>
+<pre lang="python">>>> timedelta(days=3, seconds=100)
+datetime.timedelta(3, 100)</pre>
+<p>Cela permet de répondre à la question : &#8220;Quelle date serons-nous dans 2 jours, 4 heures, 3 minutes, et 12 secondes ?&#8221;:</p>
+<pre lang="python">>>> datetime.now() + timedelta(days=2, hours=4, minutes=3, seconds=12)
+datetime.datetime(2012, 12, 26, 22, 44, 6, 251071)</pre>
+<p>A chaque fois, un nouvel objet est retourné. En effet, les objets <code>datetime</code> et <code>timedelta</code> sont immutables. Ainsi si vous voulez utiliser une version légèrement différente d&#8217;un objet <code>datetime</code>, il faudra toujours en créer un nouveau. Par exemple:</p>
+<pre lang="python">>>> maintenant = datetime.now()
+>>> maintenant.replace(year=1995) # on créer un nouvel objet
+datetime.datetime(1995, 12, 25, 0, 9, 46, 185000)</pre>
+<p>Vous noterez que je ne parles pas de fuseau horaire. Et bien c&#8217;est parce que l&#8217;implémentation Python est particulièrement ratée : l&#8217;API est compliquée et les données ne sont pas à jour. Il faut dire que la mesure du temps, contrairement à ce qu&#8217;on pourrait penser, n&#8217;est pas vraiment le truc le plus stable du monde, et des pays <a href="http://www.rfi.fr/asie-pacifique/20111230-iles-samoa-fuseau-horaire">changent régulièrement leur manière de faire</a>.</p>
+<p>Donc je trollerai sur fuseaux dans un article plus gluant sur lequel, une fois n&#8217;est pas coutume, je taclerai Python. Restons sur les dates pures.</p>
+<h2>Autre modules</h2>
+<p>Une fois que vous maitrisez <code>datetime</code>, vous pouvez retourner lire notre article sur le <a href="http://sametmax.com/serialiser-et-parser-une-date-en-python-formats-de-strftimestrptime-et-timestamps/">formatage de date</a>.</p>
+<p>Mais ce n&#8217;est pas tout, il y d&#8217;autres modules liés à la gestion du temps en Python.</p>
+<p>Dans la lib standard, il y a <a href="http://docs.python.org/2/library/calendar.html?highlight=calendar#calendar">calendar</a>.</p>
+<p>Il permet de manipuler un calendrier comme un objet, et itérer sur les jours d&#8217;un mois, les semaines, vérifier les caractéristiques d&#8217;un jour en particulier, etc. :</p>
+<pre lang="python">>>> import calendar
+>>> calendar.mdays # combien de jour par mois ?
+[0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+>>> calendar.isleap(2000) # est-ce une année bissextile ?
+True
+>>> calendar.weekday(2000, 1, 1) # quel jour était cette date ?
+5
+>>> calendar.MONDAY, calendar.TUESDAY, calendar.WEDNESDAY, calendar.THURSDAY, calendar.FRIDAY, calendar.SATURDAY, calendar.SUNDAY 
+(0, 1, 2, 3, 4, 5, 6)</pre>
+<p>On peut instancier un calendrier et itérer dessus:</p>
+<pre lang="python">>>> cal = calendar.Calendar()
+>>> cal.getfirstweekday()
+0
+>>> list(cal.iterweekdays())
+[0, 1, 2, 3, 4, 5, 6]
+>>> list(cal.itermonthdays(2000, 1)) 
+[0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 0, 0, 0, 0, 0, 0]
+>>> list(cal.itermonthdates(2000, 1))
+[datetime.date(1999, 12, 27), datetime.date(1999, 12, 28), datetime.date(1999, 12, 29), datetime.date(1999, 12, 30), datetime.date(1999, 12, 31), datetime.date(2000, 1, 1), datetime.date(2000, 1, 2), datetime.date(2000, 1, 3), datetime.date(2000, 1, 4), datetime.date(2000, 1, 5), datetime.date(2000, 1, 6), datetime.date(2000, 1, 7), datetime.date(2000, 1, 8), datetime.date(2000, 1, 9), datetime.date(2000, 1, 10), datetime.date(2000, 1, 11), datetime.date(2000, 1, 12), datetime.date(2000, 1, 13), datetime.date(2000, 1, 14), datetime.date(2000, 1, 15), datetime.date(2000, 1, 16), datetime.date(2000, 1, 17), datetime.date(2000, 1, 18), datetime.date(2000, 1, 19), datetime.date(2000, 1, 20), datetime.date(2000, 1, 21), datetime.date(2000, 1, 22), datetime.date(2000, 1, 23), datetime.date(2000, 1, 24), datetime.date(2000, 1, 25), datetime.date(2000, 1, 26), datetime.date(2000, 1, 27), datetime.date(2000, 1, 28), datetime.date(2000, 1, 29), datetime.date(2000, 1, 30), datetime.date(2000, 1, 31), datetime.date(2000, 2, 1), datetime.date(2000, 2, 2), datetime.date(2000, 2, 3), datetime.date(2000, 2, 4), datetime.date(2000, 2, 5), datetime.date(2000, 2, 6)]
+>>> cal.monthdayscalendar(2000, 1)
+[[0, 0, 0, 0, 0, 1, 2], [3, 4, 5, 6, 7, 8, 9], [10, 11, 12, 13, 14, 15, 16], [17, 18, 19, 20, 21, 22, 23], [24, 25, 26, 27, 28, 29, 30], [31, 0, 0, 0, 0, 0, 0]]</pre>
+<p>Comme souvent Python vient aussi avec de très bons modules tierces parties pour manipuler les dates:</p>
+<ul>
+<li><a href="http://labix.org/python-dateutil">dateutils</a> est un datetime boosté aux hormones qui permet notamment de donnée des durées floues comme &#8220;+ 1 mois&#8221; et gérer des événements qui se répètent. Il est dans tous mes projets par défaut.</li>
+<li><a href="http://babel.edgewall.org/">babel</a> n&#8217;est pas spécialisé dans les dates mais dans la localisation. Le module possède des outils pour formater des dates selon le format de chaque pays, et aussi avec des formats naturels comme &#8220;il y a une minute&#8221;.</li>
+<li><a href="http://pypi.python.org/pypi/pytz">pytz</a> est une implémentation saine de gestion des fuseaux horaires en Python. On y reviendra.</li>
+</ul>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/manipuler-les-dates-et-les-durees-en-python/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">3875</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/12/back-to-the-future.jpg" length="519489" type="image/jpg" />	</item>
+	</channel>
+</rss>

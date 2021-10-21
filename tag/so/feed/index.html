@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>so &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/so/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Appeler du code C depuis Python avec ctypes</title>
+		<link>http://sametmax.com/appeler-du-code-c-depuis-python-avec-ctypes/</link>
+		<comments>http://sametmax.com/appeler-du-code-c-depuis-python-avec-ctypes/#comments</comments>
+		<pubDate>Sun, 05 May 2013 06:55:40 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[c]]></category>
+		<category><![CDATA[ctypes]]></category>
+		<category><![CDATA[dll]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[so]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5811</guid>
+		<description><![CDATA[On vous a dit et répété que Python c'était un super langage de glu et que ça pouvait très facilement s'interfacer avec les binaires produits par du C. Mais jusqu'à quel point ?]]></description>
+				<content:encoded><![CDATA[<p>On vous a dit et répété que Python c&#8217;était un super langage de glu et que ça pouvait très facilement s&#8217;interfacer avec les binaires produits par du C. Mais jusqu&#8217;à quel point ?</p>
+<p>En vérité c&#8217;est extrêmement simple : Python permet de se mapper directement sur un .dll ou un .so, et d&#8217;appeler n&#8217;importe quelle fonction qu&#8217;il contient depuis le code Python comme si c&#8217;était une fonction normale. Il n&#8217;y a rien à installer, c&#8217;est fourni d&#8217;office.</p>
+<p>On peut tester ça facilement. Je ponds une lib d&#8217;une folle puissance grâce à mes talents de codeurs C internationalement connus dans le quartier :</p>
+<pre lang="c">#include<stdio.h>
+
+/*
+Attend un pointeur sur un array de caractères (une chaîne en C) 
+et l'affiche.
+*/
+dit_papa(char * p)
+{
+    printf("%s\n", p);
+}
+
+
+/*
+Attend deux entiers et les multiple
+*/
+multiplier(long a, long b)
+{
+    return a * b;
+}
+
+/*
+Attend un pointeur de pointeur sur un array de char
+parce qu'on aime les risques.
+*/
+jakadi(char ** p)
+{
+    printf("%s\n", *p);
+}
+</pre>
+<p>On compile tout ça. Comme je suis sous Nunux, j&#8217;utilise GCC et j&#8217;obtiens un .so, mais sous Windows c&#8217;est pareil avec VisualStudio et les .dll.</p>
+<pre lang="bash">
+gcc -shared -Wl,-soname,ZeLib -o ZeLib.so -fPIC ZeLib.c
+</pre>
+<p>ZeLib.so est prête et frétille d&#8217;impatience à l&#8217;idée de vous servir. Il ne reste plus qu&#8217;à lancer le shell Python&#8230;</p>
+<p>D&#8217;abord on fait ses imports, c&#8217;est dans la lib standard tout ça :</p>
+<pre lang="python">>>> import ctypes </pre>
+<p>Ensuite on se bind sur le binaire, il faut préciser un chemin absolu sinon ça ne marche pas :</p>
+<pre lang="python">>>> zelib = ctypes.CDLL("/home/sam/Work/projet/ZeLib.so")</pre>
+<p>Et derrière on peut appeler une fonction (Python fait la <a href="http://docs.python.org/2/library/ctypes.html?highlight=ctypes#fundamental-data-types">conversion entre tous les types</a> de bases Python et C) :</p>
+<pre lang="python">>>> res = zelib.multiplier(2, 3)
+>>> print res
+6</pre>
+<p>Si on veut faire des chaînes, on ne peut pas passer de l&#8217;unicode. Comme mon shell a toutes les chaînes en unicode par défaut, je dois <a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/">encoder</a> dans le charset de sortie (sur mon système, c&#8217;est UTF8):</p>
+<pre lang="python">>>> zelib.dit_papa("papa".encode('utf8'))
+papa
+5</pre>
+<p>Notez au passage que la fonction retourne quelque chose même si je n&#8217;ai pas précisé de valeur de retour. Du coup j&#8217;aurais mieux fait de mettre un bon <code>return 0 </code>à la fin.</p>
+<p>Si on veut appeler une fonction qui attend un pointeur, il faut d&#8217;abord caster son type en un type C, puis appeler <code>by_ref</code> dessus, qui va passer l&#8217;argument par référence, plutôt que par valeur : </p>
+<pre lang="python">>>> from ctypes import *
+>>> s = ctypes.c_char_p('kiwi'.encode('utf8'))
+>>> zelib.jakadi(byref(s))
+kiwi
+5</pre>
+<p>Voilà.</p>
+<p>Voilà, voilà.</p>
+<p>Bon attention quand même, le C n&#8217;est pas aussi conciliant que le Python : le debug est plus dur (pas de stacktrace, mais un bon vieux core dump), pas de completion dans ipython, et on peut même planter la VM si on se débrouille bien :-) N&#8217;oubliez pas non plus que Python 64 bits ne peut pas taper dans des DLL 32 bits et inversement.</p>
+<p>P.S: je ne vais pas mettre le code C à télécharger et le code Python, franchement, il est pas énorme. Donc petite exception dans cet article : y a rien à DL et la syntaxe est pas à base de comments.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/appeler-du-code-c-depuis-python-avec-ctypes/feed/</wfw:commentRss>
+		<slash:comments>32</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">5811</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/05/1fem1pip1pul.jpg" length="588534" type="image/jpg" />	</item>
+	</channel>
+</rss>

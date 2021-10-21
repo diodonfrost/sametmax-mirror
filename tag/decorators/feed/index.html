@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>decorators &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/decorators/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Refactoriser ses vérifications en Python</title>
+		<link>http://sametmax.com/refactoriser-ses-verifications-en-python/</link>
+		<comments>http://sametmax.com/refactoriser-ses-verifications-en-python/#comments</comments>
+		<pubDate>Sun, 23 Jun 2013 21:56:00 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[decorators]]></category>
+		<category><![CDATA[fonctions]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6437</guid>
+		<description><![CDATA[On nous a interpelé sur Twitter pour nous demander comment faire un code comme ceci (en tout cas similaire) plus propre.]]></description>
+				<content:encoded><![CDATA[<p>On nous a interpelé sur Twitter pour nous demander comment faire un code comme ceci (en tout cas similaire) plus propre:</p>
+<pre lang="python">
+# -*- coding: utf-8 -*
+
+from __future__ import unicode_literals
+
+import random
+
+def verification1(val):
+    return bool(random.randint(0, 1))
+
+verification2 = verification1
+verification3 = verification1
+
+def function(valeur):
+
+    if not verification1(valeur):
+        print("Erreur, la vérification 1 n'est pas passée")
+
+    if not verification2(valeur):
+        print("Erreur, la vérification 2 n'est pas passée")
+
+    if not verification3(valeur):
+        print("Erreur, la vérification 3 n'est pas passée")
+
+    return valeur</pre>
+<p>Ceci est évidement un exemple tout bidon, mais la problématique, c&#8217;est qu&#8217;on a plein de vérifications à faire, et un code à lancer si jamais ces vérifications échouent. Et chaîner les <code>if</code>, c&#8217;est vrai que c&#8217;est pas super mignon (même si c&#8217;est tout à fait valide, faut pas non plus se prendre trop la tête avec ça).</p>
+<p>En Python, on a plusieurs manières de s&#8217;occuper de ça. La première, j&#8217;en ai déjà parlé, c&#8217;est <a href="http://sametmax.com/quest-ce-quun-callback/">l&#8217;injection de dépendances</a>. On va passer ces checks en paramètres.</p>
+<p>Car je le rappelle, on peut passer des fonctions en paramètres, on peut mettre des fonctions dans des listes, et on peut même passer des listes de fonctions en paramètres. Ce qui ici va nous permettre de :</p>
+<ul>
+<li>Regrouper les traitements.</li>
+<li>Permettre de changer les traitements à la volée.</li>
+<li>Avoir malgré tout un traitement par défaut.</li>
+<li>Rendre les groupes de vérifications réutilisables</li>
+</ul>
+<pre lang="python">
+
+
+VERIF = (
+    (verification1, "Erreur, la vérification 1 n'est pas passée"),
+    (verification2, "Erreur, la vérification 2 n'est pas passée"),
+    (verification3, "Erreur, la vérification 3 n'est pas passée"),
+    ((lambda v: not bool(random.randint(0, 1))),
+    "Erreur, la vérification 4 n'est pas passée")
+)
+
+def faire_verifications(verifications):
+    for verif, msg in verifications:
+        if not verif(valeur):
+            print msg
+
+def function(valeur, verifications=VERIF):
+    faire_verifications(verifications)
+    return valeur</pre>
+<p>Cette manière de faire est plus verbeuse si votre liste de <code>if</code> est courte, ou si vous n&#8217;avez à le faire que pour une fonction. Mais elle devient vite plus courte et clair dans le cas où votre code grandi.</p>
+<p>Elle aussi l&#8217;avantage de pouvoir insérer ou retirer une modification très simplement (même avec une simple lambda). Enfin, le code de vérification est découplé du code de la fonction ce qui ajoute les bénéfices suivant :</p>
+<ul>
+<li>Votre code de vérification peut être déplacé dans un module dédié.</li>
+<li>Si vous avez des vérifications en plusieurs endroits, il n&#8217;y a qu&#8217;un seul endroit pour corriger les bugs des vérifications, et un seul pour faire une modification des vérifications.</li>
+<li>Le code de la fonction redevient simple : elle fait une vérification (on s&#8217;en branle de comment ça marche, on sait que ça vérifie), et ensuite elle s&#8217;occupe de SON boulot. C&#8217;est la partie du code qui nous intéresse quand on va voir la fonction.</li>
+</ul>
+<p>On peut évidement imaginer autre chose qu&#8217;un print: lever une exception, faire un log, ou même carrément aussi passer une fonction en lieu et place du message d&#8217;erreur qui fait office de callback quand la vérification échoue (et qui par défaut print, le meilleur des deux mondes).</p>
+<p>Si vos vérifications deviennent très courantes, alors, l&#8217;utilisation de décorateurs prend tout son sens. Je ne vais pas rentrer sur comment écrire son décorateur, il y a <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1">un autre article pour ça</a>, mais on peut obtenir un résultat du genre :</p>
+<pre lang="python">def verif(verification, message):
+    def decorateur(func):
+        def wrapper(*args, **kwargs):
+            if not verification(*args, **kwargs):
+                print message
+            return func(*args, **kwargs)
+        return wrapper
+    return decorateur
+
+# si on utilise souvent une vérif, on peut l'avoir 
+# tout le temps tout la main
+verif3 = verif(verification3, "Erreur, la vérification 3 n'est pas passée")
+
+# et ensuite il suffit d'appliquer autant de décorateur qu'on le souhaite
+@verif(lambda v: not bool(random.randint(0, 1)), "Erreur, la vérification 4 n'est pas passée")
+@verif3
+@verif(verification2, "Erreur, la vérification 2 n'est pas passée")
+@verif(verification1, "Erreur, la vérification 1 n'est pas passée")
+def function(valeur):
+    return valeur</pre>
+<p>Les avantages ici sont :</p>
+<ul>
+<li>Corps de la fonction initial vide de toute vérification. Les vérifications sont purement déclaratives (comme par exemple la vérification de login dans Django).</li>
+<li>Chaque vérif est très facilement réutilisable, il suffit de mettre le décorateur. Si on utilise une vérif très souvent, alors on peut même mettre le décorateur dans une variable et juste déclarer <code>@ma_verif</code>.</li>
+<li>C&#8217;est très pythonique comme style.</li>
+</ul>
+<p>En résumé : si vous avez un petit code, ne vous prenez pas la tête. Une série de if est tout à fait valide, ça marche bien, c&#8217;est clair et lisible. Il faut savoir aller au plus simple. Mais si votre code devient touffu, utiliser une liste de fonction peut aider à faire le ménage. Si vous commencer carrément à avoir un gros projet ou que vous codez une lib réutilisable, les décorateurs seront de précieux alliés : ils permettent à celui qui passe derrière vous de se foutre complètement de savoir comment ça marche et de juste assembler son code comme un légo.</p>
+<hr />
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2013/juin/verification.py">Télécharger le code de l&#8217;article</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/refactoriser-ses-verifications-en-python/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">6437</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/06/EoH7ChB.jpg" length="115889" type="image/jpg" />	</item>
+		<item>
+		<title>Django-quicky: l&#8217;abolition des préliminaires, par Sam et Max</title>
+		<link>http://sametmax.com/django-quicky-labolition-des-preliminaires-par-sam-et-max/</link>
+		<comments>http://sametmax.com/django-quicky-labolition-des-preliminaires-par-sam-et-max/#comments</comments>
+		<pubDate>Tue, 09 Oct 2012 15:22:30 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[decorators]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[routing]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2537</guid>
+		<description><![CDATA[Max aime <a href="http://sametmax.com/creer-un-site-avec-bottle-en-5-minutes-parceque-7-cest-impossible-voyons/">Bottle</a> pour sa simplicité. J'aime Django pour sa puissance. Nous aimons tous les deux les jeux de mots graveleux à conotations sexuelles.
+
+Ainsi est né <a href="https://github.com/sametmax/django-quicky">django-quicky</a>, une petite app qui permet de faire du routing et du rendering déclaratif en Django.]]></description>
+				<content:encoded><![CDATA[<p>Max aime <a href="http://sametmax.com/creer-un-site-avec-bottle-en-5-minutes-parceque-7-cest-impossible-voyons/">Bottle</a> pour sa simplicité. J&#8217;aime Django pour sa puissance. Nous aimons tous les deux les jeux de mots graveleux à connotations sexuelles.</p>
+<p>Ainsi est né <a href="https://github.com/sametmax/django-quicky">django-quicky</a>, une petite app qui permet de faire du routing et du rendering déclaratif en Django.</p>
+<p><code><a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> install django-quicky</code></p>
+<h2>Par toutes les routes</h2>
+<p>Vous avez envie d&#8217;un site, maintenant, tout de suite. Mais il faut créer l&#8217;<em>urls.py</em>, et les vues, et les mapper. Et jongler entre les deux fichiers.</p>
+<p>Ou alors vous pouvez juste faire:</p>
+<pre lang="python">
+from django_quicky import routing
+
+url, urlpatterns = routing()
+
+
+@url('/une/regex/que/django/comprends')
+def une_vue(request):
+    ...
+
+
+@url('/on/peut/cummuler/les/routes')
+@url('/une/regex/que/django/comprends')
+def une_vue(request):
+    ...</pre>
+<p>Le résultat est parfaitement compatible (et mélangeable) avec le routing habituel de Django. Il suffit juste d&#8217;utiliser <em>views.py</em> à la place d&#8217;<em>urls.py</em>, par exemple dans <code>URL_ROOT</code> ou dans <code>include()</code>.</p>
+<h2>Rien ne vaut une bonne renderette</h2>
+<p>Declarer sa vue, c&#8217;est comme les jupes, c&#8217;est de plus en plus court avec le temps qui passe (et la méthode <code>render()</code>). Mais on peut faire encore plus court, genre limite tanga:</p>
+<pre lang="python">from django_quicky import view
+
+@view(render_to='template.html')
+def une_vue(request):
+    return {'truc': truc}
+
+
+@view(render_to='json')
+def une_vue_json(request):
+    return {'truc': truc}</pre>
+<p>Dans la première vue, le dico est utilisé comme contexte pour faire le rendu du template. Dans la seconde vue, le dico est retourné sérialisé en JSON.</p>
+<h2>On change de position ?</h2>
+<p>Des fois vous êtes sur une bonne lancée, mais vous voudriez changer juste un truc. Et garder le code précédent bien sûr. C&#8217;est d&#8217;ailleurs pour ça qu&#8217;on nous vend les <a href="http://sametmax.com/des-vues-normales-aux-vues-generiques-django/">CBV</a>, c&#8217;est tellement plus flexible !</p>
+<p>Vous aimez la souplesse ? Voici de quoi mettre les chevilles très près des oreilles:</p>
+<pre lang="python">from django_quicky import view
+
+@view(render_to='template.html')
+def vue_commune(request):
+    return {'stuff': stuff}
+
+@vue_commune.post()
+def vue_POST(request, context):
+    # do more stuff
+    return context
+
+@vue_commune.ajax(render_to='json')
+def vue_AJAX(request, context):
+    return context</pre>
+<p>On a ici une seule et même vue. La première partie est rendue sous forme de template si on y arrive par une requête GET ordinaire. La seconde si c&#8217;est une requête POST. La troisième si c&#8217;est une requête en AJAX, avec rendering JSON en prime. Et les deux dernières récupèrent toujours le résultat de la première avant de s&#8217;exécuter, ce qui permet d&#8217;avoir le code en commun dans la première.</p>
+<p>C&#8217;est sous licence <a href="http://www.zlib.net/zlib_license.html">zlib</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/django-quicky-labolition-des-preliminaires-par-sam-et-max/feed/</wfw:commentRss>
+		<slash:comments>22</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">2537</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/10/49-quickos.jpg" length="358030" type="image/jpg" />	</item>
+		<item>
+		<title>Comprendre les décorateurs Python pas à pas (partie 2)</title>
+		<link>http://sametmax.com/comprendre-les-decorateur-python-pas-a-pas-partie-2/</link>
+		<comments>http://sametmax.com/comprendre-les-decorateur-python-pas-a-pas-partie-2/#comments</comments>
+		<pubDate>Wed, 23 May 2012 03:30:05 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[decorators]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=683</guid>
+		<description><![CDATA[Dans l'article précédent, nous avons vu comment fonctionnaient les décorateurs. Mais dans leur usage quotidien vous aller rencontrer des cas particuliers comme passer des arguments. Voici de quoi y faire face.]]></description>
+				<content:encoded><![CDATA[<aside style="text-align:center; font-size:60%"><em>Cet article a été mis à jour et contient maintenant du code Python en version 3</em></aside>
+<p>Dans la <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">partie 1</a>, nous avons vu comment fonctionnaient les décorateurs. Mais dans leur usage quotidien vous allez rencontrer des cas particuliers:</p>
+<ul>
+<li>Comment faire si la fonction décorée attend des arguments ?</li>
+<li>Comment changer le comportement d&#8217;un décorateur en lui passant des paramètres ?</li>
+<li>Comment préserver l&#8217;introspection ?</li>
+</ul>
+<h2>Introspection</h2>
+<p>Un des grands avantages de Python, c&#8217;est qu&#8217;il permet une très forte introspection, c&#8217;est à dire qu&#8217;on peut accéder à énormément d&#8217;informations sur le code lui-même.</p>
+<p>Par exemple, si vous mettez une docstring à une fonction:</p>
+<pre lang="python">def ma_fonction():
+    """
+        C'est une super fonction
+    """
+    pass</pre>
+<p>Vous pouvez ensuite récupérer la docstring très facilement:</p>
+<pre lang="python">>>> ma_fonction.__doc__ "\n            C'est une super fonction\n        "</pre>
+<p>Et vous pouvez la lire dans l&#8217;aide:</p>
+<pre lang="python">>>> help(ma_fonction)
+Help on function ma_fonction in module __main__:
+
+ma_fonction()
+    C'est une super fonction
+(END)</pre>
+<p>L&#8217;autocompletion, la liste des attributs, le nom de la classe, etc. Toutes ces choses sont rendues accessibles grâce à l&#8217;introspection.</p>
+<p>Mais quand vous décorez une fonction, vous l&#8217;enrobez dans une autre, détruisant ces informations:</p>
+<pre lang="python">def decorateur_inutile(func):
+    def wrapper():
+        func()
+    return wrapper
+
+@decorateur_inutile
+def ma_fonction():
+    """
+        C'est une super fonction
+    """
+    pass
+
+>>> print(ma_fonction.__doc__)
+None
+>>> help(ma_fonction)
+Help on function wrapper in module __main__:
+
+wrapper()</pre>
+<p>En effet, <code>ma_fonction</code> contient maitenant <code>wrapper</code> et non la fonction initiale. Heureusement le module <code>functool</code> possède des outils pour y pallier.</p>
+<p>Le plus utile est le décorateur <code>@wraps</code>, qui copie littéralement toutes les infos d&#8217;une fonction sur son wrapper:</p>
+<pre lang="python">from functools import wraps
+
+def decorateur_inutile(func):
+    @wraps(func) # il suffit de décorer le wrapper
+    def wrapper():
+        func()
+    return wrapper
+
+@decorateur_inutile
+def ma_fonction():
+    """
+        C'est une super fonction
+    """
+    pass</pre>
+<p>Et tout s&#8217;arrange:</p>
+<pre lang="python">>>> ma_fonction.__doc__
+"\n        C'est une super fonction\n    "</pre>
+<h2>Fonction avec arguments</h2>
+<p>Jusqu&#8217;ici les fonctions que nous avons décorées n&#8217;attendaient pas d&#8217;arguments. Il faut en effet faire un petit effort supplémentaire pour les supporter.</p>
+<pre lang="python"># Pas de magie noire, c'est le wrapper qui passe l'argument:
+
+def un_decorateur_passant_un_argument(fonction_a_decorer):
+
+    def un_wrapper_acceptant_des_arguments(arg1, arg2):
+        print("J'ai des arguments regarde :", arg1, arg2)
+        fonction_a_decorer(arg1, arg2)
+
+    return un_wrapper_acceptant_des_arguments
+
+# Puisqu'on appelle en fait un_wrapper_acceptant_des_arguments(),
+# il accepte les arguments, et les passe à la fonctions décorée
+
+@un_decorateur_passant_un_argument
+def afficher_nom(nom, prenom):
+    print("Mon nom est", nom, prenom)
+
+afficher_nom("Peter", "Venkman")
+# output:
+#J'ai des arguments regarde : Peter Venkman
+#Mon nom est Peter Venkman</pre>
+<p>Du coup pour décorer une méthode, il suffit d&#8217;accepter que le décorateur accepte <code>self</code>. Le moyen le plus simple est encore d&#8217;accepter <code>*args, **kwargs</code>, comme ça on est paré pour tous les cas.</p>
+<p>Mais attention, si vous acceptez <code>*args, **kwargs</code>, la liste des arguments ne sera plus disponible pour l&#8217;introspection. C&#8217;est quelque chose que <code>@wraps</code> ne peut pas changer. La plupart du temps, c&#8217;est un compromis acceptable.</p>
+<h2>Passer un argument au décorateur lui-même</h2>
+<p>Le problème d&#8217;un décorateur, c&#8217;est qu&#8217;il doit accepter une fonction en paramètre. Pourtant, vous avez bien vu que <code>@wraps</code> accepte lui même un argument. C&#8217;est qu&#8217;il existe donc un moyen de passer un argument au décorateur lui-même.</p>
+<p>La solution est tordue: créer un décorateur à la volée. En fait ce decorateur ne sera plus le décorateur, mais le créateur de décorateur. Il y aura donc 3 niveaux d&#8217;imbrication&#8230; C&#8217;est parti pour une session de vaudou :</p>
+<pre lang="python">def createur_de_decorateur():
+
+    print("Je fabrique des décorateurs. Je suis éxécuté une seule fois :" +
+           "à la création du décorateur")
+
+    def mon_decorateur(func):
+
+        print("Je suis un décorateur, je suis éxécuté une seule fois quand on décore la fonction")
+
+        def wrapper():
+            print("Je suis le wrapper autour de la fonction décorée. "
+                  "Je suis appelé quand on appelle la fonction décorée. "
+                  "En tant que wrapper, je retourne le RESULTAT de la fonction décorée.")
+            return func()
+
+        print("En tant que décorateur, je retourne le wrapper")
+
+        return wrapper
+
+    print("En tant que créateur de décorateur, je retourne un décorateur")
+    return mon_decorateur
+
+# Créons un décorateur, c'est juste une fonction après tout.
+nouveau_decorateur = createur_de_decorateur()
+#ouputs:
+#Je fabrique des décorateurs. Je suis éxécuté une seule fois : à la création du décorateur.
+#En tant que créateur de décorateur, je retourne un décorateur
+
+# Ensuite décorons la fonction
+
+def fonction_decoree():
+    print("Je suis la fonction décorée")
+
+fonction_decoree = nouveau_decorateur(fonction_decoree)
+#ouputs:
+#Je suis un décorateur, je suis éxécuté une seule fois quand on décore la fonction
+#En tant que décorateur, je retourne la fonction décorée
+
+# Appelons la fonction:
+fonction_decoree()
+#ouputs:
+#Je suis le wrapper autour de la fonction décorée. Je suis appelé quand on appelle la fonction décorée.
+#En tant que wrapper, je retourne le RESULTAT de la fonction décorée.
+#Je suis la fonction décorée</pre>
+<p>Aucune surprise ici. Faisons EXACTEMENT la même chose, mais en sautant les variables intermédiares.</p>
+<pre lang="python">def fonction_decoree():
+    print("Je suis la fonction décorée")
+fonction_decoree = createur_de_decorateur()(fonction_decoree)
+#ouputs:
+#Je fabrique des décorateurs. Je suis éxécuté une seule fois : à la création du décorateur.
+#En tant que créateur de décorateur, je retourne un décorateur
+#Je suis un décorateur, je suis éxécuté une seule fois quand on décore la fonction
+#En tant que décorateur, je retourne la fonction décorée.
+
+# Au final:
+fonction_decoree()
+#ouputs:
+#Je suis le wrapper autour de la fonction décorée. Je suis appelé quand on appelle la fonction décorée.
+#En tant que wrapper, je retourne le RESULTAT de la fonction décorée.
+#Je suis la fonction décorée</pre>
+<p>On recommence, en encore plus court::</p>
+<pre lang="python">@createur_de_decorateur()
+def fonction_decoree():
+    print("Je suis la fonction décorée")
+#ouputs:
+#Je fabrique des décorateurs. Je suis éxécuté une seule fois : à la création du décorateur.
+#En tant que créateur de décorateur, je retourne un décorateur
+#Je suis un décorateur, je suis éxécuté une seule fois quand on décore la fonction
+#En tant que décorateur, je retourne la fonction décorée.
+
+#Et pour finir:
+fonction_decoree()
+#ouputs:
+#Je suis le wrapper autour de la fonction décorée. Je suis appelé quand on appelle la fonction décorée.
+#En tant que wrapper, je retourne le RESULTAT de la fonction décorée.
+#Je suis la fonction décorée</pre>
+<p>Vous noterez qu&#8217;on a utilisé la notation <code>@</code>, avec un appel de fonction: <code>@createur_de_decorateur()</code> et non <code>@createur_de_decorateur</code> !</p>
+<p>Maintenant que nous pouvons générer des décorateurs à la volée, il suffit de passer des arguments au créateur de décorateur:</p>
+<pre lang="python">def createur_de_decorateur_avec_arguments(decorator_arg1, decorator_arg2):
+
+    print("Je créé des décorateur et j'accepte des arguments:", decorator_arg1, decorator_arg2)
+
+    def mon_decorateur(func):
+        print("Je suis un décorateur, vous me passez des arguments:", decorator_arg1, decorator_arg2)
+
+        # Ne pas mélanger les arguments du décorateurs et de la fonction !
+        def wrapped(function_arg1, function_arg2) :
+            print("Je suis le wrapper autour de la fonction décorée.\n"
+                  "Je peux accéder à toutes les variables\n"
+                  "\t- du décorateur: {0} {1}\n"
+                  "\t- de l'appel de la fonction: {2} {3}\n"
+                  "Et je les passe ensuite à la fonction décorée"
+                  .format(decorator_arg1, decorator_arg2,
+                          function_arg1, function_arg2))
+            return func(function_arg1, function_arg2)
+
+        return wrapped
+
+    return mon_decorateur
+
+@createur_de_decorateur_avec_arguments("Leonard", "Sheldon")
+def fonction_decoree_avec_arguments(function_arg1, function_arg2):
+    print("Je suis une fonctions décorée, je ne me soucie que de mes arguments: {0}"
+           " {1}".format(function_arg1, function_arg2))
+
+fonction_decoree_avec_arguments("Rajesh", "Howard")
+#output:
+#Je crée des décorateurs et j'accepte des arguments: Leonard Sheldon
+#Je suis un décorateur, vous me passez des arguments: Leonard Sheldon
+#Je suis le wrapper autour de la fonction décorée function.
+#Je peux accéder à toutes les variables
+#   - du décorateur: Leonard Sheldon
+#   - de l'appel de la fonction: Rajesh Howard
+#Et je les passe ensuite à la fonction décorée
+#Je suis une fonction décorée, je ne me soucie que de mes arguments: Rajesh Howard</pre>
+<p><code>mon_decorateur</code> a accès aux variables du scope supérieur car elles sont dans une closure. <a href="http://sametmax.com/closure-en-python-et-javascript/">Vous ne pourrez donc pas les modifier</a>.</p>
+<p>Et voilà, un décorateur avec des arguments ! Les arguments peuvent être des<br />
+variables:</p>
+<pre lang="python">c1 = "Penny"
+c2 = "Leslie"
+
+@createur_de_decorateur_avec_arguments("Leonard", c1)
+def fonction_decoree_avec_arguments(function_arg1, function_arg2):
+    print("Je suis une fonctions décorée, je ne me soucie que de mes arguments:"
+           " {0} {1}".format(function_arg1, function_arg2))
+
+fonction_decoree_avec_arguments(c2, "Howard")
+#output:
+#Je créé des décorateurs et j'accepte des arguments: Leonard Penny
+#Je suis un décorateur, vous me passez des arguments: Leonard Penny
+#Je suis le wrapper autour de la fonction décorée function.
+#Je peux accéder à toutes les variables
+#   - du décorateur: Leonard Penny
+#   - de l'appel de la fonction: Leslie Howard
+#Et je les passe ensuite à la fonction décorée
+#Je suis une fonctions décorée, je ne me soucie que de mes arguments: Leslie Howard</pre>
+<p>Comme vous le voyez, on peut passer des arguments au décorateur comme à n&#8217;importe quelle fonction en utilisant cette astuce. En fait on peut même utiliser <code>*args, **kwargs</code>. Mais rappelez-vous: les décorateurs sont appelés uniquement une fois, au moment de l&#8217;import du script. On ne peut pas changer leurs arguments a posteriori. Quand vous faites <code>from x import ma_fonction</code>, <code>ma_fonction</code> est déjà décorée, et on ne peut rien y changer.</p>
+<h2>Super, mais ça sert à quoi un décorateur ?</h2>
+<p>Ca a l&#8217;air chouette et tout, mais un exemple d&#8217;usage concret, ça aiderait quand même&#8230;.</p>
+<p>Et bien il y a 1000 possibilités. Parmi les usages classiques:</p>
+<ul>
+<li>étendre la fonction d&#8217;une lib externe qu&#8217;on ne peut pas modifier;</li>
+<li>gérer les permissions d&#8217;une fonction;</li>
+<li>réagir aux arguments passés;</li>
+<li>débugger.</li>
+</ul>
+<p>Le principe est la réutilisabilité: on fait un seul code, et on décore plein de fonctions avec.</p>
+<p>Exemple:</p>
+<pre lang="python">def benchmark(func):
+    """
+    Un décorateur qui affiche le temps qu'une fonction met à s'éxécuter
+    """
+    import time
+    def wrapper(*args, **kwargs):
+        t = time.clock()
+        res = func(*args, **kwargs)
+        print(func.__name__, time.clock()-t)
+        return res
+    return wrapper
+
+def logging(func):
+    """
+    Un décorateur qui log l'activité d'un script.
+    (Ok, en vrai ça fait un print, mais ça pourrait logger !)
+    """
+    def wrapper(*args, **kwargs):
+        res = func(*args, **kwargs)
+        print(func.__name__, args, kwargs)
+        return res
+    return wrapper
+
+def counter(func):
+    """
+    Compte et affiche le nombre de fois qu'une fonction a été exécutée
+    """
+    def wrapper(*args, **kwargs):
+        wrapper.count = wrapper.count + 1
+        res = func(*args, **kwargs)
+        print("{0} a été utilisée: {1}x".format(func.__name__, wrapper.count))
+        return res
+    wrapper.count = 0
+    return wrapper
+
+@counter
+@benchmark
+@logging
+def reverse_string(string):
+    return string[::-1]
+
+print(reverse_string("Karine alla en Irak"))
+print(reverse_string("Sa nana snob porte de trop bons ananas"))
+
+## reverse_string ('Karine alla en Irak',) {}
+## wrapper 0.000132
+## wrapper a été utilisée: 1x
+## karI ne alla eniraK
+## reverse_string ('Sa nana snob porte de trop bons ananas',) {}
+## wrapper 0.000128
+## wrapper a été utilisée: 2x
+## sanana snob port ed etrop bons anan aS</pre>
+<p>Mais bien sur, le plus cool avec les décorateurs, c&#8217;est qu&#8217;on peut les utiliser immédiatement sans avoir à réécrire quoi ce que soit:</p>
+<pre lang="python">import urllib
+
+@counter
+@benchmark
+@logging
+def citation_de_futurama_au_hasard():
+    url = 'http://subfusion.net/cgi-bin/quote.pl?quote=futurama&number=1'
+    try:
+        res = urllib.request.urlopen(url)
+        html = res.read().decode('ISO-8859-1')
+        return html.split('<br>')[3].strip()
+    except:
+        return "No, I'm ... doesn't!"
+
+
+print(citation_de_futurama_au_hasard())
+print(citation_de_futurama_au_hasard())
+
+#output:
+#citation_de_futurama_au_hasard () {}
+#wrapper 0.02
+#wrapper a été utilisée: 1x
+#The laws of science be a harsh mistress.
+#citation_de_futurama_au_hasard () {}
+#wrapper 0.01
+#wrapper a été utilisée: 2x
+#Curse you, merciful Poseidon!</pre>
+<p>Python vient chargé de décorateurs dans la lib standard: <code>property</code>, <code>staticmethod</code>, <code>classmethod</code>, <code>@coroutine</code>, <code>@lru_cache</code>, etc. Django gère les <a href="https://docs.djangoproject.com/en/dev/topics/auth/#the-login-required-decorator">permissions des vues</a> avec les décorateurs. Bottle <a href="http://sametmax.com/creer-un-site-avec-bottle-en-5-minutes-parceque-7-cest-impossible-voyons/">déclare ses routes</a> avec. Twisted <a href="http://hackedbellini.org/development/writing-asynchronous-python-code-with-twisted-using-inlinecallbacks/">donne l&#8217;impression qu&#8217;un appel asynchrone est synchrone</a> en les utilisant. On peut faire vraiment tout et n&#8217;importe quoi.</p>
+<p><em>Un grand merci à gawel, de l&#8217;AFPY, qui m&#8217;a, il y a quelques années, <a href="http://web.archive.org/web/20101223001036/http://www.afpy.org/Members/gawel/python/python-decorators">donné envie de découvrir les décorateurs</a>.</em></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comprendre-les-decorateur-python-pas-a-pas-partie-2/feed/</wfw:commentRss>
+		<slash:comments>30</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">683</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/05/green-snake-branch-080909_3635_990x742.jpg" length="94869" type="image/jpg" />	</item>
+		<item>
+		<title>Comprendre les décorateurs Python pas à pas (partie 1)</title>
+		<link>http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/</link>
+		<comments>http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/#comments</comments>
+		<pubDate>Mon, 30 Apr 2012 22:32:26 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[decorators]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=480</guid>
+		<description><![CDATA[Les décorateurs ont toujours l'air un peu magique à un développeur qui découvre Python. La principale raison est le manque d'explication détaillée sur le sujet, car en vérité c'est une fonctionalité simple, facile à comprendre, et très pratique. Suivez-le guide.]]></description>
+				<content:encoded><![CDATA[<aside style="text-align:center; font-size:60%"><em>Cet article a été mis à jour et contient maintenant du code Python en version 3</em></aside>
+<h2>Les fonctions Python sont des objets</h2>
+<p>Pour comprendre les décorateurs, il faut d&#8217;abord comprendre que les fonctions sont des objets en Python. Cela a d&#8217;importantes conséquences:</p>
+<pre lang="python">
+def crier(mot="yes"):
+    return mot.capitalize() + "!"
+
+print(crier())
+# output : 'Yes!'
+
+# Puisque les fonctions sont des objets,
+# on peut les assigner à des variables
+
+hurler = crier
+
+# Notez que l'on n’utilise pas les parenthèses :
+# la fonction n'est pas appelée. Ici nous mettons la fonction "crier"
+# dans la variable "hurler" afin de pouvoir appeler "crier" avec "hurler"
+
+print(hurler())
+# output : 'Yes!'
+
+# Et vous pouvez même supprimer l'ancien nom "crier",
+# la fonction restera accessible avec "hurler"
+
+del crier
+try:
+    print(crier())
+except NameError as e:
+    print(e)
+    #output: "name 'crier' is not defined"
+
+print(hurler())
+# output: 'Yes!'
+</pre>
+<p>Gardez ça à l&#8217;esprit, on va y revenir.</p>
+<p>Une autre propriété intéressante des fonctions en Python est qu&#8217;on peut les définir à l&#8217;intérieur&#8230; d&#8217;une autre fonction.</p>
+<pre lang="python">
+def parler():
+
+    # On peut définir une fonction à la volée dans "parler" ...
+    def chuchoter(mot="yes"):
+        return mot.lower()+"...";
+
+    # ... et l'utiliser immédiatement !
+
+    print(chuchoter())
+
+# On appelle "parler", qui définit "chuchoter" A CHAQUE APPEL,
+# puis "chuchoter" est appelé à l’intérieur de "parler"
+
+parler()
+# output:
+# "yes..."
+
+# Mais "chuchoter" N'EXISTE PAS en dehors de "parler"
+
+try:
+    print(chuchoter())
+except NameError, e:
+    print(e)
+    #output : "name 'chuchoter' is not defined"
+</pre>
+<h2>Passage des fonctions par référence</h2>
+<p>Toujours là ? Maintenant la partie amusante: vous avez vu que les fonctions sont des objets et peuvent donc:</p>
+<ul>
+<li>être assignées à une variable;</li>
+<li>être définies dans une autre fonction.</li>
+</ul>
+<p>Cela veut dire aussi qu&#8217;une fonction peut retourner une autre fonction :-) Hop:</p>
+<pre lang="python">
+def creerParler(type="crier"):
+
+    # On fabrique 2 fonctions à la volée
+    def crier(mot="yes"):
+        return mot.capitalize() + "!"
+
+    def chuchoter(mot="yes") :
+        return mot.lower() + "...";
+
+    # Puis on retourne l'une ou l'autre
+    if type == "crier":
+        # on utilise pas "()", on n’appelle pas la fonction
+        # on retourne l'objet fonction
+        return crier
+    else:
+        return chuchoter
+
+# Comment ce truc bizarre s'utilise ?
+
+# Obtenir la fonction et l'assigner à une variable
+parler = creerParler()
+
+# "parler" est une variable qui contient la fonction "crier":
+print(parler)
+#output : <function crier at 0xb7ea817c>
+
+# On peut appeler "crier" depuis "parler":
+print(parler())
+#ouput : YES!
+
+# Et si on se sent chaud, on peut même créer et appeler la
+# fonction en une seule fois:
+print(creerParler("chuchoter")())
+#output : yes...</pre>
+<p>Mais c&#8217;est pas fini ! Si on peut retourner une fonction, on peut aussi en passer une en argument&#8230;</p>
+<pre lang="python">
+def faireQuelqueChoseAvant(fonction):
+    print("Je fais quelque chose avant d'appeler la fonction")
+    print(fonction())
+
+faireQuelqueChoseAvant(hurler)
+#output:
+#Je fais quelque chose avant d'appeler la fonction
+#Yes!
+</pre>
+<p>C&#8217;est bon, vous avez toutes les cartes en main pour comprendre les décorateurs. En effet, les décorateurs sont des wrappers, c&#8217;est à dire qu&#8217;ils permettent d’exécuter du code avant et après la fonction qu&#8217;ils décorent, sans modifier la fonction elle-même.</p>
+<h2>Décorateur artisanal</h2>
+<p>Comment on en coderait un à la main:</p>
+<pre lang="python">
+# Un décorateur est une fonction qui attend une autre fonction en paramètre
+def decorateur_tout_neuf(fonction_a_decorer):
+
+    # En interne, le décorateur définit une fonction à la volée: le wrapper.
+    # Le wrapper va enrober la fonction originale de telle sorte qu'il
+    # puisse exécuter du code avant et après celle-ci
+    def wrapper_autour_de_la_fonction_originale():
+
+        # Mettre ici le code que l'on souhaite exécuter AVANT que la
+        # fonction s’exécute
+        print("Avant que la fonction ne s’exécute")
+
+        # Apperler la fonction (en utilisant donc les parenthèses)
+        fonction_a_decorer()
+
+        # Mettre ici le code que l'on souhaite exécuter APRES que la
+        # fonction s’exécute
+        print("Après que la fonction se soit exécutée")
+
+    # Arrivé ici, la "fonction_a_decorer" n'a JAMAIS ETE EXECUTEE
+    # On retourne le wrapper que l'on vient de créer.
+    # Le wrapper contient la fonction originale et le code à exécuter
+    # avant et après, prêt à être utilisé.
+    return wrapper_autour_de_la_fonction_originale
+
+# Maintenant imaginez une fonction que l'on ne souhaite pas modifier.
+def une_fonction_intouchable():
+    print("Je suis une fonction intouchable, on ne me modifie pas !")
+
+une_fonction_intouchable()
+#output: Je suis une fonction intouchable, on ne me modifie pas !
+
+# On peut malgré tout étendre son comportement
+# Il suffit de la passer au décorateur, qui va alors l'enrober dans
+# le code que l'on souhaite, pour ensuite retourner une nouvelle fonction
+
+une_fonction_intouchable_decoree = decorateur_tout_neuf(une_fonction_intouchable)
+une_fonction_intouchable_decoree()
+#output:
+#Avant que la fonction ne s’exécute
+#Je suis une fonction intouchable, on ne me modifie pas !
+#Après que la fonction se soit exécutée
+</pre>
+<p>Puisqu&#8217;on y est, autant faire en sorte qu&#8217;à chaque fois qu&#8217;on appelle <code>une_fonction_intouchable</code>, c&#8217;est <code>une_fonction_intouchable_decoree</code> qui est appelée à la place. C&#8217;est facile, il suffit d&#8217;écraser la fonction originale par celle retournée par le décorateur :</p>
+<pre lang="python">
+une_fonction_intouchable = decorateur_tout_neuf(une_fonction_intouchable)
+une_fonction_intouchable()
+#output:
+#Avant que la fonction ne s’exécute
+#Je suis une fonction intouchable, on ne me modifie pas !
+#Après que la fonction se soit exécutée
+</pre>
+<p>Et c&#8217;est exactement ce que les décorateurs font.</p>
+<h2>Les décorateurs, démystifiés</h2>
+<p>L&#8217;exemple précédent, en utilisant la syntaxe précédente :</p>
+<pre lang="python">
+@decorateur_tout_neuf
+def fonction_intouchable():
+    print("Me touche pas !")
+
+fonction_intouchable()
+#output:
+#Avant que la fonction ne s’exécute
+#Me touche pas !
+#Après que la fonction se soit exécutée
+</pre>
+<p>C&#8217;est tout. Oui, c&#8217;est aussi bête que ça.</p>
+<p><code>@decorateur_tout_neuf</code> est juste un raccourci pour</p>
+<pre lang="python">
+fonction_intouchable = decorateur_tout_neuf(fonction_intouchable)
+</pre>
+<p>Les décorateurs sont juste une variante pythonique du classique motif de conception &#8220;décorateur&#8221;.</p>
+<p>Et bien sûr, on peut cumuler les décorateurs:</p>
+<pre lang="python">
+def pain(func):
+    def wrapper():
+        print("</''''''\>")
+        func()
+        print("<\______/>")
+    return wrapper
+
+def ingredients(func):
+    def wrapper():
+        print("#tomates#")
+        func()
+        print("~salade~")
+    return wrapper
+
+def sandwich(food="--jambon--"):
+    print(food)
+
+sandwich()
+#output: --jambon--
+sandwich = pain(ingredients(sandwich))
+sandwich()
+#output:
+#</''''''\>
+# #tomates#
+# --jambon--
+# ~salade~
+#<\______/>
+</pre>
+<p>Avec la syntaxe Python :</p>
+<pre lang="python">
+@pain
+@ingredients
+def sandwich(nourriture="--jambon--"):
+    print(nourriture)
+
+sandwich()
+#output:
+#</''''''\>
+# #tomates#
+# --jambon--
+# ~salade~
+#<\______/>
+</pre>
+<p>Avec cet exemple, on voit aussi que l&#8217;ordre d&#8217;application des décorateurs a de l&#8217;importance :</p>
+<pre lang="python">
+@ingredients
+@pain
+def sandwich_zarb(nourriture="--jambon--"):
+    print(nourriture)
+
+sandwich_zarb()
+#output:
+##tomates#
+#</''''''\>
+# --jambon--
+#<\______/>
+# ~salade~
+</pre>
+<p>Vous pouvez maintenant éteindre votre ordinateur et reprendre une activité normale.</p>
+<p>Aller à la <a href="http://sametmax.com/comprendre-les-decorateur-python-pas-a-pas-partie-2/">partie 2</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/feed/</wfw:commentRss>
+		<slash:comments>19</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">480</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/04/animaux-serpent-calebasse-1299646-img-3563-2c84d_big.jpg" length="66649" type="image/jpg" />	</item>
+	</channel>
+</rss>

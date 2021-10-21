@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>virtualenvwrapper &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/virtualenvwrapper/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Mieux que Python virtualenvwrapper : pew</title>
+		<link>http://sametmax.com/mieux-que-python-virtualenvwrapper-pew/</link>
+		<comments>http://sametmax.com/mieux-que-python-virtualenvwrapper-pew/#comments</comments>
+		<pubDate>Sat, 20 Dec 2014 02:18:20 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[pew]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[virtualenv]]></category>
+		<category><![CDATA[virtualenvwrapper]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12939</guid>
+		<description><![CDATA[Pour se faciliter la vie, vous utilisez virtualenvwrapper.
+
+Et bien il y a plus meilleur : <a href="https://github.com/berdario/pew#usage">pew</a>.]]></description>
+				<content:encoded><![CDATA[<p>Vous avez compris que Python sans <a href="http://sametmax.com/les-environnement-virtuels-python-virtualenv-et-virtualenvwrapper/">virtualenv</a> c&#8217;est comme la mer sans les vagues, c&#8217;est comme les vagues sans l&#8217;écume, c&#8217;est comme l&#8217;écume sans le sel, c&#8217;est comme le sel sans le poivre&#8230;</p>
+<p>Mais c&#8217;est aussi appétissant que les méduses échouées.</p>
+<p>Donc pour se faciliter la vie, vous utilisez virtualenvwrapper.</p>
+<p>Et bien il y a plus meilleur : <a href="https://github.com/berdario/pew#usage">pew</a>.</p>
+<p>Non content d&#8217;avoir un nom cool et court, c&#8217;est un progrès non négligeable dans l&#8217;ergonomie de notre vie de dresseur de reptiles.</p>
+<p>D&#8217;abord : <code><a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> install pew</code>.</p>
+<p>Ensuite, tableau d&#8217;équivalence avec virtualenvwrapper :</p>
+<table class="tableizer-table">
+<tbody>
+<tr class="tableizer-firstrow">
+<th></th>
+<th>virtualenvwrapper</th>
+<th>pew</th>
+</tr>
+<tr>
+<td>Lister les env existant</td>
+<td>workon</td>
+<td>pew ls</td>
+</tr>
+<tr>
+<td>Créer un env</td>
+<td>mkvirtualenv name</td>
+<td>pew new name</td>
+</tr>
+<tr>
+<td>Supprimer un env</td>
+<td>rmvirtualenv name</td>
+<td>pew rm name</td>
+</tr>
+<tr>
+<td>Activer un env</td>
+<td>workon name</td>
+<td>pew workon name</td>
+</tr>
+<tr>
+<td>Aller dans le dossier site-packages</td>
+<td>cdsitepackages</td>
+<td>cd $(pew sitepackages_dir)</td>
+</tr>
+<tr>
+<td>Valeur par défaut pour $WORKON_HOME (dossier qui contient tous les envs)</td>
+<td>~/.virtualenvs</td>
+<td>~/local/share/virtualenvs</td>
+</tr>
+</tbody>
+</table>
+<p>Vous noterez que les commandes de pew sont plus faciles à retenir, plus cohérentes, et toutes des sous-commandes histoire d&#8217;éviter de pourrir son espace de nom.</p>
+<p>Autres avantages : pew n&#8217;a pas besoin qu&#8217;on ajoute un fichier à votre <code>.bashrc</code> pour marcher. Car pew ne source pas un env dans votre shell courant, il ouvre un nouveau shell. Pour sortir de l&#8217;env, c&#8217;est donc un simple <kbd>Ctrl</kbd> + <kbd>D</kbd>.</p>
+<p>Seulement ça ne s&#8217;arrête pas là. Pew possède quelques commandes bonus qui changent bien la vie :</p>
+<table class="tableizer-table">
+<tbody>
+<tr class="tableizer-firstrow">
+<th></th>
+<th>virtualenvwrapper</th>
+<th>pew</th>
+</tr>
+<tr>
+<td>Éxecuter la commande dans un env sans l&#8217;activer</td>
+<td>Nope</td>
+<td>pew in name commande</td>
+</tr>
+<tr>
+<td>Éxecuter la commande dans tous les env</td>
+<td>Non</td>
+<td>pew inall commande</td>
+</tr>
+<tr>
+<td>Dupliquer un virtualenv ailleurs</td>
+<td>Nada</td>
+<td>pew cp name destination</td>
+</tr>
+<tr>
+<td>Ajouter un chemin au PYTHONPATH de l&#8217;env</td>
+<td>Fuck it</td>
+<td>pew add path</td>
+</tr>
+<tr>
+<td>Changer la prise en compte des libs du site-packages du système quand on veut</td>
+<td>I&#8217;m out</td>
+<td>pew toggleglobalsitepackages</td>
+</tr>
+<tr>
+<td>Créer un env temporaire supprimé dès qu&#8217;on en sort</td>
+<td>Now you are just pushing it</td>
+<td>pew mktmpenv</td>
+</tr>
+<tr>
+<td>Choisir un dossier vers lequel aller à l&#8217;activation de l&#8217;env</td>
+<td>BANG !</td>
+<td>pew setproject path</td>
+</tr>
+</tbody>
+</table>
+<p>Bon, le seul truc qui manque pour le moment, ce sont les hooks.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/mieux-que-python-virtualenvwrapper-pew/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">12939</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/12/Bhu9n0vCIAARP9J.png" length="575356" type="image/jpg" />	</item>
+		<item>
+		<title>A l&#8217;intérieur de mon .bashrc</title>
+		<link>http://sametmax.com/a-linterieur-de-mon-bashrc/</link>
+		<comments>http://sametmax.com/a-linterieur-de-mon-bashrc/#comments</comments>
+		<pubDate>Tue, 22 Jan 2013 10:26:44 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[shell]]></category>
+		<category><![CDATA[virtualenv]]></category>
+		<category><![CDATA[virtualenvwrapper]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4238</guid>
+		<description><![CDATA[Généralement montrer son <em>.bashrc</em> donne rapidement lieu dans les comments à un concours de celui qui a la plus longue (jusqu'à ce qu'arrive un utilisateur de zsh, et alors commence le concours de celui qui pisse le plus loin). Mais bon, aujourd'hui j'ai la flemme d'écrire un article complet.]]></description>
+				<content:encoded><![CDATA[<p>Généralement montrer son <em>.bashrc</em> donne rapidement lieu dans les comments à un concours de celui qui a la plus longue (jusqu&#8217;à ce qu&#8217;arrive un utilisateur de zsh, et alors commence le concours de celui qui pisse le plus loin). Mais bon, aujourd&#8217;hui j&#8217;ai la flemme d&#8217;écrire un article complet.</p>
+<p>Rappel : le <em>.bashrc</em> c&#8217;est le fichier qui est automatiquement chargé au démarrage du shell bash, le shell par défaut sur la plupart des Unix incluant Mac et Ubuntu.</p>
+<p>Donc si vous voulez avoir une expérience de travail personnalisée dans votre terminal, c&#8217;est dans ce fichier que ça se passe.</p>
+<p>Personnellement, j&#8217;ai tout le bordel que met Ubuntu par défaut (notamment les trucs avec les autocomplétions de partout). En en prime je rajoute :</p>
+<pre lang="bash">
+# un raccourcis pour lancer Redis car je le met sur off par défaut mais je le 
+# lance souvent
+
+function redis {
+    if [ ! -e "/var/run/redis/redis-server.pid" ] ; then
+        sudo service redis-server start
+    fi
+}
+
+# un tas de raccourcis type
+
+function projet_django {
+    workon projet_django;
+    cd /home/sam/Work/projet_django/repo/projet_django;
+
+    if [[ $# -ne 0 ]]; then
+        ./manage.py $@
+    fi
+}
+alias sb='projet_django'
+
+# CF: http://sametmax.com/un-alias-bash-pour-django-virtualenv-dont-je-ne-peux-plus-me-passer/
+
+
+# fonction fétiche de bourrin
+
+function killbill {
+    BAK=$IFS
+    IFS=$'\n'
+    for id in $(ps aux | grep -P -i $1 | grep -v "grep" | awk '{printf $2" "; for (i=11; i<NF; i++) printf $i" "; print $NF}'); do 
+        service=$(echo $id | cut -d " " -f 1)
+        if [[ $2 == "-t" ]]; then
+            echo $service \"$(echo $id | cut -d " " -f 2-)\" "would be killed"
+        else
+
+            echo $service \"$(echo $id | cut -d " " -f 2-)\" "killed"
+            kill -9 $service
+        fi
+    done
+    IFS=$BAK
+}
+
+# que j'ai un peu amélioré depuis http://sametmax.com/tu-vas-crever-oui/
+
+
+# une fonction pour commiter rapidement 
+function commit {
+    git commit -m "`echo "$*" | sed -e 's/^./\U&#038;\E/g'`"
+}
+alias co=commit;
+
+# en gros on tappe "co message de commit". Sans guillement, sans rien.
+
+# des completions pour manage.py et git
+
+source /home/sam/.django_bash_completion
+source /home/sam/.git-completion.bash
+
+# activation du cache de pip pour éviter de télécharger 20 fois la même lib
+
+PIP_DOWNLOAD_CACHE='/opt/pip-cache';
+export PIP_DOWNLOAD_CACHE;
+
+# un super outil pour un git plus user friendly
+
+[ -s "/home/sam/.scm_breeze/scm_breeze.sh" ] &#038;&#038; source "/home/sam/.scm_breeze/scm_breeze.sh"
+alias c="git_index"
+
+# j'en avais parlé ici : http://sametmax.com/scm-breeze-facilite-la-selection-de-vos-fichiers-a-commiter-sous-git-avec/
+
+
+# un prompt personalisé tout en couleur
+# formaté comme ça: [nom du virtualenv] sam ~/path (branche git) $
+
+source ~/.prompt.bash
+
+
+# la configuration de virtualenv wrapper 
+export WORKON_HOME=/home/sam/.virtualenvs
+mkdir -p $WORKON_HOME
+source /usr/local/bin/virtualenvwrapper.sh
+
+# plus de détails ici : http://sametmax.com/les-environnement-virtuels-python-virtualenv-et-virtualenvwrapper/
+
+
+# j'ai récément succombé aux sirène du virtualenv automatique
+# j'avais beaucoup d'a priori (particulirement écraser la commande CD)
+# mais à l'usage, c'est pratique
+has_virtualenv() {
+    if [ -e .venv ]; then
+        workon `cat .venv`
+    fi
+}
+venv_cd () {
+    builtin cd "$@" &#038;&#038; has_virtualenv
+}
+alias cd="venv_cd"
+has_virtualenv
+
+# en gros ça m'active un virtualenv si il y a un fichier .venv avec un nom
+# de virtualenv dedans dans le dossier courrant
+
+
+# je vous en parlais récement (http://sametmax.com/configurer-votre-terminal-pour-quil-vous-notifie-de-la-fin-dune-commande-longue/)
+# c'est pour avoir une notifi à la fin des commandes longues 
+notify_when_long_running_commands_finish_install
+
+
+# ca c'est un truc de feignasse car je me souviens jamais comment extraire 
+# en ligne de commande tel ou tel format
+
+extract () {
+    if [ -f $1 ]
+    then
+        case $1 in
+            (*.7z) 7z x $1 ;;
+            (*.lzma) unlzma $1 ;;
+            (*.rar) unrar x $1 ;;
+            (*.tar) tar xvf $1 ;;
+            (*.tar.bz2) tar xvjf $1 ;;
+            (*.bz2) bunzip2 $1 ;;
+            (*.tar.gz) tar xvzf $1 ;;
+            (*.gz) gunzip $1 ;;
+            (*.tar.xz) tar Jxvf $1 ;;
+            (*.xz) xz -d $1 ;;
+            (*.tbz2) tar xvjf $1 ;;
+            (*.tgz) tar xvzf $1 ;;
+            (*.zip) unzip $1 ;;
+            (*.Z) uncompress ;;
+            (*) echo "don't know how to extract '$1'..." ;;
+        esac
+    else
+        echo "Error: '$1' is not a valid file!"
+        exit 0
+    fi
+}
+
+# ça date de http://sametmax.com/decompresser-sous-linux-en-ligne-de-commande/
+
+# et quelques alias pour des tâches de tous les jours
+
+alias ..='cd ..'
+alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
+alias ......='cd ../../../../../'
+
+alias process='ps aux | grep'
+alias serve="python -c 'import SimpleHTTPServer; SimpleHTTPServer.test()'"</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/a-linterieur-de-mon-bashrc/feed/</wfw:commentRss>
+		<slash:comments>24</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">4238</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/01/23207079.jpg" length="22869" type="image/jpg" />	</item>
+		<item>
+		<title>&#8220;ERROR: VIRTUALENVWRAPPER_LOG_DIR is not set&#8221; et &#8220;ImportError: cannot import name urandom&#8221;</title>
+		<link>http://sametmax.com/error-virtualenvwrapper_log_dir-is-not-set-et-importerror-cannot-import-name-urandom/</link>
+		<comments>http://sametmax.com/error-virtualenvwrapper_log_dir-is-not-set-et-importerror-cannot-import-name-urandom/#comments</comments>
+		<pubDate>Sat, 17 Nov 2012 13:22:04 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[ubuntu]]></category>
+		<category><![CDATA[virtualenvwrapper]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3122</guid>
+		<description><![CDATA[Petit bug pour virtualenwrapper sous Ubuntu. Ca se corrige facilement.]]></description>
+				<content:encoded><![CDATA[<p>Petits bugs pour <a href="http://sametmax.com/les-environnement-virtuels-python-virtualenv-et-virtualenvwrapper/">virtualenwrapper</a> sous Ubuntu. Ca se corrige facilement. </p>
+<p>Ajoutez dans <em>.bashrc</em> pour corriger le premier:</p>
+<p><code>export VIRTUALENVWRAPPER_LOG_DIR="$WORKON_HOME"<br />
+export VIRTUALENVWRAPPER_HOOK_DIR="$WORKON_HOME"</code></p>
+<p>Pour le second, il faut relancer la création de l&#8217;env, sur l&#8217;env lui-même. Si votre env s&#8217;appelle &#8220;mon_env&#8221;, faites:</p>
+<p><code>mkvirtualenv mon_env</code></p>
+<p>Il faut les mêmes paramètres qu&#8217;à la création de l&#8217;env.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/error-virtualenvwrapper_log_dir-is-not-set-et-importerror-cannot-import-name-urandom/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">3122</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/11/1510031-star1.gif" length="28252" type="image/jpg" />	</item>
+	</channel>
+</rss>

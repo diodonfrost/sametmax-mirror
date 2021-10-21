@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>warning &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/warning/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Warning technique à un autre développeur en Python</title>
+		<link>http://sametmax.com/warning-technique-a-un-autre-developpeur-en-python/</link>
+		<comments>http://sametmax.com/warning-technique-a-un-autre-developpeur-en-python/#comments</comments>
+		<pubDate>Fri, 22 Mar 2013 11:23:35 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[warning]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5265</guid>
+		<description><![CDATA[Une dépendance optionnelle est manquante. Une fonction est dépréciée. Une syntaxe n'est pas recommandée.
+
+Il y a mieux qu'un <code>print()</code> pour signaler ça à votre utilisateur.
+]]></description>
+				<content:encoded><![CDATA[<p>Une dépendance optionnelle est manquante. Une fonction est dépréciée. Une syntaxe n&#8217;est pas recommandée.</p>
+<p>Il y a mieux qu&#8217;un <code>print()</code> pour signaler ça à votre utilisateur.</p>
+<pre lang="python">import warnings
+
+# on definit quels types de warning on va afficher (a faire une seule fois)
+warnings.simplefilter("always")
+
+# et on affiche tous nos warning
+warnings.warn("La fonction je_vais_a_une_boom() est depreciee", DeprecationWarning)
+warnings.warn("Le module optionnel 'braces' n'est pas disponible", ImportWarning)
+# ne mettez pas de caracteres non ASCII, sinon ca chie
+
+## /home/Sam/Bureau/test.py:8: DeprecationWarning: La fonction je_vais_a_une_boom() est depreciee
+##   warnings.warn("La fonction je_vais_a_une_boom() est depreciee", DeprecationWarning)
+## /home/Sam/Bureau/test.py:9: ImportWarning: Le module optionnel 'braces' n'est pas disponible
+##   warnings.warn("Le module optionnel 'braces' n'est pas disponible", ImportWarning)
+
+</pre>
+<p>L&#8217;avantage d&#8217;utiliser le module <code>warning</code> est :</p>
+<ul>
+<li>Il affiche sur stderr automatiquement.</li>
+<li>Il affiche un format clair automatiquement (fichier, ligne, type de warning).</li>
+<li>On peut très vite lire le code source et voir ce qui déclenche un warning.</li>
+</ul>
+<p>Mais surtout, on peut filtrer les warning:</p>
+<pre lang="python">
+warnings.simplefilter("type de filtrage")</pre>
+<p>Le module permet de choisir ce qu&#8217;on affiche comme warning. Ils sont désactivables par la ligne de commande. Et surtout, quelqu&#8217;un qui importe votre module qui balance des warnings possède de nombreux moyens de les réduire au silence ou de les rediriger ailleurs. Par exemple :</p>
+<pre lang="python">with warnings.catch_warnings(record=True) as w:
+     import test</pre>
+<p>Vous trouverez ici un <a href="http://docs.python.org/2/library/warnings.html">liste des warnings disponibles ainsi que les filtres possibles</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/warning-technique-a-un-autre-developpeur-en-python/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">5265</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/03/piwJK6d.jpg" length="107634" type="image/jpg" />	</item>
+	</channel>
+</rss>

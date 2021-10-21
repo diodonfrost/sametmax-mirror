@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>sharset &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/sharset/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Le type bytes n&#8217;est pas du texte</title>
+		<link>http://sametmax.com/le-type-bytes-nest-pas-du-texte/</link>
+		<pubDate>Fri, 11 Jan 2019 11:30:10 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[binaire]]></category>
+		<category><![CDATA[bits]]></category>
+		<category><![CDATA[bytes]]></category>
+		<category><![CDATA[encodage]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[octets]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sharset]]></category>
+		<category><![CDATA[str]]></category>
+		<category><![CDATA[string]]></category>
+		<category><![CDATA[texte]]></category>
+		<category><![CDATA[unicode]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=25125</guid>
+		<description><![CDATA[J'ai beau essayer très fort de ne pas répondre en ligne, des fois <a href="https://news.ycombinator.com/item?id=18874232">je craque</a>. Mais je me soigne, globalement j'ai récupéré plein de temps, et ça se voit sur mon quotidien.
+
+Et ce craquage, et bien il est cette fois dû à une totale mécompréhension des types de texte en Python 3.]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;ai beau essayer très fort de ne pas répondre en ligne, des fois <a href="https://news.ycombinator.com/item?id=18874232">je craque</a>. Mais je me soigne, globalement j&#8217;ai récupéré plein de temps, et ça se voit sur mon quotidien.</p>
+<p>Et ce craquage, et bien il est cette fois dû à une totale mécompréhension des types de texte en Python 3.</p>
+<p>Mais c&#8217;est bien normal: Python 3 ne gère pas le texte de la même manière que la grande majorité des langages de programmation, justement à cause de la débâcle qu&#8217;on a eue en Python 2. Du coup, de nombreux programmeurs arrivent avec leur expérience d&#8217;ailleurs, et tentent de l&#8217;appliquer tel un utilisateur de SVN migrant sur git. En surface ça semble coller, malheuseuement à l&#8217;usage, ça fait faire des erreurs.</p>
+<p>Donc un peu d&#8217;explications.</p>
+<p>En informatique, tout est une histoire de convention. On dit que tel mot clé a tel effet. Que tel nom suppose telle chose. Que tel code de retour implique telle erreur. Que tel schéma XML représente tel type de document.</p>
+<p>Essentiellement, tout cela est arbitraire: des gens ont décidé qu&#8217;il en serait ainsi. Impossible de deviner que ce que fait <code>yield</code> ou <code>with</code> si vous n&#8217;avez pas d&#8217;expérience similaire avant. Impossible de savoir que le code <code>0</code> en bash ou <code>200</code> en HTTP signifie tout va bien sans qu&#8217;on vous transmette l&#8217;information, ou faire de nombreux tests.</p>
+<p>Quand je dis arbitrairement, évidemment je ne veux pas dire complètement sans raison. Il y a des raisons techniques, politiques, économiques, et parfois esthétiques à ces conventions. Cela n&#8217;en retire en rien l&#8217;aspect parfaitement artificiel de ces choix.</p>
+<p>La convention la plus omniprésente, et pourtant aujourd&#8217;hui la plus masquée dans un monde où on utilise massivement des langages de haut niveau comme Javascript, Ruby, PHP et Python, est celle de l&#8217;organisation des octets.</p>
+<p>Musique !</p>
+<p><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/SBjQ9tuuTJQ?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<h2>   &#8230;je vois même plus le code : tout ce que je vois, c&#8217;est des blondes, des brunes, des rousses.<br />
+</h2>
+<p>Tout ce qui passe par nos ordinateurs n&#8217;est qu&#8217;une suite de zéros et de uns, que nous avons groupés par paquets de 8:</p>
+<p>Seulement la grande révélation, le &#8220;aaaaaaahhhhh okayyyyyyy&#8221; qui arrive un jour dans toute vie de dev, c&#8217;est que <strong>ces paquets de 8 ne veulent rien dire.</strong> Rien. C&#8217;est nous qui avons décidé, arbitrairement encore une fois, de leur signification.</p>
+<p>Vous voyez ce moment dans les films et séries où un personnage arrive à &#8220;lire du binaire&#8221; ?</p>
+<div id="attachment_25161" style="width: 560px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2019/01/IS1.png" class="grouped_elements" rel="tc-fancybox-group25125"><img src="http://sametmax.com/wp-content/uploads/2019/01/IS1.png" alt="Evidement, &quot;c&#039;est une representation binaire ASCII de coordonnées WGS 84 Web Mercator&quot; est plus dur à caser dans un dialogue" width="550" height="281" class="size-full wp-image-25161" /></a><p class="wp-caption-text">Evidement, &#8220;c&#8217;est une representation binaire ASCII de coordonnées WGS 84 Web Mercator&#8221; est plus dur à caser dans un dialogue</p></div>
+<p>C&#8217;est de <a href="https://youtu.be/FvHHlKp923A?t=1132">l&#8217;enculage de dauphin</a>.</p>
+<p>Le binaire n&#8217;est pas un langage, pas plus que les lettres &#8220;abcdefghijklmnopqrstuvwxyz&#8221;. Vous pouvez utiliser ces lettres pour représenter certains mots italiens, français, anglais, un nom propre (sans langue), le label d&#8217;un immeuble (sans langue encore) ou un chiffre latin. </p>
+<p>Que veut dire &#8220;les gosses&#8221; ? Pour la même combinaisons de lettres, cela signifie &#8220;les enfants&#8221; avec la convention française européenne, et &#8220;les couilles&#8221; avec la convention québéquoise.</p>
+<p>Pour le binaire c&#8217;est pareil, ce que veut dire un octet dépend de la convention que vous avez choisie.</p>
+<p>Par exemple, que signifie cette suite d&#8217;octets ?</p>
+<p><code>1100001 1100010 1100011 1100100</code></p>
+<p>Bah rien. Mais <a href="https://www.youtube.com/watch?v=3c-irSUdij4">on peut lui donner un sens</a> en lui appliquant une convention.</p>
+<p>Je peux lui appliquer la convention ASCII, et donc supposer que c&#8217;est un texte dans un certain format. Voici ce que ça donne en Python:</p>
+<pre lang="python">     
+>>> data = bytearray([0b1100001, 0b1100010, 0b1100011, 0b1100100])     
+>>> print(data.decode('ascii'))     
+abcd </pre>
+<div id="attachment_25162" style="width: 310px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2019/01/binary_mock.jpg" class="grouped_elements" rel="tc-fancybox-group25125"><img src="http://sametmax.com/wp-content/uploads/2019/01/binary_mock.jpg" alt="Les processeurs modernes ne comprenent pas nativement l&#039;american apparel" width="300" height="448" class="size-full wp-image-25162" /></a><p class="wp-caption-text">Les processeurs modernes ne comprenent pas nativement l&#8217;american apparel</p></div>
+<p>Ou je peux lui appliquer une autre convention, et decider de lire ces octets comme si ils étaient le dump d&#8217;une structure C. Interprettons en Python ces octets comme un entier non signé en big-endian:</p>
+<pre lang="python">     
+>>> data = bytearray([0b1100001, 0b1100010, 0b1100011, 0b1100100])     
+>>> import struct     
+>>> struct.unpack('>I', data)     
+(1633837924,)
+</pre>
+<p>Même suite de bits, mais selon la convention choisie, elle veut dire les lettres &#8220;abcd&#8221; ou le nombre &#8220;1633837924&#8221;. Et oui, comme il n&#8217;y a pas une infinité de combinaisons de 0 et de 1 qui tiennent dans un espace mémoire limité, différentes conventions vont utiliser les mêmes octets mais décider que ça veut dire quelque chose de différent.</p>
+<p>En fait, même des conventions pour le même type usage ne veulent pas forcément dire la même chose. Par exemple, prenez l&#8217;octet:</p>
+<p><code>11101001</code></p>
+<p>Un octet somme toute sympathique, de bonne famille. Il ne paie pas de mine, mais c&#8217;est un membre utile de la société.</p>
+<p>Et maintenant, quelqu&#8217;un vous donne un indice, il vous dit que cet octet représente&#8230; du texte.</p>
+<p>Super !</p>
+<p>Oui, mais du texte avec quelle convention ? Car les pays du monde entier ont créé leur propre convention pour représenter du texte.</p>
+<p>Avec la convention &#8220;latin-1&#8221;, <a href="https://en.wikipedia.org/wiki/Windows-1252">utilisé par 0.7% de tous les sites Web du monde</a> ?</p>
+<pre lang="python"> 
+>>> bytearray([0b11101001]).decode('latin-1') 
+'é' </pre>
+<p>Avec la convention &#8220;cp850&#8221;, utilisé par la console DOS ?</p>
+<pre lang="python"> 
+>>> bytearray([0b11101001]).decode('cp850')
+'Ú'
+</pre>
+<p>Vous voulez rire ? Le premier à remplacé presque partout le second parce qu&#8217;<a href="https://en.wikipedia.org/wiki/Code_page_850">ils contiennent les mêmes lettres</a>. Elles ne sont juste pas représentées par la même combinaison d&#8217;octets.</p>
+<p>Et cet octet, que veut-il dire avec la convention &#8220;utf8&#8221;, qui est aujourd&#8217;hui le standard international recommandé pour représenter du texte ?</p>
+<pre lang="python"> 
+>>> bytearray([0b11101001]).decode('utf8')
+Traceback (most recent call last):
+File "<stdin>", line 1, in <module>
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe9 in position 0: unexpected end of data </pre>
+<p>Il n&#8217;a pas de correspondance. Cet octet n&#8217;est pas de l&#8217;utf8 valide.</p>
+<p>Si vous voulez représenter ces lettres en utf8, il faut utiliser une convention différente, en utilisant non pas un seul octet, mais une séquence d&#8217;octets:</p>
+<pre lang="python"> 
+>>> list(map(bin, 'é'.encode('utf8')))
+['0b11000011', '0b10101001']
+>>> list(map(bin, 'Ú'.encode('utf8')))
+['0b11000011', '0b10011010']
+</pre>
+<p>Vous pourriez croire que puisque le texte est particulièrement compliqué, c&#8217;est normal d&#8217;avoir des conventions qui divergent. Mais non, c&#8217;est juste la nature des conventions. Puisqu&#8217;elles sont arbitraires, l&#8217;une n&#8217;est pas plus &#8220;la vérité&#8221; qu&#8217;une autre. On retrouve la même chose avec les nombres:</p>
+<pre lang="python">
+>>> struct.unpack("h", bytearray([0b11101001, 0b11101001]))
+(-5655,)
+>>> struct.unpack("H", bytearray([0b11101001, 0b11101001])) 
+(59881,)
+</pre>
+<p>La même suite d&#8217;octets peut représenter deux nombres totalement différents, selon que je décide de les lire comme des &#8220;short&#8221;, ou des &#8220;unsigned short&#8221;.</p>
+<p>Et l&#8217;inverse est aussi vrai.</p>
+<p>Ben oui, si quelque chose peut être interprété de plusieurs façons, on a aussi le fait que deux représentations <em>différentes</em> peuvent être interprétées &#8230; pour aboutir au même résultat.</p>
+<p>Par exemple, le nombre des doigts de ma main peut être représenté de plein de façons différentes:</p>
+<ul>
+<li>         <strong>décimal</strong>: 5     </li>
+<li>         <strong>français écrit</strong>: cinq     </li>
+<li>         <strong>chiffre latin</strong>: V     </li>
+<li>         <strong>anglais écrit</strong>: five     </li>
+<li>         <strong>espagnol écrit</strong>: cinco     </li>
+<li>         <strong>base deux</strong>: 101     </li>
+<li>         <strong>structure C d&#8217;un signed short en little-endian avec Python</strong>: bytearray([0b101, 0b0])     </li>
+</ul>
+<p>Que de manières différentes, pour le même concept ! En plus, il y a confusion possible: V est une lettre également. cinq, five et cinco utilisent le même alphabet, mais pas les mêmes symboles spécifiques, pour représenter la même chose. Et le plus confusionant, 101 est une représentation binaire, mais <code>bytearray([0b101, 0b0])</code> aussi.</p>
+<p>Bref, voilà toute la complexité de la différence entre la donnée, un concept abstrait qui n&#8217;existe pas, et sa représentation, une convention humaine concrète qui nous permet de communiquer entre nous.</p>
+<p>Donc, pour lire &#8220;du binaire&#8221;, ou faire n&#8217;importe quoi en informatique, il faut connaitre la convention utilisée. Mais pas juste en informatique: pour lire le journal, il faut connaitre la convention des symboles imprimés sur les pages, pour conduire sans se faire tuer, il faut connaitre la convention des panneaux, et pour parler, il faut connaitre la convention de la compression des molécules d&#8217;air émise par l&#8217;appareil buccal et respiratoire d&#8217;un individu qui vient rencontrer votre système auditif.</p>
+<p>Vous êtes un être très conventionnel au fond.</p>
+<p>Évidemment on trouve la même chose en Python. Par exemple vous pouvez utiliser plusieurs conventions pour demander à Python de créer le même nombre en mémoire:</p>
+<pre lang="python">
+>>> 245 # base 10
+245
+>>> 0xF5 # hexadecimal
+245
+>>> 0b11110101 # binaire
+245
+>>> 245 == 0xF5 == 0b11110101
+True     
+>>> type(245)     
+<class 'int'>     
+>>> type(0xF5)     
+<class 'int'>     
+>>> type(0b11110101)     
+<class 'int'> </pre>
+<p>Inversement, <code>"1"</code> et <code>1</code> paraissent similaire, mais ils ont différents buts. Le premier est un outil destiné à l&#8217;affichage, qui matérialise le caractère représentant le chiffre arabe après le zéro. Il est stocké en interne avec une séquence d&#8217;octets similaire à:</p>
+<pre lang="python">
+>>> bin(ord("1"))
+'0b110001'
+</pre>
+<p>Tandis que que le second est un outil fait pour faire des calculs avec la plus petite valeur positive entière non nulle. Il est stocké en interne avec une séquence d&#8217;octets similaire à:</p>
+<pre lang="python">
+>>> list(map(bin, struct.pack('l', 1)))
+['0b1', '0b0', '0b0', '0b0', '0b0', '0b0', '0b0', '0b0']
+</pre>
+<p>Je simplifie bien entendu, en vérité la representation interne des nombres et du texte en Python est plus complexe que cela, et dépend de l&#8217;implémentation choisie, du type de processeur, de la taille de la donnée et de votre configuration.</p>
+<h2>
+Retour sur le type bytes </h2>
+<p>J&#8217;ai soigneusement évité d&#8217;utiliser le type <code>bytes</code> durant cette démonstration, le remplaçant techniquement inutilement (mais pédagogiquement brillamment, car je suis génial) par <code>bytearray</code>.</p>
+<p>En effet, toute cette leçon est là pour arriver à la conclusion que <code>bytes</code> ne représente pas du texte, mais si je vous avais montré tout ça avec lui, voilà qui vous aurait interloqué:</p>
+<pre lang="python">     
+>>> bytes([0b1100001, 0b1100010, 0b1100011, 0b1100100])     
+b'abcd' </pre>
+<p>&#8220;Heu, mais c&#8217;est du texte !&#8221; me dirait alors un lecteur ayant diagonalisé l&#8217;article.</p>
+<p>Mais bien entendu que non.</p>
+<p><code>bytes</code> ne présente pas du texte, c&#8217;est une structure de données dont le but est de permettre de manipuler une séquence d&#8217;octets ordonnée, et ce manuellement. N&#8217;importe laquelle.</p>
+<p>Or, il se trouve que beaucoup de langages de programmation représentent le texte comme un array d&#8217;octets, et y attachent quelques opérations de manipulation. C&#8217;est le cas du C, ou de Python 2 par exemple. Les gens ayant eu cette expérience pensent donc que <code>b'abcd'</code> représente du texte, allant parfois jusqu&#8217;à aller lui donner l&#8217;appellation de &#8220;byte string&#8221;.</p>
+<p>Il n&#8217;existe rien de tel en Python 3.</p>
+<p>En Python 3, vous avez deux types pour manipuler des séquences d&#8217;octets: <code>bytes</code> et <code>bytearray</code>. Ils sont équivalents, à ceci près que <code>bytes</code> est non mutable (non modifiable) alors que <code>bytearray</code> est mutable (modifiable).</p>
+<p>Ces types peuvent contenir n&#8217;importe quels octets, et nous avons vu ensemble qu&#8217;une même séquence d&#8217;octets pouvait être interprétée différemment selon la convention choisie pour la lire. Évidemment il est préférable de la lire avec la même convention qui a été utilisée pour la produire, sans quoi on ne comprendra pas ce que le producteur de la donnée à voulu dire.</p>
+<p>Sauf que&#8230;</p>
+<p>Beaucoup d&#8217;outils en informatique utilisent les conventions ASCII et hexadécimale pour symboliser les valeurs des octets. Si vous lancez <a href="https://www.wireshark.org/docs/wsug_html_chunked/ChapterIntroduction.html#ChIntroFeatures">Wireshark</a> pour regarder les paquets d&#8217;un protocole réseau ou si vous ouvrez un PNG avec <code>xxd</code>, on va vous représenter le contenu avec un mélange de ces conventions. </p>
+<p>Pour des raisons pratiques, Python fait donc la même chose, et permet ainsi de visualiser (ou produire) le type <code>bytes</code> à l&#8217;aide d&#8217;une notation ASCII:</p>
+<pre lang="python">    
+>>> print(b'abcd'.decode('ascii'))     
+abcd     
+>>> struct.unpack('>I', b'abcd')     
+(1633837924,)
+</pre>
+<p>Ou d&#8217;une notation héxa (ironiquement, l&#8217;héxa est representé par une combinaison de caractères ASCII \o/) si les valeurs ne tiennent pas dans la table ASCII:</p>
+<pre lang="python">     
+>>> "é".encode('utf8')  # hexa C3 A9   
+b'\xc3\xa9'     
+>>> struct.unpack('h', b'\xc3\xa9')    
+(-22077,)
+</pre>
+<p>Donc <code>bytes</code>, bien qu&#8217;il puisse contenir des octets interprétables comme du texte, n&#8217;est pas particulièrement fait pour manipuler du texte. Il peut contenir n&#8217;importe quoi. Mais pour des raisons pratiques, sa représentation dans le terminal est faite avec une convention familière. Après tout, il faut bien l&#8217;écrire en quelque chose pour l&#8217;affiquer à l&#8217;écran.</p>
+<p>Si on veut manipuler du texte en Python 3, il faut utiliser le type <code>str</code>, qui est l&#8217;outil spécialisé dans la representation et la manipulation textuelle. Si vous savez qu&#8217;un type <code>bytes</code> contient des octets qui representent du texte, alors utilisez la méthode <code>décode()</code> avec la bonne convention (appelée &#8220;charset&#8221;), pour récupérer un <code>str</code>:</p>
+<pre lang="python">     
+>>> print(b'P\xc3\xa8re No\xc3\xabl'.decode('utf8'))
+Père Noël </pre>
+<p>On a <a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/ ">un très bon article sur l&#8217;encoding en Python</a> sur le blog, d&#8217;ailleurs.</p>
+<p>Toute cela n&#8217;était bien entendu pas vrai en Python 2. En Python 2, le type <code>str</code> était un array d&#8217;octets, rendant tout cela bien confus, et amenant à plein d&#8217;erreurs. L&#8217;introduction lors de la version 2.0 de l&#8217;objet <code>unicode</code> pour pallier le problème, bien que très utile, n&#8217;a fait que rajouter à l&#8217;incomprehension des nouveaux venus.</p>
+<p>Or le monde extérieur, lui, n&#8217;a pas d&#8217;abstraction pour le texte. Faire des abstractions, c&#8217;est le rôle du langage de programmation. Si vous écrivez dans un terminal, ou lisez depuis un terminal, un nom de fichier, le contenu d&#8217;une base de données, une requête AJAX, etc., ce sont évidemment des octets qui sont échangés, et il vous faut la bonne convention pour faire partie de la discussion.</p>
+<p>Le type bas niveau <code>bytes</code> est un outil qui sert donc à communiquer avec le monde extérieur, tandis que les types haut niveau (<code>str</code>, <code>int</code>, <code>list</code>, etc.) sont des outils qui font l&#8217;abstraction de ces conventions, pour vous permettre de manipuler confortablement un concept général (du texte, un nombre, une collection ordonnée) à l&#8217;interieur des murs de votre programme.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">25125</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2019/01/definitionwrong.jpg" length="60849" type="image/jpg" />	</item>
+	</channel>
+</rss>

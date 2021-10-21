@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>auth &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/auth/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Marre des mots de passe pour push sur git ?</title>
+		<link>http://sametmax.com/marre-des-mots-de-passe-pour-push-sur-git/</link>
+		<comments>http://sametmax.com/marre-des-mots-de-passe-pour-push-sur-git/#comments</comments>
+		<pubDate>Tue, 19 Nov 2013 08:36:34 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[auth]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[git]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8013</guid>
+		<description><![CDATA[Vous êtes dans une situation où vous ne pouvez pas utiliser uniquement un clé pour vous authentifier, et il faut taper votre putain de mot de passe à chaque push.]]></description>
+				<content:encoded><![CDATA[<p>Vous êtes dans une situation où vous ne pouvez pas utiliser uniquement une clé pour vous authentifier, et il faut taper votre putain de mot de passe à chaque push.</p>
+<p><a href="http://sametmax.com/git-push-via-http-ou-comment-travailler-au-macdo/">Ça sent le vécu n&#8217;est-ce pas ?</a></p>
+<p>Mais bien entendu git vient avec une option bien cachée au fond de son fion pour adresser ce problème :</p>
+<pre lang="bash">git config credential.helper 'cache --timeout=3600'</pre>
+<p>Et votre authentification sera gardée en mémoire pour une heure. Vous pouvez faire :</p>
+<pre lang="bash">git config --global credential.helper 'cache --timeout=3600'</pre>
+<p>Pour l&#8217;étendre à tous les repos de votre machine.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/marre-des-mots-de-passe-pour-push-sur-git/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8013</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/11/cdempDI.jpg" length="51081" type="image/jpg" />	</item>
+	</channel>
+</rss>

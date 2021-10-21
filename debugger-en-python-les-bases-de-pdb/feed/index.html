@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Debugger en Python: les bases de pdb</title>
+	<atom:link href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/debugger-en-python-les-bases-de-pdb/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Amael</title>
+		<link>http://sametmax.com/debugger-en-python-les-bases-de-pdb/#comment-193387</link>
+		<dc:creator><![CDATA[Amael]]></dc:creator>
+		<pubDate>Mon, 02 Apr 2018 20:08:30 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=750#comment-193387</guid>
+		<description><![CDATA[Comment fait-on quand l&#039;entrée standard (stdin) est attrapée par le processus ? (À l&#039;aide de &lt;code&gt;tty.setcbreak(stdin.fileno())&lt;/code&gt;)
+
+Pour ne rien arranger, comment fait-on quand la sortie standard est effacée régulièrement aussi ? (Avec la séquence ansi &lt;code&gt;&#092;033[2J&lt;/code&gt;)
+]]></description>
+		<content:encoded><![CDATA[<p>Comment fait-on quand l&#8217;entrée standard (stdin) est attrapée par le processus ? (À l&#8217;aide de <code>tty.setcbreak(stdin.fileno())</code>)</p>
+<p>Pour ne rien arranger, comment fait-on quand la sortie standard est effacée régulièrement aussi ? (Avec la séquence ansi <code>&#092;033[2J</code>)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: ast2</title>
+		<link>http://sametmax.com/debugger-en-python-les-bases-de-pdb/#comment-176424</link>
+		<dc:creator><![CDATA[ast2]]></dc:creator>
+		<pubDate>Thu, 25 Feb 2016 13:40:53 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=750#comment-176424</guid>
+		<description><![CDATA[je découvre pdb et vraiment ça mérite d&#039;être connu. C&#039;est bien plus complet que le debug avec IDLE.
+]]></description>
+		<content:encoded><![CDATA[<p>je découvre pdb et vraiment ça mérite d&#8217;être connu. C&#8217;est bien plus complet que le debug avec IDLE.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/debugger-en-python-les-bases-de-pdb/#comment-1088</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Tue, 07 Aug 2012 13:46:36 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=750#comment-1088</guid>
+		<description><![CDATA[Aucune idée.]]></description>
+		<content:encoded><![CDATA[<p>Aucune idée.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Luigi</title>
+		<link>http://sametmax.com/debugger-en-python-les-bases-de-pdb/#comment-1085</link>
+		<dc:creator><![CDATA[Luigi]]></dc:creator>
+		<pubDate>Tue, 07 Aug 2012 13:15:29 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=750#comment-1085</guid>
+		<description><![CDATA[Quid de PySide ? Parce qu&#039;en remontant au sujet de SO (http://stackoverflow.com/questions/1736015/debugging-a-pyqt4-app) qui est à la base de pdbqt4, il est dit que cela ne marche pas avec PySide...]]></description>
+		<content:encoded><![CDATA[<p>Quid de PySide ? Parce qu&#8217;en remontant au sujet de SO (<a href="http://stackoverflow.com/questions/1736015/debugging-a-pyqt4-app" rel="nofollow">http://stackoverflow.com/questions/1736015/debugging-a-pyqt4-app</a>) qui est à la base de pdbqt4, il est dit que cela ne marche pas avec PySide&#8230;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/debugger-en-python-les-bases-de-pdb/#comment-1075</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 06 Aug 2012 21:44:11 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=750#comment-1075</guid>
+		<description><![CDATA[Apparement &lt;code&gt;pdb&lt;/code&gt; ne marche pas avec QT4, donc pour tous les amateurs de PyQT, utilisez &lt;a href=&quot;https://github.com/nqnwebs/pdb4qt&quot; rel=&quot;nofollow&quot;&gt;pdb4qt&lt;/a&gt;.
+
+C&#039;est une version qui réconcilie la lib avec le debugger, essentiellement en faisant un appel de &lt;code&gt;pyqtRemoveInputHook()&lt;/code&gt; juste &lt;code&gt;avant le set_trace()&lt;/code&gt;.]]></description>
+		<content:encoded><![CDATA[<p>Apparement <code>pdb</code> ne marche pas avec QT4, donc pour tous les amateurs de PyQT, utilisez <a href="https://github.com/nqnwebs/pdb4qt" rel="nofollow">pdb4qt</a>.</p>
+<p>C&#8217;est une version qui réconcilie la lib avec le debugger, essentiellement en faisant un appel de <code>pyqtRemoveInputHook()</code> juste <code>avant le set_trace()</code>.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Luigi</title>
+		<link>http://sametmax.com/debugger-en-python-les-bases-de-pdb/#comment-298</link>
+		<dc:creator><![CDATA[Luigi]]></dc:creator>
+		<pubDate>Mon, 28 May 2012 14:04:59 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=750#comment-298</guid>
+		<description><![CDATA[On en apprend tous les jours ! Merci.]]></description>
+		<content:encoded><![CDATA[<p>On en apprend tous les jours ! Merci.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<!--[if IE 7]>
+<html class="ie ie7" lang="en-US">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8" lang="en-US">
+<![endif]-->
+<!--[if !(IE 7) | !(IE 8)  ]><!-->
+<html lang="en-US">                          
+<!--<![endif]-->
+					<head>
+				    <meta charset="UTF-8" />
+				    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+            				    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+				    <link rel="profile" href="http://gmpg.org/xfn/11" />
+				    <link rel="pingback" href="http://sametmax.com/xmlrpc.php" />
+
+				   <!-- Icons font support for IE6-7  -->
+				    <!--[if lt IE 8]>
+				      <script src="http://sametmax.com/wp-content/themes/customizr/inc/assets/css/fonts/lte-ie7.js"></script>
+				    <![endif]-->
+				    <style type="text/css" id="customizr-inline-fonts">@font-face{font-family:genericons;src:url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.eot');src:url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.eot%3F') format('embedded-opentype'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.woff') format('woff'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.ttf') format('truetype'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.svg') format('svg')}@font-face{font-family:entypo;src:url('http://sametmax.com/wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.eot);src:url(http://sametmax.com/wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.eot?#iefix') format('embedded-opentype'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.woff') format('woff'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.ttf') format('truetype'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.svg') format('svg')}</style><title>La débâcle de async en 3.7 &#8211; Sam &amp; Max</title>
+<link rel='dns-prefetch' href='http://s0.wp.com/' />
+<link rel='dns-prefetch' href='http://secure.gravatar.com/' />
+<link rel='dns-prefetch' href='http://s.w.org/' />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max &raquo; Feed" href="../feed.1" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max &raquo; Comments Feed" href="../comments/feed/index.html" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max &raquo; La débâcle de async en 3.7 Comments Feed" href="feed/index.html" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.4\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.4\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/sametmax.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.9.7"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55357,56692,8205,9792,65039],[55357,56692,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='contact-form-7-css'  href='../wp-content/plugins/contact-form-7/includes/css/styles.css%3Fver=5.0.2.css' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-polls-css'  href='../wp-content/plugins/wp-polls/polls-css.css%3Fver=2.73.8.css' type='text/css' media='all' />
+<style id='wp-polls-inline-css' type='text/css'>
+.wp-polls .pollbar {
+	margin: 1px;
+	font-size: 6px;
+	line-height: 8px;
+	height: 8px;
+	background-image: url('../wp-content/plugins/wp-polls/images/default/pollbg.gif');
+	border: 1px solid #c8c8c8;
+}
+
+</style>
+<link rel='stylesheet' id='wp-syntax-css-css'  href='../wp-content/plugins/wp-syntax/css/wp-syntax.css%3Fver=1.1.css' type='text/css' media='all' />
+<link rel='stylesheet' id='dashicons-css'  href='../wp-includes/css/dashicons.min.css%3Fver=4.9.7.css' type='text/css' media='all' />
+<link rel='stylesheet' id='customizr-skin-css'  href='../wp-content/themes/customizr/inc/assets/css/black2.min.css%3Fver=3.2.10.css' type='text/css' media='all' />
+<style id='customizr-skin-inline-css' type='text/css'>
+
+.sticky-enabled .tc-shrink-on .site-logo img {
+						height:30px!important;width:auto!important
+					}
+
+					.sticky-enabled .tc-shrink-on .brand .site-title {
+						font-size:0.6em;opacity:0.8;line-height:1.2em
+					}
+
+.tc-rectangular-thumb {
+            max-height: 250px;
+            height :250px
+          }
+
+          .single .tc-rectangular-thumb {
+            max-height: 250px;
+            height :250px
+          }
+
+
+</style>
+<link rel='stylesheet' id='customizr-style-css'  href='../wp-content/themes/customizr/style.css%3Fver=3.2.10.css' type='text/css' media='all' />
+<link rel='stylesheet' id='fancyboxcss-css'  href='../wp-content/themes/customizr/inc/assets/js/fancybox/jquery.fancybox-1.3.4.min.css%3Fver=4.9.7.css' type='text/css' media='all' />
+<link rel='stylesheet' id='jetpack-widget-social-icons-styles-css'  href='../wp-content/plugins/jetpack/modules/widgets/social-icons/social-icons.css%3Fver=20170506.css' type='text/css' media='all' />
+<link rel='stylesheet' id='social-logos-css'  href='../wp-content/plugins/jetpack/_inc/social-logos/social-logos.min.css%3Fver=1.css' type='text/css' media='all' />
+<link rel='stylesheet' id='jetpack_css-css'  href='../wp-content/plugins/jetpack/css/jetpack.css%3Fver=6.3.2.css' type='text/css' media='all' />
+<script type='text/javascript' src='../wp-includes/js/jquery/jquery.js%3Fver=1.12.4'></script>
+<script type='text/javascript' src='../wp-includes/js/jquery/jquery-migrate.min.js%3Fver=1.4.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var TCParams = {"FancyBoxState":"1","FancyBoxAutoscale":"1","SliderName":"","SliderDelay":"","SliderHover":"1","SmoothScroll":"linear","ReorderBlocks":"1","CenterSlides":"1","HasComments":"","LeftSidebarClass":".span3.left.tc-sidebar","RightSidebarClass":".span3.right.tc-sidebar","LoadModernizr":"1","stickyCustomOffset":"0","stickyHeader":"1","dropdowntoViewport":"0","timerOnScrollAllBrowsers":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/themes/customizr/inc/assets/js/tc-scripts.min.js%3Fver=3.2.10'></script>
+<link rel='https://api.w.org/' href='../wp-json/index.html' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://sametmax.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='Guido van Rossum s&#8217;offre &#8220;des vacances permanentes&#8221;' href='../guido-van-rossum-soffre-des-vacances-permanentes/index.html' />
+<link rel='next' title='Sam ne répondra plus' href='../sam-ne-repondra-plus/index.html' />
+<meta name="generator" content="WordPress 4.9.7" />
+<link rel="canonical" href="index.html" />
+<link rel='shortlink' href='https://wp.me/p2ckfk-6tt' />
+<link rel="alternate" type="application/json+oembed" href="../wp-json/oembed/1.0/embed%3Furl=http:%252F%252Fsametmax.com%252Fla-debacle-de-async-en-3-7%252F" />
+<link rel="alternate" type="text/xml+oembed" href="../wp-json/oembed/1.0/embed%3Furl=http:%252F%252Fsametmax.com%252Fla-debacle-de-async-en-3-7%252F&amp;format=xml" />
+
+<link rel='dns-prefetch' href='http://v0.wordpress.com/'/>
+<style type="text/css" media="all">
+/* <![CDATA[ */
+@import url("../wp-content/plugins/wp-table-reloaded/css/plugin.css%3Fver=1.9.4.css");
+@import url("../wp-content/plugins/wp-table-reloaded/css/datatables.css%3Fver=1.9.4.css");
+/* ]]> */
+</style><link rel="shortcut icon" href="../wp-content/uploads/2015/06/favicon.png" type="image/png">
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content="La débâcle de async en 3.7" />
+<meta property="og:url" content="http://sametmax.com/la-debacle-de-async-en-3-7/" />
+<meta property="og:description" content="Quand les nouveaux mots clés async et await ont été introduits en Python 3.5, tout le monde a trouvé l&#8217;idée formidable. D&#8217;ailleurs, ça a été intégré à JavaScript.
+
+Malheureusement, in…" />
+<meta property="article:published_time" content="2018-08-07T13:14:40+00:00" />
+<meta property="article:modified_time" content="2018-08-08T17:46:39+00:00" />
+<meta property="og:site_name" content="Sam &amp; Max" />
+<meta property="og:image" content="http://sametmax.com/wp-content/uploads/2018/08/WSwts2q.jpg" />
+<meta property="og:image:width" content="500" />
+<meta property="og:image:height" content="280" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:text:title" content="La débâcle de async en 3.7" />
+<meta name="twitter:image" content="http://sametmax.com/wp-content/uploads/2018/08/WSwts2q.jpg?w=640" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<!-- End Jetpack Open Graph Tags -->
+			<link rel="stylesheet" type="text/css" id="wp-custom-css" href="../index.html%3Fcustom-css=3b3670f11a.css" />
+						    <!--Icons size hack for IE8 and less -->
+				    <!--[if lt IE 9]>
+				      <link href="http://sametmax.com/wp-content/themes/customizr/inc/assets/css/fonts/ie8-hacks.css" rel="stylesheet" type="text/css"/>
+				    <![endif]-->
+				</head>
+				
+	<body class="post-template-default single single-post postid-24891 single-format-standard tc-fade-hover-links tc-sticky-header tc-transparent-on-scroll" itemscope itemtype="http://schema.org/WebPage">
+		
+		
+	   	<header class="tc-header clearfix row-fluid tc-tagline-off tc-title-logo-on  tc-shrink-on tc-menu-on logo-left" role="banner">
+			      <div class="brand span3 pull-left ">
+
+        <h1><a class="site-title" href="../index.html" title="Sam &amp; Max | Du code, du cul">Sam &amp; Max</a></h1>
+      </div> <!-- brand span3 pull-left -->
+      <div class="container outside"><h2 class="site-description">Du code, du cul</h2></div>      	<div class="navbar-wrapper clearfix span9 tc-submenu-fade tc-submenu-move tc-open-on-hover left">
+        	<div class="navbar resp">
+          		<div class="navbar-inner" role="navigation">
+            		<div class="row-fluid">
+              		<div class="social-block span5" ><a class="social-icon icon-feed" href="../feed/rss/index.html" title="Subscribe to my rss feed"  ></a></div><h2 class="span7 inside site-description">Du code, du cul</h2><button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><div class="nav-collapse collapse tc-hover-menu-wrapper"><div class="menu-top-menu-container"><ul id="menu-top-menu-2" class="nav tc-hover-menu"><li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-1702"><a href="../category/programmation/index.html">Prog</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1703"><a href="../category/administration-system/index.html">Admin Sys</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1704"><a href="../category/philo-et-culture/index.html">Philo &#038; culture</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1706"><a href="../category/cul/index.html">Cul</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3340"><a href="../cours-et-tutos/index.html">Cours &#038; tutos</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1707"><a title="Les meilleurs blogs du Web" href="http://multiboards.net/">Multiboards</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12415"><a href="../planet-python-fr/index.html">Veille Python Fr</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15634"><a href="http://indexerror.net">Questions Python</a></li>
+</ul></div></div>          			</div>
+          		</div><!-- /.navbar-inner -->
+        	</div><!-- /.navbar resp -->
+      	</div><!-- /.navbar-wrapper -->
+    			</header>
+		<div id="tc-reset-margin-top" class="container-fluid" style="margin-top:103px"></div><div id="main-wrapper" class="container">
+
+        
+    <div class="container" role="main">
+        <div class="row column-content-wrapper">
+
+                            
+                <div id="content" class="span9 article-container">
+                    
+                    
+                        
+                                                                                    
+                                                                    <article id="post-24891" class="row-fluid post-24891 post type-post status-publish format-standard has-post-thumbnail hentry category-programmation tag-3-7 tag-async tag-asyncio tag-python">
+                                                <header class="entry-header">
+          <h1 class="entry-title format-icon">La débâcle de async en 3.7</h1>            <div class="entry-meta">
+                This entry was posted in <a class="btn btn-mini" href="../category/programmation/index.html" title="View all posts in Programmation"> Programmation </a> and tagged <a class="btn btn-mini btn-tag" href="../tag/3-7/index.html" title="View all posts in 3.7"> 3.7 </a><a class="btn btn-mini btn-tag" href="../tag/async/index.html" title="View all posts in async"> async </a><a class="btn btn-mini btn-tag" href="../tag/asyncio/index.html" title="View all posts in asyncio"> asyncio </a><a class="btn btn-mini btn-tag" href="../tag/python/index.html" title="View all posts in python"> python </a> on <a href="../2018/08/07/index.html" title="13:14" rel="bookmark"><time class="entry-date updated" datetime="2018-08-07T13:14:40+00:00">07/08/2018</time></a> <span class="by-author">by <span class="author vcard"><a class="url fn n" href="../author/sam/index.html" title="View all posts by Sam" rel="author">Sam</a></span></span>             </div><!-- .entry-meta -->
+            <hr class="featurette-divider __before_content">        </header>
+            
+
+          <section class="entry-content ">
+              <p>Quand les nouveaux mots clés <code>async</code> et <code>await</code> ont été introduits en Python 3.5, tout le monde a trouvé l&#8217;idée formidable. D&#8217;ailleurs, ça a été intégré à JavaScript.</p>
+<p>Malheureusement, introduire des mots clés dans un langage est une opération très délicate.</p>
+<h2>Limites et contournements des mots clés</h2>
+<p>En Python les mots clés ont une caractéristique importante : on ne peut pas les utiliser pour quoi que ce soit d&#8217;autre.</p>
+<p>Par exemple, <code>class</code> est un mot clé, donc je ne peux pas créer une variable, un attribut, ou une fonction appelé <code>class</code>. Ceci lève une  erreur:</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+  File <span style="color: #483d8b;">&quot;&lt;stdin&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span>
+    <span style="color: #ff7700;font-weight:bold;">class</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+          ^
+<span style="color: #008000;">SyntaxError</span>: invalid syntax
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> Foo: <span style="color: #ff7700;font-weight:bold;">pass</span>
+... 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> Foo.<span style="color: #ff7700;font-weight:bold;">class</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+  File <span style="color: #483d8b;">&quot;&lt;stdin&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span>
+    Foo.<span style="color: #ff7700;font-weight:bold;">class</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+            ^
+<span style="color: #008000;">SyntaxError</span>: invalid syntax
+<span style="color: #66cc66;">&gt;&gt;&gt;</span></pre></td></tr></table><p class="theCode" style="display:none;">&gt;&gt;&gt; class = 1
+  File &quot;&lt;stdin&gt;&quot;, line 1
+    class = 1
+          ^
+SyntaxError: invalid syntax
+&gt;&gt;&gt; class Foo: pass
+... 
+&gt;&gt;&gt; Foo.class = 1
+  File &quot;&lt;stdin&gt;&quot;, line 1
+    Foo.class = 1
+            ^
+SyntaxError: invalid syntax
+&gt;&gt;&gt;</p></div>
+
+<p>Pour cette raison, quand on veut qu&#8217;une variable contienne une classe en Python, on la nomme <code>cls</code>:</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> Bar:
+...     <span style="color: #66cc66;">@</span><span style="color: #008000;">classmethod</span>
+...     <span style="color: #ff7700;font-weight:bold;">def</span> wololo<span style="color: black;">&#40;</span>cls<span style="color: black;">&#41;</span>:
+...         <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>cls<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'wololo'</span><span style="color: black;">&#41;</span>
+... 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> Bar.<span style="color: black;">wololo</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #ff7700;font-weight:bold;">class</span> <span style="color: #483d8b;">'__main__.Bar'</span><span style="color: #66cc66;">&gt;</span> wololo
+<span style="color: #66cc66;">&gt;&gt;&gt;</span></pre></td></tr></table><p class="theCode" style="display:none;">&gt;&gt;&gt; class Bar:
+...     @classmethod
+...     def wololo(cls):
+...         print(cls, 'wololo')
+... 
+&gt;&gt;&gt; 
+&gt;&gt;&gt; Bar.wololo()
+&lt;class '__main__.Bar'&gt; wololo
+&gt;&gt;&gt;</p></div>
+
+<p>C&#8217;est aussi pour cela que vous voyez parfois des variables nommées <code>truc_</code>. Souvent <code>from_</code> par exemple, parce que <code>from</code> est un mot clé.</p>
+<p>(pro tip: plutôt que <code>from</code> et <code>to</code>, utilisez <code>src</code> et <code>dest</code>)</p>
+<p>Quand en Python 2 on a introduit <code>True</code> et <code>False</code>, un gros problème s&#8217;ensuivit: soit on en faisait des mots clés, et on pétait tout le code précédent qui utilisait ces mots, soit on en faisait des variables globales.</p>
+<p>Le choix a été de garder la stabilité jusqu&#8217;à la prochaine version majeure, et c&#8217;est pour cela que:</p>
+<ul>
+<li>On peut faire <code>True = False</code> en Python 2. Ouch.</li>
+<li>Python 3 casse ce comportement, et donc ça fait une chose de plus à laquelle il faut penser quand on migre.</li>
+</ul>
+<p>Pour la 3.5, on avait donc ce même problème, avec une cerise sur le gâteau: la lib standard utilisait elle-même la fonction <code>asyncio.async</code>.</p>
+<p>Le choix a donc de faire de <code>async</code> / <code>await</code> des variables globales, et de les transformer en mot clé en 3.7.</p>
+<p>En 3.6, un warning a été ajouté pour rappeler aux gens de migrer leur code.</p>
+<p>C&#8217;est un sacré taf, et ça comporte des risques comme nous allons le voir plus loin. C&#8217;est pour cette raison que l&#8217;ajout d&#8217;un mot clé dans Python est une des choses les plus difficiles à faire passer sur la mailling list python-idea.</p>
+<h2>Arrive la 3.7</h2>
+<p>La 3.7 est sortie avec <a href="../python-3-7-sort-de-sa-coquille/index.html">tout un tas de goodies</a>. Youpi. Mais aussi avec le passage de <code>async/await</code> de variables globales à mots clés, cassant la compatibilité ascendante. Quelque chose de rare en Python, et que personnellement j&#8217;aurais réservé pour Python 4, ne serait-ce que pour respecter semver.</p>
+<p>Le résultat, tout un tas de systèmes ont pété: des linux en rolling release, des gens qui ont fait l&#8217;update de Python à la main, des gens qui maintiennent des libs compatibles 3.5 a 3.7&#8230;</p>
+<p>D&#8217;autant que la 3.5 a <code>asyncio.async</code>, mais 3.7 considère ça une erreur.</p>
+<p>Petit exemple avec <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=902788">l&#8217;impact sur debian</a>.</p>
+<h2>Comment on aurait pu éviter ce merdier ?</h2>
+<p>D&#8217;abord, il aurait fallu ne pas introduire asyncio à l&#8217;arrache. Dans mon <a href="../guido-van-rossum-soffre-des-vacances-permanentes/index.html">&#8220;au revoir&#8221; à Guido</a>, je disais que je trouvais que les dernières fonctionnalités majeures de Python avaient été mises en oeuvre de manière précipitée.</p>
+<p>Cela se vérifie encore et encore avec asyncio, dont il faudra que je fasse un article pour dire tout ce qui a mal tourné.</p>
+<p>Casser la compatibilité ascendante dans une version mineure n&#8217;est pas acceptable, même si les dégâts sont limités et qu&#8217;on y survivra très bien. </p>
+<p>Le fait qu&#8217;asyncio soit une API marquée comme &#8220;provisional&#8221; n&#8217;a jamais empêché quelqu&#8217;un d&#8217;appeler ses variables <code>async</code>. Après tout on utilise les threads depuis bien longtemps.</p>
+<p>L&#8217;autre problème vient de l&#8217;amateurisme qui se glisse de plus en plus dans le dev. </p>
+<p>C&#8217;est une bonne chose, parce que ça veut dire que la programmation est de plus en plus accessible et accueille de plus en plus de monde. </p>
+<p>Mais cela veut dire aussi qu&#8217;une grosse part la population de programmeurs est aujourd&#8217;hui constituée de personnes qui n&#8217;ont ni les connaissances, compétences ou ressources pour faire les choses correctement.</p>
+<p>On le voit particulièrement dans le monde JavaScript, ou c&#8217;est l&#8217;explosion (là encore, ça mérite un nouvel article). Mais l&#8217;exemple de la 3.7 nous montre que la communauté Python n&#8217;est pas immunisée, et je pense que le problème va s&#8217;amplifier.</p>
+<p>Que veux-je dire par là ?</p>
+<p>Et bien il y a 30 ans, cela ne serait pas venu à l&#8217;esprit de la plupart des devs de compiler quelques choses sans mettre les flags en mode parano pour voir ce qui allait péter. Après tout, quand on code en C, on sait que tout peut imploser à tout moment, alors la prudence est une question de culture.</p>
+<p>Aujourd&#8217;hui par contre, la majorité des devs des langages haut niveau écrivent du code, font quelques tests à la main, et publient ça. D&#8217;autres les utilisent. Font des mises à jour en masse. Aucun ne prennent le temps ne serait-ce que d&#8217;activer les warnings les plus basiques.</p>
+<p>Comme tout est facile à première vue, et c&#8217;est quelque chose dont on fait la promotion pédagogiquement parlant, car ça incite les gens à se lancer, on oublie la complexité inhérente à la programmation.</p>
+<p>Mais il y a une différence colossale entre avoir un code qui marche une fois sur sa machine, et un code prêt pour la production.</p>
+<p>Par exemple en Python, vous pouvez demander l&#8217;activation des <a href="../warning-technique-a-un-autre-developpeur-en-python/index.html">warning</a> pour chaque appel avec:</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">python <span style="color: #660033;">-Wd</span></pre></td></tr></table><p class="theCode" style="display:none;">python -Wd</p></div>
+
+<p>En 3.6, ça implique ceci:</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> async<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">pass</span>
+... 
+<span style="color: #66cc66;">&lt;</span>stdin<span style="color: #66cc66;">&gt;</span>:<span style="color: #ff4500;">1</span>: <span style="color: #008000;">DeprecationWarning</span>: <span style="color: #483d8b;">'async'</span> <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #483d8b;">'await'</span> will become reserved keywords <span style="color: #ff7700;font-weight:bold;">in</span> Python <span style="color: #ff4500;">3.7</span></pre></td></tr></table><p class="theCode" style="display:none;">&gt;&gt;&gt; def async():
+...     pass
+... 
+&lt;stdin&gt;:1: DeprecationWarning: 'async' and 'await' will become reserved keywords in Python 3.7</p></div>
+
+<p>L&#8217;info a toujours été là. Prête à être utilisée.</p>
+<p>Mais alors pourquoi ne pas afficher tous les warnings, tout le temps ?</p>
+<p>Et bien si je le fais:</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">python <span style="color: #660033;">-Wa</span></pre></td></tr></table><p class="theCode" style="display:none;">python -Wa</p></div>
+
+<p>Voilà ce que ça donne quand je lance juste le shell de python 3.6:</p>
+<p><a href="https://0bin.net/paste/ArazA4+bjJ4V06Ql#8A0m+PI7EJcVhN6rwp76HwDbOQ2MWLRayO8IeArGr2N">Voir le code sur 0bin.</a></p>
+<p>Vous comprenez donc bien que ce n&#8217;est PAS activé par défaut. En fait, originalement le message était dans le corps de l&#8217;article, mais j&#8217;ai du le mettre sur 0bin parce que ça faisait planter WordPress. Si.</p>
+<p>A chaque upgrade, il est important de vérifier les warnings pour préparer ses migrations futures.</p>
+<p>Oui, c&#8217;est du boulot.</p>
+<p>En fait&#8230;</p>
+<h2>La programmation, c&#8217;est BEAUCOUP de boulot</h2>
+<p>Même si on arrive maintenant à extraire une frame vidéo en gif en une ligne de commande. </p>
+<p>Surtout maintenant qu&#8217;on y arrive en fait, car on multiplie les agencements hétérogènes de boites noires pour créer nos merveilleux programmes qui font le café.</p>
+<p>Alors on prend des raccourcis. </p>
+<p>Et puis aussi, parce qu&#8217;on ne sait pas. Qui parmi les lecteurs du blog, pourtant du coup appartenant à la toute petite bulle des gens très intéressés par la technique, connaissaient le rôle des warnings et comment les activer ?</p>
+<p>Mais ce n&#8217;est pas le seul problème. Il y a clairement une question d&#8217;attentes et de moyen. </p>
+<p>L&#8217;utilisateur (ou le client) final veut toujours plus, pour moins cher, et plus vite !</p>
+<p>Et le programmeur veut se faire chier le moins possible.</p>
+<p>Comme la complexité des empilements d&#8217;abstractions augmente, cela conduit à ignorer ce sur quoi on se base pour créer ce qui doit combler notre satisfaction immédiate.</p>
+<p>J&#8217;ai parlé d&#8217;amateurs plus haut.</p>
+<p>Mais je ne parle pas simplement de mes élèves. De mes lecteurs.</p>
+<p>Je parle aussi de moi.</p>
+<p>Prenez <a href="https://github.com/sametmax/0bin">0bin</a> par exemple.</p>
+<p>Il n&#8217;est plus à jour. Il n&#8217;a pas de tests unitaires. Il a des bugs ouverts depuis <stong>des années</stong>.</p>
+<p>Ce n&#8217;est pas pro du tout.</p>
+<p>Sauf que je ne suis pas payé pour m&#8217;en occuper, et c&#8217;est bien une partie du problème: nous sommes de nombreux bénévoles à faire tourner la machine a produire du logiciel aujourd&#8217;hui. Donc si je n&#8217;ai pas envie, fuck it !</p>
+<p>Vous imaginez si l&#8217;industrie du bâtiment ou celle de l&#8217;automobile tournaient sur les mêmes principes ?</p>
+<p>La moitié des dessins industriels faits par des bloggers, des étudiants, des retraités, des profs de lycées, des géographes, de biologistes et des postes administratifs ?</p>
+<p>Des immeubles et des voitures dont des pièces sont fabriquées par des potes qui chattent sur IRC et s&#8217;en occupent quand ils ont le temps ? Gratuitement. Y compris le service après-vente.</p>
+<p>Alors que les usagers veulent toujours plus: des normes sismiques et de la conduite autonome. Tout le monde le fait, alors la maison de campagne et la fiat punto, c&#8217;est mort, personne ne l&#8217;utilisera. </p>
+<p>Difficile de maintenir la qualité à cette échelle. </p>
+<p>Il y a tellement de demandes de dev, jamais assez d&#8217;offres, de ressources toujours limitées. </p>
+<p>Et ça grossit. Ça grossit !</p>
+<h2>Aides techniques</h2>
+<p>Ceci dit, à l&#8217;échelle de la PSF, ça aurait dû être évité.</p>
+<p>Avant d&#8217;aborder les aides techniques, il serait bon d&#8217;arrêter les conneries. Je me répète, mais c&#8217;était une vaste dauberie de faire passer <code>async/await</code> en mot clé avant Python 4.</p>
+<p>J&#8217;ai parfaitement conscience du besoin de faire progresser un langage pour ne pas rester coincé dans le passé. Je suis pour <code>async/await</code>, très bonne idée, superbe ajout. Mettre un warning ? Parfait ! Mais on respecte semver s&#8217;il vous plait. Si vous avez envie de faciliter la transition, mettre un import <code>__future__</code>, et inciter les linters à faire leur taff.</p>
+<p>En attendant, pour la suite, Python va faciliter le debuggage.</p>
+<p>Par exemple, depuis la 3.7, les <code>DeprecationWarning</code> sont activés par défaut au moins dans le module <code>__main__</code>. Donc un développeur verra ses conneries bien plus rapidement.</p>
+<p>E.G:</p>
+<p>Imp est déprécié en 3.6, mais sans -Wd, on ne le voit pas:</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">$ python3.6
+Python 3.6.5 <span style="color: #7a0874; font-weight: bold;">&#40;</span>default, May  <span style="color: #000000;">3</span> <span style="color: #000000;">2018</span>, <span style="color: #000000;">10</span>:08:<span style="color: #000000;">28</span><span style="color: #7a0874; font-weight: bold;">&#41;</span> 
+<span style="color: #7a0874; font-weight: bold;">&#91;</span>GCC 5.4.0 <span style="color: #000000;">20160609</span><span style="color: #7a0874; font-weight: bold;">&#93;</span> on linux
+Type <span style="color: #ff0000;">&quot;help&quot;</span>, <span style="color: #ff0000;">&quot;copyright&quot;</span>, <span style="color: #ff0000;">&quot;credits&quot;</span> or <span style="color: #ff0000;">&quot;license&quot;</span> <span style="color: #000000; font-weight: bold;">for</span> <span style="color: #c20cb9; font-weight: bold;">more</span> information.
+<span style="color: #000000; font-weight: bold;">&gt;&gt;&gt;</span> import imp</pre></td></tr></table><p class="theCode" style="display:none;">$ python3.6
+Python 3.6.5 (default, May  3 2018, 10:08:28) 
+[GCC 5.4.0 20160609] on linux
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt; import imp</p></div>
+
+<p>En 3.7, plein de modules importent <code>imp</code>, mais les <code>DeprecationWarning</code> ne sont pas montrés, car ça arrive dans des codes importés. En revanche, si dans le module principal, vous importez <code>imp</code>:</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">$ python3.7 
+Python 3.7.0+ <span style="color: #7a0874; font-weight: bold;">&#40;</span>default, Jun <span style="color: #000000;">28</span> <span style="color: #000000;">2018</span>, <span style="color: #000000;">14</span>:08:<span style="color: #000000;">14</span><span style="color: #7a0874; font-weight: bold;">&#41;</span> 
+<span style="color: #7a0874; font-weight: bold;">&#91;</span>GCC 5.4.0 <span style="color: #000000;">20160609</span><span style="color: #7a0874; font-weight: bold;">&#93;</span> on linux
+Type <span style="color: #ff0000;">&quot;help&quot;</span>, <span style="color: #ff0000;">&quot;copyright&quot;</span>, <span style="color: #ff0000;">&quot;credits&quot;</span> or <span style="color: #ff0000;">&quot;license&quot;</span> <span style="color: #000000; font-weight: bold;">for</span> <span style="color: #c20cb9; font-weight: bold;">more</span> information.
+<span style="color: #000000; font-weight: bold;">&gt;&gt;&gt;</span> import imp
+__main__:<span style="color: #000000;">1</span>: DeprecationWarning: the imp module is deprecated <span style="color: #000000; font-weight: bold;">in</span> favour of importlib; see the module<span style="color: #ff0000;">'s documentation for alternative uses</span></pre></td></tr></table><p class="theCode" style="display:none;">$ python3.7 
+Python 3.7.0+ (default, Jun 28 2018, 14:08:14) 
+[GCC 5.4.0 20160609] on linux
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt; import imp
+__main__:1: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses</p></div>
+
+<p>Ça donne une info importante, sans foutre un mur de warnings à chaque lancement.</p>
+<p>Une autre aide est l&#8217;apparition, toujours en 3.7, du mode développement de Python avec <code>-X dev</code> qui active tout un tas de comportements aidant au développement:</p>
+<ul>
+<li>active <code>-Wd</code></li>
+<li>appelle <code>PyMem_SetupDebugHooks</code></li>
+<li>active <code>faulthandler</code></li>
+<li>active le mode debug de asyncio</li>
+<li>met <code>sys.flags.dev_mode</code> sur <code>True</code></li>
+</ul>
+<p>Évidemment, tout ça ne sert pas à grand-chose si on ne sait pas ce qu&#8217;il faut en faire. Et ça demande du temps et du travail, ce que l&#8217;amateurisme ne permet pas forcément.</p>
+<p>Enfin je dis ça. La plupart des employeurs s&#8217;attendent à tout, tout de suite également. Donc au final, n&#8217;est-ce pas la culture générale de notre industrie qui est en train de virer dangereusement vers le vite fait mal fait ?</p>
+<p>Même si il y a clairement une question de compétence (un prof de maths est généralement compétent en maths, alors que j&#8217;attends toujours de rencontrer un prof d&#8217;info qui est capable de mettre quelque chose en prod), la pression du marché a créé des attentes impossibles&#8230;</p>
+<p>L&#8217;informatique n&#8217;existe comme secteur économique que depuis quelques décennies, contre des siècles pour la plupart des autres disciplines scientifiques. Pourtant on exige d&#8217;elle le même niveau de productivité. Il a bien fallut rogner quelque part, et c&#8217;est la fiabilité qu&#8217;on a choisit.</p>
+<p>Quand il y 20 ans, on rigolait en comparant le debuggage de Windows a la réparation d&#8217;une voiture, et la punchline sur le redémarrage, ce n&#8217;était pas grave: un peu de virtuel dans un monde plein d&#8217;encyclopédies papier, de cabines ou bottins téléphoniques et autres cartes routières.</p>
+<p>Aujourd&#8217;hui que notre monde entier dépend du fonctionnement de nos conneries codées à l&#8217;arrache, c&#8217;est plus emmerdant. Et ça explique aussi pourquoi le téléphone de ma grand mère fonctionne toujours mieux pour faire des appels que mon putain de smartphone a 600 euros. Mais je peux draguer une meuf par texto en faisant caca à l&#8217;aéroport. Tout a un prix.</p>
+<div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-official sd-sharing"><h3 class="sd-title">Partager:</h3><div class="sd-content"><ul><li class="share-twitter"><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://sametmax.com/la-debacle-de-async-en-3-7/" data-text="La débâcle de async en 3.7"  >Tweet</a></li><li class="share-facebook"><div class="fb-share-button" data-href="http://sametmax.com/la-debacle-de-async-en-3-7/" data-layout="button_count"></div></li><li class="share-google-plus-1"><div class="googleplus1_button"><div class="g-plus" data-action="share" data-annotation="bubble" data-href="http://sametmax.com/la-debacle-de-async-en-3-7/"></div></div></li><li class="share-email"><a rel="nofollow" data-shared="" class="share-email sd-button" href="index.html%3Fshare=email.html" rel="noopener noreferrer" target="_blank" title="Click to email this to a friend"><span>Email</span></a></li><li><a href="index.html#" class="sharing-anchor sd-button share-more"><span>More</span></a></li><li class="share-end"></li></ul><div class="sharing-hidden"><div class="inner" style="display: none;"><ul><li class="share-reddit"><div class="reddit_button"><iframe src="http://www.reddit.com/static/button/button1.html?newwindow=true&width=120&amp;url=http%3A%2F%2Fsametmax.com%2Fla-debacle-de-async-en-3-7%2F&amp;title=La%20d%C3%A9b%C3%A2cle%20de%20async%20en%203.7" height="22" width="120" scrolling="no" frameborder="0"></iframe></div></li><li class="share-pinterest"><div class="pinterest_button"><a href="https://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fsametmax.com%2Fla-debacle-de-async-en-3-7%2F&#038;media=http%3A%2F%2Fsametmax.com%2Fwp-content%2Fuploads%2F2018%2F08%2FWSwts2q.jpg&#038;description=La%20d%C3%A9b%C3%A2cle%20de%20async%20en%203.7" data-pin-do="buttonPin" data-pin-config="beside"><img src="http://assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png" /></a></div></li><li class="share-end"></li><li class="share-tumblr"><a target="_blank" href="https://www.tumblr.com/share/link/?url=http%3A%2F%2Fsametmax.com%2Fla-debacle-de-async-en-3-7%2F&name=La%20d%C3%A9b%C3%A2cle%20de%20async%20en%203.7" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:62px; height:20px; background:url('https://platform.tumblr.com/v1/share_2.png') top left no-repeat transparent;">Share on Tumblr</a></li><li class="share-pocket"><div class="pocket_button"><a href="https://getpocket.com/save" class="pocket-btn" data-lang="en" data-save-url="http://sametmax.com/la-debacle-de-async-en-3-7/" data-pocket-count="horizontal" >Pocket</a></div></li><li class="share-end"></li><li class="share-end"></li></ul></div></div></div></div></div>                        </section><!-- .entry-content -->
+
+        <footer class="entry-meta"><hr class="featurette-divider"><div class="author-info"><div class="row-fluid"><div class="comment-avatar author-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=100&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=200&#038;d=retro&#038;r=x 2x' class='avatar avatar-100 photo' height='100' width='100' /></div> <div class="author-description span10"><h3>About Sam</h3><p>Waf !</p><div class="author-link"><a href="../author/sam/index.html" rel="author">View all posts by Sam <span class="meta-nav">&rarr;</span></a></div></div></div></div></footer>                                    </article>
+                                
+                            
+                        
+                    
+<div id="comments" class="comments-area" >
+	<h2 id="tc-comment-title" class="comments-title">27 thoughts on &ldquo;<span>La débâcle de async en 3.7</span>&rdquo;</h2>              <ul class="commentlist">
+                        <li class="comment even thread-even depth-1" id="li-comment-197182">
+          
+            <article id="comment-197182" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/4d286c30b6ced09bb5ed9d46de400738?s=80&#038;d=retro&#038;r=x' srcset='http://1.gravatar.com/avatar/4d286c30b6ced09bb5ed9d46de400738?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Anh Onÿm  </cite> <a class="comment-date" href="index.html#comment-197182"><time datetime="2018-08-07T14:01:22+00:00">07/08/2018 at 14:01</time></a></header>  <section class="comment-content comment"><p>&#8220;(un prof de maths est généralement compétent en maths, alors que j’attends toujours de rencontrer un prof d’info qui est capable de mettre quelque chose en prod)&#8221;</p>
+<p>Que dois-je en conclure, de la part d&#8217;un formateur python?^^</p>
+<p>Sympa et intéressant, merci pour cet article plus &#8220;philo&#8221; que d&#8217;habitude, ça change et comme on dit, il faut varier les plaisirs!</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-197183">
+          
+            <article id="comment-197183" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/c39216cd6e920bb30ceb13149e1c5f47?s=80&#038;d=retro&#038;r=x' srcset='http://0.gravatar.com/avatar/c39216cd6e920bb30ceb13149e1c5f47?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">ZZelle  </cite> <a class="comment-date" href="index.html#comment-197183"><time datetime="2018-08-07T14:22:01+00:00">07/08/2018 at 14:22</time></a></header>  <section class="comment-content comment"><p>c&#8217;est ballot de ne pas apprendre de ses erreur passées.</p>
+<p>La 2.7.9 a déjà posée problème car elle introduisait des changements sur le comportement par défaut (check des certificats serveur entre autres) non-rétrocompatible mais on pourrait (presque?) le justifier avec des arguments de sécurité.</p>
+<p>La 3.7 introduit des changements majeurs dont la justification me semble très discutable &#8230; il aurait été préférable de suivre la même stratégie que pour print entre la 2.X et la 3.X avec un import __future__ pour activer le comportement 3.X en 2.X.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        <ul class="children">
+        <li class="comment even depth-2" id="li-comment-197229">
+          
+            <article id="comment-197229" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/daa45563a98419bb1b6b63904ce71f95?s=80&#038;d=retro&#038;r=x' srcset='http://1.gravatar.com/avatar/daa45563a98419bb1b6b63904ce71f95?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Victor Stinner  </cite> <a class="comment-date" href="index.html#comment-197229"><time datetime="2018-08-08T23:10:52+00:00">08/08/2018 at 23:10</time></a></header>  <section class="comment-content comment"><p>L&#8217;implémentation de async/await en tant que keyword mais pas vraiment dans Python 3.5 pose de vrais problèmes. Plusieurs codes légitimes lèvent une SyntaxError simplement parce qu&#8217;il ne s&#8217;agit pas de mot clé. Ajouter un __future__ résoud ce soucis ok. Par contre, ça ne résoud en rien le fait qu&#8217;un jour il faut vraiment que ça devienne un vrai mot clé par défaut pour corriger les bugs du parseur et arrêter de cacher la misère.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-even depth-1" id="li-comment-197184">
+          
+            <article id="comment-197184" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-197184"><time datetime="2018-08-07T14:34:23+00:00">07/08/2018 at 14:34</time></a></header>  <section class="comment-content comment"><p>> Que dois-je en conclure, de la part d’un formateur python?^^</p>
+<p>Pour être honnête, je ne confierais pas de projets à nombre de mes confrères formateurs. La vérification des profiles des formateurs est minimaliste, et on retrouve vraiment n&#8217;importe quoi dans le métier.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-odd thread-alt depth-1" id="li-comment-197185">
+          
+            <article id="comment-197185" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/3b195c045faba3fa776774b58e3f52ec?s=80&#038;d=retro&#038;r=x' srcset='http://0.gravatar.com/avatar/3b195c045faba3fa776774b58e3f52ec?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">=°.°=  </cite> <a class="comment-date" href="index.html#comment-197185"><time datetime="2018-08-07T15:45:26+00:00">07/08/2018 at 15:45</time></a></header>  <section class="comment-content comment"><p>Punaise je viens de lire l&#8217;article et j&#8217;en suis encore à réfléchir au fond. Et je parle pas du caca dans l&#8217;aéroport.</p>
+<p>Super article</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-even depth-1" id="li-comment-197188">
+          
+            <article id="comment-197188" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/4ed2a198dc5f8e4db952e0fdefffe12b?s=80&#038;d=retro&#038;r=x' srcset='http://1.gravatar.com/avatar/4ed2a198dc5f8e4db952e0fdefffe12b?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Brice  </cite> <a class="comment-date" href="index.html#comment-197188"><time datetime="2018-08-07T16:28:39+00:00">07/08/2018 at 16:28</time></a></header>  <section class="comment-content comment"><p>Dans ton retour de `python -Wa`, t&#8217;as un package (ruamel) qui envoie quasiment toutes les erreurs.<br />
+Mais à part celui-là, c&#8217;est pas la folie, c&#8217;est même que des choses qu&#8217;on est heureux de recevoir, 100% DeprecationWarning (enfin, que dire de la deprecation dûe à l&#8217;usage d&#8217;une ancienne feature uniquement pour afficher un texte dans la console, texte qui devrait probablement plutôt être loggé, d&#8217;ailleurs) :</p>
+<p>python3.6 -Wa<br />
+Python 3.6.5 (default, May  3 2018, 10:08:28)<br />
+[GCC 5.4.0 20160609] on linux<br />
+Type &#8220;help&#8221;, &#8220;copyright&#8221;, &#8220;credits&#8221; or &#8220;license&#8221; for more information.<br />
+/home/user/Scripts/pythonstartup.py:136: DeprecationWarning: invalid escape sequence \<br />
+  print(&#8216;\n/!\ Un session utilisant le store existe déjà. On ne peut pas partager un store.&#8217;)<br />
+/usr/share/python-wheels/colorama-0.3.7-py2.py3-none-any.whl/colorama/ansitowin32.py:49: DeprecationWarning: invalid escape sequence \[<br />
+/usr/share/python-wheels/colorama-0.3.7-py2.py3-none-any.whl/colorama/ansitowin32.py:50: DeprecationWarning: invalid escape sequence \]<br />
+/usr/share/python-wheels/colorama-0.3.7-py2.py3-none-any.whl/colorama/ansitowin32.py:49: DeprecationWarning: invalid escape sequence \[<br />
+/usr/share/python-wheels/colorama-0.3.7-py2.py3-none-any.whl/colorama/ansitowin32.py:50: DeprecationWarning: invalid escape sequence \]<br />
+/usr/lib/python3/dist-packages/pip/pep425tags.py:260: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module&#8217;s documentation for alternative uses<br />
+  import imp<br />
+&gt;&gt;&gt; </p>
+<p>Pour le reste de l&#8217;article, j&#8217;approuve grandement (et j&#8217;ai quelque fois peur de l&#8217;avenir de Python dans certaines discussions de Python-ideas, notamment avec les None-aware operators&#8230;)</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-odd thread-alt depth-1" id="li-comment-197189">
+          
+            <article id="comment-197189" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/07dca9ac2ebf5de3d09ae849a81a11a4?s=80&#038;d=retro&#038;r=x' srcset='http://0.gravatar.com/avatar/07dca9ac2ebf5de3d09ae849a81a11a4?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Plop  </cite> <a class="comment-date" href="index.html#comment-197189"><time datetime="2018-08-07T18:08:51+00:00">07/08/2018 at 18:08</time></a></header>  <section class="comment-content comment"><p><strong><em>n’est-ce pas la culture générale de notre industrie qui est en train de virer dangereusement vers le vite fait mal fait ?</em></strong></p>
+<p>Ça ne me paraît pas du tout nouveau…</p>
+<p>Suffit de voir la gueule de JavaScript pour comprendre. Un langage mal branlé qui fuit de tous les côtés, qu’on rustine à tout-va, et c’est ça qu’on nous oblige à utiliser dans tous les navigateurs. Il y a bien un gros effort pour tenter d’améliorer le bidule, mais on bâtit quand même sur un gros paquet de merde.</p>
+<p>Et c’était comme ça avant JavaScript. Qui n’a jamais vu d’appli métier codée avec les pieds ? (“Oh, vous avez fermé l’application en cliquant sur la croix rouge en haut à droite, il ne fallait surtout pas, vous avez tout planté…” Du vécu.)</p>
+<p>Écrit il y a huit de ça : <a href="https://ploum.net/ploum-en-j2ee/" rel="nofollow">https://ploum.net/ploum-en-j2ee/</a></p>
+<p><strong><em>Vous imaginez si l’industrie du bâtiment ou celle de l’automobile tournaient sur les mêmes principes ?</em></strong></p>
+<p>Pour l’automobile, je ne connais pas, ça a l’air assez sérieux.<br />
+Mais dans le bâtiment je ne connais pas grand-monde qui n’ait pas eu à se plaindre de professionnels qui faisaient vraiment n’importe quoi dès qu’on avait le dos tourné.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-even depth-1" id="li-comment-197204">
+          
+            <article id="comment-197204" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/4428dd3e3fbc727c24c5a8d4229498f6?s=80&#038;d=retro&#038;r=x' srcset='http://1.gravatar.com/avatar/4428dd3e3fbc727c24c5a8d4229498f6?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Bakaniko  </cite> <a class="comment-date" href="index.html#comment-197204"><time datetime="2018-08-08T07:23:14+00:00">08/08/2018 at 07:23</time></a></header>  <section class="comment-content comment"><p>Bonjour,</p>
+<p>Une petite coquille a été oubliée:</p>
+<p>&#8220;Diffile de maintenir la qualité à cette échelle.&#8221; =&gt; &#8220;Difficile de maintenir la qualité à cette échelle.&#8221;</p>
+<p>Merci pour vos articles.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-odd thread-alt depth-1" id="li-comment-197205">
+          
+            <article id="comment-197205" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/f7c0fe90b2559df70c82e393d0baccf4?s=80&#038;d=retro&#038;r=x' srcset='http://0.gravatar.com/avatar/f7c0fe90b2559df70c82e393d0baccf4?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">dineptus  </cite> <a class="comment-date" href="index.html#comment-197205"><time datetime="2018-08-08T08:13:24+00:00">08/08/2018 at 08:13</time></a></header>  <section class="comment-content comment"><p>Pour le bâtiment en fait c&#8217;est pareil. C&#8217;est même tellement similaire : les gens qui n&#8217;y connaissent rien trouvent que globalement ca marche bien, sans se rendre compte que c&#8217;est un bordel pas possible avec plein de détournements de règles, d&#8217;arrangement louches et de trucs qui tiennent pour le moment mais sans vrai gaaranties futures.</p>
+<p>D&#8217;ailleurs je serais curieux de voir un project de bâtiment qui se déroule comme prévu et livré en état parfait.</p>
+<p>Quand tu vois qu&#8217;à Paris ils sont toujours pas capable de faire des stations qui ne sont pas infilrées près 2 mois, et qu&#8217;à Stockholm ils ont du fermer la station centrale de trains de banlieu au bout d&#8217;un an aprce que tous les escalators avaient rouillés et qu&#8217;un était du coup parti en arrière quand une pièce a laché &#8230;</p>
+<p>Franchement je dirais même que l&#8217;informatique est bien plus rigoureuse que la construction.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-even depth-1" id="li-comment-197209">
+          
+            <article id="comment-197209" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Nedry  </cite> <a class="comment-date" href="index.html#comment-197209"><time datetime="2018-08-08T11:27:06+00:00">08/08/2018 at 11:27</time></a></header>  <section class="comment-content comment"><p>&#8221; Il a bien fallut rogner quelque part, et c’est la fiabilité qu’on a choisit.&#8221;</p>
+<p>Oui, enfin ce n&#8217;est pas vrai dans tous les secteurs. On doit quand même pas faire du soft d&#8217;aéronautique comme on fait un crud pour un site web vitrine (enfin j&#8217;espère, ahahah&#8230;)</p>
+<p>Comme disait Ian Malcom: &#8220;Oui mais, John, quand les pirates des Caraïbes se détraquaient, ils ne dévoraient pas les touristes !&#8221;</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-odd thread-alt depth-1" id="li-comment-197213">
+          
+            <article id="comment-197213" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/3be5efd11068200c858d4598c4a974d7?s=80&#038;d=retro&#038;r=x' srcset='http://0.gravatar.com/avatar/3be5efd11068200c858d4598c4a974d7?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">phil philou  </cite> <a class="comment-date" href="index.html#comment-197213"><time datetime="2018-08-08T15:13:31+00:00">08/08/2018 at 15:13</time></a></header>  <section class="comment-content comment"><p>+1000 sur le fond.<br />
+On se prépare des lendemains qui déchantent et peu de gens le voient venir.<br />
+Merci pour cet article, je surlike.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-even depth-1" id="li-comment-197216">
+          
+            <article id="comment-197216" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/e79f14274322d7cd1ebafdef625f34e2?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/e79f14274322d7cd1ebafdef625f34e2?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">JulienG  </cite> <a class="comment-date" href="index.html#comment-197216"><time datetime="2018-08-08T17:07:05+00:00">08/08/2018 at 17:07</time></a></header>  <section class="comment-content comment"><p>Hum. C’est mon premier commentaire et je risque un tampon « hors sujet ». Mais après tout c’est pas mal si j’ai un tampon dès le premier (non?) ! ;) </p>
+<p>Tout d’abord je trouve que c’est un bel article – ou au moins utile. Sans flagornerie aucune (si je suis peut-être suce-boules, c’est du fait d’être gay, sinon j’ai une franchise souvent déconcertante). </p>
+<p>Il met en évidence que l’informatique est, reste, se compare, ne sort pas, continue, (mettez le verbe que vous voulez) dans la perspective d’un réseau imminemment humain. Parce que le développement est (encore quelques temps), de la pensée humaine que l’on code / programme. Et que les limites de développements, sont souvent les limites de l’abstraction que nous avons nous-même (développeurs pro ou amateurs) et de nos propres expériences ou connaissances (forcément limitées). C’est-à-dire que l’on tire une suite de tâches, en réalité d’informations, qui doivent être exécutées, de notre propre savoir. Ce n’est pas rien si l’on parle « d’exécution » d’un logiciel, de « requêtes » ou de « programme » (renvoi à une notion d’ordres, d’imposer quelque chose, de suivre une volonté extérieure à la sienne). Un algorithme est toujours une représentation mathématique, logique plus exactement, d’une volonté. </p>
+<p>Si demain une « IA » (kesako?), se met à programmer, alors une grosse partie de ce que j’indique ici sera nul et non avenu. En attendant, dissertons un peu. </p>
+<p>Récemment j’écoutais le récit du procès de Pierre Laval par Franck Ferrand sur Europe1, et notamment la défense de ce dernier. Un peu plus loin, je tombe sur un article évoquant cette période d’une « dictature pluraliste », exprimé Stanley Hoffman. Je trouve ça intéressant, j’approfondis le sujet, quelques jours avant de tomber sur l’article du blog. </p>
+<p>Une dictature, c’est la volonté d’un (ou d’une très courte minorité), sur un ensemble d’individus. Hoffman – de ce que j’en ai compris –, évoque le terme de « pluraliste » ici car il n’y a pas véritablement une orientation « claire », au sens d’une pureté idéologique (il parle en universitaire, sans jugement de valeur), mais une conjonction multiples – d’autant que l’État délitescent, minés par la désertion et l’apurement de tout ce qui ressemblait à des démocrates (même de loin), la situation européenne inhumaine, ne renforçaient pas vraiment les élans intellectuels… Passons. </p>
+<p>La dictature recouvre parfois des raisons d’adhésion (religieuse le plus souvent : monarchie, théocratie, etc ; parfois impériale au sens coloniale ou encore d’idéologie), et majoritairement par l’expression de la force (soit en privant d’une liberté, soit au contraire en permettant une exaction). </p>
+<p>A l’inverse, la démocratie s’essaie en permanence à faire émerger par le débat, une volonté populaire au sens où le plus grand nombre décide (soit de manière représentative, comme en France, soit de manière directe, comme en Suisse → qualités et défauts dans les deux cas). </p>
+<p>La démocratie n’est pas du tout la recherche d’une « vérité » (ce qui plutôt le cas d’une dictature, qui souhaite légitimer son maintien), mais d’une décision légitime. D’ailleurs il existe des gardes-fous (constitution, Conseil d’État, Conseil constitutionnel, tribunaux administratifs, etc), qui rappellent soit à une loi existante (garder une cohérence) soit pour maintenir certaines valeurs communes (celles fondamentales, qui sont des débats sans fin), sans pour autant gouverner en lieu et place. </p>
+<p>Ce que j’exprime là me semble complètement dans le cœur de l’article : qui (ou quoi) décide ? Quand ? Comment ? Quelle procédure ?</p>
+<p>Asyncio est révélateur que Python semble être plus rapide dans son développement, moins « sûr » au sens des qualités d’un langage qui avance en respectant son propre passé, en tout cas de ce que j’en lis ici. Peut-être parce que sa popularité atteint un certain record et que l’explosion des utilisateurs, saturent les canaux habituels (les listes de diffusion). Bref Python dépasse le cadre du développeur pour devenir celui d’un langage « populaire ». </p>
+<p>Finalement ton article Sam, à mon sens, il rappelle que l’informatique de développement, de programmation, a le choix permanent :<br />
+→ soit d’être une science, c’est-à-dire arbitrable de manière strictement objective (objectivée). Après tout, tu peux comparer la qualité du code (pas seulement son efficacité au sens du traitement de l’information, mais aussi sa lisibilité, sa maintenance, le choix d’un langage dans une situation donnée, etc), définir des protocoles d’utilisation, faire de la recherche sur les outils conceptuels ;<br />
+→ soit d’être un outil, c’est-à-dire de répondre strictement et avant tout à un usage (ici un besoin humain de communiquer et de gérer). </p>
+<p>Si tu pars du principe que c’est avant tout une science, le côté « dictatorial » – renforcé par l’organisation jusqu’à récemment de Python (Guido van Rossum, le « dictateur bienveillant à vie ») –, invite à réduire le nombre de personnes aux « sachants », qui sont eux-même reconnus par une maîtrise réellement technique et informatique (bref ce que l’on pourrait qualifier d’universitaires, même si l’on en a pas toujours le titre ou l’objectif). Un groupe restreint, qui peuvent être élus ou désignés par un collège de fondations peu importe, d’universités, mais qui « valide » et décide d’un avenir commun à tous (avec des questions associées : quels pays représentés ? Quel niveau attendu ? Comment justifier du niveau ? etc). En tout cas, tu peux difficilement projeter aujourd’hui une validation démocratique direct (donc s’appuyant sur notre propre passion, intérêt, engagement) dans un tel cas (cf ce que je disais sur les listes de diffusion plus haut). </p>
+<p>Si tu pars du principe que c’est un outil, alors chacun prend un peu ce qu’il veut, voire organise des forks du langage (un peu à la manière de NodeJS si j’ai bien compris?), souvent pour de mauvaises raisons, avec des résultats qui tournent autour du concept unique de « ça fonctionne » ! Ccar l’essentiel est moins de répondre à des canons d’utilisation (qui peuvent arriver après), mais d’abord à des besoins très immédiats. </p>
+<p>Personnellement je crois à la première voie : offrir une vision plutôt restrictive, avec une liberté de débat suffisamment grande pour exprimer tout de même ce qu’attendent les utilisateurs au quotidien (le sens de la « dictature pluraliste » en quelque sorte). </p>
+<p>Car un langage « parfait » mais qui n’aurait ni utilisateur, ni fonction, n’aurait donc pas d’attentes et pas seulement pas d’intérêt : c’est un langage mort. Vierge même. </p>
+<p>Un crochet sur les OS fixes, à qui on peut appliquer cette même grille de lecture :<br />
+→ Windows ou le nivellement par le bas, qui s’évertue à être partout et dont la qualité première n’est pas celle de son code, mais surtout de dégager l’utilisateur de toute notion de contrôle (une infantilisation pour moi), qui est un dictateur « populaire » ;<br />
+→ Apple ou le nivellement par le haut, qui cible les clients à hauts revenus en priorité et joue d’un prestige (que je trouve très relatif…) de ses produits pour un environnement très maîtrisé mais unique, qui forme une sorte d’aristocratie (aucune alternative, des versions qui se suivent sans pouvoir maîtriser grand-chose, car lié au produit qui l’utilise) ;<br />
+→ Linux, un sublime bordel vraiment démocratique, mais qui passe son temps à voir naître et mourir des projets, parfois intéressants, souvent moins, qui se veut exigeant avant tout sur certaines valeurs. Mais qui gagne surtout dans la compétition côté serveur, et qui est (ou reste) finalement une sorte « d’élite » technique pour beaucoup d’utilisateur. </p>
+<p>Pour conclure et revenir à ce que tu indiques, c’est assez marrant – mais j’ai probablement un humour assez douteux – de comparer le développement informatique à ce qui se passe dans l’économie « réelle » (au sens de sensible, palpable). </p>
+<p>Cela prouve deux choses : 1. la connaissance n’est pas quelque chose qui se comporte tout à fait comme le matériel (ce que je t’apprends, ne me dépossède pas mais te permet de posséder à ton tour → on « copie » toujours de l’information). </p>
+<p>2. Tu as raison, l’explosion de l’usage rend le cahin-caha des débuts (éloignés certes), problématiques aujourd’hui, et que le bénévolat ne peut pas (ou plus) résoudre. J’oserai même dire : c’est une nécessité pour poursuivre notre évolution humaine (sans blague : pensez aux réseaux d’eau, d’énergie, les télécoms, etc).</p>
+<p>Mais finalement ce qui arrive à Python, c’est ce qui est arrivé à Internet : l’explosion des usages, des attentes, lors de la bascule au « grand public ». Internet s’y transformé, pas toujours en bien, mais aussi parce que l’attente était de tirer les prix vers le bas pour élargir toujours le nombre d’abonnés. Et donc la qualité du service, de résoudre l’équation par la publicité, qui s’est imposée. </p>
+<p>Aujourd’hui il y a trois Internet pour moi :<br />
+→ le continent européen, vaguement administré via des réglementations comme la RPGD,<br />
+→ la liberté foutoir américaine, et sa prime au plus aisé,<br />
+→ le contrôle asiatique (je pense notamment à la Chine) et son grand « firewall » et sa notation « citoyenne », et sa prime au plus grand respect des règles publiques (humf…). </p>
+<p>Ce sont peut-être les mêmes routeurs, les mêmes câbles, le même « réseau de réseau » mais franchement, les contextes d’utilisation, les accès (je parle même pas de l’Afrique, qui passe de rien aux réseaux mobiles), sont tellement différents, les attentes tellement différentes, que je ne serais pas surprise que finalement, un jour, les langages se scident aussi. Ou à tout le monde que l’accès à des langages, deviennent un accès à une élite (pas bien!). </p>
+<p>Pour ma part, je crois que l’équipe du « cœur » de Python devrait avoir en priorité : 1. le financement de son indépendance (mais alors franchement réelle), en s’appuyant sur des réseaux universitaires et des privés (en limitant par exemple le montant des dons, pour éviter qu’une main-mise finisse par être possible par un industriel unique) ; et 2. ne pas se disperser dans une validation qui ne regarde finalement pas trop le commun des mortels (j’en suis un moi-même). Ce qui ne veut pas dire ne pas nous écouter, mais après tout, Python c’est de l’informatique, et l’informatique, ça reste de la science technique. </p>
+<p>Si on veut que ça marche, et que ça marche bien, il faut savoir rester modeste. Et il faudra peut-être aussi un jour, penser que le monde technique n’est pas détaché de notre monde humain : développer, c’est imposer une volonté à la machine. C’est imposer nos « valeurs » à notre machine… </p>
+<p>Conclusion : vous vous rappelez en début de commentaire (y’a longtemps) du suce-boules ? Ben suce-bites aussi (envoyez vos nudes en DM les mecs! &#8230;  quoi ? y&#8217;a pas de DM ?!).</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-odd thread-alt depth-1" id="li-comment-197227">
+          
+            <article id="comment-197227" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/daa45563a98419bb1b6b63904ce71f95?s=80&#038;d=retro&#038;r=x' srcset='http://1.gravatar.com/avatar/daa45563a98419bb1b6b63904ce71f95?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Victor Stinner  </cite> <a class="comment-date" href="index.html#comment-197227"><time datetime="2018-08-08T22:56:43+00:00">08/08/2018 at 22:56</time></a></header>  <section class="comment-content comment"><p>Euh l&#8217;article est un peu survendu, Python 3.7 n&#8217;a pas fait tomber le moindre avion ni tué personne. J&#8217;ai vaguement entendu parler de qq. soucis dans Twisted avec async qui est devenu un mot clé, mais ils ont trouvé une solution élégante qui est compatible avec toutes les versions de Python et une nouvelle release est sortie. Rien d&#8217;anormal suite à une release majeure de Python (3.x).</p>
+<p>La question de fond est pourquoi le mot clé n&#8217;a pas émis de warning avant ? Euh il y a des warnings depuis 3 ans (Python 3.5).</p>
+<p>La question devient : pourquoi les warnings ne sont pas activés par défaut. Une réponse est que la majorité des devs n&#8217;en fichent des warnings et au final le résultat est pourri pour tout le monde. Ça fait des annés que je remonte et corrige des warnings dans pip.</p>
+<p>Une autre réponse est la PEP 565 de Nick Coghlan qui affiche les warnings par défaut : <a href="https://lwn.net/Articles/740804/" rel="nofollow">https://lwn.net/Articles/740804/</a></p>
+<p>Perso je n&#8217;aime pas cette PEP alors j&#8217;ai proposé l&#8217;option -X dev. Vos tests doivent passer avec -X dev ou PYTHONDEVMODE=1 et puis c&#8217;est tout.</p>
+<p>Ignorer les warnings pendant 3 ans puis pleurer que personne ne vous avait rien dit, bon, bah super.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-even depth-1" id="li-comment-197228">
+          
+            <article id="comment-197228" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/daa45563a98419bb1b6b63904ce71f95?s=80&#038;d=retro&#038;r=x' srcset='http://1.gravatar.com/avatar/daa45563a98419bb1b6b63904ce71f95?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Victor Stinner  </cite> <a class="comment-date" href="index.html#comment-197228"><time datetime="2018-08-08T23:04:40+00:00">08/08/2018 at 23:04</time></a></header>  <section class="comment-content comment"><p>&#8220;Je me répète, mais c’était une vaste dauberie de faire passer async/await en mot clé avant Python 4.&#8221;</p>
+<p>Le Python 4 &#8220;on va foutre tous les changements incompatibles dans la même release&#8221; a été testé par le passé. Résultat : la très grande majorité des dev a refusé Python 3 justement parce que ça cassait tout.</p>
+<p>Maximiser les changements incompatibles par release est une erreur, on ne le fera plus dans Python.</p>
+<p>Les changements incompatibles sont maintenant programmés et suivent un cycle lent d&#8217;au moins 2 releases voir 3. Pour async/await en mot clé, on parle de 3 releases entre l&#8217;introduction du warning et le cassage de compatibilité.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-odd thread-alt depth-1" id="li-comment-197230">
+          
+            <article id="comment-197230" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/daa45563a98419bb1b6b63904ce71f95?s=80&#038;d=retro&#038;r=x' srcset='http://1.gravatar.com/avatar/daa45563a98419bb1b6b63904ce71f95?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Victor Stinner  </cite> <a class="comment-date" href="index.html#comment-197230"><time datetime="2018-08-08T23:20:44+00:00">08/08/2018 at 23:20</time></a></header>  <section class="comment-content comment"><p>Le cas de True/False de Python 2 est intéressant.</p>
+<p>Le type bool, True et False a été ajouté en 2003 dans Python 2.3 par la PEP 285. En 2018, 15 ans plus tard, &#8220;while True:&#8221; reste plus lent que &#8220;while 1:&#8221; en Python 2.7 parce que Python 2 a besoin d&#8217;un LOAD_GLOBAL bien lent pour lire la valeur de True *à chaque itération*&#8230; au cas où True n&#8217;est pas vrai. Pour la même raison, le compilateur est incapble d&#8217;optimiser un code trivial comme &#8220;if False:&#8221; (évalué à l&#8217;exécution donc).</p>
+<p>Python 2.7 reste inefficace pour un truc aussi fondamental que True/False parce sue personne n&#8217;a eu le courage de casser la compatibilité ascendante. Perdre le support de code rétro compatible avec Python 2.2 (sans type bool).</p>
+<p>Je vous laisse méditer.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-even depth-1" id="li-comment-197235">
+          
+            <article id="comment-197235" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-197235"><time datetime="2018-08-09T07:43:40+00:00">09/08/2018 at 07:43</time></a></header>  <section class="comment-content comment"><p>Hello victor,</p>
+<p>Pour la partie sur les warnings, en fait c&#8217;est exactement ce que je dis dans l&#8217;article.</p>
+<p>En revanche, pour la partie sur l&#8217;incompatibilité, le problème vient du non respect de semver. Tu vois le problème à l&#8217;envers: ne groupons pas tout au bump de version majeure.</p>
+<p>Mais une version majeure n&#8217;est pas une fin en soit, c&#8217;est une indication technique (et parfois commerciale, mais Python n&#8217;a pas ce problème). </p>
+<p>Donc le problème est l&#8217;inverse: ce n&#8217;est pas, groupons tout au bump de version majeure, mais bumpons la version majeure quand on pête un truc.</p>
+<p>Pour des raisons culturelles, on aime pas incrémenter la version majeure des logiciels trop souvent. </p>
+<p>Mais ça serait préférable d&#8217;être à un Python 6 ou 7 déjà, et d&#8217;avoir clairement marqué le coup quand on a pété la compat. </p>
+<p>Le coup de &#8220;on est seulement en Python 3&#8221; mais en fait on a déjà cassé la compat 6 fois, ça tient plus à mon sens du tour de force psychologique (ou d&#8217;un sens d&#8217;esthétique geek douteux) que d&#8217;une stratégie technique judicieuse.</p>
+<p>Rien à voir mais: tu feras ton sprint documentation à la pyconfr cette année aussi ?</p>
+</section></div></div></article>          <!-- #comment-## -->
+        <ul class="children">
+        <li class="comment even depth-2" id="li-comment-197262">
+          
+            <article id="comment-197262" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/c935b5a721f9c411d7fd05e5f0cb5b8f?s=80&#038;d=retro&#038;r=x' srcset='http://0.gravatar.com/avatar/c935b5a721f9c411d7fd05e5f0cb5b8f?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">walt  </cite> <a class="comment-date" href="index.html#comment-197262"><time datetime="2018-08-10T10:08:26+00:00">10/08/2018 at 10:08</time></a></header>  <section class="comment-content comment"><p>@Sam totalement d&#8217;accord avec toi sur le fait qu&#8217;on devrait passer à une v4 en théorie.<br />
+Après j&#8217;ai remarqué que suivre ce genre de versionning, psychologiquement, ça freine les gens à migrer.<br />
+Je prends l&#8217;exemple d&#8217;Angular, maintenant pour le moindre truc on passe de la V4, à la V5, à la V6.<br />
+A chaque fois, y&#8217;a toute la communauté qui stresse parce qu&#8217;elle croit que ça va être un &#8220;gros&#8221; changement, avec de la migration lourde (sûrement la faute au passage de Angular 1 à 2) alors qu&#8217;en fait y&#8217;a que dalle.<br />
+Donc c&#8217;est débile mais de passer de Python 3.6 à 3.7, tu sais que ça va être smooth, passer de Python 3.6 à Python 4, tu t&#8217;attends aux mêmes problèmes que le passage de Python 2 à Python 3.<br />
+Si ça avait été comme ça depuis le début, why not, mais en faisant ça à partir de maintenant, tu dois réussir à faire changer le mindset de toute une communauté, pas évident.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-197241">
+          
+            <article id="comment-197241" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/d53a966544fd40ff0b717fd72c11ce46?s=80&#038;d=retro&#038;r=x' srcset='http://1.gravatar.com/avatar/d53a966544fd40ff0b717fd72c11ce46?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">TripleHOP  </cite> <a class="comment-date" href="index.html#comment-197241"><time datetime="2018-08-09T10:52:22+00:00">09/08/2018 at 10:52</time></a></header>  <section class="comment-content comment"><p>«” Il a bien fallut rogner quelque part, et c’est la fiabilité qu’on a choisit.”»</p>
+<p>Pour maintenir le taux de marge, on réduit sur le reste : la qualité, la maintenance, la sécurité, la masse salariale.</p>
+<p>Si vous voulez que cela s&#8217;améliore, ne voter plus pour des gros cons de néo-libéraux.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-197266">
+          
+            <article id="comment-197266" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-197266"><time datetime="2018-08-10T14:26:07+00:00">10/08/2018 at 14:26</time></a></header>  <section class="comment-content comment"><p>@walt: </p>
+<p>> Donc c’est débile mais de passer de Python 3.6 à 3.7, tu sais que ça va être smooth</p>
+<p>Sauf que ça l&#8217;est pas. Smooth. </p>
+<p>En gros là on fait semblant. On cache sous le tapis. </p>
+<p>C&#8217;est du marketing.</p>
+<p>J&#8217;aime déjà pas beaucoup le marketing, mais dans mon langage de programmation encore moins.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-197267">
+          
+            <article id="comment-197267" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/73b1b678895a6ab12ac3152b47ca68c1?s=80&#038;d=retro&#038;r=x' srcset='http://1.gravatar.com/avatar/73b1b678895a6ab12ac3152b47ca68c1?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">yoshi120  </cite> <a class="comment-date" href="index.html#comment-197267"><time datetime="2018-08-10T14:36:45+00:00">10/08/2018 at 14:36</time></a></header>  <section class="comment-content comment"><p>Un article sur José Ortega y Gasset un philosophe espagnol des années 30 devrait aider et notamment cette citation sur la science en général mais applicable à l&#8217;informatique :</p>
+<p><a href="https://philitt.fr/2017/06/13/jose-ortega-y-gasset-contre-la-barbarie-de-la-specialisation/" rel="nofollow">https://philitt.fr/2017/06/13/jose-ortega-y-gasset-contre-la-barbarie-de-la-specialisation/</a></p>
+<blockquote><p>«Car la science a besoin de temps en temps, pour régler son propre accroissement organique, d’un travail de re-consitution ; or, je l’ai déjà dit, ce travail requiert un effort d’unification chaque fois plus difficile, qui chaque fois embrasse des régions plus vastes du savoir total.»</p></blockquote>
+<p><strong>José Ortega y Gasset</strong> &#8211; <em>La révolte des masses</em> (1929)</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-197285">
+          
+            <article id="comment-197285" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/1f01a1408847c54bb68bd1475509ad73?s=80&#038;d=retro&#038;r=x' srcset='http://1.gravatar.com/avatar/1f01a1408847c54bb68bd1475509ad73?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Machin  </cite> <a class="comment-date" href="index.html#comment-197285"><time datetime="2018-08-11T13:13:19+00:00">11/08/2018 at 13:13</time></a></header>  <section class="comment-content comment"><p>&gt; Mais je peux draguer une meuf par texto en faisant caca à l’aéroport.</p>
+<p>Pour l&#8217;instant, mais Google veille, ça devrait se gâter pour ce qui est de l&#8217;odeur avec la nouvelle génération de ISamwei à capteurs environnementaux et réalité augmentée qui ne devait pas tarder à trouver le chemin du portefeuille des addicts qui ont un smartphone de déjà trois mois et que du coup  c&#8217;est juste trop pas possible.</p>
+<p>Cela étant on ne pourra pas non plus se faire draguer par une nénette en train de pisser. alors il y a peut-être une forme de justice dans tout ça. Va savoir.</p>
+<p>Plus sérieusement, bon article qui sait sortir de la bulle strictement technique pour mettre les choses en perspective.<br />
+Bin oui, l&#8217;informatique, au sens large, c&#8217;est comme tout le reste; sous le joug de la Nouvelle Economie qui fait tant saliver les perroquets néolibéraux et autres économistes/idiots utiles, dont la caractéristique principale est de se mettre eux-même à l&#8217;abri des potions amères dont il préconisent l&#8217;emploi généralisé avec un touchant enthousiasme.<br />
+Et donc:<br />
+1/ si ça se fait à deux ça peut sûrement se faire à un.<br />
+2/ on n&#8217;embauche plus, on travaille sur projet avec des sbires/mercenaires/stagiaires mal dégrossis et pas impliques pour un rond qu&#8217;on lourde (d&#8217;où l&#8217;absence d&#8217;implication, entre autres) à la fin du projet.<br />
+3/ les brouzoufs que l&#8217;on met dans un projet c&#8217;est autant qui échappe aux petits doigts rapaces de l&#8217;Actionnaire omnipotent et ça c&#8217;est le Mal absolu.<br />
+J&#8217;en oublie un tas sûrement qui ne contribuent en rien à la qualité du produit fini.</p>
+<p>Maintenant quand on parle de vite fait mal fait, mon smartphone android brut de fonderie met tous les jours ou presque, à niveau les mêmes gougueuleries.<br />
+Alors soit Google rajoute de nouvelles fonctionnalités tous les jours, mais j&#8217;en doute,  soit corrige des bugs tous les jours ce qui ne choque apparemment que moi, donc&#8230; l&#8217;exemple vient de tout en haut.</p>
+<p>A part ça, bon blog avec des articles utiles pour moi, pythoniste récent et que de loisir. Le tout dans un curieux écosystème qui me rappelle un peu le Usenet de la grande époque.<br />
+Avant l&#8217;invasion de presque tous les forums techniques par les quasi illetrés narcissiques fessebouquistes.</p>
+<p>Bon, sur ce, il est temps d&#8217;aller nourrir mon Vax780 apprivoisé.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-197287">
+          
+            <article id="comment-197287" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/ea8f752e4ca2c76ec567486750b68bea?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/ea8f752e4ca2c76ec567486750b68bea?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://recher.wordpress.com' rel='external nofollow' class='url'>Réchèr</a>  </cite> <a class="comment-date" href="index.html#comment-197287"><time datetime="2018-08-11T14:03:47+00:00">11/08/2018 at 14:03</time></a></header>  <section class="comment-content comment"><p>Le bonjour,</p>
+<p>Même si je ne peux avoir la prétention d&#8217;être un grand pythonien, j&#8217;ai quand même fait ou participé à beaucoup de projets divers, personnels et professionels :</p>
+<p> &#8211; des sites web en flask, d&#8217;autres en django,<br />
+ &#8211; des petits jeux avec pygame,<br />
+ &#8211; des scripts de validation de trucs aéronautiques (aucune idée précise de ce qu&#8217;était les &#8220;trucs&#8221; en question, j&#8217;avais le strict minimum dans des docs de specs ultra-formatés),<br />
+ &#8211; un tout petit peu de cartographie et de SIG,<br />
+ &#8211; une UI sous Windows dialoguant avec le bazar MS Office grâce à pywin32,<br />
+ &#8211; un poller SNMP sur des équipements réseaux tellement étranges que du coup Nagios tout seul ne suffisait pas,<br />
+ &#8211; un plug-in de CTFd (framework pour des jeux de Capture The Flag),<br />
+ &#8211; plein plein de petits scripts de traitement de données pour me faciliter la vie,<br />
+ &#8211; etc.</p>
+<p>À aucun moment je n&#8217;ai eu besoin de async/await. Et je n&#8217;ai jamais cherché à apprendre à m&#8217;en servir.</p>
+<p>Je ne dis pas que c&#8217;est inutile. Je dis que, peut-être, pour la plupart des développeurs python, ce ne sera pas si grave si on doit attendre la version 3.69, ou la 69.1, ou même la 69.69 pour avoir un async/await correct, stable et documenté.</p>
+<p>Pourtant, l&#8217;asynchrone, je connais un minimum. Je suis comme tout le monde, j&#8217;ai bien été obligé de bouffer du javascript.</p>
+<p>Donc pas la peine de se prendre la tête si on est actuellement un peu dans le flou concernant async/await. Le reste du langage reste très bien.</p>
+<p>J&#8217;en profite pour dire un grand merci à Guido Van Rossum, Victor Stinner et tous leurs potes. </p>
+<p>hashtag tout_le_monde_s_en_fout : à l&#8217;époque plus ou moins lointaine de mes études, j&#8217;ai eu l&#8217;occasion de suivre les mêmes cours que Victor, dans la même école. Mais je n&#8217;ai pas trop profité de cette proximité, car je passais beaucoup de temps à tenir le bar du foyer et à squatter les ordis des salles informatiques pour télécharger des images de femmes rondes que je ramenais ensuite sur mon PC à l&#8217;aide de disquettes. Internet était pas aussi répandu. Ça nous rajeunit pas.</p>
+<p>Gros bisous à tous !</p>
+</section></div></div></article>          <!-- #comment-## -->
+        <ul class="children">
+        <li class="comment even depth-2" id="li-comment-197358">
+          
+            <article id="comment-197358" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/daa45563a98419bb1b6b63904ce71f95?s=80&#038;d=retro&#038;r=x' srcset='http://1.gravatar.com/avatar/daa45563a98419bb1b6b63904ce71f95?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Victor Stinner  </cite> <a class="comment-date" href="index.html#comment-197358"><time datetime="2018-08-13T22:08:31+00:00">13/08/2018 at 22:08</time></a></header>  <section class="comment-content comment"><p>Coucou Réchèr ;-) J&#8217;ai de très bons souvenirs de l&#8217;UTBM et ses soirées. J&#8217;avais direct fait le lien la première fois que j&#8217;avais vu ton nom en commentaire y&#8217;a plusieurs mois !</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+        <li class="comment odd alt thread-even depth-1" id="li-comment-197344">
+          
+            <article id="comment-197344" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/d46f0b020f2faf42a52074ae10e95897?s=80&#038;d=retro&#038;r=x' srcset='http://1.gravatar.com/avatar/d46f0b020f2faf42a52074ae10e95897?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">TripleCON  </cite> <a class="comment-date" href="index.html#comment-197344"><time datetime="2018-08-13T13:07:59+00:00">13/08/2018 at 13:07</time></a></header>  <section class="comment-content comment"><p>Si ton script brûle, ce n&#8217;est pas à cause de la version de Python, c&#8217;est que ton script est en bois bien entendu !</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-odd thread-alt depth-1" id="li-comment-197474">
+          
+            <article id="comment-197474" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/8daedd1819fed4f06fa96d9a0c74f110?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/8daedd1819fed4f06fa96d9a0c74f110?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Jojuss  </cite> <a class="comment-date" href="index.html#comment-197474"><time datetime="2018-08-20T12:41:15+00:00">20/08/2018 at 12:41</time></a></header>  <section class="comment-content comment"><p>La programmation n&#8217;étant pas mon domaine de prédilection (je suis ingénieur mécanique), les arcanes du fonctionnement de fonctions comme async/await ça m&#8217;en touche une sans faire bouger l&#8217;autre, cependant il y a un truc que j&#8217;ai trouvé intéressant (pour moi) dans cet article.</p>
+<p>Vous parlez du fonctionnement de l&#8217;informatique qui est en général beaucoup basé sur le gratuit et le bénévolat et faites le parallèle avec les autres champs de l&#8217;industrie. Il est vrai qu&#8217;il n&#8217;y a que dans ce domaine où l&#8217;on retrouve tant de &#8220;bonne volonté?&#8221; et je me demande bien pourquoi ?<br />
+Tout le monde connaît bien l&#8217;adage : &#8220;Tout travail mérite salaire&#8221;, et bien pourquoi vous les informaticiens mettez tant de coeur à produire des choses opensource ?</p>
+<p>Je trouve ça formidable qu&#8217;il y est cette volonté de produire du contenu disponible pour tous dans l&#8217;informatique, mais dans un monde capitaliste, ça va un peu à contre courant, j&#8217;aimerai bien savoir quoi :)</p>
+<p>Sinon toujours un plaisir d&#8217;apprendre de nouvelles choses sur ce site !</p>
+</section></div></div></article>          <!-- #comment-## -->
+        <ul class="children">
+        <li class="comment odd alt depth-2" id="li-comment-197554">
+          
+            <article id="comment-197554" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/83e6ed3c963eda7057a7822ddf9d9158?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/83e6ed3c963eda7057a7822ddf9d9158?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">brliron  </cite> <a class="comment-date" href="index.html#comment-197554"><time datetime="2018-08-24T22:24:36+00:00">24/08/2018 at 22:24</time></a></header>  <section class="comment-content comment"><p>C&#8217;est une question intéressante. A mon avis, il y a plusieurs raisons à ça. La 1ère, c&#8217;est la facilité du partage.<br />
+Imaginons que les coques de téléphones n&#8217;existe pas. Tu as déjà cassé 2 téléphones en les faisant tomber, et tu aimerais éviter de casser le 3ème. Du coup, tu vas essayer de bricoler un truc, avec de la mousse, du scotch, et peut-être un peu de carton, pour que quand ton téléphone tombe, la mousse absorbe le choc.<br />
+Et une fois que tu as fait ça, ça marche, tu as tout content, ça a déjà sauvé ton téléphone 2 fois. Tu vas probablement recommander ton truc à tes amis, en leur disant à quel point c&#8217;est génial et tout. Mais est-ce que tu vas acheter des gros stocks de mousse et de scotch, et produire des centaines d&#8217;exemplaires que tu vas envoyer toi-même (en payant la livraison) à des gens partout dans le monde ?<br />
+Pour un informaticien, oui. C&#8217;est gratuit, il suffit de faire 3 clicks sur github, de taper 2 commandes et le monde entier peut utiliser ton machin.</p>
+<p>La suite, c&#8217;est que vu que tu es fier de ton machin, tu aimerais le rendre encore meilleur. C&#8217;est comme ça que tu te retrouves à faire de la correction de bugs, des améliorations etc.</p>
+<p>En parlant de fierté, il y a aussi la fierté de participer à quelque chose qui aidera des gens.</p>
+<p>Une autre raison, c&#8217;est que pour certains, la programmation est un loisir. Si ça te paraît étrange, prenons juste un autre loisir tout simple mais très répandu : les jeux du journal / programme télé, comme les mots croisés et le sudoku. Le but de ces jeux est de faire travailler le cerveau, que ce soit la mémoire des mots pour les mots croisés ou la logique pour le sudoku. Les gens aiment bien faire travailler leur cerveau de temps en temps, dans leur temps libre, et ils aiment aussi réussir des choses. Et la programmation est un bon travail de logique, avec un but à atteindre : que le truc fonctionne.</p>
+<p>Et enfin, c&#8217;est par idéologie. Et ça, c&#8217;est pas propre à l&#8217;informatique. Il y a des gens qui se battent pour sauver les pingouins du réchauffement climatique. Il y a des gens qui font tout ce qu&#8217;ils peuvent pour soutenir un candidat aux présidentielles dont ils aiment les idées. Et il y a des gens qui se battent pour qu&#8217;on puisse naviguer sur internet sans avoir sa vie privée complètement dévoilée. Ainsi que des gens qui veulent faire en sorte qu&#8217;utiliser un ordinateur au quotidien soit plus simple pour tout le monde. Et ce dernier est beaucoup plus simple que les autres. Pas besoin de réussir à changer les idées de 80 millions ou même de 7 milliards de personnes, juste à taper des trucs sur un clavier.</p>
+<p>Voilà mon avis sur la question</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-197496">
+          
+            <article id="comment-197496" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://2.gravatar.com/avatar/893f544a7fb982265b689fe59cc930f8?s=80&#038;d=retro&#038;r=x' srcset='http://2.gravatar.com/avatar/893f544a7fb982265b689fe59cc930f8?s=160&#038;d=retro&#038;r=x 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">mik  </cite> <a class="comment-date" href="index.html#comment-197496"><time datetime="2018-08-21T09:29:16+00:00">21/08/2018 at 09:29</time></a></header>  <section class="comment-content comment"><p>Je suis en train d&#8217;apprendre le code donc je suis pas une &#8220;tête&#8221; dans le domaine. ^^&#8221;</p>
+<p>Mais je pense qu&#8217;à ce niveau le mieux à faire pour les application en production est de ne pas upgrader python, tout simplement (comme s&#8217;il était passé en V4) ?</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+              </ul><!-- .commentlist -->
+            <p class="nocomments">Comments are closed.</p></div><!-- #comments .comments-area -->
+
+
+<div class="ie-comment">
+Des questions Python sans rapport avec l'article ? Posez-les sur <a href="http://indexerror.net">IndexError</a>.
+
+</div>
+        
+          <hr class="featurette-divider __after_loop">
+          <nav id="nav-below" class="navigation" role="navigation">
+
+              <h3 class="assistive-text">
+                Post navigation              </h3>
+
+              <ul class="pager">
+                                  <li class="previous">
+                    <span class="nav-previous">
+                      <a href="../guido-van-rossum-soffre-des-vacances-permanentes/index.html" rel="prev"><span class="meta-nav">&larr;</span> Guido van Rossum s&#8217;offre &#8220;des vacances permanentes&#8221;</a>                    </span>
+                  </li>
+                                                  <li class="next">
+                    <span class="nav-next">
+                        <a href="../sam-ne-repondra-plus/index.html" rel="next">Sam ne répondra plus <span class="meta-nav">&rarr;</span></a>                    </span>
+                  </li>
+                              </ul>
+
+          </nav><!-- #nav-below .navigation -->
+
+        
+        
+                </div><!--.article-container -->
+
+                    
+        <div class="span3 right tc-sidebar">
+           <div id="right" class="widget-area" role="complementary">
+                                                      <aside id="text-9" class="widget widget_text">			<div class="textwidget"><p style="font-size:1.3em"><a href="../mais-ou-je-suis-tombee-la/index.html">Mais où je suis tombé(e) là ?</a></p></div>
+		</aside><aside id="text-7" class="widget widget_text">			<div class="textwidget"><img src="http://www.adobe.com/images/pdficon_small.png" width="16" height="16"/> <a href="http://pdfcrowd.com/url_to_pdf/">Télécharger cette page en PDF</a> </div>
+		</aside><aside id="text-4" class="widget widget_text">			<div class="textwidget"><br><br><a href="../appel-a-contributeurs-impertinents/index.html"><img src="../wp-content/uploads/2012/07/contributeur.png" width="288px" style="vertical-align: middle;margin-top:-40px;margin-bottom:10px;"></a> </div>
+		</aside><aside id="blog_subscription-4" class="widget jetpack_subscription_widget"><h3 class="widget-title">Souscrire à nos conneries</h3>
+			<form action="index.html#" method="post" accept-charset="utf-8" id="subscribe-blog-blog_subscription-4">
+				<div id="subscribe-text"><p>Entrez votre adresse mail et vous recevrez une notification à chaque nouvel article.</p>
+</div><p>Join 1,492 other subscribers</p>
+					<p id="subscribe-email">
+						<label id="jetpack-subscribe-label" for="subscribe-field-blog_subscription-4">
+							Email Address						</label>
+						<input type="email" name="email" required="required" class="required" value="" id="subscribe-field-blog_subscription-4" placeholder="Email Address" />
+					</p>
+
+					<p id="subscribe-submit">
+						<input type="hidden" name="action" value="subscribe" />
+						<input type="hidden" name="source" value="http://sametmax.com/la-debacle-de-async-en-3-7/" />
+						<input type="hidden" name="sub-type" value="widget" />
+						<input type="hidden" name="redirect_fragment" value="blog_subscription-4" />
+												<input type="submit" value="J&#039;adhère, bon dieu !" name="jetpack_subscriptions_widget" />
+					</p>
+							</form>
+
+			<script>
+			/*
+			Custom functionality for safari and IE
+			 */
+			(function( d ) {
+				// In case the placeholder functionality is available we remove labels
+				if ( ( 'placeholder' in d.createElement( 'input' ) ) ) {
+					var label = d.querySelector( 'label[for=subscribe-field-blog_subscription-4]' );
+						label.style.clip 	 = 'rect(1px, 1px, 1px, 1px)';
+						label.style.position = 'absolute';
+						label.style.height   = '1px';
+						label.style.width    = '1px';
+						label.style.overflow = 'hidden';
+				}
+
+				// Make sure the email value is filled in before allowing submit
+				var form = d.getElementById('subscribe-blog-blog_subscription-4'),
+					input = d.getElementById('subscribe-field-blog_subscription-4'),
+					handler = function( event ) {
+						if ( '' === input.value ) {
+							input.focus();
+
+							if ( event.preventDefault ){
+								event.preventDefault();
+							}
+
+							return false;
+						}
+					};
+
+				if ( window.addEventListener ) {
+					form.addEventListener( 'submit', handler, false );
+				} else {
+					form.attachEvent( 'onsubmit', handler );
+				}
+			})( document );
+			</script>
+				
+</aside><aside id="tag_cloud-3" class="widget widget_tag_cloud"><h3 class="widget-title">TagCloud</h3><div class="tagcloud"><a href="../tag/0bin/index.html" class="tag-cloud-link tag-link-148 tag-link-position-1" style="font-size: 9.04pt;" aria-label="0bin (11 items)">0bin</a>
+<a href="../tag/angularjs/index.html" class="tag-cloud-link tag-link-443 tag-link-position-2" style="font-size: 8.4pt;" aria-label="angularjs (9 items)">angularjs</a>
+<a href="../tag/asyncio/index.html" class="tag-cloud-link tag-link-922 tag-link-position-3" style="font-size: 9.04pt;" aria-label="asyncio (11 items)">asyncio</a>
+<a href="../tag/autobahn/index.html" class="tag-cloud-link tag-link-979 tag-link-position-4" style="font-size: 8.4pt;" aria-label="autobahn (9 items)">autobahn</a>
+<a href="../tag/bash/index.html" class="tag-cloud-link tag-link-14 tag-link-position-5" style="font-size: 10.8pt;" aria-label="bash (19 items)">bash</a>
+<a href="../tag/bitcoin/index.html" class="tag-cloud-link tag-link-320 tag-link-position-6" style="font-size: 8.4pt;" aria-label="bitcoin (9 items)">bitcoin</a>
+<a href="../tag/blog/index.html" class="tag-cloud-link tag-link-107 tag-link-position-7" style="font-size: 11.84pt;" aria-label="blog (26 items)">blog</a>
+<a href="../tag/cache/index.html" class="tag-cloud-link tag-link-333 tag-link-position-8" style="font-size: 8.72pt;" aria-label="cache (10 items)">cache</a>
+<a href="../tag/comprehension-lists/index.html" class="tag-cloud-link tag-link-20 tag-link-position-9" style="font-size: 8pt;" aria-label="comprehension-lists (8 items)">comprehension-lists</a>
+<a href="../tag/crossbar/index.html" class="tag-cloud-link tag-link-1046 tag-link-position-10" style="font-size: 8.4pt;" aria-label="crossbar (9 items)">crossbar</a>
+<a href="../tag/css/index.html" class="tag-cloud-link tag-link-188 tag-link-position-11" style="font-size: 8.4pt;" aria-label="css (9 items)">css</a>
+<a href="../tag/cul-2/index.html" class="tag-cloud-link tag-link-33 tag-link-position-12" style="font-size: 9.28pt;" aria-label="cul (12 items)">cul</a>
+<a href="../tag/dict/index.html" class="tag-cloud-link tag-link-435 tag-link-position-13" style="font-size: 8pt;" aria-label="dict (8 items)">dict</a>
+<a href="../tag/django/index.html" class="tag-cloud-link tag-link-28 tag-link-position-14" style="font-size: 16pt;" aria-label="django (89 items)">django</a>
+<a href="../tag/don/index.html" class="tag-cloud-link tag-link-1210 tag-link-position-15" style="font-size: 10.48pt;" aria-label="don (17 items)">don</a>
+<a href="../tag/encoding/index.html" class="tag-cloud-link tag-link-54 tag-link-position-16" style="font-size: 8.72pt;" aria-label="encoding (10 items)">encoding</a>
+<a href="../tag/git/index.html" class="tag-cloud-link tag-link-18 tag-link-position-17" style="font-size: 12.88pt;" aria-label="git (35 items)">git</a>
+<a href="../tag/http/index.html" class="tag-cloud-link tag-link-204 tag-link-position-18" style="font-size: 9.6pt;" aria-label="http (13 items)">http</a>
+<a href="../tag/import/index.html" class="tag-cloud-link tag-link-215 tag-link-position-19" style="font-size: 8.4pt;" aria-label="import (9 items)">import</a>
+<a href="../tag/ipython/index.html" class="tag-cloud-link tag-link-164 tag-link-position-20" style="font-size: 8.72pt;" aria-label="ipython (10 items)">ipython</a>
+<a href="../tag/iterable/index.html" class="tag-cloud-link tag-link-217 tag-link-position-21" style="font-size: 9.84pt;" aria-label="iterable (14 items)">iterable</a>
+<a href="../tag/javascript/index.html" class="tag-cloud-link tag-link-96 tag-link-position-22" style="font-size: 14.08pt;" aria-label="javascript (50 items)">javascript</a>
+<a href="../tag/jquery/index.html" class="tag-cloud-link tag-link-112 tag-link-position-23" style="font-size: 8pt;" aria-label="jquery (8 items)">jquery</a>
+<a href="../tag/linux/index.html" class="tag-cloud-link tag-link-238 tag-link-position-24" style="font-size: 9.04pt;" aria-label="linux (11 items)">linux</a>
+<a href="../tag/meta/index.html" class="tag-cloud-link tag-link-102 tag-link-position-25" style="font-size: 17.52pt;" aria-label="meta (138 items)">meta</a>
+<a href="../tag/mysql/index.html" class="tag-cloud-link tag-link-82 tag-link-position-26" style="font-size: 8pt;" aria-label="mysql (8 items)">mysql</a>
+<a href="../tag/nginx/index.html" class="tag-cloud-link tag-link-183 tag-link-position-27" style="font-size: 9.84pt;" aria-label="nginx (14 items)">nginx</a>
+<a href="../tag/nsfw/index.html" class="tag-cloud-link tag-link-319 tag-link-position-28" style="font-size: 9.84pt;" aria-label="nsfw (14 items)">nsfw</a>
+<a href="../tag/pep8/index.html" class="tag-cloud-link tag-link-552 tag-link-position-29" style="font-size: 8pt;" aria-label="pep8 (8 items)">pep8</a>
+<a href="../tag/pip/index.html" class="tag-cloud-link tag-link-344 tag-link-position-30" style="font-size: 8.72pt;" aria-label="pip (10 items)">pip</a>
+<a href="../tag/poo/index.html" class="tag-cloud-link tag-link-549 tag-link-position-31" style="font-size: 10pt;" aria-label="poo (15 items)">poo</a>
+<a href="../tag/python/index.html" class="tag-cloud-link tag-link-4 tag-link-position-32" style="font-size: 22pt;" aria-label="python (496 items)">python</a>
+<a href="../tag/python-3/index.html" class="tag-cloud-link tag-link-365 tag-link-position-33" style="font-size: 8.4pt;" aria-label="python 3 (9 items)">python 3</a>
+<a href="../tag/redis/index.html" class="tag-cloud-link tag-link-196 tag-link-position-34" style="font-size: 8.72pt;" aria-label="redis (10 items)">redis</a>
+<a href="../tag/ruby/index.html" class="tag-cloud-link tag-link-325 tag-link-position-35" style="font-size: 8pt;" aria-label="ruby (8 items)">ruby</a>
+<a href="../tag/shell/index.html" class="tag-cloud-link tag-link-202 tag-link-position-36" style="font-size: 8.72pt;" aria-label="shell (10 items)">shell</a>
+<a href="../tag/sublime-text/index.html" class="tag-cloud-link tag-link-76 tag-link-position-37" style="font-size: 8.4pt;" aria-label="sublime text (9 items)">sublime text</a>
+<a href="../tag/ubuntu/index.html" class="tag-cloud-link tag-link-255 tag-link-position-38" style="font-size: 10.24pt;" aria-label="ubuntu (16 items)">ubuntu</a>
+<a href="../tag/unicode/index.html" class="tag-cloud-link tag-link-53 tag-link-position-39" style="font-size: 8.4pt;" aria-label="unicode (9 items)">unicode</a>
+<a href="../tag/unit-tests/index.html" class="tag-cloud-link tag-link-302 tag-link-position-40" style="font-size: 8.72pt;" aria-label="unit tests (10 items)">unit tests</a>
+<a href="../tag/unpacking/index.html" class="tag-cloud-link tag-link-180 tag-link-position-41" style="font-size: 8pt;" aria-label="unpacking (8 items)">unpacking</a>
+<a href="../tag/virtualenv/index.html" class="tag-cloud-link tag-link-259 tag-link-position-42" style="font-size: 9.04pt;" aria-label="virtualenv (11 items)">virtualenv</a>
+<a href="../tag/wamp/index.html" class="tag-cloud-link tag-link-1039 tag-link-position-43" style="font-size: 10pt;" aria-label="wamp (15 items)">wamp</a>
+<a href="../tag/web-2/index.html" class="tag-cloud-link tag-link-758 tag-link-position-44" style="font-size: 8pt;" aria-label="web (8 items)">web</a>
+<a href="../tag/yield/index.html" class="tag-cloud-link tag-link-287 tag-link-position-45" style="font-size: 8.4pt;" aria-label="yield (9 items)">yield</a></div>
+</aside><aside id="text-5" class="widget widget_text"><h3 class="widget-title"> Envoyez des sioux</h3>			<div class="textwidget"><p><img src="../wp-content/uploads/2013/07/bitcoin.png" width="16" height="16"/> On adooooore les bitcoins :</p>
+
+<p>
+
+<a href="bitcoin:19zAHPPuce4BAhsdy9KaFwVLurEJXMhMAn?amount=1X8&label=SamEtMax">19zAHPPuce4BAhsdy9KaFwVLurEJXMhMAn</a>
+
+</p></div>
+		</aside><aside id="nav_menu-3" class="widget widget_nav_menu"><h3 class="widget-title">Nos projets</h3><div class="menu-nos-projets-container"><ul id="menu-nos-projets" class="menu"><li id="menu-item-15841" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15841"><a href="http://multiboards.net/">Multiboards &#8211; l&#8217;actu geek fr en une page</a></li>
+<li id="menu-item-15837" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15837"><a href="http://0bin.net">0bin &#8211; le pastebin chiffré</a></li>
+<li id="menu-item-15838" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15838"><a href="http://allthatcounts.net">All that counts &#8211; compteur pour jeux</a></li>
+<li id="menu-item-15839" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15839"><a href="https://github.com/sametmax/django-quicky">Django quicky &#8211; quick views for Django</a></li>
+<li id="menu-item-15840" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15840"><a href="https://github.com/sametmax/VizHash.js">VizHash.js &#8211; Hash visuels</a></li>
+<li id="menu-item-15842" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15842"><a href="https://github.com/sametmax/codes-des-articles">Code des articles du blog</a></li>
+</ul></div></aside><aside id="text-11" class="widget widget_text"><h3 class="widget-title"> </h3>			<div class="textwidget"> </div>
+		</aside><aside id="meta-3" class="widget widget_meta"><h3 class="widget-title">Meta</h3>			<ul>
+						<li><a href="../wp-login.php.html">Log in</a></li>
+			<li><a href="../feed.1">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="../comments/feed/index.html">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://wordpress.org/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.org</a></li>			</ul>
+			</aside>                                              </div><!-- #left or #right-->
+        </div><!--.tc-sidebar -->
+
+        
+        </div><!--.row -->
+    </div><!-- .container role: main -->
+
+    
+</div><!--#main-wrapper"-->
+
+		<!-- FOOTER -->
+		<footer id="footer" class="">
+		 					<div class="container footer-widgets ">
+					<div class="row widget-area" role="complementary">
+												
+							<div id="footer_one" class="span4">
+																
+										<aside id="nav_menu-2" class="widget widget_nav_menu"><h3 class="widget-title">Hors du blog</h3><div class="menu-bottom-menu-container"><ul id="menu-bottom-menu" class="menu"><li id="menu-item-2391" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2391"><a href="../contactez-nous/index.html">Page de contact</a></li>
+<li id="menu-item-12230" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12230"><a href="http://twitter.com/sam_et_max">@sam_et_max sur twitter</a></li>
+<li id="menu-item-12285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12285"><a href="http://bridge.suumitsu.eu/?action=display&#038;bridge=TwitterBridge&#038;u=sam_et_max&#038;format=AtomFormat">Nos tweets en RSS</a></li>
+<li id="menu-item-12231" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12231"><a href="https://github.com/sametmax/">Fork me, I&#8217;m famous (github)</a></li>
+</ul></div></aside>
+																							</div><!-- .{$key}_widget_class -->
+
+						
+							<div id="footer_two" class="span4">
+																
+										<aside id="text-8" class="widget widget_text">			<div class="textwidget">Tous les textes de ce blog, sauf signalement contraire, sont sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</div>
+		</aside>
+																							</div><!-- .{$key}_widget_class -->
+
+						
+							<div id="footer_three" class="span4">
+																
+										<aside id="archives-2" class="widget widget_archive"><h3 class="widget-title">Toi aussi, trouve un article obsolète sur notre blog</h3>		<ul>
+			<li><a href='../2019/09/index.html'>September 2019</a>&nbsp;(1)</li>
+	<li><a href='../2019/06/index.html'>June 2019</a>&nbsp;(1)</li>
+	<li><a href='../2019/02/index.html'>February 2019</a>&nbsp;(1)</li>
+	<li><a href='../2019/01/index.html'>January 2019</a>&nbsp;(3)</li>
+	<li><a href='../2018/12/index.html'>December 2018</a>&nbsp;(1)</li>
+	<li><a href='../2018/09/index.html'>September 2018</a>&nbsp;(2)</li>
+	<li><a href='../2018/08/index.html'>August 2018</a>&nbsp;(1)</li>
+	<li><a href='../2018/07/index.html'>July 2018</a>&nbsp;(3)</li>
+	<li><a href='../2018/06/index.html'>June 2018</a>&nbsp;(4)</li>
+	<li><a href='../2018/05/index.html'>May 2018</a>&nbsp;(2)</li>
+	<li><a href='../2018/03/index.html'>March 2018</a>&nbsp;(2)</li>
+	<li><a href='../2018/02/index.html'>February 2018</a>&nbsp;(1)</li>
+	<li><a href='../2017/12/index.html'>December 2017</a>&nbsp;(4)</li>
+	<li><a href='../2017/11/index.html'>November 2017</a>&nbsp;(5)</li>
+	<li><a href='../2017/10/index.html'>October 2017</a>&nbsp;(2)</li>
+	<li><a href='../2017/09/index.html'>September 2017</a>&nbsp;(1)</li>
+	<li><a href='../2017/07/index.html'>July 2017</a>&nbsp;(5)</li>
+	<li><a href='../2017/06/index.html'>June 2017</a>&nbsp;(3)</li>
+	<li><a href='../2017/05/index.html'>May 2017</a>&nbsp;(3)</li>
+	<li><a href='../2017/04/index.html'>April 2017</a>&nbsp;(2)</li>
+	<li><a href='../2017/03/index.html'>March 2017</a>&nbsp;(3)</li>
+	<li><a href='../2017/02/index.html'>February 2017</a>&nbsp;(5)</li>
+	<li><a href='../2017/01/index.html'>January 2017</a>&nbsp;(5)</li>
+	<li><a href='../2016/10/index.html'>October 2016</a>&nbsp;(2)</li>
+	<li><a href='../2016/09/index.html'>September 2016</a>&nbsp;(5)</li>
+	<li><a href='../2016/08/index.html'>August 2016</a>&nbsp;(2)</li>
+	<li><a href='../2016/03/index.html'>March 2016</a>&nbsp;(8)</li>
+	<li><a href='../2016/02/index.html'>February 2016</a>&nbsp;(9)</li>
+	<li><a href='../2016/01/index.html'>January 2016</a>&nbsp;(16)</li>
+	<li><a href='../2015/12/index.html'>December 2015</a>&nbsp;(6)</li>
+	<li><a href='../2015/11/index.html'>November 2015</a>&nbsp;(7)</li>
+	<li><a href='../2015/10/index.html'>October 2015</a>&nbsp;(2)</li>
+	<li><a href='../2015/09/index.html'>September 2015</a>&nbsp;(6)</li>
+	<li><a href='../2015/08/index.html'>August 2015</a>&nbsp;(10)</li>
+	<li><a href='../2015/07/index.html'>July 2015</a>&nbsp;(18)</li>
+	<li><a href='../2015/06/index.html'>June 2015</a>&nbsp;(13)</li>
+	<li><a href='../2015/05/index.html'>May 2015</a>&nbsp;(12)</li>
+	<li><a href='../2015/04/index.html'>April 2015</a>&nbsp;(13)</li>
+	<li><a href='../2015/03/index.html'>March 2015</a>&nbsp;(8)</li>
+	<li><a href='../2015/02/index.html'>February 2015</a>&nbsp;(4)</li>
+	<li><a href='../2015/01/index.html'>January 2015</a>&nbsp;(21)</li>
+	<li><a href='../2014/12/index.html'>December 2014</a>&nbsp;(24)</li>
+	<li><a href='../2014/11/index.html'>November 2014</a>&nbsp;(6)</li>
+	<li><a href='../2014/10/index.html'>October 2014</a>&nbsp;(18)</li>
+	<li><a href='../2014/09/index.html'>September 2014</a>&nbsp;(10)</li>
+	<li><a href='../2014/08/index.html'>August 2014</a>&nbsp;(5)</li>
+	<li><a href='../2014/07/index.html'>July 2014</a>&nbsp;(11)</li>
+	<li><a href='../2014/06/index.html'>June 2014</a>&nbsp;(25)</li>
+	<li><a href='../2014/05/index.html'>May 2014</a>&nbsp;(14)</li>
+	<li><a href='../2014/04/index.html'>April 2014</a>&nbsp;(10)</li>
+	<li><a href='../2014/03/index.html'>March 2014</a>&nbsp;(23)</li>
+	<li><a href='../2014/02/index.html'>February 2014</a>&nbsp;(27)</li>
+	<li><a href='../2014/01/index.html'>January 2014</a>&nbsp;(17)</li>
+	<li><a href='../2013/12/index.html'>December 2013</a>&nbsp;(27)</li>
+	<li><a href='../2013/11/index.html'>November 2013</a>&nbsp;(25)</li>
+	<li><a href='../2013/10/index.html'>October 2013</a>&nbsp;(27)</li>
+	<li><a href='../2013/09/index.html'>September 2013</a>&nbsp;(1)</li>
+	<li><a href='../2013/08/index.html'>August 2013</a>&nbsp;(31)</li>
+	<li><a href='../2013/07/index.html'>July 2013</a>&nbsp;(32)</li>
+	<li><a href='../2013/06/index.html'>June 2013</a>&nbsp;(24)</li>
+	<li><a href='../2013/05/index.html'>May 2013</a>&nbsp;(30)</li>
+	<li><a href='../2013/04/index.html'>April 2013</a>&nbsp;(31)</li>
+	<li><a href='../2013/03/index.html'>March 2013</a>&nbsp;(33)</li>
+	<li><a href='../2013/02/index.html'>February 2013</a>&nbsp;(29)</li>
+	<li><a href='../2013/01/index.html'>January 2013</a>&nbsp;(34)</li>
+	<li><a href='../2012/12/index.html'>December 2012</a>&nbsp;(32)</li>
+	<li><a href='../2012/11/index.html'>November 2012</a>&nbsp;(36)</li>
+	<li><a href='../2012/10/index.html'>October 2012</a>&nbsp;(35)</li>
+	<li><a href='../2012/09/index.html'>September 2012</a>&nbsp;(36)</li>
+	<li><a href='../2012/08/index.html'>August 2012</a>&nbsp;(37)</li>
+	<li><a href='../2012/07/index.html'>July 2012</a>&nbsp;(33)</li>
+	<li><a href='../2012/06/index.html'>June 2012</a>&nbsp;(24)</li>
+	<li><a href='../2012/05/index.html'>May 2012</a>&nbsp;(31)</li>
+	<li><a href='../2012/04/index.html'>April 2012</a>&nbsp;(20)</li>
+	<li><a href='../2012/03/index.html'>March 2012</a>&nbsp;(10)</li>
+	<li><a href='../2012/02/index.html'>February 2012</a>&nbsp;(14)</li>
+		</ul>
+		</aside>
+																							</div><!-- .{$key}_widget_class -->
+
+																	</div><!-- .row.widget-area -->
+				</div><!--.footer-widgets -->
+				    				 <div class="colophon">
+			 	<div class="container">
+			 		<div class="row-fluid">
+					    <div class="span4 social-block pull-left"><span class="tc-footer-social-links-wrapper" ><a class="social-icon icon-feed" href="../feed/rss/index.html" title="Subscribe to my rss feed"  ></a></span></div><div class="span4 credits"><p>&middot; &copy; 2019 <a href="../index.html" title="Sam &amp; Max" rel="bookmark">Sam &amp; Max</a> &middot; Designed by <a href="http://themesandco.com/">Themes &amp; Co</a> &middot;</p></div><div class="span4 backtop"><p class="pull-right"><a class="back-to-top" href="index.html#">Back to top</a></p></div>	      			</div><!-- .row-fluid -->
+	      		</div><!-- .container -->
+	      	</div><!-- .colophon -->
+	    			</footer>
+			<div style="display:none">
+	<div class="grofile-hash-map-bf9ecde8f5e286de6ce5c80206cf9dd6">
+	</div>
+	<div class="grofile-hash-map-4d286c30b6ced09bb5ed9d46de400738">
+	</div>
+	<div class="grofile-hash-map-c39216cd6e920bb30ceb13149e1c5f47">
+	</div>
+	<div class="grofile-hash-map-daa45563a98419bb1b6b63904ce71f95">
+	</div>
+	<div class="grofile-hash-map-bf9ecde8f5e286de6ce5c80206cf9dd6">
+	</div>
+	<div class="grofile-hash-map-3b195c045faba3fa776774b58e3f52ec">
+	</div>
+	<div class="grofile-hash-map-4ed2a198dc5f8e4db952e0fdefffe12b">
+	</div>
+	<div class="grofile-hash-map-07dca9ac2ebf5de3d09ae849a81a11a4">
+	</div>
+	<div class="grofile-hash-map-4428dd3e3fbc727c24c5a8d4229498f6">
+	</div>
+	<div class="grofile-hash-map-f7c0fe90b2559df70c82e393d0baccf4">
+	</div>
+	<div class="grofile-hash-map-83b27f6ff2301ca0f4ed1c7628620757">
+	</div>
+	<div class="grofile-hash-map-3be5efd11068200c858d4598c4a974d7">
+	</div>
+	<div class="grofile-hash-map-e79f14274322d7cd1ebafdef625f34e2">
+	</div>
+	<div class="grofile-hash-map-c935b5a721f9c411d7fd05e5f0cb5b8f">
+	</div>
+	<div class="grofile-hash-map-d53a966544fd40ff0b717fd72c11ce46">
+	</div>
+	<div class="grofile-hash-map-73b1b678895a6ab12ac3152b47ca68c1">
+	</div>
+	<div class="grofile-hash-map-1f01a1408847c54bb68bd1475509ad73">
+	</div>
+	<div class="grofile-hash-map-ea8f752e4ca2c76ec567486750b68bea">
+	</div>
+	<div class="grofile-hash-map-d46f0b020f2faf42a52074ae10e95897">
+	</div>
+	<div class="grofile-hash-map-8daedd1819fed4f06fa96d9a0c74f110">
+	</div>
+	<div class="grofile-hash-map-83e6ed3c963eda7057a7822ddf9d9158">
+	</div>
+	<div class="grofile-hash-map-893f544a7fb982265b689fe59cc930f8">
+	</div>
+	</div>
+
+	<script type="text/javascript">
+		window.WPCOM_sharing_counts = {"http:\/\/sametmax.com\/la-debacle-de-async-en-3-7\/":24891};
+	</script>
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+			<div id="fb-root"></div>
+			<script>(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&appId=249643311490&version=v2.3'; fjs.parentNode.insertBefore(js, fjs); }(document, 'script', 'facebook-jssdk'));</script>
+			<script>
+			jQuery( document.body ).on( 'post-load', function() {
+				if ( 'undefined' !== typeof FB ) {
+					FB.XFBML.parse();
+				}
+			} );
+			</script>
+						<script>
+			function renderGooglePlus1() {
+				if ( 'undefined' === typeof gapi ) {
+					return;
+				}
+
+				jQuery( '.g-plus' ).each(function() {
+					var $button = jQuery( this );
+
+					if ( ! $button.data( 'gplus-rendered' ) ) {
+						gapi.plusone.render( this, {
+							href: $button.attr( 'data-href' ),
+							size: $button.attr( 'data-size' ),
+							annotation: $button.attr( 'data-annotation' )
+						});
+
+						$button.data( 'gplus-rendered', true );
+					}
+				});
+			}
+
+			(function() {
+				var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+				po.src = 'https://apis.google.com/js/platform.js';
+				po.innerHTML = '{"parsetags": "explicit"}';
+				po.onload = renderGooglePlus1;
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+			})();
+
+			jQuery( document.body ).on( 'post-load', renderGooglePlus1 );
+			</script>
+				<div id="sharing_email" style="display: none;">
+		<form action="index.html" method="post">
+			<label for="target_email">Send to Email Address</label>
+			<input type="email" name="target_email" id="target_email" value="" />
+
+			
+				<label for="source_name">Your Name</label>
+				<input type="text" name="source_name" id="source_name" value="" />
+
+				<label for="source_email">Your Email Address</label>
+				<input type="email" name="source_email" id="source_email" value="" />
+
+						<input type="text" id="jetpack-source_f_name" name="source_f_name" class="input" value="" size="25" autocomplete="off" title="This field is for validation and should not be changed" />
+			
+			<img style="float: right; display: none" class="loading" src="../wp-content/plugins/jetpack/modules/sharedaddy/images/loading.gif" alt="loading" width="16" height="16" />
+			<input type="submit" value="Send Email" class="sharing_send" />
+			<a rel="nofollow" href="index.html#cancel" class="sharing_cancel">Cancel</a>
+
+			<div class="errors errors-1" style="display: none;">
+				Post was not sent - check your email addresses!			</div>
+
+			<div class="errors errors-2" style="display: none;">
+				Email check failed, please try again			</div>
+
+			<div class="errors errors-3" style="display: none;">
+				Sorry, your blog cannot share posts by email.			</div>
+		</form>
+	</div>
+					<script type="text/javascript">
+				// Pinterest shared resources
+				var s = document.createElement("script");
+				s.type = "text/javascript";
+				s.async = true;
+				s.setAttribute('data-pin-hover', true);				s.src = window.location.protocol + "//assets.pinterest.com/js/pinit.js";
+				var x = document.getElementsByTagName("script")[0];
+				x.parentNode.insertBefore(s, x);
+				// if 'Pin it' button has 'counts' make container wider
+				jQuery(window).load( function(){ jQuery( 'li.share-pinterest a span:visible' ).closest( '.share-pinterest' ).width( '80px' ); } );
+			</script>
+		<script type="text/javascript" src="https://platform.tumblr.com/v1/share.js"></script>		<script>
+		// Don't use Pocket's default JS as it we need to force init new Pocket share buttons loaded via JS.
+		function jetpack_sharing_pocket_init() {
+			jQuery.getScript( 'https://widgets.getpocket.com/v1/j/btn.js?v=1' );
+		}
+		jQuery( document ).ready( jetpack_sharing_pocket_init );
+		jQuery( document.body ).on( 'post-load', jetpack_sharing_pocket_init );
+		</script>
+		<script type='text/javascript'>
+/* <![CDATA[ */
+var wpcf7 = {"apiSettings":{"root":"http:\/\/sametmax.com\/wp-json\/contact-form-7\/v1","namespace":"contact-form-7\/v1"},"recaptcha":{"messages":{"empty":"Please verify that you are not a robot."}}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/contact-form-7/includes/js/scripts.js%3Fver=5.0.2'></script>
+<script type='text/javascript' src='https://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201936'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var pollsL10n = {"ajax_url":"http:\/\/sametmax.com\/wp-admin\/admin-ajax.php","text_wait":"Your last request is still being processed. Please wait a while ...","text_valid":"Please choose a valid poll answer.","text_multiple":"Maximum number of choices allowed: ","show_loading":"1","show_fading":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/wp-polls/polls-js.js%3Fver=2.73.8'></script>
+<script type='text/javascript' src='../wp-content/plugins/wp-syntax/js/wp-syntax.js%3Fver=1.1'></script>
+<script type='text/javascript' src='https://secure.gravatar.com/js/gprofiles.js?ver=2019Sepaa'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/jetpack/modules/wpgroho.js%3Fver=4.9.7'></script>
+<script type='text/javascript' src='../wp-includes/js/comment-reply.min.js%3Fver=4.9.7'></script>
+<script type='text/javascript' src='../wp-includes/js/jquery/ui/core.min.js%3Fver=1.11.4'></script>
+<script type='text/javascript' src='../wp-content/themes/customizr/inc/assets/js/modernizr.min.js%3Fver=3.2.10'></script>
+<script type='text/javascript' src='../wp-content/themes/customizr/inc/assets/js/retina.min.js%3Fver=3.2.10'></script>
+<script type='text/javascript' src='../wp-includes/js/wp-embed.min.js%3Fver=4.9.7'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var sharing_js_options = {"lang":"en","counts":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/jetpack/_inc/build/sharedaddy/sharing.min.js%3Fver=6.3.2'></script>
+<script type='text/javascript'>
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-facebook', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+				return false;
+			});
+</script>
+<script type='text/javascript' src='https://stats.wp.com/e-201936.js' async='async' defer='defer'></script>
+<script type='text/javascript'>
+	_stq = window._stq || [];
+	_stq.push([ 'view', {v:'ext',j:'1:6.3.2',blog:'32490438',post:'24891',tz:'0',srv:'sametmax.com'} ]);
+	_stq.push([ 'clickTrackerInit', '32490438', '24891' ]);
+</script>
+<div class="tc-btt-wrapper"><i class="btt-arrow" style="color:#394143"></i></div>	</body>
+	</html>

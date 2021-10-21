@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>meteojs &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/meteojs/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Un petit goût de meteor.js en Python</title>
+		<link>http://sametmax.com/un-petit-gout-de-meteor-js-en-python/</link>
+		<comments>http://sametmax.com/un-petit-gout-de-meteor-js-en-python/#comments</comments>
+		<pubDate>Thu, 06 Mar 2014 10:37:34 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[autobahn]]></category>
+		<category><![CDATA[html]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[meteojs]]></category>
+		<category><![CDATA[pub/sub]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[websocket]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9703</guid>
+		<description><![CDATA[Depuis quelques temps, un standard est en train d'émerger autour du RPC et PUB/SUB entre navigateurs et serveurs : <a href="http://wamp.ws/">WAMP</a>. Il existe du coup des implémentations du protocole en plusieurs langages, donc une en Python avec <a href="http://autobahn.ws/python/">autobahn</a>.]]></description>
+				<content:encoded><![CDATA[<p>Je n&#8217;ai jamais caché ma jalousie envers les codeurs Javascript sous <a href="https://www.meteor.com/">meteor.js</a>. C&#8217;est à mon sens la techno la plus révolutionnaire en matière de dev Web depuis l&#8217;invention des frameworks HTTP.</p>
+<p>Ca permet notamment de faire du PUB/SUB entre le navigateur et le serveur. C&#8217;est à dire qu&#8217;un navigateur déclenche un événement, le serveur le reçoit, et tous les browsers abonnés le reçoivent aussi. Du coup, on modifie une page, toutes les autres pages sont modifiées en temps réel.</p>
+<p>Dommage que ce soit codé dans un langage pourri.</p>
+<p>Heureusement depuis quelques temps, un standard est en train d&#8217;émerger autour du RPC et PUB/SUB entre navigateurs et serveurs : <a href="http://wamp.ws/">WAMP</a>. Il existe du coup des implémentations du protocole en plusieurs langages, donc une en Python avec <a href="http://autobahn.ws/python/">autobahn</a>.</p>
+<p>Ca s&#8217;utilise ainsi : <code><a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> install autobahn</code>.</p>
+<p>Puis, un petit coup de Python :</p>
+<pre lang="python">import sys
+
+from twisted.python import log
+from twisted.internet import reactor
+
+from autobahn.twisted.websocket import listenWS
+
+from autobahn.wamp1.protocol import WampServerFactory, WampServerProtocol
+
+
+class MyPubSubServerProtocol(WampServerProtocol):
+    def onSessionOpen(self):
+        # On choisit un namespace pour enregistrer ses events PUB/SUB
+        self.registerForPubSub("http://example.com/events/bam")
+
+if __name__ == '__main__':
+   # on lance notre serveur avec moult verbosité
+   log.startLogging(sys.stdout)
+   wampFactory = WampServerFactory("ws://127.0.0.1:9000", debugWamp=True)
+   wampFactory.protocol = MyPubSubServerProtocol
+   listenWS(wampFactory)
+   reactor.run()</pre>
+<p>On lance le serveur directement :</p>
+<pre lang="bash">python votre_script.py</pre>
+<p>Côté client (pas besoin de serveur, on peut l&#8217;ouvrir dans le browser cash pistache) :</p>
+<pre lang="html"><!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://raw.github.com/tavendo/AutobahnPython/master/examples/twisted/wamp1/pubsub/simple/example1/autobahn.min.js"></script>
+    <script type="text/javascript">
+
+    $(function(){
+        ab.connect("ws://localhost:9000", function(session) {
+
+            $('#foo').click(function(){
+                // au clic sur le bouton, on envoit un evenement BAM
+                session.publish('http://example.com/events/bam', ['bam']);
+
+                // On ajoute bam à la liste en local car le publisher ne
+                // reçoit pas ses propres events
+                $('#doh').append('<li>bam</li>');
+            });
+
+            session.subscribe('http://example.com/events/bam', function(topic, evt){
+                // on s'inscrit pour recevoir l'event quand il est
+                // déclenché. Ceci marchera dans tout autre tab que celui
+                // qui a déclenché l'event
+                $('#doh').append('<li>bam</li>');
+            });
+        })
+
+    });
+
+    </script>
+
+</head>
+
+<body>
+
+<!-- Notre liste qui va se remplir de bam ! -->
+<ul id="doh"></ul>
+<button id="foo" value="Bam">Bam</button>
+
+</body>
+</html></pre>
+<p>Ce qui ce passe, c&#8217;est que quand j&#8217;appuie sur le bouton &#8220;Bam&#8221;, ça envoit un événement Bam au serveur via Websocket, qui propage l&#8217;événement à tous les clients. Donc tous les tabs ouverts sur cette page récupèrent l&#8217;événement et peuvent y réagir. Ici, les deux pages sont mises à jour en simultané. </p>
+<div id="attachment_9705" style="width: 610px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2014/03/out.gif" class="grouped_elements" rel="tc-fancybox-group9703"><img src="http://sametmax.com/wp-content/uploads/2014/03/out.gif" alt="Mise à jour de deux pages web en simultané avec autobahn" title="Chez moi ça marche" width="600" height="160" class="size-full wp-image-9705" /></a><p class="wp-caption-text">Chez moi ça marche</p></div>
+<p>Bien entendu, ceci est un exemple très basique fait pour vous donner un avant goût de la techno. D&#8217;ailleurs, meteor.js, c&#8217;est bien plus que du PUB/SUB. Il y a de la gestion de la deco, la synchro de la base côté client, le hot push de code, etc. Ils ont fait un vrai travail de fond sur les problématiques concrètes. </p>
+<p>Donc on en est encore loin, surtout que même leur techno est toujours expérimentale. Mais on a enfin de quoi rattraper le temps perdu. Et avec asyncio, îl n&#8217;y aura même pas besoin de dépendre de twisted pour ce faire. 2014 va être trop fun !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/un-petit-gout-de-meteor-js-en-python/feed/</wfw:commentRss>
+		<slash:comments>30</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">9703</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/03/out.gif" length="52202" type="image/jpg" />	</item>
+	</channel>
+</rss>

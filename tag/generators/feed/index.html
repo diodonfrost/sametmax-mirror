@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>generators &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/generators/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Qu&#8217;est-ce qu&#8217;une coroutine en Python, et à quoi ça sert ?</title>
+		<link>http://sametmax.com/quest-ce-quune-coroutine-en-python-et-a-quoi-ca-sert/</link>
+		<comments>http://sametmax.com/quest-ce-quune-coroutine-en-python-et-a-quoi-ca-sert/#comments</comments>
+		<pubDate>Sat, 13 Dec 2014 23:37:06 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[coroutine]]></category>
+		<category><![CDATA[generators]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[yield]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12854</guid>
+		<description><![CDATA[Si vous avez aimé les générateurs, vous avez du creuser un peu <code>yield</code> et vous apercevoir qu'on pouvait créer des coroutines avec. Mais sans vraiment comprendre ce que ça faisait.]]></description>
+				<content:encoded><![CDATA[<p>Si vous avez aimé les générateurs, vous avez du creuser un peu <code>yield</code> et vous apercevoir qu&#8217;on pouvait créer des coroutines avec. Mais sans vraiment comprendre ce que ça faisait.</p>
+<p>On va se faire une petit intro. C&#8217;est un sujet vraiment avancé, donc si vous avez autre chose de moins compliqué à comprendre en Python (n&#8217;importe quoi à part les métaclasses :)), ne vous prenez pas la tête sur cet article. Ecoutez juste la musique :</p>
+<p><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/zqKZ_WIK5ms?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<p>D&#8217;abord, rappel sur le fonctionnement des générateurs (qui sont un prérequis de l&#8217;article, donc si besoin, relisez le <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">tuto dédié</a>) :</p>
+<pre lang="python">def soleil():
+    print('Premier next()')
+    print('Yield 1')
+    yield 1
+
+    print('Deuxième next()')
+    print('Yield 2')
+    yield 2
+
+    print('Troisième next()')
+    print('Yield 3')
+    yield 3
+
+    # pas de quatrième next(),
+    # donc on ne passe jamais ici
+    print('Pas vu')
+
+# rappel, ceci ne déclenche pas le code 
+# de soleil() puisqu'il y a yield dedans
+print("Creation du generateur")
+undeuxtrois = soleil()
+
+# On execute le code jusqu'au yield 1
+res = next(undeuxtrois)
+print('res = %s' % res)
+
+# On execute le code jusqu'au yield 2
+res = next(undeuxtrois)
+print('res = %s' % res)
+
+# On execute le code jusqu'au yield 3
+res = next(undeuxtrois)
+print('res = %s' % res)
+print('Good bye')
+
+## Premier next()
+## Yield 1
+## res = 1
+## Deuxième next()
+## Yield 2
+## res = 2
+## Troisième next()
+## Yield 3
+## res = 3
+## Good bye
+</pre>
+<p>Chaque fois qu&#8217;on appelle <code>next()</code> sur le générateur, il va exécuter le code jusqu&#8217;au prochain <code>yield</code>, et retourner la valeur de celui-ci, puis mettre le générateur en pause.</p>
+<p>On peut assigner le résultat d&#8217;un <code>yield</code>, mais si on fait des <code>next()</code>, on obtient toujours <code>None</code> :</p>
+<pre lang="python">def lune():
+
+    print('Premier next()')
+    print('Yield 1')
+    x = (yield 1)
+
+    print('Deuxième next()')
+    print('Avant le yield 2, x = %s' % x)
+    print('Yield 2')
+    x = (yield 2)
+
+    print('Troisième next()')
+    print('Avant le yield 3, x = %s' % x)
+    print('Yield 3')
+    x = (yield 3)
+
+    print('Pas vu')
+
+
+print("Creation du generateur")
+generateur = lune()
+
+res = next(generateur)
+print('res = %s' % res)
+
+res = next(generateur)
+print('res = %s' % res)
+
+res = next(generateur)
+print('res = %s' % res)
+print('Good bye')
+
+## Creation du generateur
+## Premier next()
+## Yield 1
+## res = 1
+## Deuxième next()
+## Avant le yield 2, x = None
+## Yield 2
+## res = 2
+## Troisième next()
+## Avant le yield 3, x = None
+## Yield 3
+## res = 3
+## Good bye
+</pre>
+<p>La raison est que cette valeur doit venir de l&#8217;extérieur. Pour la fournir, il faut utiliser la méthode <code>send()</code> et non la fonction <code>next()</code>.</p>
+<p>Mais elle ne fonctionne pas du tout pareil. En fait, si on l&#8217;appelle cash pistache, ça plante :</p>
+<pre lang="python">print("Creation du generateur")
+generateur = lune()
+res = generateur.send("A")
+print('res = %s' % res)
+
+## Creation du generateur
+## Traceback (most recent call last):
+## File "test.py", line 24, in 
+##   res = generateur.send("A")
+##     TypeError: can't send non-None value to a just-started generator</pre>
+<p>C&#8217;est parce que, contrairement à <code>next()</code> qui va jusqu&#8217;au prochain <code>yield</code>, <code>send()</code> PART du dernier <code>yield</code> atteint pour aller au suivant.</p>
+<p>Il faut donc d&#8217;abord arriver à un premier <code>yield</code> avant de faire un <code>send()</code>. On peut le faire en utilisant au moins un <code>next()</code>.</p>
+<p>Voici donc notre nouveau code :</p>
+<pre lang="python">def lune():
+
+    print('On fait au moins un next()')
+    print('Yield 1')
+    
+    x = (yield 1)
+
+    print('Premier send(), x = %s' % x)
+    print('Yield 2')
+
+    x = (yield 2)
+
+    print('Deuxième send(), x = %s' % x)
+    print('Yield 3')
+
+    x = (yield 3)
+
+    # Comme on fait un next() et 3 send()
+    # on arrive là
+    print('Troisième send(), x = %s' % x)
+    print('YOLOOOOO')
+
+
+print("Creation du generateur")
+generateur = lune()
+
+next(generateur) # Ou generateur.send(None)
+
+res = generateur.send("A")
+print('res = %s' % res)
+
+res = generateur.send("B")
+print('res = %s' % res)
+
+res = generateur.send("C")
+print('res = %s' % res)
+print('Good bye')
+
+## Creation du generateur
+## On fait au moins un next()
+## Yield 1
+## Premier send(), x = A
+## Yield 2
+## res = 2
+## Deuxième send(), x = B
+## Yield 3
+## res = 3
+## Troisième send(), x = C
+## YOLOOOOO
+## Traceback (most recent call last):
+##   File "test.py", line 33, in 
+##     res = generateur.send("C")
+## StopIteration</pre>
+<p><code>send()</code> agit donc comme <code>next()</code>. Il va aller jusqu&#8217;au prochain <code>yield</code> et lui faire retourner sa valeur. Mais il y a des différences :</p>
+<ul>
+<li>Elle doit partir d&#8217;un précédent <code>yield</code>.</li>
+<li>Donc il faut au moins avoir atteint un <code>yield</code> via <code>next()</code>.</li>
+<li>Ce précédent <code>yield</code> peut retourner une valeur : celle passée via <code>send(val).</code></li>
+</ul>
+<p>La valeur peut être n&#8217;importe quel objet : string, int, classe, list, etc.</p>
+<p>Bref, <code>send()</code> permet de créer un générateur donc le comportement n&#8217;est pas figé dans le marbre.</p>
+<p>Par exemple :</p>
+<pre lang="python">def creer_fontaine():
+    contenu = "soda" 
+    while True:
+        x = yield contenu
+        if x:
+            contenu = x
+
+
+fontaine = creer_fontaine()
+
+for x in range(5):
+    print(next(fontaine))
+
+# on change le contenu de la fontaine
+fontaine.send("lait")
+
+for x in range(5):
+    print(next(fontaine))
+
+soda
+soda
+soda
+soda
+soda
+lait
+lait
+lait
+lait
+lait</pre>
+<p>On peut même s&#8217;en servir pour faire des trucs chelou comme injecter une dépendance à la volée ou contrôler le flux de son générateur :</p>
+<pre lang="python">def fuckitjaiplusdenomcool(start, inc=lambda x: x + 1):
+    x = start
+    # on controle le flux du générateur en changeant
+    # la valeur de x qui peut tout stopper
+    while x:
+        sent = yield x
+        if sent:
+            inc = sent
+        # la valeur de x dépend de ce bout de code
+        # qui est injectable
+        x = inc(x)
+
+
+generateur = fuckitjaiplusdenomcool(1)
+
+for x in generateur:
+    print(x)
+    if x &gt; 10:
+        # si on dépasse 10, on décrémente
+        generateur.send(lambda x: x - 1)
+
+## 1
+## 2
+## 3
+## 4
+## 5
+## 6
+## 7
+## 8
+## 9
+## 10
+## 11
+## 9
+## 8
+## 7
+## 6
+## 5
+## 4
+## 3
+## 2
+## 1</pre>
+<p>Mais bon, pas la peine de rentrer dans des cas si compliqués.</p>
+<p>Néanmoins, un cas d&#8217;usage de <code>send()</code> est de créer une coroutine. Une coroutine est simplement une tâche.</p>
+<p>C&#8217;est un bout de code qui fait une tache, avec un bout d&#8217;initialisation, et un bout de finalisation, et un bout d&#8217;exécution.</p>
+<p>Par exemple, j&#8217;ai un filtre qui prend un fichier rempli d&#8217;adresses IP. Il va recevoir du texte, et si le texte contient une adresse IP, il le signale, et remplit un compteur sur le disque.</p>
+<p>Si on devait coder ça en objet on dirait :</p>
+<pre lang="python">import re
+
+class Filtre:
+
+    # initialisation
+    def __init__(self, ipfile, counterfile):
+
+        with open(ipfile, 'r') as f:
+            self.banned_ips = set(f)
+        with open(counterfile) as f:
+            self.count = int(f.read())
+        self.counterfile = open(counterfile, 'w')
+
+    def check(self, line):
+        # récupère les ip et check celles qui sont 
+        # à filtrer
+        ips = re.findall( r'[0-9]+(?:\.[0-9]+){3}', line)
+        bad_ips = [ip for ip in ips if ip in self.banned_ips]
+
+        # si il y a des ip à filtrer, on incrémente le compteur
+        if bad_ips:
+            self.count += len(bad_ips)
+            self.counterfile.seek(0)
+            self.counterfile.write(str(self.count))
+
+        # on retourn les valeurs trouvées
+        return bad_ips
+
+    def close(self):
+        self.counterfile.close()
+</pre>
+<p>On l&#8217;utiliserait comme ça :</p>
+<pre lang="python">f = Filtre("/chemin/vers/liste", "/chemin/vers/counteur")
+for line in text:
+    print(f.check(line))
+f.close()</pre>
+<p>Notez que pour une tâche, l&#8217;API est toujours la même : initialiser, exécuter la tâche autant de fois que nécessaire, puis finaliser.</p>
+<p>Les coroutines sont un mot qu&#8217;on met sur ce principe (initialiser, exec, finaliser), mais avec une API sous forme de générateur. Le même code en coroutine :</p>
+<pre lang="python">def filtre(ipfile, counterfile):
+
+    # Initialisation
+    with open(ipfile, 'r') as f:
+        banned_ips = set(f)
+    with open(counterfile) as f:
+        count = int(f.read())
+    counterfile = open(counterfile, 'w')
+
+    # Exécution
+    bad_ips = []
+    while True:
+
+        try:
+            # entree et sortie de notre send(), qui équivaut
+            # aux params de "check()"
+            line = yield bad_ips
+
+        # GeneratorExit est levé is on fait generator.close()
+        # On ne peut pas ignorer cette erreur, mais
+        # on peut mettre du code de finalisation ici.
+        # Bon en vrai faudrait faire un finally quelque part
+        # mais c'est pour l'exemple bande de peer reviewers
+        except GeneratorExit:
+                counterfile.close()
+
+        ips = re.findall( r'[0-9]+(?:\.[0-9]+){3}', line)
+        bad_ips = [ip for ip in ips if ip in banned_ips]
+
+        # si il y a des ip à filtrer, on incrémente le compteur
+        if bad_ips:
+            count += len(bad_ips)
+            counterfile.seek(0)
+            counterfile.write(str(count))</pre>
+<p>On l&#8217;utiliserait comme ça :</p>
+<pre lang="python">f = filtre("/chemin/vers/liste", "/chemin/vers/counteur")
+next(f)
+for line in text:
+    print(f.send(line))
+# ceci raise GeneratorExit
+f.close()</pre>
+<p>Généralement on veut pas se faire chier à appeler <code>next()</code> à chaque fois, donc toutes les libs à base de coroutine ont ce genre de décorateur :</p>
+<pre lang="python">def coroutine(func):
+    def wrapper(*arg, **kwargs):
+        generator = func(*arg, **kwargs)
+        next(generator)
+        return generator
+    return wrapper</pre>
+<p>Afin de pouvoir faire ça :</p>
+<pre lang="python">@coroutine
+def filtre(ipfile, counterfile):
+    ...</pre>
+<p>Ca a un double usage : ça appelle <code>next()</code> automatiquement, et ça signale que la fonction est destinée à être utilisée comme coroutine.</p>
+<p>Mais voilà, c&#8217;est tout, une coroutine c&#8217;est juste ça : utiliser un générateur pour faire une tâche qui consiste à s&#8217;initialiser, faire un traitement plusieurs fois, et optionellement, se finaliser. On utilisera une coroutine pour ne pas reinventer la roue car c&#8217;est un problème bien défini, qui a une solution. D&#8217;autant qu&#8217;une coroutine bouffe moins de ressources qu&#8217;une classe.</p>
+<p>Les usages avancés des coroutines impliquent de chaîner plusieurs coroutines, comme des tuyaux.</p>
+<p>Souvenez-vous, en Python il est courant de chaîner des générateurs :</p>
+<pre lang="python">def mettre_au_carre(iterable):
+    for x in iterable:
+        yield x * x
+
+def filtrer_les_pairs(iterable):
+    for x in iterable:
+        if x % 2 == 0:
+            yield x
+
+def strigifier(iterable):
+    for x in iterable:
+        yield str(x)
+
+# on pipe les données d'un générateur à l'autre
+nombres = range(10)
+carres = mettre_au_carre(nombres)
+carres_pairs = filtrer_les_pairs(carres)
+fete_du_string = strigifier(carres_pairs)
+
+for x in fete_du_string:
+    print(repr(x))
+
+## '0'
+## '4'
+## '16'
+## '36'
+## '64'
+</pre>
+<p>On peut faire pareil avec les coroutines. Cependant, la logique est inversée : au lieu de lire les données, on les envoie :</p>
+<pre lang="python">@coroutine
+def mettre_au_carre(ouput):
+    while True:
+        x = (yield)
+        ouput.send(x * x)
+
+@coroutine
+def filtrer_les_paires(ouput):
+    while True:
+        x = (yield)
+        if x % 2 == 0:
+            ouput.send(x)
+
+@coroutine
+def strigifier(ouput):
+    while True:
+        x = (yield)
+        ouput.send(str(x))
+
+@coroutine
+def afficher():
+    while True:
+        x = (yield)
+        print(x)
+
+nombres = range(10)
+
+# chaque coroutine est la sortie d'une autre
+afficheur = afficher()
+fete_du_string = strigifier(afficheur)
+paires = filtrer_les_paires(fete_du_string)
+carre = mettre_au_carre(paires)
+
+# on envoit les données vers la première coroutine
+# et elle fait suivre aux autres
+for x in nombres:
+    carre.send(x)
+
+## '0'
+## '4'
+## '16'
+## '36'
+## '64'
+</pre>
+<p>Vous allez me dire : &#8220;ça fait la même chose, et c&#8217;est plus compliqué, quel interêt ?&#8221;.</p>
+<p>En fait, ça ne fait pas exactement la même chose.</p>
+<p>Dans le cas des générateurs ordinaires, on déclenche le traitement par la fin. On fait une boucle qui demande quelle est la prochaine donnée, et si il y en a une, on l&#8217;affiche. C&#8217;est pratique si on sait qu&#8217;on a des données sous la main car on demande (<code>next()</code> est appelée par la boucle <code>for</code>) la donnée suivante à chaque fois : c&#8217;est du PULL.</p>
+<p>Mais que se passe-t-il si on n&#8217;a pas encore les données ? Si on traite des données qui arrivent par évenement ?</p>
+<p>Par exemple, si on écrit un serveur HTTP qui doit réagir aux requêtes ?</p>
+<p>Dans ce cas, on ne peut envoyer (<code>send()</code>) la donnée suivante dans notre pipeline de générateurs uniquement quand elle arrive, et les coroutines font exactement cela : c&#8217;est du PUSH.</p>
+<p>En résumé :</p>
+<ul>
+<li><code>yield</code> permet de faire des générateurs</li>
+<li>On peut demander la prochaine valeur du générateur avec <code>next()</code>. Dans ce cas, le code s&#8217;exécute jusqu&#8217;au prochain <code>yield</code>.</li>
+<li>On peut envoyer une valeur au générateur avec <code>send()</code>. Dans ce cas, on DOIT partir d&#8217;un <code>yield</code> existant duquel on récupère la valeur envoyée via une assignation. Donc il faut au moins un <code>next()</code> avant d&#8217;utiliser un <code>send()</code> et un signe égal sur le <code>yield</code>.</li>
+<li><code>send()</code> va aussi aller au prochain <code>yield</code> et retourner sa valeur.</li>
+<li>Une coroutine n&#8217;est qu&#8217;une formalisation de la manière d&#8217;éffectuer une tâche avec un init, une exécution et une finalisation optionelle en utilisant un générateur. C&#8217;est une solution générique à un problème courant, mais plus léger qu&#8217;une classe.</li>
+<li>Généralement on décore les générateurs coroutines avec un décorateur <code>@coroutine</code> pour s&#8217;éviter d&#8217;appeler <code>next()</code> à la main et notifier l&#8217;usage qu&#8217;il est fait de ce générateur.</li>
+<li>On peut chaîner des coroutines comme on chaîne des générateurs, mais au lieu de lire les données une à une (PULL), on les envoie une par une (PUSH). Cela est pratique quand on ne sait pas à l&#8217;avance quand une nouvelle donnée va arriver.</li>
+</ul>
+<p>Si vous êtes arrivé jusqu&#8217;ici, vous méritez un cookie.</p>
+<p>Ca tombe bien, ce blog utilise des cookies, et la loi m&#8217;oblige à vous le notifier.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quest-ce-quune-coroutine-en-python-et-a-quoi-ca-sert/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">12854</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/12/d2rD4tZ.jpg" length="66279" type="image/jpg" />	</item>
+		<item>
+		<title>Les vues sur des collections en Python</title>
+		<link>http://sametmax.com/les-vues-sur-des-collections-en-python/</link>
+		<comments>http://sametmax.com/les-vues-sur-des-collections-en-python/#comments</comments>
+		<pubDate>Sat, 03 Nov 2012 18:57:02 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dict]]></category>
+		<category><![CDATA[generators]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[strings]]></category>
+		<category><![CDATA[views]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2785</guid>
+		<description><![CDATA[Python 3 introduit de nombreux changements qui ont été backportés dans Python 2.7. Parmis eux, les vues, qui sont un concept assez mal expliqué dans la documentation standard.]]></description>
+				<content:encoded><![CDATA[<p>Python 3 introduit de nombreux changements qui ont été backportés dans Python 2.7. Parmi eux, les vues, qui sont un concept assez mal expliqué dans la documentation standard.</p>
+<h2>Dictionary views</h2>
+<p>Quand on voulait travailler sur les valeurs d&#8217;un dictionnaire en Python, on avait deux choix:</p>
+<ul>
+<li>faire <code>dict.values()</code> et récupérer une liste entière. Créant une liste entière en mémoire.</li>
+<li>faire <code>dict.itervalues()</code>, et récupérer un générateur. Mais qui ne peut être lu qu&#8217;une fois.</li>
+</ul>
+<p>Les vues sont une solution intermédiaire: ce sont des objets qui prennent peu de mémoire, mais qui peuvent être lus plusieurs fois.</p>
+<p>Exemple:</p>
+<pre lang="python">>>> scores = {'foo': 1, 'bar': 0}
+>>> val = scores.viewvalues()
+>>> print val
+dict_values([1, 0])
+>>> 1 in val
+True
+>>> [x * 2 for x in val]
+[2, 0]
+</pre>
+<p>Contrairement à une liste, les vues issues d&#8217;un dictionnaire ne supportent pas le slicing ou l&#8217;assignation et il n&#8217;y a aucune garantie d&#8217;ordre des éléments. De plus, elles ne peuvent être modifiées.</p>
+<p>Bref, <strong>une vue ne contient rien</strong>, c&#8217;est juste un objet qui, quand on accède à son contenu, va le chercher dans le dictionnaire et vous le retourne. C&#8217;est ce qu&#8217;on appelle un objet proxy: il vous donne l&#8217;illusion d&#8217;accéder directement aux données pour vous faciliter la vie, généralement en vous les présentant sous une forme différente: ici un itérable.</p>
+<p>On peut récupérer des vues pour les valeurs, mais également pour les clés et les couples clés / valeurs. Ces deux types de vues se comportent en plus comme des <a href="http://sametmax.com/ce-que-vous-ne-saviez-pas-sur-les-collections-en-python/">sets</a>:</p>
+<pre lang="python">
+>>> scores.viewitems()
+dict_items([('foo', 1), ('bar', 0)])
+>>> scores.viewkeys() | [3,]
+set([3, 'foo', 'bar'])</pre>
+<p>Puisqu&#8217;il est rare d&#8217;avoir besoin d&#8217;une vraie liste, et comme les vues sont une très bonne alternative aux générateurs, <code>dict.values</code> et consorts retournent des vues en Python 3.</p>
+<p>Maintenant vous allez me dire &#8220;Mais si les vues sont une si bonne alternative aux générateurs, pourquoi on ne remplace pas tous les générateurs par des vues ?&#8221;. </p>
+<p>Tout simplement parce que ce n&#8217;est pas possible. Un générateur est un mécanisme standard qui permet de produire des valeurs une par une. N&#8217;importe qui peut créer un générateur, car c&#8217;est un concept portable d&#8217;un problème à un autre. On peut l&#8217;appliquer à de nombreuses choses: algorithme, flux de données, fichier, etc. </p>
+<p>Une vue n&#8217;est qu&#8217;un proxy qui permet de voir une <a href="http://sametmax.com/quest-ce-quune-structure-de-donnees/">structure de données</a> sous une autre forme. Il faut coder une vue par type de structure de données, car la vue va chercher les données dans cette structure quand on lui demande. Le code est donc différent à chaque fois.</p>
+<p>Python ne permet pas de créer soi-même des vues, mais créer un proxy, c&#8217;est à dire un objet qui retourne les valeurs d&#8217;un autre objet quand on l&#8217;interroge, peut se faire à la main dans tout langage de programmation. Ainsi vous pourriez créer un proxy qui ressemble a une vue des clés d&#8217;un dico très simplement:</p>
+<pre lang="python">
+class keyview(object):
+
+    def __init__(self, d):
+        self.d = d
+
+    def __iter__(self):
+        return self.d.iterkeys()
+
+>>> view = keyview(scores)
+>>> for x in view:
+...     print x
+...     
+foo
+bar
+>>> list(view)
+['foo', 'bar']
+>>> 
+</pre>
+<p>L&#8217;implémentation réelle de Python (en C&#8230;) ne fait pas vraiment grand chose de plus, juste un travail d&#8217;optimisation pour être plus rapide.</p>
+<h2>memoryview</h2>
+<p>Les memory views suivent le même principe, mais appliqué à toute structure de données qui supporte le buffer protocole (un certain nombre de méthodes avec un nom et un comportement défini par ce protocole) comme celles trouvées dans le module <code>struct</code> ou <code>array</code>. La structure de données la plus connue qui suit le buffer protocole est la chaîne de caractères.</p>
+<pre lang="python">>>> s = 'Sam & Max eat the road with a Github fork'
+>>> ms = memoryview(s)
+>>> ms[-1]
+'k'
+>>> ms[:9]
+<memory at 0x25ded60>
+>>> ''.join(ms[:9])
+'Sam & Max'</pre>
+<p>Le principal intérêt de la memory view appliquée aux strings, c&#8217;est que tout slicing retourne une nouvelle memory view. On peut donc travailler sur des parties de la chaînes sans créer une nouvelle chaîne en mémoire.</p>
+<p>En revanche, les chaînes unicodes ne sont pas supportées. Il vous faudra jouer avec <code>encode()</code> et <code>decode()</code>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-vues-sur-des-collections-en-python/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">2785</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/11/fenetretravaux.jpg" length="392879" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>__init__ &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/__init__/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Rendez votre package exécutable avec __main__.py</title>
+		<link>http://sametmax.com/rendez-votre-module-executable-avec-__main__-py/</link>
+		<comments>http://sametmax.com/rendez-votre-module-executable-avec-__main__-py/#comments</comments>
+		<pubDate>Tue, 13 Jan 2015 06:47:42 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[import]]></category>
+		<category><![CDATA[module]]></category>
+		<category><![CDATA[package]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[__init__]]></category>
+		<category><![CDATA[__main__]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=15704</guid>
+		<description><![CDATA[Tout le monde connait le fichier <a href="http://sametmax.com/vous-pouvez-mettre-du-code-dans-__init__-py/">__init__.py</a>, mais <code>__main__.py</code> est moins connu.]]></description>
+				<content:encoded><![CDATA[<p>Tout le monde connait le fichier <a href="http://sametmax.com/vous-pouvez-mettre-du-code-dans-__init__-py/">__init__.py</a>, mais <code>__main__.py</code> est moins connu.</p>
+<p>Il permet de lancer du code si on tente d&#8217;exécuter un package (c&#8217;est à dire un dossier qui contient un fichier <code>__init__.py</code>):</p>
+<pre lang="bash">$ tree monpackage/
+monpackakge/
+├── __init__.py
+└── __main__.py
+
+0 directories, 2 files
+$ cat monpackage/__main__.py
+print('Hello :)')
+$ python monpackage/ # ceci est un dossier 
+Hello :)</pre>
+<p>Le <code>__main__.py</code>  est aussi exécuté quand on fait <code>python -m monpackage</code>. </p>
+<p>Notez que son exécution suppose l&#8217;import préalable du package, et que donc <code>__init__.py</code> sera toujours exécuté avant <code>__main__.py</code>. En revanche, faire juste <code>import monpackage</code> ne déclenche pas l&#8217;exécution de <code>__main__.py</code>.</p>
+<p>Si vous zippez votre package et appelez la commande <code>python</code>, c&#8217;est aussi ce fichier qui sera exécuté. Pratique donc, pour faire un exécutable portable à peu de frais, tout en gardant la lib importable.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/rendez-votre-module-executable-avec-__main__-py/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">15704</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/01/index2.jpeg" length="8794" type="image/jpg" />	</item>
+		<item>
+		<title>Vous pouvez mettre du code dans __init__.py</title>
+		<link>http://sametmax.com/vous-pouvez-mettre-du-code-dans-__init__-py/</link>
+		<comments>http://sametmax.com/vous-pouvez-mettre-du-code-dans-__init__-py/#comments</comments>
+		<pubDate>Wed, 26 Jun 2013 11:20:04 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[import]]></category>
+		<category><![CDATA[init]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[__init__]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3472</guid>
+		<description><![CDATA[Le fichier <em>__init__.py</em> ne sert pas qu'à <a href="http://sametmax.com/les-imports-en-python/">déclarer un dossier comme un package importable</a>. C'est aussi le code exécuté automatiquement, une seule fois, quand on importe le module.]]></description>
+				<content:encoded><![CDATA[<p>Le fichier <em>__init__.py</em> ne sert pas qu&#8217;à <a href="http://sametmax.com/les-imports-en-python/">déclarer un dossier comme un package importable</a>. C&#8217;est aussi le code exécuté automatiquement, une seule fois, quand on importe le module.</p>
+<p>Du coup vous pouvez mettre dedans tout code Python que vous souhaitez lancer à l&#8217;import. On y voit souvent :</p>
+<ul>
+<li>Initialisation du cache.</li>
+<li>Constantes comme <code>__version__</code>.</li>
+<li>Import d&#8217;autres modules pour les mettre dans l&#8217;espace de nom courant.</li>
+<li>Check de dépendances.</li>
+<li>Aliasing.</li>
+<li>Monkey patching and hacks tout moches qui sont là temporairement pour 6 ans.</li>
+</ul>
+<p>Je vous déconseille de mettre trop de code dans le fichier <em>__init__.py</em>, notamment du code métier. C&#8217;est une mauvaise habitude que l&#8217;on peut voir dans le code de Django par exemple. Car ça veut dire que l&#8217;import du package déclenche ce code, qui lui-même importe d&#8217;autres modules, qui déclenche d&#8217;autres codes, etc. Cela donne des effets de bord à l&#8217;import, alors que l&#8217;import d&#8217;un simple package est quelque chose que l&#8217;on veut généralement ne pas avoir beaucoup d&#8217;effets.</p>
+<p>Dans Django par exemple, c&#8217;est ce qui fait que beaucoup de modules lèvent une exception à l&#8217;import :</p>
+<p><code>django.core.exceptions.ImproperlyConfigured: Requested setting X but settings are not configured. </code></p>
+<p>Alors qu&#8217;ils n&#8217;ont pas du tout besoin des settings pour fonctionner.</p>
+<p>Si vous avez besoin que votre classe <code>Bidule</code> soit directement importable dans votre package <code>machin</code>, faites dans <em>machin/__init__.py</em> :</p>
+<pre lang="python">from .module_qui_contient_bidule import Bidule</pre>
+<p>Du coup vous pourrez faire n&#8217;importe où ailleurs:</p>
+<pre lang="python">from machin import Bidule</pre>
+<p>C&#8217;est bien plus propre que de mettre tout le code de <code>Bidule</code> dans le <em>__init__.py</em>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/vous-pouvez-mettre-du-code-dans-__init__-py/feed/</wfw:commentRss>
+		<slash:comments>12</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">3472</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/06/UHM9zrZ.jpg" length="59179" type="image/jpg" />	</item>
+		<item>
+		<title>La différence entre __new__ et __init__ en Python</title>
+		<link>http://sametmax.com/la-difference-entre-__new__-et-__init__-en-python/</link>
+		<comments>http://sametmax.com/la-difference-entre-__new__-et-__init__-en-python/#comments</comments>
+		<pubDate>Fri, 11 Jan 2013 10:06:36 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[objet]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[__init__]]></category>
+		<category><![CDATA[__new__]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3534</guid>
+		<description><![CDATA[Les méthodes <code>__new__</code> et <code>__init__</code> n'ont rien de spécial. Ce sont des méthodes ordinaires. Mais parce qu'elles sont nommées ainsi, Python les détecte et les appelle automatiquement a un moment précis.]]></description>
+				<content:encoded><![CDATA[<p>Les méthodes <code>__new__</code> et <code>__init__</code> n&#8217;ont rien de spécial. Ce sont des méthodes ordinaires. Mais parce qu&#8217;elles sont nommées ainsi, Python les détecte et les appelle automatiquement a un moment précis.</p>
+<p>Ce moment, c&#8217;est ce qui différencie <code>__init__</code> de <code>__new__</code>.</p>
+<h2><code>__init__</code> pour initialiser</h2>
+<p><code>__init__</code> est la méthode qui va être appelée automatiquement après qu&#8217;un objet ai été crée. <strong>Ce n&#8217;est pas un contructeur du tout</strong>, c&#8217;est un initialiseur.</p>
+<p>Si vous faîtes ça:</p>
+<pre lang="python">>>> class Premiere(object):
+...         
+...         def __init__(self, prix):
+...                 print "%s euros" % prix
+...         
+>>> c = Premiere(10000)
+10000 euros</pre>
+<p>A la ligne <code>c = Premiere(10000)</code>, Python va créer une instance de la classe <code>Première()</code>. Il va ensuite immédiatement et automatiquement appeler <code>__init__</code> en lui passant cette instance en premier argument et les paramètres passés par l&#8217;appel <code>Premiere(paramètres)</code>. Donc, quand <code>__init__</code> est appelé, l&#8217;objet instancié existe déjà.</p>
+<p>On va utiliser <code>__init__</code> pour initialiser l&#8217;objet, c&#8217;est à dire pour lui donner son état de départ: changer les attributs, configurer l&#8217;objet par rapports aux arguments, etc.</p>
+<p> Dans tous les autres langages, on utiliserait le constructeur pour faire ce boulot. Pas en Python. </p>
+<p> L&#8217;avantage de <code>__init__</code>, c&#8217;est qu&#8217;il est très facile à manipuler. Il n&#8217;y a pas de magie dangereuse dans <code>__init__</code>: on a l&#8217;objet tout neuf, et les arguments passés à l&#8217;instancitation, on peut donc manipuler l&#8217;objet sans se soucier du reste. Ici on attache deux attributs à l&#8217;instance <code>self</code>:</p>
+<pre lang="python"> >>> class Premiere(object):
+...         discount = False
+...         def __init__(self, prix):
+...                 self.prix = prix
+...                 if self.prix < 5000:
+...                     self.discount = True
+...         
+>>> c = Premiere(10000)
+>>> c.discount
+False</pre>
+<p>Comme en Python les attributs sont dynamiques, on peut attacher un argument même si l&#8217;instance ne le déclare pas, et il est créé automatiquement. </p>
+<p>En résumé: <code>__init__</code> est appelé automatiquement APRES la création de l&#8217;objet, et on met dedans le code d&#8217;initialisation de l&#8217;objet (généralement une modification des attributs pour leur donner leur état de départ).</p>
+<h2><code>__new__</code> pour créer</h2>
+<p><code>__new__</code> est le vrai constructeur. Pour cette raison, elle doit retourner un objet.</p>
+<pre lang="python">>>> class Premiere(object):
+...
+...     def __new__(cls, prix):
+...        print "%s euros" % prix
+...        return super(Premiere, cls).__new__(cls)
+...
+>>> c = Premiere(10000)
+10000 euros</pre>
+<p><code>__new__</code> est appelée AVANT la création de l&#8217;objet, car c&#8217;est son boulot de créer l&#8217;instance et de la retourner. Comme on ne sait pas retourner une instance nous même (enfin si, mais pas dans cet article :-)), on appelle <code>super()</code> pour utiliser la méthode <code>__new__</code> de <code>object</code> et créer une instance pour cette classe.</p>
+<p>L&#8217;objet créé sera ensuite passé à <code>__init__</code> automatiquement par Python.</p>
+<p>On utilise rarement <code>__new__</code>. Les deux cas principaux sont:</p>
+<ul>
+<li>si on hérite d&#8217;un type immutable (str, int, tuple, etc), <code>__new__</code> est le seul endroit où on puisse initialiser l&#8217;objet.</li>
+<li>dans le cas des métaclasses.</li>
+</ul>
+<p>En résumé: <code>__new__</code> est le vrai constructeur, il est appelé pour créer l&#8217;objet, et l&#8217;objet ainsi instancié est passé à <code>__init__</code>. Vous n&#8217;avez presque aucune raison de vous en servir, c&#8217;est vraiment pour les cas particuliers.</p>
+<p>Voici l&#8217;ordre d&#8217;éxécution:</p>
+<pre lang="python">>>> class Premiere(object):
+...         def __new__(cls, prix):
+...                 print "__new__"
+...                 return super(Premiere, cls).__new__(cls)
+...         def __init__(self, *args):
+...                 print "__init__"
+
+>>> c = Premiere(10000)
+__new__
+__init__</pre>
+<h2>Exemple d&#8217;utilisation de <code>__new__</code></h2>
+<p>Généralement on sait très bien utiliser <code>__init__</code>, mais <code>__new__</code> est moins évident.</p>
+<p>L&#8217;usage le plus fréquent de <code>__new__</code> quand on hérite d&#8217;objets immutables. Par exemple, si vous voulez faire un objet <code>Temperature</code> qui hérite de <code>float</code> et qui accepte une unité en plus, ceci ne va pas marcher:</p>
+<pre lang="python">class Temperature(float):
+
+    def __init__(self, value, unit):
+
+        super(Temperature, self).__init__(value)
+        self.unit = unit
+
+    def __str__(self):
+        return "%s%s" % (self.value, self.unit)
+
+print Temperature(10, '°C')
+
+Traceback (most recent call last):
+  File "<ipython-input-1-65b676255e09>", line 11, in <module>
+    Temperature(10, '°C')
+TypeError: float() takes at most 1 argument (2 given)</pre>
+<p>La raison est que du fait de la nature immutable de <code>float</code>, il est initialisé dans <code>__new__</code>, et il n&#8217;attend aucune valeur de plus dans <code>__new__</code>, mais on lui passe malgré tout (via <code>Temperature(10, '°C')</code>).</p>
+<p>En revanche, ceci va marcher:</p>
+<pre lang="python">class Temperature(float):
+
+    def __new__(cls, value, unit):
+
+        instance = super(Temperature, cls).__new__(cls, value)
+        instance.unit = unit
+        return instance
+
+    def __str__(self):
+        return "%s%s" % (super(Temperature, self).__str__(), self.unit)
+
+print Temperature(10, '°C')
+10.0°C</pre>
+<p>Comme on override <code>__new__</code>, on lui donne la possibilité d&#8217;accepter une argument de plus.</p>
+<p>Un autre exemple serait de vouloir créer une chaîne de caractères qui est toujours en majuscule (ce qui est bien moins utile que l&#8217;exemple précédent):</p>
+<pre lang="python">class CapsLockString(str):
+
+    def __init__(self, value):
+
+        print value # et maintenant je fais quoi ?
+
+print CapsLockString('test')
+test
+test</pre>
+<p>Ça ne plantera pas, mais il n&#8217;y a rien que nous puissions faire car <code>str</code> est immutable. On ne peut tout simplement pas faire quoique ce soit avec <code>value</code>. Avec <code>__new__</code>, on peut faire quelque chose sur la chaîne intermédiaire:</p>
+<pre lang="python">class CapsLockString(str):
+
+    def __new__(cls, value):
+
+        return super(CapsLockString, cls).__new__(cls, value.upper())
+
+print CapsLockString('test')
+TEST</pre>
+<p>Deux chaînes sont en fait créées, une normale, puis une en majuscule retournée par upper() qui va servir de valeur à notre objet (en fait il y en a même 3 dans l&#8217;implémentation CPython, c&#8217;est pour ça que les notations littérales sont plus rapides que l&#8217;usage des classes pour créer des built-in).</p>
+<p><code>__new__</code> permet donc essentiellement de créer de jolis API. On l&#8217;utilise par ailleurs dans les metaclasses, mais ce sera pour un autre article.</p>
+<p>Un troisième usage de<code> __new__</code>, assez rare (mais en même temps utiliser <code>__new__</code> est déjà rare), c&#8217;est le pattern factory. Les javaistes le connaissent bien, c&#8217;est un motif de conception qui permet de gérer la création d&#8217;objets qui peuvent eux même créer des objets, qui créer des objets qui&#8230; Bref.</p>
+<p>Car en fait <code>__new__</code> peut retourner n&#8217;importe quoi. Il peut <a href="http://sametmax.com/usages-et-dangers-du-null-object-pattern-en-python/">retourner toujours la même instance</a> pour faire un singleton par exemple. On peut même carrément renvoyer un truc qui n&#8217;a rien n&#8217;a voir, par exemple une fonction :</p>
+<pre lang="python">class FonctionFactory(object):
+
+    def __new__(self, value, repeat):
+
+        def repeater(string=value):
+
+            return string * repeat
+
+        return repeater
+
+
+>>> function = FonctionFactory('hello', 2) # création de la fonction
+>>> print function()
+hellohello
+>>> print function('bonjour')
+bonjourbonjour
+</pre>
+<p>Ici on retourne carrément une fonction, et pas du tout une instance de <code>FonctionFactory()</code> comme prévu. On pourrait faire ceci de manière plus simple avec de la programmation fonctionnelle, mais <code>__new__</code> permet de bénéficier de tout l&#8217;outillage de la POO.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-difference-entre-__new__-et-__init__-en-python/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">3534</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/01/trouver-les-7_differences.jpg" length="50393" type="image/jpg" />	</item>
+	</channel>
+</rss>

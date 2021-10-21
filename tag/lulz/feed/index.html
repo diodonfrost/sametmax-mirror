@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>lulz &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/lulz/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Générateur de nom d&#8217;heroic fantasy en Python</title>
+		<link>http://sametmax.com/generateur-de-nom-dheroic-fantasy-en-python/</link>
+		<comments>http://sametmax.com/generateur-de-nom-dheroic-fantasy-en-python/#comments</comments>
+		<pubDate>Tue, 16 Oct 2012 16:21:37 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[lulz]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2621</guid>
+		<description><![CDATA[Les générateurs de nom d'heroic fantasy sont légions sur internet. Mais autant j'ai trouvé des générateurs de noms normaux en Python (dont je me sers d'ailleurs pour créer des comptes bidons automatiquement pour les démos), autant je n'ai rien trouvé pour pythonement printer l'en-tête d'une feuille de personnage de DDA.]]></description>
+				<content:encoded><![CDATA[<p>Les <a href="http://www.kleimo.com/random/name.cfm">générateurs de noms d&#8217;heroic fantasy</a> sont légions sur internet. Mais autant j&#8217;ai trouvé des <a href="https://github.com/amnong/namegen">générateurs de noms normaux en Python</a> (dont je me sers d&#8217;ailleurs pour créer des comptes bidons automatiquement pour les démos), autant je n&#8217;ai rien trouvé pour pythonement printer l&#8217;en-tête d&#8217;une feuille de personnage de DDA.</p>
+<p>Et comme c&#8217;est fun, voilà le nonos du Sam du jour:</p>
+<pre lang="python">
+from random import randint, choice
+
+class FantasyNameGenerator(object):
+    """
+        Random fantasy name generator
+    """
+
+    # on déclare les lettres, leurs positions voulues dans le nom
+    # et un poids de fréquence d'apparition
+
+    # voyelles
+    VOWELS = (
+        (('start', 'middle', 'end'), (
+                (5, ("a", "e", "i", "o", "u")),
+                (1, ("ae", "ai", "ao", "au", "aa", "ea", "eo", "eu", "ee", "ia",
+                     "io", "iu", "ii", "oa", "oe", "oi", "ou", "oo", "eau", "y"))
+        )),
+        (('middle'), (
+            (1, ("'",)),
+        ))
+    )
+
+    # consonnes
+    CONSONANTS = (
+        (('start', 'middle', 'end'), (
+                (3, ("b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p",
+                     "r", "s", "t", "v", "w")),
+                (1, ("x", "y", "z", "sc", "ch", "gh", "ph", "sh", "th", "sk", "wk", "st"))
+        )),
+        (('middle', 'end'), (
+                (1, ("ck", "nk", "rk", "ss")),
+        )),
+        (('start', 'middle'), (
+                (2, ("br", "dr", "fr", "gr", "kr", )),
+                (1, ("cr", "pr", "sr", "tr", "qu", "wh", "cl", "fl", "gl", "kl",
+                     "ll", "pl", "sl", "str"))
+        )),
+    )
+
+    # on génère deux listes de type ((lettre, position), (lettre, position)...)
+    # pour pouvoir piocher au hasard dedans
+    SYLLABLES_POOL = [[], []]
+
+    for i, group in enumerate((VOWELS, CONSONANTS)):
+        pool = SYLLABLES_POOL[i]
+        for place, pack in group:
+            for frequency, letters in pack:
+                for letter in letters:
+                    pool.extend(((letter, set(place)),) * frequency)
+
+
+    def __init__(self, min_syllable=2, max_syllable=None):
+        self.min_syllable = min_syllable
+        self.max_syllable = max_syllable or (min_syllable + 2)
+
+    def __iter__(self):
+        # juste pour le plaisir d'avoir le générateur itérable
+        while True:
+            yield self.get_new_name()
+
+    # générer un nom avec les réglages de l'instance
+    def get_new_name(self):
+        return self.generate_name(self.min_syllable, self.max_syllable)
+
+    @classmethod
+    def generate_name(cls, min_syllable, max_syllable, base=""):
+
+        # méthode pour générer un nom à indépendament de l'instance
+
+        # on génère aléatoirement la taille du mot et le son de départ
+        length, pool = randint(min_syllable, max_syllable), randint(0, 1)
+
+        # pour chaque syllabe, on en choppe une au hasard et on change de pool
+        # si la syllable n'est pas à la bonne place, on tire à nouveau
+        for i in xrange(1, length + 1):
+
+            while True:
+
+                letter, place = choice(cls.SYLLABLES_POOL[pool])
+
+                if i == 1:
+                    if 'start' not in place:
+                        continue
+                elif i == length:
+                    if 'end' not in place:
+                        continue
+                else:
+                    if 'middle' not in place:
+                        continue
+
+                base += letter
+                pool = abs(pool - 1)
+                break
+
+        return base.title()</pre>
+<p>Et ça s&#8217;utilise comme ça:</p>
+<pre lang="python">import itertools
+
+for name in itertools.islice(FantasyNameGenerator(max_syllable=5), 5):
+    print name
+</pre>
+<p>Et ça affiche ça:</p>
+<p><code>Oislaex<br />
+Feasroap<br />
+Kab<br />
+Uthi<br />
+Iin</code></p>
+<p>Ok, ok, ça sert à rien. Mais c&#8217;est marrant !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/generateur-de-nom-dheroic-fantasy-en-python/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">2621</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/10/th1.jpeg" length="55425" type="image/jpg" />	</item>
+	</channel>
+</rss>

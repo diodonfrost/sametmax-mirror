@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Pourquoi utiliser un mécanisme d&#8217;exceptions ?</title>
+	<atom:link href="http://sametmax.com/pourquoi-utiliser-un-mecanisme-dexceptions/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/pourquoi-utiliser-un-mecanisme-dexceptions/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/pourquoi-utiliser-un-mecanisme-dexceptions/#comment-175669</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 10 Feb 2016 22:01:31 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17365#comment-175669</guid>
+		<description><![CDATA[&lt;p&gt;Merci !&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Merci !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Gerardo</title>
+		<link>http://sametmax.com/pourquoi-utiliser-un-mecanisme-dexceptions/#comment-175648</link>
+		<dc:creator><![CDATA[Gerardo]]></dc:creator>
+		<pubDate>Wed, 10 Feb 2016 13:37:24 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17365#comment-175648</guid>
+		<description><![CDATA[Merci pour l&#039;article, interessant comme d&#039;habitude !
+
+Et deux petites coquilles :
+
+Parce que c’est la manière de faire &lt;strike&gt; que &lt;/strike&gt; de la communauté
+
+elles sont au coeur du fonctionnement du langage, et pas juste pour &lt;strike&gt; pour &lt;/strike&gt; les erreurs.
+]]></description>
+		<content:encoded><![CDATA[<p>Merci pour l&#8217;article, interessant comme d&#8217;habitude !</p>
+<p>Et deux petites coquilles :</p>
+<p>Parce que c’est la manière de faire <strike> que </strike> de la communauté</p>
+<p>elles sont au coeur du fonctionnement du langage, et pas juste pour <strike> pour </strike> les erreurs.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: ultra</title>
+		<link>http://sametmax.com/pourquoi-utiliser-un-mecanisme-dexceptions/#comment-173285</link>
+		<dc:creator><![CDATA[ultra]]></dc:creator>
+		<pubDate>Thu, 07 Jan 2016 13:18:09 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17365#comment-173285</guid>
+		<description><![CDATA[@Sam
+
+Ce que t&#039;expliques pour les exceptions qui sont au coeur de python, marche aussi pour le logging qui y est intégré.
+
+Écrire print() pour loguer en python c&#039;est contre l&#039;esprit du langage.
+
+En fait, quand tu débarques dans un langage, il y a tous les non dits et les usages de la &quot;communauté&quot; qui ne sont pas explicites.
+
+Donc non seulement faut apprendre le langage mais aussi les bonnes pratiques de la communauté.
+
+C&#039;est tout l’intérêt de ce blog qui explique bien l&#039;esprit du langage.
+
+J&#039;ai réécrit une bonne partie de mon code python après la lecture de ce blog.
+]]></description>
+		<content:encoded><![CDATA[<p>@Sam</p>
+<p>Ce que t&#8217;expliques pour les exceptions qui sont au coeur de python, marche aussi pour le logging qui y est intégré.</p>
+<p>Écrire print() pour loguer en python c&#8217;est contre l&#8217;esprit du langage.</p>
+<p>En fait, quand tu débarques dans un langage, il y a tous les non dits et les usages de la &#8220;communauté&#8221; qui ne sont pas explicites.</p>
+<p>Donc non seulement faut apprendre le langage mais aussi les bonnes pratiques de la communauté.</p>
+<p>C&#8217;est tout l’intérêt de ce blog qui explique bien l&#8217;esprit du langage.</p>
+<p>J&#8217;ai réécrit une bonne partie de mon code python après la lecture de ce blog.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Brice</title>
+		<link>http://sametmax.com/pourquoi-utiliser-un-mecanisme-dexceptions/#comment-173186</link>
+		<dc:creator><![CDATA[Brice]]></dc:creator>
+		<pubDate>Wed, 06 Jan 2016 20:27:53 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17365#comment-173186</guid>
+		<description><![CDATA[@toub :
+
+Par rapport au premier exemple, j&#039;aurais tendance à le faire de 2 manières différentes en fonction du contexte :
+
+Si j&#039;ai absolument besoin d&#039;un (et un seul) retour, ma fonction sera &lt;code&gt;get_element()&lt;/code&gt; et lèvera une exception si l&#039;element n&#039;existe pas. Sinon, c&#039;est seulement une recherche qui peut ne rien trouver, et la fonction sera &lt;code&gt;find_element()&lt;/code&gt; ou &lt;code&gt;search_element()&lt;/code&gt;, et ça retournera &lt;code&gt;None&lt;/code&gt; si je cherche un seul element, ou un iterable vide si je peux avoir plusieurs elements (&lt;code&gt;find_elements()&lt;/code&gt;). Dans ce cas, c&#039;est la fonction appelante qui se chargera de lever une exception si l&#039;absence de retour est finalement problématique.
+]]></description>
+		<content:encoded><![CDATA[<p>@toub :</p>
+<p>Par rapport au premier exemple, j&#8217;aurais tendance à le faire de 2 manières différentes en fonction du contexte :</p>
+<p>Si j&#8217;ai absolument besoin d&#8217;un (et un seul) retour, ma fonction sera <code>get_element()</code> et lèvera une exception si l&#8217;element n&#8217;existe pas. Sinon, c&#8217;est seulement une recherche qui peut ne rien trouver, et la fonction sera <code>find_element()</code> ou <code>search_element()</code>, et ça retournera <code>None</code> si je cherche un seul element, ou un iterable vide si je peux avoir plusieurs elements (<code>find_elements()</code>). Dans ce cas, c&#8217;est la fonction appelante qui se chargera de lever une exception si l&#8217;absence de retour est finalement problématique.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Xavier Combelle</title>
+		<link>http://sametmax.com/pourquoi-utiliser-un-mecanisme-dexceptions/#comment-173165</link>
+		<dc:creator><![CDATA[Xavier Combelle]]></dc:creator>
+		<pubDate>Wed, 06 Jan 2016 17:21:08 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17365#comment-173165</guid>
+		<description><![CDATA[Si je me trompe pas, si les exceptions sont &quot;rapides&quot; en python, c&#039;est que les autres opérations sont lentes donc relativement, les exceptions sont plutôt rapides.
+
+Ce que je veux dire, c&#039;est que python n&#039;a pas trouvé de recette magique pour que les exceptions deviennent miraculeusement rapide dans l&#039;absolu.
+]]></description>
+		<content:encoded><![CDATA[<p>Si je me trompe pas, si les exceptions sont &#8220;rapides&#8221; en python, c&#8217;est que les autres opérations sont lentes donc relativement, les exceptions sont plutôt rapides.</p>
+<p>Ce que je veux dire, c&#8217;est que python n&#8217;a pas trouvé de recette magique pour que les exceptions deviennent miraculeusement rapide dans l&#8217;absolu.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: inso</title>
+		<link>http://sametmax.com/pourquoi-utiliser-un-mecanisme-dexceptions/#comment-173131</link>
+		<dc:creator><![CDATA[inso]]></dc:creator>
+		<pubDate>Wed, 06 Jan 2016 12:46:24 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17365#comment-173131</guid>
+		<description><![CDATA[De manière générale, une bonne manière de gérer les erreurs est de le faire en mode &quot;Fail Fast&quot;.
+
+Le Fail Fast consiste à ne pas traiter des situations qui ne devraient pas arriver. Par exemple, il ne faut pas tester à null à chaque fois qu&#039;un objet est passé en paramètre. Ou il ne faut pas vérifier si un entier est toujours positif lorsqu&#039;on passe un index de tableau.
+
+Il faut au contraire ne rien faire. Ca plantera si un null ou un entier négatif arrive. Mais si ça plante, ce n&#039;est pas le code de traitement du null ou de l&#039;entier qui bug, c&#039;est avant. Un mauvais paramètre aura été passé et il faut en trouver la raison.
+
+Le fail fast permet de ne pas surcharger le code avec de la verbosité qui ne fera que rendre la correction de bug plus complexe encore.
+]]></description>
+		<content:encoded><![CDATA[<p>De manière générale, une bonne manière de gérer les erreurs est de le faire en mode &#8220;Fail Fast&#8221;.</p>
+<p>Le Fail Fast consiste à ne pas traiter des situations qui ne devraient pas arriver. Par exemple, il ne faut pas tester à null à chaque fois qu&#8217;un objet est passé en paramètre. Ou il ne faut pas vérifier si un entier est toujours positif lorsqu&#8217;on passe un index de tableau.</p>
+<p>Il faut au contraire ne rien faire. Ca plantera si un null ou un entier négatif arrive. Mais si ça plante, ce n&#8217;est pas le code de traitement du null ou de l&#8217;entier qui bug, c&#8217;est avant. Un mauvais paramètre aura été passé et il faut en trouver la raison.</p>
+<p>Le fail fast permet de ne pas surcharger le code avec de la verbosité qui ne fera que rendre la correction de bug plus complexe encore.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/pourquoi-utiliser-un-mecanisme-dexceptions/#comment-173128</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 06 Jan 2016 12:22:47 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17365#comment-173128</guid>
+		<description><![CDATA[&lt;p&gt;+1. Surtout que la réponse risque d&#039;être longue.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>+1. Surtout que la réponse risque d&#8217;être longue.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: boblinux</title>
+		<link>http://sametmax.com/pourquoi-utiliser-un-mecanisme-dexceptions/#comment-173126</link>
+		<dc:creator><![CDATA[boblinux]]></dc:creator>
+		<pubDate>Wed, 06 Jan 2016 12:00:51 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17365#comment-173126</guid>
+		<description><![CDATA[@toub
+
+Au pire amène toi sur indexerror pour cette question, le format s&#039;y prête beaucoup plus, de même que la qualité des réponses.
+
+On pourra en discuter tranquillement histoire de laisser la place ici pour les com&#039;s un peu moins précis/techniques :)
+]]></description>
+		<content:encoded><![CDATA[<p>@toub</p>
+<p>Au pire amène toi sur indexerror pour cette question, le format s&#8217;y prête beaucoup plus, de même que la qualité des réponses.</p>
+<p>On pourra en discuter tranquillement histoire de laisser la place ici pour les com&#8217;s un peu moins précis/techniques :)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: toub</title>
+		<link>http://sametmax.com/pourquoi-utiliser-un-mecanisme-dexceptions/#comment-173121</link>
+		<dc:creator><![CDATA[toub]]></dc:creator>
+		<pubDate>Wed, 06 Jan 2016 11:13:03 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17365#comment-173121</guid>
+		<description><![CDATA[&lt;p&gt;Comme pour le moment mon code n&#039;a pas le moindre début d&#039;usage d&#039;exception (ce que je souhaite corriger) je n&#039;ai pas de vrai code à te donner.&lt;/p&gt;
+
+&lt;p&gt;Le cas d&#039;usage c&#039;est un truc de ce gout la:&lt;/p&gt;
+
+&lt;pre lang=&quot;python&quot;&gt;# On lance un thread qui bloque sur le fd d&#039;une socket, et remplit ReadThread.data_received avec les donnees lues.
+
+read_thread = ReadThread(socket_fd)
+
+read_thread.start()
+
+# Si on n&#039;a pas reçu les trames de demarrage au bout de 5 secondes
+
+sleep(5)
+
+if read_thread.data_received != &quot;StartMessage&quot;:
+
+    raise StartDatasException
+
+while True:
+
+    read_thread.data_received = None
+
+    sleep(5)
+
+    # Si on n&#039;a pas reçu le heartbeat au bout de 5 secondes
+
+    if read_thread.data_received != &quot;Heartbeat&quot;:
+
+        raise HeartBeatException
+
+
+&lt;/pre&gt;
+
+&lt;p&gt;Comment gérer l&#039;arrêt du thread, la fermeture de la socket... de maniere unifiee pour les 2 raise d&#039;exception ?&lt;/p&gt;
+
+&lt;p&gt;Bon l&#039;exemple est rapide et pourri de bugs potentiels, mais ce qui m&#039;intéressesse en l&#039;occurence c&#039;est surtout le nettoyage des données suite aux &lt;code&gt;raise&lt;/code&gt;&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Comme pour le moment mon code n&#8217;a pas le moindre début d&#8217;usage d&#8217;exception (ce que je souhaite corriger) je n&#8217;ai pas de vrai code à te donner.</p>
+<p>Le cas d&#8217;usage c&#8217;est un truc de ce gout la:</p>
+<pre lang="python"># On lance un thread qui bloque sur le fd d'une socket, et remplit ReadThread.data_received avec les donnees lues.
+
+read_thread = ReadThread(socket_fd)
+
+read_thread.start()
+
+# Si on n'a pas reçu les trames de demarrage au bout de 5 secondes
+
+sleep(5)
+
+if read_thread.data_received != "StartMessage":
+
+    raise StartDatasException
+
+while True:
+
+    read_thread.data_received = None
+
+    sleep(5)
+
+    # Si on n'a pas reçu le heartbeat au bout de 5 secondes
+
+    if read_thread.data_received != "Heartbeat":
+
+        raise HeartBeatException
+
+
+</pre>
+<p>Comment gérer l&#8217;arrêt du thread, la fermeture de la socket&#8230; de maniere unifiee pour les 2 raise d&#8217;exception ?</p>
+<p>Bon l&#8217;exemple est rapide et pourri de bugs potentiels, mais ce qui m&#8217;intéressesse en l&#8217;occurence c&#8217;est surtout le nettoyage des données suite aux <code>raise</code></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/pourquoi-utiliser-un-mecanisme-dexceptions/#comment-173111</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 06 Jan 2016 10:03:31 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17365#comment-173111</guid>
+		<description><![CDATA[&lt;p&gt;Il faut que tu me montres du code car là réponse va vraiment dépendre ce celui-ci.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Il faut que tu me montres du code car là réponse va vraiment dépendre ce celui-ci.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

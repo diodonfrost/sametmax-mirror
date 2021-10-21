@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: La différence entre __new__ et __init__ en Python</title>
+	<atom:link href="http://sametmax.com/la-difference-entre-__new__-et-__init__-en-python/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/la-difference-entre-__new__-et-__init__-en-python/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/la-difference-entre-__new__-et-__init__-en-python/#comment-185785</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 23 Feb 2017 12:15:34 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3534#comment-185785</guid>
+		<description><![CDATA[&lt;p&gt;Yep:&lt;/p&gt;
+
+&lt;pre lang=&quot;python&quot;&gt;
+class Temperature(int):
+    
+    def __new__(cls, val, unit):
+        return super().__new__(cls, val)
+    
+    def __init__(self, val, unit):
+        super().__init__()
+        self.unit = unit
+        
+    def __str__(self):  
+        return &#039;%g %s&#039; % (self, self.unit)
+    
+    def __add__(self, other):
+        if self.unit != other.unit:
+            raise ValueError(&quot;Choux et carottes, connard !&quot;)
+        return Temperature(super().__add__(other), self.unit)
+
+
+t1 = Temperature(1, &quot;C&quot;)
+t2 = Temperature(2, &quot;C&quot;)
+t3 = Temperature(2, &quot;K&quot;)
+
+print(t1 + t2)
+print(t2 + t3)
+&lt;/pre&gt;
+
+&lt;p&gt;Mais bon autant utiliser une lib existante type https://pypi.python.org/pypi/units/&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Yep:</p>
+<pre lang="python">
+class Temperature(int):
+    
+    def __new__(cls, val, unit):
+        return super().__new__(cls, val)
+    
+    def __init__(self, val, unit):
+        super().__init__()
+        self.unit = unit
+        
+    def __str__(self):  
+        return '%g %s' % (self, self.unit)
+    
+    def __add__(self, other):
+        if self.unit != other.unit:
+            raise ValueError("Choux et carottes, connard !")
+        return Temperature(super().__add__(other), self.unit)
+
+
+t1 = Temperature(1, "C")
+t2 = Temperature(2, "C")
+t3 = Temperature(2, "K")
+
+print(t1 + t2)
+print(t2 + t3)
+</pre>
+<p>Mais bon autant utiliser une lib existante type <a href="https://pypi.python.org/pypi/units/" rel="nofollow">https://pypi.python.org/pypi/units/</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Daxley</title>
+		<link>http://sametmax.com/la-difference-entre-__new__-et-__init__-en-python/#comment-185747</link>
+		<dc:creator><![CDATA[Daxley]]></dc:creator>
+		<pubDate>Wed, 22 Feb 2017 14:34:22 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3534#comment-185747</guid>
+		<description><![CDATA[Mais du coup en héritant float on peut aditionner des objets température avec un + ?
+
+Du style une pseudo surcharge d&#039;opérateur comme en C++
+
+Et si on peut, peut on aussi renvoyer une exception dans le cas où l&#039;unité ne serait pas la même ?
+]]></description>
+		<content:encoded><![CDATA[<p>Mais du coup en héritant float on peut aditionner des objets température avec un + ?</p>
+<p>Du style une pseudo surcharge d&#8217;opérateur comme en C++</p>
+<p>Et si on peut, peut on aussi renvoyer une exception dans le cas où l&#8217;unité ne serait pas la même ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/la-difference-entre-__new__-et-__init__-en-python/#comment-177198</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 16 Mar 2016 15:14:33 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3534#comment-177198</guid>
+		<description><![CDATA[&lt;p&gt;C&#039;est le cls qui est trompeur.&lt;/p&gt;
+
+&lt;p&gt;Merci pour les typos.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>C&#8217;est le cls qui est trompeur.</p>
+<p>Merci pour les typos.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: ast</title>
+		<link>http://sametmax.com/la-difference-entre-__new__-et-__init__-en-python/#comment-177196</link>
+		<dc:creator><![CDATA[ast]]></dc:creator>
+		<pubDate>Wed, 16 Mar 2016 14:47:14 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3534#comment-177196</guid>
+		<description><![CDATA[Ah &lt;strong&gt;new&lt;/strong&gt; est une méthode statique. Dans ce cas Gilles Lenfant s&#039;est trompé dans son commentaire, il dit que c&#039;est une classmethod
+]]></description>
+		<content:encoded><![CDATA[<p>Ah <strong>new</strong> est une méthode statique. Dans ce cas Gilles Lenfant s&#8217;est trompé dans son commentaire, il dit que c&#8217;est une classmethod</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: ast</title>
+		<link>http://sametmax.com/la-difference-entre-__new__-et-__init__-en-python/#comment-177194</link>
+		<dc:creator><![CDATA[ast]]></dc:creator>
+		<pubDate>Wed, 16 Mar 2016 14:19:36 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3534#comment-177194</guid>
+		<description><![CDATA[Une petite coquille dans la classe Temperature:
+
+def &lt;strong&gt;init&lt;/strong&gt;(self, value, unit):
+
+...super(Temperature, cls).&lt;strong&gt;init&lt;/strong&gt;(value)
+
+remplacer cls par self
+
+ça ne change pas le message d&#039;erreur car l&#039;erreur se produit avant, à l&#039;appel de &lt;strong&gt;new&lt;/strong&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Une petite coquille dans la classe Temperature:</p>
+<p>def <strong>init</strong>(self, value, unit):</p>
+<p>&#8230;super(Temperature, cls).<strong>init</strong>(value)</p>
+<p>remplacer cls par self</p>
+<p>ça ne change pas le message d&#8217;erreur car l&#8217;erreur se produit avant, à l&#8217;appel de <strong>new</strong></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/la-difference-entre-__new__-et-__init__-en-python/#comment-177193</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 16 Mar 2016 13:47:10 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3534#comment-177193</guid>
+		<description><![CDATA[&lt;p&gt;La réponse est assez surprenante:&lt;/p&gt;
+
+&lt;pre lang=&quot;python&quot;&quot;&gt;&gt;&gt;&gt; class Foo:
+...     pass
+
+&gt;&gt;&gt; Foo.__new__
+&lt;built-in method __new__ of type object at 0x992b80&gt; # note l&#039;id
+&gt;&gt;&gt; type(Foo.__new__(Foo)) # note l&#039;effet
+&lt;class &#039;__main__.Foo&#039;&gt;
+
+&gt;&gt;&gt; object.__new__ 
+&lt;built-in method __new__ of type object at 0x992b80&gt; # meme id !
+&gt;&gt;&gt; type(object.__new__(Foo)) # meme effet !
+&lt;class &#039;__main__.Foo&#039;&gt;
+
+&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;__new__&lt;/code&gt; est n&#039;est pas une méthode de Foo mais de object, qui est attachée à Foo. C&#039;est aussi une méthode statique. Toute classe custo en Python hérite de object, mais comme &lt;strong&gt;new&lt;/strong&gt; est appelée très souvent, plutot que de faire un look up au parent à chaque fois ce qui est couteux, Python utilise cette astuce pour avoir la meme methode partout.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>La réponse est assez surprenante:</p>
+<pre lang="python"">>>> class Foo:
+...     pass
+
+>>> Foo.__new__
+<built -in method __new__ of type object at 0x992b80> # note l'id
+>>> type(Foo.__new__(Foo)) # note l'effet
+<class '__main__.Foo'>
+
+>>> object.__new__ 
+<built -in method __new__ of type object at 0x992b80> # meme id !
+>>> type(object.__new__(Foo)) # meme effet !
+<class '__main__.Foo'>
+
+</class></built></class></built></pre>
+<p><code>__new__</code> est n&#8217;est pas une méthode de Foo mais de object, qui est attachée à Foo. C&#8217;est aussi une méthode statique. Toute classe custo en Python hérite de object, mais comme <strong>new</strong> est appelée très souvent, plutot que de faire un look up au parent à chaque fois ce qui est couteux, Python utilise cette astuce pour avoir la meme methode partout.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: ast</title>
+		<link>http://sametmax.com/la-difference-entre-__new__-et-__init__-en-python/#comment-177188</link>
+		<dc:creator><![CDATA[ast]]></dc:creator>
+		<pubDate>Wed, 16 Mar 2016 09:57:59 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3534#comment-177188</guid>
+		<description><![CDATA[Dans cette classe:
+
+&lt;code&gt;
+
+class Premiere(object):
+
+...     def &lt;strong&gt;new&lt;/strong&gt;(cls, prix):
+
+...        print &quot;%s euros&quot; % prix
+
+...        return super(Premiere, cls).&lt;strong&gt;new&lt;/strong&gt;(cls)
+
+&lt;/code&gt;
+
+je m&#039;étonne qu&#039;il faille passer cls en argument de &lt;strong&gt;new&lt;/strong&gt;
+
+Quand on utilise super() pour aller chercher le &lt;strong&gt;init&lt;/strong&gt; d&#039;une classe parente, on utilise la syntaxe:
+
+super(MyClass, self).&lt;strong&gt;init&lt;/strong&gt;()
+
+il n&#039;y a pas le self passé en argument du &lt;strong&gt;init&lt;/strong&gt;(). il est passé automatiquement.
+
+Alors pourquoi cls est passé en argument de &lt;strong&gt;new&lt;/strong&gt; ?
+]]></description>
+		<content:encoded><![CDATA[<p>Dans cette classe:</p>
+<p><code></p>
+<p>class Premiere(object):</p>
+<p>...     def <strong>new</strong>(cls, prix):</p>
+<p>...        print "%s euros" % prix</p>
+<p>...        return super(Premiere, cls).<strong>new</strong>(cls)</p>
+<p></code></p>
+<p>je m&#8217;étonne qu&#8217;il faille passer cls en argument de <strong>new</strong></p>
+<p>Quand on utilise super() pour aller chercher le <strong>init</strong> d&#8217;une classe parente, on utilise la syntaxe:</p>
+<p>super(MyClass, self).<strong>init</strong>()</p>
+<p>il n&#8217;y a pas le self passé en argument du <strong>init</strong>(). il est passé automatiquement.</p>
+<p>Alors pourquoi cls est passé en argument de <strong>new</strong> ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Gilles Lenfant</title>
+		<link>http://sametmax.com/la-difference-entre-__new__-et-__init__-en-python/#comment-162869</link>
+		<dc:creator><![CDATA[Gilles Lenfant]]></dc:creator>
+		<pubDate>Thu, 02 Jul 2015 15:26:51 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3534#comment-162869</guid>
+		<description><![CDATA[On pourra aussi noter que &lt;strong&gt;new&lt;/strong&gt; est la seule classmethod implicite de Python (il n&#039;est pas nécessaire de précéder la méthode &lt;strong&gt;new&lt;/strong&gt; du décorateur @classmethod)
+]]></description>
+		<content:encoded><![CDATA[<p>On pourra aussi noter que <strong>new</strong> est la seule classmethod implicite de Python (il n&#8217;est pas nécessaire de précéder la méthode <strong>new</strong> du décorateur @classmethod)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/la-difference-entre-__new__-et-__init__-en-python/#comment-5084</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sat, 12 Jan 2013 09:05:47 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3534#comment-5084</guid>
+		<description><![CDATA[@Krypted: &lt;a href=&quot;http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/&quot; rel=&quot;nofollow&quot;&gt;peewee&lt;/a&gt; a un &lt;a href=&quot;https://github.com/coleifer/peewee/blob/master/peewee.py&quot; rel=&quot;nofollow&quot;&gt;exemple&lt;/a&gt; d&#039;utilisation de __new__ en prod. Il faut le lire lentement par contre :-)
+
+@jpcw: Oui mais dans les docs on lit immutable partout, donc je garde volontairement le terme pour qu&#039;un débutant puisse faire facilement le lien. Il faut faire des concessions.]]></description>
+		<content:encoded><![CDATA[<p>@Krypted: <a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/" rel="nofollow">peewee</a> a un <a href="https://github.com/coleifer/peewee/blob/master/peewee.py" rel="nofollow">exemple</a> d&#8217;utilisation de __new__ en prod. Il faut le lire lentement par contre :-)</p>
+<p>@jpcw: Oui mais dans les docs on lit immutable partout, donc je garde volontairement le terme pour qu&#8217;un débutant puisse faire facilement le lien. Il faut faire des concessions.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: jpcw</title>
+		<link>http://sametmax.com/la-difference-entre-__new__-et-__init__-en-python/#comment-5082</link>
+		<dc:creator><![CDATA[jpcw]]></dc:creator>
+		<pubDate>Sat, 12 Jan 2013 07:39:42 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=3534#comment-5082</guid>
+		<description><![CDATA[&lt;code&gt;s/immutable/immuable/g &lt;/code&gt;
+ça sonne quand même beaucoup mieux, et ça n&#039;entache plus la qualité de l&#039;article.]]></description>
+		<content:encoded><![CDATA[<p><code>s/immutable/immuable/g </code><br />
+ça sonne quand même beaucoup mieux, et ça n&#8217;entache plus la qualité de l&#8217;article.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

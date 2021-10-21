@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>telnet &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/telnet/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Debugger Python à distance avec rpdb</title>
+		<link>http://sametmax.com/debugger-python-a-distance-avec-rpdb/</link>
+		<comments>http://sametmax.com/debugger-python-a-distance-avec-rpdb/#comments</comments>
+		<pubDate>Fri, 09 Jan 2015 08:33:47 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[pdb]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[telnet]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=13066</guid>
+		<description><![CDATA[Vous aimez pdb parce que c&#8217;est cool. Et vous adorez pdbpp parce que c&#8217;est trop cool. Mais parfois vous n&#8217;avez pas accès à une console sur votre process : il est derrière un nginx, ou même sur une machine distante. rpdb vient résoudre ce problème en lançant un serveur telnet qui donne accès à votre [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Vous aimez <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">pdb</a> parce que c&#8217;est cool. Et vous adorez <a href="https://pypi.python.org/pypi/pdbpp/">pdbpp</a> parce que c&#8217;est trop cool.</p>
+<p>Mais parfois vous n&#8217;avez pas accès à une console sur votre process : il est derrière un nginx, ou même sur une machine distante.</p>
+<p><a href="https://pypi.python.org/pypi/rpdb/">rpdb</a> vient résoudre ce problème en lançant un serveur telnet qui donne accès à votre debugger.</p>
+<pre lang="bash">
+pip install rpdb
+</pre>
+<p>Puis :</p>
+<pre lang="python">
+import rpdb; rpdb.set_trace()
+</pre>
+<p>Et après vous prenez votre client telnet favoris, et vous accédez à votre débugger :</p>
+<pre lang="bash">
+telnet 127.0.0.1 4444
+</pre>
+<p>Bien entendu, si vous êtes à distance, remplacez 127.0.0.1 par l&#8217;ip de la machine. Le port est configurable également :</p>
+<pre lang="python">
+import rpdb
+debugger = rpdb.Rpdb(port=12345)
+debugger.set_trace()
+</pre>
+<p>Et derrière, ça lance <code>pdb</code>, donc <code>pdbpp</code> est lancé automatiquement si il est installé. Joie.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/debugger-python-a-distance-avec-rpdb/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">13066</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/01/Ty9Z3Pz.jpg" length="87006" type="image/jpg" />	</item>
+	</channel>
+</rss>

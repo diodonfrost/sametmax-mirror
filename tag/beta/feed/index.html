@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>beta &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/beta/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Tester Python 3.5 beta</title>
+		<link>http://sametmax.com/tester-python-3-5-beta/</link>
+		<comments>http://sametmax.com/tester-python-3-5-beta/#comments</comments>
+		<pubDate>Wed, 08 Jul 2015 06:55:10 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[beta]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16581</guid>
+		<description><![CDATA[<a href="https://www.reddit.com/r/sametmax/comments/3cfr83/whats_new_in_python_35_python_350b2_documentation/">Python 3.5 est en phase beta</a>, est c'est un release très (mais alors très très très) attendue.
+]]></description>
+				<content:encoded><![CDATA[<p><a href="https://www.reddit.com/r/sametmax/comments/3cfr83/whats_new_in_python_35_python_350b2_documentation/">Python 3.5 est en phase beta</a>, et c&#8217;est une release très (mais alors très très très) attendue.</p>
+<p>Si vous ne voulez pas attendre et tester le bouzin de suite, il est facile de setup la bestiole sous linux :</p>
+<ul>
+<li>Installer un compilateur et les headers de Python;</li>
+<li>Télécharger les sources;</li>
+<li>Décompresser tout ça;</li>
+<li>Compiler;</li>
+<li>Installer.</li>
+</ul>
+<p>Un exemple possible :</p>
+<pre lang="python">cd /tmp
+sudo apt-get install python-dev gcc # ou yum install python-devel gcc
+wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0b3.tgz
+tar -xvf Python-3.5.0b3.tgz
+cd Python-3.5.0b3
+./configure
+make
+sudo make altinstall</pre>
+<p>Ne faites surtout PAS <code>sudo make install</code>, qui écraserait votre python principal.</p>
+<p>Ensuite on lance :</p>
+<pre lang="bash">$ python3.5
+$ python3.5
+Python 3.5.0b3 (default, Jul  5 2015, 23:52:07) 
+[GCC 4.8.4] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+Traceback (most recent call last):
+  File "/home/sam/Scripts/pythonstartup.py", line 119, in 
+    store = Store(os.path.join(TEMP_DIR, 'store.%s.db') % python_version)
+  File "/home/sam/Scripts/pythonstartup.py", line 93, in __init__
+    object.__setattr__(self, 'DICT', shelve.DbfilenameShelf(filename))
+  File "/usr/local/lib/python3.5/shelve.py", line 227, in __init__
+    Shelf.__init__(self, dbm.open(filename, flag), protocol, writeback)
+  File "/usr/local/lib/python3.5/dbm/__init__.py", line 91, in open
+    "available".format(result))
+dbm.error: db type is dbm.gnu, but the module is not available
+&gt;&gt;&gt; import types
+&gt;&gt;&gt; print(':)')
+:)
+&gt;&gt;&gt; 
+</pre>
+<p>En dehors du vomi d&#8217;intro, tout marche chez moi.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/tester-python-3-5-beta/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">16581</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/07/QAbsQ6Z.gif" length="585286" type="image/jpg" />	</item>
+	</channel>
+</rss>

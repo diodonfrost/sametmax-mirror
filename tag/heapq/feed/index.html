@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>heapq &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/heapq/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Trier un CSV de 5 Go</title>
+		<link>http://sametmax.com/trier-un-csv-de-5-go/</link>
+		<comments>http://sametmax.com/trier-un-csv-de-5-go/#comments</comments>
+		<pubDate>Mon, 14 May 2018 08:26:12 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[heapq]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sort]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=24323</guid>
+		<description><![CDATA[en relisant <a href="http://neopythonic.blogspot.fr/2008/10/sorting-million-32-bit-integers-in-2mb.html">un célèbre post de Guido</a> sur la réponse à la blague "comment trier un million d'entiers avec 2M de Ram", j'ai réalisé 2 choses:
+
+<ul>
+<li>Le contenu de l'article est génial.</li>
+<li>Le contenu de l'article est incompréhensible.</li>
+</ul>]]></description>
+				<content:encoded><![CDATA[<p>Marrant, j&#8217;ai jamais eu autant de RAM, et j&#8217;ai jamais eu autant de problèmes de RAM. On est en train de faire un bon dans inefficacité des programmes, et ça va pas aller en s&#8217;arrangeant entre docker, electron et nos chers navigateurs. Une grosse app Python peut devenir assez velue aussi niveau mémoire, même quand on n&#8217;est pas <a href="http://sametmax.com/13558-go-de-rames/">un boulet</a> comme moi.</p>
+<p>Et justement, en relisant <a href="http://neopythonic.blogspot.fr/2008/10/sorting-million-32-bit-integers-in-2mb.html">un célèbre post de Guido</a> sur la réponse à la blague &#8220;comment trier un million d&#8217;entiers avec 2M de Ram&#8221;, j&#8217;ai réalisé 2 choses:</p>
+<ul>
+<li>Le contenu de l&#8217;article est génial.</li>
+<li>Le contenu de l&#8217;article est incompréhensible.</li>
+</ul>
+<p>Or c&#8217;est un peu ma raison d&#8217;être, si vous voulez, de prendre les trucs cools mais imbitables et les rendre utilisables.</p>
+<p>Aujourd&#8217;hui, donc, on va trier un CSV de 5Go en Python. Ça parle plus qu&#8217;un fichier de nombres, et puis ça évite d&#8217;expliquer le module <code>array</code> qui est juste une optimisation.</p>
+<p>J&#8217;ai pris mes petites mimines, et j&#8217;ai pondu un CSV qui contient 63Mo de:</p>
+<pre>A,01/02/2016,2
+A,13/07/2011,1
+B,24/01/1996,3
+C,30/12/1999,1
+D,13/07/2011,3
+D,01/02/2016,5
+E,24/01/1996,4
+F,30/12/1999,1
+G,13/07/2011,4
+H,01/02/2016,4
+I,01/02/2016,5
+I,13/07/2011,2
+A,01/02/2016,2
+A,13/07/2011,1</pre>
+<p>En copier/coller.</p>
+<p>Puis j&#8217;ai lancé un script pour dupliquer le bébé et jusqu&#8217;à atteindre 5,9 Go de taille:</p>
+<pre lang="python">with open('data.csv') as infile:
+    with open('data2.csv', 'w') as outfile:
+        for x in range(100):
+            outfile.write(infile.read())
+            infile.seek(0)</pre>
+<div id="attachment_24327" style="width: 490px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2018/05/V3btCPt.jpg" class="grouped_elements" rel="tc-fancybox-group24323"><img src="http://sametmax.com/wp-content/uploads/2018/05/V3btCPt.jpg" alt="Si jamais vous doutiez que je vous aime..." width="480" height="360" class="size-full wp-image-24327" /></a><p class="wp-caption-text">Si jamais vous doutiez que je vous aime&#8230;</p></div>
+<p>395366400 lignes. Jusqu&#8217;ici tout va bien.</p>
+<p>Maintenant, supposons qu&#8217;on veuille trier sur la date. Si vos souvenirs en Python sont exacts (ou si vous avez lu notre super article sur <a href="http://sametmax.com/ordonner-en-python/">Ordonner en Python</a>), vous savez que la solution naïve est de loader le fichier cash pistache, puis d&#8217;appeler dessus <code>sorted()</code> avec le paramètre <code>key</code>.</p>
+<p>D&#8217;abord, il faut choisir le callback à passer à <code>key</code>, c&#8217;est à dire la fonction qui va être exécutée pour chaque ligne pour extraire la date de la ligne et permettre ainsi à <code>sorted()</code> de comparer avec les autres dates.</p>
+<pre lang="python">>>> str_date = "A,01/02/2016,2".split(',')[1] # récupère la date uniquement
+>>> str_date
+'01/02/2016'
+>>> ''.join(str_date.split('/')[::-1]) # on inverse la date avoir une valeur ordonnable
+'20160201'
+</pre>
+<p>On en fait une fonction:</p>
+<pre lang="python"> 
+def extract_date(ligne):
+    str_date = ligne.split(',')[1]
+    return ''.join(str_date.split('/')[::-1])
+</pre>
+<p>Ensuite on a juste à ouvrir le fichier, trier les lignes, et sauvegarder tout ça dans l&#8217;autre fichier:</p>
+<pre lang="python">with open('data2.csv') as infile:
+    with open('sorted_data.csv', 'w') as outfile:
+        # on fait le tri
+        sorted_lines = sorted(infile, key=extract_date)
+        # on ecrit les lignes triées dans le nouveau fichier
+        outfile.writelines(sorted_lines)</pre>
+<p>Easy money, double poney.</p>
+<p>Enfin avec un fichier de quelques Mo. Parce que si vous faites ça dans un fichier de 5,9 Go, votre RAM va vomir comme une pom pom girl anorexique.</p>
+<div id="attachment_24325" style="width: 824px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2018/05/cfCXCHK.png" class="grouped_elements" rel="tc-fancybox-group24323"><img src="http://sametmax.com/wp-content/uploads/2018/05/cfCXCHK.png" alt="sorted() sur un disque complet, illustré" width="814" height="390" class="size-full wp-image-24325" /></a><p class="wp-caption-text">sorted() sur un disque complet, illustré</p></div>
+<p>Comment résoudre ce problème ?</p>
+<p>Et bien en faisant tout pareil, mais avec des petits morceaux !</p>
+<pre lang="python">
+import heapq
+
+from tempfile import TemporaryFile
+from itertools import islice
+
+# On garde notre fonction key
+def extract_date(ligne):
+    str_date = ligne.split(',')[1]
+    return ''.join(str_date.split('/')[::-1])
+
+# Liste de tous les fichiers temporaires avec les lignes triées
+sorted_temp_files = []
+
+with open('data2.csv') as infile:
+    progress = 0
+    while True:
+        # On lit seulement 3000000 lignes sur 395366400 à chaque tour de boucle
+        lines = list(islice(infile, 3000000))
+
+        if not lines:  # plus de ligne ? On sort
+            break
+
+        # On affiche où on en est
+        print("{:.2f}%".format(progress))
+        progress += (3000000 / 395366400 * 100)
+
+        # On tri les lignes, comme avec sorted() mais sur place. 
+        # Ça évite de dupliquer les données en mémoire.
+        lines.sort(key=extract_date)
+
+        # On crée un fichier temporaire qui va contenir les 3000000 lignes
+        # triées
+        f = TemporaryFile(mode="r+")
+        f.writelines(lines)
+
+        # On rembobine le fichier pour pouvoir relire le contenu plus tard
+        f.seek(0)
+
+        # On balance le fichier dans la liste des fichiers triés
+        # L'objet fichier hein. Pas le chemin du fichier. C'est pour ça qu'on
+        # a fait .seek(0) avant. On va en avoir besoin plus bas.
+        sorted_temp_files.append(f)
+
+    # Toute la magie se fait là.
+    # On utilise heapq.merge(), qui prend en paramètre plein de trucs qu'on 
+    # vient de trier, et permet de se balader dedans comme si c'était un seul
+    # gros truc trié, mais sans tout charger en mémoire.
+    # En gros il regarde les premières valeurs de tous les itérables, les compares,
+    # puis fait retourne un générateur qui yield tout dans l'ordre 
+    with open('sorted_data.csv', 'w') as outfile:
+        for ligne in heapq.merge(*sorted_temp_files, key=extract_date):
+            outfile.write(ligne)
+
+</pre>
+<p>Au lieu de charger les 5 Go en mémoire, on plafonne à 400 Mo. Une raison de plus d&#8217;<a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">apprendre à utiliser les générateurs.</a></p>
+<div id="attachment_24326" style="width: 590px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2018/05/kPXVXqx.jpg" class="grouped_elements" rel="tc-fancybox-group24323"><img src="http://sametmax.com/wp-content/uploads/2018/05/kPXVXqx.jpg" alt="Sametmax, c&#039;est de la bombe" width="580" height="326" class="size-full wp-image-24326" /></a><p class="wp-caption-text">Sametmax, c&#8217;est de la bombe</p></div>
+<p>Alors évidemment, c&#8217;est long. Y a genre 40 minutes de traitement. Moins si on utilise pypy et qu&#8217;on accepte de up la conso RAM. On code pas en Rust :)</p>
+<p>Si vous avez besoin de perfs et que Python reste votre outil de prédilections, 3 solutions restent à votre disposition:</p>
+<p>&#8211; Prétraiter le fichier en lui rajoutant une première colonne qui contient un timestamp. Ca c&#8217;est super rapide à trier.<br />
+&#8211; Utiliser un truc de numpy ou pandas comme np.memmap().sort(kind=&#8217;merge&#8217;). C&#8217;est du C, donc ça speed.<br />
+&#8211; <a href="https://www.chrisstucchio.com/blog/2013/hadoop_hatred.html">Acheter de la ram et tout trier en mémoire</a> avec la solution 1.</p>
+<p>EDIT:</p>
+<p>Un lecteur m&#8217;a alpagué sur twitter pour me dire qu&#8217;on peut faire ça plus vite et plus facilement avec sort. Oui, évidement.</p>
+<p>L&#8217;exercice est académique, il est simplifié pour vous permettre de comprendre <code>heapq.merge()</code>. En réalité, on aura vraiment besoin de ça que pour un cas complexe. Exemple, vous lisez un flux de log une socket et vous checkez les adresses IP d&#8217;abord pour filtrer celles de la liste noire, puis pour les faire matcher une zone géographique et vous triez tout ça et vous le passez à la suite du pipeline. Et le tout doit marcher sous Linux et Windows Server avec juste la lib standard parce que diab est de mauvais poil.</p>
+<p>Évidement que si vous voulez juste trier un CSV vous n&#8217;allez pas coder un script python de 30 lignes.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/trier-un-csv-de-5-go/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">24323</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/05/GqKLWie.jpg" length="81143" type="image/jpg" />	</item>
+		<item>
+		<title>Heapq, le module Python incompris</title>
+		<link>http://sametmax.com/heapq-le-module-python-incompris/</link>
+		<comments>http://sametmax.com/heapq-le-module-python-incompris/#comments</comments>
+		<pubDate>Fri, 21 Dec 2012 17:23:44 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[collections]]></category>
+		<category><![CDATA[heapq]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[list]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3813</guid>
+		<description><![CDATA[heapq est un algorythme qui organise une liste sous forme d'arbre binaire. Vous voyez c'était simple non ? Non ?]]></description>
+				<content:encoded><![CDATA[<p>Guido Van Rossum, notre-Dieu-à-tous-beni-soit-il, a un jour accepté de faire une session de questions-réponses publique, dans laquelle un petit malin lui a demandé &#8220;<a href="http://neopythonic.blogspot.fr/2008/10/sorting-million-32-bit-integers-in-2mb.html">Comment ordonner un million d&#8217;entiers 32 bits dans 2Mo de Ram avec Python</a>&#8220;.</p>
+<p>Ca aurait été sur ce blog, le mec se serait pris un tampon &#8220;drozophiliafucker&#8221; dans la gueule et ça aurait été plié. Mais quand on est BDFL et, à l&#8217;époque, employé chez Google, on est obligé de donner une réponse un peu sérieuse.</p>
+<p>Si vous avez suivi le lien précédent, vous verrez que sa réponse implique un obscure module appelé heapq. Si vous allez sur <a href="http://docs.python.org/2/library/heapq.html">la doc</a> du-dit module, vous verrez qu&#8217;elle implique une obscure explication innomable et vous aller retourner à la vidéo de porn que vous avez laissé bufferiser en haute résolution afin de pouvoir voir les grains de beauté qui longent le pourtour anal de la principale protagoniste. Respirons. </p>
+<h2>Il y a une explication rationnelle à tout cela</h2>
+<p>heapq est un algorithme qui organise une liste sous forme d&#8217;arbre binaire. Vous voyez c&#8217;était simple non ?</p>
+<p>Nan je déconne, je vais pas vous laisser avec ça quand même.</p>
+<p>Le module heapq permet d&#8217;utiliser le type &#8220;list&#8221; pour y ajouter ou retirer les éléments de telle sorte qu&#8217;ils soient toujours dans l&#8217;ordre.</p>
+<p>Sous le capot, ça marche effectivement avec un arbre binaire, mais on s&#8217;en branle. Tout ce qu&#8217;il faut comprendre c&#8217;est:</p>
+<pre lang="python">>>> from heapq import heappush, heappop
+>>> l = []
+>>> heappush(l, 69)
+>>> heappush(l, 42)
+>>> heappush(l, 2048)
+>>> heappush(l, -273.15)
+>>> l # la liste est ordonnée en arbre binaire...
+[-273.15, 42, 2048, 69]
+>>> for x in xrange(len(l)): # et on depop pour itérer dans l'odre
+    print heappop(l)
+...     
+-273.15
+42
+69
+2048
+
+</pre>
+<p>Donc on a une liste, on lui met des éléments dans la tronche dans n&#8217;importe quel ordre, et bam, on peut itérer dans le bon ordre sans avoir à rien faire. Et cette insertion est assez rapide (O(lg n) pour les tatillons). Le parcours l&#8217;est également (de l&#8217;ordre de O(n log n)).</p>
+<p>Et donc c&#8217;est très pratique pour trouver les x plus petits éléments (ou les plus grands), implémenter des queues de priorité, etc.</p>
+<p>Exemple de queue de priorité, (courageusement <a href="http://joernhees.de/blog/2010/07/19/min-heap-in-python/">volé d&#8217;ici</a>):</p>
+<pre lang="python">import heapq
+
+class PriorityQueue(list):
+
+    def __init__(self, data):
+        super(Heap, self).__init__()
+        for i, x in enumerate(data):
+            self.push(i, x)
+   
+    def push(self, priority, item):
+        """
+            On push en rajoute une priorité
+        """
+        heapq.heappush(self, (priority, item))
+   
+    def pop(self):
+        """
+            On pop en retirant la proprité
+        """
+        return heapq.heappop(self)[1]
+   
+    def __len__(self):
+        return len(self)
+   
+    def __iter__(self):
+        """
+            Comme on a une méthode next(), on peut se retourner soi-même.
+            Ainsi la boucle for appelera next() automatiquement. 
+        """
+        return self
+   
+    def next(self):
+        """ 
+           On depop la liste du plus petit au plus grand.
+        """
+        try:
+            return self.pop()
+        except IndexError:
+            raise StopIteration
+
+>>> l = PriorityQueue(("azerty"))
+>>> l
+>>> l.push(100, 'après')
+>>> l.push(-1, 'avant')
+>>> l.push(5, 'pendant')
+>>> for x in l:
+...     print x
+...     
+avant
+a
+z
+e
+r
+t
+pendant
+y
+après</pre>
+<p>Et le plus beau, c&#8217;est qu&#8217;on peut prendre plusieurs itérables ordonnés, et utiliser <code>heapq.merge</code> pour obtenir un générateur (qui ne charge pas tout en mémoire d&#8217;un coup) qui va permettre d&#8217;iterer de manière ordonnée sur tous les éléments.</p>
+<pre lang="python">>>> import heapq
+>>> l1 = sorted([random.randint(0, 1000) for x in xrange(5)])
+>>> l2 = sorted([random.randint(0, 1000) for x in xrange(5)])
+>>> l3 = sorted([random.randint(0, 1000) for x in xrange(5)])
+>>> list(heapq.merge(l1, l2, l3))
+[52, 59, 60, 171, 174, 262, 336, 402, 435, 487, 557, 645, 899, 949, 996]</pre>
+<p>Notez que ce n&#8217;est pas du tout la même chose que de concaténer les listes:</p>
+<pre lang="python">>>> l1 + l2 + l3
+[59, 174, 336, 487, 996, 52, 171, 557, 645, 949, 60, 262, 402, 435, 899]</pre>
+<p>Car des élements de <code>l2</code> peuvent être inférieurs à ceux de <code>l1</code>. <code>heap.merge</code> nous ordonne tout bien correctement. C&#8217;est l&#8217;équivalent de <code>sorted(l1 + l2 + l3)</code>, sauf que ça ne charge pas tout en mémoire:</p>
+<pre lang="python">>>> heapq.merge(l1, l2, l3)
+<generator object merge at 0x0314F238></pre>
+<p>Alors que <code>sorted()</code>, charge tout en mémoire:</p>
+<pre lang="python">>>> sorted(l1 + l2 + l3)
+[52, 59, 60, 171, 174, 262, 336, 402, 435, 487, 557, 645, 899, 949, 996]</pre>
+<p><del datetime="2012-12-21T17:35:16+00:00">Bien entendu, ça marche avec des listes créées avec </del><br />
+<del datetime="2012-12-21T17:35:16+00:00"><code>heapq</code>, ainsi:</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> l1 = []</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> for x in xrange(5): heappush(l1, random.randint(0, 1000))</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> l2 = []</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> for x in xrange(5): heappush(l2, random.randint(0, 1000))</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> l3 = []</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> for x in xrange(5): heappush(l3, random.randint(0, 1000))</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> list(heapq.merge(l1, l2, l3))</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">[31, 40, 133, 360, 504, 508, 513, 679, 645, 792, 838, 413, 765, 886, 924]</del></p>
+<p><em>(Grosse connasserie de ma part, faites comme si vous aviez rien vu.)</em></p>
+<p>Quand on a de grosses quantités de données à trier, c&#8217;est très pratique, car l&#8217;effort de tri est répartie à chaque insertion, et à chaque itération pendant le parcours, pas concentré sur de gros appels de <code>sorted()</code>.</p>
+<p>On peut aussi récupérer des trucs du genre, les n plus petits / grands éléments sans tout coder à la main:</p>
+<pre lang="python">>>> l = [random.randint(0, 1000) for x in xrange(100)]
+>>> heapq.nsmallest(4, l)
+[0, 2, 4, 7]
+>>> heapq.nlargest(3, l)
+[999, 996, 983]</pre>
+<p>Et c&#8217;est beaucoup plus efficace que de le faire soi-même.</p>
+<p>J&#8217;en profite pour rappeler au passage que tous les objets en Python sont ordonnables:</p>
+<pre lang="python">>>> (1, 2) > (2, 1)
+False
+>>> (1, 2) < (2, 1)
+True
+>>> "a" > "b"
+False
+>>> "a" < "b"
+True</pre>
+<p>Et qu'en définissant les méthodes <a href="http://docs.python.org/2/reference/datamodel.html#object.__eq__">__eq_</a>_, <code>__lt__</code>, <code>__gt__</code>, etc., on peut donner un moyen de <a href="http://wiki.python.org/moin/HowTo/Sorting">comparer n'importe quelle classe</a>.</p>
+<p>Bref, pour tous les besoins de classement, de priorisations, d'ordonnancement, de notion de plus petits, de plus grands, etc. qui concernent un gros jeu de données, <code>heapq</code> est le module qu'il vous faut.</p>
+<p>Et là je percute que ça fait quelque temps déjà que je fais des articles élitistes pour des uses cases de 1% de la population. Donc les prochains tutos concerneront des trucs plus terre à terre. Parce que, je fais le malin là, mais je savais pas à quoi servait <code>heapq</code> il y a 3 semaines.</p>
+<p>xoxo les filles</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/heapq-le-module-python-incompris/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">3813</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/12/hip-hop.jpg" length="76988" type="image/jpg" />	</item>
+	</channel>
+</rss>

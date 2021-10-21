@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Tu vas crever, oui ?</title>
+	<atom:link href="http://sametmax.com/tu-vas-crever-oui/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/tu-vas-crever-oui/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/tu-vas-crever-oui/#comment-14447</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Tue, 01 Oct 2013 13:10:02 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=56#comment-14447</guid>
+		<description><![CDATA[Ah ouai, c&#039;est vachement mieux ! Merci !]]></description>
+		<content:encoded><![CDATA[<p>Ah ouai, c&#8217;est vachement mieux ! Merci !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: nononinimoumous</title>
+		<link>http://sametmax.com/tu-vas-crever-oui/#comment-14224</link>
+		<dc:creator><![CDATA[nononinimoumous]]></dc:creator>
+		<pubDate>Sat, 14 Sep 2013 14:58:28 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=56#comment-14224</guid>
+		<description><![CDATA[Le code ci dessus est tronqué par erreur, la voici au complet:
+http://paste.ubuntu.com/6088302/]]></description>
+		<content:encoded><![CDATA[<p>Le code ci dessus est tronqué par erreur, la voici au complet:<br />
+<a href="http://paste.ubuntu.com/6088302/" rel="nofollow">http://paste.ubuntu.com/6088302/</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: nononinimoumous</title>
+		<link>http://sametmax.com/tu-vas-crever-oui/#comment-14087</link>
+		<dc:creator><![CDATA[nononinimoumous]]></dc:creator>
+		<pubDate>Tue, 10 Sep 2013 11:29:50 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=56#comment-14087</guid>
+		<description><![CDATA[Cette fonction très sympathique &lt;del&gt;de demeuré&lt;/del&gt; au demeurant est un peu trop meurtrière, dans le sens où elle laisse traîner beaucoup trop de morceaux de cadavres et de sang (segments d&#039;allocation mémoire actifs, fichiers temporaires ouverts, processus parents orphelins, sockets occupés...)
+
+Si je peux me permettre de proposer ma contribution pour passer de Uma Thurman à Sam Fisher:
+
+&lt;pre lang=&quot;bash&quot;&gt;function killbill {
+	BAK=$IFS
+	IFS=$&#039;\n&#039;
+	for id in $(ps aux &#124; grep -P -i $1 &#124; grep -v &quot;grep&quot; &#124; awk &#039;{printf $2&quot; &quot;; for (i=11; i&lt;NF; i++) printf $i&quot; &quot;; print $NF}&#039;); do 
+		service=$(echo $id &#124; cut -d &quot; &quot; -f 1)
+		if [[ $2 == &quot;-t&quot; ]]; then
+            echo $service \&quot;$(echo $id &#124; cut -d &quot; &quot; -f 2-)\&quot; &quot;would be killed&quot;
+		else
+            echo $service \&quot;$(echo $id &#124; cut -d &quot; &quot; -f 2-)\&quot; &quot;killed&quot;
+			for signal in &quot;TERM&quot; &quot;INT&quot; &quot;HUP&quot; &quot;KILL&quot; &quot;9&quot;; do
+    			kill -$signal $service
+    			RETVAL=$?
+    			[ $RETVAL -eq 0 ] &amp;&amp; break
+    			echo &quot;warning: kill failed: pid=$service, signal=$signal&quot; &gt;&amp;2
+    			sleep 1
+    		done
+		fi
+	done
+	IFS=$BAK
+}&lt;/pre&gt;]]></description>
+		<content:encoded><![CDATA[<p>Cette fonction très sympathique <del>de demeuré</del> au demeurant est un peu trop meurtrière, dans le sens où elle laisse traîner beaucoup trop de morceaux de cadavres et de sang (segments d&#8217;allocation mémoire actifs, fichiers temporaires ouverts, processus parents orphelins, sockets occupés&#8230;)</p>
+<p>Si je peux me permettre de proposer ma contribution pour passer de Uma Thurman à Sam Fisher:</p>
+<pre lang="bash">function killbill {
+	BAK=$IFS
+	IFS=$'\n'
+	for id in $(ps aux | grep -P -i $1 | grep -v "grep" | awk '{printf $2" "; for (i=11; i<nf ; i++) printf $i" "; print $NF}'); do 
+		service=$(echo $id | cut -d " " -f 1)
+		if [[ $2 == "-t" ]]; then
+            echo $service \"$(echo $id | cut -d " " -f 2-)\" "would be killed"
+		else
+            echo $service \"$(echo $id | cut -d " " -f 2-)\" "killed"
+			for signal in "TERM" "INT" "HUP" "KILL" "9"; do
+    			kill -$signal $service
+    			RETVAL=$?
+    			[ $RETVAL -eq 0 ] &#038;&#038; break
+    			echo "warning: kill failed: pid=$service, signal=$signal" >&#038;2
+    			sleep 1
+    		done
+		fi
+	done
+	IFS=$BAK
+}</nf></pre>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Max</title>
+		<link>http://sametmax.com/tu-vas-crever-oui/#comment-245</link>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+		<pubDate>Tue, 22 May 2012 13:54:03 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=56#comment-245</guid>
+		<description><![CDATA[Je connaissais pas, vais aller voir ça, merci du tuyau huggy ;)]]></description>
+		<content:encoded><![CDATA[<p>Je connaissais pas, vais aller voir ça, merci du tuyau huggy ;)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Gardouille</title>
+		<link>http://sametmax.com/tu-vas-crever-oui/#comment-241</link>
+		<dc:creator><![CDATA[Gardouille]]></dc:creator>
+		<pubDate>Tue, 22 May 2012 12:58:40 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=56#comment-241</guid>
+		<description><![CDATA[D&#039;où l&#039;intérêt de passer à zsh et son auto-complétion plutôt que bash =)
+
+dans zshrc j&#039;y ai collé ça:
+zstyle &#039;:completion:*:*:*:*:processes&#039; menu yes select
+zstyle &#039;:completion:*:processes&#039; command &#039;ps -au$USER&#039;
+zstyle &#039;:completion:*:*:kill:*:processes&#039; list-colors &quot;=(#b) #([0-9]#)*=36=31&quot;
+
+Et j&#039;ai plusieurs options de complétions: un menu listant mes process, auto-complétion en fonction du PID ou du nom du process ... à partir de la commande kill.
+
+Après avoir pas mal utilisé bash au début, je suis rapidement arrivé à la fin des personnalisation que je pouvais apporté (c&#039;était peut-être à cause de mes compétences de l&#039;époque aussi ^^). Alors qu&#039;avec zsh t&#039;as pas mal de trucs super pratique déjà intégrés et surtout un manuel et une doc juste monstrueux.
+
+Bref zsh c&#039;est bon, mangez-en =)]]></description>
+		<content:encoded><![CDATA[<p>D&#8217;où l&#8217;intérêt de passer à zsh et son auto-complétion plutôt que bash =)</p>
+<p>dans zshrc j&#8217;y ai collé ça:<br />
+zstyle &#8216;:completion:*:*:*:*:processes&#8217; menu yes select<br />
+zstyle &#8216;:completion:*:processes&#8217; command &#8216;ps -au$USER&#8217;<br />
+zstyle &#8216;:completion:*:*:kill:*:processes&#8217; list-colors &#8220;=(#b) #([0-9]#)*=36=31&#8221;</p>
+<p>Et j&#8217;ai plusieurs options de complétions: un menu listant mes process, auto-complétion en fonction du PID ou du nom du process &#8230; à partir de la commande kill.</p>
+<p>Après avoir pas mal utilisé bash au début, je suis rapidement arrivé à la fin des personnalisation que je pouvais apporté (c&#8217;était peut-être à cause de mes compétences de l&#8217;époque aussi ^^). Alors qu&#8217;avec zsh t&#8217;as pas mal de trucs super pratique déjà intégrés et surtout un manuel et une doc juste monstrueux.</p>
+<p>Bref zsh c&#8217;est bon, mangez-en =)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/tu-vas-crever-oui/#comment-86</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sat, 05 May 2012 11:43:21 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=56#comment-86</guid>
+		<description><![CDATA[Quoting myself:
+
+&lt;blockquote&gt; Sous Linux par contre, vous allez tenter un par un : pkill, killall, xkill… Et puis quand (presque toujours) rien ne marche, un bon vieux ps aux &#124; grep machin suivi de kill -9.
+&lt;/blockquote&gt;
+
+Pkill et killall marchent un jour sur deux, sauf quand c&#039;est la pleine lune et jamais un vendredi pendant une année bisextile.]]></description>
+		<content:encoded><![CDATA[<p>Quoting myself:</p>
+<blockquote><p> Sous Linux par contre, vous allez tenter un par un : pkill, killall, xkill… Et puis quand (presque toujours) rien ne marche, un bon vieux ps aux | grep machin suivi de kill -9.
+</p></blockquote>
+<p>Pkill et killall marchent un jour sur deux, sauf quand c&#8217;est la pleine lune et jamais un vendredi pendant une année bisextile.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Baronsed</title>
+		<link>http://sametmax.com/tu-vas-crever-oui/#comment-83</link>
+		<dc:creator><![CDATA[Baronsed]]></dc:creator>
+		<pubDate>Sat, 05 May 2012 05:03:14 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=56#comment-83</guid>
+		<description><![CDATA[N&#039;est pas ce que fait pkill ? Bon, à part le -9, certes. Sinon, les magic keys... portent bien leur nom.]]></description>
+		<content:encoded><![CDATA[<p>N&#8217;est pas ce que fait pkill ? Bon, à part le -9, certes. Sinon, les magic keys&#8230; portent bien leur nom.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/tu-vas-crever-oui/#comment-73</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 03 May 2012 22:28:52 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=56#comment-73</guid>
+		<description><![CDATA[Y deux choses qui foirent 50% du temps sous linux: le copier/coller et killall -9.
+
+J&#039;ai passé des heures essayer de des process comme le daemon d&#039;ubuntu one avec les commandes normales, ça ne marche jamais.
+
+Killbill n&#039;est pas une solution propre, mais par contre le résultat est garanti. Je ne peux plus m&#039;en passer, il est dans tous les .bashrc du moindre des serveurs que je gère.]]></description>
+		<content:encoded><![CDATA[<p>Y deux choses qui foirent 50% du temps sous linux: le copier/coller et killall -9.</p>
+<p>J&#8217;ai passé des heures essayer de des process comme le daemon d&#8217;ubuntu one avec les commandes normales, ça ne marche jamais.</p>
+<p>Killbill n&#8217;est pas une solution propre, mais par contre le résultat est garanti. Je ne peux plus m&#8217;en passer, il est dans tous les .bashrc du moindre des serveurs que je gère.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Fred</title>
+		<link>http://sametmax.com/tu-vas-crever-oui/#comment-71</link>
+		<dc:creator><![CDATA[Fred]]></dc:creator>
+		<pubDate>Thu, 03 May 2012 20:17:32 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=56#comment-71</guid>
+		<description><![CDATA[Je me trompe peut-être mais il me semble que &quot;killall -9&quot; est tout aussi efficace non ?]]></description>
+		<content:encoded><![CDATA[<p>Je me trompe peut-être mais il me semble que &#8220;killall -9&#8221; est tout aussi efficace non ?</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

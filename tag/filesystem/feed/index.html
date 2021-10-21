@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>filesystem &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/filesystem/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Django cache illimité sur filesystem &#8211; Overrider FileBasedCache</title>
+		<link>http://sametmax.com/django-cache-illimite-sur-filesystem-overrider-filebasedcache/</link>
+		<comments>http://sametmax.com/django-cache-illimite-sur-filesystem-overrider-filebasedcache/#comments</comments>
+		<pubDate>Sat, 13 Oct 2012 14:00:01 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[filesystem]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2569</guid>
+		<description><![CDATA[Mettre son site en cache dans le filesystem avec django sans limite d'entrée. ]]></description>
+				<content:encoded><![CDATA[<p>Django propose plusieurs façons de mettre de son <a href="https://docs.djangoproject.com/en/1.4/topics/cache/">site en <em>cache</em></a>.<br />
+Un de nos site gourmant en pages commencait à saturer le cache en mémoire alors il a fallut le basculer sur le filesystem, oui mais Django et son backend filesystem par défaut autorise 300 entrées dans le cache, ensuite il va effacer les anciennes pour les remplacer par les nouvelles, etc&#8230;</p>
+<p>On peut régler le nombre d&#8217;entrées avec l&#8217;option MAX_ENTRIES dans les settings mais que fait django derrière ?<br />
+Il va scanner votre répertoire de <em>cache</em> et <strong>compter tous les fichiers !</strong> Niveau performance on a vu mieux !</p>
+<p>Voici un petit patch qui consiste à bypasser le comptage des fichiers dans le cas où l&#8217;ont veut un cache &#8220;infini&#8221;, ce qui soulève un autre problème, ça va <em>cacher</em> jusqu&#8217;à qu&#8217;il n&#8217;y ait plus de pages à cacher ou que le disque sature :)</p>
+<p>dans un fichier cache.py que vous mettez où vous voulez (moi dans libs par ex):</p>
+<pre lang="python">#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+    Override FileBasedCache to extend entries cache count.
+    avoid scanning all cache dir to count entries.
+
+"""
+import os
+from django.core.cache.backends.filebased import FileBasedCache
+
+class CustomFileBasedCache(FileBasedCache):
+
+    def _get_num_entries(self):
+       count = 0
+       if self._max_entries == 9999: return 0
+       for _,_,files in os.walk(self._dir):
+           count += len(files)
+       return count
+    _num_entries = property(_get_num_entries)</pre>
+<p>dans les settings rajoutez à votre backend filesystem le backend customisé &#8220;libs.cache.CustomFileBasedCache&#8221; et l&#8217;option MAX_ENTRIES à -1:</p>
+<pre lang="python">
+CACHE_DEFAULT_SECONDS = 3600
+CACHES = {
+   'default': {
+       'BACKEND': 'redis_cache.RedisCache',
+       'LOCATION': 'localhost:6379',
+       'TIMEOUT': CACHE_DEFAULT_SECONDS,
+   },
+   'filesystem': {
+       'BACKEND': 'libs.cache.CustomFileBasedCache',
+       'LOCATION': '/var/tmp/django',
+       'TIMEOUT': CACHE_DEFAULT_SECONDS,
+       'OPTIONS': {
+            'MAX_ENTRIES': 9999 # Set 9999 for unlimited cache
+       }
+   }
+}</pre>
+<p>On évite du coup le os.walk de la méthode _get_num_entries qui dans le cas d&#8217;un grand nombre de fichiers en cache pourrait faire du mal à votre serveur.</p>
+<p>A utiliser avec précaution car ça cache, ça cache, ça cache&#8230; :)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/django-cache-illimite-sur-filesystem-overrider-filebasedcache/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">2569</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/10/Gear-Diary-Burning_Hard_Drive.jpeg" length="211841" type="image/jpg" />	</item>
+	</channel>
+</rss>

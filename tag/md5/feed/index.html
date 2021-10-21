@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>md5 &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/md5/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>MD5 en Bash, PHP, Python et Javascript</title>
+		<link>http://sametmax.com/md5-en-bash-php-python-et-javascript/</link>
+		<comments>http://sametmax.com/md5-en-bash-php-python-et-javascript/#comments</comments>
+		<pubDate>Mon, 18 Jun 2012 17:33:17 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[md5]]></category>
+		<category><![CDATA[php]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=936</guid>
+		<description><![CDATA[Bien que pour tout ce qui touche à la sécurité (comme les mots de passe ou les signatures) il vaille mieux préférer des fonctions plus sécurisées comme SHA-2, MD5 reste très pratique pour vérifier l'intégrité d'un fichier ou pour éviter les doublons.]]></description>
+				<content:encoded><![CDATA[<p>Bien que pour tout ce qui touche à la sécurité (comme les mots de passe ou les signatures) il vaille mieux préférer des fonctions plus sécurisées comme SHA-2, <a href="https://fr.wikipedia.org/wiki/Md5">MD5</a> reste très pratique pour vérifier l&#8217;intégrité d&#8217;un fichier ou pour éviter les doublons.</p>
+<h2>Bash</h2>
+<pre lang="bash">echo -n "chaine à hasher" | md5sum</pre>
+<p>(N&#8217;oubliez pas <code>-n</code> sinon vous aurez un saut de ligne ajouté à la chaîne.)</p>
+<p>ou</p>
+<pre lang="bash">md5sum /fichier/a/hasher</pre>
+<h2>Python</h2>
+<pre lang="python">
+>>> import hashlib
+>>> hashlib.md5('chaine à hasher').hexdigest()
+</pre>
+<p>ou</p>
+<pre lang="python">
+>>> import hashlib
+>>> hashlib.md5(open("/fichier/a/hasher").read()).hexdigest()
+</pre>
+<p>La lib <code>hashlib</code> contient également des fonctions pour les hashs sha1, sha224, sha256, sha384 et sha512.</p>
+<h2>PHP</h2>
+<pre lang="php">echo md5("chaine a hasher");</pre>
+<p>ou</p>
+<pre lang="php">echo md5(fread(fopen('/fichier/a/hasher', 'r'), TAILLE_DU_FICHIER));</pre>
+<p>A noter que l&#8217;encodage du terminal et code jouent sur le résultat. Rappelez-vous aussi que PHP et Python n&#8217;utilisent pas UTF-8 par défaut.</p>
+<h2>Javascript</h2>
+<p>Il n&#8217;existe pas de fonction cross-browser qui permette de récuperer le hash MD5 d&#8217;une chaîne, mais on peut utiliser des bibliothèques externes. La plus connue est celle de <a href="http://pajhome.org.uk/crypt/md5 ">Paul Johnston</a> que nous utilisons pour créer les hashs visuels de <a href="http://sametmax.com/vizhash-js-notre-implementation-libre-de-hash-visuel-utilisant-html5-canvas/">Vizhash.js</a>, et donc dans <a href="http://sametmax.com/0bin-implementation-python-de-zerobin-pastebin-chiffre-cote-client/">0bin</a>.</p>
+<p>On insère le code:</p>
+<pre lang="hrml"><script type="text/javascript" src="md5.js"></script></pre>
+<p>Puis:</p>
+<pre lang="javascript">alert(hex_md5('chaine a hasher'));</pre>
+<p>Comme Javascript n&#8217;a pas normalement accès au système de fichiers, il n&#8217;y a pas de version qui permette de calculer la somme de contrôle d&#8217;un fichier directement.</p>
+<p><strong>UPDATE</strong> après commantaires:</p>
+<p>Pour éviter les problèmes liés à l&#8217;encoding, il vaut mieux ouvrir le fichier en mode binaire: <code>fopen('fichier', rb')</code> et <code>open('fichier', 'rb')</code> en PHP et Python.</p>
+<p>Pour PHP, peut utiliser directement md5_<code>file</code> pour calculer le MD5 d&#8217;un fichier. </p>
+<p>Pour Python, dans le cas de gros fichiers, utiliser read() charde tout le contenu en mémoire. On peut éviter ça en utilisant une approche par morceaux, telle que:</p>
+<pre lang="python">
+hash = md5()
+with open('fichier') as f:
+    for chunk in f.read(500):
+        hash.update(chunk)
+print hash.hexdigest()
+</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/md5-en-bash-php-python-et-javascript/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">936</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/06/2737.jpg" length="96251" type="image/jpg" />	</item>
+	</channel>
+</rss>

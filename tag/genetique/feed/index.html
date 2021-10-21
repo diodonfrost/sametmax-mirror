@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>génétique &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/genetique/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Du Darwinisme pythonien</title>
+		<link>http://sametmax.com/du-darwinisme-pythonien/</link>
+		<comments>http://sametmax.com/du-darwinisme-pythonien/#comments</comments>
+		<pubDate>Thu, 12 Dec 2013 10:13:22 +0000</pubDate>
+		<dc:creator><![CDATA[golgotha]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[algorithme]]></category>
+		<category><![CDATA[génétique]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8171</guid>
+		<description><![CDATA[Qui n'a jamais rêvé de cloner des <del datetime="2013-12-02T19:59:20+00:00">moutons</del> clara morgane et de s'adonner à des expérimentations scientifiques de haut niveau ?]]></description>
+				<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/golgotha/">golgotha</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<p>Qui n&#8217;a jamais rêvé de cloner des <del datetime="2013-12-02T19:59:20+00:00">moutons</del> clara morgane et de s&#8217;adonner à des expérimentations scientifiques de haut niveau ?</p>
+<p>Bon ici, nous n&#8217;avons pas de clara morgane sous la main pour notre expérience mais, avec le python et les théories scientifiques de Darwin, on peut faire quelques trucs sympas : On va essayer de déterminer le plus court chemin à prendre pour relier plusieurs points entre eux, le truc cool c&#8217;est que pour solutionner le problème on va utiliser un algorithme génétique.</p>
+<p>De la génétique dans du python ?!</p>
+<p>En fait c&#8217;est assez simple (encore des termes barbares pour épater les copains..), écoutez bien, je vous explique le concept : on va faire des individus, chaque individu va faire un parcours en fonction des points du tracé en paramètre. A la fin, on note chaque individu avec un score, le score étant la longueur du parcours de l&#8217;individu. Vous suivez toujours ? Bien. On prend les meilleurs (Normal) et on les accouple avec des moins bons (faut les pousser un peu, au début ils sont timides mais, après ça va tout seul, c&#8217;est même l&#8217;orgie parfois&#8230;) ce qui donne une nouvelle population, normalement un poil meilleure que l&#8217;ancienne qu&#8217;on va vite mettre à la poubelle. On recommence le processus <code>n</code> fois et à la fin, on devrait arriver à des super individus, genre blonds aux yeux bleus qui parlent 14 langues : ça c&#8217;est notre solution.</p>
+<p>Passons aux travaux pratiques !</p>
+<p>Je commence par déclarer deux variables globales, la population et la liste de points.</p>
+<pre lang="python">
+population = []
+a_map = []
+</pre>
+<p>Ensuite on créer une classe Point standard :</p>
+<pre lang="python">
+class Point(object):
+
+    COUNT = 0
+
+    def __init__(self, x, y):
+        self.X = x
+        self.Y = y
+
+    def __str__(self):
+        return "Point(%s,%s)"%(self.X, self.Y) 
+
+    def distance(self, other):
+        dx = self.X - other.X
+        dy = self.Y - other.Y
+        return sqrt(dx**2 + dy**2)
+</pre>
+<p>Rien de particulier ici, l&#8217;objet nous sera utile plus tard.</p>
+<pre lang="python">
+class Individu(object):
+
+    # le constructeur de l'objet.
+    # on met le score à zéro.
+    # on peut aussi lui passer la liste de points
+    # pour qu'il initialise une route au hasard.
+    def __init__(self, init = False, map_point = []):
+        self.score = 0
+        self.route = []
+        if init :
+            self.set_route(map_point)
+
+    # ici on créé une route avec un mélange des points
+    # on utilise shuffle pour mélanger les points.
+    # ensuite on calcul le score, c'est à dire la longueur du trajet.
+    def set_route(self, map_point) :
+        shuffle(map_point)
+        self.route = map_point
+        for p in range(len(map_point) - 1) :
+            self.score += map_point[p].distance(map_point[p+1])
+
+    # ici on donne à l'objet la capacité de faire un enfant
+    # ça prend comme paramètre l'objet (lui même), et un autre individu.
+    # on prend la moitié du trajet de l'objet et on complète avec
+    # les points de l'autre individu.
+    # on retourne un enfant, qui est un individu.
+    def croisement(self, other):
+        child = Individu()
+        # je prends la moitier de moi-même.
+        wdth = len(self.route)/2
+        first_segment = self.route[:wdth/2]
+        last_segment  = []
+        # je complète avec l'autre
+        for i in range(len(self.route)) :
+            if other.route[i] not in first_segment :
+                last_segment.append(other.route[i])
+        child.set_route(first_segment + last_segment)
+        return child
+
+    # ici on défini une fonction pour que l'objet puisse se dessiner.
+    # pour cela on utilisera Turtle de python.
+    def show_me(self):
+        turtle.clearscreen()
+        pen = turtle.Turtle()
+        pen.speed(0)
+        pen.up()
+        pen.setpos(self.route[0].X, self.route[0].Y)
+        for point in self.route :
+            pen.goto(point.X, point.Y)
+            pen.down()
+            pen.dot()
+
+        pen.goto(self.route[0].X, self.route[0].Y)
+
+</pre>
+<p>Voilà pour l&#8217;objet individu (pas très inspiré sur le nom j&#8217;avoue..) qui est donc capable maintenant de faire pas mal de choses qui sera utile: se montrer, faire un petit (capacité que beaucoup d&#8217;objet lui envie déjà) et choisir une route parmi une liste de points.</p>
+<p>La suite, j&#8217;ai écris ça dans des fonctions, il y a surement plus propre mais bon, le but est de vous montrer comment fonctionne un algo génétique, je laisserai le soin aux pro du python d&#8217;améliorer le code en lui-même (je ne vais pas faire tout le boulot non plus !)</p>
+<pre lang="python">
+# initialisation des points de la carte.
+# prend en paramètre un nombre de points.
+def init_map(nb):
+    global a_map
+    del a_map[:]
+    for i in range(nb):
+        p = Point(randint(1, 300), randint(1, 300))
+        a_map.append(p)
+</pre>
+<pre lang="python">
+# initialisation de la population.
+# prend en paramètre le nombre d'individus à créer.
+def init_pop(nb, map_point):
+    global population
+    del population[:]
+    for i in range(nb):
+        i = Individu(True, map_point)
+        population.append(i)
+</pre>
+<pre lang="python">
+# fonction qui sert à trier les individus suivant leur score.
+# utile pour trouver les meilleurs.
+def selection(pop):
+    pop.sort(key=lambda x: x.score, reverse=True)
+</pre>
+<pre lang="python">
+# dans cette fonction, on sélectionne les 15 meilleurs individus de la population
+# que l'on croise avec les autres individus.
+# la nouvelle population est constituée des 15 meilleurs plus les enfants.
+def croisement(pop):
+    new_pop = []
+    best_pop = population[85:]
+    for i in range(len(pop)-15) :
+        new_pop.append(choice(best_pop).croisement(choice(population[20:85])))
+    return new_pop + best_pop
+</pre>
+<pre lang="python">
+# la fonction principal.
+# on passe en paramètre le nombre de générations que l'on souhaite faire
+# et le nombre de points. 
+# Ensuite, on itère selon un algorithme précis :
+# Création d'une population initiale.
+# Sélection puis croisement de la population
+# à chaque génération on regarde si on a un meilleur score
+# si oui, on l'affiche.
+def play(nb_gene, nb_point) :
+    init_map(nb_point)
+    init_pop(100, a_map)
+    best_score = 1000000
+    for i in range(nb_gene) :
+        global population
+        population = croisement(population)
+        selection(population)
+        if best_score > population[99].score :
+            best_score = population[99].score
+            print 'meilleur score : ' + str(population[99].score)
+            population[99].show_me()
+
+</pre>
+<p>Voilà le morceau, je pense que j&#8217;ai laissé assez de commentaires dans le code pour bien comprendre comment ça fonctionne et au niveau du python en lui-même il n&#8217;y a vraiment rien de spécial, ici ce qui compte c&#8217;est que vous voyez rapidement comment fonctionne l&#8217;algorithme.</p>
+<p>Alors, maintenant : Pourquoi s&#8217;emmerder à accoupler des objets à 2,78 Ghz ?</p>
+<p>Le problème ci-dessus, un problème dit <a href="http://fr.wikipedia.org/wiki/Problème_NP-complet" title="nb-complet" target="_blank">np-complet</a>, c&#8217;est-à-dire que c&#8217;est la merde pour trouver une solution dans un temps raisonnable si on l&#8217;a fait de façon traditionnelle : pour trouver le meilleur trajet sur 10 points, on sera obligé dans un premier temps de trouver tous les trajets possibles, avec N villes on a (N-1)!/2 trajet possible, le nombre de trajets explose littéralement si N augmente. Avec 100 points il est déjà pratiquement impossible de calculer tous les trajets possibles en un temps raisonnable.</p>
+<p>C&#8217;est là que l&#8217;algorithme génétique est très fort, on arrive très vite à une solution approchée, il est tout de même à noter que le résultat obtenu par l&#8217;algorithme génétique n&#8217;est pas LA solution exact au problème, il donne une solution approchée.</p>
+<p>Dernier point sur le code ci-dessus, ce n&#8217;est que les bases de l&#8217;algorithme génétique, avec ce code vous ne pourrez pas venir à bout d&#8217;un parcours de plus de 20 ou 30 villes, pour cela il faut améliorer l&#8217;algorithme, par exemple le croisement entre deux individus peut être fait de plusieurs façons différentes, dans mon exemple je prends la moitié du &#8220;code génétique&#8221; d&#8217;un individu que je colle à une autre moitié, on peut aussi faire du crossover : c&#8217;est-à-dire qu&#8217;on prend des bouts du code génétique des deux individus alternativement. Ensuite, il y a aussi des mutations génétiques à introduire dans le croisement, à un certain taux, par exemple 1% des croisements entre individus produira une mutation génétique, concrètement : on fait le croisement puis on change aléatoirement des données du code génétique, dans notre exemple on échangera deux points sur le parcours. Cela a pour effet de produire des individus potentiellement meilleurs que les autres, en terme mathématique ça permet aussi de ne pas s&#8217;enfermer dans une solution locale, ce qui est souvent le cas.</p>
+<p>J&#8217;espère ne pas vous avoir complètement perdu avec mes explications et vous avoir donné envie de regarder de plus près cet algorithme que je trouve très élégant.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/du-darwinisme-pythonien/feed/</wfw:commentRss>
+		<slash:comments>34</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8171</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/12/yO8DJCe.jpg" length="30561" type="image/jpg" />	</item>
+	</channel>
+</rss>

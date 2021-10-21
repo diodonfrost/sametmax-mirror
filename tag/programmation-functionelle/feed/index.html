@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>programmation functionelle &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/programmation-functionelle/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Introduction au currying </title>
+		<link>http://sametmax.com/introduction-au-currying/</link>
+		<comments>http://sametmax.com/introduction-au-currying/#comments</comments>
+		<pubDate>Fri, 12 Dec 2014 19:37:00 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[comprehension-lists]]></category>
+		<category><![CDATA[currying]]></category>
+		<category><![CDATA[fonction]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[lambda]]></category>
+		<category><![CDATA[listes en intention]]></category>
+		<category><![CDATA[programmation functionelle]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12693</guid>
+		<description><![CDATA[Le currying (ou Curryfication pour les frencofans) est le nom donné à une technique de programmation qui consiste à créer une fonction à partir d'une autre fonction et d'une liste partielle de paramètres destinés à celle-ci. On retrouve massivement cette technique en programmation fonctionnelle puisqu'elle permet de créer une fonction pure à partir d'une autre fonction pure. C'est une forme de réutilisabilité de code.]]></description>
+				<content:encoded><![CDATA[<p>Le currying (ou Curryfication pour les frencofans) est le nom donné à une technique de programmation qui consiste à créer une fonction à partir d&#8217;une autre fonction et d&#8217;une liste partielle de paramètres destinés à celle-ci. On retrouve massivement cette technique en programmation fonctionnelle puisqu&#8217;elle permet de créer une fonction pure à partir d&#8217;une autre fonction pure. C&#8217;est une forme de réutilisabilité de code.</p>
+<p>La forme la plus simple de currying est de réécrire une fonction appelant l&#8217;autre. Par exemple, soit une fonction pour multiplier tous les éléments d&#8217;un itérable :</p>
+<pre lang="python">def multiply(iterable, number):
+    """ Multiplie tous les éléments d'un itérable par un nombre.
+
+        Exemple :
+
+            >>> list(multiply([1, 2, 3], 2))
+            [2, 4, 6]
+    """
+    return (x * number for x in iterable)</pre>
+<p>On peut ensuite créer une fonction qui multipliera par 2 tous les éléments d&#8217;un itérable :</p>
+<pre lang="python">def doubled(iterable):
+    """ Multiplie tous les éléments d'un itérable par un 2.
+
+        Exemple :
+
+            >>> list(doubled([1, 2, 3]))
+            [2, 4, 6]
+    """
+    return multiply(iterable, 2)</pre>
+<p>C&#8217;est une forme de currying. On créé une fonction qui fait ce que fait une autre fonction, mais avec des arguments par défaut.</p>
+<p>Python possède une fonction pour faire ça automatiquement avec n&#8217;importe quelle fonction :</p>
+<pre lang="python">>>> from functools import partial 
+>>> tripled = partial(multiply, number=3) # on curryfie ici
+>>> list(tripled([1, 2, 3])) # nouvelle fonction avec un seul argument
+[3, 6, 9]</pre>
+<p>Cela marche car, je vous le rappelle, les fonctions sont des objets en Python. On peut mettre une fonction (je ne parle pas de son résultat) dans une variable, passer une fonction en paramètre ou retourner une fonction dans une autre fonction. <strong>Les fonctions sont manipulables</strong>.</p>
+<p>Il n&#8217;est pas rare d&#8217;utiliser les fonctions anonymes comme outils curryfication. En Python, on ferait ça avec une <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">lambda</a> :</p>
+<pre lang="python">
+>>> tripled = lambda x: multiple(x, 3) 
+>>> list(tripled([1, 2, 3]))
+[3, 6, 9]</pre>
+<p>Certains outils, comme <a href="http://buzzdecafe.github.io/code/2014/05/16/introducing-ramda/">Ramda</a> en Javascript, vont plus loin, et exposent des fonctions qui se curryfient automatiquement.</p>
+<p>Pour ce faire, il faut inverser l&#8217;ordre qu&#8217;on mettrait intuitivement aux arguments dans la déclaration d&#8217;une fonction :</p>
+<pre lang="python">
+# au lieu de multiply(iterable, number), on a :
+def multiply(number, iterable=None):
+    # Si on a pas d'itérable passé, on curryfie
+    if iterable is None:
+        return partial(multiply, number=number)
+    return (x * number for x in iterable)</pre>
+<p>Ainsi :</p>
+<pre lang="python">>>> list(multiply(2, [1, 2, 3])) # pas de currying
+[2, 4, 6]
+>>> quintuple = multiply(5) # currying automatique
+>>> list(quintuple([1, 2, 3]))
+[5, 10, 15]
+</pre>
+<p>L’intérêt de ce style, c&#8217;est qu&#8217;on peut composer des traitements à partir de plusieurs sous traitements, presque déclarativement :</p>
+<pre lang="python">
+def remove(filter, iterable=None):
+    """ Retire tous les éléments d'un itérable correspondant au filtre.
+
+        Exemple :
+
+            >>> list(remove(lambda x: x >= 4, [1, 2, 3, 4, 5]))
+            [1, 2, 3]
+    """
+    if iterable is None:
+        return partial(remove, filter)
+
+    return (x for x in iterable if not filter(x))
+
+>>> smalls = remove(lambda x: x >= 4)
+>>> list(smalls(tripled([0, 1, 2, 3, 4]))) # le traitement est auto descriptif
+[0, 3]
+</pre>
+<p>Néanmoins, il faut savoir que ce style n&#8217;est pas pythonique. En effet, en Python on préférera généralement utiliser des suites suite de générateurs. Soit par <a href="http://sametmax.com/python-love-les-listes-en-intention-partie-2/">intention</a>, soit via <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">yield</a>.</p>
+<p>Notre exemple serait alors :</p>
+<pre lang="python">>>> tripled = (x * 3 for x in [0, 1, 2, 3, 4])
+>>> smalls = (x for x in tripled if x <= 4)
+>>> list(smalls)
+[0, 3]</pre>
+<p>De plus, cette technique suppose qu&#8217;on ne profitera pas de certaines fonctionnalités, comme les paramètres par défaut des fonctions Python.</p>
+<p>C&#8217;est toutefois une bonne chose à connaître. C&#8217;est occasionnellement utile en Python et peut produire des solutions très élégantes. C&#8217;est également une bonne chose à comprendre pour aborder d&#8217;autres langages plus fonctionnels qui les utilisent bien plus comme le Javascript, le Lisp, ou carrément le Haskell.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/introduction-au-currying/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">12693</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/12/tumblr_n5zg0woqTQ1r539hzo1_500.jpg" length="68286" type="image/jpg" />	</item>
+	</channel>
+</rss>

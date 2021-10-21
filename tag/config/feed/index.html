@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>config &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/config/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Virtualenv EnvironmentError: mysql_config not found sous MAC OSX</title>
+		<link>http://sametmax.com/virtualenv-environmenterror-mysql_config-not-found-sous-mac-osx/</link>
+		<comments>http://sametmax.com/virtualenv-environmenterror-mysql_config-not-found-sous-mac-osx/#comments</comments>
+		<pubDate>Tue, 04 Feb 2014 10:56:18 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[config]]></category>
+		<category><![CDATA[erreur]]></category>
+		<category><![CDATA[mysql-python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8963</guid>
+		<description><![CDATA[Des fois il y a des petites choses comme ça qui devraient s'installer comme un rien et passer innaperçues mais non, ça vous fait une belle erreur et vous passez des heures à vous demander pourquoi ça ne veut pas s'installer. Restons zen...]]></description>
+				<content:encoded><![CDATA[<p>Comme le post précédent est inutile j&#8217;en fais un autre qui doit concerner au moins 0.00001% de la population.</p>
+<p>A vous qui essayez depuis 2 heures de configurer MySQL-python sous votre virtualenv, cet article vous est dédié.</p>
+<p>Cette erreur vicieuse m&#8217;arrive à chaque fois que j&#8217;installe MySQL-python dans un nouvel environnement virtuel. Ceci dit vous l&#8217;aurez peut-être sous un autre OS. Sur CentOS j&#8217;avais qu&#8217;à faire un <em>yum install mysql-devel</em> mais sous Mac c&#8217;est autre chose. Plus de puissance engendre plus de responsabilités&#8230;</p>
+<pre lang="bash">
+
+Max $  pip install MySQL-python
+Downloading/unpacking MySQL-python
+  Downloading MySQL-python-1.2.5.zip (108Kb): 108Kb downloaded
+  Running setup.py egg_info for package MySQL-python
+    sh: mysql_config: command not found
+    Traceback (most recent call last):
+      File "<string>", line 14, in <module>
+      File "/Users/Max/.virtualenvs/zooscator/build/MySQL-python/setup.py", line 17, in <module>
+        metadata, options = get_config()
+      File "setup_posix.py", line 43, in get_config
+        libs = mysql_config("libs_r")
+      File "setup_posix.py", line 25, in mysql_config
+        raise EnvironmentError("%s not found" % (mysql_config.path,))
+    EnvironmentError: mysql_config not found
+    Complete output from command python setup.py egg_info:
+    sh: mysql_config: command not found
+
+Traceback (most recent call last):
+
+  File "<string>", line 14, in <module>
+
+  File "/Users/Max/.virtualenvs/zooscator/build/MySQL-python/setup.py", line 17, in <module>
+
+    metadata, options = get_config()
+
+  File "setup_posix.py", line 43, in get_config
+
+    libs = mysql_config("libs_r")
+
+  File "setup_posix.py", line 25, in mysql_config
+
+    raise EnvironmentError("%s not found" % (mysql_config.path,))
+
+EnvironmentError: mysql_config not found
+
+----------------------------------------
+Command python setup.py egg_info failed with error code 1
+Storing complete log in /Users/Max/.pip/pip.log
+
+</pre>
+<p>Il faut éditer votre fichier <strong>activate</strong> qui se trouve dans le répertoire bin de votre environnement virtuel: ex &#8220;/Users/Max/.virtualenvs/zooscator/bin/activate&#8221;</p>
+<pre lang="bash">
+vi /Users/Max/.virtualenvs/zooscator/bin
+</pre>
+<p><strong>Trouvez les lignes suivantes et ajoutez:</strong></p>
+<blockquote><p>PATH=&#8221;$PATH:/opt/local/lib/mysql5/bin/&#8221;
+</p></blockquote>
+<pre lang="bash">
+...
+_OLD_VIRTUAL_PATH="$PATH"
+PATH="$VIRTUAL_ENV/bin:$PATH"
+PATH="$PATH:/opt/local/lib/mysql5/bin/"
+export PATH
+...
+</pre>
+<p>Chez moi le chemin vers mysql est /opt/local/lib/mysql5/bin/, si vous ne connaissez pas le vôtre utilisez la commande <em>locate</em>: ex <em>locate mysql</em></p>
+<p><strong>Une fois le fichier <em>activate</em> édité il faut le resourcer:<br />
+</strong></p>
+<pre lang="bash">
+source /Users/Max/.virtualenvs/zooscator/bin/activate
+</pre>
+<p><strong>Et vous pourrez alors installer MySQL-python tranquillou billou:<br />
+</strong></p>
+<pre lang="bash">
+Max $  pip install MySQL-python
+
+Downloading/unpacking MySQL-python
+  Running setup.py egg_info for package MySQL-python
+
+Installing collected packages: MySQL-python
+  Running setup.py install for MySQL-python
+[....................]
+Successfully installed MySQL-python
+Cleaning up...
+</pre>
+<p>Je vais nourrir mon cochon d&#8217;Inde.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/virtualenv-environmenterror-mysql_config-not-found-sous-mac-osx/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8963</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/02/burn_out_1086894409_sato_kronik0405.jpg" length="49452" type="image/jpg" />	</item>
+	</channel>
+</rss>

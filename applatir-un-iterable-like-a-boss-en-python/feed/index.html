@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Aplatir un iterable like a boss en Python</title>
+	<atom:link href="http://sametmax.com/applatir-un-iterable-like-a-boss-en-python/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/applatir-un-iterable-like-a-boss-en-python/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Yahya Abou Imran</title>
+		<link>http://sametmax.com/applatir-un-iterable-like-a-boss-en-python/#comment-192183</link>
+		<dc:creator><![CDATA[Yahya Abou Imran]]></dc:creator>
+		<pubDate>Thu, 01 Feb 2018 22:21:10 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7172#comment-192183</guid>
+		<description><![CDATA[&lt;p&gt;&lt;span class=&quot;merci&quot;&gt;&lt;/span&gt;Je vois bien que c&#039;est un article qui date un peu, mais bon, juste pour dire:&lt;/p&gt;
+
+&lt;p&gt;On peut remplacer l&#039;histoire des flatten_types par quelque chose d&#039;un peu plus simple si ce qu&#039;on veut c&#039;est juste accepter n&#039;importe quel itétrable à l&#039;exclusion des mappings :&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;&lt;/p&gt;
+
+&lt;p&gt;from collections.abc import Iterable, Mapping&lt;/p&gt;
+
+&lt;p&gt;def should_flatten(self, obj):&lt;/p&gt;
+
+&lt;p&gt;return isinstance(obj, Iterable) and not isinstance(obj, Mapping)&lt;/p&gt;
+
+&lt;p&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;C&#039;est même l&#039;une des raisons de l&#039;existence des ABCs : avant, distinguer un mapping d&#039;un &quot;simple&quot; itérable n&#039;avait pas de solution propre (c&#039;est la parole de Guido lui-même dans la PEP sur les ABCs).&lt;/p&gt;
+
+&lt;p&gt;En outre, avoir set et MutablesSet dans les flatten_types en même temps est redondant...&lt;/p&gt;
+
+&lt;p&gt;Quoiqu&#039;il en soit, merci pour vos articles, à chaque fois que j&#039;en lis un j&#039;apprends plein de choses.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p><span class="merci"></span>Je vois bien que c&#8217;est un article qui date un peu, mais bon, juste pour dire:</p>
+<p>On peut remplacer l&#8217;histoire des flatten_types par quelque chose d&#8217;un peu plus simple si ce qu&#8217;on veut c&#8217;est juste accepter n&#8217;importe quel itétrable à l&#8217;exclusion des mappings :</p>
+<p><code></code></p>
+<p>from collections.abc import Iterable, Mapping</p>
+<p>def should_flatten(self, obj):</p>
+<p>return isinstance(obj, Iterable) and not isinstance(obj, Mapping)</p>
+</p>
+<p>C&#8217;est même l&#8217;une des raisons de l&#8217;existence des ABCs : avant, distinguer un mapping d&#8217;un &#8220;simple&#8221; itérable n&#8217;avait pas de solution propre (c&#8217;est la parole de Guido lui-même dans la PEP sur les ABCs).</p>
+<p>En outre, avoir set et MutablesSet dans les flatten_types en même temps est redondant&#8230;</p>
+<p>Quoiqu&#8217;il en soit, merci pour vos articles, à chaque fois que j&#8217;en lis un j&#8217;apprends plein de choses.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/applatir-un-iterable-like-a-boss-en-python/#comment-13584</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sat, 24 Aug 2013 13:22:43 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7172#comment-13584</guid>
+		<description><![CDATA[En général je récupère des trucs sur stackoverflow, activepython et github, je les nettoies, j&#039;emballe le tout dans un code réutilisable et ça me fait un article.]]></description>
+		<content:encoded><![CDATA[<p>En général je récupère des trucs sur stackoverflow, activepython et github, je les nettoies, j&#8217;emballe le tout dans un code réutilisable et ça me fait un article.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: glickind</title>
+		<link>http://sametmax.com/applatir-un-iterable-like-a-boss-en-python/#comment-13582</link>
+		<dc:creator><![CDATA[glickind]]></dc:creator>
+		<pubDate>Sat, 24 Aug 2013 13:06:33 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7172#comment-13582</guid>
+		<description><![CDATA[si la limite du nb de récursion vous gêne, allez voir du côté de &lt;a href=&quot;http://www.stackless.com/&quot; rel=&quot;nofollow&quot;&gt;Stackless Python&lt;/a&gt;]]></description>
+		<content:encoded><![CDATA[<p>si la limite du nb de récursion vous gêne, allez voir du côté de <a href="http://www.stackless.com/" rel="nofollow">Stackless Python</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: roro</title>
+		<link>http://sametmax.com/applatir-un-iterable-like-a-boss-en-python/#comment-13580</link>
+		<dc:creator><![CDATA[roro]]></dc:creator>
+		<pubDate>Sat, 24 Aug 2013 12:55:42 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7172#comment-13580</guid>
+		<description><![CDATA[hé ben mon vieux, je sais pas d&#039;où il les sort...
+Mais il nous en sort de vraiment étonnantes...]]></description>
+		<content:encoded><![CDATA[<p>hé ben mon vieux, je sais pas d&#8217;où il les sort&#8230;<br />
+Mais il nous en sort de vraiment étonnantes&#8230;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: foxmask</title>
+		<link>http://sametmax.com/applatir-un-iterable-like-a-boss-en-python/#comment-13561</link>
+		<dc:creator><![CDATA[foxmask]]></dc:creator>
+		<pubDate>Fri, 23 Aug 2013 13:03:32 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7172#comment-13561</guid>
+		<description><![CDATA[Ça m&#039;a fait pas à la tête en ce vendredi après midi :) Mais j&#039;aime ce que ça fait en tout cas.]]></description>
+		<content:encoded><![CDATA[<p>Ça m&#8217;a fait pas à la tête en ce vendredi après midi :) Mais j&#8217;aime ce que ça fait en tout cas.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

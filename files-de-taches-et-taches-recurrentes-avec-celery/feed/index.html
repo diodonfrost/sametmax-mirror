@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Files de tâches et tâches récurrentes avec Celery</title>
+	<atom:link href="http://sametmax.com/files-de-taches-et-taches-recurrentes-avec-celery/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/files-de-taches-et-taches-recurrentes-avec-celery/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/files-de-taches-et-taches-recurrentes-avec-celery/#comment-190636</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 08 Nov 2017 14:43:34 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6880#comment-190636</guid>
+		<description><![CDATA[&lt;p&gt;Bien vu!&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Bien vu!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: AnOnyme77</title>
+		<link>http://sametmax.com/files-de-taches-et-taches-recurrentes-avec-celery/#comment-190605</link>
+		<dc:creator><![CDATA[AnOnyme77]]></dc:creator>
+		<pubDate>Mon, 06 Nov 2017 16:40:47 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6880#comment-190605</guid>
+		<description><![CDATA[Super article. J&#039;apprends toujours des trucs super intéressants avec vous !
+
+Une petite erreur dans un code par contre je pense :
+
+&lt;code&gt;@periodic_task(run_every=crontab(hour=&#039;5,13,23&#039;, minute=30, day_of_week=&#039;monday&#039;)&lt;/code&gt;
+
+Je vois ici deux parenthèses ouvrantes et une fermante :&#039;(.
+]]></description>
+		<content:encoded><![CDATA[<p>Super article. J&#8217;apprends toujours des trucs super intéressants avec vous !</p>
+<p>Une petite erreur dans un code par contre je pense :</p>
+<p><code>@periodic_task(run_every=crontab(hour='5,13,23', minute=30, day_of_week='monday')</code></p>
+<p>Je vois ici deux parenthèses ouvrantes et une fermante :'(.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: mzk</title>
+		<link>http://sametmax.com/files-de-taches-et-taches-recurrentes-avec-celery/#comment-187497</link>
+		<dc:creator><![CDATA[mzk]]></dc:creator>
+		<pubDate>Thu, 01 Jun 2017 10:22:17 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6880#comment-187497</guid>
+		<description><![CDATA[J&#039;arrive un peu tard, pour ramener ma fraise... J&#039;ai mis du temps à comprendre tout ce jargon sur le multiprocessing, threading, parallélisme vs. concurrence, etc. Mais le tutoriel ici est assez fascinant et finalement très accessible ! Merci.
+
+Juste pour les &lt;em&gt;noobs&lt;/em&gt; comme moi, et qui utilisent abondement Python 3.6 - comme fourni &lt;em&gt;out-of-the-box&lt;/em&gt; par Arch Linux, voici une légère ré-écriture du script &lt;em&gt;tasks.py&lt;/em&gt; :
+
+&lt;pre&gt;
+&lt;code&gt;
+import urllib.request
+
+from collections import Counter
+
+from celery import Celery
+
+celery = Celery(&#039;tasks&#039;, broker=&#039;redis://localhost&#039;, backend=&#039;redis://localhost&#039;)
+
+@celery.task
+def ecount(url):
+&#160;&#160;&#160;&#160;with urllib.request.urlopen(url) as res:
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;html = res.read()
+&#160;&#160;&#160;&#160;html = html.decode(&#039;utf-8&#039;)
+&#160;&#160;&#160;&#160;return Counter(html)[&#039;e&#039;]
+&lt;/code&gt;
+&lt;/pre&gt;
+
+Voilà. Je sais pas si c&#039;est très utile, mais si ça peut aider les &lt;em&gt;bleus&lt;/em&gt; comme moi...
+]]></description>
+		<content:encoded><![CDATA[<p>J&#8217;arrive un peu tard, pour ramener ma fraise&#8230; J&#8217;ai mis du temps à comprendre tout ce jargon sur le multiprocessing, threading, parallélisme vs. concurrence, etc. Mais le tutoriel ici est assez fascinant et finalement très accessible ! Merci.</p>
+<p>Juste pour les <em>noobs</em> comme moi, et qui utilisent abondement Python 3.6 &#8211; comme fourni <em>out-of-the-box</em> par Arch Linux, voici une légère ré-écriture du script <em>tasks.py</em> :</p>
+<pre>
+<code>
+import urllib.request
+
+from collections import Counter
+
+from celery import Celery
+
+celery = Celery('tasks', broker='redis://localhost', backend='redis://localhost')
+
+@celery.task
+def ecount(url):
+&nbsp;&nbsp;&nbsp;&nbsp;with urllib.request.urlopen(url) as res:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;html = res.read()
+&nbsp;&nbsp;&nbsp;&nbsp;html = html.decode('utf-8')
+&nbsp;&nbsp;&nbsp;&nbsp;return Counter(html)['e']
+</code>
+</pre>
+<p>Voilà. Je sais pas si c&#8217;est très utile, mais si ça peut aider les <em>bleus</em> comme moi&#8230;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Siltaar</title>
+		<link>http://sametmax.com/files-de-taches-et-taches-recurrentes-avec-celery/#comment-186852</link>
+		<dc:creator><![CDATA[Siltaar]]></dc:creator>
+		<pubDate>Wed, 19 Apr 2017 21:17:27 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6880#comment-186852</guid>
+		<description><![CDATA[« Heureusement il existe une bibliothèque qui se met au dessus de Kombu pour et nous expose juste les fonctionnalités que l’on souhaite »
+
+--&#062; &lt;strike&gt;pour&lt;/strike&gt;
+
+Après, la vie privée des libs, qui se mets au dessus, qui expose quoi… cela ne nous, regarde pas ;-)
+]]></description>
+		<content:encoded><![CDATA[<p>« Heureusement il existe une bibliothèque qui se met au dessus de Kombu pour et nous expose juste les fonctionnalités que l’on souhaite »</p>
+<p>&#8211;&gt; <strike>pour</strike></p>
+<p>Après, la vie privée des libs, qui se mets au dessus, qui expose quoi… cela ne nous, regarde pas ;-)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Nevenoe</title>
+		<link>http://sametmax.com/files-de-taches-et-taches-recurrentes-avec-celery/#comment-178129</link>
+		<dc:creator><![CDATA[Nevenoe]]></dc:creator>
+		<pubDate>Wed, 11 May 2016 11:52:48 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6880#comment-178129</guid>
+		<description><![CDATA[Une alternative à Celery pourrait être Django-Crontab: https://pypi.python.org/pypi/django-crontab
+
+Je laisse ça la... Pour le partage.
+]]></description>
+		<content:encoded><![CDATA[<p>Une alternative à Celery pourrait être Django-Crontab: <a href="https://pypi.python.org/pypi/django-crontab" rel="nofollow">https://pypi.python.org/pypi/django-crontab</a></p>
+<p>Je laisse ça la&#8230; Pour le partage.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/files-de-taches-et-taches-recurrentes-avec-celery/#comment-160300</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Tue, 05 May 2015 22:30:10 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6880#comment-160300</guid>
+		<description><![CDATA[&lt;p&gt;Pose la question sur indexerror.net, ce sera mieux adapté que les comments du blog.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Pose la question sur indexerror.net, ce sera mieux adapté que les comments du blog.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: francoisgfx</title>
+		<link>http://sametmax.com/files-de-taches-et-taches-recurrentes-avec-celery/#comment-160286</link>
+		<dc:creator><![CDATA[francoisgfx]]></dc:creator>
+		<pubDate>Tue, 05 May 2015 15:51:57 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6880#comment-160286</guid>
+		<description><![CDATA[Hello,
+
+J&#039;aimerai créer une tache qui soit exécuté par plusieurs workers ayant différente app. Est ce que c&#039;est possible ?
+
+j&#039;ai une tache périodique qui poll des events d&#039;un service. Je voudrais stocker chaque event dans une queue par type d&#039;event.
+
+Ensuite que chaque worker se bind a une queue d&#039;un type d&#039;event qui l’intéresse et execute son code en fonction.
+
+Vue que la fonction/app a exécuter est dans le message, je ne vois pas comment je peux faire ça.
+
+Si vous avez une idée, je suis preneur.
+
+Merci
+
+F.
+]]></description>
+		<content:encoded><![CDATA[<p>Hello,</p>
+<p>J&#8217;aimerai créer une tache qui soit exécuté par plusieurs workers ayant différente app. Est ce que c&#8217;est possible ?</p>
+<p>j&#8217;ai une tache périodique qui poll des events d&#8217;un service. Je voudrais stocker chaque event dans une queue par type d&#8217;event.</p>
+<p>Ensuite que chaque worker se bind a une queue d&#8217;un type d&#8217;event qui l’intéresse et execute son code en fonction.</p>
+<p>Vue que la fonction/app a exécuter est dans le message, je ne vois pas comment je peux faire ça.</p>
+<p>Si vous avez une idée, je suis preneur.</p>
+<p>Merci</p>
+<p>F.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/files-de-taches-et-taches-recurrentes-avec-celery/#comment-49412</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 11 Jun 2014 16:29:51 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6880#comment-49412</guid>
+		<description><![CDATA[^^ 
+
+Tu ne crois pas si bien dire, on s&#039;est tous les deux inscrit à l&#039;école de massage thai pour une 30aine d&#039;heures de cours. On va devenir experts en passage de massage \o/]]></description>
+		<content:encoded><![CDATA[<p>^^ </p>
+<p>Tu ne crois pas si bien dire, on s&#8217;est tous les deux inscrit à l&#8217;école de massage thai pour une 30aine d&#8217;heures de cours. On va devenir experts en passage de massage \o/</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: mdupuy</title>
+		<link>http://sametmax.com/files-de-taches-et-taches-recurrentes-avec-celery/#comment-49388</link>
+		<dc:creator><![CDATA[mdupuy]]></dc:creator>
+		<pubDate>Wed, 11 Jun 2014 16:01:24 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6880#comment-49388</guid>
+		<description><![CDATA[On apprend que le broker est un &quot;passeur de massage&quot;. On sent que la Thaïlande a eu une certaine influence sur le contenu de l&#039;article.]]></description>
+		<content:encoded><![CDATA[<p>On apprend que le broker est un &#8220;passeur de massage&#8221;. On sent que la Thaïlande a eu une certaine influence sur le contenu de l&#8217;article.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/files-de-taches-et-taches-recurrentes-avec-celery/#comment-18963</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sat, 25 Jan 2014 21:46:55 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6880#comment-18963</guid>
+		<description><![CDATA[Pas problème, donne moi les codes d&#039;accès de ton compte de banque en ligne, et je t&#039;envoies autant de bitcoins que tu veux.]]></description>
+		<content:encoded><![CDATA[<p>Pas problème, donne moi les codes d&#8217;accès de ton compte de banque en ligne, et je t&#8217;envoies autant de bitcoins que tu veux.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

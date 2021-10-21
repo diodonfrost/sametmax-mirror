@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>crochet &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/crochet/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Les managers le détestent : faites tourner WAMP dans Django avec cette astuce insolite</title>
+		<link>http://sametmax.com/les-managers-le-detestent-faites-tourner-wamp-dans-django-avec-cette-astuce-insolite/</link>
+		<comments>http://sametmax.com/les-managers-le-detestent-faites-tourner-wamp-dans-django-avec-cette-astuce-insolite/#comments</comments>
+		<pubDate>Sun, 04 Jan 2015 19:45:07 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[autobahn]]></category>
+		<category><![CDATA[crochet]]></category>
+		<category><![CDATA[crossbar]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[flask]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[twisted]]></category>
+		<category><![CDATA[wamp]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=15665</guid>
+		<description><![CDATA[On peut utiliser WAMP, <code>directement</code> dans Django.]]></description>
+				<content:encoded><![CDATA[<p>Il existe une lib appelée <a href="https://pypi.python.org/pypi/crochet">crochet</a> qui permet de faire marcher des API de twisted entre deux bouts de code bloquants. Certes, ça ne marche qu&#8217;en 2.7 et c&#8217;est pas hyper performant, mais on peut faire des trucs mignons du genre cette démo qui <a href="https://github.com/tavendo/AutobahnPython/tree/master/examples/twisted/wamp/app/crochet/example1">mélange flask et WAMP</a>.</p>
+<p>C&#8217;est du pur Python, pas de process externe à gérer, c&#8217;est presque simple.</p>
+<p>Bref, si on veut utiliser WAMP avec une app synchrone comme flask, c&#8217;est un bon moyen de s&#8217;y mettre. On aura jamais des perfs fantastiques, mais on peut pusher vers le browser.</p>
+<p>Du coup je me suis demandé si on pouvait faire ça avec Django.</p>
+<p>Évidement, ça a été un peu plus compliqué car par défaut <code>runserver</code> lance plusieurs workers et fait un peu de magie avec les threads. Mais après un peu de bidouillage, ça marche !</p>
+<p>On peut utiliser WAMP, <code>directement</code> dans Django.</p>
+<h2>Suivez le guide</h2>
+<p>D&#8217;abord, on installe tout le bouzin (python 2.7, souvenez-vous) :</p>
+<pre lang="bash">pip install crossbar crochet django</pre>
+<p>Il vous faudra un Django 1.7, le tout dernier, car il possède <a href="https://docs.djangoproject.com/en/dev/ref/applications/#django.apps.AppConfig.ready">une fonctionnalité</a> qui nous permet de lancer du code quand tout le framework est chargé.</p>
+<p>Vous vous faites votre projet comme d&#8217;hab, et vous ouvrez le fichier de settings et au lieu de mettre votre app dans <code>INSTALLED_APPS</code>, vous rajoutez ça :</p>
+<pre lang="python">INSTALLED_APPS = (
+    '...',
+    'votreapp.app.VotreAppConfig'
+)</pre>
+<p>Puis dans le module de votre app, vous créez un fichier app.py, qui va contenir ça:</p>
+<pre lang="python"># -*- coding: utf-8 -*-
+
+import crochet
+
+from django.apps import AppConfig
+
+# On charge l'objet contenant la session WAMP définie dans la vue
+from votreapp.views import wapp
+
+class VotreAppConfig(AppConfig):
+    name = 'votreapp'
+    def ready(self):
+        # On dit a crochet de faire tourner notre app wamp dans sa popote qui
+        # isole le reactor de Twisted
+        @crochet.run_in_reactor
+        def start_wamp():
+           # On démarre la session WAMP en se connectant au serveur
+           # publique de test
+           wapp.run("wws://demo.crossbar.io/ws", "realm1", start_reactor=False)
+        start_wamp()</pre>
+<p>On passe à urls.py dans lequel on se rajoute des vues de démo :</p>
+<pre lang="python">
+    url(r'^ping/', 'votreapp.views.ping'),
+    url(r'^$', 'votreapp.views.index')
+</pre>
+<p>Puis dans notre fichier views.py, on met :</p>
+<pre lang="python">
+# -*- coding: utf-8 -*-
+
+import uuid
+
+from django.shortcuts import render
+
+import crochet
+
+# Crochet se démerde pour faire tourner le reactor twisted de
+# manière invisible. A lancer avant d'importer autobahn
+crochet.setup()
+
+from autobahn.twisted.wamp import Application
+
+# un objet qui contient une session WAMP
+wapp = Application()
+
+# On enrobe les primitives de WAMP pour les rendre synchrones
+@crochet.wait_for(timeout=1)
+def publish(topic, *args, **kwargs):
+   return wapp.session.publish(topic, *args, **kwargs)
+
+@crochet.wait_for(timeout=1)
+def call(name, *args, **kwargs):
+   return wapp.session.call(name, *args, **kwargs)
+
+def register(name, *args, **kwargs):
+    @crochet.run_in_reactor
+    def decorator(func):
+        wapp.register(name, *args, **kwargs)(func)
+    return decorator
+
+def subscribe(name, *args, **kwargs):
+    @crochet.run_in_reactor
+    def decorator(func):
+        wapp.subscribe(name, *args, **kwargs)(func)
+    return decorator
+
+# Et hop, on peut utiliser nos outils WAMP !
+
+@register('uuid')
+def get_uuid():
+    return uuid.uuid4().hex
+
+@subscribe('ping')
+def onping():
+    with open('test', 'w') as f:
+        f.write('ping')
+
+# Et à côté, quelques vues django normales
+
+def index(request):
+    # pub et RPC en action côté Python
+    publish('ping')
+    print call('uuid')
+
+    with open('test') as f:
+        print(f.read())
+    return render(request, 'index.html')
+
+def ping(request):
+    return render(request, 'ping.html')
+</pre>
+<p>Après, un peu de templating pour que ça marche&#8230;</p>
+<p>Index.html :</p>
+<pre lang="html">
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>
+       UUID
+    </title>
+
+    <script src="{% static 'autobahn.min.js' %}"></script>
+    <script type="text/javascript">
+      var connection = new autobahn.Connection({
+         url: "ws://localhost:8080/ws",
+         realm: "realm1"
+      });
+
+     connection.onopen = function (session) {
+
+        session.call("uuid").then(function (uuid) {
+          var p = document.getElementById('uuid');
+          p.innerHTML = uuid;
+        });
+     };
+
+     connection.open();
+    </script>
+</head>
+<body>
+<h2>UUID</h2>
+<p id="uuid"></p>
+</body>
+</html></pre>
+<p>ping.html :</p>
+<pre lang="python">{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>
+       Ping
+    </title>
+
+    <script src="{% static 'autobahn.min.js' %}"></script>
+    <script type="text/javascript">
+      var connection = new autobahn.Connection({
+         url: "ws://localhost:8080/ws",
+         realm: "realm1"
+      });
+
+     connection.onopen = function (session) {
+
+        session.subscribe("ping", function () {
+          var ul = document.getElementById('ping');
+          var li = document.createElement('li');
+          li.innerHTML = 'Ping !'
+          ul.appendChild(li);
+        });
+     };
+
+     connection.open();
+    </script>
+</head>
+<body>
+<h2>Ping me !</h2>
+
+<ul id="ping">
+</ul>
+</body>
+</html></pre>
+<p>On ouvre la console, on lance son routeur :</p>
+<pre lang="bash">
+    crossbar init
+    crossbar start</pre>
+<p>On lance dans une autre console son serveur Django :</p>
+<pre lang="bash">./manage.py runserver</pre>
+<p>Et si on navigue sur <code>http://127.0.0.1:8000</code>, on récupère un UUID tout frais via RCP.</p>
+<p>On peut aussi voir dans le shell que ça marche côté Python :</p>
+<pre>94cfccf0899d4c42950788fa655b65ed
+ping</pre>
+<p>D’ailleurs un fichier nommé &#8220;test&#8221; est créé à la racine du projet.</p>
+<p>Et si on navigue sur <code>http://127.0.0.1:8000/ping/</code> et qu&#8217;on refresh <code>http://127.0.0.1:8000</code> plusieurs fois, on voit la page se mettre à jour.</p>
+<p>Achievement unlock : use WAMP and Django code in the same file.</p>
+<h2>A partir de là</h2>
+<p>Il y a plein de choses à faire.</p>
+<p>On pourrait faire une lib qui wrap tout ça pour pas à avoir à le mettre dans son fichier de vue et qui utilise settings.py pour la configuration.</p>
+<p>Il faut tester ça avec des setups plus gros pour voir comment ça se comporte avec gunicorn, plusieurs workers, le logging de Django, etc. Je suis à peu près sûr que les callbacks vont être registrés plusieurs fois et ça devrait faire des erreurs dans les logs (rien de grave ceci dit).</p>
+<p>On pourrait aussi adapter le RPC pour qu&#8217;il utilise les cookies d&#8217;authentification Django, et pouvoir les protéger avec @login_required.</p>
+<p>Mais un monde d&#8217;opportunités s&#8217;offrent à vous à partir de là.</p>
+<p>Moi, ça fait 6 h que je taffe dessus, je vais me pieuter.</p>
+<hr>
+<p><a href="https://github.com/sametmax/codes-des-articles/tree/master/2015/janvier/wamp_et_django">Télécharger le code de l&#8217;article</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-managers-le-detestent-faites-tourner-wamp-dans-django-avec-cette-astuce-insolite/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">15665</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/01/index.jpeg" length="10867" type="image/jpg" />	</item>
+	</channel>
+</rss>

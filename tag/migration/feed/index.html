@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>migration &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/migration/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Conclusions de la migration</title>
+		<link>http://sametmax.com/conclusions-de-la-migration/</link>
+		<comments>http://sametmax.com/conclusions-de-la-migration/#comments</comments>
+		<pubDate>Thu, 08 Jan 2015 09:15:40 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[blog]]></category>
+		<category><![CDATA[meta]]></category>
+		<category><![CDATA[migration]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=15682</guid>
+		<description><![CDATA[La migration de serveur est terminée. Le blog, le <a href="http://multiboards.net">multiboards</a>, <a href="http://indexerror.net">IndexError</a> et <a href="http://0bin.net">0bin</a> on été rétablis. On en a profité pour remettre sur pied <a href="http://allthatcounts.net">AllThatCounts</a> qui avait été délaissé durant le dernier crash.]]></description>
+				<content:encoded><![CDATA[<p>La migration de serveur est terminée. Le blog, le <a href="http://multiboards.net">multiboards</a>, <a href="http://indexerror.net">IndexError</a> et <a href="http://0bin.net">0bin</a> on été rétablis. On en a profité pour remettre sur pied <a href="http://allthatcounts.net">AllThatCounts</a> qui avait été délaissé durant le dernier crash.</p>
+<p>On quitte donc <a href="https://www.leaseweb.com/">LeaseWeb</a>, qui nous a forcé à migré 3 fois avec ses machines qui ont planté. En plus deux fois la partition <code>/tmp</code> était corrompue, ce qui rend le backup particulièrement compliqué. On notera que leur SAV nous posait des questions du genre &#8220;si vous installez ça, et lancez cette commande, ça donne quoi ?&#8221;, alors qu&#8217;on leur a bien notifié qu&#8217;on avait un disque monté en lecture seul du fait du FS en vrac&#8230;</p>
+<p>On est passé chez <a href="http://www.cinfu.com/vps/">Cinfu</a>, car on peut les payer en Bitcoin. Livraison du serveur rapide, installation sans histoire, et finalement une migration beaucoup moins chiante que la dernière fois car on a fait les gros bourrins : <code>rsync</code> + <code>mysqldump</code> bien large. Ce qui a pris le plus de temps c&#8217;était de résoudre les centaines de problèmes de permissions que ça a créé, les trucs que ça aurait pas du écraser, etc.</p>
+<p>On avait + de 100000 spams dans la poubelle des commentaires, qui prenaient 300 Mo des 400 mo de la taille totale de la BDD du blog. Un petit :</p>
+<pre lang="sql">DELETE FROM wp_comments WHERE comment_approved = 'trash';</pre>
+<p>A accéléré la migration vu qu&#8217;on a du transférer la base 3 fois et la réimporter autant à cause d&#8217;erreurs diverses. Note à nous-même : arrêter de mettre des <code>.bak</code> dans <code>/tmp</code> parce que c&#8217;est &#8220;juste pour 5 minutes&#8221;. Après on se fait avoir comme des débutants au reboot. </p>
+<p>C&#8217;est là qu&#8217;on voit qu&#8217;on est dev, et pas admin.</p>
+<p>Rajouter dans wp-config.php :</p>
+<pre lang="php">define('EMPTY_TRASH_DAYS', 30); </pre>
+<p>Nous évitera d&#8217;avoir à repenser à tout ça. C&#8217;est con mais faut le savoir.</p>
+<p>J&#8217;en profite pour témoigner mon amour immodéré pour <a href="https://mosh.mit.edu/">mosh</a>. Parce que faire tout ça sur une connexion thai avec 300ms de ping minimum et une coupure toutes les 10 minutes, avec SSH, c&#8217;est juste un enfer.</p>
+<p>Sous Centos, faut installer les repos <code>EPEL</code> et <code>yum install mosh</code> derrière.</p>
+<p>Sous Ubuntu, fait installer le ppa <code>ppa:keithw/mosh</code> et <code>apt-get install mosh</code> derrière.</p>
+<p>Certains serveurs ont un pare feu tatillon, et il faut rajouter dans la section <code>:RH-Firewall-1-INPUT - [0:0]</code> de iptable :</p>
+<p><code>-A RH-Firewall-1-INPUT -p udp --dport 60000:61000 -j ACCEPT</code></p>
+<p>D&#8217;autres ont des problèmes de locales:</p>
+<pre lang="python">apt-get install --reinstall language-pack-fr
+dpkg-reconfigure locales</pre>
+<p>Parfois y a aucun problème. C&#8217;est juste qu&#8217;on a pas un parc homogène, avec des bécanes vieilles de 1000 ans, alors forcément&#8230;</p>
+<p>Mais Max a fait des devis, et si on passe au cloud avec les 2G/s de BP et les To de disque dur qu&#8217;on consomme, on multiplie les prix par 10 d&#8217;hébergement. Faire les trucs à la main, c&#8217;est chiant, mais c&#8217;est économe.</p>
+<p>Pour mosh, pas de serveur à lancer, juste remplacer <code>ssh</code> par <code>mosh</code> dans la commande quand on se connecte. Des fois je lance avec <code>--predict=experimental</code> car je suis impatient et le retour de frappe est plus rapide, mais le cursor fait des mouvements bizarres, faut s&#8217;habituer.</p>
+<p>Bon, on retourne faire des trucs plus productifs.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/conclusions-de-la-migration/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">15682</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/01/reVgzvz.gif" length="998065" type="image/jpg" />	</item>
+		<item>
+		<title>Restauration des fonctionnalités</title>
+		<link>http://sametmax.com/restauration-des-fonctionnalites/</link>
+		<comments>http://sametmax.com/restauration-des-fonctionnalites/#comments</comments>
+		<pubDate>Wed, 08 Oct 2014 12:52:09 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[blog]]></category>
+		<category><![CDATA[meta]]></category>
+		<category><![CDATA[migration]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12332</guid>
+		<description><![CDATA[Après les iframes et la coloration syntaxique, le formulaire de contact, le flux rss des tweets et le planet Python fr sont de nouveau opérationnels. Ça me fait penser que si vous connaissez des blogs fr sur Python, proposez les pour le planet.]]></description>
+				<content:encoded><![CDATA[<p>Après les iframes et la coloration syntaxique, le <a href="http://sametmax.com/contactez-nous/">formulaire de contact</ahref=>, le <a href="http://bridge.suumitsu.eu/?action=display&#038;bridge=TwitterBridge&#038;u=sam_et_max&#038;format=AtomFormat">flux rss des tweets</a> et le <a href="http://sametmax.com/planet-python-fr/">planet Python fr</a> sont de nouveau opérationnels. </p>
+<p>Ça me fait penser que si vous connaissez des blogs fr sur Python, proposez les pour le planet.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/restauration-des-fonctionnalites/feed/</wfw:commentRss>
+		<slash:comments>19</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">12332</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/10/fixing_luna__s_console_by_bcrich40-d5axh6z.jpg" length="117314" type="image/jpg" />	</item>
+		<item>
+		<title>Multiboards a été migré</title>
+		<link>http://sametmax.com/multiboards-a-ete-migre/</link>
+		<comments>http://sametmax.com/multiboards-a-ete-migre/#comments</comments>
+		<pubDate>Fri, 26 Sep 2014 07:30:14 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[meta]]></category>
+		<category><![CDATA[migration]]></category>
+		<category><![CDATA[multiboards]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12242</guid>
+		<description><![CDATA[<a href="http://multiboards.net/">multiboards.net</a>, la page Web qu'on trempe dans son café, a été migrée.]]></description>
+				<content:encoded><![CDATA[<p><a href="http://multiboards.net/">multiboards.net</a>, la page Web qu&#8217;on trempe dans son café, a été migrée. Comme il n&#8217;y a aucune donnée associée, ben, le truc n&#8217;a pas bougé, dont vous le retrouverez tel qu&#8217;avant.</p>
+<p>Plusieurs personnes nous ont demandé le code source. La raison pour laquelle il n&#8217;est pas publié, c&#8217;est que c&#8217;est un amas de code vraiment peu ragoutant, et qu&#8217;il faudrait vraiment le nettoyer pour éviter que la honte ne s&#8217;abatte sur nous.</p>
+<p>Max voudrait en faire un truc personnalisable, avec des widgets, et tout, à la netwibes mais en plus simple. Je pense que ça n&#8217;arrivera jamais :)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/multiboards-a-ete-migre/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">12242</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/09/tumblr_nbn02s0t2e1r539hzo1_500.jpg" length="44005" type="image/jpg" />	</item>
+		<item>
+		<title>Le blog a été migré (enfin presque)</title>
+		<link>http://sametmax.com/le-blog-a-ete-migre-enfin-presque/</link>
+		<comments>http://sametmax.com/le-blog-a-ete-migre-enfin-presque/#comments</comments>
+		<pubDate>Tue, 23 Sep 2014 12:18:43 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[blog]]></category>
+		<category><![CDATA[meta]]></category>
+		<category><![CDATA[mi-figue]]></category>
+		<category><![CDATA[mi-raisin]]></category>
+		<category><![CDATA[migraine]]></category>
+		<category><![CDATA[migration]]></category>
+		<category><![CDATA[wordpress]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12217</guid>
+		<description><![CDATA[En gros, vous pouvez de nouveau lire vos articles techniques préférés. Et les autres aussi.
+]]></description>
+				<content:encoded><![CDATA[<p>Max a pris l&#8217;hébergement et a setup Varnish (sans lequel le WP s&#8217;écroule sous la masse de vos pattes velues), puis j&#8217;ai installé WP 4, et migré la DB et les images.</p>
+<p>En gros, vous pouvez de nouveau lire vos articles techniques préférés. Et les autres aussi.</p>
+<p>Par contre, feu notre ancien thème (snif, il était si&#8230; si&#8230; attachant&#8230;), et donc tous les easter eggs qui vont avec.</p>
+<p>Vous noterez donc un blog moins fun, avec des bugs graphiques et surtout, sans plugins, donc ouvert aux 4 vents aux spams mais sans formulaire de contact. Mouarf.</p>
+<p>Je vais corriger ça petit à petit, mais je ne me presse pas, l&#8217;avantage d&#8217;écrire un blog bénévole est qu&#8217;on ne doit rien à personne, donc on peut se gratter les couilles.</p>
+<p>0bin, multiboards et allthatcount vont suivre. Je vais probablement les migrer avant de m&#8217;attaquer à la corrections des petits problèmes du blog d&#8217;ailleurs.</p>
+<p>La base de données complète a été migrée. Félicitation à l&#8217;équipe de WP pour avoir mis en œuvre un outil de conversion des tables d&#8217;une version à l&#8217;autre parfaitement transparent. C&#8217;est pas facile à faire, et ça marche super bien. Mettez l&#8217;article en favoris, je ne dirais pas souvent du bien de cet outil.</p>
+<p>Ça signifie que vos commentaires sont là, les pages statiques aussi, et bien entendu, pour les contributeurs, leurs comptes utilisateurs également. Il y a eu un bug de login ce matin, mais c&#8217;est réparé.</p>
+<p>Si vous voyez des trucs qui pètent, merci de les lister en comment ici que je puisse avoir une check list à jour et sans doublons. Avec les URLS c&#8217;est mieux.</p>
+<p>Parmi les problèmes que je vois venir : les iframes qui marchent pas, la barre de menu de droite qui déconne, et autres joyeusetés, des médias de mauvaise taille.</p>
+<p>Et bonne lecture :)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-blog-a-ete-migre-enfin-presque/feed/</wfw:commentRss>
+		<slash:comments>27</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">12217</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/09/discours-1940-1946.jpg" length="13887" type="image/jpg" />	</item>
+		<item>
+		<title>Migrer wordpress d&#8217;un serveur à un autre &#8211; Pense-bête</title>
+		<link>http://sametmax.com/migrer-wordpress-dun-serveur-a-un-autre-pense-bete/</link>
+		<comments>http://sametmax.com/migrer-wordpress-dun-serveur-a-un-autre-pense-bete/#comments</comments>
+		<pubDate>Wed, 09 Jan 2013 08:59:03 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[migration]]></category>
+		<category><![CDATA[ubuntu]]></category>
+		<category><![CDATA[wordpress]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4050</guid>
+		<description><![CDATA[Quand on migre wordpress d'un serveur à autre sans vouloir se taper la réinstall il y a deux trois trucs à pas oublier...]]></description>
+				<content:encoded><![CDATA[<p>Si on veut changer de serveur sans se taper la réinstall de wordpress ça peut devenir casse-tête si on oublie deux trois trucs&#8230;</p>
+<p>Voici un petit pense-bête avec pour exemple une config Nginx / WordPress / php5-cgi  sur Ubuntu.</p>
+<p>serveura.com = serveur sur lequel se trouve l&#8217;ancien WordPress à migrer<br />
+serveurb.com = nouveau serveur qui va accueillir WordPress</p>
+<p><strong>1. on sauve la db et on l&#8217;upload sur le nouveau serveur (on peut le faire à la fin si le blog a pas mal d&#8217;activité)</strong><br />
+Sur le serveur A:</p>
+<pre lang="bash">
+mysqldump -u user_toto -ppass_toto base_a_toto > /tmp/base_a_toto.sql
+rsync -P -azc /tmp/base_a_toto.sql user@serveurb.com:/tmp/base_a_toto.sql</pre>
+<p><strong>2. On copie wordpress sur le nouveau serveur</strong><br />
+Sur le serveur A:</p>
+<pre lang="bash">
+rsync -P -azc /home/monsite/wordpress/ user@serveurb.com:/home/monsite/
+</pre>
+<p><strong>3. Setup et configuration du nouveau serveur</strong><br />
+Sur le serveur B:<br />
+Installer les packets necessaires:</p>
+<pre lang="bash">
+apt-get install php5-cgi php5-mysql mysql-server nginx spawn-fcgi sendmail
+</pre>
+<p>Il faut lancer les services nginx et spawn-cgi (pour ce dernier on peut utiliser <a href="http://supervisord.org/">supervisord</a>)</p>
+<p>Nginx:<br />
+Editer le fichier /etc/nginx/conf.d/monsite.conf . Attention à bien indiquer le chemin absolu vers votre site pour <em>root</em></p>
+<pre lang="bash">
+server {
+    listen      80;
+    server_name  monsite.com www.monsite.com;                   # your domain name
+    root         /home/monsite/wordpress;  # absolute path to your WordPress installation
+    index index.php index.html;
+    
+    error_log "/var/log/nginx_error.log";
+    access_log  "/var/log/nginx_access.log";
+
+    try_files $uri $uri/ /index.php;
+
+    location ~ \.php$ {
+        include        /etc/nginx/fastcgi_params;
+        fastcgi_pass   127.0.0.1:53217;
+        fastcgi_index index.php;
+        fastcgi_buffers 8 16k;
+        fastcgi_buffer_size 32k;
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+    }
+
+location = /robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+}
+
+# Deny all attempts to access hidden files such as .htaccess, .htpasswd, .DS_Store (Mac).
+location ~ /\. {
+        deny all;
+        access_log off;
+        log_not_found off;
+}
+
+# Deny access to any files with a .php extension in the uploads directory
+location ~* ^/wp-content/uploads/.*.php$ {
+        deny all;
+        access_log off;
+        log_not_found off;
+}
+
+# Deny access to any files with a .php extension in the uploads directory for multisite
+location ~* /files/(.*).php$ {
+        deny all;
+        access_log off;
+        log_not_found off;
+}
+
+}
+
+</pre>
+<p><a href="http://serverfault.com/questions/6733/php-what-are-the-advantages-of-fastcgi-over-mod-php">Spawn-Fcgi</a>: C&#8217;est lui qui va lancer php5-cgi pour faire la liaison entre php et nginx. on va le lancer avec supervisor comme si c&#8217;était un service mais mieux.</p>
+<p>Installation de Supervisor:</p>
+<pre lang="bash">
+apt-get install python-setuptools
+easy_install supervisor
+echo_supervisord_conf > /etc/supervisord.conf
+</pre>
+<p>Editez le fichier /etc/supervisord.conf pour y rajouter spawn-fcgi, c&#8217;est mieux de lancer php5-cgi avec un user autre que root (www-data ou autre) :</p>
+<pre lang="bash">
+[program:php5-cgi]
+command=/usr/local/bin/spawn-fcgi -n -a 127.0.0.1 -p 53217 -u www-data -f /usr/bin/php5-cgi
+redirect_stderr=true 
+stdout_logfile=/var/log/php5-cgi.log
+stdout_logfile_maxbytes=10MB 
+</pre>
+<p>Pour lancer Spawn-fcgi:</p>
+<pre lang="bash">
+supervisorctl restart php5-cgi
+</pre>
+<p>Mysql: on ajoute mysql au demarrage et on le lance</p>
+<pre lang="bash">
+chkconfig mysql on
+service mysql start
+</pre>
+<p>Dump de la DB: il faut créer un user et une base sur la nouvelle install, si possible le même que sur l&#8217;ancien serveur pour faciliter la transition.<br />
+Sur le serveur B:</p>
+<pre lang="bash">
+mysql -u root -prootpass
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 42
+Server version: 5.5.28-0ubuntu0.12.04.3 (Ubuntu)
+
+Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database base_a_toto;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> GRANT ALL PRIVILEGES ON base_a_toto.* TO "user_toto"@"localhost" identified by "pass_toto";
+
+Query OK, 0 rows affected (16.16 sec)
+
+mysql> FLUSH PRIVILEGES;
+Query OK, 0 rows affected (0.00 sec)
+</pre>
+<p>Et on importe la base de données de serveura.com:</p>
+<pre lang="bash">
+mysql -u user_toto -ppass_toto base_a_toto < /tmp/base_a_toto.sql 
+</pre>
+<p><strong>4. Changer les dns</strong><br />
+des fois on oublie :) alors changez les dns et attendez un peu, normallement ça devrait crystalliser...</p>
+<p>Ca prend pas 5 minutes, même avec les paquets tous prêts. on peut avoir de mauvaises surprises en route. Moi par exemple erreur 500 , pour m'aperçevoir au bout de 2 heures que j'avais pas installé php5-mysql d'où ce tuto ;)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/migrer-wordpress-dun-serveur-a-un-autre-pense-bete/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">4050</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/01/migration1.jpg" length="79816" type="image/jpg" />	</item>
+		<item>
+		<title>Dois-je apprendre Python 2 ou Python 3 ?</title>
+		<link>http://sametmax.com/dois-je-apprendre-python-2-ou-python-3/</link>
+		<comments>http://sametmax.com/dois-je-apprendre-python-2-ou-python-3/#comments</comments>
+		<pubDate>Wed, 12 Sep 2012 13:57:39 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[migration]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[python 3]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2098</guid>
+		<description><![CDATA[Les deux versions étant incompatibles, et Python 3 ayant plein de super fonctionnalités que Python 2 n'a pas, mais la V2 étant encore très rependue, on peut se demander lequel on doit apprendre.]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;ai écris cet artice en 2012. La réponse a depuis changé :</p>
+<p><strong>Apprenez Python 3.</strong></p>
+<p>Il est plus simple, plus élégant, plus mieux.</p>
+<p>Installez minimum Python 3.4, si possible.</p>
+<p>Quelques exceptions à cette règle :</p>
+<ul>
+<li>Vous planifier d&#8217;utiliser une lib en rouge dans <a href="http://python3wos.appspot.com/">cette liste</a>.</li>
+<li>Vous savez que vous allez bosser essentiellement sur du vieux code dans votre boîte.</li>
+</ul>
+<p>Rappelez-vous qu&#8217;il est facile d&#8217;installer et utiliser Python 2 et 3 sur la même machine. Et un virtualenv peut contenir une version de Python particulière. Le choix de l&#8217;un n&#8217;exclus donc pas l&#8217;autre pour plus tard. On peut même écrire un code qui marche sur Python 2 ET Python 3 aujourd&#8217;hui. C&#8217;est moche, mais ça marche :)</p>
+<p>Donc, bonjour Python 3 avec pip et venv installés par défaut, les accents qui marchent out of the box, pas de bizarreries qui traînent comme des noms incohérents et <code>object</code>&#8230;</p>
+<p>Mac et Linux ont la 2.7 par défaut installé, mais ça se règle avec un coup de homebrew, apt-get install, yum install, etc. N&#8217;ayez pas peur.</p>
+<p>Mon ancien article n&#8217;est donc plus valable.</p>
+<p><del>Les deux versions étant incompatibles, et Python 3 ayant plein de super fonctionnalités que Python 2 n&#8217;a pas, mais la V2 étant encore très répandue, on peut se demander lequel on doit apprendre.</del></p>
+<h2><del>Etat du lard</del></h2>
+<p><del>Python 3 permet de s&#8217;affranchir de beaucoup de problèmes d&#8217;encoding en utilisant unicode par défaut. A partir de la version 3.3, il va venir avec un <a href="sametmax.com/les-environnement-virtuels-python-virtualenv-et-virtualenvwrapper">virtualenv</a> intégré, et distutils2, rendant le packaging et le déploiement beaucoup plus simple. Sans compter la délégation à un sous générateur. Plus besoin non plus d&#8217;utiliser &#8216;object&#8217; dans l&#8217;héritage, et des tas de libs nettoyées. Bref, un comportement plus simple et un langage plus beau.</del></p>
+<p><del>Python 2 lui est néanmoins présent encore partout:</del></p>
+<ul>
+<li><del>Ubuntu est toujours en 2.7, et <a href="https://wiki.ubuntu.com/Python/3">passera en 3 dans la prochaine version,</a> mais laissant la possibilité d&#8217;installer la 2.</del></li>
+<li><del>Mac OS utilise toujours la 2.6 par défaut.</del></li>
+<li><del>Certains serveurs Web sont toujours en 2.4 (!) si bien que Max  recompile carrément Python 2.6 dessus (oui, c&#8217;est un acharné).</del></li>
+<li><del>Django est en phase de <a href="https://www.djangoproject.com/weblog/2012/mar/13/py3k/">transition version Python 3</a>, mais pour le moment ce n&#8217;est pas fait, et il sera toujours compatible avec Python 2.7 pour les deux prochaines versions.</del></li>
+<li><del>Une bonne partie des libs sur pypi et sur github sont <a href="http://python3wos.appspot.com/">toujours en Python 2</a>, ou au moins compatibles avec.</del></li>
+</ul>
+<p><del>Enfin, l&#8217;outil <a href="http://docs.python.org/library/2to3.html">2to3</a> permet de convertir automatiquement, et facilement, la plupart des codes de Python 2 vers Python 3.</del></p>
+<h2><del>Apprentissage et usage</del></h2>
+<p><del>Dans la vie de tous les jours, en tant que programmeur Python, vous allez donc forcément être confronté à Python 2 pendant encore 3 ou 4 ans. Je rappelle que Python 2.4 était encore assez courant il y a deux ans, et qu&#8217;il y a 5 ans je lisais encore des questions sur les fora concernant Python 2.2.</del></p>
+<p><del>Or, Python 2 est plus compliqué que Python 3, il demande des connaissances particulières: gérer l&#8217;encoding, setuper son virtualenv, faire gaffe à bien utiliser &#8216;object&#8217;, connaitre les noms des libs mal standardisés, etc.</del></p>
+<p><del>Dans tous les cas, il sera toujours <strong>beaucoup</strong> plus simple d&#8217;apprendre Python 2 et de passer à Python 3 que l&#8217;inverse, et il est improbable que vous n&#8217;ayez pas besoin de toucher un code en Python 2. Hey, nous même, nous codons encore tous nos projets en Python 2. On se posera la question de la migration quand Django l&#8217;aura fait, et même là, on aura des tas de projets qui resteront pour toujours en V2.</del></p>
+<p><del>Donc, si vous apprenez (ou enseignez le Python)<strong>, le choix le plus pragmatique est d&#8217;apprendre avec Python 2, et de rajouter l&#8217;apprentissage des différences entre la V2 et la V3</strong>. Ce faisant vous saurez aussi comment faire migrer un projet, ce dont il est possible que vous ayez un jour besoin.</del></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/dois-je-apprendre-python-2-ou-python-3/feed/</wfw:commentRss>
+		<slash:comments>26</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">2098</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/09/6a0120a85dcdae970b01287770a775970c.jpg" length="42754" type="image/jpg" />	</item>
+	</channel>
+</rss>

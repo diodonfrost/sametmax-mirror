@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>for &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/for/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Une boucle while de moins</title>
+		<link>http://sametmax.com/une-boucle-while-de-moins/</link>
+		<comments>http://sametmax.com/une-boucle-while-de-moins/#comments</comments>
+		<pubDate>Tue, 23 Jun 2015 10:04:55 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[for]]></category>
+		<category><![CDATA[iter]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[iteration]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[while]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16427</guid>
+		<description><![CDATA[Si vous devez retenir un truc de la partie Python de ce blog, c'est qu'en Python, l'itération est tout.]]></description>
+				<content:encoded><![CDATA[<p>Si vous devez retenir un truc de la partie Python de ce blog, c&#8217;est qu&#8217;en Python, l&#8217;itération est tout.</p>
+<p>Du coup, on utilise pas beaucoup <code>while</code>, à part dans quelques cas particuliers.</p>
+<p>Le cas d&#8217;école, c&#8217;est la lecture d&#8217;un fichier octet par octet.</p>
+<p>Imaginez, vous créez un petit array de float écrits en 64 bits :</p>
+<pre lang="python">>>> import numpy as np
+>>> a = np.sin(np.linspace(2.0, 3.0, num=100))
+>>> a.dtype
+dtype('float64')</pre>
+<p>Vous sauvegardez tout ça dans un fichier :</p>
+<pre lang="python">>>> a.tofile('/tmp/data')</pre>
+<p>Si vous voulez lire le fichier <strong>hors de numpy</strong>, il faut le charger float par float, donc le lire 64 bits par 64 bits soit par groupes de 8 octets.</p>
+<p>La méthode canonique :</p>
+<pre lang="python">with open('/tmp/data', 'rb') as f:
+    while True:
+        nombre = f.read(8)
+        if not nombre:
+            break
+        # faire un truc avec le nombre</pre>
+<p>Mais il existe une autre manière de faire cela, moins connue : utiliser <code>iter()</code>.</p>
+<pre lang="python">with open('/tmp/data', 'rb') as f:
+    for nombre in iter(lambda: f.read(8), b''):
+        # faire un truc avec nombre</pre>
+<p>Cela marche car <code>iter()</code>, parmi ses nombreuses fonctionnalités, accepte un <a href="http://sametmax.com/les-trucmuchables-en-python/">callable</a> en paramètre (ici notre <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">lambda</a>), et va l&#8217;appeler jusqu&#8217;à ce que celui-ci retourne une valeur dite &#8220;sentinelle&#8221; (ici notre second paramètre).</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/une-boucle-while-de-moins/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">16427</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/06/GgghUeo.jpg" length="232071" type="image/jpg" />	</item>
+		<item>
+		<title>Sortir de plusieurs boucles for imbriquées en Python</title>
+		<link>http://sametmax.com/sortir-de-plusieurs-boucles-for-imbriquees-en-python/</link>
+		<comments>http://sametmax.com/sortir-de-plusieurs-boucles-for-imbriquees-en-python/#comments</comments>
+		<pubDate>Tue, 01 Jan 2013 19:27:41 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[context manager]]></category>
+		<category><![CDATA[for]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3962</guid>
+		<description><![CDATA[Le mot clé <code>break</code> permet de sortir d'une boucle <code>for</code> abruptement. Mais une seule. Parfois on a 3, 4 boucles imbriquées, et on aimerait tellement sortir de toutes d'un coup.
+
+Ce que je vais vous montrer est mal. Mais c'est tellement bon.]]></description>
+				<content:encoded><![CDATA[<p>Le mot clé <code>break</code> permet de sortir d&#8217;une boucle <code>for</code> abruptement. Mais une seule. Parfois on a 3, 4 boucles imbriquées, et on aimerait tellement sortir de toutes d&#8217;un coup.</p>
+<p>Ce que je vais vous montrer est mal. Mais c&#8217;est tellement bon.</p>
+<pre lang="python">
+from contextlib import contextmanager
+
+# on fait une exception qui hérite de StopIteration car c'est ce qui est utilisé
+# de toute façon pour arrêter une boucle
+class MultiStopIteration(StopIteration):
+    # la classe est capable de se lever elle même comme exception
+    def throw(self):
+        raise self
+
+
+@contextmanager
+def multibreak():
+    # le seul boulot de notre context manager c'est de donne le moyen de lever
+    # l'exception tout en l'attrapant
+    try:
+        yield MultiStopIteration().throw
+    except MultiStopIteration:
+        pass</pre>
+<p>En gros on se créé un petit <a href="http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/">context manager</a>, dont le seul but est de créer une exception qui va remonter en pêtant toutes les boucles. Je vous avais dit que c&#8217;était mal</p>
+<p>Ca s&#8217;utilise comme ça:</p>
+<pre lang="python">>>> with multibreak() as stop:
+...     for x in range(1, 4):
+...         for z in range(1, 4):
+...             for w in range(1, 4):
+...                 print w
+...                 if x * z * w == 2 * 2 * 2:
+...                     print 'stop'
+...                     stop() # appel MultiStopIteration().throw()
+...
+1
+2
+3
+1
+2
+3
+1
+2
+3
+1
+2
+3
+1
+2
+stop
+</pre>
+<p>Je vous avais dit que ça serait bon.</p>
+<p>A part le fait que ce n&#8217;est pas très rapide au moment du bubbling de l&#8217;exception sur 3 blocks, il n&#8217;y a aucun danger ou side-effect. On triche en fait à peine, car <a href="http://sametmax.com/dis-papa-dis-papa-dis-moi-dis-moi-comment-cest-fait-dans-une-boucle-for/">le mécanisme interne des boucles en Python utilise de toute façon déjà une exception</a> (StopIteration) pour dire à une boucle quand s&#8217;arrêter.</p>
+<p>Bref, encore une victoire de connard.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/sortir-de-plusieurs-boucles-for-imbriquees-en-python/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">3962</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/12/2320485189_1.jpg" length="68692" type="image/jpg" />	</item>
+		<item>
+		<title>Dis papa, dis papa, dis-moi, dis-moi. Comment c&#8217;est fait dans une boucle for ?</title>
+		<link>http://sametmax.com/dis-papa-dis-papa-dis-moi-dis-moi-comment-cest-fait-dans-une-boucle-for/</link>
+		<comments>http://sametmax.com/dis-papa-dis-papa-dis-moi-dis-moi-comment-cest-fait-dans-une-boucle-for/#comments</comments>
+		<pubDate>Mon, 31 Dec 2012 16:10:08 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[for]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[iterator]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3953</guid>
+		<description><![CDATA[Dis papa, dis papa, dis-moi, dis-moi. Comment c'est fait dans une boucle for ?
+]]></description>
+				<content:encoded><![CDATA[<p>Dis papa, dis papa, dis-moi, dis-moi. Comment c&#8217;est fait dans une boucle <code>for</code> ?</p>
+<p>C&#8217;est pas compliquéééééééééééé, j&#8217;vais tout t&#8217;expliquuuuuerrrrrrrrrr.</p>
+<p>C´est le p´tit zinzin qui passe par ici:</p>
+<pre lang="python">>>> class MonIterable(object): # faisons notre propre itérable
+...
+...     def __init__(self):
+...         self.values = [1, 2]
+...
+...     def __iter__(self): # ('for' appelle __iter__ automatiquement)
+...         return self # __iter__ doit renvoyer un iterateur, ici nous-même
+...
+...     def next(self): # chaque tour de boucle, for appelle next()
+...         if self.values: # qui retourne une des valeus de self.values
+...             return self.values.pop() # en l'enlevant de la liste initiale
+...         raise StopIteration() # si il y en a plus, il dit stop !
+...</pre>
+<p>Et qui va toucher le p´tit machinnnnnnnnnnnnnnnnnnnnnnnnn !</p>
+<pre lang="python">>>> for x in MonIterable(): # ceci appelle next() jusqu'à StopIteration
+...    print x
+2
+1</pre>
+<p>Et le p´tit machin qui repasse par là:</p>
+<pre lang="python">>>> iterateur = iter(MonIterable()) # Voilà ce que ça donne à la main
+>>> iterateur.next()
+2
+>>> iterateur.next()
+1
+>>> iterateur.next() # l'exception: mécanisme naturel de Python pour stopper une boucle !
+Traceback (most recent call last):
+  File "<pyshell#9>", line 19, in <module>
+    iterateur.next()
+  File "<pyshell#9>", line 14, in next
+    raise StopIteration()
+StopIteration</pre>
+<p>Et qui fait marcher ce p´tit zinzinnnnnnnnnnnnn !</p>
+<pre lang="python">>>> iterateur = iter(range(3)) # c'est pareil pour tous les iterables
+>>> iterateur.next() # un iterateur est juste un truc avec une méthode next()
+0
+>>> iterateur.next() # next() doit retourner la prochain valeur de l'iterable
+1
+>>> iterateur.next() # un itérateur itère donc sur un iterable
+2
+>>> iterateur.next() # jusqu'à la fin, où il lève StopIteratino
+Traceback (most recent call last):
+  File "<ipython-input-19-6c9f9efdd35c>", line 1, in <module>
+    iterateur.next()
+StopIteration</pre>
+<p>Ah bon ?</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/dis-papa-dis-papa-dis-moi-dis-moi-comment-cest-fait-dans-une-boucle-for/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">3953</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/12/henri-des1.jpg" length="22377" type="image/jpg" />	</item>
+	</channel>
+</rss>

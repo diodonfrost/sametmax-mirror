@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>rotation &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/rotation/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Do you rotate ?</title>
+		<link>http://sametmax.com/do-you-rotate/</link>
+		<comments>http://sametmax.com/do-you-rotate/#comments</comments>
+		<pubDate>Mon, 05 Mar 2018 03:29:27 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[log]]></category>
+		<category><![CDATA[rotation]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=24161</guid>
+		<description><![CDATA[L'explosion de la taille des logs a tué plus d'un serveur. Il est amusant de se dire que c'est du texte qui peut mettre à genoux un serveur de streaming vidéo avec 32 coeurs, 2To de SSD et 64 Go de RAM. Mais un bon access log non contrôlé sous nginx ou même <a href="https://forum.smartcash.cc/t/smartnode-new-start-required-and-other-issues/3105">le log de debug</a> du wallet de la coin smartcash, ça peut prendre par surprise.]]></description>
+				<content:encoded><![CDATA[<p>L&#8217;explosion de la taille des logs a tué plus d&#8217;un serveur. Il est amusant de se dire que c&#8217;est du texte qui peut mettre à genoux un serveur de streaming vidéo avec 32 coeurs, 2To de SSD et 64 Go de RAM. Mais un bon access log non contrôlé sous nginx ou même <a href="https://forum.smartcash.cc/t/smartnode-new-start-required-and-other-issues/3105">le log de debug</a> du wallet de la coin smartcash, ça peut prendre par surprise.</p>
+<p>Le module <a href="http://sametmax.com/ecrire-des-logs-en-python/">logging</a> de Python a d&#8217;excellentes options pour gérer la taille des logs, notamment le <code>RotatingFileHandler</code>.</p>
+<p>Sous Linux, c&#8217;est logrotate qui fait le boulot pour le système. C&#8217;est performant, ça marche super bien, c&#8217;est hyper simple à utiliser, et c&#8217;est dispo partout.</p>
+<p>Bref, en prod, un petit vi sur <code>/etc/logrotate.d/ton_projet</code> et pouf, on peut demander une rotation en 10 lignes:</p>
+<pre>/var/www/ton_projet/*.log
+{
+    size 100K
+    daily
+    rotate 5
+    missingok
+    notifempty
+}</pre>
+<p>Y a rien à activer, un cron lance déjà logrotate tous les jours.</p>
+<p>Par contre, si votre process utilise systemd pour démarrer, inutile de logger manuellement. Tout ce qui est sur la sortie standard est automatiquement loggué avec rotation et accessible avec un petit <code>journalctl -u ton_process.service --since today</code>.</p>
+<p>Bref, attendez encore un peu avant de rajouter logstash à votre stack.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/do-you-rotate/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">24161</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/03/GIFMaker.org_ONuVbD.gif" length="348096" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>variable &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/variable/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>L&#8217;expression d&#8217;assignation vient d&#8217;être acceptée</title>
+		<link>http://sametmax.com/lexpression-dassignation-vient-detre-acceptee/</link>
+		<comments>http://sametmax.com/lexpression-dassignation-vient-detre-acceptee/#comments</comments>
+		<pubDate>Tue, 03 Jul 2018 09:15:47 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[assignation]]></category>
+		<category><![CDATA[pep]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[variable]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=24766</guid>
+		<description><![CDATA[Après des mois de débats sur <a href="https://mail.python.org/mailman/listinfo/python-ideas">python-idea</a> (mailing list sur laquelle, je vous le rappelle, tout le monde a le droit de participer), Guido <a href="https://groups.google.com/forum/#!topic/dev-python/egS7A22oJgE%5B151-175%5D">a validé</a> la <a href="https://www.python.org/dev/peps/pep-0572/">PEP 572</a>. <code>(foo := bar)</code> sera donc un code valide en Python 3.8.]]></description>
+				<content:encoded><![CDATA[<p>Après des mois de débats sur <a href="https://mail.python.org/mailman/listinfo/python-ideas">python-idea</a> (mailing list sur laquelle, je vous le rappelle, tout le monde a le droit de participer), Guido <a href="https://groups.google.com/forum/#!topic/dev-python/egS7A22oJgE%5B151-175%5D">a validé</a> la <a href="https://www.python.org/dev/peps/pep-0572/">PEP 572</a>. <code>(foo := bar)</code> sera donc un code valide en Python 3.8.</p>
+<p>Je n&#8217;avais pas vu de feature plus controversée depuis les <a href="http://sametmax.com/le-formatage-des-strings-en-long-et-en-large/">f-strings</a>. Et je gage que, comme les f-strings, après un temps d&#8217;adaptation, la communauté va se demander comment on a vécu sans auparavant.</p>
+<h2>Un peu d&#8217;histoire</h2>
+<p>Il existe deux grandes catégories d&#8217;instructions dans les langages de programmation. Les déclarations et les expressions.</p>
+<p>La déclaration, en anglais &#8220;statement&#8221;, est une action indépendante formulée sur une ligne. C&#8217;est une unité syntaxique, et une déclaration ne peut être contenue dans une autre déclaration sur la même ligne.</p>
+<p>Ex:</p>
+<pre lang="python">
+import os
+</pre>
+<p>est une déclaration. Un import est tout seul sur sa ligne et ne se combine pas avec d&#8217;autres instructions.</p>
+<p>L&#8217;expression, elle, est une combinaison de littéraux, variables, d&#8217;opérateurs et d&#8217;appels de fonctions qui retournent un résultat. Les expressions peuvent contenir d&#8217;autres expressions, et elles peuvent être contenues dans une déclaration.</p>
+<p>Ex:</p>
+<pre lang="python">1 + 1 </pre>
+<p>est une expression. On peut, en effet, assigner le résultat de ce code à une variable, le passer à une fonction en paramètre ou le tester dans une condition.</p>
+<p>Les langages, comme le COBOL, qui privilégient le style impératif utilisent majoritairement des déclarations. Les langages, comme LISP, qui privilégient le style fonctionnel, utilisent majoritairement des expressions.</p>
+<p>Très souvent néanmoins, les langages populaires font largement usage des deux. L&#8217;expression est plus flexible et plus puissante. La déclaration force une opinion sur la structure du programme et évite les divergences de style. Selon la philosophie que l&#8217;on souhaite donner à son bébé, un créateur de langage va donc s&#8217;orienter plus vers l&#8217;une ou l&#8217;autre.</p>
+<p>Python est multiparadigme et soutient le style impératif, fonctionnel et orienté objet. Il possède donc non seulement des expressions et des déclarations, mais également souvent les deux versions pour une même instruction.</p>
+<p>Ex, les déclarations:</p>
+<pre lang="python">squares = []
+for x in numbers:
+    squares.append(x * x)
+
+def mean(x):
+    return x * x / 2
+
+if is_ok:
+    print(welcome)
+else:
+    print(error)</pre>
+<p>ont des expressions équivalentes:</p>
+<pre lang="python">
+
+squares = [x * x for x in number]
+
+mean = lambda x: x * x / 2
+
+print(welcome if is_ok else error)
+</pre>
+<p>Parfois Python choisit d&#8217;orienter le style du programmeur, non pas évitant de fournir des expressions, mais par le biais de la grammaire imposée. Ainsi il oblige à indenter, et n&#8217;autorise pas les lambdas à contenir de déclaration. C&#8217;est une autre stratégie pour imposer une philosophie au langage. Pour Python, la philosophie est que la capacité à s&#8217;exprimer doit rester riche, mais pas au détriment de la capacité à comprendre le code.</p>
+<p>Une particularité de Python, c&#8217;est que l&#8217;assignation, c&#8217;est-à-dire le fait d&#8217;associer une valeur à une variable, est une déclaration. Ex:</p>
+<pre lang="python">a = 1</pre>
+<p>Comme les déclarations ne peuvent contenir d&#8217;autres déclarations, cette syntaxe interdit:</p>
+<pre lang="python">if a = 1:  </pre>
+<p>Ce n&#8217;est pas le cas dans de nombreux langages populaires, comme le C, PHP, le JS&#8230; Exemple en Ruby:</p>
+<pre lang="ruby">if (value = Settings.get('test_setting'))
+  perform_action(value)
+end</pre>
+<p>Ici, non seulement on assigne le résultat du <code>get()</code> à la variable <code>value</code>, mais en plus, on teste le résultat du <code>get()</code> avec le <code>if</code>.</p>
+<p>Actuellement ceci est impossible en Python, et le même code serait:</p>
+<pre lang="python">value = Settings.get('test_setting')
+if value:
+  perform_action(value)</pre>
+<p>Ce n&#8217;est pas une erreur, c&#8217;est un choix de design. En effet une source de bug très courante en programmation est de vouloir faire une comparaison, mais de taper une assignation.</p>
+<p>Ainsi, quelqu&#8217;un voudrait faire:</p>
+<pre lang="python">while reponse == "oui":
+    ...
+    reponse = input('Voulez-vous continuer ?')</pre>
+<p>Mais ferait:</p>
+<pre lang="python">while reponse = "oui": # erreur subtile et difficile à voir
+    ...
+    reponse = input('Voulez-vous continuer ?')</pre>
+<p>Ce qui ne compare pas DU TOUT la variable. Et en plus change son contenu. Dans ce cas précis, le résultat est une boucle infinie, mais parfaitement valide et qui ne provoquera pas d&#8217;erreur.</p>
+<p>Pour éviter ce genre de bug que même les programmeurs aguerris font un jour de fatigue, la syntaxe a tout simplement été interdite en stipulant que l&#8217;assignation était toujours une déclaration.</p>
+<h2>La PEP 572</h2>
+<p>L&#8217;absence de cette fonctionnalité a eu d&#8217;excellents bénéfices. Je le vois régulièrement dans mes salles de classe, ce bug. La <code>SyntaxError</code> qui résulte de cette faute en Python permet de l&#8217;attraper avant qu&#8217;il ne fasse le moindre dégât.</p>
+<p>Car c&#8217;est tout le problème de cette erreur: si la syntaxe est valide, le bug est silencieux, le code tourne, il ne fait juste pas du tout ce qu&#8217;on lui demande. C&#8217;est la plus pernicieuse des situations, avec des conséquences qui peuvent ne se déclarer que bien plus loin dans le code et une séance de débuggage des plus irritantes.</p>
+<p>A mon sens, c&#8217;était une excellente décision de design.</p>
+<p>Pourtant la PEP 572 revient dessus, en proposant, comme pour <code>lambda</code>, la boucle <code>for</code> ou la condition, un équivalent sous forme d&#8217;expression.</p>
+<p>Pourquoi ?</p>
+<p>Et bien Python doit aussi satisfaire les programmeurs chevronnés, qui en ont marre de se retrouver avec des situations comme :</p>
+<pre lang="python">match1 = pattern1.match(data)
+if match1:
+    print(match1.group(1))
+else:
+    match2 = pattern2.match(data)
+    if match2:
+        print(match2.group(2))</pre>
+<p>Certes, ce code est clair et facile à comprendre, mais il est très verbeux. On doit faire avec une indentation artificiellement induite par la limite de la syntaxe, et non par la logique du raisonnement qui est ici parfaitement linéaire.</p>
+<p>Comment donc réconcilier le désir d&#8217;éviter le fameux bug tout en satisfaisant les besoins d&#8217;expressivité, légitimes une fois qu&#8217;on quitte le nid des débutants ?</p>
+<p>La solution proposée est triple :</p>
+<ul>
+<li>Ajouter un nouvel opérateur dédié, permettant l&#8217;assignation sous forme d&#8217;expression.</li>
+<li>Forcer l&#8217;usage des parenthèses pour encadrer cette expression.</li>
+<li>Rendre les deux opérateurs d&#8217;assignation mutuellement exclusifs.</li>
+</ul>
+<p>Le nouvel opérateur choisi est <code>:=</code> et il ne peut exister qu&#8217;entre parenthèses. Il peut être utilisé là où un simple <code>=</code> ne serait pas autorisé. Mais, il ne peut PAS être utilisé là où on peut utiliser <code>=</code>. Le but est de ne jamais mettre ces deux opérateurs en concurrence: une situation permet l&#8217;un ou l&#8217;autre, jamais les deux.</p>
+<p><code>=</code> ne change pas. La seule différence, c&#8217;est qu&#8217;à partir de Python 3.8, vous aurez le droit de faire:</p>
+<pre lang="python">
+if (match1 := pattern1.match(data)):
+    print(match1.group(1))
+elif (match2 := pattern2.match(data)):
+    print(match2.group(2))</pre>
+<p>L&#8217;opérateur <code>:=</code> permet donc bien, dans des situations très précises, d&#8217;obtenir un code plus cours et élégant, sans introduire pourtant d’ambiguïté et donc de bug potentiel. Il autorise une nouvelle forme d&#8217;expressivité, mais sa syntaxe est très marquée: impossible de le confondre avec son frère, et les parenthèses l&#8217;isolent du reste du code.</p>
+<p>On ne se pose pas non plus la question de quand choisir <code>=</code> et <code>:=</code> puisque:</p>
+<pre lang="python">a = 1</pre>
+<p>est valide, mais pas:</p>
+<pre lang="python">a := 1</pre>
+<p>Bien que:</p>
+<pre lang="python">(a := 1)</pre>
+<p>soit valide, personne n&#8217;aura envie d&#8217;utiliser vainement cette forme plus lourde.</p>
+<p>L&#8217;usage de <code>:=</code> est donc marginal, et cantonné à des cas particuliers.</p>
+<h2>Une opinion, c&#8217;est comme un trou du cul&#8230;</h2>
+<p>Personnellement j&#8217;étais mitigé sur l&#8217;idée. De plus, j&#8217;aurais préféré l&#8217;usage du mot clé <code>as</code>, puisqu&#8217;on l&#8217;utilisait déjà dans les imports, les context managers et la gestion des exceptions. </p>
+<p>Chaque ajout d&#8217;expression rajoute également la possibilité d&#8217;abus. Si vous avez déjà vu ces horreurs à base de lambdas imbriquées ou d&#8217;intensions sans fin, vous savez de quoi je parle.</p>
+<p>Avec <code>:=</code>, on peut vraiment se lancer dans du grand n&#8217;importe quoi:</p>
+<p>Pour reprendre l&#8217;exemple de la PEP:</p>
+<pre lang="python">while True:
+    old = total
+    total += term
+    if old == total:
+        return total
+    term *= mx2 / (i*(i+1))
+    i += 2</pre>
+<p>est très clair. </p>
+<p>En revanche:</p>
+<pre lang="python">while total != (total := total + term):
+    term *= mx2 / (i*(i+1))
+    i += 2
+return total</pre>
+<p>Est une abomination qu&#8217;il faut purger par le feu.</p>
+<p>Mais par expérience, j&#8217;ai rarement vu en 15 ans de Python beaucoup d&#8217;abus de ses fonctionnalités avancées. Les bénéfices ont toujours dépassé le coût d&#8217;une large marge. Pourtant entre les décorateurs, les dunder methods et les meta classes, il y a matière à messe noire.</p>
+<p>Par ailleurs j&#8217;avoue que je suis ravi de pouvoir enfin faire:</p>
+<pre lang="python">while (data := io.get(x)):</pre>
+<p>Et:</p>
+<pre lang="python">[bar(x) for z in stuff if (x := foo(z))]</pre>
+<p>La PEP mentionne aussi un exemple que je n&#8217;avais pas prévu, et qui souffle le chaud et le froid:</p>
+<pre lang="python">diff = x - x_base
+if diff:
+    g = gcd(diff, n)
+    if g > 1:
+        return g</pre>
+<p>Peut devenir:</p>
+<pre lang="python">if (diff := x - x_base) and (g := gcd(diff, n)) > 1:
+    return g
+</pre>
+<p>Comme l&#8217;auteur, j&#8217;approuve le fait que la première version est inutilement verbeuse, mais contrairement à lui, je trouve que la seconde est bien trop complexe pour être scannée d&#8217;un coup d’œil.</p>
+<p>En revanche:</p>
+<pre lang="python">diff = x - x_base
+if diff and (g := gcd(diff, n)) > 1:
+    return g</pre>
+<p>est tout à fait à mon goût.</p>
+<p>Ceci démontre bien qu&#8217;il va falloir un temps d&#8217;adaptation avant que la communauté trouve l&#8217;équilibre entre Perl et BASIC. Quoi qu&#8217;il en soit, on n’aura pas à s&#8217;en soucier avant l&#8217;année prochaine, et même d&#8217;ici là, peu de code pourra en faire usage avant que la 3.8 soit largement installée.</p>
+<p>De mon côté je m&#8217;attends à ce qu&#8217;on ignore majoritairement cette fonctionnalité, jusqu&#8217;au moment où elle apparaîtra dans un coin de l&#8217;esprit le temps d&#8217;un besoin ponctuel et local, pour être oubliée à nouveau jusqu&#8217;à l&#8217;occasion suivante. Comme <del datetime="2018-07-03T09:40:56+00:00">Dieu</del> Guido l&#8217;aura voulu. D&#8217;ailleurs, côté enseignement, je ne compte pas introduire l&#8217;opérateur dans mes cours, ou alors dans une section bonus, à moins qu&#8217;un participant ne pose la question.</p>
+<p>Aller, vous pouvez râler en commentaire maintenant :)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/lexpression-dassignation-vient-detre-acceptee/feed/</wfw:commentRss>
+		<slash:comments>20</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">24766</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/07/jsgGSg0.jpg" length="47619" type="image/jpg" />	</item>
+		<item>
+		<title>Bien nommer ses variables en Python</title>
+		<link>http://sametmax.com/bien-nommer-ses-variables-en-python/</link>
+		<comments>http://sametmax.com/bien-nommer-ses-variables-en-python/#comments</comments>
+		<pubDate>Thu, 09 Oct 2014 09:42:31 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[convention]]></category>
+		<category><![CDATA[nommage]]></category>
+		<category><![CDATA[pep8]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[variable]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12376</guid>
+		<description><![CDATA[<blockquote>There are only two hard things in Computer Science: cache invalidation and naming things.</blockquote>
+
+<em>Phil Karlton</em>]]></description>
+				<content:encoded><![CDATA[<blockquote><p>There are only two hard things in Computer Science: cache invalidation and naming things.</p></blockquote>
+<p><em>Phil Karlton</em></p>
+<p>Utiliser des bons noms est le geste de documentation le plus important d&#8217;un code. Je ne parle pas de bien formater le nom des variables. Pour ça, il y a le PEP8 et ce qu&#8217;il recommande tient en 3 lignes :</p>
+<ul>
+<li>Le nom des classes en CamelCase</li>
+<li>Les (pseudo) constantes en UPPER_CASE</li>
+<li>Le reste en snake_case</li>
+</ul>
+<p>C&#8217;est tout.</p>
+<p>Non, je parle de choisir un nom adapté et descriptif.</p>
+<p>Le post est long, et vous savez que quand le post est long, je vous mets une musique d&#8217;attente.</p>
+<p><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/4TV_128Fz2g?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<h2>Explicit is better than implicit</h2>
+<p>En Python, il n&#8217;y a pas de déclaration de type. Le nom d&#8217;une variable a donc d&#8217;autant plus d&#8217;importance pour expliquer ce qu&#8217;il y a dedans.</p>
+<p>Prenez cet exemple :</p>
+<pre lang="python">best = []
+for k, v in data.items():
+    if v > top:
+        best.append(k)</pre>
+<p>Quand on lit ce bout de code, on se demande :</p>
+<ul>
+<li>Best ? Mais best en quoi ?</li>
+<li>Que contient data ?</li>
+<li>Quel est la nature de top ?</li>
+</ul>
+<p>Maintenant, avec des noms explicites :</p>
+<pre lang="python">best_players = []
+for player, score in data.items():
+    if score > top_score :
+        best_players.append(player)</pre>
+<p>On comprend tout de suite de quoi il est question. L&#8217;algo n&#8217;a pas changé, seul le nommage a changé.</p>
+<p>Et si on passe à une écriture plus compacte, le gain est encore plus net :</p>
+<pre lang="python">best = [k for k, v in data.items() if k > top]</pre>
+<p>VS</p>
+<pre lang="python">best_players = [player for player, score in data.items() if score > top_score]</pre>
+<p>Parfois, on veut la concision, mais faute de nommage, on doit se retourner vers les commentaires :</p>
+<pre lang="python"># Get players with the best scores
+best = [k for k, v in data.items() if k > top]</pre>
+<p>Néanmoins, si on doit faire le choix entre commenter et bien nommer, le nommage doit avoir priorité. Le commentaire est important, mais c&#8217;est le dernier recours d&#8217;un code qui n&#8217;est pas explicite. Avoir un code clair doit être l&#8217;objectif premier. Ensuite, seulement, on le commente (abondamment toutefois, faut pas être radin).</p>
+<p>Si vous avez suivi, je nomme mes variables en fonction de leur nature, pas leur type. On peut utiliser les règles de l&#8217;orthographe pour encore plus de précision, par exemple le pluriel.</p>
+<pre lang="python">fruits = ["kiwi", "banane", 'poire']
+for fruit in fruits:
+    print(fruit)</pre>
+<p>J&#8217;utilise le pluriel pour une liste de données, qui va donc potentiellement contenir plusieurs fruits. Mais j&#8217;utilise un singulier dans la boucle pour le fruit en court.</p>
+<p>L&#8217;utilisation d&#8217;adjectifs est aussi bienvenue :</p>
+<p><code>fruits</code> peut devenir, après un traitement <code>filtered_fruits</code>, indiquant que la liste a subi un filtrage. Les mots en &#8220;ed&#8221; en anglais aident beaucoup à la qualification.</p>
+<p>On évite au maximum les variables courtes. Certains cas sont néanmoins tolérés. Le premier est l&#8217;utilisation de <code>i</code>, <code>x</code>, <code>y</code>et <code>z</code> pour des indices.</p>
+<pre lang="python">for i, fruit in enumerate(fruits):
+    # faire un truc</pre>
+<p>Les indices sont quelque chose de tellement courant en informatique qu&#8217;on ne va pas se gaver à l&#8217;appeler &#8220;indice&#8221; à chaque fois.</p>
+<p>Le second est dans le cadre scientifique. On a souvent des variables pour un algo, des coordonnées, des valeurs géométriques ou mathématiques, qui n&#8217;ont pas de dénomination. Dans ce cas, inutile d&#8217;essayer d&#8217;inventer une nomenclature tordue. Exemple typique, <a href="http://equi4.com/md5/pymd5.py">l&#8217;algo pour pondre un MD5</a>. Mais il faut compenser par des commentaires, sinon on s&#8217;y perd.</p>
+<p>Il ne faut pas avoir peur des noms longs. Si, j&#8217;ai un jeu de données, que je filtre plusieurs fois, il est de bon ton de distinguer les différents jeux avec des noms détaillés :</p>
+<pre lang="python">sample = range(10)
+squares = [x * x for x in sample]
+even_squares = [x for x in squares if x % 2 == 0]
+even_squares_tail = even_squares[-3:]</pre>
+<p>Faire des noms de plus de 10 caractères n&#8217;est pas sale. On est pas sur un tableau des scores d&#8217;une borne d&#8217;arcade des années 80.</p>
+<p>J&#8217;utilise bien entendu des noms en anglais, ce qui est toujours préférable, mais si vous devez en mettre en fr, évitez à tout prix les accents malgré la possibilité de les utiliser en Python 3.</p>
+<h2>Conventions</h2>
+<p>Il existe quelques noms qui sont toujours utilisés de la même façon en Python.</p>
+<p><code>self</code> et <code>cls</code> sont les plus connus, en j&#8217;en parle déjà dans <a href="https://duckduckgo.com/l/?kh=-1&amp;uddg=http%3A%2F%2Fsametmax.com%2Fle-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-1">le dossier sur la POO</a>.</p>
+<p>Il y a <code>args</code> et <code>kwargs</code>, qu&#8217;on utilise avec l&#8217;opérateur splat, dont je parle <a href="https://duckduckgo.com/l/?kh=-1&amp;uddg=http%3A%2F%2Fsametmax.com%2Foperateur-splat-ou-etoile-en-python%2F">ici</a>.</p>
+<p>Et puis il y en a de plus discrets.</p>
+<p><code>_</code> est utilisé pour une variable qu&#8217;on ignore. Certaines opérations, comme l&#8217;unpacking, supposent la création de plusieurs variables. Si on n&#8217;est pas intéressé par l&#8217;une d&#8217;elles, on peut le signaler. Par exemple, l&#8217;ORM django permet d&#8217;obtenir un objet, et si il n&#8217;existe pas, de le créer. Cette fonction retourne un tuble (objet, bool), l&#8217;élément indiquant si l&#8217;objet a été créé ou non. Si cette information nous intéresse :</p>
+<pre lang="python">user, created = User.objects.get_or_create(username="sam")</pre>
+<p>Si cette information ne nous intéresse pas :</p>
+<pre lang="python">user, _ = User.objects.get_or_create(username="sam")</pre>
+<p>Ainsi le lecteur saura qu&#8217;il peut ignorer cette variable quand il parcourt le code.</p>
+<p>Il y a aussi les alias. On ne peut pas utiliser certains noms comme <code>list</code> ou <code>id</code> qui sont des fonctions existantes en Python.</p>
+<p>On s&#8217;arrange généralement en trouvant un synonyme, mais si ce n&#8217;est pas pratique, on change une lettre. <code>list</code> devient <code>lst</code> (rappelez vous que <code>list</code> est un nom déjà assez pourri, nommez plutôt le contenu), <code>class</code> devient <code>klass</code>, <code>dict</code> devient <code>dct</code>, etc.</p>
+<p>Si on ne peut pas le faire, la convention est de rajouter un underscore à la fin du nom : <code>id</code> devient <code>id_</code>, <code>max</code> devient <code>max_</code>&#8230; Mais faites l&#8217;effort, avant, de chercher un synonyme. Je vois trop souvent des <code>from_</code>/<code>to</code> alors que certains contextes permettent parfaitement de les nommer <code>start</code>/<code>end</code> ou <code>source</code>/<code>destination</code>.</p>
+<p>A ne pas confondre avec l&#8217;underscore AVANT le nom, qui est une convention pour dire qu&#8217;une variable ne fait pas partie de l&#8217;API publique.</p>
+<p>Ce sont des béquilles, le choix d&#8217;un nom judicieux et clair est toujours préférable, mais ce sont des béquilles utiles.</p>
+<h2>Savoir quand nommer</h2>
+<p>Au-delà de donner un bon nom, il y a le fait de choisir quand il faut nommer, et quand il faut éviter de le faire.</p>
+<p>Si seul le résultat final d&#8217;un traitement m&#8217;intéresse, alors, il vaut mieux utiliser une seule variable et mettre le nouveau résultat dedans à chaque fois :</p>
+<pre lang="python">fstab = [line.strip() for line in open('/etc/fstab') if line]
+fstab = [line.lower() for line in fstab if not line.startswith('#')]
+fstab = [line.split()[:3] for line in fstab]</pre>
+<p>il faut aussi savoir quand ne pas du tout créer une variable :</p>
+<pre lang="python">row = line.strip().split()
+for col in row:
+    # do something</pre>
+<p>ici, la variable intermédiaire est inutile :</p>
+<pre lang="python">for col in line.strip().split():
+    # do something</pre>
+<p>L&#8217;inverse est aussi vrai :</p>
+<pre lang="python">for col in [int(x) for x in line.strip().split()]:
+    # do something</pre>
+<p>La ligne devient beaucoup trop complexe, et ajouter une variable intermédiaire avec un bon nom va améliorer la lisibilité du programme :</p>
+<pre lang="python">numeric_col = [int(x) for x in line.strip().split()]
+for col in numeric_col:
+    # do something</pre>
+<p>On pourrait croire que je précise le type ici en utilisant &#8220;numeric&#8221;, mais je n&#8217;ai pas utilisé integer ou float. J&#8217;ai précisé la nature : des colonnes numériques. Il se trouve que pour des données aussi brutes, la nature se rapproche du type.</p>
+<p>Si vous êtes du genre à utiliser des <a href="https://duckduckgo.com/l/?kh=-1&amp;uddg=http%3A%2F%2Fsametmax.com%2Ffonctions-anonymes-en-python-ou-lambda%2F">lambdas</a>, cela s&#8217;applique aussi à vous.</p>
+<p>Pour quelque chose de simple, une lambda inline est très lisible :</p>
+<pre lang="python">sorted(scores.items(), key=lambda score: score[1])</pre>
+<p>Mais pour quelque chose de complexe, une fonction complète est bien plus adaptée :</p>
+<pre lang="python">def calculate_rank(score):
+    return sum(goals for sort, goal in score[1] if sort == 'A')
+
+sorted(scores.items(), key=calculate_rank)</pre>
+<p>Plutôt qu&#8217;un horrible :</p>
+<pre lang="python">sorted(scores.items(), key=lambda x: sum(g for s, g in x[1] if s == 'A'))</pre>
+<p>Pourquoi je parle de lambda alors qu&#8217;on est sur du nommage ? Parce qu&#8217;une lambda est anonyme, alors qu&#8217;une fonction normale a un nom. Et ce nom exprime l&#8217;action de la fonction. Il documente.</p>
+<h2>Habitudes stylistiques</h2>
+<p>Ces règles là ne sont pas officielles, mais j&#8217;ai pu les constater dans nombre de bons codes.</p>
+<p>La nom d&#8217;une fonction/méthode est aussi important, sinon plus, que le nom d&#8217;une variable. Il n&#8217;est pas rare que j&#8217;écrive des fonctions avec des noms bien dodus comme :</p>
+<pre lang="python">def get_last_downloaded_shemale_vids()</pre>
+<p>Si on oublie la docstring, on a déjà une bonne idée de ce que cette fonction fait. Cela n&#8217;empêche pas de docstringuer quand même pour annoncer des subtilités sur les types, les potentiels side effects, des choses à savoir sur le temps d&#8217;exécution, le format, les perfs, etc.</p>
+<p>Mais il arrive souvent qu&#8217;une fonction ne fasse pas quelque chose d&#8217;aussi concret. Prenez par exemple une fonction dont le but est de sluggifier les strings d&#8217;une list.</p>
+<p>Si la fonction transforme la liste, on va utiliser un verbe dans le nom :</p>
+<pre lang="python">slugify_items(data)</pre>
+<p>Si par contre la fonction retourne une liste avec les éléments modifiés, on va utiliser le participe passé :</p>
+<pre lang="python">data = slugified_items(data)</pre>
+<p>C&#8217;est subtil, mais la sémantique est différente. Dans le premier cas, on s&#8217;attend à un effet de bord. Dans le second cas, on s&#8217;attend à une nouvelle liste, ou comme souvent en Python, à un <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">générateur</a>.</p>
+<p>Quand on a affaire à une méthode en Python, on utilise rarement le préfixe <code>get_</code>. Personnellement je l&#8217;utilise parfois pour des actions complexes, ou des méthodes de classe.</p>
+<p>Mais généralement, on préférera utiliser directement le nom de ce qu&#8217;on veut récupérer. Exemple :</p>
+<pre lang="python">comments = blog_post.get_comments(spam=False) # NON
+comments = blog_post.comments(spam=False) # Oui</pre>
+<p>Si on n&#8217;a pas besoin de passer de paramètre, alors une <a href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-2/">property</a> est plus appropriée :</p>
+<pre lang="python">comments = blog_post.comments # Ouiiiiiiiiiiiiiii</pre>
+<p>J&#8217;en profite pour faire remarquer qu&#8217;il est très classe de prononcer plusieurs fois très vite &#8220;sans paramètre, une propriété est plus appropriée&#8221;.</p>
+<p>Enfin, il arrive qu&#8217;on ait besoin de spécifier des rôles techniques et des interactions entre plusieurs bouts de code : hiérarchie, composition, dépendances, etc. Ce sont les choses les plus compliquées à comprendre quand on lit du code : voir le tableau au complet, ce qui lie les différents blocs.</p>
+<p>Il ne faut pas hésiter à nommer ses éléments pour cela. Apprendre le nom des design patterns aide beaucoup, mais même si on n&#8217;est pas top moumoute niveau vocabulaire, on peut faire des choses aussi simple que :</p>
+<pre lang="python">class BaseAuthenticator(object):
+    #...
+
+class PwdAuthenticator(BaseAuthenticator):
+    #...
+
+class KeyAuthenticator(BaseAuthenticator):
+    #...</pre>
+<p>Si vous lisez <code>BaseAuthentificator</code>, vous n&#8217;avez pas besoin de voir qu&#8217;elle est parente d&#8217;autres classes plus bas pour savoir que ce n&#8217;est probablement pas une classe instanciable, mais sans doute une classe interface ou une classe abstraite. De quoi se faciliter une lecture en diagonale.</p>
+<h2>FAIL</h2>
+<p>Voici quelques exemples de noms qui ratent complètement l&#8217;objectif de documentation :</p>
+<pre lang="python">
+def do_query_database():
+    # ...
+
+def query_database():
+    # ...
+    do_query_database()
+    # ...
+
+</pre>
+<p>J&#8217;en croise dans le code source de Django, et ça me fait hurler. Sérieux ça veut dire quoi ? Qu&#8217;est-ce qui a été extrait ? Dans quel but ? On a plus de question APRÈS avoir lu le nom qu&#8217;avant, c&#8217;est encore pire qu&#8217;un mauvais nom, c&#8217;est un nom méchant.</p>
+<p>Dans ce cas, il faut essayer d&#8217;expliquer au maximum ce que l&#8217;appendice &#8211; qui va me faire choper une péritonite &#8211; que vous avez mis de côté fait :</p>
+<pre lang="python">
+def excute_and_send_query():
+    # ...
+
+def query_database():
+    # ...
+    excute_and_send_query()
+    # ...
+
+</pre>
+<p>Un truc également exaspérant, c&#8217;est l&#8217;usage d&#8217;un vocabulaire ambigu :</p>
+<pre lang="python">def make_best_player_list():
+    # ...
+</pre>
+<p>On sait ce que ça fait, ça fabrique une liste des meilleurs joueurs. Le contexte nous permet d&#8217;évaluer le résultat le plus probable. Maintenant un cas beaucoup moins clair :</p>
+<pre lang="python">def make_query():
+    # ...
+</pre>
+<p>Ca envoie la requête, ça construit la requête ou les deux ? <code>Make</code> est un mot qui peut vouloir dire fabriquer ou exécuter. Ici il vaut mieux utiliser un vocabulaire plus explicite comme :</p>
+<pre lang="python">def build_sql_query():
+    # ...
+</pre>
+<p>ou</p>
+<pre lang="python">def send_db_query():
+    # ...
+</pre>
+<p>Là on sait qui fait quoi. Quitte à faire :</p>
+<pre lang="python">def db_query():
+    build_sql_query()
+    send_db_query()
+</pre>
+<p>Et oui, diviser le travail en plusieurs sous unités bien nommées, puis les regrouper dans un bloc plus général est aussi une forme de documentation. Créer des fonctions n&#8217;est pas qu&#8217;une question de maintenance ou de perf.</p>
+<p>Savoir bien nommer les choses vient avec de l’entraînement. Au début, il faut prendre le temps de le faire. Il faut s&#8217;arrêter, et se mettre à la place d&#8217;un autre dev qui n&#8217;a pas encore eu son café.</p>
+<p>Allez, détendez-vous, ce blog est plein de code qui ne suit pas les conseils de cet article. Faites juste au mieux ok ?</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/bien-nommer-ses-variables-en-python/feed/</wfw:commentRss>
+		<slash:comments>29</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">12376</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/10/0VhvbuF.gif" length="61326" type="image/jpg" />	</item>
+	</channel>
+</rss>

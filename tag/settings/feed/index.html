@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>settings &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/settings/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Regrouper ses fichiers de settings avec stow</title>
+		<link>http://sametmax.com/regrouper-ses-fichiers-de-settings-avec-stow/</link>
+		<comments>http://sametmax.com/regrouper-ses-fichiers-de-settings-avec-stow/#comments</comments>
+		<pubDate>Fri, 06 Oct 2017 08:24:03 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[configuration]]></category>
+		<category><![CDATA[settings]]></category>
+		<category><![CDATA[stow]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=23681</guid>
+		<description><![CDATA[Sous Linux, le dossier utilisateur est blindé de fichiers de configuration. Les fameux <code>.machins</code>. Par exemple le <code>.bashrc</code> pour la config du bash, le <code>.mozilla</code> qui contient toutes vos données Firefox, le <code>.ssh</code> avec toutes vos clés privées, le <code>.local/share/virtualenvs</code> avec les envs virtuels Python créés par pew ou <code>.config/sublime-text-3</code> pour la configuration de Sublime text, etc.]]></description>
+				<content:encoded><![CDATA[<p>Sous Linux, le dossier utilisateur est blindé de fichiers de configuration. Les fameux <code>.machins</code>. Par exemple le <code>.bashrc</code> pour la config du bash, le <code>.mozilla</code> qui contient toutes vos données Firefox, le <code>.ssh</code> avec toutes vos clés privées, le <code>.local/share/virtualenvs</code> avec les envs virtuels Python créés par pew ou <code>.config/sublime-text-3</code> pour la configuration de Sublime text, etc.</p>
+<p>Au final, voici tous les fichiers de conf qui sont importants pour moi de près ou de loin:</p>
+<pre>
+├── .autoenv
+├── .bashrc
+├── .config
+│   ├── autostart
+│   ├── Code
+│   ├── copyq
+│   ├── fish
+│   ├── gtg
+│   ├── liferea
+│   ├── pulse
+│   ├── stremio
+│   ├── sublime-text-3
+│   ├── transmission
+│   ├── user-dirs.dirs
+│   ├── user-dirs.locale
+│   ├── variety
+│   ├── VeraCrypt
+│   ├── Zeal
+│   └── zim
+├── .django-completion.bash
+├── .editorconfig
+├── .git-aware-prompt
+├── .git-completion.bash
+├── .gitconfig
+├── .gitignore
+├── .git-prompt.sh
+├── .git.scmbrc
+├── .jupyter
+├── .lastpass
+├── .liferea_1.8
+├── .local
+│   └── share
+        ├── gtg
+        ├── keyrings
+        ├── liferea
+        ├── omf
+        ├── TowerFall
+        ├── virtualenvs
+        └── Zeal
+├── .mozilla
+├── .netrc
+├── .oh-my-zsh
+├── .openambit
+├── .pypirc
+├── .scmbrc
+├── .scm_breeze
+├── .sshplus
+├── .vscode
+│   └── extensions
+└── .zshrc
+</pre>
+<p>Quand on bidouille, on les change souvent. On les backup aussi, pour pouvoir les porter d&#8217;un laptop à un autre, les synchroniser, les uploader sur un serveur ou les récup lors d&#8217;une réinstallation. Parce que quand on a tuné ses terminaux et éditeurs aux petits oignons, on a pas envie de recommencer à poil.</p>
+<p>Pour bien faciliter les choses, ils sont éparpillés un peu partout, dans des sous-dossiers différents. </p>
+<p>Et je sais pas quel vil individu a suggéré une fois que faire une partition séparée pour <code>/home</code> était la solution de Skippy à tous les soucis, mais perso, ça me cause plus de bugs qu&#8217;autre chose quand on change de versions d&#8217;OS.</p>
+<p>Bref, laissez tomber vos vieilles croyances issues de charlatans de sectes. Moi, j&#8217;ai vu la lumière (lien de don bitcoin en bas à droite de la page), et elle s&#8217;appelle <code>GNU stow</code>.</p>
+<p>Stow est un vieil utilitaire (donc sagesse millénaire des anciens, vous pouvez avoir confiance, prenez ce cristal aussi il est en promo), qui est grosso merdo un <code>ln -s</code> récursive. C&#8217;est-à-dire que ça fait des symlinks des fichiers et des dossiers que vous lui passez.</p>
+<p>On peut l&#8217;utiliser pour plein de choses, mais l&#8217;usage sacré implique le sacrifice d&#8217;une vierge à Max, puis de déplacer tous les fichiers de settings qu&#8217;on souhaite gérer dans un seul dossier.</p>
+<p>Par exemple, moi j&#8217;ai:</p>
+<pre>
+/home/user/church/settings/
+
+    ├── .autoenv
+    ├── .bashrc
+    ├── .config
+    │   ├── autostart
+    │   ├── Code
+    │   ├── copyq
+    │   ├── fish
+    │   ├── gtg
+    ...
+</pre>
+<p>Au lieu de les avoir éparpillées partout, toutes les brebis sont maintenant regroupées dans une seule église. </p>
+<p>Il est très important de garder l&#8217;organisation des dossiers et des sous-dossiers d&#8217;origine. Ici vous voyez que j&#8217;ai le dossier <code>Code</code>, qui est le dossier de settings de VSCode. Mais il est DANS un dossier <code>.config</code>, car avant mon regroupement il était dans <code>/home/user/.config/</code>.</p>
+<p>En revanche, il n&#8217;est pas du tout nécessaire que <code>.config</code> contienne tous les dossiers qu&#8217;il avait précédemment. Seuls ceux qui vous intéressent. Le reste peut rester à sa place initiale, dans le <code>/home/user/.config/</code>.</p>
+<p>Donc je résume:</p>
+<ul>
+<li>Listez les fichiers et dossiers de settings qui vous intéressent.</li>
+<li>Déplacez les tous dans un dossier commun en gardant une arborescence similaire.</li>
+<li>Laissez les fichiers qui ne vous intéressent pas là où ils sont.</li>
+<li>Priez (une bonne pratique avant toute opération informatique).</li>
+</ul>
+<p>Arrive le messie, Stow.</p>
+<p>D&#8217;abord, il faut l&#8217;installer, mais comme c&#8217;est un outil vénérable, il est dans les dépôts. Sous Ubuntu, le psaume &#8220;apt install stow&#8221; fera l&#8217;affaire.</p>
+<p>Ensuite, on prêche. Je me perds dans mes propres paraboles, mais les voies du seigneur sont impénétrables, contrairement à celles d&#8217;Abella Anderson. Bref on demande à <code>stow</code> de traiter récursivement tout le contenu du dossier <code>settings</code> qui est dans <code>/home/user/church</code> afin de le linker vers <code>/home/user/</code>:</p>
+<pre lang="bash">stow -d /home/user/church -t /home/user/ settings</pre>
+<p>Stow va prendre récursivement tous les dossiers qui sont dans <code>/home/user/church/settings</code>, et les comparer à ceux dans <code>/home/user</code>. Si ils existent, il va ne rien faire, mais si ils n&#8217;existent pas, il va créer un lien vers chacun de ceux manquants. Pour les fichiers, si ils n&#8217;existent pas, il va créer un lien, sinon il va vous afficher une erreur, afin de ne pas écraser quelque chose d&#8217;important et vous signalez qu&#8217;il y un souci.</p>
+<p>Le but de tout ça ?</p>
+<p>Pour votre système et tous vos logiciels, ça ne change rien. Ils vont tomber sur les liens et avoir l&#8217;impression que tous les fichiers de configs sont à leur place et vont continuer à fonctionner dans la joie et le gospel.</p>
+<p>Et pour vous, ben vous avez un seul endroit où tous les fichiers importants sont regroupés. Plus besoin de les chercher. Facile à backuper et à restaurer. On peut même tout foutre sous Git.</p>
+<p>Loué soit le sauveur.</p>
+<p>Vive moi.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/regrouper-ses-fichiers-de-settings-avec-stow/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">23681</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/10/s4UjYDb.jpg" length="232781" type="image/jpg" />	</item>
+		<item>
+		<title>Quelques outils pour gérer les clés secrètes en Django</title>
+		<link>http://sametmax.com/quelques-outils-pour-gerer-les-cles-secretes-en-django/</link>
+		<comments>http://sametmax.com/quelques-outils-pour-gerer-les-cles-secretes-en-django/#comments</comments>
+		<pubDate>Thu, 23 Feb 2017 15:05:16 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[security]]></category>
+		<category><![CDATA[settings]]></category>
+		<category><![CDATA[web]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=22504</guid>
+		<description><![CDATA[Fonctions et commandes pour se faciliter la vie]]></description>
+				<content:encoded><![CDATA[<p>On ne veut pas mettre sa SECRET_KEY en prod, et utiliser un service pour <a href="http://www.miniwebtool.com/django-secret-key-generator/">générer la clé</a>, ça va deux minutes.</p>
+<p>Générer une clé secrète:</p>
+<pre lang="python">import random
+import string
+
+def secret_key(size=50):
+    pool = string.ascii_letters + string.digits + string.punctuation
+    return "".join(random.SystemRandom().choice(pool) for i in range(size))</pre>
+<p>Générer une clé secrete avec une commande <code>manage.py</code>:</p>
+<pre lang="python">from django.core.management.base import BaseCommand, CommandError
+from polls.models import Question as Poll
+
+class Command(BaseCommand):
+    help = 'Generate a secret key'
+
+    def add_arguments(self, parser):
+        parser.add_argument('size', default=50, type=int)
+
+    def handle(self, *args, **options):
+        self.stdout.write(secret_key(options['size']))</pre>
+<p>A mettre dans <code>./votreapp/management/command/generate_secret_key.py</code> :)</p>
+<p>Une fonction pour lire la clé depuis un fichier texte ou générer la clé si elle n&#8217;existe pas:</p>
+<pre lang="python">import io
+import os
+
+try:
+    import pwd
+except ImportError:
+    pass
+
+try:
+    import grp
+except ImportError:
+    pass
+
+
+def secret_key_from_file(
+        file_path, 
+        create=True, 
+        size=50, 
+        file_perms=None, # unix uniquement
+        file_user=None, # unix uniquement
+        file_group=None # unix uniquement
+    ):
+    try:
+        with io.open(file_path) as f:
+            return f.read().strip()
+    except IOError as e:
+        if e.errno == 2 and create:
+            with io.open(file_path, 'w') as f:
+                key = secret_key(size)
+                f.write(key)
+
+            if any((file_perms, file_user, file_group)) and not pwd:
+                raise ValueError('File chmod and chown are for Unix only')
+
+            if file_user:
+                os.chown(file_path, uid=pwd.getpwnam(file_user).pw_uid)
+
+            if file_group:
+                os.chown(file_path, gid=grp.getgrnam(file_group).gr_gid)
+
+            if file_perms:
+                os.chmod(file_path, int(str(file_perms), 8))
+
+            return key
+
+        raise</pre>
+<p>Et une fonction pour récupérer la clé depuis une variable d&#8217;environnement ou un fichier:</p>
+<pre lang="python">def get_secret_key(
+        file_path=None, 
+        create=True, 
+        size=50, 
+        file_perms=None, 
+        file_user=None, 
+        file_group=None,
+        env_var="DJANGO_SECRET_KEY"
+    ):
+    try:
+        return os.environ[env_var]
+    except KeyError:
+        if file_path:
+            return secret_key_from_file(file_path, create=create, size=size)
+        raise</pre>
+<p>Le but de cette dernière est d&#8217;avoir ça dans son fichier de settings:</p>
+<p><code>SECRET_KEY = get_secret_key('secret_key')</code></p>
+<p>Et de foutre &#8216;secret_key&#8217; dans son .gitignore.</p>
+<p>Comme ça:</p>
+<ul>
+<li>Si on n&#8217;a pas de clé secrète, on en génère une.</li>
+<li>Si on a une, elle est dans un fichier qui n&#8217;est PAS dans settings.py.</li>
+<li>On peut commiter settings.py. Chaque env de dev et prod a sa clé secrète automatiquement.</li>
+<li>On peut overrider la clé avec une variable d&#8217;environnement si on le souhaite.</li>
+</ul>
+<p>En attendant, <a href="https://github.com/django-extensions/django-extensions/issues/1017">j&#8217;ai proposé qu&#8217;on ajoute ça a django extensions</a>. Et qui sait, dans le core peut être un jour ?</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quelques-outils-pour-gerer-les-cles-secretes-en-django/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">22504</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/02/WY7QChI.jpg" length="710544" type="image/jpg" />	</item>
+		<item>
+		<title>Mettre Ubuntu en veille en appuyant sur le bouton &#8216;power&#8217;</title>
+		<link>http://sametmax.com/mettre-ubuntu-en-veille-en-appuyant-sur-le-bouton-power/</link>
+		<comments>http://sametmax.com/mettre-ubuntu-en-veille-en-appuyant-sur-le-bouton-power/#comments</comments>
+		<pubDate>Mon, 29 Apr 2013 07:24:43 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[settings]]></category>
+		<category><![CDATA[suspend]]></category>
+		<category><![CDATA[ubuntu]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5909</guid>
+		<description><![CDATA[J'ai horreur que mon ordi se mette en veille quand je rabat le capot. C'est un ultra portable, donc je le balade partout. Du coup, je régle dans les options que la fermeture déclenche juste le verrouillage de l'écran : un geste et mon laptop est à l'abrit des blagues des petits malins dans les hackerspaces pendant la pose pipi.
+
+Mais j'aime pouvoir le mettre en veille rapidement, en appuyant juste sur le bouton power, et il n'y a plus de paramètres pour le régler dans les settings d'Ubuntu.]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;ai horreur que mon ordi se mette en veille quand je rabat le capot. C&#8217;est un ultra portable, donc je le balade partout. Du coup, je régle dans les options que la fermeture déclenche juste le verrouillage de l&#8217;écran : un geste et mon laptop est à l&#8217;abrit des blagues des petits malins dans les hackerspaces pendant la pose pipi.</p>
+<p>Mais j&#8217;aime pouvoir le mettre en veille rapidement, en appuyant juste sur le bouton power, et il n&#8217;y a plus de paramètres pour le régler dans les settings d&#8217;Ubuntu.</p>
+<p>La solution et cette petite ligne de commande :</p>
+<pre lang="python">gsettings set org.gnome.settings-daemon.plugins.power button-power 'suspend'</pre>
+<p>Les valeurs possibles sont :</p>
+<ul>
+<li><strong>&#8216;blank&#8217;</strong> : aucune valeur.</li>
+<li><strong>&#8216;suspend&#8217;</strong> : mettre en veille.</li>
+<li><strong>&#8216;shutdown&#8217;</strong> : éteindre.</li>
+<li><strong>&#8216;hibernate&#8217;</strong> : hiberner.</li>
+<li><strong>&#8216;interactive&#8217;</strong> : afficher une fenêtre qui demande quoi faire.</li>
+<li><strong>&#8216;nothing&#8217;</strong> : ne rien faire.</li>
+</ul>
+<p>On peut aussi <a href=" http://askubuntu.com/questions/66723/how-do-i-modify-the-power-options">le faire en graphique</a> pour ceux qui n&#8217;aiment pas le terminal.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/mettre-ubuntu-en-veille-en-appuyant-sur-le-bouton-power/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">5909</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/04/JJLDYfI.jpg" length="30425" type="image/jpg" />	</item>
+		<item>
+		<title>En Django, le fichier settings.py, c&#8217;est juste du Python</title>
+		<link>http://sametmax.com/en-django-le-fichier-settings-py-cest-juste-du-python/</link>
+		<comments>http://sametmax.com/en-django-le-fichier-settings-py-cest-juste-du-python/#comments</comments>
+		<pubDate>Mon, 24 Sep 2012 12:42:50 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[settings]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2285</guid>
+		<description><![CDATA[On a beau répêter dans la doc, "Django is just Python", c'est difficile de s'y faire. Surtout dans le fichier settigns.py: c'est vrai que le paramétrage, c'est quelque chose qu'on a l'habitude d'être typiquement déclaratif.
+
+Rappel donc, le fichier settings.py, c'est juste du Python.]]></description>
+				<content:encoded><![CDATA[<p>On a beau répêter dans la doc, &#8220;Django is just Python&#8221;, c&#8217;est difficile de s&#8217;y faire. Surtout dans le fichier settigns.py: c&#8217;est vrai que le paramétrage, c&#8217;est quelque chose qu&#8217;on a l&#8217;habitude d&#8217;être typiquement déclaratif.</p>
+<p>Rappel donc, le fichier settings.py, c&#8217;est juste du Python.</p>
+<p>Ça veut dire qu&#8217;on peut faire ça en début de fichier:</p>
+<pre lang="python">import os
+# répérer le dossier du projet
+ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
+
+Et ça un peut partout dans le projet pour éviter les d'avoir des chemins absolus en dur:
+
+STATIC_ROOT = os.path.join(ROOT_DIR, 'static')</pre>
+<p>On peut aussi faire des choses comme celle-ci, pour avoir un comportement spécial en mode debug:</p>
+<pre lang="python">if DEBUG:
+
+    # on retire le dernier middleware
+    MIDDLEWARE_CLASSES = [:-1]
+    #et on en rajoute un au début
+    MIDDLEWARE_CLASSES = (
+        'libs.middlewares.MonMiddlewareKilebo',
+    ) + MIDDLEWARE_CLASSES</pre>
+<p>Et si un settings n&#8217;existe pas, on peut l&#8217;inventer pour le réutiliser partout dans son code ailleurs:</p>
+<pre lang="python">SERVER_POOL = (
+    ('8.8.8.8', "sametmax.com"),
+    ('8.8.4.4', "cnd.sametmax.com"),
+    ('208.67.222.222', 'staging.sametmax.com'),
+    ('208.67.220.220', "dev.sametmax.com")
+)</pre>
+<p>Et même se faciliter la vie:</p>
+<pre lang="python">SERVER_POOL_DICT = dict(SERVER_POOL)</pre>
+<p>Dans le même genre on peut faire des calculs:</p>
+<pre lang="python">CINQ_MINUTES = 60 * 5
+...
+CACHE_MIDDLEWARE_SECONDS = CINQ_MINUTES * 2</pre>
+<p>Et bien entendu, on peut splitter son fichier de settings en plusieurs fichiers. Il y a le maintenant classique fichier de settings local qui est différent sur chaque marchine, et qu&#8217;on importe en fin de fichier:</p>
+<pre lang="python">try:
+    from settings_local import *
+except ImportError:
+    pass</pre>
+<p>Ca permet de mettre les paramètres de la base de données dans settings_local.py.</p>
+<p>Mais on oublie souvent que peut tout à fait récupérer les paramètres depuis un fichier non Python.</p>
+<p>Récupérer des valeurs dans un fichiers ini ? Fastoche !</p>
+<pre lang="python">import ConfigParser
+config = ConfigParser.RawConfigParser()
+config.readfp('/chemin/vers/fichier.ini')
+locals().update(config.items('section'))</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/en-django-le-fichier-settings-py-cest-juste-du-python/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">2285</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/09/1_tabs_c.gif" length="9555" type="image/jpg" />	</item>
+		<item>
+		<title>Mettre automatiquement DEBUG sur False en production pour Django</title>
+		<link>http://sametmax.com/mettre-automatiquement-debug-sur-false-en-production-pour-django/</link>
+		<comments>http://sametmax.com/mettre-automatiquement-debug-sur-false-en-production-pour-django/#comments</comments>
+		<pubDate>Sat, 01 Sep 2012 14:24:22 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[debug]]></category>
+		<category><![CDATA[deploiement]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[settings]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1913</guid>
+		<description><![CDATA[L'avantage des fichiers de settings en pur Python, c'est qu'on peut faire des trucs mignons comme ça....]]></description>
+				<content:encoded><![CDATA[<p>L&#8217;avantage des fichiers de settings en pur Python, c&#8217;est qu&#8217;on peut faire des trucs mignons comme:</p>
+<pre lang="python">import socket
+
+if socket.gethostname() == 'monsupersite.com':
+    DEBUG = False
+else:
+    DEBUG = True
+</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/mettre-automatiquement-debug-sur-false-en-production-pour-django/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1913</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/08/miss-post-it.jpg" length="50732" type="image/jpg" />	</item>
+		<item>
+		<title>Retour à la ligne sur Sublime Text 2 (word wrap)</title>
+		<link>http://sametmax.com/retour-a-la-ligne-sur-sublime-text-2-word-wrap/</link>
+		<comments>http://sametmax.com/retour-a-la-ligne-sur-sublime-text-2-word-wrap/#comments</comments>
+		<pubDate>Tue, 17 Apr 2012 16:13:20 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[settings]]></category>
+		<category><![CDATA[sublime text]]></category>
+		<category><![CDATA[word wrap]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=407</guid>
+		<description><![CDATA[Configurer Sublime Text pour aller à la ligne automatiquement (word wrap).]]></description>
+				<content:encoded><![CDATA[<p>Des fois lorsqu&#8217;on a des lignes trop longues on se retrouve avec une barre de scrolling horizontale sur Sublime.<br />
+Pas toujours pratique à lire ni à éditer. On peut dire à Sublime de retourner à la ligne lorsque cette dernière est plus longue que la largeur de votre espace de travail.</p>
+<p>Pour ce faire on utilise <strong>word wrap</strong></p>
+<p>Allez dans les préférences > Settings User et rajoutez cette ligne:</p>
+<p>Par exemple:</p>
+<pre lang="bash">
+{
+	"font_size": 11.0
+}
+
+</pre>
+<p>donnera:</p>
+<pre lang="bash">
+{
+	"font_size": 11.0,
+	"word_wrap": true
+}
+</pre>
+<p>Relancez Sublime pour que les changements soient pris en compte.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/retour-a-la-ligne-sur-sublime-text-2-word-wrap/feed/</wfw:commentRss>
+		<slash:comments>17</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">407</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/04/typewriter.jpg" length="130279" type="image/jpg" />	</item>
+	</channel>
+</rss>

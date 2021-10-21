@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>https &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/https/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Le bulletin sécu : https pour 0bin et leak de mots de passe</title>
+		<link>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/</link>
+		<comments>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/#comments</comments>
+		<pubDate>Sun, 10 Jan 2016 12:42:33 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[0bin]]></category>
+		<category><![CDATA[chiffrement]]></category>
+		<category><![CDATA[hash]]></category>
+		<category><![CDATA[https]]></category>
+		<category><![CDATA[meta]]></category>
+		<category><![CDATA[password]]></category>
+		<category><![CDATA[sécurité]]></category>
+		<category><![CDATA[sysadmin]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=17638</guid>
+		<description><![CDATA[Bon, soit.]]></description>
+				<content:encoded><![CDATA[<p>Quand letsencrypt est passé live, on m&#8217;a gentiment signalé qu&#8217;on avait plus d&#8217;excuses pour faire tourner 0bin en clair.</p>
+<p>Bon, soit.</p>
+<p>J&#8217;ai mis en place ça hier à titre de test : <a href="https://0bin.net/">https://0bin.net/</a>.</p>
+<p>Pour le moment je vais pas faire de redirection car j&#8217;attends de voir si le truc tient. </p>
+<p>La bonne nouvelle, c&#8217;est que comme l&#8217;installation est juste nginx + zerobin, il n&#8217;y a pas eut grand chose à faire : lancer un script, le laisser nous identifier et installer les dependances pour qu&#8217;il génère le certificat et faire pointer le dit certificat par nginx.</p>
+<p>La moins bonne nouvelle c&#8217;est que notre archi pour <a href="http://sametmax.com">sametmax.com</a> et <a href="http://indexerror.net">indexerror.net</a> est basé sur client => varnish => nginx => worker => site.</p>
+<p>Il faut donc mettre le certif au niveau de varnish.</p>
+<p>Mais comme vous vous en doutez bien, il fallait que ça couille : support de https est un truc récent sur varnish et notre version ne le supporte pas. Donc il reste à :</p>
+<ul>
+<li>Up varnish. Compiler à la main, chercher un mec qui l’a fait, up le serveur ou autre.</li>
+<li>Ou passer varnish derrière nginx et réécrire tout le VLC.</li>
+<li>Ou mettre uniquement HTTPS pour les formulaires de connexions. C’est mieux que rien, mais ça laisse le cookie d’identification en clair et ça va demander de faire des règles milimétriaques.</li>
+<li>Mettre <a href="https://github.com/varnish/hitch">un autre truc</a> en face de varnish juste pour le port 443. </li>
+</ul>
+<p>Oh, du boulot en plus, je ne m’y attendais tellement pas&#8230;</p>
+<p>Merci à tous ceux qui ont proposé et fourni de l’aide néanmoins. C’est cool d’avoir du soutien parmi ses lecteurs.</p>
+<p>Pendant ce temps, et ça n’a rien à voir, un lecteur s’est amusé à brute forcer des hashs de mots de passe qu’on avait leakés connement et a trouvé celui de max au bout de quelques jours. Il nous a gentiment envoyé le résultat de ses recherches par mail. Ce n’est pas ironique, hein. J’apprécie que quand quelqu’un trouve que tu es à poil il te le fasse savoir avec précision et honnêteté.</p>
+<p>Du coup va falloir aussi changer tous les mots de passe du blog et de indexerror. </p>
+<p>Comme ce n’est pas une question de sécurité nationale, je ne suis pas en mode bersek à vouloir faire ça dans la minute, mais sachez-le : changez vos mots de passe à l’occasion. Personne ne va violer votre sœur demain si vous ne le faites pas, mais mieux vaut prévenir que guérir.</p>
+<p>Oh, du boulot en plus, je ne m’y attendais tellement pas&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/feed/</wfw:commentRss>
+		<slash:comments>18</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">17638</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/01/g3i4LZQ.jpg" length="28901" type="image/jpg" />	</item>
+		<item>
+		<title>Pourquoi obliger le SSL par défaut est une grosse connerie</title>
+		<link>http://sametmax.com/pourquoi-obliger-le-ssl-par-defaut-est-une-grosse-connerie/</link>
+		<comments>http://sametmax.com/pourquoi-obliger-le-ssl-par-defaut-est-une-grosse-connerie/#comments</comments>
+		<pubDate>Wed, 06 May 2015 09:06:13 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[chrome]]></category>
+		<category><![CDATA[firefox]]></category>
+		<category><![CDATA[http]]></category>
+		<category><![CDATA[https]]></category>
+		<category><![CDATA[mozilla]]></category>
+		<category><![CDATA[ssl]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16175</guid>
+		<description><![CDATA[Chrome et Mozilla parlent de limiter les fonctionnalités de leurs navigateurs sur les sites qui n'utilisent pas SSL.]]></description>
+				<content:encoded><![CDATA[<p>Chrome et Mozilla <a href="https://blog.mozilla.org/security/2015/04/30/deprecating-non-secure-http/">parlent</a> de limiter les fonctionnalités de leurs navigateurs sur les sites qui n&#8217;utilisent pas SSL.</p>
+<p>Sur le papier, c&#8217;est pavé de bonnes intentions : forcer les auteurs de sites à chiffrer la communication entre le serveur et le client. Plus de sécurité pour les utilisateurs, tant pis pour les dev paresseux, pas vrai ?</p>
+<p><strong>Sauf que HTTPS fonctionne sur le principe d&#8217;autorités centrales</strong>. Vous devez obtenir un certificat auprès d&#8217;une autorité de confiance, sans quoi le navigateur va afficher ça :<br />
+<div id="attachment_16176" style="width: 700px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2015/05/firefoxCertError.jpg" class="grouped_elements" rel="tc-fancybox-group16175"><img src="http://sametmax.com/wp-content/uploads/2015/05/firefoxCertError.jpg" alt="This connection is untrusted" width="690" height="431" class="size-full wp-image-16176" /></a><p class="wp-caption-text">Michou ne va pas lire ce texte, encore moins chercher et trouver comment accéder au site. Elle va courir. Un virus !</p></div></p>
+<p>Les moteurs de recherche vont vous plomber, l&#8217;utilisateur va fuir, bref, votre site est mort.</p>
+<p>Et c&#8217;est la que ça devient fun, car les autorités centrales sont des organismes privés, et il n&#8217;y en a pas beaucoup. Ils ne sont pas tenus de vous filer un certificat, et peuvent le retirer à tout moment. </p>
+<p>En clair, <strong>forcer SSL partout, c&#8217;est donner la main à quelques grosses boites pour décider qui a le droit d&#8217;être sur le Web ou pas.</strong> Vous voulez faire un truc qui ne leur plait pas ? Attention, montrer un tableau classique avec des nichons ne plait pas à Apple, faire un noeud Tor ne plait pas à Amazon, les bitcoins ne plaisent pas à Paypal et être gay ne plait pas à plein de gouvernements.</p>
+<p>Toutes ces entités travaillent main dans la main avec les autorités de certification, et avoir Mozilla en <a href="https://letsencrypt.org/">proposer</a> une n&#8217;y changera rien. Si vous faites un truc que ces gens ne veulent pas, vous effacer du Web sera aussi facile que de faire pression pour révoquer votre certificat.</p>
+<p>Sans jugement. Sans procès. Sans recours possible.</p>
+<p>Le Web deviendra un app store.</p>
+<p>EDIT : </p>
+<p>Je rajoute mon commentaire sur let&#8217;s encrypt ici sinon je sens que tout le monde va radoter</p>
+<blockquote><p>L’article a un lien qui pointe vers let’s encrypt. Ca ne change rien : c’est centralisé, privé, et subira des pressions comme tous les autres. J’aime Mozilla, j’ai confiance en eux, mais ils n’ont aucun moyen de garantir la neutralité de let’s encrypt, ne serait que par rapport aux gouvernements.</p>
+<p>Et puis quoi ? A la fin tous les sites “border line” seront chez eux ? Comme ça bam, un bon single point of failure à attaquer pour tout faire tomber d’un coup ?</p>
+<p>FBI. FBI. FBI.</p></blockquote>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/pourquoi-obliger-le-ssl-par-defaut-est-une-grosse-connerie/feed/</wfw:commentRss>
+		<slash:comments>47</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">16175</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/05/dgggmto.gif" length="154990" type="image/jpg" />	</item>
+		<item>
+		<title>Git push via HTTP (ou comment travailler au MacDo)</title>
+		<link>http://sametmax.com/git-push-via-http-ou-comment-travailler-au-macdo/</link>
+		<comments>http://sametmax.com/git-push-via-http-ou-comment-travailler-au-macdo/#comments</comments>
+		<pubDate>Mon, 19 Aug 2013 18:03:53 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[https]]></category>
+		<category><![CDATA[push]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=647</guid>
+		<description><![CDATA[Le Mac wifi est annoncé comme "Internet gratuit Illimité", ce qui en langage commercial ignorant signifie une partie du Web censurée et les ports de emails ouverts si vous nous achetez un Maxi best of.]]></description>
+				<content:encoded><![CDATA[<p>Hier, j’ai dû pusher du Mac Do. Parce que je suis dans un pli d&#8217;une circonvolution du sphincter du trou du cul du monde, à savoir chez mes grands-parents. Inutile de dire que j&#8217;avais un meilleur accès Internet à Kisumu, au Kenya. Si, si.</p>
+<p>Bien entendu, le Mac wifi est annoncé comme &#8220;Internet gratuit Illimité&#8221;, ce qui en langage commercial ignorant signifie une partie du Web censurée et les ports de emails ouverts si vous nous achetez un maxi best of.</p>
+<p>Donc pas de SSH.</p>
+<p>Heurement Github est grand, Github est beau, et Github accepte les push via HTTPS.</p>
+<p>Modifiez juste une ligne dans votre fichier .git/config de :</p>
+<pre>
+[remote "origin"]
+	url = git@github.com/votre_pseudo/votre_repo.git</pre>
+<p>Vers :</p>
+<pre>
+[remote "origin"]
+	url = https://github.com/votre_pseudo/votre_repo.git</pre>
+<p>La commande git devrait vous prompter pour username (mettez votre email) et mot de passe, et hop : le monde du télétravail à la campagne s&#8217;ouvre à vous.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/git-push-via-http-ou-comment-travailler-au-macdo/feed/</wfw:commentRss>
+		<slash:comments>17</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">647</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/08/SbR55.jpg" length="80437" type="image/jpg" />	</item>
+	</channel>
+</rss>

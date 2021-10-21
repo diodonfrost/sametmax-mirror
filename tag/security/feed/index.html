@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>security &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/security/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Quelques outils pour gérer les clés secrètes en Django</title>
+		<link>http://sametmax.com/quelques-outils-pour-gerer-les-cles-secretes-en-django/</link>
+		<comments>http://sametmax.com/quelques-outils-pour-gerer-les-cles-secretes-en-django/#comments</comments>
+		<pubDate>Thu, 23 Feb 2017 15:05:16 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[security]]></category>
+		<category><![CDATA[settings]]></category>
+		<category><![CDATA[web]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=22504</guid>
+		<description><![CDATA[Fonctions et commandes pour se faciliter la vie]]></description>
+				<content:encoded><![CDATA[<p>On ne veut pas mettre sa SECRET_KEY en prod, et utiliser un service pour <a href="http://www.miniwebtool.com/django-secret-key-generator/">générer la clé</a>, ça va deux minutes.</p>
+<p>Générer une clé secrète:</p>
+<pre lang="python">import random
+import string
+
+def secret_key(size=50):
+    pool = string.ascii_letters + string.digits + string.punctuation
+    return "".join(random.SystemRandom().choice(pool) for i in range(size))</pre>
+<p>Générer une clé secrete avec une commande <code>manage.py</code>:</p>
+<pre lang="python">from django.core.management.base import BaseCommand, CommandError
+from polls.models import Question as Poll
+
+class Command(BaseCommand):
+    help = 'Generate a secret key'
+
+    def add_arguments(self, parser):
+        parser.add_argument('size', default=50, type=int)
+
+    def handle(self, *args, **options):
+        self.stdout.write(secret_key(options['size']))</pre>
+<p>A mettre dans <code>./votreapp/management/command/generate_secret_key.py</code> :)</p>
+<p>Une fonction pour lire la clé depuis un fichier texte ou générer la clé si elle n&#8217;existe pas:</p>
+<pre lang="python">import io
+import os
+
+try:
+    import pwd
+except ImportError:
+    pass
+
+try:
+    import grp
+except ImportError:
+    pass
+
+
+def secret_key_from_file(
+        file_path, 
+        create=True, 
+        size=50, 
+        file_perms=None, # unix uniquement
+        file_user=None, # unix uniquement
+        file_group=None # unix uniquement
+    ):
+    try:
+        with io.open(file_path) as f:
+            return f.read().strip()
+    except IOError as e:
+        if e.errno == 2 and create:
+            with io.open(file_path, 'w') as f:
+                key = secret_key(size)
+                f.write(key)
+
+            if any((file_perms, file_user, file_group)) and not pwd:
+                raise ValueError('File chmod and chown are for Unix only')
+
+            if file_user:
+                os.chown(file_path, uid=pwd.getpwnam(file_user).pw_uid)
+
+            if file_group:
+                os.chown(file_path, gid=grp.getgrnam(file_group).gr_gid)
+
+            if file_perms:
+                os.chmod(file_path, int(str(file_perms), 8))
+
+            return key
+
+        raise</pre>
+<p>Et une fonction pour récupérer la clé depuis une variable d&#8217;environnement ou un fichier:</p>
+<pre lang="python">def get_secret_key(
+        file_path=None, 
+        create=True, 
+        size=50, 
+        file_perms=None, 
+        file_user=None, 
+        file_group=None,
+        env_var="DJANGO_SECRET_KEY"
+    ):
+    try:
+        return os.environ[env_var]
+    except KeyError:
+        if file_path:
+            return secret_key_from_file(file_path, create=create, size=size)
+        raise</pre>
+<p>Le but de cette dernière est d&#8217;avoir ça dans son fichier de settings:</p>
+<p><code>SECRET_KEY = get_secret_key('secret_key')</code></p>
+<p>Et de foutre &#8216;secret_key&#8217; dans son .gitignore.</p>
+<p>Comme ça:</p>
+<ul>
+<li>Si on n&#8217;a pas de clé secrète, on en génère une.</li>
+<li>Si on a une, elle est dans un fichier qui n&#8217;est PAS dans settings.py.</li>
+<li>On peut commiter settings.py. Chaque env de dev et prod a sa clé secrète automatiquement.</li>
+<li>On peut overrider la clé avec une variable d&#8217;environnement si on le souhaite.</li>
+</ul>
+<p>En attendant, <a href="https://github.com/django-extensions/django-extensions/issues/1017">j&#8217;ai proposé qu&#8217;on ajoute ça a django extensions</a>. Et qui sait, dans le core peut être un jour ?</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quelques-outils-pour-gerer-les-cles-secretes-en-django/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">22504</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/02/WY7QChI.jpg" length="710544" type="image/jpg" />	</item>
+		<item>
+		<title>Desactiver la validation des mots de passe en mode DEBUG sous Django</title>
+		<link>http://sametmax.com/desactiver-la-validation-des-mots-de-passe-en-mode-debug-sous-django/</link>
+		<comments>http://sametmax.com/desactiver-la-validation-des-mots-de-passe-en-mode-debug-sous-django/#comments</comments>
+		<pubDate>Fri, 08 Jan 2016 10:29:10 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[security]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=17508</guid>
+		<description><![CDATA[Django 1.9 rajoute la validation de "sécurité" des mots de passe comme corde à son arc. 
+
+Personnellement je trouve ça naze. ]]></description>
+				<content:encoded><![CDATA[<p>Django 1.9 rajoute la validation de &#8220;sécurité&#8221; des mots de passe comme corde à son arc. </p>
+<p>Personnellement je trouve ça naze. </p>
+<p>Je suis pour permettre aux utilisateurs de mettre le password qu’ils veulent, même tout pourri. De toute façon les gens qui ne font pas attention à leur sécurité ne vont jamais se souvenir du mot de passe compliqué et faire un « j’ai oublié mon mot de passe » à chaque fois. </p>
+<p>Pire, la complexité ajoutée va faire fuir les nouveaux utilisateurs qui ne vont pas vouloir se faire chier à remplir le formulaire. Ou alors ils vont faire « login with facebook ».</p>
+<p>Mais le plus naze dans tout ça c’est que la validation est tout ou rien : on peut pas mettre de la validation juste pour les comptes admin par exemple. Ce qui aurait du sens.</p>
+<p>Alors, oui à la mise en oeuvre d’un indicateur de force de mot de passe, mais pas un refus catégorique de s’inscrire comme le système actuel le fait.</p>
+<p>Dans tous les cas, vous voudrez au moins le désactiver en mode <code>DEBUG</code> car devoir taper un mot de passe compliqué en dev sur votre machine en local pour accéder à une base de données sqlite de test, c’est relou.</p>
+<p>Car oui, <code>./manage.py createsuperuser</code> refuse votre password si il n’est pas &#8220;sécurisé&#8221; par défaut. En prod, ça a du sens, mais quand je veux tester une merde sur mon laptop, &#8220;admin/admin&#8221; est généralement ce je veux.</p>
+<p>Donc:</p>
+<pre lang="python">AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 9,
+        }
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
+if DEBUG:
+    AUTH_PASSWORD_VALIDATORS = []</pre>
+<p>Enfin, franchement, un validateur de mot de passe basé sur la présence de chiffres. Sérieux ? On a des validateurs basés sur une entropie générale depuis longtemps.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/desactiver-la-validation-des-mots-de-passe-en-mode-debug-sous-django/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">17508</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/01/EfdVChc.gif" length="1012243" type="image/jpg" />	</item>
+		<item>
+		<title>On a tenté de nous hacker 0bin</title>
+		<link>http://sametmax.com/on-a-tente-de-nous-hacker-0bin/</link>
+		<comments>http://sametmax.com/on-a-tente-de-nous-hacker-0bin/#comments</comments>
+		<pubDate>Sun, 20 Dec 2015 09:36:38 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[0bin]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[meta]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[security]]></category>
+		<category><![CDATA[zerobin]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=17160</guid>
+		<description><![CDATA[Je suis tombé sur un dossier bizarre en me balandant dans le dossier contenant tous les pastes de 0bin.net.]]></description>
+				<content:encoded><![CDATA[<p>En me baladant dans l’arbo de <a href="http://0bin.net">0bin.net</a> pour retirer un dox qu’on m’avait signalé je suis tombé sur un dossier au nom bizarre :</p>
+<pre lang="bash"># ls -l
+total 4
+4 drwxr-xr-x 7 root root 4096 sept. 24  2014 --</pre>
+<p>Hum, voilà qui n’est pas pratique à analyser depuis le bash. Et pourquoi j’ai ce dossier-là d’ailleurs ?</p>
+<p>Regardons ce qu’il y a dedans :</p>
+<pre lang="bash">
+# python -c "import os; os.rename('--', "strange_dir")"
+# ls strange_dir/
+3Q  Dk  k5  Oh  -u</pre>
+<p>Oh, y a un dossier nommé &#8220;-u&#8221;&#8230;</p>
+<p>A ce stade-là, j’ai juste supprimé le truc.</p>
+<p>Et j’ai réalisé : on crée les dossiers de l’arbo en fonction du nom du paste, qui est une clé générée côté client, et donc fournie par un code JavaScript non trusté.</p>
+<p>Du coup l’attaqueur nous a sans doute passé une commande bash comme nom de fichier. J’imagine, espérant qu’on fabriquait le fichier avec une exécution shell. Comme on utilise le module os pour le faire, je pense que ça n’a eu aucun impact.</p>
+<p>J’espère :)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/on-a-tente-de-nous-hacker-0bin/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">17160</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/12/9eFBCaD.jpg" length="670682" type="image/jpg" />	</item>
+	</channel>
+</rss>

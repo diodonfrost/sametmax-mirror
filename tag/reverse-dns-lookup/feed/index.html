@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>reverse dns lookup &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/reverse-dns-lookup/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Authoriser GoogleBot à crawler certains contenus de votre site sous Django avec Reverse DNS Lookup</title>
+		<link>http://sametmax.com/authoriser-googleboot-a-crawler-certains-contenus-de-votre-site-sous-django-avec-reverse-dns-lookup/</link>
+		<comments>http://sametmax.com/authoriser-googleboot-a-crawler-certains-contenus-de-votre-site-sous-django-avec-reverse-dns-lookup/#comments</comments>
+		<pubDate>Tue, 20 Nov 2012 20:29:46 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[googlebot]]></category>
+		<category><![CDATA[reverse dns lookup]]></category>
+		<category><![CDATA[seo]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3165</guid>
+		<description><![CDATA[Si vous avez du contenu rich media que vous voulez faire indexer par Google vous aller devoir proposer dans votre Sitemap un lien vers votre contenu video ou image. Et vous n'avez certainement pas envie que tout le monde puisse puiser dedans.]]></description>
+				<content:encoded><![CDATA[<p>Si vous avez du contenu <a href="https://support.google.com/webmasters/bin/answer.py?hl=en&#038;answer=183668&#038;ctx=cb&#038;src=cb&#038;cbid=1bw4t9jciznos&#038;cbrank=3#2">rich media</a> que vous voulez le faire indexer par Google vous allez devoir proposer dans votre <a href="https://support.google.com/webmasters/bin/answer.py?hl=en&#038;answer=156184&#038;topic=8476&#038;ctx=topic">Sitemap</a> un lien vers votre contenu video ou image. Et vous n&#8217;avez certainement pas envie que tout le monde puisse puiser dedans.</p>
+<p>D&#8217;après La doc Google, le rich media c&#8217;est l&#8217;avenir, micro-datas, sitemap video, etc&#8230; faut être à la page.<br />
+Du coup vous avez envie que votre contenu se retrouve indexé par Google et rien que lui, ou pas lui et rien que Yahoo, ou pas Yahoo et rien que Bing, ou pas que Bing mais rien que Yahoo et Google et aussi un peu Bing finalement mais surtout pas Da silva&#8230;<a href="http://www.youtube.com/watch?v=wlPhNy8nHHU">Je l&#8217;aime pas Da silva</a>&#8230;</p>
+<p>Google <a href="https://support.google.com/webmasters/bin/answer.py?hl=en&#038;answer=80553">conseille d&#8217;utiliser le Reverse DNS lookup</a>. En gros de récupérer le nom de domaine du robot en fonction de l&#8217;IP qui vous crawle.</p>
+<p><strong>On fait une fonction qui check l&#8217;ip et on gère le retour dans la vue Django:</strong></p>
+<pre lang="python">
+def allowed_bot(ip):
+    """
+        Do a reverse dns lookup on IP to get domain 
+        and check if it is a bot from know search engines
+    """
+    allowed_bots = ['.msn.com', '.yahoo.com', '.googlebot.com']
+    try:
+        socket.setdefaulttimeout(5)
+        host = socket.gethostbyaddr(ip)[0]
+    except socket.herror:
+        return False
+
+    for bot in allowed_bots:
+        if host.find(bot) > 0:
+            return True
+
+def ma_vue(request):
+    """
+       redirect to video to index
+    """
+    ip = request.META.get('REMOTE_ADDR', None)
+
+    if allowed_bot(ip): 
+        return http.HttpResponseRedirect("http://monsite.com/video/meme.flv") 
+    else:
+        return http.http404
+
+</pre>
+<p>Cette méthode n&#8217;est pas à utiliser pour une vue qui retourne une page entière car ça ferait une requête à chaque fois, mais pour du contenu qu&#8217;on a mis à dispo dans un Sitemap comme un player flv .</p>
+<p>Exemple de sitemap avec la balise video :</p>
+<pre >
+
+    <video:video>      
+      <video:player_loc allow_embed="yes">http://www.monsite.com/player.swf?file=/play/76293.xml</video:player_loc>
+      <video:thumbnail_loc>http://www.monsite.com/video/76293/thumbnail.jpg</video:thumbnail_loc>
+      <video:title>mémé à l'île de la raie</video:title>
+      <video:description>Aller mémé te laisse pas ratrapper par la raie !</video:description>
+    </video:video>
+
+</pre>
+<p>Il y a d&#8217;autres solutions comme récupérer la liste de toutes les IPs des crawlers et les passer à Nginx en adaptant un peu <a href="http://sametmax.com/nginx-et-limitation-de-connexion-par-ip-avec-limit_conn_zone/" title="nginx et limitation de connexion par IP avec limit_conn_zone">cet article</a></p>
+<p>NB: Si vous utilisez nginx en tant que proxy n&#8217;oubliez pas d&#8217;inclure proxy_set_header pour renvoyer la bonne IP du client:</p>
+<pre lang="bash">
+location / {
+  proxy_pass        http://monsite_cherrypy;
+  proxy_set_header  X-Real-IP  $remote_addr;
+}
+</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/authoriser-googleboot-a-crawler-certains-contenus-de-votre-site-sous-django-avec-reverse-dns-lookup/feed/</wfw:commentRss>
+		<slash:comments>30</slash:comments>
+<enclosure url="http://monsite.com/video/meme.flv" length="0" type="video/x-flv" />
+	<post-id xmlns="com-wordpress:feed-additions:1">3165</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/11/genialo.jpeg" length="7768" type="image/jpg" />	</item>
+	</channel>
+</rss>

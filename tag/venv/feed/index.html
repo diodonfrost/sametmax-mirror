@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>venv &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/venv/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Lancer correctement python et ses commandes cousines</title>
+		<link>http://sametmax.com/lancer-correctement-python-et-ses-commandes-cousines/</link>
+		<pubDate>Sat, 08 Jun 2019 18:00:02 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[pip]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[venv]]></category>
+		<category><![CDATA[virtualenv]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=25303</guid>
+		<description><![CDATA[Dans cet article, on va voir comment lancer <code>python</code> depuis la ligne de commande, ainsi que les commandes qui lui sont liées: pip, venv, etc.]]></description>
+				<content:encoded><![CDATA[<p>Si j&#8217;avais su, j&#8217;aurais écrit cet article il y a 5 ans. Je pense que tellement de monde aurait évité des heures de frustration. Mais ça prend du temps de réaliser que des choses qui vous paraissent simples sont des obstacles pour d&#8217;autres.</p>
+<p>Mieux vaut tard que jamais j&#8217;imagine.</p>
+<p>Dans cet article, on va voir comment lancer <code>python</code> depuis la ligne de commande, ainsi que les commandes qui lui sont liées: pip, venv, etc.</p>
+<h2>Sous Windows</h2>
+<p>Vous avez installé Python, c&#8217;est certain. Vous lisez votre premier tuto, qui vous dit de lancer <code>cmd.exe</code>, et de taper <code>python</code>, mais impossible de le faire marcher. Des messages du genre <code>‘python’ is not recognized as an internal or external command</code> apparaissent. Ou alors le mauvais Python se lance.</p>
+<p>Déjà, premièrement, désinstallez Python, et réinstallez-le (en utilisant l&#8217;installeur officiel si possible), mais sur la toute première fenêtre de l&#8217;installeur, vérifiez bien que la case &#8220;Add Python to PATH&#8221; (ou son équivalent français) qui est tout en bas est cochée. Sans cela, le dossier d&#8217;installation de Python ne sera pas trouvable par le shell au moment de taper la commande. Je sais, ça devrait être coché par défaut. J&#8217;ai signalé ça plusieurs fois sur la mailing-list, et ils n&#8217;en ont rien à foutre.</p>
+<div id="attachment_25314" style="width: 723px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2019/06/python37_win_installer.png" class="grouped_elements" rel="tc-fancybox-group25303"><img src="http://sametmax.com/wp-content/uploads/2019/06/python37_win_installer.png" alt="Le clitoris de l&#039;installation de Python" width="713" height="455" class="size-full wp-image-25314" /></a><p class="wp-caption-text">Le clitoris de l&#8217;installation de Python</p></div>
+<p>Alternativement, si vous ne voulez pas désinstaller Python, ou si vous n&#8217;utilisez pas l&#8217;installeur de Python standard, cherchez le dossier où vous avez installé python. C&#8217;est un dossier qui doit contenir <code>python.exe</code> et un dossier appelé <code>Scripts</code>. Très souvent on le trouve à <code>C:\users\[votre nom d'utilisateur]\Local Settings\Application Data\Programs\Python\Python36</code>. <a href="http://sametmax.com/ajouter-un-chemin-a-la-variable-denvironnement-path-sous-windows/">Ajoutez ce chemin dans le sys PATH</a>, ainsi le chemin vers le sous-dossier <code>Scripts</code>.</p>
+<p><strong>Redémarrer votre console</strong>. Vous devriez au moins pouvoir taper <code>python -v</code>.</p>
+<p>Maintenant, sachez que vous ne devriez pas taper la commande <code>python</code>.</p>
+<p>Whaaaaaaaaaaaaat ?</p>
+<p>Vous entends-je me hurler suavement à l&#8217;oreille.</p>
+<p>Non. Sous Windows, vous devriez utiliser la commande <code>py -X.Y</code>. La commande <code>py</code> permet en effet de spécifier la version de Python à lancer. Par exemple <code>py -2.7</code> pour lancer Python 2.7, ou <code>py -3.6</code> pour lancer Python 3.6, s’ils sont installés sur la machine, bien entendu.</p>
+<p>Pourquoi utiliser la commande <code>py</code> ? Et bien parce que sinon, <code>python</code> lancera le premier <code>python.exe</code> qu&#8217;il trouve. Si vous avez plusieurs versions de Python installées sur votre machine, ce qui est souvent le cas sur les machines de dev, des fois à son insu, vous allez avoir des problèmes.</p>
+<p>En fait, quand vous lisez un tutoriel sur Python, si vous lisez quelque part &#8220;tapez python&#8221;, remplacez-le mentalement par &#8220;tapez py -X.Y&#8221;. La commande marche strictement pareil que la commande <code>python</code> traditionnelle. Elle prend les mêmes arguments, et lance le shell de la même façon.</p>
+<p>Aussi, rien à voir, mais n&#8217;utilisez pas les terminaux de <code>cmd.exe</code> ou <code>powershell.exe</code>. Ils sont à chier. Prenez le temps de télécharger <a href="https://cmder.net/">cmder</a>, et si vous le pouvez, faites le <a href="https://github.com/cmderdev/cmder">cmder.exe /REGISTER ALL</a> en admin tant que vous y êtes.</p>
+<p>Aussi petite astuce bien pratique: si vous maintenez <kbd>shift</kbd> et que vous faites un clic droit dans l&#8217;explorateur de fichier ou sur le bureau, un menu contextuel différent de celui habituel s&#8217;ouvre. Il contient des actions fort utiles:</p>
+<ul>
+<li>&#8220;Ouvrir fenêtre de commande ici&#8221;, qui vous ouvrira la console, immédiatement dans le bon dossier.</li>
+<li>&#8220;Copier en tant que chemin d&#8217;accès&#8221;, qui vous permettra de mettre le chemin de n&#8217;importe quel fichier dans le presse-papier.</li>
+</ul>
+<h2>Sous Unix (Max, Linux, etc)</h2>
+<p>N&#8217;utilisez pas la commande <code>python</code>, mais utilisez une commande suffixée <code>pythonX.Y</code>. Par exemple, pour lancer Python 2.7, tapez <code>python2.7</code>, ou pour lancer Python 3.6, tapez <code>python3.6</code>. </p>
+<p>En fait, quand vous lisez un tutoriel sur Python, si vous lisez quelque part &#8220;tapez python&#8221;, remplacez-le mentalement par &#8220;tapez pythonX.Y&#8221;. La commande marche strictement pareil que la commande <code>python</code> traditionnelle. Elle prend les mêmes arguments, et lance le shell de la même façon, mais comme on a souvent plusieurs versions de Python installées sur une machine (sans parfois même sans rendre compte), c&#8217;est important de le faire.</p>
+<h2>Pour les linuxiens seulement</h2>
+<p>Pip et virtualenv sont fournis quand on installe Python sous Mac et Windows, mais souvent pas sous Linux ! Assurez-vous de toujours les installer avec votre gestionnaire de paquet, et ce <strong>pour chaque version de Python que vous avez</strong>.</p>
+<p>Exemple: <code>yum install python3.6-pip</code> ou <code>apt install python3.6-venv</code>.</p>
+<h2>Tous OS confondus</h2>
+<p>Quand vous utilisez une commande écrite en Python, mettez <code>python -m</code> devant. C&#8217;est un cheat code.</p>
+<p>N&#8217;appelez-pas <code>pip</code>, mais <code>python -m pip</code>.</p>
+<p>N&#8217;appelez-pas <code>venv</code>, mais <code>python -m venv</code>.</p>
+<p>N&#8217;appelez-pas <code>black</code>, mais <code>python -m black</code>.</p>
+<p>Si vous lisez dans un tutoriel &#8220;tapez pip install&#8221;, remplacez-le mentalement par &#8220;tapez python -m pip install&#8221;.</p>
+<p><code>-m</code> ne marche pas avec toutes les commandes (<code>python -m jupyter console</code> a un bug, snif) car cela suppose que le développeur de la commande y a pensé, mais c&#8217;est le cas de la plupart des outils modernes. </p>
+<p>Or <code>-m</code> va vous éviter tout un tas de problème de PATH, de droits et de version de Python.</p>
+<p>Donc, si on combine tous les conseils, n&#8217;utilisez pas <code>pip</code>, mais <code>py -3.6 -m pip</code> ou <code>python3.6 -m pip</code>.</p>
+<p>Je sais, c&#8217;est plus long a taper, mais ça va bien vous aider. </p>
+<h2>pip install</h2>
+<p>Certains outils doivent s&#8217;installer en global. On voit souvent des conseils comme faire un <code>sudo pip install</code> ou un <code>sudo easy_install</code>. C&#8217;est mal. Ceci va pourrir les paquets système de Python, et peut avoir des conséquences indésirables. Notez que parfois, rien ne marche, et je le fais quand même du coup.</p>
+<p>Mais la plupart du temps, ce qu&#8217;il vous faut, c&#8217;est <code>--user</code>, suivi de <code>-m</code>. Par exemple, ne faites pas:</p>
+<pre lang="bash"> 
+sudo pip install black 
+black mon_fichier.py </pre>
+<p>Mais faites:</p>
+<pre lang="bash"> 
+python3.6 -m pip install black --user 
+python3.6 -m black mon_fichier.py </pre>
+<p>Notez le <code>--user</code>, ainsi que les deux usages de <code>-m</code>.</p>
+<p>Ceci va installer black localement, pas au niveau du système. On s&#8217;assure qu&#8217;on n&#8217;utilise bien Python3.6, à l&#8217;installation et à l&#8217;usage de black. Et comme on n&#8217;utilise <code>-m</code>, on a pas à se demander si la commande <code>black</code> est bien sur le <code>PATH</code> (pas besoin de trifouiller son <code>.bashrc</code> ou le sys <code>PATH</code> de Windows.)</p>
+<h2>Mais c&#8217;est trop chiant !</h2>
+<p>Absolulement, c&#8217;est aussi pour cela qu&#8217;<a href="http://sametmax.com/les-environnement-virtuels-python-virtualenv-et-virtualenvwrapper/">on utilise des environnements virtuels</a>.</p>
+<p>Utilisez des virtualenvs. Abusez-en. Un virtualenv par projet. Un autre pour les tests rapidos. Un pour maman, un pour papa, et un pour le fun. Ils ne coûtent rien que quelques Mo sur votre disque dur, donc lâchez-vous.</p>
+<p>Car dans un virtualenv, non seulement vous êtes isolés des autres installations de Python, mais en plus&#8230; tous les conseils ci-dessus ne sont plus nécessaires !</p>
+<p>Vous pouvez taper juste <code>python</code> et juste <code>pip</code>, plus de <code>py</code>, plus de suffixes, plus de <code>-m</code> et <code>--user</code>. Joie !</p>
+<p>Moralité: les rares fois où vous êtes hors virtualenv, suivez les conseils des autres parties de l&#8217;article (<code>py -3.6 -m pip install --user</code> ou <code>python3.6 -m pip install --user</code>). Et des que vous le pouvez, pouf, virtualenv, et tout va pour le mieux.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">25303</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2019/06/BN4tobh.jpg" length="72544" type="image/jpg" />	</item>
+	</channel>
+</rss>

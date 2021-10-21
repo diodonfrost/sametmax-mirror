@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Comment mocker une coroutine ?</title>
+	<atom:link href="http://sametmax.com/comment-mocker-une-coroutine/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/comment-mocker-une-coroutine/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: polux</title>
+		<link>http://sametmax.com/comment-mocker-une-coroutine/#comment-174935</link>
+		<dc:creator><![CDATA[polux]]></dc:creator>
+		<pubDate>Wed, 27 Jan 2016 10:07:50 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17976#comment-174935</guid>
+		<description><![CDATA[C&#039;est quoi un mock ?
+]]></description>
+		<content:encoded><![CDATA[<p>C&#8217;est quoi un mock ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/comment-mocker-une-coroutine/#comment-174867</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Tue, 26 Jan 2016 10:13:16 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17976#comment-174867</guid>
+		<description><![CDATA[&lt;p&gt;Arrête de te mocker !&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Arrête de te mocker !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: vlmath</title>
+		<link>http://sametmax.com/comment-mocker-une-coroutine/#comment-174846</link>
+		<dc:creator><![CDATA[vlmath]]></dc:creator>
+		<pubDate>Mon, 25 Jan 2016 22:33:48 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17976#comment-174846</guid>
+		<description><![CDATA[&quot;pour gérer gérer les coroutines&quot; : bègue ? :P
+]]></description>
+		<content:encoded><![CDATA[<p>&#8220;pour gérer gérer les coroutines&#8221; : bègue ? :P</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: boblinux</title>
+		<link>http://sametmax.com/comment-mocker-une-coroutine/#comment-174841</link>
+		<dc:creator><![CDATA[boblinux]]></dc:creator>
+		<pubDate>Mon, 25 Jan 2016 22:03:42 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17976#comment-174841</guid>
+		<description><![CDATA[i understand nothing.
+]]></description>
+		<content:encoded><![CDATA[<p>i understand nothing.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/comment-mocker-une-coroutine/#comment-174835</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 25 Jan 2016 15:50:49 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17976#comment-174835</guid>
+		<description><![CDATA[&lt;p&gt;Hi. It&#039;s cool but I don&#039;t get how it helps me:&lt;/p&gt;
+
+&lt;pre lang=&quot;python&quot;&gt;
+    &gt;&gt;&gt; loop = asyncio.get_event_loop()
+    &gt;&gt;&gt; async def foo():
+    ...     b = await CoroutineMock()
+    ...     print(b)
+  
+    &gt;&gt;&gt; loop.run_until_complete(foo())
+    Traceback (most recent call last):
+      File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+      File &quot;/usr/lib/python3.5/asyncio/base_events.py&quot;, line 337, in run_until_complete
+        return future.result()
+      File &quot;/usr/lib/python3.5/asyncio/futures.py&quot;, line 274, in result
+        raise self._exception
+      File &quot;/usr/lib/python3.5/asyncio/tasks.py&quot;, line 239, in _step
+        result = coro.send(None)
+      File &quot;&lt;stdin&gt;&quot;, line 2, in foo
+    TypeError: object CoroutineMock can&#039;t be used in &#039;await&#039; expression
+    object CoroutineMock can&#039;t be used in &#039;await&#039; expression
+
+    &gt;&gt;&gt; async def foo():
+    ...     b = await asyncio.ensure_future(CoroutineMock())
+    ...   
+    ...     print(b)
+
+    &gt;&gt;&gt; loop.run_until_complete(foo())
+    Traceback (most recent call last):
+      File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+      File &quot;/usr/lib/python3.5/asyncio/base_events.py&quot;, line 337, in run_until_complete
+        return future.result()
+      File &quot;/usr/lib/python3.5/asyncio/futures.py&quot;, line 274, in result
+        raise self._exception
+      File &quot;/usr/lib/python3.5/asyncio/tasks.py&quot;, line 239, in _step
+        result = coro.send(None)
+      File &quot;&lt;stdin&gt;&quot;, line 2, in foo
+      File &quot;/usr/lib/python3.5/asyncio/tasks.py&quot;, line 546, in ensure_future
+        raise TypeError(&#039;A Future, a coroutine or an awaitable is required&#039;)
+    TypeError: A Future, a coroutine or an awaitable is required
+    A Future, a coroutine or an awaitable is required
+
+  &lt;/pre&gt;
+
+&lt;p&gt;If I can&#039;t use it anywhere I would use a regular coroutine, what&#039;s the point of mocking it ?&lt;/p&gt;
+
+&lt;p&gt;Did I use it wrong ?&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Hi. It&#8217;s cool but I don&#8217;t get how it helps me:</p>
+<pre lang="python">
+    >>> loop = asyncio.get_event_loop()
+    >>> async def foo():
+    ...     b = await CoroutineMock()
+    ...     print(b)
+  
+    >>> loop.run_until_complete(foo())
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "/usr/lib/python3.5/asyncio/base_events.py", line 337, in run_until_complete
+        return future.result()
+      File "/usr/lib/python3.5/asyncio/futures.py", line 274, in result
+        raise self._exception
+      File "/usr/lib/python3.5/asyncio/tasks.py", line 239, in _step
+        result = coro.send(None)
+      File "<stdin>", line 2, in foo
+    TypeError: object CoroutineMock can't be used in 'await' expression
+    object CoroutineMock can't be used in 'await' expression
+
+    >>> async def foo():
+    ...     b = await asyncio.ensure_future(CoroutineMock())
+    ...   
+    ...     print(b)
+
+    >>> loop.run_until_complete(foo())
+    Traceback (most recent call last):
+      File "</stdin><stdin>", line 1, in <module>
+      File "/usr/lib/python3.5/asyncio/base_events.py", line 337, in run_until_complete
+        return future.result()
+      File "/usr/lib/python3.5/asyncio/futures.py", line 274, in result
+        raise self._exception
+      File "/usr/lib/python3.5/asyncio/tasks.py", line 239, in _step
+        result = coro.send(None)
+      File "<stdin>", line 2, in foo
+      File "/usr/lib/python3.5/asyncio/tasks.py", line 546, in ensure_future
+        raise TypeError('A Future, a coroutine or an awaitable is required')
+    TypeError: A Future, a coroutine or an awaitable is required
+    A Future, a coroutine or an awaitable is required
+
+  </stdin></module></stdin></module></stdin></pre>
+<p>If I can&#8217;t use it anywhere I would use a regular coroutine, what&#8217;s the point of mocking it ?</p>
+<p>Did I use it wrong ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Martius</title>
+		<link>http://sametmax.com/comment-mocker-une-coroutine/#comment-174834</link>
+		<dc:creator><![CDATA[Martius]]></dc:creator>
+		<pubDate>Mon, 25 Jan 2016 15:20:43 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17976#comment-174834</guid>
+		<description><![CDATA[J&#039;écris une bibliothèque qui s&#039;appelle &lt;a href=&quot;http://asynctest.readthedocs.org/en/latest/&quot; rel=&quot;nofollow&quot;&gt;asynctest&lt;/a&gt; (aussi sur &lt;a href=&quot;http://github.com/Martiusweb/asynctest&quot; rel=&quot;nofollow&quot;&gt;github&lt;/a&gt; et &lt;a href=&quot;https://pypi.python.org/pypi/asynctest&quot; rel=&quot;nofollow&quot;&gt;Pypi&lt;/a&gt;).
+
+Elle surcharge le paquet standard unittest pour ajouter des fonctionnalités permettant de tester du code asyncio. Elle inclue des outils pour facilement faire des mocks de coroutines (y compris avec de l&#039;auto-mocking ou patch()). Elle permet aussi d&#039;utiliser directement des coroutines dans les fonctions de setup, teardown, test ou cleanup (ce qui fait économiser pas mal de boilerplate).
+]]></description>
+		<content:encoded><![CDATA[<p>J&#8217;écris une bibliothèque qui s&#8217;appelle <a href="http://asynctest.readthedocs.org/en/latest/" rel="nofollow">asynctest</a> (aussi sur <a href="http://github.com/Martiusweb/asynctest" rel="nofollow">github</a> et <a href="https://pypi.python.org/pypi/asynctest" rel="nofollow">Pypi</a>).</p>
+<p>Elle surcharge le paquet standard unittest pour ajouter des fonctionnalités permettant de tester du code asyncio. Elle inclue des outils pour facilement faire des mocks de coroutines (y compris avec de l&#8217;auto-mocking ou patch()). Elle permet aussi d&#8217;utiliser directement des coroutines dans les fonctions de setup, teardown, test ou cleanup (ce qui fait économiser pas mal de boilerplate).</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

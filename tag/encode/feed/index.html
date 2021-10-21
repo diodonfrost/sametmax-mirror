@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>encode &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/encode/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>[FFMPEG] &#8211; Encoder un répertoire entier en mp3</title>
+		<link>http://sametmax.com/ffmpeg-encoder-un-repertoire-entier-en-mp3/</link>
+		<comments>http://sametmax.com/ffmpeg-encoder-un-repertoire-entier-en-mp3/#comments</comments>
+		<pubDate>Tue, 02 Apr 2013 09:39:14 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Uncategorized]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[avi]]></category>
+		<category><![CDATA[encode]]></category>
+		<category><![CDATA[ffmpeg]]></category>
+		<category><![CDATA[mp3]]></category>
+		<category><![CDATA[mp4]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5574</guid>
+		<description><![CDATA[Petite commande fort sympatoche pour encoder tout un répertoire avec ffmpeg en ligne de commande rapidos.]]></description>
+				<content:encoded><![CDATA[<p>Petite commande fort sympatoche pour encoder tout un répertoire avec ffmpeg en ligne de commande.</p>
+<p>(Il faut avoir ffmpeg d&#8217;installé: <a href="http://sametmax.com/installer-ffmpeg-avec-x264-et-support-mp3/" title="installer ffmpeg avec x264 et support mp3">voir ici pour le compiler</a> ou plus bas)<br />
+<strong>sous Ubuntu (avec un max de codecs):</strong></p>
+<pre lang="bash">
+sudo apt-get install libavcodec-unstripped-52 libavdevice-unstripped-52 libavformat-unstripped-52 libavutil-unstripped-50 libpostproc-unstripped-51 libswscale-unstripped-0 ffmpeg
+</pre>
+<p>Ouvrez un shell dans le répertoire où se trouve les fichiers  (videos, mp4, wav, etc) à convertirs en mp3 tapez:</p>
+<pre lang="bash">
+for file in *.*; do `ffmpeg -i "$file" "$file.mp3"`;done
+</pre>
+<p>Ffmpeg va automatiquement encoder en mp3 44khz stéréo vos fichiers en un tour de main. Vous pouvez rajouter des options de bitrate (ie: -b 192k) ou utilisez le filtre pour convertir qu&#8217;un certain type de fichier en remplacant *.* par *.avi , *.mp4, etc.</p>
+<p>Ps: N&#8217;hésitez pas à partager vos lignes de commandes utiles, je les rajouterai si besoin (encodage audio / video)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ffmpeg-encoder-un-repertoire-entier-en-mp3/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">5574</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/04/hifigenie.gif" length="42473" type="image/jpg" />	</item>
+	</channel>
+</rss>

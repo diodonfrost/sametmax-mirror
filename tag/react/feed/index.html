@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>react &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/react/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Le don du mois: mobx</title>
+		<link>http://sametmax.com/le-don-du-mois-mobx/</link>
+		<comments>http://sametmax.com/le-don-du-mois-mobx/#comments</comments>
+		<pubDate>Mon, 02 Jul 2018 10:41:28 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[don]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[mobx]]></category>
+		<category><![CDATA[react]]></category>
+		<category><![CDATA[reactjs]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=24750</guid>
+		<description><![CDATA[Quand je vous dis que j'ai donné 50 balles à <a href="https://github.com/mobxjs/mobx">Mobx</a>, c'est que le projet déchire. Et il déchire <strong>malgré</strong> le fait qu'il soit codé en JS.]]></description>
+				<content:encoded><![CDATA[<p>Si vous avez suivi un peu les différents <a href="http://sametmax.com/tag/don/">dons du mois</a> au fur et à mesure de la vie du blog, vous avez du vous rendre compte de 2 choses:</p>
+<ul>
+<li>Le don du mois n&#8217;est pas mensuel. Il est juste limité à un par mois. Ça m&#8217;évite la pression d&#8217;être un bon samaritain. Sauf que du coup, j&#8217;oublie parfois pendant trèèèèèèès longtemps :)</li>
+<li>Il n&#8217;y a pas beaucoup de projets JS dans le lot. Ahem.</li>
+</ul>
+<p>En fait le seul et unique projet JS supporté a été <a href="http://sametmax.com/le-don-du-mois-vue-js/">VueJS</a>. C&#8217;est dire que la barre est haute, étant donné la qualité exceptionnelle de ce projet.</p>
+<p>Donc quand je vous dis que j&#8217;ai donné 50 balles à <a href="https://github.com/mobxjs/mobx">Mobx</a>, c&#8217;est que le projet déchire. Et il déchire <strong>malgré</strong> le fait qu&#8217;il soit codé en JS.</p>
+<p>Mobx permet, en gros, de surveiller les modifications à une structure de données. Vous posez un marqueur sur la structure, et un sur les fonctions utilisant la structure, et c&#8217;est tout:</p>
+<pre lang="javascript">class TodoList {
+    @observable todos = []; // dire à mobx de surveiller
+}
+
+...
+
+@observer // dire à mobx de tenir à jour
+class TodoListView extends Component {
+    render() {
+        return <ul>
+            {this.props.todoList.todos.map(todo =>)}
+        </ul>
+    }
+
+</pre>
+<p> C&#8217;est là la brillance du système: malgré sa simplicité, mobx va récursivement réagir à toute modifications, même sur des données complexes imbriquées; Et calculer toutes les dépendances de chaque fonction pour ne les appeler qu&#8217;au meilleur moment.</p>
+<p>C&#8217;est facile à utiliser, et étonnamment rapide à exécuter.</p>
+<p>Le résultat ? Quand un client me force à utiliser ReactJS, je saute redux, et je met Mobx à la place. Ca donne <em>presque</em> l&#8217;impression d&#8217;utiliser Vue: le code de manipulation d&#8217;état est simple à comprendre, gentil sur le CPU et les mutations d&#8217;état restent courtes et élégantes. Le reste est toujours moche, mais ça on y peut rien.</p>
+<p>Bref, mobx est ce qui rend react acceptable. Et tout ce qui peut apaiser la douleur du dev en front-end n&#8217;a pas de prix.</p>
+<p>J&#8217;ai regardé le code source, et la popote interne est bien complexe. Mais à chaque fois que je veux l&#8217;utiliser je me dis que ça ne pourra pas être si simple&#8230; et si.</p>
+<p>La page de don, <a href="https://mobx.js.org/donate.html">c&#8217;est par là</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-don-du-mois-mobx/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">24750</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/07/mmGrMWi.png" length="482085" type="image/jpg" />	</item>
+		<item>
+		<title>Vue, j&#8217;l&#8217;avais pas vu</title>
+		<link>http://sametmax.com/vue-jlavais-pas-vu/</link>
+		<comments>http://sametmax.com/vue-jlavais-pas-vu/#comments</comments>
+		<pubDate>Sun, 14 May 2017 13:10:42 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[js]]></category>
+		<category><![CDATA[react]]></category>
+		<category><![CDATA[reactjs]]></category>
+		<category><![CDATA[vue]]></category>
+		<category><![CDATA[vue.js]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=23281</guid>
+		<description><![CDATA[Dans le dernier article, je vous offrais votre dose maintenant obligatoire de bashing de l'écosystème JS. En l’occurrence en suggérant que React était un bouquet de roses avec plus d'épines que de pétales. Mais vue ?]]></description>
+				<content:encoded><![CDATA[<p><em>(Pour Max: je t&#8217;ai mis un exemple de code tout fait en bas de page car je sais que ça va te saouler de tout lire)<br />
+</em><br />
+Elle était facile, mais ça fait des années que le blog est up, je peux pas avoir de l&#8217;inspiration tout le temps.</p>
+<p><a href="http://sametmax.com/reaction-a-reactjs/">Dans le dernier article</a>, je vous offrais votre dose maintenant obligatoire de bashing de l&#8217;écosystème JS. En l’occurrence en suggérant que React était un bouquet de roses avec plus d&#8217;épines que de pétales.</p>
+<p>Mais bon, si les gens utilisent React, ça n&#8217;est pas QUE parce que c&#8217;est la mode. C&#8217;est parce que cette techno répond à un besoin de plus en plus impérieux en dev front end : avoir un outil valable pour créer des GUI avancées en JS.</p>
+<p>Parce que le combo jQuery + moteur de template, ça nous a mené loin, mais on arrive au stade où ça scale plus.</p>
+<p>Pas mal de tentatives ont été faites pour répondre au problème : knockout, angular 1, polymer, etc.</p>
+<p>La nouvelle génération (react, riot, vue, angular 2+, etc) est beaucoup plus mature et performante, et offre des fonctionnalités très sympas:</p>
+<ul>
+<li>DOM virtuel qui permet de faire des mises à jour fréquentes sur de très nombreux objets à l&#8217;écran sans freezer le browser.</li>
+<li>Découplage très élégant des données et de leurs représentations.</li>
+<li>Facilité de manipulation des éléments HTML, des events et du cycle de vie de tout le bordel.</li>
+<li>Création de composants graphiques isolés et réutilisables.</li>
+</ul>
+<p>En gros, partout où on faisait avant <code>$(selecteur).trucmuche(element)</code>, on peut maintenant faire ça plus facilement, plus rapidement et plus proprement. (Par contre Vue/React/etc font pas l&#8217;AJAX, tournez-vous vers <a href="https://github.com/mzabriskie/axios">axios</a> ou gardez jQuery sous le coude).</p>
+<p>Bon, si ils offrent TOUS ces éléments là, pourquoi diable est-ce que j&#8217;ai une préférence pour Vue.JS plutôt que Riot, Angular ou React ?</p>
+<p>Souvenez-vous, je reprochais essentiellement ceci à React:</p>
+<ul>
+<li>Grosse courbe d&#8217;apprentissage. Ce qui impacte la productivité de tout nouveau dans l&#8217;équipe.</li>
+<li>Mauvaise ergonomie du JSX qui du coup s&#8217;écrit, se lit et se debug lentement.</li>
+<li>Mauvaise foi totale de la communauté qui prétend qu&#8217;on peut utiliser React sans la tonne de nutella autour, ce qui est comme argumenter qu&#8217;on peut faire du Java sans IDE.</li>
+<li>Nutella sus-nommé qui est blindé d&#8217;huile de palme et de vidange.</li>
+<li>Globalement une API inélégante et peu intuitive.</li>
+</ul>
+<p>Mais alors, qu&#8217;est-ce que <a href="https://vuejs.org/">Vue.js</a> fait de mieux ?</p>
+<p>Ben tout, mes amis. Tout.</p>
+<h2>Légèreté</h2>
+<p>A l&#8217;heure où les codeurs hypes de la vibe du flex ont tous un fichier de conf webpack de 3 km, mais déjà obsolète et qui pétera à la prochaine upgade, Vue offre un point de vue rafraîchissant sur la question.</p>
+<p>TOUTE, j&#8217;ai bien dit TOUTE, la puissance de vue.js est accessible avec une simple inclusion de balise script. </p>
+<p>Vous en avez marre des pages de 3Mo ? Minifié et gzippé, Vue.js pèse moins de 30ko.</p>
+<p>Dans un monde où il faut soit faire un site Web, soit faire une SPA (aux chiottes l&#8217;amélioration progressive !), Vue permet de ne remplacer que quelques bouts de vos pages si vous n&#8217;avez pas envie de tout transformer en un monstre de JS.</p>
+<p>La doc, très bien faite, vous permettra de prendre l&#8217;outil en main en une après-midi. En buvant du thé.</p>
+<p>Le tout, sans besoin d&#8217;aucun écosystème particulier. Aucun. Rien. Ca marche out of the box.</p>
+<p>En gros, là où tout le monde vous vend du scale up, Vue vous permet de scale down.</p>
+<h2>Puissance</h2>
+<p>Malgré cela, Vue reste parfaitement adaptée aux gros projets. En fait, elle a été créée pour et par l&#8217;équipe du site du géant chinois, alibaba.com. Alors oui, c&#8217;est sûr, c&#8217;est pas Facebook et son milliard d&#8217;utilisateurs, mais comme mes projets ne servent pas 10 millions de pages par jour, contrairement à Alibaba, je pense que je suis ok.</p>
+<p>Dans la pratique, qu&#8217;est-ce que ça veut dire ?</p>
+<p>Et bien d&#8217;abord, <a href="http://www.stefankrause.net/wp/?p=316">Vue est plus rapide que React</a>. Ouais ça fait mal au cul de lire ça quand on vient de finir d&#8217;optimiser son pipeline de rendu JSX, surtout que la techno a été créée pour la vitesse. Mais voilà, c&#8217;est le cas.</p>
+<p>Vue supporte aussi parfaitement l&#8217;inclusion dans un écosystème plus gros si le besoin s&#8217;en fait sentir :</p>
+<ul>
+<li>Vous pouvez utiliser Vue avec <a href="https://github.com/vuejs-templates/webpack">Webpack</a>.</li>
+<li>Vous avez <a href="https://vuex.vuejs.org">un store</a> et <a href="https://vuex.vuejs.org">un routeur</a> pour vue.</li>
+<li>Vous pouvez <a href="https://github.com/vuejs/babel-plugin-transform-vue-jsx">utiliser du JSX</a> si vous êtes maso.</li>
+<li>Vous pouvez créer des SPA avec une hiérarchie de <a href="https://vuejs.org/v2/guide/components.html">composants</a>.</li>
+<li>Vous pouvez faire le <a href="https://vuejs.org/v2/guide/ssr.html">rendu des templates côté serveur</a>.</li>
+</ul>
+<p>En gros, Vue peut faire absolument tout ce que les autres font. Mais ne vous oblige pas à commencer en sortant le bazooka. Vue est ce que React aurait dû être depuis le début.</p>
+<p>Notez qu&#8217;on peut remercier les devs de React pour avoir popularisé de nombreux concepts que Vue utilise. Standing on the giants&#8217; shoulders et tout, et tout. Vue n&#8217;aurait jamais existé sans React. Mais maintenant que Vue est là, on peut laisser React en paix.</p>
+<h2>Elégance</h2>
+<p>De par son design, Vue vous permet donc de commencer doucement, en ajoutant 30ko à votre projet et en l&#8217;utilisant un peu ici et là. Puis quand vous en avez besoin, vous pouvez commencer à utiliser des fonctionnalités avancées.</p>
+<p>Par exemple, vous pouvez comme avec Angular 1 balancer toutes vos variables et binding dans le HTML de votre page en vrac. Et plus tard tout refactoriser en composant comme avec React. Tranquille.</p>
+<p>L&#8217;API de Vue est petite, et surtout, facile à comprendre car tout est bien nommé, et bien rangé. Voyez plutôt:</p>
+<pre lang="javascript">
+Vue({
+  el: "#app", // l'élément sur lequel attacher la vue
+  created: function(){
+    // code lancé au démarrage
+  },
+  mounted: function(){
+    // code lancé quand la vue est attachée à la page
+  },
+  updated: function(){
+    // code lancé quand la vue est mise à jour
+  },
+  destroyed: function(){
+    // code lancé quand la vue est détruite
+  }
+  data: {
+    // ben ici y a vous données statiques
+  },
+  methods: {
+    // ici les fonctions à rendre disponibles dans le HTML
+  },
+  computed: {
+    // ici on met les données à recalculer à la volée
+    // à chaque refresh
+  }
+})
+</pre>
+<p>Voilà vous avez là 50% de l&#8217;API de Vue. Very hard indeed.</p>
+<p>On sent partout que les devs ont apporté des soins à des petits détails comme:</p>
+<pre lang="html">
+<!-- Lance truc() juste au premier click.
+Appelle preventDefault automatiquement. -->
+<a v-on:click.once.prevent="truc()">Foo</a>
+</pre>
+<p>D&#8217;une manière générale, tout template Vue est du HTML valide, ce qui fait qu&#8217;il est très facile d&#8217;insérer du Vue sur un site existant.</p>
+<h2>Un petit bout de vue</h2>
+<p>Mais alors, pour tous ceux qui en sont restés à jQuery et handlebar.js, à quoi ça ressemble tout ça ?</p>
+<p>Ben un todo ressemble à ça en Vue:</p>
+<pre lang="html">
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Todo</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<!-- Cette partie va être contrôlée par la vue -->
+<div id="app">
+
+<!-- Quand on soumet le formulaire, on ajoute la tâche -->
+<form v-on:submit.prevent="addTask(newTask)">
+  <!-- L'input est maintenant lié à la variable newTask -->
+  <p><input v-model="newTask"> <button>Ajouter</button></p>
+</form>
+
+<ul>
+  <!-- Créer un li pour chaque tache dans mon array 'tasks' -->
+  <li v-for="task in tasks">{{task}}</li>
+</ul>
+  
+</div>
+
+<script type="text/javascript">
+app = new Vue({
+  el: "#app", // j'attache cette vue à l'élément avec l'id App
+  data: {
+    tasks: [], // mes tâches seront stockées dans l'array 'tasks'
+    newTask: "", // ce que contient l'input du formulaire
+  },
+  methods: {
+    addTask: function(task){
+      this.tasks.push(task); // on ajoute la tâche dans l'array
+      this.newTask = ""; // on vide l'input
+    }
+  }
+})
+</script>
+
+</body>
+</html>
+</pre>
+<p>(Vous pouvez littéralement copier-coller ce code dans un fichier todo.html et ça marche. Essayez de faire ça avec React&#8230;)</p>
+<p>Comme avec Angular/React/Riot on a séparé complètement la logique de manipulation des données de celle de l&#8217;affichage qui est mis à jour automatiquement quand les données changent.</p>
+<p>Contrairement à React, on n&#8217;est pas obligé de créer un arbre complexe de composants qui transforme toute sa page en soupe de JS(X). Mais contrairement à Angular, on n&#8217;est pas obligé de rester sur cet exemple simple, et on peut créer une hiérarchie de composants. </p>
+<p>Un composant peut complètement isoler le JS, le HTML et le CSS (qui n&#8217;affecte alors que le composant):</p>
+<p><img src="https://vuejs.org/images/vue-component.png"></img></p>
+<p>Et pour que ça marche, pas besoin de préprocesseur, pas besoin de ES6, ES7, typescript, babel, webpack, npm&#8230; Vous pouvez les utiliser. Sur un gros projet je me fais chier à setup ce qui vaut le coup. Mais vous n&#8217;êtes pas obligé. </p>
+<h2>La communauté</h2>
+<p>La communauté est importante pour un projet, et celle de vue est très agréable. Ce sont des gens polis, humbles, et compétents. Ils pensent aux petits détails. Regardez par exemple <a href="https://vuex.vuejs.org/en/intro.html">cette page</a> pleine de jolis schémas.</p>
+<p>En comparaison, la communauté React est criarde. Les confs des devs de Facebook sont faites par <a href="https://www.youtube.com/watch?v=XxVg_s8xAms">des présentateurs tout droit sortis de South Park</a>. Quand on critique react, on se fait insulter personnellement sur twitter par les fan boys plutôt que de tenter de discuter, preuve systématique de l&#8217;absence d&#8217;arguments.</p>
+<p>Enfin les seuls éléments donnés pour combattre les critiques sont les raisons des problèmes, un rappel de la taille des utilisateurs et des &#8220;moi j&#8217;aime&#8221; laconiques. </p>
+<p>Mais faites un test. Prenez 3 dev, un react, un jquery, un vue. Faites leur faire un agenda CRUD avec recherche et autocompletion qui tape en Ajax dans un backend Django/Rails/Whatever. Donnez leurs des machines vierges. Et sortez le pop corn.</p>
+<p>Pour le moment, React possède encore deux avantages: react native, et la masse (fb, les utilisateurs, le nombre de plugins, etc). </p>
+<p>Mais honnêtement ? Il y a très peu de bénéfices à utiliser React plutôt que Vue sur la plupart des projets pur Web. Et un coût garanti d&#8217;être élevé.</p>
+<p>Angular 1 est en train de mourir de l&#8217;abandon de Google. Après la sucette de l&#8217;incompatibilité d&#8217;Angular 2, je n&#8217;ai aucune confiance en la techno et ne compte donc pas réinvestir de billes dedans. De plus Angular 2+ souffre du même problème d&#8217;obligation d&#8217;installer la terre entière avant de commencer à coder.</p>
+<p>Riot est une meilleure alternative, mais l&#8217;obligation de passer par des composants est un no-go IMO. Créer des composants pour moi est l&#8217;exception, pas la règle. Je le fais en dernier, à la phase de refactoring.</p>
+<p>Donc ne vous emmerdez pas, prenez quelques heures pour jouer avec Vue, ça coûte pas cher, et c&#8217;est chouette.</p>
+<p>&#8212;&#8212;&#8212;&#8212;-</p>
+<p>On me signale dans l&#8217;oreillette de linker dans <a href="https://fr.vuejs.org/">la doc française</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/vue-jlavais-pas-vu/feed/</wfw:commentRss>
+		<slash:comments>53</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">23281</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/05/v1qeO3S.jpg" length="56355" type="image/jpg" />	</item>
+		<item>
+		<title>Réaction à ReactJS</title>
+		<link>http://sametmax.com/reaction-a-reactjs/</link>
+		<comments>http://sametmax.com/reaction-a-reactjs/#comments</comments>
+		<pubDate>Wed, 10 May 2017 18:39:23 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[js]]></category>
+		<category><![CDATA[react]]></category>
+		<category><![CDATA[reactjs]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=23244</guid>
+		<description><![CDATA[Alors merde, quoi, react, keskeçavo ?]]></description>
+				<content:encoded><![CDATA[<p>Grand utilisateur de jQuery, formateur Angular et maintenant adorateur de VueJS, vous vous demandez sûrement ce que je pense de React. Si, je le sais, mon avis est pour vous comme un phare dans la nuit sombre du frontend engluée dans le brouillard de JavaScript.</p>
+<p>Après tout, Facebook est codé avec cette techno pixel par pixel, et ils servent des milliards de pages chaque jour. Ça ne peut pas être mauvais. Ce ne sont pas de cons quand même.</p>
+<p>Et puis tout le monde en parle, les asticots gigotent autour des restes du gigot d&#8217;ordre que les devs des GAFAS tentent de mettre au menu dans leur régime sans sel et sans typage.</p>
+<p>Alors merde, quoi, react, keskeçavo ?</p>
+<p>Je vais passer peut être pour un réact (hashtag lol), mais franchement le gigot au brouillard, c&#8217;est pas mon plat préféré.</p>
+<p>Taillons un peu JS, ça m&#8217;avait manqué.</p>
+<h2>Mon royaume pour un hello world</h2>
+<p>React est tellement chiant à setuper que la doc officielle <a href="https://facebook.github.io/react/docs/hello-world.html">vous propose le hello world dans un code pen</a> histoire de pas vous faire fuir tout de suite.</p>
+<p>En fait, si pour vous installer un module avec npm/yarn/bower (plutôt que de copier le truc directement ou d&#8217;utiliser un CDN) est déjà un truc qui vous fait grogner, vous êtes loin derrière.</p>
+<p>Il va vous falloir un outil de build (gulp, grunt ou l&#8217;usine à Vespene Webpack) et la série de recettes obsolètes customisées trouvées sur un coin de github pour connecter tous les bouts de votre pipeline. React bien sûr, mais aussi Babel pour transformer le JSX en JS.</p>
+<p>Babel suit la left-pad philosophie, à savoir que tout est configurable et éclaté en centaines de petites dépendances et settings. C&#8217;est tellement chiant que des packages existent, appelés &#8220;presets&#8221;, dont l&#8217;unique but est de configurer Babel pour une tâche particulière.</p>
+<p>Une fois que vous avez tout ça up, vous vous allez à la pêche au tuto, seulement pour remarquer que tout le monde code en ES6, voir ES7, et vous rajoutez donc un peu plus de plugins à tout ce bordel. Allah vous garde si vous tentez d&#8217;utiliser TypeScript.</p>
+<p>Et vient alors le moment tant attendu pour faire coucou de la main programmatiquement. Ça foire, bien entendu. Le debugger vous pointe sur un bundle.js de plusieurs Mo, et vous apprenez que le support des sources maps est inégal d&#8217;un navigateur à l&#8217;autre.</p>
+<p>Bienvenue.</p>
+<h2>Le X c&#8217;est pas toujours excitant</h2>
+<p>Une fois passée la douloureuse expérience de mettre en place votre environnement de travail, vous trouvez un certains confort. L&#8217;autoreload de la page est franchement pratique, et pouvoir utiliser l&#8217;unpacking (pardon le spread), les valeurs de paramètres par défaut et les arrow functions sans vous soucier de la compat du navigateur c&#8217;est quand même cool. Avec un webpack tout bien huilé avec amour (et douleur), vous pouvez faire des imports en JS et on a presque l&#8217;impression d&#8217;utiliser un langage de programmation.</p>
+<p>Et puis le JSX, de loin ça à l&#8217;air pas mal ! Du HTML directement dans le JS ça parait un peu bizarre mais on vous le vend comme un avantage : finis les langages de templates limités, vous pouvez utiliser la pleine puissance (hum&#8230;) du langage JavaScript pour créer vos balises.</p>
+<p>Sauf que non, le JSX, ça pue du cul.</p>
+<p>D&#8217;abord, il y a le fait que toutes les structures sont à faire en JS. Les conditions, les concaténations et bien entendu, les boucles. Donc vous avez une liste de noms et numéros de téléphone, en VueJS, vous faites:</p>
+<pre lang="html"><ul>
+    <li v-for="pers in persons" v-if="pers">
+        <strong>{{ pers.nom }} </strong>: {{ pers.tel }} 
+    </li>
+    <li v-else>
+        <em>Nobody's here!</em>
+    </li>
+</ul></pre>
+<p>Mais en React, vous allez faire péter une expression ternaire et une fonction anonyme en plein milieu rien que pour l&#8217;occasion:</p>
+<pre lang="jsx"><ul>
+    {
+      (this.state.persons)
+        ? this.state.persons.map((pers) => (
+            <li><strong>{ pers.nom } </strong>: { pers.tel } </li>
+        ))
+        : (
+            <li>
+                <em>Nobody's here!</em>
+            </li>
+        )
+    }
+</ul></pre>
+<p>Vous la sentez bien la puissance de JavaScript là ?</p>
+<p>Et attention à ces boucles, car dedans vous guette cette erreur qui va vous poursuivre jusque dans vos cauchemars:</p>
+<pre>
+SyntaxError: Adjacent JSX elements must be wrapped in an enclosing tag</pre>
+<p>Babel vous signale gentiment que ne pouvez pas produire un snippet de JSX qui contienne plus d&#8217;un élément à la racine. Donc il faut TOUT wrapper dans un container. TOUT. Vous allez avoir vite des DIVs et des SPANs inutiles partout, juste pour faire plaisir à React. C&#8217;est absurde. C&#8217;est à vomir. Ca nique votre CSS et remplit vos sessions &#8220;examinez un élément&#8221; de tendinites dues aux clics pour déplier tout l&#8217;arbre des emballages cadeaux de vos balises. Et aussi, nique la sémantique.</p>
+<p>Pour éviter ça vous allez tenter d&#8217;inliner un maximum de trucs dans une seule expression JSX ou tout foutre dans des arrays. Car je ne l&#8217;ai pas précisé ? Les arrays de JSX sont automatiquement et magiquement convertis en sous-éléments. Et du coup vous pourrez profiter au maximum des qualités de lisibilité de JS.</p>
+<p>JSX est bourré de petits trucs comme ça, pour faire plaisir.  Par exemple, j&#8217;ai un bouton, quand je le clique il delete la personne de la ligne de mon agenda. Je mets aussi une classe pour tous et une selon que la personne est importante ou non. Un prevent default pour éviter que le browser recharge la page si je suis dans un form.</p>
+<p>En Vue, je passe un objet qui dit quelle classe afficher ou non. Le click handler contient une instruction <code>prevent</code> qui me permet d&#8217;appeler <code>preventDefault</code> automatiquement. Et j&#8217;appelle <code>deletePerson</code> tout naturellement :</p>
+<pre lang="html"><button class="{'delete-person': true, 'important-person': pers.isImportant}" 
+        v-on:click.prevent="deletePerson(pers)">
+    Delete
+</button></pre>
+<p>En react, on ne peut pas passer de paramètre à son handler. Il faut le passer dans une closure. Mais alors la closure va recevoir l&#8217;objet event, qu&#8217;on doit donc faire suivre à notre handler, afin qu&#8217;il puisse appeler <code>preventDefault</code> à la main. A noter aussi que <code>class</code> s&#8217;appelle <code>className</code>. Et n&#8217;accepte que des strings donc la concaténation se fait à la mano.</p>
+<pre lang="html">// plus haut on appelle preventDefault dans handleDelete
+
+<button className={'delete-person ' + (pers.isImportant ? 'important-person': '')}
+        onClick={(e) => this.deletePerson(pers, e)}>
+    Delete
+</button>
+</pre>
+<p>Ce n&#8217;est pas juste chiant à lire, c&#8217;est surtout hyper chiant à trouver, à taper et à debugger. </p>
+<h2>Un peu de nutella sur votre confiture ?</h2>
+<p>React, c&#8217;est verbeux, il va falloir vous y faire. Il suffit de comparer <a href="https://github.com/tastejs/todomvc/tree/gh-pages/examples">le code nécessaire</a> pour faire une TODO en react avec les autres frameworks.</p>
+<p>Mais ce n&#8217;est pas juste ça qui est lourd.</p>
+<p>Non, le vrai truc qui est super pesant, c&#8217;est que react est un cancer. Quand il est utilisé, il contamine tout.</p>
+<p>Par principe, une fois que vous utilisez react, il faut mettre TOUTE VOTRE PAGE en react. Pas juste un petit bout. Par là j&#8217;entends que 90% de votre HTML va devoir migrer dans le code JSX. Votre beau code HTML bien propre, converti en cette monstruosité de mélange entre le langage le plus dégueulasse du monde et un monstre mimic qui essaye de se faire passer pour du HTML pour vous bouffer.</p>
+<p>Or, toute l&#8217;idée c&#8217;est de faire des composants, de diviser votre pages en plus petits bouts. Mais voilà, React n&#8217;a rien prévu de simple pour la communication. Pour passer des données des composants enfants, il faut les passer via les attributs de balise HTML (appelés les props, pour faciliter la rechercher Google). Si vous avez 5 niveaux d&#8217;imbrications, vous vous tapez ça 5 fois.</p>
+<p>Plus amusant, il n&#8217;y a aucun mécanisme pour passer des infos de l&#8217;enfant aux parents. La méthode standard est d&#8217;écrire puis passer manuellement un callback du parent à l&#8217;enfant, via props, et appeler ce callback dans l&#8217;enfant avec la valeur que le parent utilise ensuite. POUR. CHAQUE. PUTAIN. DE. VALEUR.</p>
+<p>Passer des callbacks, ça va 5 minutes. Et ça ne résout pas un problème de communication entre composants parallèles, c&#8217;est à dire ni parent, ni enfant. Du coup tout le monde finit par utiliser une lib supplémentaire type <code>EventEmitter</code> pour servir de bus de communication.</p>
+<p>Quand vous entendez les gens se plaindre de la difficulté d&#8217;utiliser l&#8217;écosystème de react, les fans répondent souvent que l&#8217;écosystème n&#8217;est pas obligatoire. On peut très bien s&#8217;en passer sur un petit projet. </p>
+<p>Sauf que react est absolument inutilisable sans. Sans un bus d&#8217;event, un transpiler ES6 + JSX, un builder et un hot reloader au mininum, le projet ne dépasse jamais le stade du prototype.</p>
+<p>Mais bon soyons franc, beaucoup de projets react tout court ne dépassent jamais le stade du prototype. On parle de codeurs JS là.</p>
+<h2>Etat</h2>
+<p>Les props ne doivent jamais changer. Seul l&#8217;état d&#8217;un composant react peut changer, ce qui trigger un nouveau rendu du composant.</p>
+<p>Mais l&#8217;état lui-même est en read-only. On est supposé uniquement créer un nouvel état à chaque fois et remplacer l&#8217;ancien.</p>
+<p>Au début on le fait à la main, mais JS n&#8217;est pas vraiment fait pour faire de l&#8217;immutabilité, et ça devient uber chiant très vite. Changer la propriété d&#8217;un objet qui est lui même dans un array demande de recréer tout l&#8217;array et l&#8217;objet. A chaque fois.</p>
+<p>On se tourne alors vers des libs (encore une) type immutable.js qui fournit des listes et maps qui sont immutables et permettent de faire ces opérations sans y laisser ses jours de congé.</p>
+<p>Une fois de plus, les connards qui vous disent qu&#8217;on peut faire du react sans la tonne de boiler plate qu&#8217;on voit dans les tutos ne le font jamais eux-mêmes. Parce que oui, on peut faire Paris-Amiens à pied en théorie, mais bon&#8230;</p>
+<h2>Des décisions à la con</h2>
+<p>Clairement, react a été fait pour créer des UI. Mais au bout d&#8217;un moment, les utilisateurs se sont réveillés et ont voulu une encapsulation pour des composants non UI. Mais react ne sait pas faire. Quand vous avez donc un composant non UI, par exemple la déclaration de votre routing, vous le déclarez&#8230; en JSX:</p>
+<pre lang="jsx">  render((
+      <Router history={browserHistory}>
+        <Route path="/foo" component={FooView}/>
+        <Route path="/bar" component={BarViw}/>
+      </Router>
+  ), document.getElementById('app'))</pre>
+<p>Votre app va devenir très vite une pyramide de composants, certains qui s&#8217;affichent, d&#8217;autres non, tous se passant en cascade des données les uns aux autres.</p>
+<p>Et au passage, quel est l&#8217;abruti qui a décidé des noms des méthodes des cycles de vie comme <code>getInitialState</code>, <code>componentWillMount</code> et <code>componentDidMount</code> ? </p>
+<p>Surtout que vos méthodes et les méthodes héritées de la classe du component sont dans le même espace de nom.</p>
+<h2>Le bonheur des stores</h2>
+<p>Un truc dont on peut vraiment se passer par contre, ce sont les stores. Flux, redux, vuex, etc. On peut utiliser n&#8217;importe quelle solution pour stocker l&#8217;état de son projet côté client.</p>
+<p>Mais si vous voulez profiter des promesses de react, comme le time travel et la concurrence parfaite, il vous faudra un store. </p>
+<p>&#8220;store&#8221; c&#8217;est le nom huppé que react donne à ses modèles. Je ne vais pas rentrer dans les détails, et vous laissez décider par vous même du truc. Voici, comment la doc vous recommande d&#8217;ajouter une personne dans une liste d&#8217;un agenda avec redux, la store la plus populaire:</p>
+<pre lang="jsx">
+// Les imports
+import React from 'react';
+import { render } from 'react-dom';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+
+// creation du store
+const initialState = {'agenda': []};
+
+function reducer(state=initialState, action){
+  switch (action.type) {
+    case 'ADD_PERSON':
+      return {
+        'agenda': [..., action.object]
+      }
+    default:
+      return state
+  }
+}
+
+const store = createStore(reducer);
+
+
+// creation de l'action d'ajouter un objet dans le store
+
+function addPersonAction(obj){
+    return {
+        'type': 'ADD_Person',
+        'object': obj
+    };
+}
+
+
+export function addPerson(Person){
+    store.dispatch(addPersonAction(Person));
+}
+
+
+// composant qui affiche le form de l'agenda et la liste des personnes
+var Agenda = React.createClass({
+
+  handleAdd: function(){
+      addPerson({
+        "name": this.refs.name.value,
+        "tel": this.refs.tel.value
+      })
+  },
+
+  render: function(){
+
+    return <form onClick={this.handleAdd}>
+        <p><input ref="name" /><input ref="tel" /><button>Add</button></p>
+    </form>
+
+    <ul>
+        {
+            this.store.agenda.map((pers) => (
+                <li><strong>{ pers.nom } </strong>: { pers.tel } </li>
+            ))
+        }
+    </ul>
+  }
+
+
+});
+
+
+// adapter qui permet de passer le store à l'agenda
+const AgendaContainer = connect(function(state){
+    return {'agenda': state.get("agenda")};
+})(Agenda);
+
+
+// affichage du bouzin
+render((
+<Provider store={store}>
+  <AgendaContainer>
+</Provider>
+), document.getElementById('app'))</pre>
+<p>Vous imaginez bien que trouver ça tout seul a été un bonheur. Parce que oui, la doc est absolument à chier, dans la longue tradition des stacks JS modernes.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/reaction-a-reactjs/feed/</wfw:commentRss>
+		<slash:comments>37</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">23244</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/05/MH6XS6B.gif" length="523818" type="image/jpg" />	</item>
+	</channel>
+</rss>

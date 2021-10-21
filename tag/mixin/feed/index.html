@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>mixin &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/mixin/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Explication de code: des mixins et des décorateurs de méthode pour Django</title>
+		<link>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/</link>
+		<comments>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/#comments</comments>
+		<pubDate>Tue, 21 Aug 2012 14:37:57 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cbv]]></category>
+		<category><![CDATA[decorator]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[mixin]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1812</guid>
+		<description><![CDATA[J'ai une préférence pour mon profile de 3-quart gauche.]]></description>
+				<content:encoded><![CDATA[<p>Suite à notre <a href="http://sametmax.com/envoyez-nous-les-scripts-que-vous-ne-pigez-pas/">appel à l&#8217;envoi de code à expliquer</a>, nous avons reçu ceci:</p>
+<blockquote><p>Pouvez-vous m&#8217;aider à comprendre ce code?</p>
+<p><a href="https://gist.github.com/3092600">https://gist.github.com/3092600</a></p>
+<p>La fonction dispatch, à quoi sert-elle?</p>
+<p>L&#8217;appel via super, on appelle le parent de la classe?</p>
+<p>Merci, je vous ferai une statue un jour!
+</p></blockquote>
+<p>Prépare le marbre.</p>
+<h2>Programmation orientée objet</h2>
+<p>Commençons par:</p>
+<blockquote><p>L&#8217;appel via super, on appelle le parent de la classe?</p></blockquote>
+<p>Oui, très exactement.</p>
+<p>Et j&#8217;en profite pour rappeler que si vous utilisez les <a href="sametmax.com/des-vues-normales-aux-vues-generiques-django/">CBV</a>, il va vous falloir vous toucher en programmation orientée objet: définition de classe, héritage multiple, overriding, et autres joyeusetés.</p>
+<p>Comme ce genre d&#8217;infos peut faire l&#8217;objet d&#8217;une série d&#8217;articles à part entière, je vais être obligé de partir du principe que vous savez coder en objet pour expliquer ce code. Sinon, ce post ferait quelques milliers de lignes. Si ce n&#8217;est pas votre cas, lisez notre <a href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-1/">dossier sur la POO</a>, et revenez après.</p>
+<h2>Worflow des CBV</h2>
+<blockquote><p>La fonction <code>dispatch</code>, à quoi sert-elle? </p></blockquote>
+<p>Les CBV ont un ordre d&#8217;éxécution pour leurs méthodes: <code>render_to_response()</code> retourne la vue, mais elle est appelée depuis <code>get()</code> ou <code>post()</code>, qui appellent aussi <code>get_context_data()</code> pour créer le <code>context</code> du template. Et <code>get_context_data()</code> appelle <code>get_query_set()</code> pour les vues qui utilisent l&#8217;ORM. Il faudrait que je fasse un gros schéma de tout ça un jour.</p>
+<p><code>Dispatch()</code> est la méthode qui appelle toutes les autres. Elle choisi notament si on appelle la méthode <code>get()</code> ou <code>post()</code>. C&#8217;est en quelque sorte la méthode mère. Si on veut faire un truc avant que la vue ne travaille, c&#8217;est la dedans qu&#8217;il faut agir.</p>
+<h2>Les décorateurs de méthode</h2>
+<p>Comme vous l&#8217;avez vu, le code utilise <code>@method_decorator</code>. Encore une fois, je vais partir du principe que vous vous touchez avec les décorateurs, si ce n&#8217;est pas le cas, <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">il y a un article pour ça</a><img src="https://s.w.org/images/core/emoji/2.4/72x72/2122.png" alt="™" class="wp-smiley" style="height: 1em; max-height: 1em;" />.</p>
+<p>Néanmoins, dans l&#8217;article on ne parle que des décorateurs de fonctions. Comment décorer une méthode ? Et bien c&#8217;est pareil, sauf qu&#8217;il faut que votre décorateur accepte <code>self</code> en plus comme argument dans la fonction qu&#8217;il retourne.</p>
+<p>Afin d&#8217;éviter de réécrire tous les décorateurs en double, on utilise <code>@method_decorator</code> qui est un décorateur&#8230; pour décorateurs ^^ Il transforme un décorateur pour fonction afin qu&#8217;il soit applicable à une méthode.</p>
+<p>Ainsi quand vous voyez  <code>@method_decorator(login_required)</code>, ça veut dire &#8220;tranformer le décorateur <code>login_required</code> pour qu&#8217;il marche sur les méthodes, et l&#8217;apppliquer sur la méthode juste en dessous&#8221;</p>
+<h2>Les mixins</h2>
+<p>Je suis sûr que vous n&#8217;avez pas pu vous empêcher de vous demander, à la vue de ça:</p>
+<pre lang="python">LoginRequiredMixin(object):
+    """
+        View mixin which requires that the user is authenticated.
+    """</pre>
+<p>Mais c&#8217;est quoi un mixin non de diou ?</p>
+<p>Alors, déjà, on se rassure, ce n&#8217;est pas encore un nouveau truc compliqué à apprendre, c&#8217;est juste le nom d&#8217;un truc que vous connaissez déjà.</p>
+<p>Un mixin, c&#8217;est le nom qu&#8217;on donne à une classe dont le but est exclusivement d&#8217;être utilisé pour l&#8217;héritage, afin de rajouter une fonctionalité à la classe enfant.</p>
+<p>En gros, ce n&#8217;est qu&#8217;un nom, ça n&#8217;a rien de spécial, c&#8217;est une classe normale. Mixin est juste le rôle de la classe.</p>
+<p>Les mixins ne sont PAS des interfaces, car ils font toujours quelque chose. Ils sont utilisés quand on a un code générique qu&#8217;on veut réutiliser dans plusieurs classes.</p>
+<p>Les mixins changent le comportement, mais PAS la nature de la classe enfant. Il n&#8217;y a pas de <code>AnimalMixing</code> dont hériterait une class <code>Chien</code>, ou <code>Chat</code>. Ca c&#8217;est de l&#8217;héritage normal. On ne parle de mixin que pour le comportement.</p>
+<p>Les mixins ne marchent que dans les langages qui autorisent l&#8217;héritage multiple, car on doit pouvoir hériter de plein de mixins d&#8217;un coup pour que ça soit utile.</p>
+<h2>Explication du premier Snippet</h2>
+<p>Vous vous souvenez du temps où c&#8217;était si simple de protéger une vue ?</p>
+<pre lang="python">@login_required
+def ma_vue(request):</pre>
+<p>Avec les CBV, ce temps là est finit mes amis. C&#8217;est pour ça que je n&#8217;ai pas beaucoup d&#8217;amour pour elles.</p>
+<p>Pour protéger une CBV on a plusieurs choix:</p>
+<pre lang="python">class MaView(ListView):
+    ...
+
+ma_vue = login_required(MaView.as_view())</pre>
+<p>Et on importe <code>ma_vue</code> dans <em>urls.py</em>.</p>
+<p>OU directement dans <em>urls.py</em>:</p>
+<pre lang="python">...
+url('/this/is/not/a/url', login_required(MaView.as_view()))
+...</pre>
+<p>OU la méthode <a href="https://docs.djangoproject.com/en/1.4/topics/class-based-views/#decorating-the-class">recommandée</a> par les mecs de Django, méga simple et intuitive:</p>
+<pre lang="python">class MaView(ListView):
+    ...
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ProtectedView, self).dispatch(*args, **kwargs)</pre>
+<p>On applique le décorateur <code>@login_required</code> à la méthode <code>dispatch()</code>. Comme c&#8217;est la méthode qui appelle toutes les autres, la vue est ainsi protégée.</p>
+<p>Seulement voilà, tout celà est bien relou, et l&#8217;auteur des snippets y remédie:</p>
+<pre lang="python">class LoginRequiredMixin(object):
+    """
+      View mixin which requires that the user is authenticated.
+    """
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(LoginRequiredMixin, self).dispatch(
+            self, request, *args, **kwargs)</pre>
+<p>Ce faisant, il créé un mixin qui va appliquer ce décorateur. Mixin qu&#8217;on peut réutiliser ainsi:</p>
+<pre lang="python">class MaView(LoginRequiredMixin, ListView):
+    ...</pre>
+<p>Et protéger une vue redevient simple à nouveau !</p>
+<p>Attention, il faut bien mettre le mixin en premier dans la liste de parents. En effet, <code>dispatch()</code> de <code>MaView</code> va appeler celui de <code>LoginRequiredMixin</code> qui va appeler <code>super()</code> qui va va ainsi appeler <code>dispatch()</code> de <code>ListView</code>. C&#8217;est ce qu&#8217;on appelle le MRO (Method Résolution Order), <a href="https://fuhm.net/super-harmful/">l&#8217;ordre à vachement d&#8217;importance</a>, et ça mériterait un article à lui tout seul.</p>
+<p>Je résume:</p>
+<p><code>dispatch()</code> est la méthode d&#8217;un vue qui appelle toutes les autres. <code>LoginRequiredMixin</code> a sa méthode <code>dispatch()</code> protégée pour qu&#8217;elle ne soit accessible que par les utilisateurs enregistrés. <code>MaView</code> hérite du mixin pour intégrer cette fonctionalité. Du coup son <code>dispatch()</code> va utiliser le <code>dispatch()</code> de <code>LoginRequiredMixin</code>, qui est protégé. Comme <code>LoginRequiredMixin</code> est bien faites, son <code>dispatch()</code> appelle celui de <code>ListView</code>, et ainsi la vue fonctionne correctement.</p>
+<h2>Les autres snippets</h2>
+<p>On peut maintenant aller plus vite.</p>
+<p>Le deuxième mixin permet de n&#8217;autoriser l&#8217;accès à une vue que si on a les permissions nécessaires (Django vient en effet avec toute une gestion des permissions dans son app contrib &#8216;auth&#8217;)</p>
+<pre lang="python">class PermissionsRequiredMixin(object):
+    # les permissions nécessaires sont stockées dans cet attribut
+    required_permissions = ()
+
+    # dispatch est encore une fois protégée contre les users non loggés
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        # on rajoute une subtilité:
+        # on vérifie si le user a les permissions exigées avant
+        # d'appler le dispatch() du parent
+        # si on a pas les permissions, on rajoute un message d'erreur
+        # et on redirige vers la page de login
+        # sinon on appelle le dispatch() du parent comme d'hab
+        if not request.user.has_perms(self.required_permissions):
+            messages.error(
+                request,
+                'You do not have the permission required to perform the '
+                'requested operation.')
+            return redirect(settings.LOGIN_URL)
+        return super(PermissionsRequiredMixin, self).dispatch(
+            request, *args, **kwargs)</pre>
+<p>Ca s&#8217;utilise comme ça:</p>
+<pre lang="python">class MaVue(PermissionsRequiredMixin, ListView):
+    required_permissions = (
+        'dealer.create_cocaine',
+        'dealer.delete_cocaine',
+    )</pre>
+<p>Un utilisateur qui n&#8217;a pas les permissions <code>create_cocaine</code> et <code>delete_cocaine</code> de l&#8217;app &#8216;dealer&#8217; sera redirigé vers la page de login.</p>
+<p>En effet, <code>MaVue.dispatch</code> appelle la méthode <code>PermissionsRequiredMixin.dispatch</code>, mais avec une subtilité: le <code>self</code> passé en paramètre est celui de <code>MaVue</code>. <code>self.required_permissions</code> dans <code>PermissionsRequiredMixin.dispatch</code> est donc en vérité <code>MaVue.required_permissions</code>. Relisez ce paragraphe plusieurs fois.</p>
+<p>Notez en revanche que la page de redirection n&#8217;est pas configurable, ce qui est bien dommage. Ca se corrige facilement:</p>
+<pre lang="python">class PermissionsRequiredMixin(object):
+    required_permissions = ()
+    redirect_url = settings.LOGIN_URL # <== HOP
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perms(self.required_permissions):
+            messages.error(
+                request,
+                'You do not have the permission required to perform the '
+                'requested operation.')
+            return redirect(self.redirect_url) # <== HOP
+        return super(PermissionsRequiredMixin, self).dispatch(
+            request, *args, **kwargs)</pre>
+<p>Du coup on a plus de marge de manoeuvre.</p>
+<p><strong>Le 3eme et 4eme snippet, c'est la même chose. Kiff kiff. Pareil.</strong></p>
+<p>Mais au lieu de vérifier les permissions, on vérifie juste si l'utilisateur à accès à l'admin Django (<code>is_staff</code>) ou que l'utilisateur est un superutilisateur (<code>is_superuser</code>: il a toutes les permissions):</p>
+<pre lang="python">class StaffRequiredMixin(object):
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        # j'ai pas besoin de vous expliquer ça quand même ?
+        if not request.user.is_staff:
+            messages.error(
+                request,
+                'You do not have the permission required to perform the '
+                'requested operation.')
+            return redirect(settings.LOGIN_URL)
+        return super(StaffRequiredMixin, self).dispatch(request,
+            *args, **kwargs)
+
+class SuperUserRequiredMixin(object):
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        # je pense que c'est assez explicite
+        if not request.user.is_superuser:
+            messages.error(
+                request,
+                'You do not have the permission required to perform the '
+                'requested operation.')
+            return redirect(settings.LOGIN_URL)
+        return super(SuperUserRequiredMixin, self).dispatch(request,
+            *args, **kwargs)</pre>
+<p>Comme je le disais plus haut, on peut utiliser plusieurs mixins en même temps. Par exemple, si je veux limiter l'accès à une vue aux dealers qui font partie de mon staff:</p>
+<pre lang="python">class MaVue(PermissionsRequiredMixin, StaffRequiredMixin, ListView):
+    required_permissions = (
+        'dealer.create_cocaine',
+        'dealer.delete_cocaine',
+    )</pre>
+<p>Notez encore une fois que les mixins sont là en premier, car <code>MaVue.dispatch</code> appelle <code>PermissionsRequiredMixin.dispatch</code> qui appelle <code>StaffRequiredMixin.dispatch</code> qui appelle <code>ListView.dispatch</code>.</p>
+<p>En revanche, dans ce cas précis l'ordre des mixins, entre eux, n'a pas d'importance. Ce ne sera pas toujours le cas: il faut comprendre comment les mixins agissent pour savoir si certains doivent être mis en premier. C'est tout le problème des CBV: pour en faire un usage productif, la somme de choses à savoir est assez démente.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/feed/</wfw:commentRss>
+		<slash:comments>24</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1812</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/08/monument_miniature.jpg" length="14088" type="image/jpg" />	</item>
+	</channel>
+</rss>

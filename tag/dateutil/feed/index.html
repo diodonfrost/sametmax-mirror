@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>dateutil &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/dateutil/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Les time zones en Python</title>
+		<link>http://sametmax.com/les-time-zones-en-python/</link>
+		<comments>http://sametmax.com/les-time-zones-en-python/#comments</comments>
+		<pubDate>Tue, 15 Oct 2013 18:23:38 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[arrow]]></category>
+		<category><![CDATA[datetime]]></category>
+		<category><![CDATA[dateutil]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[pytz]]></category>
+		<category><![CDATA[timezone]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7448</guid>
+		<description><![CDATA[Je suis tombé sur <a href="http://crsmithdev.com/arrow/">arrow</a>, une lib Python qui résout le problème]]></description>
+				<content:encoded><![CDATA[<p>Si vous suivez un peu le blog, vous savez <a href="http://sametmax.com/manipuler-les-dates-et-les-durees-en-python/">comment manipuler les dates en Python</a>. Et c&#8217;est trop cool. Parce que le temps, c&#8217;est quelque chose de difficile en programmation, comme la gestion des monnaies ou la traduction d&#8217;une interface.</p>
+<p>Mais notre article ne traite pas des time zones, c&#8217;est à dire de la gestion des fuseaux horaires. La raison est très simple, Sam est une grosse feignasse, et comme c&#8217;est un sujet <a href="http://lucumr.pocoo.org/2011/7/15/eppur-si-muove/">super galère</a>, il l&#8217;a soigneusement évité, vous renvoyant à l&#8217;usage de pytz. Démerdez vous.</p>
+<p>Qu&#8217;est-ce qui a changé ? Le sujet est-il devenu plus simple ? Sam a-t-il un regain de motivation ? Le fait de parler de lui à la 3eme personne est-il signe de sénilité ?</p>
+<p>Bien sûr que non, c&#8217;est simplement que je suis tombé sur <a href="http://crsmithdev.com/arrow/">arrow</a>, une lib Python qui résout le problème. Pour faire simple, c&#8217;est presque exactement la lib que j&#8217;avais commencé à coder pour la gestion du temps. Sauf que le mec, lui, il l&#8217;a terminé, alors que la mienne, elle est au fin fond d&#8217;un repo git poussiéreux depuis 8 mois.</p>
+<p>Bref, laissez tout tomber, n&#8217;installez plus dateutil, pytz et autres libs que j&#8217;ai pu vous recommander par le passé (elle sont incluses et abstraites par arrow). Faites juste :</p>
+<p><code>pip install arrow</code></p>
+<h2>Tout commence par l&#8217;UTC</h2>
+<p>Comme pour la gestion des encodings, la gestion des dates se fait en utilisant une base commune. Pour l&#8217;encoding, c&#8217;est unicode, pour les dates, c&#8217;est UTC.</p>
+<p>Donc, si vous prévoyez de gérer différents fuseaux horaires dans votre programme, TOUT votre programme &#8211; j&#8217;ai dit TOUT &#8211; doit manipuler exclusivement des dates en UTC.</p>
+<p>Comme avec l&#8217;encoding, l&#8217;idée est la suivante :</p>
+<ul>
+<li>A l&#8217;entrée de votre programme, vous acceptez des dates avec une timezone. Vous convertissez ces dates vers l&#8217;UTC.</li>
+<li>Dans votre programme, vous manipuler uniquement de l&#8217;UTC.</li>
+<li>A la sortie du programme, vous renvoyez des dates dans une timezone.</li>
+</ul>
+<p>Ceci suppose donc que :</p>
+<ul>
+<li>Vous savez ce qu&#8217;est une entrée et une sortie. Je vous fait un rappel : tout ce qui est pas dans votre programme (query base de données, socket, fichiers, print, input utilisateur, clic, affichage, etc.).</li>
+<li>Vous DEVEZ savoir la timezone de ce qui rentre. <strong>Si vous ne le savez pas, vous ne pouvez absolument rien faire</strong> à part afficher à votre utilisateur que vous ne savez pas et le réglage par défaut . Pour la sortie, si vous ne savez pas, vous pouvez sortir de l&#8217;UTC par défaut, ça mange pas de pain. Mais pour l&#8217;entrée, il faut lire la spec, la doc, demander au collègue, au fournisseur, au client, peu importe, il faut trouver l&#8217;info.</li>
+</ul>
+<h2>Avec arrow, c&#8217;est simplissime&#8230;</h2>
+<p>Si vous créez une date vous même, il suffit de toujours le faire en UTC :</p>
+<pre lang="python">>>> import arrow
+>>> maintenant = arrow.utcnow() # heure et date actuelle en UTC
+>>> print(maintenant)
+2013-10-15T17:15:19.139000+00:00
+>>> from datetime import datetime
+>>> date_de_sortie_des_goonies = arrow.get(datetime(1985, 12, 4), 'US/Pacific')
+>>> print(date_de_sortie_des_goonies)
+1985-12-04T00:00:00-08:00
+>>> date_de_sortie_des_goonies = date_de_sortie_des_goonies.to('utc')
+>>> print(date_de_sortie_des_goonies)
+1985-12-04T08:00:00+00:00
+Là, on a des dates uniquements en UTC.</pre>
+<p>Si vous importez une date, c&#8217;est très simple également :</p>
+<pre lang="python">>>> arrow.get(1367900664) # un timestamp marche..
+<Arrow [2013-05-07T04:24:24+00:00]>
+>>> arrow.get('1367900664') # ... même en string
+<Arrow [2013-05-07T04:24:24+00:00]>
+>>> arrow.get(1367900664.152325) # ... ou en float
+<Arrow [2013-05-07T04:24:24.152325+00:00]>
+>>> arrow.get('2013-09-30T15:34:00.000-07:00').to('utc') # parser une date standard...
+<Arrow [2013-09-30T22:34:00+00:00]>
+>>> from dateutil import tz # pour parser une date custo
+>>> arrow.Arrow.strptime('2013-05-05 12:30:45', '%Y-%m-%d %H:%M:%S', tz.gettz('Paris/Europe'))
+<Arrow [2013-05-05T12:30:45+00:00]></pre>
+<p>Tout ça renvoie de l&#8217;UTC. </p>
+<p>Et quand vous voulez afficher une date, vous pouvez tout simplement la reconvertir vers la timezone de votre choix avec la méthode <code>to()</code> et la formater comme avec <code>format()</code></p>
+<h2>Stockage des dates</h2>
+<p>Quand on stocke une date (dans une base de données, un fichier, etc), il faut se demander quel est le but du stockage. Si le but est de stocker la date d&#8217;un événement, mettez la date en UTC. Un timestamp suffit, ou alors la représentation YYYY-MM-DD hh:mm:ss. Par contre, si vous voulez stocker une date liée à un événement et un lieu (par exemple un rendez-vous d&#8217;affaire ou le décollage d&#8217;un avion), stockez la date en UTC avec sa timezone dans un champ à côté, sinon vous serez bien baisé quand vous voudrez la ressortir.</p>
+<p>Ah oui, et réglez toujours tous vos serveurs sur UTC. Toujours.</p>
+<h2>En bonus</h2>
+<p>On peut obtenir toutes les infos utiles sans tourner autour du pot :</p>
+<pre lang="python">>>> a = arrow.utcnow()
+>>> print(a.datetime)
+2013-10-15 17:48:28.335000+00:00
+>>> print(a.timestamp)
+1381859308
+>>> print(repr(a.naive)) # on accès à l'objet datetime au cas où...
+datetime.datetime(2013, 10, 15, 17, 49, 25, 515000)
+>>> print(a.tzinfo) # ... et à l'objet tzinfo
+tzutc()
+>>> print(a.year, a.hour)
+(2013, 17)</pre>
+<p>Et on peut faire des replacements et des calculs flous, comme avec dateutil :</p>
+<pre lang="python">>>> a = arrow.utcnow()
+>>> print(a.format('DD, MMMM', locale='fr_FR'))
+15, Octobre
+>>> a = a.replace(day=30)
+>>> print(a.format('DD, MMMM', locale='fr_FR'))
+30, Octobre
+>>> a = a.replace(days=+1)
+>>> print(a.format('DD, MMMM', locale='fr_FR'))
+31, Octobre
+>>> a = a.replace(months=-1)
+>>> print(a.format('DD, MMMM', locale='fr_FR'))
+30, Septembre</pre>
+<p>Faire de l&#8217;affichage relatif :</p>
+<pre lang="python">>>> before = arrow.utcnow().replace(hours=-3)
+>>> before.humanize(locale='Fr_fr'))
+'il y a 3 heures'</pre>
+<p>Bref, arrow, c&#8217;est de la bombe baby !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-time-zones-en-python/feed/</wfw:commentRss>
+		<slash:comments>12</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">7448</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/10/tumblr_munp0wYq4t1r539hzo1_500.jpg" length="35324" type="image/jpg" />	</item>
+	</channel>
+</rss>

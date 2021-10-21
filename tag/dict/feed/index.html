@@ -1,0 +1,1130 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>dict &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/dict/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>L&#8217;ordre des choses</title>
+		<link>http://sametmax.com/lordre-des-choses/</link>
+		<comments>http://sametmax.com/lordre-des-choses/#comments</comments>
+		<pubDate>Tue, 16 Aug 2016 14:45:23 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dico]]></category>
+		<category><![CDATA[dict]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=19982</guid>
+		<description><![CDATA[Des mois et des mois que je n’ai pas écrit :) Je ne compte même pas Max, qui à l’heure où je vous parle est en train découvrir les joies de la sidérurgie et qui ne se souvient du blog que quand on en parle dans le jacuzzi d’un FKK. Ça va faire 4 ans [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Des mois et des mois que je n’ai pas écrit :) Je ne compte même pas Max, qui à l’heure où je vous parle est en train découvrir les joies de la sidérurgie et qui ne se souvient du blog que quand on en parle dans le jacuzzi d’un FKK. </p>
+<p>Ça va faire 4 ans qu’on a ce truc.</p>
+<p>Entre temps lui et moi avons déménagé plusieurs fois, séparément, puis réaménagé ensemble, on a pris des responsabilités comme l’achat d’une machine à glaçons et la culture de plantes carnivores (la mienne est morte, mais il a la main verte apparemment).</p>
+<p>Je vais être franc avec vous, l’écriture ne m’a pas manqué. Pas du tout.</p>
+<p>Et puis aujourd’hui, j’ai eu envie. Ça ne m’avait pas pris depuis pas mal de temps, mais c’est une bonne chose : le sens du devoir avait depuis longtemps perdu son influence sur ma motivation éditoriale.</p>
+<p>Est-ce que ça va durer un article ? 10 ? Un an ?</p>
+<p>On va voir.</p>
+<p>Mais ce ne sont pas les sujets qui manquent. En fait Python 3.6 est droit devant nous, avec plein de trucs chouettes à la clé. J’ai aussi beaucoup joué avec asyncio, jusqu’à trouver des bugs dedans et les reporter aux core-dev direct.</p>
+<p>Pour le cul par contre, je ne sais pas encore, je vais laisser traîner jusqu’à ce que, tel Rocco dans Omar et Fred, ma bite me parle.</p>
+<p>Python pour commencer donc.</p>
+<p>Plein de changements de perfs, en vitesse, occupation mémoire, etc, prévus pour la prochaine version. Parmi eux, un changement majeur sur <a href="https://bugs.python.org/issue27350">l’implémentation des dictionnaires</a> inspiré directement de Pypy, qui les rendront plus compacts et plus rapides.</p>
+<p>Et surtout, ordonnés par défaut. </p>
+<p>Yep, plus besoin de <a href="http://sametmax.com/ce-que-vous-ne-saviez-pas-sur-les-collections-en-python/">collections.OrderedDict</a>, qui restera malgré tout pour des raisons de compatibilité.</p>
+<p>Enfin s’ils décident que ça fait maintenant partie de la specs et n’est pas juste un détail d’implémentation.</p>
+<p>Ca veut dire aussi que <a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">**kwargs</a> et <code>__dict__</code> deviendront ordonnés, ce qui va arranger beaucoup de monde.</p>
+<p>Mais l’article, en plus de prêcher la bonne nouvelle, est aussi là pour vous parler d’un petit hack sympa qui peut être pratique dans votre <a href="http://sametmax.com/variables-denvironnement-utilisees-par-python/">PYTHONSTARTUP</a> pour des sessions shellifiantes : donner l’impression d’avoir un <code>OrderedDict</code> builtin par défaut.</p>
+<pre lang="python">from textwrap import dedent
+from collections import OrderedDict
+
+class OrderedDictFactory(object):
+
+    # __getitem__ est la méthode magique appelée quand on fait objet[trucs]
+    # et keys contient la liste des trucs
+    def __getitem__(self, keys):
+
+        for key in keys:
+
+            # slice est un objet builtin fabriqué par Python quand on fait 
+            # objet[debut:fin], qui contient le debut et la fin
+            if not isinstance(key, slice):
+
+                # on check qu’on a bien une liste de slices
+                raise SyntaxError(dedent("""
+                    One element of the dict is not a key/value pair: {!r}.
+
+                    The syntax is d["key1": "value", "key2": "value", ...].
+                    Check if you haven't missed a semicolon somewhere.
+                """.format(key)))
+
+        # et on retourne juste un ordered dict classique
+        return OrderedDict([(k.start, k.stop) for k in keys])
+
+# instance de référence pour notre factory abrégé pour des raisons de 
+# facilité
+d = OrderedDictFactory()</pre>
+<p>Et hop, on abuse la notation du slicing :</p>
+<pre lang="python">>>> menu = d[
+   "Samurai pizza cats" : "fruits de mer", # un slice
+   "Tortue ninja" : "4 saisons", # un autre slice 
+   'Max': "paysanne" # do you wanna slice ?
+]
+
+>>> menu
+OrderedDict([('Samurai pizza cats', 'fruits de mer'), ('Tortues ninjsa', '4 saisons'), ('Max', 'paysanne')])</pre>
+<p>Rien à voir avec la choucroute, mais certaines personnes m’ont parlé de faire un miroir SFW du blog. Je vous rappelle que le blog est sous creative common, alors faites-vous plaiz, vous pouvez tout réutiliser.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/lordre-des-choses/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">19982</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/08/1w6WcsT.jpg" length="116685" type="image/jpg" />	</item>
+		<item>
+		<title>Récupérer le premier et le dernier élément d&#8217;un OrderedDict</title>
+		<link>http://sametmax.com/recuperer-le-premier-et-le-dernier-element-dun-ordereddict/</link>
+		<comments>http://sametmax.com/recuperer-le-premier-et-le-dernier-element-dun-ordereddict/#comments</comments>
+		<pubDate>Tue, 22 Mar 2016 18:18:11 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[collections]]></category>
+		<category><![CDATA[dict]]></category>
+		<category><![CDATA[orderedidct]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=18724</guid>
+		<description><![CDATA[<code>collections.OrderedDict</code> est une structure de données que j'utilise de plus en plus, surtout que sa réécriture en C en 3.5 lui donne des performances décentes.]]></description>
+				<content:encoded><![CDATA[<p><code>collections.OrderedDict</code> est une structure de données que j&#8217;utilise de plus en plus, surtout que sa réécriture en C en 3.5 lui donne des performances décentes.</p>
+<p>Néanmoins, il n&#8217;y a pas dans l&#8217;API de moyen de récupérer le premier ou le dernier élément inséré dans dico. Il y a bien <code>popitem()</code>, mais ça retire l&#8217;élément du dictionnaire, et c&#8217;est pas forcément ce qu&#8217;on veut.</p>
+<p>Heureusement <code>OrderedDict</code> est un itérable, et implémente <code>__reversed__</code>, et on peut donc utiliser les outils suivant our récupérer les extrémités avec une perf 0(1):</p>
+<pre lang="python">>>> from collections import OrderedDict
+>>> d = OrderedDict.fromkeys('azerty')
+>>> next(iter(d.items())) # premier élément
+'a'
+>>> next(reversed(d.items())) # dernier élément
+'y'</pre>
+<p>Après l&#8217;implémentation de <code>OrderedDict</code> reste une liste doublement chainée, et on ne peut donc pas récupérer un élément à un index arbitraire sans le parcourir à la main&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/recuperer-le-premier-et-le-dernier-element-dun-ordereddict/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">18724</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/03/7SiQSD1.jpg" length="22422" type="image/jpg" />	</item>
+		<item>
+		<title>Compter et  grouper : encore plus fainéant</title>
+		<link>http://sametmax.com/compter-et-grouper-encore-plus-faineant/</link>
+		<comments>http://sametmax.com/compter-et-grouper-encore-plus-faineant/#comments</comments>
+		<pubDate>Wed, 01 Jul 2015 19:37:12 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[collections]]></category>
+		<category><![CDATA[counter]]></category>
+		<category><![CDATA[dict]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16529</guid>
+		<description><![CDATA[Après avoir bien galéré à créer un compteur à la main avec un dico, <a href="http://sametmax.com/aller-plus-loin-avec-les-hash-maps-en-python/">vous avez découvert</a> les joies des méthodes <code>dict.get</code> et <code>dict.setdefault</code>. Puis évidemment quelqu'un vous a pointé vers <code>collections.defaultdict</code>, et enfin, vous avez fini par découvrir <code>collections.Counter</code>. Joie.]]></description>
+				<content:encoded><![CDATA[<p>Après avoir bien galéré à créer un compteur à la main avec un dico, <a href="http://sametmax.com/aller-plus-loin-avec-les-hash-maps-en-python/">vous avez découvert</a> les joies des méthodes <code>dict.get</code> et <code>dict.setdefault</code>. Puis évidemment quelqu&#8217;un vous a pointé vers <code>collections.defaultdict</code>, et enfin, vous avez fini par découvrir <code>collections.Counter</code>. Joie.</p>
+<p>Le parcours est à peu près toujours le même quand on veut grouper ou compter des valeurs en Python.</p>
+<p>Malgré cela, je vois encore des gens qui sous utilisent ces collections. Par exemple, <code>Counter</code> peut compter automatiquement :</p>
+<pre lang="python">>>> from collections import Counter
+>>> Counter('jfsqmfjdklmqfjsdqklmfjdsqhfdqsjkhfdshjkl')
+    Counter({'j': 6, 'f': 6, 'q': 5, 's': 5, 'd': 5, 'k': 4, 'l': 3, 'm': 3, 'h': 3})
+</pre>
+<p>Mais ce que ne réalisent pas beaucoup de développeurs, c&#8217;est que cet objet accepte n&#8217;importe quel itérable en paramètre. Nous sommes en Python, et rededjiou, je me tue à répéter que l&#8217;itération est la philosophie centrale du langage.</p>
+<p>Donc le compteur peut prendre une expression génératrice en paramètre.</p>
+<p>Par exemple, si vous voulez compter un truc un peu plus complexe que des éléments, comme mettons, le ratio de lignes commentées dans un fichier, vous n&#8217;avez pas besoin de faire ça :</p>
+<pre lang="python">count = Counter()
+for line in open('/etc/fstab', encoding='ascii'):
+        count[line.startswith('#')] += 1
+ # out : Counter({True: 10, False: 3})
+</pre>
+<p>Ceci marchera parfaitement :</p>
+<pre lang="python">count = Counter(line.startswith('#') for line in open('/etc/fstab', encoding='ascii'))
+# out : Counter({True: 10, False: 3})</pre>
+<p>Vous pouvez également utiliser des générateurs plus complexes. Combien de fichiers par types d&#8217;extensions ?</p>
+<pre lang="python">import os
+import pathlib
+
+def get_extensions(path):
+    for dirpath, dirnames, files in os.walk(path):
+        for name in files:
+            ext = pathlib.Path(name).suffix
+            if ext: # on ignore les fichiers sans extension
+                yield ext
+            
+
+Counter(get_extensions('/etc')).most_common(9)
+ # Out : 
+ # ('.conf', 632),
+ # ('.0', 348),
+ # ('.gz', 323),
+ # ('.jhansonxi', 207),
+ # ('.pem', 177),
+ # ('.load', 127),
+ # ('.ttb', 86),
+ # ('.ktb', 80),
+ # ('.kti', 55)]</pre>
+<p>Notez que le <code>Counter</code> peut faire plus que compter. Ici il nous donne les 9 plus grandes valeurs du classement, mais en prime, il peut aussi nous faire des opérations ensemblistes :</p>
+<pre lang="python">>>> c = Counter("aabbbbbbbbbbbbcccc")
+>>> c & Counter('aaaaaaaaaaaaaaabbcddddddd') # valeurs min
+    Counter({'b': 2, 'a': 2, 'c': 1})
+>>> c | Counter('aaaaaaaaaaaaaaabbcddddddd') # valeurs max
+    Counter({'a': 15, 'b': 12, 'd': 7, 'c': 4})</pre>
+<p>Le compteur fournit par Python est donc naturellement très, très puissant.</p>
+<p>Une autre chose qui est rarement faite : sous-classer ces types.</p>
+<p>Par exemple, si vous avez souvent des opérations où il faut grouper des valeurs :</p>
+<pre lang="python">from collections import defaultdict
+
+class Grouper(defaultdict):
+ 
+    def __init__(self, iterable):
+        super(Grouper, self).__init__(list)
+        self.update(iterable)
+ 
+    def update(self, iterable):
+        try:
+            iterable = iterable.items()
+        except AttributeError:
+            iterable = iterable
+        for k, v in iterable:
+            self[k].append(v)</pre>
+<p>On prend un default dict, on lui dit qu&#8217;un update ajoute les éléments à la liste en valeur plutôt que de la remplacer, et zou, vous avez un dictionnaire qui va grouper toutes les valeurs automatiquement.</p>
+<p>Liste des fichiers par extensions ? Fastoche !</p>
+<pre lang="python">def get_extensions(path):
+    for dirpath, dirnames, files in os.walk(path):
+        for name in files:
+            ext = pathlib.Path(name).suffix
+            if ext: 
+                yield ext, name # on rajoute le name ici
+
+>>>files = Grouper(get_extensions('/etc'))
+>>> files['.tti']
+['en-na-ascii.tti',
+ 'numbers-french.tti',
+ 'devanagari.tti',
+ 'letters-cyrillic.tti',
+ 'punctuation-basic.tti',
+ 'malayalam.tti',
+ 'ascii-basic.tti',
+ 'spaces.tti',
+ 'letters-latin.tti',
+ 'letters-latin-dot8.tti',
+ 'en-chess.tti',
+ 'numbers-dot8.tti',
+ 'punctuation-tibetan.tti',
+ 'boxes.tti',
+ 'gujarati.tti',
+ 'numbers-nemeth.tti',
+ 'punctuation-alternate.tti',
+ 'common.tti',
+ 'blocks.tti',
+ 'gurmukhi.tti',
+ 'kannada.tti',
+ 'telugu.tti',
+ 'tamil.tti',
+ 'numbers-dot6.tti',
+ 'de-chess.tti',
+ 'control-latin.tti',
+ 'letters-tibetan.tti',
+ 'oriya.tti',
+ 'bengali.tti']</pre>
+<p>Bref, compter et grouper sont des opérations si communes : ne vous faites par chier à refaire tout ça à la main.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/compter-et-grouper-encore-plus-faineant/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">16529</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/07/DVKgxFH.gif" length="510930" type="image/jpg" />	</item>
+		<item>
+		<title>Views VS generators</title>
+		<link>http://sametmax.com/views-vs-generators/</link>
+		<comments>http://sametmax.com/views-vs-generators/#comments</comments>
+		<pubDate>Wed, 25 Mar 2015 18:57:20 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dict]]></category>
+		<category><![CDATA[generator]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[view]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=15993</guid>
+		<description><![CDATA[Avec Python 2.7, un outil appelé les "views" (les "vues") est apparu. Une vue est juste un enrobage qui permet de voir un objet d'une certaine façon, et de le manipuler d'une certaine façon (avec une autre API), sans changer cet objet.]]></description>
+				<content:encoded><![CDATA[<p>Avec Python 2.7, un outil appelé les &#8220;views&#8221; (les &#8220;vues&#8221;) est apparu. Une vue est juste un enrobage qui permet de voir un objet d&#8217;une certaine façon, et de le manipuler d&#8217;une certaine façon (avec une autre API), sans changer cet objet.</p>
+<p>Les vues ont surtout été notables pour leur apparition dans les dictionnaires avec Python 2.7:</p>
+<pre lang="python">    >>> scores = {"sam": 1, "max": 0}
+    >>> scores.items() # retourne une lsite
+    [('max', 0), ('sam', 1)]
+    >>> scores.iteritems() # retourne un générateur
+    <dictionary-itemiterator object at 0x7f8782a26628>
+    >>> list(scores.iteritems()) # sans views
+    [('max', 0), ('sam', 1)]
+    >>> scores.viewsitems() # avec views
+    Traceback (most recent call last):
+      File "<ipython-input-12-dc0b08011047>", line 1, in <module>
+        scores.viewsitems() # avec views
+    AttributeError: 'dict' object has no attribute 'viewsitems'
+
+    >>> scores.viewitems() # retourne une vue
+    dict_items([('max', 0), ('sam', 1)])</pre>
+<p>Néanmoins personne ne les a vraiment utilisé, et c&#8217;est un tort. Elles sont en effet très performantes, et pour cette raison sont retournées par défaut avec <code>items()</code> en Python 3.</p>
+<p>En effet, les vues ne sont qu&#8217;un enrobage : elles ne contiennent rien, et donc ne prennent pas beaucoup mémoire, tout comme les générateurs.</p>
+<p>Mais contrairement aux générateurs, les vues ne se vident pas et peuvent exposer une API plus complète que les générateurs, comme par exemple déclarer une taille :</p>
+<pre lang="python">>>> items = scores.iteritems()
+>>> list(items)
+[('max', 0), ('sam', 1)]
+>>> list(items) # woops
+[]
+>>> items = scores.viewitems()
+>>> list(items)
+[('max', 0), ('sam', 1)]
+>>> list(items)
+[('max', 0), ('sam', 1)]
+>>> len(scores.iteritems()) # nope
+Traceback (most recent call last):
+  File "<ipython-input-21-9c7f250da51d>", line 1, in <module>
+    len(scores.iteritems())
+TypeError: object of type 'dictionary-itemiterator' has no len()
+
+>>> len(scores.viewitems())
+2
+</pre>
+<p>Alors certes, on ne peut pas mettre des vues partout, et les générateurs restent utiles. Mais quand il est possible de les utiliser, et à moins d&#8217;avoir besoin d&#8217;une liste afin de modifier les valeurs in place, il n&#8217;y pas de raison de ne pas le faire : c&#8217;est le meilleur des deux mondes. </p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/views-vs-generators/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">15993</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/03/magic-realism-paintings-illusions-rob-gonsalves-11.jpg" length="398794" type="image/jpg" />	</item>
+		<item>
+		<title>Chercher dans plusieurs dicts à la fois avec ChainMap</title>
+		<link>http://sametmax.com/chercher-dans-plusieurs-dicts-a-la-fois-avec-chainmap/</link>
+		<comments>http://sametmax.com/chercher-dans-plusieurs-dicts-a-la-fois-avec-chainmap/#comments</comments>
+		<pubDate>Fri, 11 Jul 2014 08:09:25 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dico]]></category>
+		<category><![CDATA[dict]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=11382</guid>
+		<description><![CDATA[Depuis Python 3.3 existe un nouvel outil pour travailler avec les dicos et j'étais complètement passé à côté : <a href="https://docs.python.org/3.3/library/collections.html#collections.ChainMap">ChainMap</a>.]]></description>
+				<content:encoded><![CDATA[<p>Depuis Python 3.3 existe un nouvel outil pour travailler avec les dicos et j&#8217;étais complètement passé à côté : <a href="https://docs.python.org/3.3/library/collections.html#collections.ChainMap">ChainMap</a>.</p>
+<p>Il permet de créer un objet qui se comporte comme un <a href="http://sametmax.com/aller-plus-loin-avec-les-hash-maps-en-python/">dict</a>, mais qui va chercher dans plusieurs dictionnaires.</p>
+<p>Un exemple sera plus clair.</p>
+<p>Imaginez que vous ayez un système de configuration avec des valeurs par défaut :</p>
+<pre lang="python">default_config = {'DEBUG': False, 'HOST': 'localhost', 'PORT': 8080}</pre>
+<p>Puis votre utilisateur peut fournir un fichier de configuration <code>settings.py</code> qui contient :</p>
+<pre lang="python">DEBUG = True
+PORT = 8000</pre>
+<p>Et avec un peu de parsing, vous le récupérez sous forme de dico :</p>
+<pre lang="python">import settings
+user_config = {k: v for k, v in vars(settings).items() if k.isupper()}
+## {'DEBUG': True, 'PORT': 8000}</pre>
+<p>Puis l&#8217;utilisateur peut passer la config via la ligne de commande, et une fois il fait :</p>
+<pre lang="python">--host 0.0.0.0</pre>
+<p>Et vous récupérez la config :</p>
+<pre lang="python">cmd_config = {"HOST": "0.0.0.0"}</pre>
+<p>Maintenant il faut prendre tout ça en compte. La ligne de commande écrase le fichier de config qui écrase les valeurs par défaut :</p>
+<pre lang="python">conf = {}
+conf.update(default_config)
+conf.update(user_config)
+conf.update(cmd_config)
+print(conf) # configuration finale
+## {'DEBUG': True, 'HOST': '0.0.0.0', 'PORT': 8000}</pre>
+<p>Ça va marcher, mais ça a plusieurs défauts : </p>
+<ul>
+<li>Si vos dicos sont très grands, vous prenez encore plus de place en mémoire.</li>
+<li>Si vous modifiez <code>conf</code>, impossible de savoir quelle était sa valeur initiale.</li>
+<li>Si vous modifiez <code>user_config</code>, il faut tout refusionner. Mais si vous avez modifié <code>conf</code> entre temps, comment vous assurer que vous n&#8217;allez pas écraser ces modifications ?</li>
+<li>Si vous voulez temporairement faire une modification à conf, il faut de nouveau créer un dico en plus avec tout dedans.</li>
+</ul>
+<p>ChainMap résout ce problème en cherchant une clé dans une liste de dicos sous-jacent, mais en appliquant les modifications uniquement sur le premier dico.</p>
+<pre lang="python">>>> from collections import ChainMap
+
+>>> conf = ChainMap({}, # <- ce mapping sera le seul modifié
+                    # les clés seront cherchées dans cet ordre :
+                    cmd_config, 
+                    user_config, 
+                    default_config)
+
+>>> conf['HOST']
+>>> '0.0.0.0'
+>>> conf['DEBUG']
+>>> True
+>>> conf['PORT']
+>>> 8000</pre>
+<p>Les dicos sont ici stockés par référence, ça ne prend pas de mémoire en plus, et si on modifie un dico :</p>
+<pre lang="python">user_config['DEBUG'] = False</pre>
+<p>Alors c&#8217;est reflété par <code>ChainMap</code>:</p>
+<pre lang="python">>>> conf['DEBUG']
+False</pre>
+<p>Si on fait une modification, seul le dico le plus haut dans la chaine (ici notre dico vide), est modifié :</p>
+<pre lang="python">>>> conf["PORT"] = 7777
+>>> conf
+ChainMap({'PORT': 7777}, {'HOST': '0.0.0.0'}, {'DEBUG': False, 'PORT': 8000}, {'DEBUG': False, 'HOST': 'localhost', 'PORT': 8080})</pre>
+<p>Et si on a besoin d&#8217;un contexte temporaire, on peut créer un enfant :</p>
+<pre lang="python">>>> sub_conf = conf.new_child()
+>>> sub_conf
+ChainMap({}, {'PORT': 7777}, {'HOST': '0.0.0.0'}, {'DEBUG': False, 'PORT': 8000}, {'DEBUG': False, 'HOST': 'localhost', 'PORT': 8080})</pre>
+<p>Cela crée un nouveau ChainMap, avec un dico vide en haut de la chaîne, qui permet donc de travailler temporairement avec de nouvelles valeurs, sans toucher au ChainMap d&#8217;origine. </p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/chercher-dans-plusieurs-dicts-a-la-fois-avec-chainmap/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">11382</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/07/tumblr_n5nx1iJWNQ1r539hzo1_500.jpg" length="184953" type="image/jpg" />	</item>
+		<item>
+		<title>Aller plus loin avec les hash maps en Python</title>
+		<link>http://sametmax.com/aller-plus-loin-avec-les-hash-maps-en-python/</link>
+		<comments>http://sametmax.com/aller-plus-loin-avec-les-hash-maps-en-python/#comments</comments>
+		<pubDate>Mon, 30 Jun 2014 03:28:26 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dico]]></category>
+		<category><![CDATA[dict]]></category>
+		<category><![CDATA[dictionnaire]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=11217</guid>
+		<description><![CDATA[Les hash map sont souvent sous-utilisés, surtout par les personnes venant d'un autre langage avec implémentation vraiment batardes du concept. Les array en PHP et les objet en Javascript étant parmi les pires exemples.]]></description>
+				<content:encoded><![CDATA[<p>Les hash map sont souvent sous-utilisés, surtout par les personnes venant d&#8217;un autre langage avec implémentation vraiment batarde du concept. Les arrays en PHP et les objets en Javascript étant parmi les pires exemples.</p>
+<p>Le point d&#8217;entrée pour les hash maps en Python, c&#8217;est le dictionnaire. Et la plupart des gens ont pigé le principe de l&#8217;association clé / valeur :</p>
+<pre lang="python">>>> d = {}
+>>> d['cle'] = 'valeur'
+>>> d['cle']
+'valeur'
+>>> d['pas cle']
+Traceback (most recent call last):
+  File "<ipython-input-12-eed7cf6f5344>", line 1, in <module>
+    d['pas cle']
+KeyError: 'pas cle'</pre>
+<p>L’intérêt du dictionnaire étant qu&#8217;accéder à une clé est très rapide (c&#8217;est <a href="http://sametmax.com/complexite-algorithmique-pourquoi-tant-de-n/">une opération O(1)</a>), tout comme vérifier qu&#8217;une clé est présente dans le dico :</p>
+<pre lang="python">>>> 'cle' in d
+True</pre>
+<p>Mais généralement les gens s&#8217;arrêtent là.</p>
+<h2>Itération</h2>
+<p>Parfois, ils vont plus loin, et tentent l&#8217;itération dessus :</p>
+<pre lang="python">>>> scores = {"Joe": 1, "Jonh": 5, "Jack": 3, "Jenny": 7, "Jeanne": 0, "July": 3}
+>>> for score in scores:
+    print(score)
+...
+Jenny
+Jack
+Joe
+July
+Jonh
+Jeanne</pre>
+<p>Ils s’aperçoivent qu&#8217;on peut uniquement récupérer les clés, et essayent de faire ça :</p>
+<pre lang="python">>>> for nom in scores:
+    print(nom, scores[nom])
+...
+Jenny 7
+Jack 3
+Joe 1
+July 3
+Jonh 5
+Jeanne 0</pre>
+<p>Rapidement ils sont corrigés par quelques collègues qui leur expliquent qu&#8217;on peut faire ceci :</p>
+<pre lang="python">>>> for nom, score in scores.items():
+    print(nom, score)
+...
+Jenny 7
+Jack 3
+Joe 1
+July 3
+Jonh 5
+Jeanne 0</pre>
+<p>Sans vraiment expliquer pourquoi. Si vous êtes curieux, cela marche grâce à l&#8217;<a href="http://sametmax.com/tag/unpacking/">unpacking</a>.</p>
+<p>Ensuite ils vont chercher à afficher des choses dans l&#8217;ordre, mais un dictionnaire n&#8217;est pas ordonné. Là commencent les embrouilles : dans l&#8217;ordre des clés, des valeurs ou dans l&#8217;ordre d&#8217;insertion ?</p>
+<p>Dans l&#8217;ordre des clés ou des valeurs, il faut se taper le <a href="http://sametmax.com/ordonner-en-python/">tri</a> à chaque fois :</p>
+<pre lang="python">>>> for nom, score in sorted(scores.items()):
+    print(nom, score)
+...
+Jack 3
+Jeanne 0
+Jenny 7
+Joe 1
+Jonh 5
+July 3
+>>> for nom, score in sorted(scores.items(), key=lambda x: x[1]):
+    print(nom, score)
+...
+Jeanne 0
+Joe 1
+Jack 3
+July 3
+Jonh 5
+Jenny 7</pre>
+<p>Dans l&#8217;ordre d&#8217;insertion par contre, ce n&#8217;est pas possible avec le dictionnaire. Mais voilà l&#8217;astuce : le hash map en Python, ce n&#8217;est pas QUE le type <code>dict</code>.</p>
+<p>Pour ce problème, on peut utiliser <code>collections.OrderedDict</code> :</p>
+<pre lang="python">>>> from collections import OrderedDict
+>>> d = OrderedDict()
+>>> d['Jeanne'] = 3
+>>> d['Jack'] = 2
+>>> d['July'] = 6
+>>> for nom, score in d.items():
+        print(nom, score)
+...
+Jeanne 3
+Jack 2
+July 6</pre>
+<p>Après il y a le rare problème, mais tout de même existant, de la très très grosse structure de données que l&#8217;on veut itérer dans l&#8217;ordre de clés :</p>
+<pre lang="python">>>> import random
+>>> l = range(10000000)
+>>> random.shuffle(l)</pre>
+<p>Si on fait un sort dessus, ça prend plusieurs secondes :</p>
+<pre lang="python">>>> l.sort()</pre>
+<p>Imaginez avec un dico qui contient un million de clés sous forme de texte. La lecture dans l&#8217;ordre sera très, très lente. Parfois ce n&#8217;est pas grave, et parfois c&#8217;est très emmerdant.</p>
+<p>La stdlib de Python ne permet pas de répondre à ce problème facilement. On pourrait bricoler quelque chose avec <a href="http://sametmax.com/heapq-le-module-python-incompris/">heapq</a>, mais franchement, c&#8217;est se casser la tête pour rien.</p>
+<p>Le plus simple est d&#8217;utiliser une lib externe, par exemple l&#8217;excellente <a href="https://github.com/grantjenks/sorted_containers">sorted_container</a>, qui en plus d&#8217;être très rapide, est en pur Python. Du coup, un peu de <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> :</p>
+<p><code>pip install sortedcontainer</code></p>
+<p>Et on est bon.</p>
+<pre lang="python">>>> from sortedcontainers import SortedDict
+>>> d = SortedDict()
+>>> d['Joe'] = 1
+>>> d['Jeanne'] = 6
+>>> d['July'] = 3
+>>> d['John'] = 3
+>>> for nom, score in d.items():
+    print(nom, score)
+...
+Jeanne 6
+Joe 1
+John 3
+July 3</pre>
+<p>SortedDict s&#8217;assure que le dictionnaire reste ordonné à chaque insertion d&#8217;un élément, et ainsi, vous évite de devoir faire un tri tout à la fin.</p>
+<h2>Initialisation</h2>
+<p>La plupart du temps, on utilise la notation littérale. Mais le constructeur <code>dict</code> trouve son utilité dans le fait qu&#8217;il accepte un itérable de tuples en paramètre :</p>
+<pre lang="python">>>> dict([("a", 1), ("b", 2)])
+{'a': 1, 'b': 2}</pre>
+<p>La plupart du temps, les gens n&#8217;en voient pas l&#8217;utilité. Mais il faut se rappeler que tout le langage Python est organisé autour de l&#8217;itération. Je ne cesse de le répéter, en Python, l&#8217;itération est tout.</p>
+<p>De fait, cette particularité du constructeur du dico vous permet de créer des dictionnaires à partir de structures existantes inattendues&#8230;</p>
+<p>Prendre deux séquences et les pairer :</p>
+<pre lang="python">>>> personnes = ('Joe', 'John', 'Jean-Michel')
+>>> scores = (4, 10, 34)
+>>> zip(personnes, scores)
+[('Joe', 4), ('John', 10), ('Jean-michel', 34)]
+>>> dict(zip(personnes, scores))
+{'Jean-michel': 34, 'John': 10, 'Joe': 4}</pre>
+<p>Pairer les deux derniers champs du résultat d&#8217;une commande :</p>
+<pre lang="python">>>> import subprocess
+>>> df = subprocess.check_output('df')
+>>> print(df)
+Sys. de fichiers       blocks de 1K  Utilisé Disponible Uti% Monté sur
+/dev/sda7                   7972000  6614840     929156  88% /
+none                              4        0          4   0% /sys/fs/cgroup
+udev                        1968688        4    1968684   1% /dev
+tmpfs                        395896     1112     394784   1% /run
+none                           5120        0       5120   0% /run/lock
+none                        1979472      160    1979312   1% /run/shm
+none                         102400       44     102356   1% /run/user
+/dev/sda5                  65438480 57693436    4397852  93% /media/sam/
+>>> dict(l.split()[-2:] for l in  list(df.split('\n'))[1:] if l)
+{'31%': '/media/truecrypt1', '1%': '/run/user', '93%': '/media/sam', '88%': '/', '0%': '/run/lock'}</pre>
+<p>Depuis Python 2.7, cette fonctionnalité est partiellement phagocytée par la syntaxe pour <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">les intentions</a> sur les dicos :</p>
+<pre lang="python">>>> from pprint import pprint
+>>> pprint( {line: num for num, line in enumerate(open('/etc/fstab'), 1)})
+{'#\n': 6,
+ '# / was on /dev/sda7 during installation\n': 8,
+ '# /etc/fstab: static file system information.\n': 1,
+ '# <file system> <mount point>   <type>  <options>       <dump>  <pass>\n': 7,
+ "# Use 'blkid' to print the universally unique identifier for a\n": 3,
+ '# device; this may be used with UUID= as a more robust way to name devices\n': 4,
+ '# swap was on /dev/sda6 during installation\n': 10,
+ '# that works even if disks are added and removed. See fstab(5).\n': 5,
+ 'UUID=4c0455fb-ff57-466a-8d1f-22b575129f4f none            swap    sw              0       0\n': 11,
+ 'UUID=4f560031-1058-4eb6-a51e-b7991dfc6db7 /               ext4    errors=remount-ro 0       1\n': 9,
+ 'UUID=b27f7e93-60c0-4efa-bfae-5ac21a8f4e3c /media/sam ext4 auto,user,rw,exec 0 0\n': 12}</pre>
+<p>Cela dit, on n&#8217;a pas toujours besoin de clés ET de valeurs pour créer un dictionnaire. Ainsi, si on a une liste de n&#8217;clés qu&#8217;on veut toutes initialiser à la même valeur, la très peu connue méthode <code>fromkeys</code> nous rendra bien service :</p>
+<pre lang="python">>>> personnes = ('Joe', 'John', 'Jean-michel')
+>>> dict.fromkeys(personnes, 0)
+{'Jean-michel': 0, 'John': 0, 'Joe': 0}</pre>
+<p>De même, on peut ne pas vouloir initialiser un dico, mais vouloir une valeur par défaut pour toutes les clés.  <code>collections.defaultdict</code> est fait pour ça. En plus, les valeurs peuvent être dynamiques :</p>
+<pre lang="python">>>> from collections import defaultdict
+>>> scores = defaultdict(lambda: 0)
+>>> scores['Joe']
+0
+>>> scores['Joe'] = 1
+>>> scores['Joe']
+1
+>>> scores['July']
+0
+>>> import datetime
+>>> naissances = defaultdict(datetime.datetime.utcnow)
+>>> naissances['Joe']
+datetime.datetime(2014, 6, 29, 6, 58, 11, 412202)</pre>
+<p>Enfin, je sais que tous les tutos du monde en Python utilisent le dictionnaire pour montrer une forme ou une aute de compteur. Mais si vous avez VRAIMENT besoin d&#8217;un compteur, utilisez <code>collections.Counter</code> qui est un objet avec l&#8217;interface d&#8217;un dictionnaire mais avec tout ce qu&#8217;il faut pour compter :</p>
+<pre lang="python">>>> from collections import Counter
+>>> c = Counter('abbbac') # comptage automatique
+>>> c
+Counter({'b': 3, 'a': 2, 'c': 1})
+>>> c['c']
+1
+>>> c['d'] # pas de KeyError
+0
+>>> c['z'] += 1 # pas de KeyError
+>>> c['z']
+>>> c.most_common(2) # et en bonus
+[('b', 3), ('a', 2)]
+</pre>
+<h2>Clé en main</h2>
+<p>Récupérer une clé si on ne sait pas si elle est présente est une opération courante, et la documentation montre généralement ça :</p>
+<pre lang="python">try:
+   val = dico['cle']
+except KeyError:
+   val = 'valeur par defaut'</pre>
+<p>Bien que ce soit parfaitement valide, c&#8217;est généralement se faire chier pour rien puisqu&#8217;on peut faire ça en une ligne :</p>
+<pre lang="python">   val = dico.get('cle', 'valeur par defaut')</pre>
+<p>Néanmoins la méthode <code>get()</code> est très connue. Moins connue est la méthode <code>setdefault</code>. En effet, parfois on veut faire plutôt ceci :</p>
+<pre lang="python">try:
+   val = dico['cle']
+except KeyError:
+   dico['cle'] = 'valeur par defaut'
+   val = 'valeur par defaut'</pre>
+<p>Et ça peut également se faire en une ligne :</p>
+<pre lang="python">   val = dico.setdefault('cle', valeur par defaut)</pre>
+<p>J&#8217;aimerais aussi en profiter pour rappeler que les clés des dicos peuvent être n&#8217;importe quel objet hashable, pas juste une string ou un int. Notamment, <a href="http://sametmax.com/de-linteret-des-tuples-comme-cle-de-dictionnaire/">les tuples sont des clés valides</a>, et comme l&#8217;opérateur tuple <a href="http://sametmax.com/10-trucs-que-je-deteste-en-python/">est la virgule et non la parenthèse</a>, cette syntaxe est parfaitement valide :</p>
+<pre lang="python">>>> d = {}
+>>> d[1, 2] = 'tresor'
+>>> d[3, 3] = 'mine'
+>>> d
+{(1, 2): 'tresor', (3, 3): 'mine'}
+>>> d[3, 3]
+'mine'</pre>
+<p>Parmi les objets utilisables comme clés :</p>
+<ul>
+<li>Les frozenset.</li>
+<li>Les <a href="http://sametmax.com/le-namedtuple-la-structure-mal-aimee/">namedtuples</a></li>
+<li>Les instances de <a href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-1/">vos classes</a></li>
+</ul>
+<p>Si vous avez un doute, il est facile de savoir si un objet est hashable ou pas :</p>
+<pre lang="python">>>> import collections
+>>> isinstance({}, collections.Hashable)
+False
+>> isinstance(0, collections.Hashable)
+True</pre>
+<h2>Mon dico à moi, c&#8217;est le meilleur</h2>
+<p>On peut tout à fait hériter du type dictionnaire pour obtenir un type qui a des fonctionnalités que le type original n&#8217;a pas :</p>
+<pre lang="python">>>> class MonDico(dict):
+...     def __add__(self, other):
+...         new = {}
+...         new.update(self)
+...         new.update(other)
+...         return new
+...
+>>> d1 = MonDico(a=1, b=2)
+>>> d2 = MonDico(b=3, c=3)
+>>> d1 + d2
+{'a': 1, 'c': 3, 'b': 3}</pre>
+<p>Mais c&#8217;est assez rare. La plupart du temps on veut plutôt rajouter des fonctionnalités de conteneur à un type existant. Dans ce cas, les <a href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-6/">méthodes magiques</a> viennent à la rescousse. Par exemple :</p>
+<pre lang="python">class Phrase(object):
+
+   def __init__(self, string):
+      self.words = string.split()
+
+   def __getitem__(self, word):
+      return [i for i, w in enumerate(self.words) if w == word]
+
+>>> p = Phrase("Une petite puce pique plus qu'une grosse puce ne pique")
+>>> p['petite']
+[1]
+>>> p['puce']
+[2, 7]
+</pre>
+<p>Hey oui, les hash maps en Python, c&#8217;est un sujet qui peut aller très, très loin. C&#8217;est ce qui est merveilleux avec ce langage, on peut rapidement programmer en effleurant juste la surface, sans se noyer. Et si on a besoin d&#8217;aller plus loin, des profondeurs abyssales de features nous attendent.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/aller-plus-loin-avec-les-hash-maps-en-python/feed/</wfw:commentRss>
+		<slash:comments>22</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">11217</post-id>	</item>
+		<item>
+		<title>Mesurer les performances d&#8217;un snippet Python</title>
+		<link>http://sametmax.com/mesurer-les-performances-dun-snippet-python/</link>
+		<comments>http://sametmax.com/mesurer-les-performances-dun-snippet-python/#comments</comments>
+		<pubDate>Sat, 08 Jun 2013 20:20:52 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dict]]></category>
+		<category><![CDATA[merge]]></category>
+		<category><![CDATA[perf]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6369</guid>
+		<description><![CDATA[L'open source c'est fantastique. Github c'est merveilleux. On parle de <a href="http://sametmax.com/batbelt-la-lib-des-petits-outils-python-qui-vont-bien/">batbelt</a>, et paf, quelques jours plus tard on a notre <a href="https://github.com/sametmax/Bat-belt/pull/1">première contribution</a>.]]></description>
+				<content:encoded><![CDATA[<p>Ca fait longtemps que j&#8217;avais pas musique.</p>
+
+<!-- iframe plugin v.4.3 wordpress.org/plugins/iframe/ -->
+<iframe width="420" height="315" src="http://www.youtube.com/embed/qeMFqkcPYcg" frameborder="0" 0="allowfullscreen" scrolling="yes" class="iframe-class"></iframe>
+
+<p>L&#8217;open source c&#8217;est fantastique. Github c&#8217;est merveilleux. On parle de <a href="http://sametmax.com/batbelt-la-lib-des-petits-outils-python-qui-vont-bien/">batbelt</a>, et paf, quelques jours plus tard on a notre <a href="https://github.com/sametmax/Bat-belt/pull/1">première contribution</a>.</p>
+<p>Ce qui est sympa avec cette lib, c&#8217;est que ce sont des fonctions simples et courtes, axées sur des tâches très précises. Le code est donc généralement <a href="https://github.com/sametmax/Bat-belt/blob/master/batbelt/structs.py">intéressant à lire</a>, mais pas trop compliqué, et on tombe souvent sur des cas d&#8217;école.</p>
+<p>C&#8217;est le cas de cette modification de la fonction <code>dmerge()</code>. Originalement, <code>dmerge</code> permet de créer un dictionnaire à partir de la fusion de de 2 autres dicos, et ça marchait comme ça:</p>
+<pre lang="python">def dmerge(d1, d2):
+    d = {}
+    d.update(d1)
+    d.update(d2)
+    return d</pre>
+<p>Facile à comprendre, rapide, simple, et le comportement par défaut est intuitif : si une clé est en double, la clé du deuxième dico écrase la première.</p>
+<p>Comme le <a href="http://sametmax.com/batbelt-la-lib-des-petits-outils-python-qui-vont-bien/#comment-9657">précisait Etienne,</a> ce comportement est néanmoins un parmi de nombreux possibles. On pourrait aussi vouloir:</p>
+<ul>
+<li>Lever une exception en cas de doublon.</li>
+<li>Concaténer ou additionner les doublons.</li>
+<li>Mettre les doublons dans une liste.</li>
+<li>Garder la valeur originale en cas de doublon.</li>
+<li>Prendre la valeur la plus grande / petite en cas de doublon.</li>
+<li>Etc.</li>
+</ul>
+<p>Pour cela, notre contributeur a proposé qu&#8217;on puisse passer en paramètre une fonction qui choisit quelle valeur garder en cas de doublon. Le code devient donc :</p>
+<pre lang="python">
+def dmerge(d1, d2, merge_func=lambda v1, v2: v2):
+    d = {}
+    d.update([(k, v) for k, v in d1.iteritems() if k not in d2])
+    d.update([(k, v) for k, v in d2.iteritems() if k not in d1])
+    d.update([(k, merge_func(v, d2[k])) for k, v in d1.iteritems() if k in d2])
+    return d
+</pre>
+<p>Avoir une valeur par défaut nous permet de garder le comportement initial. Pour cela on utilise une <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">lambda</a>. C&#8217;est ce qu&#8217;on appelle l&#8217;injection de dépendance.</p>
+<p>Comme j&#8217;ai bien faire mumuse avec Python, je me suis demandé : &#8220;quelle est la stratégie de merge la plus rapide ?&#8221;. J&#8217;ai donc fait plusieurs tests de merge, avec plusieurs algos. Voici ce que ça donne:</p>
+<pre lang="python">
+ from itertools import chain
+  
+  
+ def dmerge1(d1, d2, merge_func=None):
+     """
+         Mon premier essai, en virant la lambda et en utilisant itertools.
+     """
+     d = {}
+  
+     if merge_func is None:
+  
+         d.update(d1)
+         d.update(d2)
+         return d
+  
+     for k, v in chain(d1.iteritems(), d2.iteritems()):
+         if k in d1 and k in d2:
+             d[k] = merge_func(d1[k], d2[k])
+         else:
+             d[k] = v
+  
+     return d
+  
+  
+  
+ def dmerge2(d1, d2, merge_func=lambda v1, v2: v2):
+     """
+         Le code du PR original
+     """
+     d = {}
+     d.update([(k, v) for k, v in d1.iteritems() if k not in d2])
+     d.update([(k, v) for k, v in d2.iteritems() if k not in d1])
+     d.update([(k, merge_func(v, d2[k])) for k, v in d1.iteritems() if k in d2])
+     return d
+  
+  
+ def dmerge3(d1, d2, merge_func=None):
+     """
+        Un mélange du code original et de mon premier essai.
+     """
+     d = {}
+  
+     d.update(d1)
+  
+     if merge_func is None:
+         d.update(d2)
+         return d
+  
+     for k, v in d2.iteritems():
+         if k in d:
+             d[k] = merge_func(d[k], v)
+         else:
+             d[k] = v
+  
+     return d
+  
+  
+  
+ def dmerge4(d1, d2, merge_func=None):
+     """
+         Le code original, en virant la lambda
+     """
+     d = {}
+  
+     if merge_func is None:
+         d.update(d1)
+         d.update(d2)
+         return d
+  
+     d.update([(k, v) for k, v in d1.iteritems() if k not in d2])
+     d.update([(k, v) for k, v in d2.iteritems() if k not in d1])
+     d.update([(k, merge_func(v, d2[k])) for k, v in d1.iteritems() if k in d2])
+     return d
+  
+  
+ if __name__ == "__main__":
+  
+     import random
+     import timeit
+  
+     print('Generate test dicts')
+  
+     # pour que le test soit juste, il faut créer plusieurs types de dicos:
+     # des longs, et des courts avec plein de collisions ou moins
+     d1 = {random.randint(0, 100): 'd1' for x in xrange(10000)}
+     d2 = {random.randint(0, 100): 'd2' for x in xrange(10000)}
+     d3 = {random.randint(0, 10000000): 'd1' for x in xrange(1000000)}
+     d4 = {random.randint(0, 10000000): 'd2' for x in xrange(1000000)}
+  
+     merge_to_list = lambda a, b: [a, b]
+  
+     # ensuite il faut s'assurer que toutes ces fonctions retournent bien
+     # la même chose
+
+     print("Testing returns value all match")
+  
+     assert (dmerge1(d1, d2) == dmerge2(d1, d2)
+             == dmerge3(d1, d2) == dmerge4(d1, d2))
+     assert (dmerge1(d1, d2, merge_to_list) == dmerge2(d1, d2, merge_to_list)
+            == dmerge3(d1, d2, merge_to_list) == dmerge4(d1, d2, merge_to_list))
+  
+     assert (dmerge1(d3, d4) == dmerge2(d3, d4)
+             == dmerge3(d3, d4) == dmerge4(d3, d4))
+     assert (dmerge1(d3, d4, merge_to_list) == dmerge2(d3, d4, merge_to_list)
+             == dmerge3(d3, d4, merge_to_list) == dmerge4(d3, d4, merge_to_list))
+  
+     assert (dmerge1(d1, d4) == dmerge2(d1, d4)
+             == dmerge3(d1, d4) == dmerge4(d1, d4))
+     assert (dmerge1(d1, d4, merge_to_list) == dmerge2(d1, d4, merge_to_list)
+             == dmerge3(d1, d4, merge_to_list) == dmerge4(d1, d4, merge_to_list))
+  
+  
+     # enfin on lance l'évaluation du temps d'éxécution avec timeit()
+
+     print("Start timing")
+  
+
+     # ce code est exécuté une fois par appel de timeit
+     # notez l'astuce 'from __main__ import x' qui importe du code
+     # du fichier en cours, ce qui sert rarement
+     setup = '''from __main__ import (dmerge1, dmerge2, dmerge3, dmerge4,
+                                      d1, d2, d3, d4, merge_to_list)'''
+  
+  
+
+     # ensuite on fait des appels à timeit : 
+     # - le premier paramètre est le code à mesurer: il faut qu'il 
+     #   soit le plus simple et court possible
+     # - le second et le code d'initialisation avant le test (hors mesure)
+     # - le 3e est le nombre de fois que le code va être appelé. 
+
+
+     # on va tester chaque fonction pour chaque type de dico, une fois
+     # avec l'approche par défaut, et une fois avec une fonction de merge
+     # personnalisée
+     print "Lots of collisions"
+  
+     print "Default merge strategy"
+     print "1", timeit.timeit("dmerge1(d1, d2)", setup=setup, number=1000000)
+     print "2", timeit.timeit("dmerge2(d1, d2)", setup=setup, number=1000000)
+     print "3", timeit.timeit("dmerge3(d1, d2)", setup=setup, number=1000000)
+     print "4", timeit.timeit("dmerge4(d1, d2)", setup=setup, number=1000000)
+  
+     print "Custom merge strategy"
+     print "1", timeit.timeit("dmerge1(d1, d2, merge_to_list)",
+                               setup=setup, number=100000)
+     print "2", timeit.timeit("dmerge2(d1, d2, merge_to_list)",
+                               setup=setup, number=100000)
+     print "3", timeit.timeit("dmerge3(d1, d2, merge_to_list)",
+                               setup=setup, number=100000)
+     print "4", timeit.timeit("dmerge4(d1, d2, merge_to_list)",
+                               setup=setup, number=100000)
+  
+
+    # le nombre de répétitions est bien plus faible ici car sinon le test
+    # est très très long
+
+     print "Long dictionaries"
+  
+     print "Default merge strategy"
+     print "1", timeit.timeit("dmerge1(d3, d4)", setup=setup, number=100)
+     print "2", timeit.timeit("dmerge2(d3, d4)", setup=setup, number=100)
+     print "3", timeit.timeit("dmerge3(d3, d4)", setup=setup, number=100)
+     print "4", timeit.timeit("dmerge4(d3, d4)", setup=setup, number=100)
+  
+     print "Custom merge strategy"
+     print "1", timeit.timeit("dmerge1(d3, d4, merge_to_list)",
+                               setup=setup, number=100)
+     print "2", timeit.timeit("dmerge2(d3, d4, merge_to_list)",
+                               setup=setup, number=100)
+     print "3", timeit.timeit("dmerge3(d3, d4, merge_to_list)",
+                               setup=setup, number=100)
+     print "4", timeit.timeit("dmerge4(d3, d4, merge_to_list)",
+                               setup=setup, number=100)
+  
+     print "Mixed dictionaries"
+  
+     print "Default merge strategy"
+     print "1", timeit.timeit("dmerge1(d1, d4)", setup=setup, number=100)
+     print "2", timeit.timeit("dmerge2(d1, d4)", setup=setup, number=100)
+     print "3", timeit.timeit("dmerge3(d1, d4)", setup=setup, number=100)
+     print "4", timeit.timeit("dmerge4(d1, d4)", setup=setup, number=100)
+  
+     print "Custom merge strategy"
+     print "1", timeit.timeit("dmerge1(d1, d4, merge_to_list)",
+                              setup=setup, number=100)
+     print "2", timeit.timeit("dmerge2(d1, d4, merge_to_list)",
+                              setup=setup, number=100)
+     print "3", timeit.timeit("dmerge3(d1, d4, merge_to_list)",
+                              setup=setup, number=100)
+     print "4", timeit.timeit("dmerge4(d1, d4, merge_to_list)",
+                              setup=setup, number=100)
+  
+
+# Et voici le résultat que ça nous ressort. On voit clairement 
+# que la 3eme fonction donne les meilleurs perfs, du coup
+# c'est celle qu'on a choisit
+  
+ ## Generate test dicts
+ ## Testing returns value all match
+ ## Start timing
+ ## Lots of collisions
+ ## Default merge strategy
+ ## 1 19.9299340248
+ ## 2 148.185166121
+ ## 3 21.2276539803
+ ## 4 21.2074358463
+ ## Custom merge strategy
+ ## 1 30.646312952
+ ## 2 18.522135973
+ ## 3 14.0125968456
+ ## 4 18.5139119625
+ ## Long dictionaries
+ ## Default merge strategy
+ ## 1 84.4819910526
+ ## 2 383.444111109
+ ## 3 80.7273669243
+ ## 4 86.0287930965
+ ## Custom merge strategy
+ ## 1 294.41114521
+ ## 2 377.38009119
+ ## 3 154.505481005
+ ## 4 256.771039963
+ ## Mixed dictionaries
+ ## Default merge strategy
+ ## 1 19.9574320316
+ ## 2 87.1410660744
+ ## 3 19.3570361137
+ ## 4 19.524998188
+ ## Custom merge strategy
+ ## 1 60.6157000065
+ ## 2 86.3876900673
+ ## 3 59.0331327915
+ ## 4 87.0504939556
+ ## [Finished in 2494.7s]
+ </pre>
+<p> Le test complet a pris en tout 2494.7s, soit 41 minutes, pour tourner sur ma machine, et je l&#8217;ai lancé plusieurs fois avec différentes modifs au fil de la journée. Il faut vraiment est un geek pour aimer faire ce genre de connerie. Parce que soyons honnête, tout le monde s&#8217;en branle des perfs de cette fonction :-)</p>
+<p> Il faut savoir aussi qu&#8217;après coup j&#8217;ai réalisé que son code utilisait des listes en intention, et non des <a href="http://sametmax.com/python-love-les-listes-en-intention-partie-2/">expressions génératrices</a>, ce qui fait qu&#8217;il faut attendre que toute la liste soit générée avec que <code>update()</code> fasse son travail.</p>
+<p> Il y avait donc des cas supplémentaires à tester et j&#8217;avais mergé son code dans batbelt. Arf, l&#8217;optimisation n&#8217;a jamais de fin ^^</p>
+<p> Bref, j&#8217;ai relancé un test avec avec des listes en intentions (et même avec des expressions ternaires ce qui donne des trucs capilotractés):</p>
+<pre lang="python">
+def dmerge1(d1, d2, merge_func=None):
+    """
+        Une version de l'ancien dmerge3 qui utilise une expression génératrice.
+    """
+    d = {}
+
+    d.update(d1)
+
+    if merge_func is None:
+        d.update(d2)
+        return d
+
+    d.update((k, (v if k not in d else merge_func(d[k], v))) for k, v in d2.iteritems())
+
+    return d
+
+
+
+def dmerge2(d1, d2, merge_func=lambda v1, v2: v2):
+    """
+        La version du proposée par notre gentil contributeur, mais
+        avec des expressions génératrices à la place des listes en 
+        intention.
+    """
+    d = {}
+    d.update((k, v) for k, v in d1.iteritems() if k not in d2)
+    d.update((k, v) for k, v in d2.iteritems() if k not in d1)
+    d.update((k, merge_func(v, d2[k])) for k, v in d1.iteritems() if k in d2)
+    return d
+
+
+
+def dmerge3(d1, d2, merge_func=None):
+    """
+      La version la plus rapide du test précédent.
+    """
+    d = {}
+
+    d.update(d1)
+
+    if merge_func is None:
+        d.update(d2)
+        return d
+
+    for k, v in d2.iteritems():
+        if k in d:
+            d[k] = merge_func(d[k], v)
+        else:
+            d[k] = v
+
+    return d
+
+
+def dmerge4(d1, d2, merge_func=None):
+    """
+        La version proposée par notre contributeur, optimisée comme un connard.
+    """
+    d = {}
+
+    if merge_func is None:
+        d.update(d1)
+        d.update(d2)
+        return d
+
+    d.update((k, v) for k, v in d1.iteritems() if k not in d2)
+    d.update((k, v) for k, v in d2.iteritems() if k not in d1)
+    d.update((k, merge_func(v, d2[k])) for k, v in d1.iteritems() if k in d2)
+    return d
+
+
+## Generate test dicts
+## Testing returns value all match
+## Start timing
+## Lots of collisions
+## Default merge strategy
+## 1 12.2690660954
+## 2 97.121183157
+## 3 12.1084120274
+## 4 12.6807589531
+## Custom merge strategy
+## 1 8.73903894424
+## 2 12.0493769646
+## 3 8.00074601173
+## 4 11.4764301777
+## Long dictionaries
+## Default merge strategy
+## 1 54.5233860016
+## 2 218.695598841
+## 3 70.213809967
+## 4 61.8348701
+## Custom merge strategy
+## 1 103.258821964
+## 2 217.720175982
+## 3 96.5204670429
+## 4 214.480421066
+## Mixed dictionaries
+## Default merge strategy
+## 1 19.169850111
+## 2 66.9599928856
+## 3 19.4371211529
+## 4 19.5183057785
+## Custom merge strategy
+## 1 64.7940750122
+## 2 66.9712991714
+## 3 58.5918440819
+## 4 67.5281140804
+## [Finished in 1619.3s]
+</pre>
+<p>La bonne nouvelle pour moi, c&#8217;est que l&#8217;algo 3 est toujours le plus rapide, j&#8217;ai pas à re pusher.</p>
+<p>Mais il est intéressant de constater que globalement les 4 tests mettent 1619.3s à s’exécuter. Globalement utiliser des expressions génératrices boost bien les perfs.</p>
+<hr />
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2013/juin/perf.py">Télécharger le code de l&#8217;article.</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/mesurer-les-performances-dun-snippet-python/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">6369</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/06/rmhtBR7.jpg" length="92496" type="image/jpg" />	</item>
+		<item>
+		<title>Les vues sur des collections en Python</title>
+		<link>http://sametmax.com/les-vues-sur-des-collections-en-python/</link>
+		<comments>http://sametmax.com/les-vues-sur-des-collections-en-python/#comments</comments>
+		<pubDate>Sat, 03 Nov 2012 18:57:02 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dict]]></category>
+		<category><![CDATA[generators]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[strings]]></category>
+		<category><![CDATA[views]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2785</guid>
+		<description><![CDATA[Python 3 introduit de nombreux changements qui ont été backportés dans Python 2.7. Parmis eux, les vues, qui sont un concept assez mal expliqué dans la documentation standard.]]></description>
+				<content:encoded><![CDATA[<p>Python 3 introduit de nombreux changements qui ont été backportés dans Python 2.7. Parmi eux, les vues, qui sont un concept assez mal expliqué dans la documentation standard.</p>
+<h2>Dictionary views</h2>
+<p>Quand on voulait travailler sur les valeurs d&#8217;un dictionnaire en Python, on avait deux choix:</p>
+<ul>
+<li>faire <code>dict.values()</code> et récupérer une liste entière. Créant une liste entière en mémoire.</li>
+<li>faire <code>dict.itervalues()</code>, et récupérer un générateur. Mais qui ne peut être lu qu&#8217;une fois.</li>
+</ul>
+<p>Les vues sont une solution intermédiaire: ce sont des objets qui prennent peu de mémoire, mais qui peuvent être lus plusieurs fois.</p>
+<p>Exemple:</p>
+<pre lang="python">>>> scores = {'foo': 1, 'bar': 0}
+>>> val = scores.viewvalues()
+>>> print val
+dict_values([1, 0])
+>>> 1 in val
+True
+>>> [x * 2 for x in val]
+[2, 0]
+</pre>
+<p>Contrairement à une liste, les vues issues d&#8217;un dictionnaire ne supportent pas le slicing ou l&#8217;assignation et il n&#8217;y a aucune garantie d&#8217;ordre des éléments. De plus, elles ne peuvent être modifiées.</p>
+<p>Bref, <strong>une vue ne contient rien</strong>, c&#8217;est juste un objet qui, quand on accède à son contenu, va le chercher dans le dictionnaire et vous le retourne. C&#8217;est ce qu&#8217;on appelle un objet proxy: il vous donne l&#8217;illusion d&#8217;accéder directement aux données pour vous faciliter la vie, généralement en vous les présentant sous une forme différente: ici un itérable.</p>
+<p>On peut récupérer des vues pour les valeurs, mais également pour les clés et les couples clés / valeurs. Ces deux types de vues se comportent en plus comme des <a href="http://sametmax.com/ce-que-vous-ne-saviez-pas-sur-les-collections-en-python/">sets</a>:</p>
+<pre lang="python">
+>>> scores.viewitems()
+dict_items([('foo', 1), ('bar', 0)])
+>>> scores.viewkeys() | [3,]
+set([3, 'foo', 'bar'])</pre>
+<p>Puisqu&#8217;il est rare d&#8217;avoir besoin d&#8217;une vraie liste, et comme les vues sont une très bonne alternative aux générateurs, <code>dict.values</code> et consorts retournent des vues en Python 3.</p>
+<p>Maintenant vous allez me dire &#8220;Mais si les vues sont une si bonne alternative aux générateurs, pourquoi on ne remplace pas tous les générateurs par des vues ?&#8221;. </p>
+<p>Tout simplement parce que ce n&#8217;est pas possible. Un générateur est un mécanisme standard qui permet de produire des valeurs une par une. N&#8217;importe qui peut créer un générateur, car c&#8217;est un concept portable d&#8217;un problème à un autre. On peut l&#8217;appliquer à de nombreuses choses: algorithme, flux de données, fichier, etc. </p>
+<p>Une vue n&#8217;est qu&#8217;un proxy qui permet de voir une <a href="http://sametmax.com/quest-ce-quune-structure-de-donnees/">structure de données</a> sous une autre forme. Il faut coder une vue par type de structure de données, car la vue va chercher les données dans cette structure quand on lui demande. Le code est donc différent à chaque fois.</p>
+<p>Python ne permet pas de créer soi-même des vues, mais créer un proxy, c&#8217;est à dire un objet qui retourne les valeurs d&#8217;un autre objet quand on l&#8217;interroge, peut se faire à la main dans tout langage de programmation. Ainsi vous pourriez créer un proxy qui ressemble a une vue des clés d&#8217;un dico très simplement:</p>
+<pre lang="python">
+class keyview(object):
+
+    def __init__(self, d):
+        self.d = d
+
+    def __iter__(self):
+        return self.d.iterkeys()
+
+>>> view = keyview(scores)
+>>> for x in view:
+...     print x
+...     
+foo
+bar
+>>> list(view)
+['foo', 'bar']
+>>> 
+</pre>
+<p>L&#8217;implémentation réelle de Python (en C&#8230;) ne fait pas vraiment grand chose de plus, juste un travail d&#8217;optimisation pour être plus rapide.</p>
+<h2>memoryview</h2>
+<p>Les memory views suivent le même principe, mais appliqué à toute structure de données qui supporte le buffer protocole (un certain nombre de méthodes avec un nom et un comportement défini par ce protocole) comme celles trouvées dans le module <code>struct</code> ou <code>array</code>. La structure de données la plus connue qui suit le buffer protocole est la chaîne de caractères.</p>
+<pre lang="python">>>> s = 'Sam & Max eat the road with a Github fork'
+>>> ms = memoryview(s)
+>>> ms[-1]
+'k'
+>>> ms[:9]
+<memory at 0x25ded60>
+>>> ''.join(ms[:9])
+'Sam & Max'</pre>
+<p>Le principal intérêt de la memory view appliquée aux strings, c&#8217;est que tout slicing retourne une nouvelle memory view. On peut donc travailler sur des parties de la chaînes sans créer une nouvelle chaîne en mémoire.</p>
+<p>En revanche, les chaînes unicodes ne sont pas supportées. Il vous faudra jouer avec <code>encode()</code> et <code>decode()</code>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-vues-sur-des-collections-en-python/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">2785</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/11/fenetretravaux.jpg" length="392879" type="image/jpg" />	</item>
+	</channel>
+</rss>

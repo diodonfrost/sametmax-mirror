@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>state machine &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/state-machine/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>State machine en Python en l&#8217;absence d&#8217;algos récursifs bénéficiant de tail call optimisation</title>
+		<link>http://sametmax.com/state-machine-en-python-en-labsence-dalgos-recursifs-beneficiant-de-tail-call-optimisation/</link>
+		<comments>http://sametmax.com/state-machine-en-python-en-labsence-dalgos-recursifs-beneficiant-de-tail-call-optimisation/#comments</comments>
+		<pubDate>Thu, 26 Jul 2012 12:44:25 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[recursion]]></category>
+		<category><![CDATA[state machine]]></category>
+		<category><![CDATA[tco]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1299</guid>
+		<description><![CDATA[Comme l'indique le titre...]]></description>
+				<content:encoded><![CDATA[<p>Ca c&#8217;est un titre qui en jette ! Faut dire que je tiens du <a href="https://fr.wikipedia.org/wiki/Impostures_intellectuelles">maître Sokal</a> himself.</p>
+<p>Donc, vulgarisons un peu. Ca sera un article bien prise de tête. Lisez-le un dimanche soir quand vous ne captez pas arte (et si vous ne pigez rien, c&#8217;est pas grave, revenez dans un an, moi je le fais bien avec tous les articles d&#8217;<a href="http://www.aleax.it/python_mat_en.html">Alex Martelli</a>).</p>
+<p>Un appel récursif, c&#8217;est une fonction qui s&#8217;appelle elle-même. Et en Python ça donne ça:</p>
+<pre lang="python">def fonction_recursive():
+
+    print "Je suis récursive, fuck yeah !"
+
+    fonction_recursive()</pre>
+<p>Et sa sortie va ressembler à ça:</p>
+<pre lang="python">>>> fonction_recursive()
+Je suis récursive, fuck yeah !
+Je suis récursive, fuck yeah !
+Je suis récursive, fuck yeah !
+Je suis récursive, fuck yeah !
+Je suis récursive, fuck yeah !
+Je suis récursive, fuck yeah !
+Je suis récursive, fuck yeah !
+Je suis récursive, fuck yeah !
+Je suis récursive, fuck yeah !
+[...]</pre>
+<p>Un peu comme une boucle infinie:</p>
+<pre lang="python">while True:
+    print "Je suis récursive, fuck yeah !"</pre>
+<p>Car la fonction s&#8217;appelle elle même indéfiniement.</p>
+<p>Les boucles infinies peuvent être utiles, mais en Python, les récursions infinies sont vachement craignos, parcequ&#8217;elles aboutissent toujours à ce message d&#8217;erreur:</p>
+<pre lang="python">RuntimeError: maximum recursion depth exceeded</pre>
+<p>En effet, une boucle infinie est une sucession d&#8217;opération les une après les autres, mais une récursion infinie est une succession d&#8217;opérations les unes <strong>dans</strong> les autres. Et comme Python garde en mémoire une pile de chaque appel de fonction (c&#8217;est entre autre ce qui vous permet de voir le fameux stack trace quand il y a une erreur et remonter jusqu&#8217;à la source du plantage au moment d&#8217;une exception), il finit par remplir la pile, qui par défaut a une limite de 1000 entrées.</p>
+<p>Du coup, en Python, quand on fait du récursif, on est obligé de faire une condition de sortie, du genre:</p>
+<pre lang="python">def fonction_recursive(count=0):
+
+    if count > 100:
+        return 
+
+    print "Je suis récursive, fuck yeah !"
+
+    fonction_recursive(count + 1)</pre>
+<p>Ce qui va ici limité le nombre d&#8217;appels récursifs à 100.</p>
+<p>On ne va pas discuter de la pertinence de la récursivité, mais toujours est-il que Python est limité de ce côté, et <a href="http://neopythonic.blogspot.fr/2009/04/tail-recursion-elimination.html">c&#8217;est un choix délibéré</a>.</p>
+<p>Il est limité car dans d&#8217;autres langages, tels que Lisp et <a href="http://sametmax.com/premiere-approche-du-langage-erlang-vu-par-un-pythoniste/">Erlang</a>, on peut faire autant de récursion qu&#8217;on le souhaite, pourvu qu&#8217;on écrive la récursion d&#8217;une certaine façon. C&#8217;est ce qu&#8217;on appelle la TCO, <a href="https://en.wikipedia.org/wiki/Tail-call_optimization">Tail Call Optimisation</a>: le pile d&#8217;appels est vidée au fur et à mesure et ne devient jamais pleine.</p>
+<p>Comment ça s&#8217;utilise et pourquoi ça marche peut faire l&#8217;objet d&#8217;un article à lui tout seul, et ce n&#8217;est pas le but ici.</p>
+<p>Le but de l&#8217;article est de répondre à une question que certains habitués de la récursion se posent: <strong>comment faire des state machines en Python ?</strong></p>
+<p>En effet, une manière très élégante de coder une state machine, ou <a href="https://fr.wikipedia.org/wiki/Automate_fini">automate fini</a>, est justement d&#8217;utiliser une récusion infinie:</p>
+<pre lang="python">def etat3(a, b, c):
+
+    print "Etat 3"
+    print a, b, c
+
+    etat1(a, b, c)
+
+def etat2(a, b, c):
+
+    print "Etat 2"
+    print a, b, c
+
+    etat3(a, b, c)
+
+def etat1(a, b, c):
+
+    print "Etat 1"
+    print a, b, c
+
+    etat2(a, b, c)
+
+etat1(1, 2, 3)</pre>
+<p>Cela permet de faire transiter le code d&#8217;un état à un autre sans se soucier de stocker l&#8217;état courant, sans barder le programme de <code>if/else</code>, et le code est beaucoup plus élégant et simple à suivre (c&#8217;est un état qui change, c&#8217;est tout):</p>
+<p>etat1 => etat2 => etat3 => etat1 => etat2 => etat3 => etc</p>
+<p>Enfin plus simple, pourvu qu&#8217;on code proprement, car la récursion infinie, c&#8217;est au fond <a href="http://academic.research.microsoft.com/Paper/896024.aspx">une forme ultime de goto</a> (instruction qui par ailleurs est bannie de Python).</p>
+<p>Mais, si vous l&#8217;avez remarqué, pour faire une state machine de cette manière, il nous faut des appels infinis (la state machine n&#8217;est pas sensée s&#8217;arrêter au bout de 1000 appels), et donc une TCO, ce que Python ne possède pas.</p>
+<p>C&#8217;est évidement sans comptez notre Guido favoris qui nous a pondu <a href="http://neopythonic.blogspot.fr/2009/04/final-words-on-tail-calls.html">la solution au problème</a>, version Python:</p>
+<pre lang="python">def etat3(a, b, c):
+
+    print "Etat 3"
+    print a, b, c
+
+    return etat1, [a, b, c]
+
+def etat2(a, b, c):
+
+    print "Etat 2"
+    print a, b, c
+
+    return etat3, [a, b, c]
+
+def etat1(a, b, c):
+
+    print "Etat 1"
+    print a, b, c
+
+    return etat2, [a, b, c]
+
+func, args = etat1, [1, 2, 3]
+while True:
+  func, args = func(*args)</pre>
+<p>Et voilà, nous avons le même effet (et les mêmes possibilités de sortie, condition, etc), mais en procédural plutôt qu&#8217;en purement fonctionnel. Toute l&#8217;astuce consiste à retourner le prochain état désiré au lieu de l&#8217;éxécuter, et de laisser la boucle principale se charger des appels.</p>
+<p>Le bloc <code>while</code> est rarement utilisé en Python, à part justement pour des main loops (souvent infinies), et c&#8217;est probablement l&#8217;usage le plus pertinent que j&#8217;ai vu depuis longtemps.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/state-machine-en-python-en-labsence-dalgos-recursifs-beneficiant-de-tail-call-optimisation/feed/</wfw:commentRss>
+		<slash:comments>12</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1299</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/07/fastoche.gif" length="400558" type="image/jpg" />	</item>
+	</channel>
+</rss>

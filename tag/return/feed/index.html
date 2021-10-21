@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>return &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/return/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Quelle valeur retourner quand on ne trouve rien en Python ?</title>
+		<link>http://sametmax.com/quelle-valeur-retourner-quand-on-ne-trouve-rien/</link>
+		<comments>http://sametmax.com/quelle-valeur-retourner-quand-on-ne-trouve-rien/#comments</comments>
+		<pubDate>Wed, 30 Jan 2013 09:25:16 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[return]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4321</guid>
+		<description><![CDATA[Techniquement une fonction Python ne peut pas ne rien retourner. Il n'existe rien de telle qu'un procédure dans ce langage. Si vous ne donnez aucune valeur de retour, elle va retourner <code>None</code>.
+
+Ne rien retourner, c'est donc choisir de retourner <code>None</code>. Or la valeur de retour est une choix d'API, et va dicter comme les gens vont utiliser votre fonction. Il convient donc de bien choisir sa valeur de retour "à vide".]]></description>
+				<content:encoded><![CDATA[<p>Hier je me suis dit que maintenant je mettrai de la musique à écouter pendant le tuto. Parce que. Donc détendez-vous avez un petit morceau de K&#8217;s Choice :</p>
+
+<!-- iframe plugin v.4.3 wordpress.org/plugins/iframe/ -->
+<iframe width="420" height="315" src="http://www.youtube.com/embed/7kNzDk2CPHI" frameborder="0" 0="allowfullscreen" scrolling="yes" class="iframe-class"></iframe>
+
+<p>Techniquement une fonction Python ne peut pas ne rien retourner. Il n&#8217;existe rien de telle qu&#8217;un procédure dans ce langage. Si vous ne donnez aucune valeur de retour, elle va retourner <code>None</code>.</p>
+<pre lang="python">>>> def metal():
+...     1 + 1
+...     
+>>> print metal()
+None</pre>
+<p>Ne rien retourner, c&#8217;est donc choisir de retourner <code>None</code>. Or la valeur de retour est un choix d&#8217;API, et va dicter comme les gens vont utiliser votre fonction. Il convient donc de bien choisir sa valeur de retour &#8220;à vide&#8221;.</p>
+<h2>Fonction qui produit un résultat</h2>
+<p>La fonction qui produit un résultat, par exemple on lui donne deux valeur, et elle calcule une troisième, est le cas le plus facile.</p>
+<p>Si la valeur peut être calculée, on retourne la valeur. Sinon, c&#8217;est qu&#8217;il y a un problème avec les arguments. Comme Python n&#8217;est pas un langage compilé, on ne check pas la nature des arguments. De plus parfois ce n&#8217;est pas tant un problème de nature que de valeur (comme le domaine de définition en maths). Dans ce cas, le mieux est de lever une exception (souvent ValueError ou un descendant) :</p>
+<pre lang="python">def by_poison(arg1, arg2):
+
+    # faire l'opération ici
+
+    # ah, ça marche pas ?
+
+    raise ValueError("{} et {} doivent être bidule truc sinon ça ne marche pas".format(arg1, arg2))</pre>
+<p>On évite la plupart du temps les valeurs qui veulent dire sémantiquement &#8220;mauvaise opération&#8221; comme <code>NaN</code> en Python. On préférera lever une exception. <code>None</code> est rarement une bonne idée ici.</p>
+<h2>Fonction qui cherche un résultat</h2>
+<p>Ce genre de fonction ne va pas lever une exception sous prétexte qu&#8217;elle n&#8217;a pas trouvé un truc. Ne pas trouver est un état tout à fait normal (à moins que la présence soit requise, mais dans ce cas lever l&#8217;exception ne doit pas être à ce niveau mais à celui plus haut de toute façon).</p>
+<p>Si c&#8217;est une vérification de présence, on retourne juste <code>True</code> / <code>False</code> :</p>
+<pre lang="python">def is_inside(value, other_value):
+
+    # vérifier que value est dans other value
+
+    return True # ou False</pre>
+<p>Notez que si vous faites les choses proprement, il vaut mieux overrider <code>__contains__</code> pour permettre d&#8217;utiliser <code>in</code> directement.</p>
+<p>Si votre recherche doit retourner une liste d&#8217;items (comme les lignes dans une base de données), dans ce cas quand on ne trouve rien, il vaut mieux retourner une liste vide. Cela permet de faire une boucle <code>for</code> sur le résultat dans tous les cas sans vérification ni side effect.</p>
+<pre lang="python">def inignition(query):
+
+    # chercher un truc, et si on trouve le retourner
+
+    # et tout à la fin, au cas où
+    return []</pre>
+<p>Si vous cherchez un élément en particulier (genre un nombre premier dans la liste donnée), le mieux est de retourner <code>None</code> si il ne fait pas partie des données retournable. Si <code>None</code> fait partie des données trouvable, on retourne au fait de lever des exceptions :(. Mais c&#8217;est qu&#8217;il y a un problème ailleurs, car <code>None</code> ne devrait pas être une donnée significative.</p>
+<pre lang="python">def fed(truc, bidule):
+
+    # chercher un truc, et si on trouve le retourner
+
+    # et tout à la fin, au cas où
+    return None</pre>
+<p>Certains cas particuliers demandent de retourner le même type que celui recherché. Il n&#8217;y a pas de règle pour ça, il va falloir utiliser votre tête, pour faire quelque chose de cohérent.</p>
+<p>Par exemple, rechercher la chaîne la plus longue dans une séquence doit-il retourner <code>None</code> si aucune n&#8217;est trouvée, ou une chaîne vide ? Il n&#8217;y a pas de bonne réponse, c&#8217;est selon la sémantique de votre appli. Si elle traite uniquement avec des types string, une chaîne vide peut avoir du sens. Si c&#8217;est la présence ou l&#8217;absence de chaîne la plus longue qui est importante, alors <code>None</code> sera plus approprié.</p>
+<p>A l&#8217;inverse, des fonctions comme &#8220;trouver la position&#8221; ne doit pas retourner -1 comme dans la plupart des autres langages. -1 est en effet très significatif en Python (pour le slicing par exemple). Évitez donc d&#8217;utiliser le même type pour dire &#8220;rien n&#8217;est trouvé&#8221; si la valeur risque d&#8217;être significative. Dans ce cas choisissez <code>None</code>. </p>
+<pre lang="python">megalist[:littlelist.search(truc)] # si littlelist.search(truc) retourn -1 c'est la merde !</pre>
+<p>La bibliothèque Python a tendance à lever des exception à tout va :</p>
+<pre lang="python">>>> s = 'Tasse'
+>>> s.index('p')
+Traceback (most recent call last):
+  File "<ipython-input-14-e5567af6b163>", line 1, in <module>
+    s.index('p')
+ValueError: substring not found</pre>
+<p>C&#8217;est un comportement acceptable, mais ce n&#8217;est pas le plus pratique. Vous allez voir pourquoi.</p>
+<h2>Valeur par défaut</h2>
+<p>Retourner <code>None</code> quand on ne trouve rien peut résulter en une API extrêmement agréable car l&#8217;action la plus utilisée comme contre mesure est d&#8217;avoir une valeur par défaut. Prenez pas exemple un dictionnaire. Récupérer un élement et assigner une valeur par défaut si il manque ressemble à ça avec une exception :</p>
+<pre lang="python">>>> dicos = {'petit larousse' : 'dans la tête', 'gros robert' : 'dans le derriere'}
+>>> dicos['urban dictionary'] # un entrée inexistante lève l'exception KeyError
+Traceback (most recent call last):
+  File "<ipython-input-18-0d425e038e32>", line 1, in <module>
+    dicos['urban dictionary']
+KeyError: 'urban dictionary'
+>>> try: # du coup on doit faire un try
+...     ou_ca = dicos['urban dictionary']
+... except KeyError:
+...     ou_ca = 'sur le net'
+...     
+>>> ou_ca
+'sur le net'
+</pre>
+<p>Mais Python permet <a href="http://sametmax.com/ce-que-vous-ne-saviez-pas-sur-les-collections-en-python/">un raccourcis pour ça</a>, vraiment sympas :</p>
+<pre lang="python">>>> dicos.get('urban dictionary', 'sur le net')
+'sur le net'</pre>
+<p>La méthode <code>get()</code> permet de récupérer une valeur, et si la clé n&#8217;existe pas, elle retourne le deuxième argument. Or, par défaut, le second argument est None :</p>
+<pre lang="python">>>> print dicos.get('urban dictionary')
+None</pre>
+<p>Donc si vous avez une fonction qui cherche quelque chose et qui risque de ne pas trouver, il peut être très pratique de proposer une argument comme valeur de retour par défaut, et de le mettre à <code>None</code> :</p>
+<pre lang="python">def and_blind(cherche, default=None):
+
+     if je_trouve_pas_cherche:
+        return default</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quelle-valeur-retourner-quand-on-ne-trouve-rien/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">4321</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/01/anaconda-3.jpg" length="63123" type="image/jpg" />	</item>
+	</channel>
+</rss>

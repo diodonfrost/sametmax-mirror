@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>ntp &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/ntp/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Changer la timezone sous Ubuntu Server en ligne de commande</title>
+		<link>http://sametmax.com/changer-la-timezone-sous-ubuntu-server-en-ligne-de-commande/</link>
+		<pubDate>Fri, 15 Nov 2013 10:28:15 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[ntp]]></category>
+		<category><![CDATA[timezone]]></category>
+		<category><![CDATA[ubuntu]]></category>
+		<category><![CDATA[utc]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7954</guid>
+		<description><![CDATA[Avoir tous ses serveur à la même heure, c'est primordial. Et cette même heure devrait <a href="http://sametmax.com/les-time-zones-en-python/">toujours être UTC</a>. Sous Ubuntu server, ça se fait en deux lignes.
+]]></description>
+				<content:encoded><![CDATA[<p>Avoir tous ses serveurs à la même heure, c&#8217;est primordial. Et cette même heure devrait <a href="http://sametmax.com/les-time-zones-en-python/">toujours être UTC</a>.</p>
+<p>Du coup dans votre script de déploiement, n&#8217;oubliez pas de changer la timezone de la machine.</p>
+<p>Sous Ubuntu server, ça se fait en deux lignes :</p>
+<pre lang="bash">echo "UTC" | sudo tee /etc/timezone
+sudo dpkg-reconfigure  --frontend noninteractive  tzdata</pre>
+<p>Si vous avez des cron, redémarrez le daemon sinon il sera toujours décalé :</p>
+<pre lang="bash">sudo service cron restart</pre>
+<p>Si vous êtes du genre à aimer la précision, vous pouvez installer un daemon NTP qui permet de synchroniser l&#8217;horloge du serveur régulièrement avec un serveur distant :</p>
+<pre lang="bash">sudo apt-get -y install ntp</pre>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">7954</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/11/wAiL8lw.png" length="492697" type="image/jpg" />	</item>
+		<item>
+		<title>Synchroniser son serveur avec ntp sous Linux</title>
+		<link>http://sametmax.com/synchroniser-son-serveur-avec-ntp-sous-linux/</link>
+		<comments>http://sametmax.com/synchroniser-son-serveur-avec-ntp-sous-linux/#comments</comments>
+		<pubDate>Wed, 15 May 2013 07:32:53 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[linux]]></category>
+		<category><![CDATA[ntp]]></category>
+		<category><![CDATA[serveur]]></category>
+		<category><![CDATA[synchroniser]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1086</guid>
+		<description><![CDATA[Synchroniser son serveur avec l'heure sub-atomique de Sirus B en quelques clics...]]></description>
+				<content:encoded><![CDATA[<p>NTP (Network Time Protocol) est un protocole utilisé pour synchroniser l&#8217;heure de votre système en utilisant un serveur en ligne. Cet article explique comment l&#8217;installer et le configurer sur un système d&#8217;exploitation Linux.</p>
+<p><strong>1. Installation</strong></p>
+<p>Pour installer le service ntp, ouvrez un terminal en root.</p>
+<p><b>Sous Ubuntu:</b></p>
+<pre lang="bash">
+sudo apt-get install ntp
+</pre>
+<p><b><br />
+2. Utilisation<br />
+</b></p>
+<p>La configuration de ntp se trouve généralement dans le fichier /etc/ntp.conf. On peut y ajouter de nouveaux serveurs de temps, en ajoutant une ligne similaire à celle-ci par exemple :</p>
+<pre lang="bash">
+server 0.fedora.pool.ntp.org dynamic
+</pre>
+<p>Démarrez ensuite le service avec cette commande afin de synchroniser la date et l&#8217;heure (Attention, il faut plusieurs minutes avant que l&#8217;heure soit synchronisée) :</p>
+<pre lang="bash">
+/etc/init.d/ntpd start
+</pre>
+<p>On pourra ensuite vérifier que l&#8217;heure est correcte avec la commande &#8220;date&#8221;:</p>
+<pre lang="bash">
+[sm@web1 ~]# date
+Wed May 15 07:21:15 UTC 2013
+[sm@web1 ~]# 
+</pre>
+<p>Note : en cas de problème, on pourra vérifier le bon fonctionnement avec la commande ntpstat qui donnera des informations sur le statut du service ntp :</p>
+<pre lang="bash">
+[sm@web1 ~]# ntpstat
+synchronised to NTP server (213.161.194.93) at stratum 4
+time correct to within 562 ms
+polling server every 64 s
+</pre>
+<p><b>A quoi ça sert ?</b></p>
+<p>Dans notre cas nous avons des sites qui hébergent du contenu avec des urls qui expirent au bout d&#8217;un certainstemps.<br />
+La création de ces urls à durée de vie comptée est faite depuis le serveur web, le contenu se trouvant sur d&#8217;autres serveurs.<br />
+ntp dans ce cas nous assure que tous les serveurs seront calés sur la même heure, ce qui évite de générer des urls déjà expirées si un des serveurs de contenu n&#8217;était pas à l&#8217;heure.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/synchroniser-son-serveur-avec-ntp-sous-linux/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1086</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/07/screenshot_86.jpg" length="53235" type="image/jpg" />	</item>
+	</channel>
+</rss>

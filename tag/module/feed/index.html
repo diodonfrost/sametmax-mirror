@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>module &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/module/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Rendez votre package exécutable avec __main__.py</title>
+		<link>http://sametmax.com/rendez-votre-module-executable-avec-__main__-py/</link>
+		<comments>http://sametmax.com/rendez-votre-module-executable-avec-__main__-py/#comments</comments>
+		<pubDate>Tue, 13 Jan 2015 06:47:42 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[import]]></category>
+		<category><![CDATA[module]]></category>
+		<category><![CDATA[package]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[__init__]]></category>
+		<category><![CDATA[__main__]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=15704</guid>
+		<description><![CDATA[Tout le monde connait le fichier <a href="http://sametmax.com/vous-pouvez-mettre-du-code-dans-__init__-py/">__init__.py</a>, mais <code>__main__.py</code> est moins connu.]]></description>
+				<content:encoded><![CDATA[<p>Tout le monde connait le fichier <a href="http://sametmax.com/vous-pouvez-mettre-du-code-dans-__init__-py/">__init__.py</a>, mais <code>__main__.py</code> est moins connu.</p>
+<p>Il permet de lancer du code si on tente d&#8217;exécuter un package (c&#8217;est à dire un dossier qui contient un fichier <code>__init__.py</code>):</p>
+<pre lang="bash">$ tree monpackage/
+monpackakge/
+├── __init__.py
+└── __main__.py
+
+0 directories, 2 files
+$ cat monpackage/__main__.py
+print('Hello :)')
+$ python monpackage/ # ceci est un dossier 
+Hello :)</pre>
+<p>Le <code>__main__.py</code>  est aussi exécuté quand on fait <code>python -m monpackage</code>. </p>
+<p>Notez que son exécution suppose l&#8217;import préalable du package, et que donc <code>__init__.py</code> sera toujours exécuté avant <code>__main__.py</code>. En revanche, faire juste <code>import monpackage</code> ne déclenche pas l&#8217;exécution de <code>__main__.py</code>.</p>
+<p>Si vous zippez votre package et appelez la commande <code>python</code>, c&#8217;est aussi ce fichier qui sera exécuté. Pratique donc, pour faire un exécutable portable à peu de frais, tout en gardant la lib importable.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/rendez-votre-module-executable-avec-__main__-py/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">15704</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/01/index2.jpeg" length="8794" type="image/jpg" />	</item>
+		<item>
+		<title>Les imports en Python</title>
+		<link>http://sametmax.com/les-imports-en-python/</link>
+		<comments>http://sametmax.com/les-imports-en-python/#comments</comments>
+		<pubDate>Thu, 16 May 2013 09:13:27 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[import]]></category>
+		<category><![CDATA[module]]></category>
+		<category><![CDATA[package]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6127</guid>
+		<description><![CDATA[Un jour vous avez du écrire votre propre module. Vous n'aviez pas vraiment réfléchi à la question. C'était juste une petite lib pour regrouper des fonctions. Ou juste une app Django. Un truc tout simple. Mais les imports ont soudainement cessé de devenir clairs. Ça ne marchait pas. Rien ne marchait. Vous aviez des <code>sys.path.append</code> partout juste au cas où et c'était encore pire.
+
+Vous avez donc décidé de vous remettre à PHP, au moins le <code>include</code> utilise les chemins de fichiers, et ça, c'est facile.]]></description>
+				<content:encoded><![CDATA[<p>Je suis fan de carmina burrana depuis l&#8217;age de 12 ans, alors pourquoi pas O Fortuna comme musique d&#8217;ambiance :</p>
+<p><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/nIwrgAnx6Q8?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<p>Les imports, c&#8217;était fastoche. Vous étiez dans votre petit programme, et pour importer un module de la lib standard, vous faisiez:</p>
+<pre lang="python">import module
+</pre>
+<p>Par exemple :</p>
+<pre lang="python">import os</pre>
+<p>Et pour importer une classe ou une fonction de cette lib, vous faisiez :</p>
+<pre lang="python">from module import fonction
+from module import Classe</pre>
+<p>Par exemple :</p>
+<pre lang="python">from hashlib import md5
+from xml.etree import Element</pre>
+<p>Parfois, c&#8217;était un peu plus compliqué, mais ça allait encore. Des fois il fallait importer un sous-module :</p>
+<pre lang="python">from package.sous_package import module</pre>
+<p>Par exemple :</p>
+<pre lang="python">from xml.sax import saxutils</pre>
+<p>Mais ça allait encore.</p>
+<p>Et puis un jour vous avez du écrire votre propre module. Vous n&#8217;aviez pas vraiment réfléchi à la question. C&#8217;était juste une petite lib pour regrouper des fonctions. Ou juste une app Django. Un truc tout simple. Mais les imports ont soudainement cessé de devenir clairs. Ça ne marchait pas. Rien ne marchait. Vous aviez des <code>sys.path.append</code> partout juste au cas où et c&#8217;était encore pire.</p>
+<p>Vous avez donc décidé de vous remettre à PHP, au moins le <code>include</code> utilise les chemins de fichiers, et ça, c&#8217;est facile.</p>
+<h2>Sous le capot</h2>
+<p>Quand vous utilisez <code>import</code>, sous le capot Python utilise le fonction <code>__import__</code>. Malgré ses <code>__</code> dans le nom, c&#8217;est une fonction ordinaire, et vous pouvez d&#8217;ailleurs l&#8217;utiliser vous-même :</p>
+<pre lang="python">>>> os = __import__('os')
+>>> os.path.join('s', 'ton', 'mon', 'g')
+u's/ton/mon/g'</pre>
+<p>En fait, importer un module, c&#8217;est créer un objet module qui est assigné à une variable tout à fait normale :</p>
+<pre lang="python">>>> type(os)
+<type 'module'>
+>>> os = "on peut ecraser un module"
+>>> os.path
+Traceback (most recent call last):
+  File "<ipython-input-12-e34748f24345>", line 1, in <module>
+    os.path
+AttributeError: 'unicode' object has no attribute 'path'
+
+>>> import sys
+>>> type(sys)
+<type 'module'>
+>>> sys = "je t'ecrase la tronche"
+>>> type(sys)
+<type 'unicode'></pre>
+<p>Le mécanisme de module Python n&#8217;est donc pas un truc à part, c&#8217;est un objet comme le reste, qui contient des attributs. Les attributs sont les variables et les fonctions du module.</p>
+<p>Pour charger un module, la fonction <code>__import__</code> passe par les étapes suivantes :</p>
+<ol>
+<li>Chercher si le module <code>os</code> existe.</li>
+<li>Chercher si le module a déjà été importé. Si oui, s&#8217;arrêter ici et renvoyer le module existant.</li>
+<li>Si non, chercher si il a été déjà compilé en .pyc.</li>
+<li>Si ce n&#8217;est pas le cas, compiler le fichier .py en .pyc.</li>
+<li>Charger le bytecode du fichier pyc.</li>
+<li>Créer un objet module vide.</li>
+<li>Éxecuter le bytecode dans le contexte de l&#8217;objet module et remplir ce dernier avec le résultat.</li>
+<li>Ajouter l&#8217;objet module dans <code>sys.modules</code>, un dictionnaire qui contient tous les modules déjà chargés.</li>
+<li>Retourner le module pour pouvoir l&#8217;assigner à une variable, par défaut la variable porte son nom.</li>
+</ol>
+<p>La fonction <code>__import__</code> est donc très complexe, et d&#8217;ailleurs si vous voulez l&#8217;utiliser pour des trucs plus compliqués qu&#8217;un simple import de module, vous allez galérer car sa signature est vraiment zarb.</p>
+<p>Mais pour vous, seule l&#8217;étape 1 est importante à comprendre. C&#8217;est l&#8217;étape à laquelle tout se joue.</p>
+<h2>Comment Python définit quel module importer ?</h2>
+<p>C&#8217;est la partie vraiment difficile, en effet si un import ne marche pas, c&#8217;est très souvent parce que Python ne trouve pas le module que vous voulez. Et la raison pour laquelle il ne le trouve pas, c&#8217;est que vous ne comprenez pas comment il cherche.</p>
+<p>Python utilise ce qu&#8217;on appelle le PYTHON PATH pour chercher les modules importables. C&#8217;est une variable système qui contient une liste de dossiers. Par exemple, sur ma machine, elle contient ceci :</p>
+<pre lang="python">['',
+ '/usr/bin',
+ '/usr/local/lib/python2.7/dist-packages/grin-1.2.1-py2.7.egg',
+ '/usr/lib/python2.7',
+ '/usr/lib/python2.7/plat-linux2',
+ '/usr/lib/python2.7/lib-tk',
+ '/usr/lib/python2.7/lib-old',
+ '/usr/lib/python2.7/lib-dynload',
+ '/home/sam/.local/lib/python2.7/site-packages',
+ '/usr/local/lib/python2.7/dist-packages',
+ '/usr/local/lib/python2.7/dist-packages/setuptools-0.6c11-py2.7.egg-info',
+ '/usr/lib/python2.7/dist-packages',
+ '/usr/lib/python2.7/dist-packages/PIL',
+ '/usr/lib/python2.7/dist-packages/gst-0.10',
+ '/usr/lib/python2.7/dist-packages/gtk-2.0',
+ '/usr/lib/pymodules/python2.7',
+ '/usr/lib/python2.7/dist-packages/ubuntu-sso-client',
+ '/usr/lib/python2.7/dist-packages/ubuntuone-client',
+ '/usr/lib/python2.7/dist-packages/ubuntuone-control-panel',
+ '/usr/lib/python2.7/dist-packages/ubuntuone-couch',
+ '/usr/lib/python2.7/dist-packages/ubuntuone-installer',
+ '/usr/lib/python2.7/dist-packages/ubuntuone-storage-protocol',
+ '/usr/lib/python2.7/dist-packages/wx-2.6-gtk2-unicode',
+ '/usr/lib/python2.7/dist-packages/IPython/extensions']</pre>
+<p> Donc, quand vous faites <code>import os</code>, Python va faire une boucle <code>for</code> là dessus et chercher dans chaque dossier si un package (un dossier avec un fichier <code>__init__.py</code>) ou un module (un fichier avec l&#8217;extension <em>.py</em>) nommé <code>os</code> existe.</p>
+<p> Dès qu&#8217;il en trouve un, il s&#8217;arrête de chercher et l&#8217;importe. Si il n&#8217;en trouve pas, il va lever une <code>ImportError</code>.</p>
+<p> Ce qui signifie que si votre module n&#8217;est PAS dans le PYTHON PATH, vous ne pouvez PAS l&#8217;importer. C&#8217;est impossible.</p>
+<p> La grande majorité des problèmes d&#8217;import vient du fait que le module que vous essayez d&#8217;importer n&#8217;est pas dans le PYTHON PATH.</p>
+<p> Maintenant, la grande question, c&#8217;est :</p>
+<h2>Qu&#8217;est-ce qui est dans le PYTHON PATH ?</h2>
+<p>Par défault, les dossiers <em>sites-packages</em> et <em>dist-packages</em> dans le dossier d&#8217;installation Python sont dans le PYTHON PATH. Quelques autres sont ajoutés selon les systèmes, mais vous pouvez toujours compter sur <em>sites-packages</em> et <em>dist-packages</em> pour être dans le PYTHON PATH. Quand vous installez une lib, par exemple avec <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a>, c&#8217;est là dedans que la lib va s&#8217;installer, pour être sûre de pouvoir être importée.</p>
+<p>Quand vous êtes dans un <a href="http://sametmax.com/les-environnement-virtuels-python-virtualenv-et-virtualenvwrapper/">virtualenv</a>, les dossiers <em>sites-packages</em> et <em>dist-packages</em> de l&#8217;environnement virtuel sont ajoutés au PYTHON PATH.</p>
+<p>Mais tout ça ne change pas grand chose pour vous. En effet, vous n&#8217;allez pas mettre VOTRE code dans les dossiers <em>sites-packages</em> et <em>dist-packages</em>.</p>
+<p>C&#8217;est pour cela que Python possède un mécanisme supplémentaire : le dossier qui contient le module sur lequel vous lancez la commande <code>python</code> est automatiquement ajouté au PYTHON PATH.</p>
+<h2>Le PYTHON PATH, en pratique</h2>
+<p>Supposons que je sois dans le dossier <em>/home/sam/Bureau</em> et que j&#8217;aie dedans ce package. Voici à quoi ressemble mon arbo (<a href="https://github.com/sametmax/codes-des-articles/blob/master/2013/mai/test_imports.zip">téléchargez l&#8217;arbo vierge</a> pour vos tests):</p>
+<pre><strong>/home/sam/Bureau # <-- je suis ici</strong>
+.
+`-- test_imports
+    |-- __init__.py
+    |-- package_tout_en_haut
+    |   |-- __init__.py
+    |   |-- autre_sous_package
+    |   |   |-- __init__.py
+    |   |   `-- autre_module_en_bas.py
+    |   |-- sous_module.py
+    |   `-- sous_package
+    |       |-- __init__.py
+    |       |-- autre_module_en_bas.py
+    |       |-- autre_sous_package
+    |       |   |-- __init__.py
+    |       |   `-- autre_module_en_bas.py
+    |       `-- module_tout_en_bas.py
+    `-- top_module.py</pre>
+<p>Si je lance un shell Python depuis ce dossier ou un script Python contenu dans ce dossier, je peux faire <code>import test_imports</code>, car <em>/home/sam/Bureau</em> est automatiquement ajouté au PYTHON PATH.</p>
+<p>Je peux donc faire :</p>
+<pre lang="python">>>> import test_imports
+>>> from test_imports import package_tout_en_haut
+>>> from test_imports import top_module
+test_imports.top_module
+>>> from test_imports.package_tout_en_haut import sous_module
+test_imports.package_tout_en_haut.sous_module
+</pre>
+<p>Mais si je me mets ici dans <em>./package_tout_en_haut/sous_package</em> :</p>
+<pre>/home/sam/Bureau
+.
+`-- test_imports
+    |-- __init__.py
+    |-- package_tout_en_haut
+    |   |-- __init__.py
+    |   |-- autre_sous_package
+    |   |   |-- __init__.py
+    |   |   `-- autre_module_en_bas.py
+    |   |-- sous_module.py
+    |   `-- <strong>sous_package     # <-- je suis ici</strong>
+    |       |-- __init__.py
+    |       |-- autre_module_en_bas.py
+    |       |-- autre_sous_package
+    |       |   |-- __init__.py
+    |       |   `-- autre_module_en_bas.py
+    |       |-- module_tout_en_bas.py
+    `-- top_module.py</pre>
+<p>Je ne peux PAS importer <code>test_imports</code>, ni dans un shell, ni depuis un module de ce dossier :</p>
+<pre lang="python">>>> import test_imports
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ImportError: No module named test_imports</pre>
+<p>En effet, comme je lance la commande Python depuis</p>
+<p> <em>./package_tout_en_haut/sous_package</em></p>
+<p> alors</p>
+<p> <em>./package_tout_en_haut/sous_package</em> </p>
+<p> <strong>EST</strong> ajouté au PYTHON PATH, mais </p>
+<p> <em>/home/sam/Bureau/</em> </p>
+<p> n&#8217;est <strong>PAS</strong> ajouté au PYTHON PATH.</p>
+<p>Je ne peux donc PAS faire </p>
+<pre lang="python">from test_imports import top_module </pre>
+<p>depuis un fichier comme </p>
+<p><em>.test_imports/package_tout_en_haut/sous_package/autre_module_en_bas.py</em> </p>
+<p>et exécuter directement </p>
+<pre lang="python">python autre_module_en_bas.py</pre>
+<p>ni même </p>
+<pre lang="python">python ./test_imports/package_tout_en_haut/sous_package/autre_module_en_bas.py</pre>
+<p>Je peux faire </p>
+<pre lang="python">from test_imports import top_module</pre>
+<p>depuis </p>
+<p><em>autre_module_en_bas.py</em> </p>
+<p>uniquement si je lance un script Python tout en haut de mon arbo qui importe </p>
+<p><em>autre_module_en_bas.py</em>.</p>
+<h2>Mais alors, comment on fait ?<br />
+</h2>
+<p>Il faut s&#8217;assurer que le dossier qui contient <code>test_imports</code>, notre module racine, soit TOUJOURS dans le PYTHON PATH.</p>
+<p>Il y a plusieurs possibilités pour cela.</p>
+<p>La première, c&#8217;est que notre lib va être utilisée une fois installée avec pip. Dans ce cas, on s&#8217;en branle, <code>test_imports</code> sera dans sites-packages automatiquement, et on pourra faire <code>from test_imports import top_module </code> de partout joyeusement.</p>
+<p>Mais souvent, ce n&#8217;est pas le cas, votre code n&#8217;est pas fait pour être installé.</p>
+<p>La seconde technique consiste à s&#8217;assurer que l&#8217;on appelle TOUJOURS la commande Python depuis le dossier qui est tout au dessus. C&#8217;est ce que fait django avec sa commande <code>./manage.py</code> par exemple.</p>
+<p>Vous avez votre projet :</p>
+<pre>./manage.py
+projet</pre>
+<p>Et tout passe par <code>python manage.py</code>, qui est au dessus de projet, donc le dossier est bien ajouté au PYTHON PATH, et tout va bien.</p>
+<p>Dans votre cas ça veut dire vous assurer qu&#8217;on lance toujours votre programme depuis un script d&#8217;entrée qui est tout en haut de votre arborescence.</p>
+<p>Ca veut dire que vous devez avoir un point d&#8217;entrée UNIQUE pour votre package.</p>
+<p>Mais parfois ça ne convient pas. Dans le cas des tests unitaires par exemple, il vous faut un point d&#8217;entrée spécialement pour les tests.</p>
+<p>Pour ce genre de scénario, il faut donc avoir le dossier qui les contient <strong>à côté</strong> de votre package.  Ainsi, si j&#8217;avais des tests unitaires, je devrais faire un dossier <em>tests</em> à côté du dossier <em>test_imports</em>. Par exemple, transformer mon arbo en un truc comme ça :</p>
+<pre>src
+   |_ test_imports
+   |_ tests
+</pre>
+<p>Afin que je lance les tests en faisant <code>python tests</code> depuis <em>src</em>. Et dans mes fichiers de tests, je pourrai faire des <code>from test_imports import truc</code>.</p>
+<p>La manière dont vous organisez votre projet est donc très importante en Python, et si vous avez des problèmes d&#8217;import, la première chose à faire est de changer sa structure. Il n&#8217;y a pas de magie.</p>
+<p>La dernière possibilité, quand tout a échoué, c&#8217;est de rajouter à la main le dossier dans le PYTHON PATH. <code>sys.path</code> est une simple liste, on peut donc faire un <code>append()</code> dessus.</p>
+<p>Par exemple, si je veux absolument (mais je ne devrais pas :-)) pouvoir faire :</p>
+<p><code>python .test_imports/package_tout_en_haut/sous_package/autre_module_en_bas.py</code> et importer <code>test_imports</code> dans <em>autre_module_en_bas.py</em>, je peux faire un truc du genre :</p>
+<pre lang="python">import os
+
+dossier = os.path.dirname(os.path.abspath(__file__))
+
+while not dossier.endswith('test_imports'):
+    dossier = os.path.dirname(dossier)
+
+dossier = os.path.dirname(dossier)
+
+if dossier not in sys.path:
+    sys.path.append(dossier)</pre>
+<p>Ce code va remonter dans l&#8217;arbo jusqu&#8217;à tomber sur le chemin du dossier <em>test_imports</em> et ajouter son dossier parent au PYTHON PATH.</p>
+<p>Ce n&#8217;est pas le truc le plus propre du monde, mais ça peut dépanner.</p>
+<h2>Imports absolus et relatifs</h2>
+<p>Si vous êtes dans <em>./package_tout_en_haut/sous_package</em> :</p>
+<pre>/home/sam/Bureau
+.
+`-- test_imports
+    |-- __init__.py
+    |-- package_tout_en_haut
+    |   |-- __init__.py
+    |   |-- autre_sous_package
+    |   |   |-- __init__.py
+    |   |   `-- autre_module_en_bas.py
+    |   |-- sous_module.py
+    |   `-- <strong>sous_package     # <-- je suis ici</strong>
+    |       |-- __init__.py
+    |       |-- autre_module_en_bas.py
+    |       |-- autre_sous_package
+    |       |   |-- __init__.py
+    |       |   `-- autre_module_en_bas.py
+    |       |-- module_tout_en_bas.py
+    |       `-- test_imports  # <-- autre package nommé test_imports
+    |           `-- sous_module.py
+    `-- top_module.py</pre>
+<p>Vous voyez que vous avez deux packages nommés <em>test_imports</em>.</p>
+<p>Si vous écrivez <code>import test_imports</code> dans <em>autre_module_en_bas.py</em>, que va-t-il se passer ?</p>
+<p>C'est le module tout en bas qui va être importé.</p>
+<p>Ce n'est pas forcément ce que vous voulez. Python 3 corrige cela en permettant des imports relatifs, et Python 2.7 peut en bénéficier en important tout en haut du module :</p>
+<pre lang="python">from __future__ import absolute_import</pre>
+<p>En faisant cela, vous obtenez le comportement de Python 3 dans Python 2.7, et vous pourrez alors choisir entre faire :</p>
+<pre lang="python">import test_imports # importe le module tout en haut
+from . import test_imports # import le module dans le même dossier
+from .test_imports import sous_module
+from test_imports import top_module</pre>
+<p>Je vous recommande de toujours utiliser <em>from __future__ import absolute_import</em>. Ca ne coûte rien, et c'est plus cohérent. Par contre, vous ne pourrez pas tester <em>from __future__ import absolute_import</em> dans le shell, donc cet exemple ne marche pas dans ipython, mais il fonctionne parfaitement dans vos modules.</p>
+<p>On peut aussi faire des imports relatifs du package contenant avec :</p>
+<pre lang="python">from .. import truc
+from ..package import machin</pre>
+<p>N'oubliez pas que ceci ne marche que :</p>
+<ul>
+<li>Si <code>from __future__ import absolute_import</code> est activé.</li>
+<li>Le package tout en haut (celui qui contient tous les autres) est dans le PYTHON PATH</li>
+</ul>
+<p>Sinon, ça ne sert A RIEN. Ce n'est pas comme un <em>../</em> dans un bash. Ça ne remonte pas d'un dossier. C'est juste une notation pour dire j'utilise celui la plutôt que l'autre, quand il y a ambiguité.</p>
+<h2>Pièges des imports</h2>
+<h3>Package sans init</h3>
+<p>Si vous avez :</p>
+<pre>.
+`-- test_imports
+    |-- __init__.py
+    |-- package_sans_init
+    |   `-- nada.py</pre>
+<p><em>nada.py</em> n'est pas importable, car <em>package_sans_init</em> ne contient pas de fichier <em>__init__.py</em>, même si <em>test_imports</em> est dans le PYTHON PATH. Ce comportement est corrigé en Python 3, et tout sous-dossier d'un package importable est automatiquement importable, qu'il contienne un <em>__init__.py</em> ou non.</p>
+<h3>Imports circulaires</h3>
+<p>J'en ai déjà parlé <a href="http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/">ici</a>.</p>
+<p>Vous avez :</p>
+<pre>.
+`-- test_imports
+    |-- __init__.py
+    |-- package_tout_en_haut
+    |   |-- __init__.py
+    |   `-- sous_package
+    |       |-- __init__.py
+    |       |-- autre_module_en_bas.py
+    |       `-- module_tout_en_bas.py</pre>
+<p>Et vous importez <code>autre_module_en_bas</code> dans <code>module_tout_en_bas</code> et inversement. Non seulement ça ne marchera pas, mais en plus l'erreur est déroutante :</p>
+<pre lang="python">ImportError: No module named module_tout_en_bas</pre>
+<p>Oui vous avez bien lu, il va vous dire que le module n'existe pas !</p>
+<p>Il n'y a pas non plus de solution propre à ce problème : soit vous fusionnez vos deux fichiers, soit vous faites un 3eme module qui utilise ces deux modules (et ces deux modules n'importent pas ce 3eme module).</p>
+<p>Sinon il y a la solution crade : mettre un des imports dans un appel de fonction ou de méthode comme ça:</p>
+<pre lang="python">def truc():
+    import module_tout_en_bas
+    module_tout_en_bas.bidule()</pre>
+<p>Parfois, ça dépanne :-) On ne tue pas des chatons non plus, donc si ça ne devient pas une habitude, ça peut passer.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-imports-en-python/feed/</wfw:commentRss>
+		<slash:comments>37</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">6127</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/05/tumblr_mj4zt7GH891r539hzo1_500.jpg" length="77621" type="image/jpg" />	</item>
+	</channel>
+</rss>

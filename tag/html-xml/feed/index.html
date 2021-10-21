@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>HTML XML &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/html-xml/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Parser du HTML avec BeautifulSoup</title>
+		<link>http://sametmax.com/parser-du-html-avec-beautifulsoup/</link>
+		<comments>http://sametmax.com/parser-du-html-avec-beautifulsoup/#comments</comments>
+		<pubDate>Thu, 23 Jan 2014 22:46:31 +0000</pubDate>
+		<dc:creator><![CDATA[k3c]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[HTML XML]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6161</guid>
+		<description><![CDATA[Ceci est un post invité de k3c posté sous licence creative common 3.0 unported. Un exemple de parsing HTML avec BeautifulSoup. Cet article ne traitera pas l&#8217;écriture ou la modification de HTML, et pompera allègrement la doc BeautifulSoup (traduite). De manière générale, pour télécharger une vidéo sur un site de replay, il faut récupérer un [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/k3c/">k3c</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<p>Un exemple de parsing HTML avec BeautifulSoup. </p>
+<p>Cet article ne traitera pas l&#8217;écriture ou la modification de HTML, et pompera allègrement la doc BeautifulSoup (traduite).</p>
+<p>De manière générale, pour télécharger une vidéo sur un site de replay, il faut</p>
+<ul>
+<li>récupérer un identifiant de la vidéo</li>
+<li>le passer à un autre site</li>
+<li>analyser le résultat pour trouver l&#8217;adresse de la vidéo.</li>
+</ul>
+<p>Prenons un exemple sur les replays de d8.tv, par exemple</p>
+<p><a href="http://www.d8.tv/d8-series/pid6654-d8-longmire.html">une vidéo de D8</a></p>
+<p>(attention cet exemple sera rapidement obsolète, mais c&#8217;est le principe qui nous intéresse)</p>
+<p>L&#8217;installation de BeautifulSoup 4 se fait avec, au choix</p>
+<pre lang="shell">
+$ apt-get install python-bs4
+$ easy_install beautifulsoup4
+$ pip install beautifulsoup4
+</pre>
+<p>La documentation de BeautifulSoup 4 est à</p>
+<p><a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/">http://www.crummy.com/software/BeautifulSoup/bs4/doc/</a></p>
+<p>Si on regarde le code source de la page (CTRL U sous Firefox, sinon voyez avec votre navigateur préféré), on voit que la partie qui nous intéresse et qui contient videoId est courte</p>
+<p>Ici l&#8217;identifiant recherché est 943696</p>
+<p>En Python, on va donc faire quelque chose comme</p>
+<pre lang="python">
+from urllib2 import urlopen
+import bs4 as BeautifulSoup
+html = urlopen('http://www.d8.tv/d8-series/pid6654-d8-longmire.html').read()
+soup = BeautifulSoup.BeautifulSoup(html)
+</pre>
+<p>Comme le dit la doc BeautifulSoup</p>
+<p><em>début du pompage de la doc BeautifulSoup</em></p>
+<p>Beautiful Soup transforme un document HTML complexe en un arbre complexe d&#8217;objets Python. Mais vous aurez à manipuler seulement quatre types d&#8217;objets : Tag, NavigableString, BeautifulSoup, et Comment.</p>
+<ul>
+<li>Tag<br />
+	Un objet Tag correspond à un tag HTML ou XML dans le document<br />
+	Les Tags ont de nombreux attributs et méthodes, que nous verrons dans<br />
+	<a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/#navigating-the-tree">naviguer dans l&#8217;arborescence</a><br />
+	et<br />
+	<a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/#searching-the-tree">chercher dans 	l&#8217;arborescence</a></p>
+<p>	Pour l&#8217;instant, les caractéristiques les plus importantes d&#8217;un tag sont<br />
+	son nom   </p>
+<pre lang="python">
+>>> tag.name
+ u'b'</pre>
+<p>	ses attributs<br />
+	Un tag peut avoir n&#8217;importe quel nombre d&#8217;attributs. Le tag </p>
+<pre lang="html"><b class="boldest"></pre>
+<p> possède un attribut “class” dont la  valeur est “boldest”. On peut accéder les attributs d&#8217;un tag en le traitant comme un dictionaire :</p>
+<pre lang="python">
+>>> tag['class']
+ u'boldest'</pre>
+<p>	On peut accéder directement ce dictionaire avec .attrs:</p>
+<pre lang="python">
+>>>tag.attrs
+ {u'class': u'boldest'}</pre>
+</li>
+<li>NavigableString<br />
+	Une chaîne de caractères est un peu de texte  l&#8217;intérieur d&#8217;un tag. Beautiful Soup utilise la classe NavigableString class pour contenir ces morceaux de texte:</p>
+<pre lang="python">
+>>> tag.string
+ u'Extremely bold'
+>>> type(tag.string)
+ class 'bs4.element.NavigableString'
+	</pre>
+<p>	Un NavigableString est comme une chaîne de caractères  Python Unicode, sauf que elle supporte aussi quelques unes des caractéristiques décrites dans Navigating the tree et Searching the tree. Vous pouvez convertir une chaîne de caractères NavigableString en Unicode avec unicode():</p>
+<pre lang="python">
+>>> unicode_string = unicode(tag.string)
+>>> unicode_string
+ u'Extremely bold'
+>>> type(unicode_string)
+ type 'unicode'
+	</pre>
+</li>
+<li>
+BeautifulSoup<br />
+	L&#8217;objet BeautifulSoup lui-même représente le document dans son ensemble. Dans la plupart des cas, vous pouvez le 	traiter en tant qu&#8217;objet Cela signifie qu&#8217;il supporte la plupart des méthodes décrites dans Navigating the tree et 	Searching the tree.</p>
+<p>	Comme l&#8217;objet BeautifulSoup ne correspond pas à un tag final HTML ou XML, il n&#8217;a pas de nom et pas d&#8217;attributs. 	Mais il est parfois utile de rechercher son .name, donc on lui a donné le .name “[document]”:</p>
+<pre lang="python">
+>>> soup.name
+ u'[document]'
+	</pre>
+</li>
+<li> Commentaires et autres chaînes de caractères spéciales
+<p>	Tag, NavigableString, et BeautifulSoup couvrent presque tout ce que vous verrez dans un fichier HTML ou XML, mais il y a quelques cas à part. Le seul qui doit vous inquiéter (un peu) est le commentaire :</p>
+<pre lang="html">
+markup = "<b><!--Hey, buddy. Want to buy a used parser?--></b>"
+	</pre>
+<pre lang="python">
+>>> soup = BeautifulSoup(markup)
+>>> comment = soup.b.string
+>>> type(comment)
+ class 'bs4.element.Comment'
+	</pre>
+<p>	L&#8217;objet Comment est simplement un type spécial de NavigableString:</p>
+<pre lang="python">
+>>> comment
+ u'Hey, buddy. Want to buy a used parser'
+	</pre>
+<p>	Mais quand il apparaît en tant que morceau de document HTML, un Comment est affiché avec un formattage spécial :</p>
+<pre lang="html">
+# <b>
+#  <!--Hey, buddy. Want to buy a used parser?-->
+# </b></pre>
+<p>	Beautiful Soup définit des classes pour n&#8217;importe quoi d&#8217;autre qui apparaîtrait dans un document XML : CData, ProcessingInstruction, Declaration, et Doctype. De la meme manière que Comment, ces classes sont des sous-classes de NavigableString qui ajoutent quelque chose à la chaîne de caractères. Voici un exemple qui remplace le commentaire par un block CDATA :</p>
+<pre lang="python">
+from bs4 import CData
+cdata = CData("A CDATA block")
+comment.replace_with(cdata)
+print(soup.b.prettify())
+	</pre>
+<pre lang="html">
+# <b>
+#  <![CDATA[A CDATA block]]&gt;
+# </b></pre>
+</li>
+</ul>
+<p><em>fin du pompage de la doc BeautifulSoup</em></p>
+<p>On peut faire un</p>
+<pre lang="python">print soup.prettify()</pre>
+<p>pour voir à quoi ressemble le code HTML de la page</p>
+<p>Il faut d&#8217;abord analyser la page et rechercher ce qui suit videoId</p>
+<p>Pour commencer nous allons naviguer dans le document.</p>
+<p>BeautifulSoup permet de multiples syntaxes, par exemple, on n&#8217;est pas obligé de donner le chemin complet</p>
+<pre lang="python">soup.head.meta</pre>
+<p>ou</p>
+<pre lang="python">soup.meta</pre>
+<p>affichent le meme résultat, vu que la première balise meta est sous la balise head</p>
+<pre lang="html"><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/></pre>
+<p>Si on regarde les méthodes disponibles</p>
+<pre lang="python">
+dir(soup.meta)
+['FORMATTERS', '__call__', '__class__', '__contains__', '__delattr__', '__delitem__', '__dict__', '__doc__', '__eq__', '__format__', '__getattr__', '__getattribute__', '__getitem__', '__hash__', '__init__', '__iter__', '__len__', '__module__', '__ne__', '__new__', '__nonzero__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setitem__', '__sizeof__', '__str__', '__subclasshook__', '__unicode__', '__weakref__', '_all_strings', '_attr_value_as_string', '_attribute_checker', '_find_all', '_find_one', '_lastRecursiveChild', '_last_descendant', 'append', 'attribselect_re', 'attrs', 'can_be_empty_element', 'childGenerator', 'children', 'clear', 'contents', 'decode', 'decode_contents', 'decompose', 'descendants', 'encode', 'encode_contents', 'extract', 'fetchNextSiblings', 'fetchParents', 'fetchPrevious', 'fetchPreviousSiblings', 'find', 'findAll', 'findAllNext', 'findAllPrevious', 'findChild', 'findChildren', 'findNext', 'findNextSibling', 'findNextSiblings', 'findParent', 'findParents', 'findPrevious', 'findPreviousSibling', 'findPreviousSiblings', 'find_all', 'find_all_next', 'find_all_previous', 'find_next', 'find_next_sibling', 'find_next_siblings', 'find_parent', 'find_parents', 'find_previous', 'find_previous_sibling', 'find_previous_siblings', 'format_string', 'get', 'getText', 'get_text', 'has_attr', 'has_key', 'hidden', 'index', 'insert', 'insert_after', 'insert_before', 'isSelfClosing', 'is_empty_element', 'name', 'namespace', 'next', 'nextGenerator', 'nextSibling', 'nextSiblingGenerator', 'next_element', 'next_elements', 'next_sibling', 'next_siblings', 'parent', 'parentGenerator', 'parents', 'parserClass', 'parser_class', 'prefix', 'prettify', 'previous', 'previousGenerator', 'previousSibling', 'previousSiblingGenerator', 'previous_element', 'previous_elements', 'previous_sibling', 'previous_siblings', 'recursiveChildGenerator', 'renderContents', 'replaceWith', 'replaceWithChildren', 'replace_with', 'replace_with_children', 'select', 'setup', 'string', 'strings', 'stripped_strings', 'tag_name_re', 'text', 'unwrap', 'wrap']
+</pre>
+<p>on voit que de nombreuses méthodes sont disponibles, et suivant la doc, on peut donc le traiter comme un dictionnaire</p>
+<pre lang="python">
+>>> soup.meta['http-equiv']
+'Content-Type'</pre>
+<p>et tester quelques méthodes</p>
+<pre lang="python">
+>>> soup.meta.name
+'meta'
+>>> soup.meta.find_next_sibling()
+'<meta content="D8" name="author"/>'
+</pre>
+<pre lang="python">soup.meta.find_previous_sibling()</pre>
+<p>Nous voyons que soup.meta a un sibling (frère ou soeur) suivant, mais pas de précédent, c&#8217;est le premier de l&#8217;arborescence.<br />
+Bon, la balise meta a pour nom meta, pas un scoop, on continue avec les clés de dictionnaire, sans surprise</p>
+<pre lang="python">
+>>> soup.meta.find_next_sibling()
+'<meta content="D8" name="author"/>'
+>>> soup.meta.find_next_sibling()['content']
+'D8'
+>>> soup.meta.find_next_sibling()['name']
+'author'
+</pre>
+<p>Pour le fun, regardez ce que renvoie</p>
+<pre lang="python">soup.meta.find_next_sibling().parent</pre>
+<p>et</p>
+<pre lang="python">soup.meta.find_next_sibling().parent.parent</pre>
+<p>et je vous laisse deviner la prochaine commande que vous allez passer&#8230;</p>
+<p>Revenons à une recherche qui va trouver de nombreuses occurences</p>
+<pre lang="python">soup.find('div')</pre>
+<p> va trouver la première balise div, et</p>
+<pre lang="python">soup.find_all('div')</pre>
+<p>va renvoyer une liste contenant tous les div de la page, mais cela ne permet pas de trouver facilement la portion contenant videoId, par contre, la documentation de BeautifulSoup montre comment trouver spécifiquement une CSS class, voir<br />
+<a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/#searching-by-css-class">searching by css class dans la doc BeautifulSoup</a><br />
+dans la documentation BeautifulSoup<br />
+Voici la syntaxe à utiliser</p>
+<pre lang="python">soup.find('div',attrs={"class":u"block-common block-player-programme"})</pre>
+<p>va renvoyer la partie qui nous intéresse, par exemple</p>
+<pre lang="html">
+        <div class="block-common block-player-programme">
+
+            <div class="bpp-player">
+                <div class="playerVideo player_16_9">
+                	
+		<div class="itemprop" itemprop="video" itemscope itemtype="http://schema.org/VideoObject">
+			<h1>Vidéo : <span itemprop="name">Longmire - Samedi 30 novembre à 20h50</span></h1>
+			<meta itemprop="duration" content="" />
+			<meta itemprop="thumbnailUrl" content="http://media.canal-plus.com/wwwplus/image/53/1/1/LONGMIRE___BANDE_ANNONCE__131120_UGC_3279_image_L.jpg" />			
+			
+			<meta itemprop="embedURL" content="http://player.canalplus.fr/embed/flash/CanalPlayerEmbarque.swf?vid=975153" />
+			<meta itemprop="uploadDate" content="2013-11-29T00:00:00+01:00" />
+			<meta itemprop="expires" content="2014-02-18T00:00:00+01:00" />
+			   
+    <canal:player videoId="975153" width="640" height="360" id="CanalPlayerEmbarque"></canal:player>
+</pre>
+<p>Le type de cette donnée est bs4 élément tag </p>
+<p>Comme l&#8217;a dit un homme célèbre<br />
+<a href="http://sametmax.com/si-vous-ne-savez-pas-ce-que-contient-une-variable-vous-ne-comprenez-pas-le-programme/">si vous ne savez pas ce que contient une variable, vous ne comprenez pas le programme</a><br />
+on peut donc faire un type, dir, help, doc, repr, par exemple</p>
+<pre lang="python">
+>>> type(soup.find('div',attrs={"class":u"block-common block-player-programme"}))
+class 'bs4.element.Tag'
+</pre>
+<p>donc nous pouvons rechercher un tag, comme<br />
+canal:player </p>
+<pre lang="python">
+>>> soup.find('div',attrs={"class":u"block-common block-player-programme"}).find('canal:player')
+'<canal:player height="360" id="CanalPlayerEmbarque" videoid="786679" width="640"></canal:player>'
+>>> soup.findAll('div', attrs={"class":u"tlog-inner"})
+</pre>
+<p>renvoie une liste</p>
+<pre lang="python">
+[<div class="tlog-inner">
+<div class="tlog-account">
+<span class="tlog-avatar"><img height="30" src="http://media.canal-plus.com/design/front_office_d8/images/xtrans.gif" width="30"/></span>
+<a class="tlog-logout le_btn" href="#">x</a>
+</div>
+<form action="#" method="post">
+<label class="switch-fb">
+<span class="cursor traa"> </span>
+<input checked="" id="check-switch-fb" name="switch-fb" type="checkbox" value="1"/>
+</label>
+</form>
+<div id="headerFbLastActivity">
+<input id="name_facebook_user" type="hidden"/>
+<div class="top-arrow"></div>
+<div class="top">
+<div class="top-bg"></div>
+<div class="top-title">Activité récente</div>
+</div>
+<div class="middle">
+<div class="wrap-last-activity">
+<div class="entry">Aucune</div>
+</div>
+<div class="wrap-notification"></div>
+</div>
+<div class="bottom">
+<a class="logout" href="#logout">Déconnexion</a>
+</div>
+</div>
+</div>]
+</pre>
+<p>On peut prendre le premier élément de cette liste</p>
+<pre lang="python">soup.findAll('div', attrs={"class":u"tlog-inner"})[0]</pre>
+<p>et ne vouloir que la ligne commençant par &#8220;span class&#8221;</p>
+<pre lang="python">soup.findAll('div', attrs={"class":u"tlog-inner"})[0].span</pre>
+<p>ce qui affiche</p>
+<pre lang="html">
+<span class="tlog-avatar"><img height="30" src="http://media.canal-plus.com/design/front_office_d8/images/xtrans.gif" width="30"/></span>
+</pre>
+<p>Voyons le type de donnée</p>
+<pre lang="python">
+>>> type(soup.findAll('div', attrs={"class":u"tlog-inner"})[0].span)
+<class 'bs4.element.Tag'>
+</pre>
+<p>et voyons les méthodes disponibles</p>
+<pre lang="python">
+>>> dir(soup.findAll('div', attrs={"class":u"tlog-inner"})[0].span)
+['FORMATTERS', '__call__', '__class__', '__contains__', '__delattr__', '__delitem__', '__dict__', '__doc__', '__eq__', '__format__', '__getattr__', '__getattribute__',
+'__getitem__', '__hash__', '__init__', '__iter__', '__len__', '__module__', '__ne__', '__new__', '__nonzero__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__'
+, '__setitem__', '__sizeof__', '__str__', '__subclasshook__', '__unicode__', '__weakref__', '_all_strings', '_attr_value_as_string', '_attribute_checker', '_find_all',
+'_find_one', '_lastRecursiveChild', '_last_descendant', 'append', 'attribselect_re', 'attrs', 'can_be_empty_element', 'childGenerator', 'children', 'clear', 'contents',
+ 'decode', 'decode_contents', 'decompose', 'descendants', 'encode', 'encode_contents', 'extract', 'fetchNextSiblings', 'fetchParents', 'fetchPrevious', 'fetchPreviousSi
+blings', 'find', 'findAll', 'findAllNext', 'findAllPrevious', 'findChild', 'findChildren', 'findNext', 'findNextSibling', 'findNextSiblings', 'findParent', 'findParents
+', 'findPrevious', 'findPreviousSibling', 'findPreviousSiblings', 'find_all', 'find_all_next', 'find_all_previous', 'find_next', 'find_next_sibling', 'find_next_sibling
+s', 'find_parent', 'find_parents', 'find_previous', 'find_previous_sibling', 'find_previous_siblings', 'format_string', 'get', 'getText', 'get_text', 'has_attr', 'has_k
+ey', 'hidden', 'index', 'insert', 'insert_after', 'insert_before', 'isSelfClosing', 'is_empty_element', 'name', 'namespace', 'next', 'nextGenerator', 'nextSibling', 'ne
+xtSiblingGenerator', 'next_element', 'next_elements', 'next_sibling', 'next_siblings', 'parent', 'parentGenerator', 'parents', 'parserClass', 'parser_class', 'prefix',
+'prettify', 'previous', 'previousGenerator', 'previousSibling', 'previousSiblingGenerator', 'previous_element', 'previous_elements', 'previous_sibling', 'previous_sibli
+ngs', 'recursiveChildGenerator', 'renderContents', 'replaceWith', 'replaceWithChildren', 'replace_with', 'replace_with_children', 'select', 'setup', 'string', 'strings'
+, 'stripped_strings', 'tag_name_re', 'text', 'unwrap', 'wrap']
+</pre>
+<p>Nous voulons maintenant juste ce qui suit videoId. </p>
+<pre lang="python">dir(soup.find('div',attrs={"class":u"block-common block-player-programme"}).find('canal:player'))</pre>
+<p>montre, entre autres choses, que la méthode get est disponible.<br />
+Pour récupérer l&#8217;identifiant qui nous intéresse, on peut donc faire </p>
+<pre lang="python">
+>>> soup.find('div',attrs={"class":u"block-common block-player-programme"}).find('canal:player').get('videoid')
+'975153'</pre>
+<p>ou utiliser une autre syntaxe</p>
+<pre lang="python">
+>>> soup.find('div',attrs={"class":u"block-common block-player-programme"}).find('canal:player')['videoid']
+'975153'</pre>
+<p>De la même manière, on peut récupérer le titre de la vidéo </p>
+<pre lang="python">
+>>> soup.find('h3',attrs={"class":u"bpp-title"})
+'<h3 class="bpp-title">Longmire - Samedi 30 novembre à 20h50</h3>'
+</pre>
+<p>mais on veut juste le titre, donc </p>
+<pre lang="python">
+>>> soup.find('h3',attrs={"class":u"bpp-title"}).text
+uu'Longmire - Samedi 30 novembre \xe0 20h50'
+</pre>
+<p>Maintenant que l&#8217;on a le numéro de la vidéo, on peut le passer au site qui contient l&#8217;adresse, et avec un peu de scripting XML, récupérer l&#8217;adresse de la vidéo (un autre article sera consacré au scripting XML)<br />
+Selon que la vidéo vient de D8 ou de canal, elle sera sur<br />
+<a href="http://service.canal-plus.com/video/rest/getVideosLiees/d8/">vidéo de d8</a><br />
+ou<br />
+<a href="http://service.canal-plus.com/video/rest/getVideosLiees/cplus/">vidéo de Canal Plus</a><br />
+et avec un peu de code</p>
+<pre lang="python">
+from lxml import objectify
+def get_HD(d8_cplus,vid):
+    root = objectify.fromstring(urlopen('http://service.canal-plus.com/video/rest/getVideosLiees/'+d8_cplus+'/'+vid).read())
+    for x in root.iter():
+        if x.tag == 'VIDEO' and x.ID.text == vid:
+            for vres in vidattr:
+                if hasattr(x.MEDIA.VIDEOS, vres):
+                    print 'Resolution :', vres
+                    videoUrl = getattr(x.MEDIA.VIDEOS, vres).text
+                break
+        break
+    print videoUrl
+for x in ['d8','cplus']:
+    get_HD(x,vid)
+</pre>
+<p>on peut trouver l&#8217;adresse de la vidéo.<br />
+Il reste juste à envoyer la commande rtmpdump, dans ce cas</p>
+<pre lang="shell">rtmpdump -r rtmp://ugc-vod-fms.canalplus.fr/ondemand/videos/1311/LONGMIRE___BANDE_ANNONCE__131120_UGC_3279_video_HD.mp4 -c 1935 -m 10 -B 1 -o mavideo.mp4</pre>
+<p>Voilà, il reste à noter que BeautifulSoup peut restreindre sa recherche à une partie du document, utiliser <a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/#a-regular-expression">une regex</a> (même si <a href="http://sametmax.com/comment-parser-de-html-avec-des-regex/">c&#8217;est le mal</a>), on peut <a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/#the-limit-argument">limiter la taille de la liste renvoyée par findAll</a></p>
+<p>Quelles sont les méthodes les plus utiles, si vous avez la flemme de lire toute la doc ?</p>
+<ul>
+<li>.contents, les enfants d&#8217;un tag sont disponibles dans une liste appelée .contents</li>
+<li>.has_key(&#8216;value&#8217;) vous rendra de grands services, associé parfois à
+<pre lang="python">['value'] != u'' </pre>
+</li>
+<li>pour extraire un tag sans attribut, par exemple pour un tag p, la syntaxe sera simplement
+<pre lang="python">soup.findAll('p', {'class': None})</pre>
+</li>
+<li>.attrs vous affichera un dictionnaire qui peut être intéressant, par exemple :
+<pre lang="python">
+>>>soup.head.link
+ '<link href="http://media.canal-plus.com/design_pack/front_office_d8/css/d8.d25540b7a93dba7baf89e5ca53ef00e5.min.css" rel="stylesheet" type="text/css"/>'
+>>> soup.head.link.attrs
+ {'href': 'http://media.canal-plus.com/design_pack/front_office_d8/css/d8.d25540b7a93dba7baf89e5ca53ef00e5.min.css', 'type': 'text/css', 'rel': ['stylesheet']}
+</pre>
+</li>
+<li>.previousSibling (et .next_sibling) peut être utile, par exemple, avec un simple HTML comme ce qui suit
+<pre lang="html">
+<div class="category_link">
+Category:
+<a href="/category/personal">Personal</a>
+</div></pre>
+<p>    on peut récupérer la chaîne Category : de plusieurs manières, par exemple l&#8217;évident</p>
+<pre lang="python">
+>>> soup.findAll('div')[0].contents[0]
+u'\n  Category:\n  '
+</pre>
+<p>	mais aussi en remontant depuis la balise a</p>
+<pre lang="python">
+>>> soup.find('a').previousSibling
+u'\n  Category:\n  '
+</pre>
+<p>	Sinon cela est aussi utile avec un HTML mal foutu comme</p>
+<pre lang="html">
+<p>z1</p>tagada
+<p>z2</p>tsointsoin
+</pre>
+<p>	Dans ce cas, pour récupérer tagada tsointsoin<br />
+	on fera par exemple</p>
+<pre lang="python">
+soup.findAll('p')[0].next_sibling
+soup.findAll('p')[1].next_sibling
+</pre>
+<p>ou, pour faire plaisir à Sam/Max</p>
+<pre lang="python">
+>>> [p.next_sibling for p in soup.findAll('p')]
+[u'tagada', u'tsoitsoin']
+</pre>
+<li>A quoi sert text=True ?<br />
+	Simplement à récupérer juste du texte dans du Html, sans toute la syntaxe HTML.<br />
+	Un exemple, toujours sur la vidéo de D8 va illustrer cela</p>
+<pre lang="python">
+>>> soup.findAll('div', {"class":"tmlog-wdrw wdrw"})[0].a
+'<a class="tmlogin-btn" href="#">'
+'<span>Se connecter</span>'
+'</a>'
+>>> soup.findAll('div', {"class":"tmlog-wdrw wdrw"})[0].a.contents
+ [u'\n', <span>Se connecter</span>, u'\n']
+>>> soup.findAll('div', {"class":"tmlog-wdrw wdrw"})[0].a.text
+ u'\nSe connecter\n'
+>>> soup.findAll('div', {"class":"tmlog-wdrw wdrw"})[0].a.findAll(text=True)
+ [u'\n', u'Se connecter', u'\n']
+</pre>
+</li>
+<li> Une dernière chose, si vous avez besoin de parser des documents de plusieurs centaines de Mo et donc de performances, oubliez le parser HTML par défaut dans BeautifulSoup, et <a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/#installing-a-parser">installez</a> le rapide <a href="http://lxml.de/performance.html">lxml</a> ou un autre parser. Si comme moi vous traitez des documents &#8220;petits&#8221;, ça n&#8217;a pas d&#8217;importance.
+</ul>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/parser-du-html-avec-beautifulsoup/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">6161</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/01/PP1PjyX.png" length="266135" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>info &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/info/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Obtenir les infos d&#8217;une video avec ffmpeg</title>
+		<link>http://sametmax.com/obtenir-les-infos-dune-video-avec-ffmpeg/</link>
+		<comments>http://sametmax.com/obtenir-les-infos-dune-video-avec-ffmpeg/#comments</comments>
+		<pubDate>Sun, 15 Apr 2012 10:36:46 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[ffmpeg]]></category>
+		<category><![CDATA[info]]></category>
+		<category><![CDATA[media]]></category>
+		<category><![CDATA[video]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=394</guid>
+		<description><![CDATA[connaître le format, codec et autres infos essentielles d'une vidéo avec ffmpeg.]]></description>
+				<content:encoded><![CDATA[<p>Des fois il arrive qu&#8217;on ai besoin de savoir à quel type de vidéo on a affaire, ses codec videos, audio, sa résolution ou encore sa durée.</p>
+<p>Avec ffmpeg on peut obtenir tout ça très simplement à l&#8217;aide de l&#8217;option <em><strong>&#8220;i&#8221;</strong></em>:</p>
+<pre lang="bash">
+ffmpeg -i 1.mp4
+</pre>
+<pre lang="bash">
+ffmpeg version N-39738-g8274b21 Copyright (c) 2000-2012 the FFmpeg developers
+  built on Apr 13 2012 13:46:48 with gcc 4.1.2 20080704 (Red Hat 4.1.2-51)
+  configuration: --enable-gpl --enable-postproc 
+--enable-swscale --enable-avfilter 
+--enable-libmp3lame --enable-libvorbis 
+--enable-libdirac --enable-libfaac 
+--enable-libx264 --enable-nonfree 
+--mandir=/opt/local/share/man --enable-shared --enable-pthreads
+  libavutil      51. 46.100 / 51. 46.100
+  libavcodec     54. 14.101 / 54. 14.101
+  libavformat    54.  3.100 / 54.  3.100
+  libavdevice    53.  4.100 / 53.  4.100
+  libavfilter     2. 67.101 /  2. 67.101
+  libswscale      2.  1.100 /  2.  1.100
+  libswresample   0. 11.100 /  0. 11.100
+  libpostproc    52.  0.100 / 52.  0.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '1.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    creation_time   : 2011-10-30 14:03:08
+    encoder         : Lavf54.3.100
+  Duration: 00:03:02.50, start: 0.000000, bitrate: 617 kb/s
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p, 640x360, 481 kb/s, 29.97 fps, 29.97 tbr, 30k tbn, 59.94 tbc
+    Metadata:
+      creation_time   : 2011-10-30 14:03:08
+      handler_name    : VideoHandler
+    Stream #0:1(und): Audio: aac (mp4a / 0x6134706D), 44100 Hz, stereo, s16, 127 kb/s
+    Metadata:
+      creation_time   : 2011-10-30 14:03:08
+      handler_name    : SoundHandler
+</pre>
+<p>Si l&#8217;on veut récupérer juste une partie des infos comme la durée on peut faire comme ceci:</p>
+<pre lang="bash">
+ffmpeg -i 1.mp4 2>&1 | gawk 'match($0, /Duration: (.[^,]*)/, matches) {print matches[1]}' 
+00:03:02.50
+</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/obtenir-les-infos-dune-video-avec-ffmpeg/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">394</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/04/winff-gui-ffmpeg-L-4.jpeg" length="49361" type="image/jpg" />	</item>
+	</channel>
+</rss>

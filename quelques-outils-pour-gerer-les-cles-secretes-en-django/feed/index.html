@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Quelques outils pour gérer les clés secrètes en Django</title>
+	<atom:link href="http://sametmax.com/quelques-outils-pour-gerer-les-cles-secretes-en-django/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/quelques-outils-pour-gerer-les-cles-secretes-en-django/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Matthieu</title>
+		<link>http://sametmax.com/quelques-outils-pour-gerer-les-cles-secretes-en-django/#comment-185899</link>
+		<dc:creator><![CDATA[Matthieu]]></dc:creator>
+		<pubDate>Mon, 27 Feb 2017 11:51:24 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=22504#comment-185899</guid>
+		<description><![CDATA[M&#039;étant rendu compte que j&#039;avais pas mal de choses en commun dans mes différents projets django, je me suis fait une surcouche, qui permet entre autres de s&#039;occuper facilement des settings.
+
+Ma surcouche définit pas mal de settings par défaut (a priori viables, genre &lt;code&gt;USE_TZ = True&lt;/code&gt;), ensuite mon projet donne d&#039;autres settings (ou écrase certains précédents) et je cherche enfin dans des fichiers de conf (./local_settings.{py&#124;ini} et $VIRTUALENV/etc/monprojet/settings.{py&#124;ini}). On a ensuite une fusion de ces 6 différentes sources de settings.
+
+Au final :
+
+
+la grande majorité des settings sont définis une seule fois dans mon socle applicatif,
+quelques settings sont overridés dans chaque projet (parfois seulement 3 ou 4),
+en dév&#039;, j&#039;ai uniquement un fichier supplémentaire (local_settings.py) à la racine du projet contenant en général &lt;code&gt;DEBUG=True&lt;/code&gt;,
+quand je déploie (avec &lt;code&gt;pip install monprojet&lt;/code&gt;, rien de plus), je dois écrire un fichier de conf&#039; normal (au format .ini), sachant que j&#039;ai une commande Django qui me donne son emplacement et son contenu avec les valeurs actuelles,
+je n&#039;ai plus à gérer plusieurs fichiers de settings avec 99% de choses en commun et qu&#039;il faut mettre à jour à chaque modif,
+les mises à jour se font via &lt;code&gt;pip install monprojet --upgrade&lt;/code&gt; (avec migrate et collecstatic) et n&#039;affectent pas le fichier de conf local. 
+
+
+Après la fusion, il y a une analyse des settings, pour faire des références entre settings, créer automatiquement des dossiers, ... sachant que toutes les strings sont par défaut interprétées comme des &lt;code&gt;string.format&lt;/code&gt;.
+
+Par exemple, les settings fournis par mon socle définissent :
+
+&lt;pre&gt;DATABASES = {&#039;default&#039;: {
+    &#039;ENGINE&#039;: CallableSetting(database_engine, &#039;DATABASE_ENGINE&#039;), &#039;NAME&#039;: &#039;{DATABASE_NAME}&#039;, &#039;USER&#039;: &#039;{DATABASE_USER}&#039;,
+    &#039;PASSWORD&#039;: &#039;{DATABASE_PASSWORD}&#039;, &#039;HOST&#039;: &#039;{DATABASE_HOST}&#039;, &#039;PORT&#039;: &#039;{DATABASE_PORT}&#039;},
+}&lt;/pre&gt;
+
+Quand je déploie, j&#039;ai uniquement à écraser DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD, DATABASE_HOST et DATABASE_PORT dans le fichier de settings local (les valeurs par défaut utilisent du sqlite, histoire d&#039;avoir un truc utilisable par défaut).
+
+J&#039;ai également une liste de correspondances entre les settings Python à personnaliser (genre DATABASE_NAME) et le format .ini (&lt;code&gt;database.name&lt;/code&gt;, pour chercher l&#039;option &lt;code&gt;name&lt;/code&gt; dans la section &lt;code&gt;[database]&lt;/code&gt;).
+
+Grâce à la possibilité d&#039;appeler du code après la fusion, je peux faire des choses assez complexes : si je définis les coordonnées Redis dans la section &lt;code&gt;[cache]&lt;/code&gt; ou celles du LDAP dans la section &lt;code&gt;[auth]&lt;/code&gt;, j&#039;ajoute les packages à &lt;code&gt;INSTALLED_APPS&lt;/code&gt; et je vérifie que les packages sont installés.
+
+Et pour revenir au sujet, &lt;code&gt;SECRET_KEY&lt;/code&gt; est défini par un callable qui tente de lire un fichier, et s&#039;il n&#039;existe pas, le crée en générant son contenu =&#062; une nouvelle clef est générée lors de chaque déploiement et reste persistante sur la machine, de façon transparente.
+]]></description>
+		<content:encoded><![CDATA[<p>M&#8217;étant rendu compte que j&#8217;avais pas mal de choses en commun dans mes différents projets django, je me suis fait une surcouche, qui permet entre autres de s&#8217;occuper facilement des settings.</p>
+<p>Ma surcouche définit pas mal de settings par défaut (a priori viables, genre <code>USE_TZ = True</code>), ensuite mon projet donne d&#8217;autres settings (ou écrase certains précédents) et je cherche enfin dans des fichiers de conf (./local_settings.{py|ini} et $VIRTUALENV/etc/monprojet/settings.{py|ini}). On a ensuite une fusion de ces 6 différentes sources de settings.</p>
+<p>Au final :</p>
+<p>la grande majorité des settings sont définis une seule fois dans mon socle applicatif,<br />
+quelques settings sont overridés dans chaque projet (parfois seulement 3 ou 4),<br />
+en dév&#8217;, j&#8217;ai uniquement un fichier supplémentaire (local_settings.py) à la racine du projet contenant en général <code>DEBUG=True</code>,<br />
+quand je déploie (avec <code>pip install monprojet</code>, rien de plus), je dois écrire un fichier de conf&#8217; normal (au format .ini), sachant que j&#8217;ai une commande Django qui me donne son emplacement et son contenu avec les valeurs actuelles,<br />
+je n&#8217;ai plus à gérer plusieurs fichiers de settings avec 99% de choses en commun et qu&#8217;il faut mettre à jour à chaque modif,<br />
+les mises à jour se font via <code>pip install monprojet --upgrade</code> (avec migrate et collecstatic) et n&#8217;affectent pas le fichier de conf local. </p>
+<p>Après la fusion, il y a une analyse des settings, pour faire des références entre settings, créer automatiquement des dossiers, &#8230; sachant que toutes les strings sont par défaut interprétées comme des <code>string.format</code>.</p>
+<p>Par exemple, les settings fournis par mon socle définissent :</p>
+<pre>DATABASES = {'default': {
+    'ENGINE': CallableSetting(database_engine, 'DATABASE_ENGINE'), 'NAME': '{DATABASE_NAME}', 'USER': '{DATABASE_USER}',
+    'PASSWORD': '{DATABASE_PASSWORD}', 'HOST': '{DATABASE_HOST}', 'PORT': '{DATABASE_PORT}'},
+}</pre>
+<p>Quand je déploie, j&#8217;ai uniquement à écraser DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD, DATABASE_HOST et DATABASE_PORT dans le fichier de settings local (les valeurs par défaut utilisent du sqlite, histoire d&#8217;avoir un truc utilisable par défaut).</p>
+<p>J&#8217;ai également une liste de correspondances entre les settings Python à personnaliser (genre DATABASE_NAME) et le format .ini (<code>database.name</code>, pour chercher l&#8217;option <code>name</code> dans la section <code>[database]</code>).</p>
+<p>Grâce à la possibilité d&#8217;appeler du code après la fusion, je peux faire des choses assez complexes : si je définis les coordonnées Redis dans la section <code>[cache]</code> ou celles du LDAP dans la section <code>[auth]</code>, j&#8217;ajoute les packages à <code>INSTALLED_APPS</code> et je vérifie que les packages sont installés.</p>
+<p>Et pour revenir au sujet, <code>SECRET_KEY</code> est défini par un callable qui tente de lire un fichier, et s&#8217;il n&#8217;existe pas, le crée en générant son contenu =&gt; une nouvelle clef est générée lors de chaque déploiement et reste persistante sur la machine, de façon transparente.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: little-indian</title>
+		<link>http://sametmax.com/quelques-outils-pour-gerer-les-cles-secretes-en-django/#comment-185819</link>
+		<dc:creator><![CDATA[little-indian]]></dc:creator>
+		<pubDate>Fri, 24 Feb 2017 12:41:05 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=22504#comment-185819</guid>
+		<description><![CDATA[@paulo: Tes variables d&#039;environnements sont sauvegardées du moment que tu les mets dans un fichier et que tu sources celui-ci au démarage de ton contexte d&#039;exécution .... pour cela plusieurs possibilités :
+
+- les mettre dans le bashrc de ton utilisateur
+
+- les mettre dans un fichier X ou Y et sourcer celui-ci à la volée et ensuite lancer ton appli
+
+- etc...
+
+c&#039;est le même mécanisme que quand tu utilises des virtualenv par exemple...
+]]></description>
+		<content:encoded><![CDATA[<p>@paulo: Tes variables d&#8217;environnements sont sauvegardées du moment que tu les mets dans un fichier et que tu sources celui-ci au démarage de ton contexte d&#8217;exécution &#8230;. pour cela plusieurs possibilités :</p>
+<p>&#8211; les mettre dans le bashrc de ton utilisateur</p>
+<p>&#8211; les mettre dans un fichier X ou Y et sourcer celui-ci à la volée et ensuite lancer ton appli</p>
+<p>&#8211; etc&#8230;</p>
+<p>c&#8217;est le même mécanisme que quand tu utilises des virtualenv par exemple&#8230;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: paulo</title>
+		<link>http://sametmax.com/quelques-outils-pour-gerer-les-cles-secretes-en-django/#comment-185814</link>
+		<dc:creator><![CDATA[paulo]]></dc:creator>
+		<pubDate>Fri, 24 Feb 2017 10:19:45 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=22504#comment-185814</guid>
+		<description><![CDATA[Une autre petite question,
+
+si une machine redémarre, les variables d&#039;environnements sont t&#039;elles sauvegardées?
+]]></description>
+		<content:encoded><![CDATA[<p>Une autre petite question,</p>
+<p>si une machine redémarre, les variables d&#8217;environnements sont t&#8217;elles sauvegardées?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Matthieu</title>
+		<link>http://sametmax.com/quelques-outils-pour-gerer-les-cles-secretes-en-django/#comment-185813</link>
+		<dc:creator><![CDATA[Matthieu]]></dc:creator>
+		<pubDate>Fri, 24 Feb 2017 09:30:34 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=22504#comment-185813</guid>
+		<description><![CDATA[J&#039;ai tenté de changer la clé, j&#039;ai cassé ma session en cours, mais j&#039;ai pu me reconnecter avec le même mot de passe.
+
+Peut être que ce sont des settings additionnels qui lient les MdP à la clé.
+]]></description>
+		<content:encoded><![CDATA[<p>J&#8217;ai tenté de changer la clé, j&#8217;ai cassé ma session en cours, mais j&#8217;ai pu me reconnecter avec le même mot de passe.</p>
+<p>Peut être que ce sont des settings additionnels qui lient les MdP à la clé.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: paulo</title>
+		<link>http://sametmax.com/quelques-outils-pour-gerer-les-cles-secretes-en-django/#comment-185800</link>
+		<dc:creator><![CDATA[paulo]]></dc:creator>
+		<pubDate>Thu, 23 Feb 2017 21:47:34 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=22504#comment-185800</guid>
+		<description><![CDATA[Merci à toi Max
+
+parfois les débutants, veulent absolument trouver des trucs simple avant les vrais dev lol
+]]></description>
+		<content:encoded><![CDATA[<p>Merci à toi Max</p>
+<p>parfois les débutants, veulent absolument trouver des trucs simple avant les vrais dev lol</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/quelques-outils-pour-gerer-les-cles-secretes-en-django/#comment-185798</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 23 Feb 2017 21:32:09 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=22504#comment-185798</guid>
+		<description><![CDATA[&lt;p&gt;Ce n&#039;est pas une question de visibilité, c&#039;est juste pour éviter de gérer la génération de la clé sur chaque poste. Si tu as 3 dev, 3 serveurs de prod, un de dev et un de staging, ça fait 8 clés. Si tu utilise ça la clé est générée automatiquement et tu n&#039;as pas à t&#039;en soucier.&lt;/p&gt;
+
+&lt;p&gt;Ca évite aussi l&#039;erreur classique de la clé commitée dans git par le stagiaire si secret_key est déjà dans le .gitignore ou la mise en prod où on oublie la clé.&lt;/p&gt;
+
+&lt;p&gt;Enfin on ne doit surtout pas changer la clé à chanque lancement, car les mots de passes en bdd de django.contrib.auth sont hashés avec la clé, et un changement invaliderait tous les mots de passe.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Ce n&#8217;est pas une question de visibilité, c&#8217;est juste pour éviter de gérer la génération de la clé sur chaque poste. Si tu as 3 dev, 3 serveurs de prod, un de dev et un de staging, ça fait 8 clés. Si tu utilise ça la clé est générée automatiquement et tu n&#8217;as pas à t&#8217;en soucier.</p>
+<p>Ca évite aussi l&#8217;erreur classique de la clé commitée dans git par le stagiaire si secret_key est déjà dans le .gitignore ou la mise en prod où on oublie la clé.</p>
+<p>Enfin on ne doit surtout pas changer la clé à chanque lancement, car les mots de passes en bdd de django.contrib.auth sont hashés avec la clé, et un changement invaliderait tous les mots de passe.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: paulo</title>
+		<link>http://sametmax.com/quelques-outils-pour-gerer-les-cles-secretes-en-django/#comment-185797</link>
+		<dc:creator><![CDATA[paulo]]></dc:creator>
+		<pubDate>Thu, 23 Feb 2017 20:42:56 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=22504#comment-185797</guid>
+		<description><![CDATA[Salut Sam,
+
+Désolé suis un débutant, mais une question me taraude.
+
+quelle différence cela fait t&#039;il entre un clef visible ( SECRET_KEY =&#039;bvqsdhkjh...&quot;), et une clef à priori cachée (SECRET_KEY=get_secret_key(&#039;secret_key&#039;))
+
+ne peut t&#039;on pas de toute façon affiché SCRET_KEY?
+
+et pourquoi du coup ne pas faire en python 3.6 :
+
+from secrets import token_urlsafe
+
+SECRET_KEY = token_urlsafe(37)
+
+la clef serait différente à chaque démmarage
+
+merci d&#039;avance
+]]></description>
+		<content:encoded><![CDATA[<p>Salut Sam,</p>
+<p>Désolé suis un débutant, mais une question me taraude.</p>
+<p>quelle différence cela fait t&#8217;il entre un clef visible ( SECRET_KEY =&#8217;bvqsdhkjh&#8230;&#8221;), et une clef à priori cachée (SECRET_KEY=get_secret_key(&#8216;secret_key&#8217;))</p>
+<p>ne peut t&#8217;on pas de toute façon affiché SCRET_KEY?</p>
+<p>et pourquoi du coup ne pas faire en python 3.6 :</p>
+<p>from secrets import token_urlsafe</p>
+<p>SECRET_KEY = token_urlsafe(37)</p>
+<p>la clef serait différente à chaque démmarage</p>
+<p>merci d&#8217;avance</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/quelques-outils-pour-gerer-les-cles-secretes-en-django/#comment-185791</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 23 Feb 2017 16:01:40 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=22504#comment-185791</guid>
+		<description><![CDATA[&lt;p&gt;@luxcem : secret.choice est un alias de ce que j&#039;utilise dans secret_key(). Mais c&#039;est vrai que c&#039;est une bonne pratique de l&#039;utiliser si on sait qu&#039;il est dispo.&lt;/p&gt;
+
+&lt;p&gt;@Oscar LASM: c&#039;est bien si tu utilise les env vars. Mais je m&#039;appercois de plus en plus que 90% des devs ne savent même pas ce que c&#039;est. Déjà sous windows...&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>@luxcem : secret.choice est un alias de ce que j&#8217;utilise dans secret_key(). Mais c&#8217;est vrai que c&#8217;est une bonne pratique de l&#8217;utiliser si on sait qu&#8217;il est dispo.</p>
+<p>@Oscar LASM: c&#8217;est bien si tu utilise les env vars. Mais je m&#8217;appercois de plus en plus que 90% des devs ne savent même pas ce que c&#8217;est. Déjà sous windows&#8230;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oscar LASM</title>
+		<link>http://sametmax.com/quelques-outils-pour-gerer-les-cles-secretes-en-django/#comment-185790</link>
+		<dc:creator><![CDATA[Oscar LASM]]></dc:creator>
+		<pubDate>Thu, 23 Feb 2017 15:44:05 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=22504#comment-185790</guid>
+		<description><![CDATA[Salut,
+
+Moi j&#039;utilise django-environ pour gérer mes settings
+]]></description>
+		<content:encoded><![CDATA[<p>Salut,</p>
+<p>Moi j&#8217;utilise django-environ pour gérer mes settings</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: luxcem</title>
+		<link>http://sametmax.com/quelques-outils-pour-gerer-les-cles-secretes-en-django/#comment-185789</link>
+		<dc:creator><![CDATA[luxcem]]></dc:creator>
+		<pubDate>Thu, 23 Feb 2017 15:29:07 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=22504#comment-185789</guid>
+		<description><![CDATA[Au passage on peut noter l’ajout du module &lt;strong&gt;&lt;a href=&quot;https://docs.python.org/3.6/library/secrets.html&quot; rel=&quot;nofollow&quot;&gt;secrets&lt;/a&gt;&lt;/strong&gt; dans la 3.6.
+]]></description>
+		<content:encoded><![CDATA[<p>Au passage on peut noter l’ajout du module <strong><a href="https://docs.python.org/3.6/library/secrets.html" rel="nofollow">secrets</a></strong> dans la 3.6.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

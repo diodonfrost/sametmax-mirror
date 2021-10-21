@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Accepter un ID mais retourner un objet pour les liens de Django Rest Framework</title>
+	<atom:link href="http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/#comment-188408</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sun, 23 Jul 2017 14:07:14 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=23385#comment-188408</guid>
+		<description><![CDATA[&lt;p&gt;@buffalo974 : crayon et papier d&#039;abord :)&lt;/p&gt;
+
+&lt;p&gt;Après lire le code source d&#039;un projet externe ça demande vraiment d&#039;être expérimenté, faut pas déconner. Souvent on entend des gens dire &quot;lisez les sources ça fait progresser&quot;, mais y a un fossé entre pouvoir jeter un coup d&#039;oeil à un fichier et comprendre toutes les implications dans un projet. Pour ce dernier, il faut avoir codé pas mal de projets soi-même.&lt;/p&gt;
+
+&lt;p&gt;Pour ce cas là ça m&#039;a pris une bonne demi-heure à une heure. Je savais déjà ce que je voulais faire car j&#039;avais cherché longtemps un moyen de le faire. Donc j&#039;ai juste regardé le code source du truc qui me le permettait pas, et j&#039;ai tenté de le modifier jusqu&#039;à ce que ça marche dans un test unitaire à l&#039;arrache. La tricherie c&#039;est que DRF utilise pas mal de design patterns que je connais bien, et ça change tout car quand je le vois faire quelque chose, ça me parle. D&#039;autant que j&#039;avais déjà regardé le code source de DRF dans des missions précédents et ce n&#039;était pas une base non familière.&lt;/p&gt;
+
+&lt;p&gt;@lollo : DRF marchera très bien pour ça, on peut tout faire sans ORM. Mais vue que tu fais un sous appel à un autre système derrière pour des raisons de perfs tu voudras peut être plutôt taper dans un framework asynchrone. Cherche un micro framework tout simple si c&#039;est le cas. L&#039;avantage de DRF c&#039;est qu&#039;il gère toute l&#039;authentification, et c&#039;est pas rien sur une API. Le désavantage c&#039;est que c&#039;est un gros morceau.&lt;/p&gt;
+
+&lt;p&gt;@Pyglouthon : c&#039;est pas faux :)&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>@buffalo974 : crayon et papier d&#8217;abord :)</p>
+<p>Après lire le code source d&#8217;un projet externe ça demande vraiment d&#8217;être expérimenté, faut pas déconner. Souvent on entend des gens dire &#8220;lisez les sources ça fait progresser&#8221;, mais y a un fossé entre pouvoir jeter un coup d&#8217;oeil à un fichier et comprendre toutes les implications dans un projet. Pour ce dernier, il faut avoir codé pas mal de projets soi-même.</p>
+<p>Pour ce cas là ça m&#8217;a pris une bonne demi-heure à une heure. Je savais déjà ce que je voulais faire car j&#8217;avais cherché longtemps un moyen de le faire. Donc j&#8217;ai juste regardé le code source du truc qui me le permettait pas, et j&#8217;ai tenté de le modifier jusqu&#8217;à ce que ça marche dans un test unitaire à l&#8217;arrache. La tricherie c&#8217;est que DRF utilise pas mal de design patterns que je connais bien, et ça change tout car quand je le vois faire quelque chose, ça me parle. D&#8217;autant que j&#8217;avais déjà regardé le code source de DRF dans des missions précédents et ce n&#8217;était pas une base non familière.</p>
+<p>@lollo : DRF marchera très bien pour ça, on peut tout faire sans ORM. Mais vue que tu fais un sous appel à un autre système derrière pour des raisons de perfs tu voudras peut être plutôt taper dans un framework asynchrone. Cherche un micro framework tout simple si c&#8217;est le cas. L&#8217;avantage de DRF c&#8217;est qu&#8217;il gère toute l&#8217;authentification, et c&#8217;est pas rien sur une API. Le désavantage c&#8217;est que c&#8217;est un gros morceau.</p>
+<p>@Pyglouthon : c&#8217;est pas faux :)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Pyglouthon</title>
+		<link>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/#comment-187710</link>
+		<dc:creator><![CDATA[Pyglouthon]]></dc:creator>
+		<pubDate>Tue, 13 Jun 2017 06:01:18 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=23385#comment-187710</guid>
+		<description><![CDATA[C&#039;est certes pratique d&#039;avoir ce petit helper dans le projet mais la solution de Fabs me semble simple et efficace.
+
+Je ne fais plus trop de Django depuis un moment mais sur mes projets Flask + marshmallow je définis aussi mon schema (~serializer) avec des champs en dump_only et d&#039;autres en read_only. T&#039;es pas tant que ça une grosse feignasse vu comme tu te fais chier à aller fouiner le code source pour faire ta tambouille. T&#039;es surtout un bon geek curieux, un macgyver du Python web :-)
+
+Faut vraiment que je sois bloqué par les limites du package ou que la doc soit inexistantes pour en arriver là. Bon c&#039;est vrai, ça arrive souvent avec les packages pour flask.
+]]></description>
+		<content:encoded><![CDATA[<p>C&#8217;est certes pratique d&#8217;avoir ce petit helper dans le projet mais la solution de Fabs me semble simple et efficace.</p>
+<p>Je ne fais plus trop de Django depuis un moment mais sur mes projets Flask + marshmallow je définis aussi mon schema (~serializer) avec des champs en dump_only et d&#8217;autres en read_only. T&#8217;es pas tant que ça une grosse feignasse vu comme tu te fais chier à aller fouiner le code source pour faire ta tambouille. T&#8217;es surtout un bon geek curieux, un macgyver du Python web :-)</p>
+<p>Faut vraiment que je sois bloqué par les limites du package ou que la doc soit inexistantes pour en arriver là. Bon c&#8217;est vrai, ça arrive souvent avec les packages pour flask.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: lollo</title>
+		<link>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/#comment-187702</link>
+		<dc:creator><![CDATA[lollo]]></dc:creator>
+		<pubDate>Mon, 12 Jun 2017 20:06:31 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=23385#comment-187702</guid>
+		<description><![CDATA[Bonjour,
+
+Trop bien cet article.
+
+J&#039;ai un truc a faire depuis des mois et je m&#039;y suis pas encore attelé.. surement car j&#039;ai pas encore la BONNE solution.
+
+J&#039;ai un point API json_rcp assez sale et verbeux auquel je peux pas toucher, car utilisé dans une autre condition.
+
+Je veux donc faire un bridge API  json_rpc qui expose des methodes faisant intervenir plusieurs appel json, changeant la structure et filtrant les data.
+
+je me demande quel est le top framework REST pour faire ca.. Car les solutions que j&#039;ai trouvé sont assez dependante de l&#039;ORM
+]]></description>
+		<content:encoded><![CDATA[<p>Bonjour,</p>
+<p>Trop bien cet article.</p>
+<p>J&#8217;ai un truc a faire depuis des mois et je m&#8217;y suis pas encore attelé.. surement car j&#8217;ai pas encore la BONNE solution.</p>
+<p>J&#8217;ai un point API json_rcp assez sale et verbeux auquel je peux pas toucher, car utilisé dans une autre condition.</p>
+<p>Je veux donc faire un bridge API  json_rpc qui expose des methodes faisant intervenir plusieurs appel json, changeant la structure et filtrant les data.</p>
+<p>je me demande quel est le top framework REST pour faire ca.. Car les solutions que j&#8217;ai trouvé sont assez dependante de l&#8217;ORM</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: buffalo974</title>
+		<link>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/#comment-187679</link>
+		<dc:creator><![CDATA[buffalo974]]></dc:creator>
+		<pubDate>Sun, 11 Jun 2017 20:57:24 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=23385#comment-187679</guid>
+		<description><![CDATA[C&#039; est quoi ta methodologie quand tu t&#039;attaques à un probleme costaud ?
+
+Tu passes simplement ta paume sur la doc à la Matrix ?
+
+Ou tu fais des dessins au crayon, ou tu utilises un UML generator pour visualiser vite fait la tuyauterie ?
+
+quand je regardes des codes sources sur nullege, arrivé en bas du fichier, ma mémoire et déjà saturée depuis 5 minutes... Alors pour trouver un hack , jte racontes pas le fossé.
+
+Combien de temps ça t&#039;a pris à cogiter pour ce cas en particulier ?
+]]></description>
+		<content:encoded><![CDATA[<p>C&#8217; est quoi ta methodologie quand tu t&#8217;attaques à un probleme costaud ?</p>
+<p>Tu passes simplement ta paume sur la doc à la Matrix ?</p>
+<p>Ou tu fais des dessins au crayon, ou tu utilises un UML generator pour visualiser vite fait la tuyauterie ?</p>
+<p>quand je regardes des codes sources sur nullege, arrivé en bas du fichier, ma mémoire et déjà saturée depuis 5 minutes&#8230; Alors pour trouver un hack , jte racontes pas le fossé.</p>
+<p>Combien de temps ça t&#8217;a pris à cogiter pour ce cas en particulier ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Blob</title>
+		<link>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/#comment-187677</link>
+		<dc:creator><![CDATA[Blob]]></dc:creator>
+		<pubDate>Sun, 11 Jun 2017 16:05:28 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=23385#comment-187677</guid>
+		<description><![CDATA[&lt;p&gt;&lt;span class=&quot;merci&quot;&gt;&lt;/span&gt;Oui, j&#039;ajoute de l&#039;information alors ;-)&lt;/p&gt;
+
+&lt;p&gt;Les corrections sont au niveau de la méthode &lt;code&gt;from_serializer&lt;/code&gt; et de l&#039;appel dans le serializer.&lt;/p&gt;
+
+&lt;p&gt;Dans la méthode &lt;code&gt;from_serializer&lt;/code&gt;, pour respecter la méthode &lt;b&gt;type&lt;/b&gt;, il faut que le 2ème argument soit un tuple: &lt;code&gt;[cls] -&#062; (cls,)&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Comme on passe une classe et non une instance, on ne peut pas faire &lt;code&gt;serializer.&lt;strong&gt;class&lt;/strong&gt;.name&lt;/code&gt; mais plutôt &lt;code&gt;serializer.__name__&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Enfin au niveau du serializer, on utilise la méthode de classe &lt;code&gt;from_serializer&lt;/code&gt; à laquelle on passe la classe du serializer à utiliser, ce qui nous donne une nouvelle classe de laquelle on appelle le constructeur:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;bar = AsymetricRelatedField.from_serializer(BarSerializer)()&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;En tout cas, ce que je n&#039;avais pas mis dans mon premier post, l&#039;idée est vraiment très bonne ! En plus elle tombe à pic et solutionne un problème que j&#039;avais la veille.&lt;/p&gt;
+
+&lt;p&gt;Dommage que la proposition ne soit pas passée et même si je comprend les raisons, on fait bien ce qu&#039;on veut avec nos APIS !&lt;/p&gt;
+
+&lt;p&gt;Encore un bon article donc :-)&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p><span class="merci"></span>Oui, j&#8217;ajoute de l&#8217;information alors ;-)</p>
+<p>Les corrections sont au niveau de la méthode <code>from_serializer</code> et de l&#8217;appel dans le serializer.</p>
+<p>Dans la méthode <code>from_serializer</code>, pour respecter la méthode <b>type</b>, il faut que le 2ème argument soit un tuple: <code>[cls] -&gt; (cls,)</code></p>
+<p>Comme on passe une classe et non une instance, on ne peut pas faire <code>serializer.<strong>class</strong>.name</code> mais plutôt <code>serializer.__name__</code></p>
+<p>Enfin au niveau du serializer, on utilise la méthode de classe <code>from_serializer</code> à laquelle on passe la classe du serializer à utiliser, ce qui nous donne une nouvelle classe de laquelle on appelle le constructeur:</p>
+<p><code>bar = AsymetricRelatedField.from_serializer(BarSerializer)()</code></p>
+<p>En tout cas, ce que je n&#8217;avais pas mis dans mon premier post, l&#8217;idée est vraiment très bonne ! En plus elle tombe à pic et solutionne un problème que j&#8217;avais la veille.</p>
+<p>Dommage que la proposition ne soit pas passée et même si je comprend les raisons, on fait bien ce qu&#8217;on veut avec nos APIS !</p>
+<p>Encore un bon article donc :-)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/#comment-187665</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sat, 10 Jun 2017 15:47:57 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=23385#comment-187665</guid>
+		<description><![CDATA[&lt;p&gt;Il faut que tu précise ce qui ne marchait pas et ce que tu as corrigé.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Il faut que tu précise ce qui ne marchait pas et ce que tu as corrigé.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Blob</title>
+		<link>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/#comment-187647</link>
+		<dc:creator><![CDATA[Blob]]></dc:creator>
+		<pubDate>Fri, 09 Jun 2017 13:53:27 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=23385#comment-187647</guid>
+		<description><![CDATA[Bon comme ça ne marchait pas directement chez moi, je poste la version &quot;corrigée&quot;:
+
+D&#039;un côté dans un &lt;code&gt;helpers.py&lt;/code&gt;:
+
+&lt;code&gt;
+
+from collections import OrderedDict
+
+from rest_framework import serializers
+
+class AsymetricRelatedField(serializers.PrimaryKeyRelatedField):
+
+&lt;pre&gt;&lt;code&gt;# en lecture, je veux l&#039;objet complet, pas juste l&#039;id
+def to_representation(self, value):
+    return self.serializer_class(value).data
+
+# petite astuce perso et pas obligatoire pour permettre de taper moins
+# de code: lui faire prendre le queryset du model du serializer
+# automatiquement. Je suis lazy
+def get_queryset(self):
+    if self.queryset:
+        return self.queryset
+    return self.serializer_class.Meta.model.objects.all()
+
+# Get choices est utilisé par l&#039;autodoc DRF et s&#039;attend à ce que
+# to_representation() retourne un ID ce qui fait tout planter. On
+# réécrit le truc pour utiliser item.pk au lieu de to_representation()
+def get_choices(self, cutoff=None):
+    queryset = self.get_queryset()
+    if queryset is None:
+        return {}
+
+    if cutoff is not None:
+        queryset = queryset[:cutoff]
+
+    return OrderedDict([
+        (
+            item.pk,
+            self.display_value(item)
+        )
+        for item in queryset
+    ])
+
+# DRF saute certaines validations quand il n&#039;y a que l&#039;id, et comme ce
+# n&#039;est pas le cas ici, tout plante. On désactive ça.
+def use_pk_only_optimization(self):
+    return False
+
+# Un petit constructeur pour générer le field depuis un serializer. lazy,
+# lazy, lazy...
+@classmethod
+def from_serializer(cls, serializer, name=None, args=(), kwargs={}):
+    if name is None:
+        name = f&quot;{serializer.__name__}AsymetricAutoField&quot;
+
+    return type(name, (cls,), {&quot;serializer_class&quot;: serializer})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;/code&gt;
+
+Et dans &lt;code&gt;serializers.py&lt;/code&gt;:
+
+&lt;code&gt;
+
+class FooSerializer(serializers.ModelSerializer):
+
+&lt;pre&gt;&lt;code&gt;bar = AsymetricRelatedField.from_serializer(BarSerializer)()
+
+class Meta:
+    model = Foo
+    field=(&#039;bar&#039;, &#039;name&#039;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;/code&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Bon comme ça ne marchait pas directement chez moi, je poste la version &#8220;corrigée&#8221;:</p>
+<p>D&#8217;un côté dans un <code>helpers.py</code>:</p>
+<p><code></p>
+<p>from collections import OrderedDict</p>
+<p>from rest_framework import serializers</p>
+<p>class AsymetricRelatedField(serializers.PrimaryKeyRelatedField):</p>
+<pre><code># en lecture, je veux l'objet complet, pas juste l'id
+def to_representation(self, value):
+    return self.serializer_class(value).data
+
+# petite astuce perso et pas obligatoire pour permettre de taper moins
+# de code: lui faire prendre le queryset du model du serializer
+# automatiquement. Je suis lazy
+def get_queryset(self):
+    if self.queryset:
+        return self.queryset
+    return self.serializer_class.Meta.model.objects.all()
+
+# Get choices est utilisé par l'autodoc DRF et s'attend à ce que
+# to_representation() retourne un ID ce qui fait tout planter. On
+# réécrit le truc pour utiliser item.pk au lieu de to_representation()
+def get_choices(self, cutoff=None):
+    queryset = self.get_queryset()
+    if queryset is None:
+        return {}
+
+    if cutoff is not None:
+        queryset = queryset[:cutoff]
+
+    return OrderedDict([
+        (
+            item.pk,
+            self.display_value(item)
+        )
+        for item in queryset
+    ])
+
+# DRF saute certaines validations quand il n'y a que l'id, et comme ce
+# n'est pas le cas ici, tout plante. On désactive ça.
+def use_pk_only_optimization(self):
+    return False
+
+# Un petit constructeur pour générer le field depuis un serializer. lazy,
+# lazy, lazy...
+@classmethod
+def from_serializer(cls, serializer, name=None, args=(), kwargs={}):
+    if name is None:
+        name = f"{serializer.__name__}AsymetricAutoField"
+
+    return type(name, (cls,), {"serializer_class": serializer})
+</code></pre>
+<p></code></p>
+<p>Et dans <code>serializers.py</code>:</p>
+<p><code></p>
+<p>class FooSerializer(serializers.ModelSerializer):</p>
+<pre><code>bar = AsymetricRelatedField.from_serializer(BarSerializer)()
+
+class Meta:
+    model = Foo
+    field=('bar', 'name')
+</code></pre>
+<p></code></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Fabs</title>
+		<link>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/#comment-187644</link>
+		<dc:creator><![CDATA[Fabs]]></dc:creator>
+		<pubDate>Fri, 09 Jun 2017 12:55:52 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=23385#comment-187644</guid>
+		<description><![CDATA[Pour info, comme soumis dans le ticket, nous utilisons cette solution :
+
+&lt;pre&gt;
+class FooSerializer(serilizers.ModelSerializer):
+    
+    bar = BarSerializer(read_only=True)
+    bar_id = serializers.PrimaryKeyRelatedField(source=&#039;bar&#039;,  queryset=Bar.objects.all(), )
+
+    class Meta:
+
+        model = Foo
+        fields = (&#039;bar&#039;, &#039;bar_id&#039;, )
+
+&lt;/pre&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Pour info, comme soumis dans le ticket, nous utilisons cette solution :</p>
+<pre>
+class FooSerializer(serilizers.ModelSerializer):
+    
+    bar = BarSerializer(read_only=True)
+    bar_id = serializers.PrimaryKeyRelatedField(source='bar',  queryset=Bar.objects.all(), )
+
+    class Meta:
+
+        model = Foo
+        fields = ('bar', 'bar_id', )
+
+</pre>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Mask</title>
+		<link>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/#comment-187632</link>
+		<dc:creator><![CDATA[Mask]]></dc:creator>
+		<pubDate>Thu, 08 Jun 2017 12:46:31 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=23385#comment-187632</guid>
+		<description><![CDATA[Ha bah.. Il tombe à pic cet article..
+
+Je m&#039;embête depuis ce matin à trouver un truc propre, j&#039;étais parti sur la solution 1, mais effectivement, refaire l&#039;écriture à la main, c&#039;est pas la joie.
+
+Merci pour l&#039;astuce.
+]]></description>
+		<content:encoded><![CDATA[<p>Ha bah.. Il tombe à pic cet article..</p>
+<p>Je m&#8217;embête depuis ce matin à trouver un truc propre, j&#8217;étais parti sur la solution 1, mais effectivement, refaire l&#8217;écriture à la main, c&#8217;est pas la joie.</p>
+<p>Merci pour l&#8217;astuce.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/#comment-187630</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 08 Jun 2017 10:37:13 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=23385#comment-187630</guid>
+		<description><![CDATA[&lt;p&gt;Glop&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Glop</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

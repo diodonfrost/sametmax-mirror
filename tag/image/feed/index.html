@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>image &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/image/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Pour vos thumbnails, ImageMagick à la rescousse</title>
+		<link>http://sametmax.com/pour-vos-thumbnails-imagemagick-a-la-rescousse/</link>
+		<comments>http://sametmax.com/pour-vos-thumbnails-imagemagick-a-la-rescousse/#comments</comments>
+		<pubDate>Sun, 01 Dec 2013 08:11:42 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[image]]></category>
+		<category><![CDATA[imagemagick]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[thumbnails]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8141</guid>
+		<description><![CDATA[<a href="http://www.imagemagick.org/">ImageMagick</a> est la solution de manipulation d'images la plus souple et versatile à disposition. Après pas mal de tests, Max en avait conclu qu'appeler la lib avec un bon subprocess était simplement plus rapide et donnait des résultats de meilleure qualité que d'utiliser PIL en Python ou GD en PHP.]]></description>
+				<content:encoded><![CDATA[<p><a href="http://www.imagemagick.org/">ImageMagick</a> est la solution de manipulation d&#8217;images la plus souple et versatile à disposition. Après pas mal de tests, Max en avait conclu qu&#8217;appeler la lib avec un bon <a href="http://docs.python.org/2/library/subprocess.html">subprocess</a> était simplement plus rapide et donnait des résultats de meilleure qualité que d&#8217;utiliser PIL en Python ou GD en PHP.</p>
+<p>Et je peux vous dire qu&#8217;il en a fait des tests pour obtenir le thumbnail des nichons parfait. C&#8217;est un perfectionniste quand il s&#8217;agit des tétons.</p>
+<p>En général, on trouve ImageMagick dans les dépôts. Par exemple, sous debian :</p>
+<pre lang="bash">sudo apt-get install imagemagick</pre>
+<p>Mais il n&#8217;est pas rare que Max compile la bête histoire d&#8217;avoir la même version partout :</p>
+<pre lang="bash">wget http://mirror.checkdomain.de/imagemagick/ImageMagick-6.8.7-4.tar.gz ; tar -xvf ImageMagick-6.8.7-4.tar.gz ; cd ImageMagick-6.8.7-4
+./configure
+make && make install
+ln -s /usr/local/bin/convert /usr/bin/convert
+ln -s /usr/local/bin/identify /usr/bin/identify</pre>
+<p>Après tout ça, vous aurez accès à plusieurs commandes, qui permettent des manipulations d&#8217;images diverses.</p>
+<p>Par exemple, <code>identify</code> permet de récupérer des informations sur l&#8217;image telles que le format, la profondeur des couleurs&#8230; Nous on l&#8217;utilise surtout pour récupérer la taille :</p>
+<pre lang="bash">identify -format "%[fx:w],%[fx:h]" "chemin/vers/image"</pre>
+<p>On peut utiliser un wrapper tel que <a href="http://docs.wand-py.org">wand</a> pour utiliser ça depuis Python. Mais il est très facile de se faire un wrapper vite fait à la main :</p>
+<pre lang="python">import envoy
+from minibelt import normalize
+
+class ImageMagicError(Exception):
+    def __init__(self, result, encoding):
+        msg = normalize(result.std_err.decode(encoding))
+        super(ImageMagicError, self).__init__(msg)
+
+def size(img, encoding=sys.stdout.encoding):
+    r = envoy.run('identify -format "%[fx:w],%[fx:h]" "{}"'.format(img))
+
+    if r.status_code != 0:
+        raise ImageMagicError(r, encoding)
+
+    w, h = r.std_out.strip().split(',')
+    return int(w), int(h)</pre>
+<p>Notez que j&#8217;utilise <a href="https://github.com/sametmax/minibelt">minibelt</a> et <a href="https://github.com/kennethreitz/envoy/">envoy</a> (un wrapper pour subprocess), car je suis une grosse feignasse.</p>
+<p>Pour faire un thumbnail, la recette est plus compliquée, car ImageMagick est à l&#8217;image, ce que Perl est à la programmation. There’s_more_than_one_way_to_do_it ©.</p>
+<p>Au final, celui qui nous a donné le meilleur résultat en qualité est cette suite d&#8217;arcanes secrètes transmise d&#8217;oreille de druide à oreille de druide :</p>
+<pre lang="bash">convert chemin/image/originale -thumbnail largeurxhauteur^ -gravity center -extent largeurxhauteur -quality 80 chemin/vers/resultat.jpg
+</pre>
+<p>Ceci va redimensionner l&#8217;image en conservant le ratio, et si le résultat n&#8217;est pas adaptée aux dimensions finales, va en découper une partie tout en préservant le centre de l&#8217;image. La sortie sera un jpg avec un taux de qualité de 80%.</p>
+<p>Là encore, un petit wrapper ne fait pas de mal :</p>
+<pre lang="python">def thumb(img, width, heigth, output, crop=False, encoding=sys.stdout.encoding):
+    if crop:
+        if crop is True:
+            crop = 'center'
+        crop = "-gravity {} -extent {}x{}".format(crop, width, heigth)
+    else:
+        crop = ''
+
+    cmd = ("convert {img} -thumbnail {width}x{heigth}^ {crop} -quality 80 {output}").format(
+          img=img, width=width, heigth=heigth, crop=crop, output=output,
+    )
+
+    r =  envoy.run(cmd)
+
+    if r.status_code != 0:
+        raise ImageMagicError(r, encoding)
+
+    return r</pre>
+<p>Bref, ce genre de petit bricolage est loin d&#8217;être propre, mais il s&#8217;est montré fort robuste et efficace au fil des années. Quand on fait des dizaines de milliers de screenshots de films de cul tous les jours, c&#8217;est important :-)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/pour-vos-thumbnails-imagemagick-a-la-rescousse/feed/</wfw:commentRss>
+		<slash:comments>24</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8141</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/12/O0BuGUt.jpg" length="61903" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>rsync &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/rsync/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Connaître la version de Rsync</title>
+		<link>http://sametmax.com/connaitre-la-version-de-rsync/</link>
+		<comments>http://sametmax.com/connaitre-la-version-de-rsync/#comments</comments>
+		<pubDate>Sun, 23 Sep 2012 17:41:12 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[rsync]]></category>
+		<category><![CDATA[version]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2253</guid>
+		<description><![CDATA[connaître la version de Rsync.]]></description>
+				<content:encoded><![CDATA[<p>Rsync c&#8217;est un super prog pour synchroniser le contenu d&#8217;un serveur à un autre. Voir <a href="http://sametmax.com/rsync-ou-comment-transferer-du-gros-contenu-via-ssh/" title="Rsync ou comment transférer du gros contenu via ssh">transférer du gros contenu via ssh</a>.<br />
+Pour connaître la version présente sur votre système rentrez à l&#8217;invite de commande juste &#8220;rsync&#8221;. Et oui c&#8217;es tout con mais des fois on essais -V et autres commandes sans trouver.</p>
+<pre lang="bash">
+[max@toto]# rsync
+rsync  version 3.0.6  protocol version 30
+Copyright (C) 1996-2009 by Andrew Tridgell, Wayne Davison, and others.
+Web site: http://rsync.samba.org/
+Capabilities:
+    64-bit files, 64-bit inums, 64-bit timestamps, 64-bit long ints,
+    socketpairs, hardlinks, symlinks, IPv6, batchfiles, inplace,
+    append, ACLs, xattrs, iconv, symtimes
+</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/connaitre-la-version-de-rsync/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">2253</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/09/version.jpeg" length="542894" type="image/jpg" />	</item>
+		<item>
+		<title>Rsync ou comment transférer du gros contenu via ssh</title>
+		<link>http://sametmax.com/rsync-ou-comment-transferer-du-gros-contenu-via-ssh/</link>
+		<pubDate>Tue, 17 Apr 2012 16:37:15 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[fichiers]]></category>
+		<category><![CDATA[rsync]]></category>
+		<category><![CDATA[upload]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=413</guid>
+		<description><![CDATA[Pour des tas de raison on a parfois besoin de transférer du contenu de son ordi à un serveur, de serveur à serveur, etc.. Heureusement rsync est là pour nous sauver la vie.]]></description>
+				<content:encoded><![CDATA[<p>Pour des tas de raison on a parfois besoin de transférer du contenu de son ordi à un serveur, de serveur à serveur, etc..</p>
+<p>Un outil très pratique et robuste fait ce travail à merveille: <strong>RSYNC</strong></p>
+<p>Vous pouvez le télécharger ici : <a href="http://rsync.samba.org/">http://rsync.samba.org/</a> ou essayer un yum install rsync sous Fedora</p>
+<p>la ligne de commande la plus classique pour transférer un répertoire en local sur un serveur distant est la suivante:</p>
+<pre lang="bash">
+
+rsync -P -azc --bwlimit=150 /home/source user@serveur.com:/home/destination
+
+</pre>
+<p>bwlimit est la limitation de bande passante à utiliser en ko/s, je conseille de le mettre car des fois rsync sature le réseau et peut meme planter car par default il utilise toute la BP disponible.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">413</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/04/transfert-bleu-icon.png" length="25206" type="image/jpg" />	</item>
+	</channel>
+</rss>

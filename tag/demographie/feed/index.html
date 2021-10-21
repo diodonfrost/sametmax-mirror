@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>démographie &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/demographie/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>La théorie de la salle de bain et (un tout petit peu de) Python</title>
+		<link>http://sametmax.com/la-theorie-de-la-salle-de-bain-et-un-tout-petit-peu-de-python/</link>
+		<comments>http://sametmax.com/la-theorie-de-la-salle-de-bain-et-un-tout-petit-peu-de-python/#comments</comments>
+		<pubDate>Sun, 23 Sep 2012 20:12:51 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[croissance]]></category>
+		<category><![CDATA[démographie]]></category>
+		<category><![CDATA[économie]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2258</guid>
+		<description><![CDATA[Il y a quelques jours, j'ai tweeté <a href="http://www.youtube.com/watch?v=F-QA2rkpBSY&#038;feature=list_other&#038;playnext=1&#038;list=SP6A1FD147A45EF50D">une vidéo d'une heure de mauvaise qualité où l'on voyait un vieillard parler en anglais de la fonction exponentielle</a>.
+
+Le tweet n'a pas eu de succès. Je me demande bien pourquoi :-)]]></description>
+				<content:encoded><![CDATA[<p>Il y a quelques jours, j&#8217;ai tweeté <a href="http://www.youtube.com/watch?v=F-QA2rkpBSY&#038;feature=list_other&#038;playnext=1&#038;list=SP6A1FD147A45EF50D">une vidéo d&#8217;une heure de mauvaise qualité où l&#8217;on voyait un vieillard parler en anglais de la fonction exponentielle</a>.</p>
+<p>Le tweet n&#8217;a pas eu de succès. Je me demande bien pourquoi. :-)</p>
+<p>C&#8217;est extrêmement fâcheux car cette vidéo est d&#8217;une importance capitale.</p>
+<p>En effet, cette petite conf, plus que de maths, parle surtout d&#8217;économie, d&#8217;écologie, de démographie, de la survie de l&#8217;espèce humaine, de sa bêtise, et tout ça avec humour. On en a bien besoin.</p>
+<p>J&#8217;ai donc décider de résumer cette vidéo ici, en français, et de mettre un peu de Python dedans pour le lulz.</p>
+<h2>La fonction exponentielle, dans votre vie de tous les jours</h2>
+<p>Quand vous lisez un truc comme ça dans la presse :</p>
+<blockquote><p>Le prix de l&#8217;essence a augmenté de 3 % par an.</p></blockquote>
+<p>Vous vous dites &#8220;oh, bah ça va&#8221;</p>
+<p>Et puis l&#8217;année suivante:</p>
+<blockquote><p>Le prix de l&#8217;essence a doublé depuis les années 90.</p></blockquote>
+<p>Et là vous criez &#8220;tous des bâtards, sauf papa parce qu&#8217;il est chauve&#8221;.</p>
+<p>Vous aurait-on menti les années précédentes ? Nein. C&#8217;est toute la beauté de la croissance continue, un phénomène mathématique facile à étudier.</p>
+<p>Par contre, je sais pas pour vous, mais moi les logs, les e de truc et les epsilons de machin, ça me parle moyen. Alors si on faisait un peu de bruteforce ? Les matheux me pardonneront mes approximations, l&#8217;idée est ici plus importante que la précision des chiffres puisque je suis un charlot.</p>
+<p>Prenons une valeur arbitraire, un pourcentage de croissance par an, et regardons combien d&#8217;années ça prend pour doubler:</p>
+<pre lang="python">def calculer_temps_de_doublement(pourcent, valeur=1000000):
+
+    double_de_la_valeur = valeur * 2
+    while valeur < double_de_la_valeur:
+        valeur += valeur * pourcent / 100
+        yield valeur
+</pre>
+<p>(Pour ceux qui découvrent le mot clé yield, <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">c'est par ici</a>)</p>
+<p>Voyons ce que ça donne si on gardait constante la croissance actuelle de la population mondiale:</p>
+<pre lang="python"># croissance de la population mondiale
+for i, x in enumerate(calculer_temps_de_doublement(1.7)):
+    print i, x
+
+0 1017000.0
+1 1034289.0
+2 1051871.913
+3 1069753.73552
+...
+39 1962628.57148
+40 1995993.25719
+41 2029925.14256</pre>
+<p>Il faut 41 ans pour que ça double. En clair, un minuscule pour-cent virgule sept, et le nombre d'abrutis sur la Terre double avant que vous ayez atteint la moitié de votre vie.</p>
+<p>Voyons la même chose avec la consommation du pétrole:</p>
+<pre lang="python"># croissance de consommation du pétrole
+for i, x in enumerate(calculer_temps_de_doublement(3.4)):
+    print i, x
+
+0 1034000.0
+1 1069156.0
+2 1105507.304
+3 1143094.55234
+...
+18 1887514.23841
+19 1951689.72251
+20 2018047.17308</pre>
+<p>A votre majorité, la consommation du pétrole de l'humanité aurait donc doublé. Évidement, ce n'est vrai que si cette augmentation reste constante, on peut imaginer que notre consommation diminue avec le temps. Jusqu'ici, la consommation n'a pas juste augmenté, notre croissance de consommation a presque toujours augmenté. Avec un milliard de chinois et d'indiens ça va pas s'arrêter car:</p>
+<pre lang="python"># test avec la croissance chinoise de 2008
+for i, x in enumerate(calculer_temps_de_doublement(9.8)):
+    print i, x
+
+0 1098000.0
+1 1205604.0
+2 1323753.192
+3 1453481.00482
+4 1595922.14329
+5 1752322.51333
+6 1924050.11964
+7 2112607.03136</pre>
+<p>En 7 ans, la production de richesse des bridés doublerait.</p>
+<p>Mais bon, l'idée n'est pas encore de débattre, juste de vous montrer un truc: un petit pourcentage, et ça double vite, très vite. Quand vous lisez dans la presse une croissance constante en pour-cent, il faut tout de suite s'arrêter et réfléchir: qu'est-ce que ça représente vraiment ?</p>
+<p><strong>Qu'est-ce que ça représente à l'échelle d'une vie ?</strong></p>
+<p>Je prends une valeurs arbitraire, je rajoute un pourcentage de croissance par an, et ce, tous les ans pendant 70 ans:</p>
+<pre lang="python">def nombre_de_multiplications_en_une_vie(pourcent, duree_de_vie=70, valeur=1000000):
+
+    valeur_de_depart = valeur
+    for x in xrange(duree_de_vie):
+        valeur += valeur * pourcent / 100
+        print x, valeur
+
+    print valeur / valeur_de_depart</pre>
+<p>4 %, en une vie ça multiplie par...</p>
+<pre lang="python">nombre_de_multiplications_en_une_vie(4)
+0 1040000
+1 1081600
+2 1124864
+3 1169858
+...
+68 14972576
+69 15571479
+15</pre>
+<p>15 fois la valeur. </p>
+<p>7% ?</p>
+<pre lang="python">nombre_de_multiplications_en_une_vie(7)
+0 1070000
+1 1144900
+2 1225043
+3 1310796
+...
+67 99562171
+68 106531522
+69 113988728
+113</pre>
+<p>Vos enfants se retrouvent avec le phénomène multiplié par 100.</p>
+<p>Donc, quand on vous fait semblant de parler de développement durable, mais que l'argument c'est de de garder la croissance de quelque chose, n'importe quelle chose, avec un certain seuil en pour-cent, on vous parle en fait juste d'une croissance normale, massive. Un truc qui va être énormément multiplié. Et très vite.</p>
+<p>C'est ce qu'on appelle une croissance exponentielle.</p>
+<h2>Ok, mais pourquoi tu nous dis ça ?</h2>
+<p>Je reprends l'analogie de notre vieux Albert Bartlett, qui ressemble à l'<a href="http://www.google.fr/search?source=hp&#038;q=nenuphare%20surface&#038;meta=&#038;aq=f&#038;aqi=g10&#038;aql=&#038;oq=&#038;gs_rfai=#hl=fr&#038;sclient=psy-ab&#038;q=enigme+nenuphare&#038;oq=enigme+nenuphare&#038;gs_l=serp.3..0j0i10i30j0i30l2.1947.3337.1.3455.9.5.0.4.4.0.254.805.0j4j1.5.0...0.0...1c.1.a77dpF0I4NU&#038;pbx=1&#038;bav=on.2,or.r_gc.r_pw.r_qf.&#038;fp=888c038e854cfa89&#038;biw=1861&#038;bih=955">énigme des nénuphars</a>.</p>
+<p>Vous avez vu qu'avec un petit pour-cent, une croissance constante fait très vite doubler une quantité. Qu'est-ce qui se passe quand on suit l'évolution de ces doublements ?</p>
+<p>Imaginez: une hypothétique bactérie (sous stéroïdes :-)) se divise toutes les secondes, doublant donc sa population chaque seconde.</p>
+<p>A 11H, la <a href="https://fr.wikipedia.org/wiki/Bo%C3%AEte_de_Petri">boîte de Pétri</a> dans laquelle vous avez mis la bactérie contient une bactérie. A midi, la boîte est pleine.</p>
+<p>Voilà ce que ça donne (<em>le slideshow marche plus sous Firefox, mais marche encore sous chrome</em>):</p>
+
+<!-- iframe plugin v.4.3 wordpress.org/plugins/iframe/ -->
+<iframe src="https://www.slideshare.net/slideshow/embed_code/14411917" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" 0="allowfullscreen" class="iframe-class"></iframe>
+
+<p>Maintenant la question piège, à quelle heure reste-t-il la moitié de l'espace dans la boîte ?</p>
+<p>Réponse en slides:</p>
+
+<!-- iframe plugin v.4.3 wordpress.org/plugins/iframe/ -->
+<iframe src="http://fr.slideshare.net/slideshow/embed_code/14412173" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" 0="allowfullscreen" class="iframe-class"></iframe>
+
+<p>En clair, jusqu'à la dernière minute, nos chères bactéries ont encore l'impression qu'il y a encore plein d'espace.</p>
+<p>Le cas des bactéries est un exemple typique de croissance dans un système fermé: il y a une ressource limitée, ici l'espace.</p>
+<p>Le système fermé dans notre cas, vous l'avez compris, c'est la Terre. Pour la ressource limitée, prenez celle que vous voulez: l'air pur, l'eau potable, l'espace, le pétrole, la bouffe, le métal, etc. Toutes ces ressources sont limitées, et nous les consommons de manière croissante.</p>
+<p>Mais vous allez me dire : "arrête, y en a encore plein". Là on en est pas à la moitié. Et il y les progrès scientifiques. Et les alternatives.</p>
+<p>Mais voilà l'astuce, jusqu'à quelle heure on a l'impression qu'on en a "encore plein" ? C'est ce qui est magnifique avec la croissance exponentielle, ça augmente très vite...</p>
+
+<!-- iframe plugin v.4.3 wordpress.org/plugins/iframe/ -->
+<iframe src="http://www.slideshare.net/slideshow/embed_code/14412017" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" 0="allowfullscreen" class="iframe-class"></iframe>
+
+<p>Voilà pourquoi vous entendez plein de gens criez "attention, on va manquer de (insérer ici une ressource limitée)". Et c'est surtout pour ça que les mecs qui vous disent "mais nan, on en a encore plein, et on peut encore en découvrir plein, et il y a le progrès, les alternatives, on a de la marge" n'ont rien compris au film. </p>
+<p>La quantité n'a AUCUNE importance, <strong>l'important c'est qu'elle est limitée, et qu'on en consomme toujours plus</strong>. L'important c'est que cette croissance ne nous permet pas d'évaluer sereinement le temps de freinage avant de heurter le mur.</p>
+<p>Particulièrement parce que la croissance exponentielle possède une autre caractéristique très intéressante, à chaque fois qu'on passe le temps de doublement, <strong>la quantité consommée est égale à tout ce qui a été consommé depuis le début</strong>. Tout. A chaque fois, on consomme plus que tout l'historique:</p>
+
+<!-- iframe plugin v.4.3 wordpress.org/plugins/iframe/ -->
+<iframe src="http://fr.slideshare.net/slideshow/embed_code/14412074" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" 0="allowfullscreen" class="iframe-class"></iframe>
+
+<p>Du coup, supposons que nos bactéries fassent comme nous, et décident de continuer leur croissance, et de la compenser par de nouvelles découvertes. Des bactéries géniales, genre prix Nobel chez les monocellulaires, font une découverte incroyable.</p>
+<p>3 autres boîtes de Pétri ! </p>
+<p>3 fois plus que ce qui a toujours été consommé, depuis le début de leur existence. C'est énorme, c'est comme si on découvrait soudainement que le schiste pouvait en fait nous filer du pétrole. C'est gigantesque. 3 fois ce qu'on a fait depuis le début de la consommation. Ça laisse voir venir non ?</p>
+
+<!-- iframe plugin v.4.3 wordpress.org/plugins/iframe/ -->
+<iframe src="http://www.slideshare.net/slideshow/embed_code/14412038" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" 0="allowfullscreen" class="iframe-class"></iframe>
+
+<p>Voilà, à 12h02, il n'y a plus rien.</p>
+<p>Albert Bartlett pense que pour l'humanité et le pétrole, il est actuellement 11h58. Mais même si il se trompe, comme toutes les personnes qui ont annoncé la fin du pétrole avant lui, il ne peut pas se tromper sur le principe: la ressource est limitée, et nous la consommons exponentiellement.</p>
+<p>Enfin notre cher pépé malin nous rappelle que les solutions posent aussi souvent des problèmes, particulièrement celles qui consistent à essayer de nous maintenir dans notre système de croissance.</p>
+<p>Personnellement, je prendrais juste un exemple: les énergies alternatives. Qu'on s'y intéresse est une très bonne chose, mais leur existence ne résout pas le problème, elles sont l'équivalente de la découverte d'une nouvelle boîte de Pétri !</p>
+<p> Elles sont comme les autres, on peut les produire en quantité limité, même celles dites "renouvellables". En effet, les installations et la maintenance pour la production de ces énergies consomment d'autres ressources: espace, énergie, métal, main d’œuvre qualifiée et bouffe de la main d’œuvre, etc. Sans compter que le pétrole, ce n'est pas que pour l'énergie, mais aussi pour la chimie: agriculture, médecine, vêtement, informatique... On est pas prêt de s'en passer.</p>
+<p>Et rien n'est gratuit.</p>
+<p><em><strong>>Rappel : la quantité disponible n'a aucune importance. L'important c'est que l'on est dans un système fermé, donc qu'il y a une limite, aussi grande soit-elle. Or, on accélère notre consommation.</strong></em></p>
+<h2>Démographie, consommation et démocratie</h2>
+<p>Évidement, il y a le problème de consommation. On bouffe trop, on utilise trop la voiture, on jette trop, etc.</p>
+<p>Mais si on était un village de Provence, ça n'aurait aucune importance.</p>
+<p>L'important, c'est qu'on est nombreux, et que ça continue d'augmenter. Qu'être humain, c'est essayer de garantir que tous le monde ait les mêmes droits, les mêmes libertés, et les mêmes chances. </p>
+<p>Ce n'est pas possible avec une population qui se compte en milliard. Et surtout, qui continue de croître (et de consommer), de manière exponentielle.</p>
+<p>La surpopulation est un problème majeur.  </p>
+<p>Notre société porte aux nues ceux qui font des enfants, c'est sacré. Et notre société produit des enfants qui vont faire la queue pendant 48H pour acheter l'iPhone 5. </p>
+<p>Exponentiellement. Dans un système fermé.</p>
+<p>Mais plus grave que cela, la surpopulation ne permet pas l'existence de la démocratie.</p>
+<p>La vidéo offre une très belle citation de <a href="https://fr.wikipedia.org/wiki/Isaac_Asimov">Isaac Asimov</a>, que je vais paraphraser ici:</p>
+<blockquote>
+<p>J'ai une théorie sur les salles de bain.</p>
+<p>Quand vous avez un appartement avec 2 personnes et 2 salles de bains, tout le monde peut profiter des salles de bains, y faire ce qu'il veut, tout le temps qu'il veut, au moment qu'il veut. Et tout le monde peut croire dans "le droit à la salle de bain". D'ailleurs, il est clair que ça devrait être écrit dans la constitution.</p>
+<p>Quand vous avez 20 personnes dans l'appartement, même dans le cas improbable où tout le monde croit dans le droit à la salle de bain, et même si c'est écrit dans la constitution, une telle chose ne peut exister. Il faut instaurer des horaires. Des tours. Il faut frapper à la porte et dire "t'as bientôt fini ?". Il y aura des meilleurs horaires pour certains, et des abus.</p>
+<p>La démocratie ne peut pas survivre à la surpopulation. La dignité humaine ne peut pas survivre à la surpopulation. Le confort et la décence ne peuvent pas survivre la surpopulation. Plus on ajoute de personnes sur Terre, plus la valeur de la vie, non seulement diminue, mais disparaît. Cela n'a aucune importance si une personne meurt, plus il y a de gens, moins l'individu compte.</p>
+</blockquote>
+<p><em><strong>Rappelez-vous, si vous sentez qu'on en est encore loin, qu'à 11h55, il reste 97% de la boîte de Pétri. </strong></em></p>
+<h2>La bonne nouvelle et la moins bonne</h2>
+<p>Tous les systèmes tendent vers l'équilibre. Il n'y a rien à faire, ça se fait tout seul. Ca veut dire - bonne nouvelle ! - que tous nos problèmes de consommation de ressources vont se régler tout seuls. On va consommer moins automatiquement. Avoir une population qui va baisser, automatiquement.</p>
+<p>La mauvaise nouvelle, c'est qu'il est toujours plus facile de détruire que de construire, de mettre le bordel que d'organiser, de consommer que de produire. </p>
+<p>Du coup, il n'y a pas de solution rapide à un problème que nous avons mis des siècles à installer.</p>
+<p>Ainsi, rien ne dit que si on mettait une solution en place maintenant, ce serait elle qui ferait tendre notre système vers l'équilibre.</p>
+<p>Vous ne suivez pas ?</p>
+<p>Le système va s'équilibrer, c'est une certitude. La question, la question VRAIMENT importante, c'est <strong>comment</strong>.</p>
+<p>Prenez la surpopulation par exemple, voici deux colonnes, l'une implique que la population continue d'augmenter, l'autre va freiner ou compenser cette augmentation:</p>
+<p style="text-align: center;"><a href="http://sametmax.com/wp-content/uploads/2012/09/croissance1.png" class="grouped_elements" rel="tc-fancybox-group2258"><img class="aligncenter  wp-image-2261" src="http://sametmax.com/wp-content/uploads/2012/09/croissance1.png" alt="Colonne de gauche: croissance. Colonne de droite: décroissance" width="508" height="381" /></a></p>
+<p>Vous sentez comme certains items sont plus agréables que d'autres ?</p>
+<p>Voilà le truc, le système va s'équilibrer automatiquement, et dans notre cas, il va s'équilibrer en diminuant notre nombre, car nous sommes en croissance constante dans un système fermé.</p>
+<p>Donc, la nature va prendre des trucs dans la colonne de droite et les mettre en œuvre jusqu'à ce que le système s'équilibre.</p>
+<p>Ce n'est pas une prophétie divine, ce n'est pas magique, ce n'est pas une prédiction de médium, c'est juste un fait simple de la vie.</p>
+<p>On ne peut pas savoir ce qui sera utilisé dans la colonne de droite. L'Inde qui va faire la guerre à ses voisins car elle manque d'eau ? La Chine qui va détruire l'économie en consommant tout le fer, provocant une récession mondiale et la famine ? Monsanto / Fukushima / le réchauffement climatique qui va nous faire dégénérer ? Le monde entier qui soudainement fait moins de bébés, naturellement ?</p>
+<p>On ne peut pas non plus savoir quand ça va arriver. Dans 2 ans ? dans 120 ans ? La précision, c'est pour les astrologues.</p>
+<p>On sait juste que ça va arriver.</p>
+<p>En gros, notre problématique, c'est de choisir le truc le moins désagréable de la colonne de droite et de l'appliquer rapidement et efficacement avant que les autres items soient utilisés pour nous. Parce qu'il est clair que personne ne veut mettre le holà sur la colonne de gauche.</p>
+<p>Ce n'est pas pour ça qu'il faut arrêter le progrès scientifique, cracher sur le pétrole et le nucléaire ou castrer tout le monde. </p>
+<p>Mais ne rien faire, c'est aberrant</p>
+<h2>En plus d'apprendre Python, qu'est-ce que je peux faire d'utile ?</h2>
+<p>Envisager de ne pas faire des enfants, voir d'en adopter. Ou au minimum arrêter de se comporter comme un extrémiste religieux qui fait la promotion du Dieu Procréation comme à peu prêt tout le monde actuellement. C'est grave.</p>
+<p>Acheter moins. Réparer. Faire avec moins. Faire sans. Ne pas faire.</p>
+<p>Ne pas avoir de voiture. Ne pas changer tous les jours de t-shirt. Ne pas acheter le dernier gadget.</p>
+<p>Acheter d'occasion. Donner. Libérer de l'espace chez soi, et du temps dans sa vie.</p>
+<p>Prendre le vélo. Marcher. Acheter local. Et moins.</p>
+<p>Réfléchir, éteindre la télé, lire, parler à ses amis face à face.</p>
+<p>Cuisiner. Manger (beaucoup) moins de viande.</p>
+<p>On ne doit pas viser moins de croissance. On doit viser la décroissance. </p>
+<p>Gagner moins d'argent, faire moins de choses. Avoir une économie qui ne soit pas basée sur le plus.</p>
+<p>Vendre moins.</p>
+<p>Ce n'est pas l'austérité. Ce n'est pas vivre comme un homme des cavernes. Ça ne veut pas dire vivre moins. C'est juste ne pas être un parasite suicidaire.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-theorie-de-la-salle-de-bain-et-un-tout-petit-peu-de-python/feed/</wfw:commentRss>
+		<slash:comments>62</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">2258</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/09/scientist-approved-futurama.png" length="33871" type="image/jpg" />	</item>
+	</channel>
+</rss>

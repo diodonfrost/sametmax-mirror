@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: S&#8217;affranchir des doublons d&#8217;un itérable en Python</title>
+	<atom:link href="http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/#comment-183281</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sat, 03 Dec 2016 12:27:01 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7143#comment-183281</guid>
+		<description><![CDATA[&lt;p&gt;Je n&#039;ai rien compris.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Je n&#8217;ai rien compris.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: hlaure</title>
+		<link>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/#comment-183204</link>
+		<dc:creator><![CDATA[hlaure]]></dc:creator>
+		<pubDate>Thu, 01 Dec 2016 14:57:08 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7143#comment-183204</guid>
+		<description><![CDATA[error sur sur remove_duplicates()
+
+list_tst = [1,2,3,1,1,5,2,3,3,3,8,0,1]
+
+def remove_duplicates(lst, equals=lambda x, y: x == y):
+
+if not isinstance(lst, list):
+
+raise TypeError(&#039;This function works only with lists.&#039;)
+
+i1 = 0
+
+l = (len(lst) - 1)
+
+while i1 &#060; l:
+
+elem = lst[i1]
+
+i2 = i1 + 1
+
+while i2 &#060;= l:
+
+if equals(elem, lst[i2]):
+
+del lst[i2]
+
+l -= 1
+
+else:
+
+i2 += 1
+
+i1 += 1
+
+return lst
+]]></description>
+		<content:encoded><![CDATA[<p>error sur sur remove_duplicates()</p>
+<p>list_tst = [1,2,3,1,1,5,2,3,3,3,8,0,1]</p>
+<p>def remove_duplicates(lst, equals=lambda x, y: x == y):</p>
+<p>if not isinstance(lst, list):</p>
+<p>raise TypeError(&#8216;This function works only with lists.&#8217;)</p>
+<p>i1 = 0</p>
+<p>l = (len(lst) &#8211; 1)</p>
+<p>while i1 &lt; l:</p>
+<p>elem = lst[i1]</p>
+<p>i2 = i1 + 1</p>
+<p>while i2 &lt;= l:</p>
+<p>if equals(elem, lst[i2]):</p>
+<p>del lst[i2]</p>
+<p>l -= 1</p>
+<p>else:</p>
+<p>i2 += 1</p>
+<p>i1 += 1</p>
+<p>return lst</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/#comment-177117</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 14 Mar 2016 15:50:56 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7143#comment-177117</guid>
+		<description><![CDATA[&lt;p&gt;list(set(l)) ne fait pas la même chose:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;il n&#039;y a pas de modifications in place: les données sont copiées deux fois en mémoire.&lt;/li&gt;
+&lt;li&gt;ça ne gère pas les générateurs de taille indéfinie;&lt;/li&gt;
+&lt;li&gt;ça fait perdre l&#039;ordre des éléments;&lt;/li&gt;
+&lt;li&gt;ça ne marche que si les éléments sont hashables.&lt;/li&gt;
+&lt;/ul&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>list(set(l)) ne fait pas la même chose:</p>
+<ul>
+<li>il n&#8217;y a pas de modifications in place: les données sont copiées deux fois en mémoire.</li>
+<li>ça ne gère pas les générateurs de taille indéfinie;</li>
+<li>ça fait perdre l&#8217;ordre des éléments;</li>
+<li>ça ne marche que si les éléments sont hashables.</li>
+</ul>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: zak</title>
+		<link>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/#comment-177073</link>
+		<dc:creator><![CDATA[zak]]></dc:creator>
+		<pubDate>Sun, 13 Mar 2016 14:36:03 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7143#comment-177073</guid>
+		<description><![CDATA[salut ,
+
+salut ,j&#039;ai utilisé ta méthode remove_duplicates(lst) dans mon programme et j&#039;ai remarqué qu&#039;elle ne supprime pas tous les dupliqués !,cette méthode marche très bien   (list(set(l)) ) !!!!!
+]]></description>
+		<content:encoded><![CDATA[<p>salut ,</p>
+<p>salut ,j&#8217;ai utilisé ta méthode remove_duplicates(lst) dans mon programme et j&#8217;ai remarqué qu&#8217;elle ne supprime pas tous les dupliqués !,cette méthode marche très bien   (list(set(l)) ) !!!!!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/#comment-174972</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 27 Jan 2016 21:35:55 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7143#comment-174972</guid>
+		<description><![CDATA[&lt;p&gt;Tu perds l&#039;ordre de tes données, tu ne peux pas choisir le critère de dédoublement, tu n&#039;as pas le choix sur le trade-off CPU/Mémoire et ça ne marche pas sur les itérables de tailles indéfinis.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Tu perds l&#8217;ordre de tes données, tu ne peux pas choisir le critère de dédoublement, tu n&#8217;as pas le choix sur le trade-off CPU/Mémoire et ça ne marche pas sur les itérables de tailles indéfinis.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Fabien</title>
+		<link>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/#comment-174970</link>
+		<dc:creator><![CDATA[Fabien]]></dc:creator>
+		<pubDate>Wed, 27 Jan 2016 21:16:20 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7143#comment-174970</guid>
+		<description><![CDATA[Est-ce que la conversion en set ne serait pas plus efficace (ou au moins plus simple) ?
+
+def remove_duplicates2(lst):
+
+return list(set(lst))
+]]></description>
+		<content:encoded><![CDATA[<p>Est-ce que la conversion en set ne serait pas plus efficace (ou au moins plus simple) ?</p>
+<p>def remove_duplicates2(lst):</p>
+<p>return list(set(lst))</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/#comment-161437</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sun, 31 May 2015 14:20:00 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7143#comment-161437</guid>
+		<description><![CDATA[&lt;p&gt;Les perfs sont o(e(n)), donc sur les gros flux c&#039;est très, très lent. Et ça ne marche pas sur les flux de taille infinie.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Les perfs sont o(e(n)), donc sur les gros flux c&#8217;est très, très lent. Et ça ne marche pas sur les flux de taille infinie.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Quetzal</title>
+		<link>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/#comment-161415</link>
+		<dc:creator><![CDATA[Quetzal]]></dc:creator>
+		<pubDate>Fri, 29 May 2015 09:11:02 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7143#comment-161415</guid>
+		<description><![CDATA[&lt;p&gt;y&#039;a aussi comme ça:&lt;/p&gt;
+
+&lt;pre lang=&quot;python&quot;&gt;def doublon(L0):
+
+    L1=[]
+    for i in L0:
+        if i not in L1:
+            L1.append(i)
+
+    return L1&lt;/pre&gt;
+
+&lt;p&gt;simple itération sur les items déja stocké pour vérifier que le nouveau n&#039;y est pas... et si le loup n&#039;y est pas, on le stocke comme nouvel item...&lt;/p&gt;
+
+&lt;p&gt;par contre ce que ça vaux en perf... je vous laisse faire...&lt;/p&gt;
+
+&lt;p&gt;merci bien pour le site...&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>y&#8217;a aussi comme ça:</p>
+<pre lang="python">def doublon(L0):
+
+    L1=[]
+    for i in L0:
+        if i not in L1:
+            L1.append(i)
+
+    return L1</pre>
+<p>simple itération sur les items déja stocké pour vérifier que le nouveau n&#8217;y est pas&#8230; et si le loup n&#8217;y est pas, on le stocke comme nouvel item&#8230;</p>
+<p>par contre ce que ça vaux en perf&#8230; je vous laisse faire&#8230;</p>
+<p>merci bien pour le site&#8230;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/#comment-14453</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Tue, 01 Oct 2013 13:28:15 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7143#comment-14453</guid>
+		<description><![CDATA[Hello @JeromeJ.
+
+Cette solution ne fonctionne malheureusement qu&#039;avec les itérables de taille finie et occupe pas mal de mémoire du fait des clés inutiles du dico. De plus on perd le bénéfice du travail au fur et à mesure d&#039;un générateur.]]></description>
+		<content:encoded><![CDATA[<p>Hello @JeromeJ.</p>
+<p>Cette solution ne fonctionne malheureusement qu&#8217;avec les itérables de taille finie et occupe pas mal de mémoire du fait des clés inutiles du dico. De plus on perd le bénéfice du travail au fur et à mesure d&#8217;un générateur.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: JeromeJ</title>
+		<link>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/#comment-13896</link>
+		<dc:creator><![CDATA[JeromeJ]]></dc:creator>
+		<pubDate>Wed, 04 Sep 2013 02:03:47 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7143#comment-13896</guid>
+		<description><![CDATA[Supprime les doublons et conserve l&#039;ordre :
+
+&lt;code&gt;import collections
+import itertools
+
+print(list(OrderedDict(itertools.zip_longest(&quot;abcddde&quot;, (None,))).keys())) # [&#039;a&#039;, &#039;b&#039;, &#039;c&#039;, &#039;d&#039;, &#039;e&#039;]
+
+print(list(OrderedDict(itertools.zip_longest((1,2,2,2,3), (None,))).keys())) # [1, 2, 3]
+&lt;/code&gt;
+
+Sûrement améliorable.
+
+Genre créer une fonction et s&#039;assurer de renvoyer le même type que celui reçu ?
+zip_longest n&#039;est ptet pas requis non plus si on reçoit l&#039;input via un paramètre (None,)*len(myInput) mais j&#039;ignore si ça serait plus rapide.]]></description>
+		<content:encoded><![CDATA[<p>Supprime les doublons et conserve l&#8217;ordre :</p>
+<p><code>import collections<br />
+import itertools</p>
+<p>print(list(OrderedDict(itertools.zip_longest("abcddde", (None,))).keys())) # ['a', 'b', 'c', 'd', 'e']</p>
+<p>print(list(OrderedDict(itertools.zip_longest((1,2,2,2,3), (None,))).keys())) # [1, 2, 3]<br />
+</code></p>
+<p>Sûrement améliorable.</p>
+<p>Genre créer une fonction et s&#8217;assurer de renvoyer le même type que celui reçu ?<br />
+zip_longest n&#8217;est ptet pas requis non plus si on reçoit l&#8217;input via un paramètre (None,)*len(myInput) mais j&#8217;ignore si ça serait plus rapide.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

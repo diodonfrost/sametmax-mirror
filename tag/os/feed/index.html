@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>os &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/os/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Ouvrir un fichier avec le bon programme en Python</title>
+		<link>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/</link>
+		<comments>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/#comments</comments>
+		<pubDate>Thu, 17 Oct 2013 10:09:59 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[fichier]]></category>
+		<category><![CDATA[linux]]></category>
+		<category><![CDATA[mac]]></category>
+		<category><![CDATA[open]]></category>
+		<category><![CDATA[os]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[windows]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7469</guid>
+		<description><![CDATA[Les OS ont des réglages par défaut pour chaque type de fichier, et on peut demander "ouvrir le type de fichier par défaut". Par exemple, moi, si on je demande d'ouvrir un fichier vidéo, je m'attend à ce que VLC soit lancé.
+
+Voilà comment faire ça en Python.]]></description>
+				<content:encoded><![CDATA[<p>Votre logiciel doit permettre d&#8217;ouvrir un fichier avec un programme externe. Oui mais lequel ?</p>
+<p>Les OS ont des réglages par défaut pour chaque type de fichier, et on peut demander &#8220;ouvrir le prog pour ce type de fichier par défaut&#8221;. Par exemple, moi, si je demande d&#8217;ouvrir un fichier vidéo, je m&#8217;attend à ce que VLC soit lancé.</p>
+<p>Voilà comment faire ça en Python :</p>
+<pre lang="python">import subprocess
+import sys
+import os
+
+def run_file(path):
+
+    # Pas de EAFP cette fois puisqu'on est dans un process externe,
+    # on ne peut pas gérer l'exception aussi facilement, donc on fait
+    # des checks essentiels avant.
+
+    # Vérifier que le fichier existe
+    if not os.path.exists(path):
+        raise IOError('No such file: %s' % path)
+
+    # On a accès en lecture ?
+    if hasattr(os, 'access') and not os.access(path, os.R_OK):
+        raise IOError('Cannot access file: %s' % path)
+
+    # Lancer le bon programme pour le bon OS :
+
+    if hasattr(os, 'startfile'): # Windows
+        # Startfile est très limité sous Windows, on ne pourra pas savoir
+        # si il y a eu une erreu
+        proc = os.startfile(path)
+
+    elif sys.platform.startswith('linux'): # Linux:
+        proc = subprocess.Popen(['xdg-open', path], 
+                                 # on capture stdin et out pour rendre le 
+                                 # tout non bloquant
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    elif sys.platform == 'darwin': # Mac:
+        proc = subprocess.Popen(['open', '--', path], 
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    else:
+        raise NotImplementedError(
+            "Your `%s` isn't a supported operatin system`." % sys.platform)
+
+    # Proc sera toujours None sous Windows. Sous les autres OS, il permet de
+    # récupérer le status code du programme, and lire / ecrire sur stdin et out
+    return proc</pre>
+<p>C&#8217;était le petit snippet sympas du jour !</p>
+<p>P.S : si quelqu&#8217;un utilise <del>BDSM</del> BSD ou Solaris, je veux bien qu&#8217;il complète le snippet.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/feed/</wfw:commentRss>
+		<slash:comments>18</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">7469</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/10/qzb7emC.jpg" length="54438" type="image/jpg" />	</item>
+		<item>
+		<title>Invalid cross-device link</title>
+		<link>http://sametmax.com/invalid-cross-device-link/</link>
+		<comments>http://sametmax.com/invalid-cross-device-link/#comments</comments>
+		<pubDate>Tue, 09 Apr 2013 10:19:57 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[file]]></category>
+		<category><![CDATA[os]]></category>
+		<category><![CDATA[oserror]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[rename]]></category>
+		<category><![CDATA[shutil]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5652</guid>
+		<description><![CDATA[Les erreurs d'upload de fichier, c'est 99% de problèmes de droit d'accès et d'espace disque. Mais de temps à autres, on tombe sur des petites saloperies bien vicelardes...]]></description>
+				<content:encoded><![CDATA[<p>Les erreurs d&#8217;upload de fichier, c&#8217;est 99% de problèmes de droit d&#8217;accès et d&#8217;espace disque. Mais de temps à autres, on tombe sur des petites saloperies bien vicelardes comme ce code anodin :</p>
+<pre lang="python">os.rename(uploaded_tmp_file, destination)</pre>
+<p>Ce snippet, comme vous l&#8217;aurez compris, prend simplement un fichier qui vient d&#8217;être uploadé et le déplace vers un autre dossier où il sera traité, chouchouté, encodé, et mis en ligne.</p>
+<p>Sauf que la ligne en question nous a valu un cryptique :</p>
+<p><code>IOError: Invalid cross-device link</code></p>
+<p><a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">PDB</a> nous confirme le merdier, même en le faisant à la main. Pourtant la commande bash <code>MV</code> fait le déplacement du fichier sans problème.</p>
+<p>User / group ? Checked.</p>
+<p>Permission en lecture écriture ? Checked.</p>
+<p>SEL linux ? Désactivé depuis longtemps.</p>
+<p>Quid alors ?</p>
+<p><a href="http://mail.python.org/pipermail/python-list/2005-February/323335.html">Les archives de la mailling list</a> de Python nous offre une réponse à la question, que je vous traduis :</p>
+<blockquote><p>mv est un programme étonnamment complexe, tandis que os.rename est un wrapper autour de rename(2) qui est probablement documenté sur ton système comme retournant EXDEV dans ces circonstances.</p>
+<p>os.xxx est généralement une surcouche assez fine autour de ce que ton OS fournit, et en hérite toutes les limites. Pour certains actions, os.shutil fournit quelque chose qui se situe entre os.xxx et os.system(&#8220;xxx&#8221;) en terme de complexité et de capacité.</p></blockquote>
+<p>Je l&#8217;ai traduis en français, maintenant je vous la refais en langage humain : <code>os.rename</code> ne fait vaguement qu&#8217;appeler la commande <code>rename</code>, qui n&#8217;est pas très puissante, et notamment qui est incapable de gérer un déplacement de fichier d&#8217;une partition à une autre. Or dans notre cas, notre dossier temporaire était sur une partition séparée pour des raisons de perfs.</p>
+<p>La solution est d&#8217;utiliser <code>shutil</code>, un module un peu plus lent, mais surtout de plus haut niveau qui se charge des détails comme la nature et l&#8217;origine du fichier et de sa destination. </p>
+<p>Bref, la solution est tout simplement de faire :</p>
+<pre lang="python">shutil.move(uploaded_tmp_file, destination)</pre>
+<p>Tout ça pour ça, oui, mais c&#8217;est ce qui arrive quand une abstraction ne fait plus son boulot dans un langage de haut niveau où on a l&#8217;habitude que tout soit automatisé.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/invalid-cross-device-link/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">5652</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/04/fUPKw.jpg" length="725486" type="image/jpg" />	</item>
+	</channel>
+</rss>

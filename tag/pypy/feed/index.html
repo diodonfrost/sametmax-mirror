@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>pypy &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/pypy/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title> Ceci n&#8217;est pas un benchmark&#8230;</title>
+		<link>http://sametmax.com/ceci-nest-pas-un-benchmark/</link>
+		<comments>http://sametmax.com/ceci-nest-pas-un-benchmark/#comments</comments>
+		<pubDate>Thu, 11 Jul 2013 06:08:02 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[perf]]></category>
+		<category><![CDATA[pypy]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6620</guid>
+		<description><![CDATA[Et dire qu'au début pypy était très lent...]]></description>
+				<content:encoded><![CDATA[<p>&#8230; mais quand même. Il va falloir sérieusement étudier le passage de nos sites à pypy.</p>
+<pre lang="bash">$ pypy --version
+Python 2.7.2 (1.8+dfsg-2, Feb 19 2012, 19:18:08)
+[PyPy 1.8.0 with GCC 4.6.2]
+
+$ date; pypy -c "for x in xrange(1000000000): pass"; date
+mardi 9 juillet 2013, 12:30:58 (UTC+0200)
+mardi 9 juillet 2013, 12:31:09 (UTC+0200)
+
+$ python --version
+Python 2.7.3
+
+$ date; python -c "for x in xrange(1000000000): pass"; date
+mardi 9 juillet 2013, 12:31:16 (UTC+0200)
+mardi 9 juillet 2013, 12:32:49 (UTC+0200)</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ceci-nest-pas-un-benchmark/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">6620</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/07/PyZlRmH.jpg" length="185408" type="image/jpg" />	</item>
+	</channel>
+</rss>

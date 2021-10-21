@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>mock &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/mock/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Comment mocker une coroutine ?</title>
+		<link>http://sametmax.com/comment-mocker-une-coroutine/</link>
+		<comments>http://sametmax.com/comment-mocker-une-coroutine/#comments</comments>
+		<pubDate>Mon, 25 Jan 2016 10:34:23 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[mock]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unittest]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=17976</guid>
+		<description><![CDATA[Dans <a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-5/">le guide sur les tests</a> en python (que je dois toujours terminer, je sais...), je vous parle des objets mocks.
+
+Si vous avez eu le plaisir de jouer avec asyncio, vous avez du noter que unittest.mock n'a aucun outil pour gérer gérer les coroutines.]]></description>
+				<content:encoded><![CDATA[<p>Dans <a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-5/">le guide sur les tests</a> en python (que je dois toujours terminer, je sais&#8230;), je vous parle des objets mocks.</p>
+<p>Si vous avez eu le plaisir de jouer avec <code>asyncio</code>, vous avez du noter que <code>unittest.mock</code> n&#8217;a aucun outil pour gérer gérer les coroutines.</p>
+<p>En attendant que ce soit intégré à la stdlib, voici une petite recette :</p>
+<pre lang="python">import asyncio
+from unittest.mock import Mock
+
+# on utilise toute la machinerie du Mock original
+class AMock(Mock):
+
+
+    def __call__(self, *args, **kwargs):
+        # la référence du parent doit se récupérer hors
+        # hors de la closure
+        parent = super(AMock, self) 
+        # sauf qu'à l'appel on créé une fonction coroutine
+        @asyncio.coroutine
+        def coro():
+            # Qui fait le vrai Mock.__call__ (et donc popule l'historique 
+            # des appels), mais seulement après l'évent loop l'ait éxécuté
+            return parent.__call__(*args, **kwargs)
+
+        # On appelle la fonction coroutine pour générer une coroutine
+        # (les coroutines marchent comme les générateurs)
+        return coro()
+
+
+</pre>
+<p>Je propose qu&#8217;en l&#8217;honneur de ce bidouillage, on l&#8217;appelle&#8230; mockoroutine !</p>
+<p>Ca va s&#8217;utiliser comme ça:</p>
+<pre lang="python">mockorourine = AMock()
+yield from mockorourine()</pre>
+<p>Après le <code>yield from</code>, <code>mockorourine.call_count == 1</code>, et <code>mockorourine.assert_called_once_with()</code>passe. </p>
+<p>Si vous êtes en 3.5+, on peut même faire:</p>
+<pre lang="python">class AMock(Mock):
+
+    def __call__(self, *args, **kwargs):
+        parent = super(AMock, self)
+        async def coro():
+            return parent.__call__(*args, **kwargs)
+        return coro()
+
+    def __await__(self):
+        # on delegue le await à la couroutine créée par __call__
+        return self().__await__()</pre>
+<p>Puis:</p>
+<pre lang="python">await AMock()</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comment-mocker-une-coroutine/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">17976</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/01/SRxfAmq.jpg" length="87995" type="image/jpg" />	</item>
+		<item>
+		<title>Un gros guide bien gras sur les tests unitaires en Python, partie 5</title>
+		<link>http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-5/</link>
+		<comments>http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-5/#comments</comments>
+		<pubDate>Sun, 17 May 2015 07:35:20 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[mock]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unit tests]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16281</guid>
+		<description><![CDATA[Vous avez <a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-4/">vu</a> les modules pour faire les tests, mais dès que vous allez vouloir faire des tests sérieux, vous allez vous heurter à la dure réalité.
+
+La réalité est que pour tester, il vous faut la réalité.]]></description>
+				<content:encoded><![CDATA[<p>Vous avez <a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-4/">vu</a> les modules pour faire les tests, mais dès que vous allez vouloir faire des tests sérieux, vous allez vous heurter à la dure réalité.</p>
+<p>La réalité est que pour tester, il vous faut la réalité.</p>
+<p>Par exemple, si vous tapez dans une base de données, il vous faut une base de données opérationnelle. Pour tester un téléchargement, il vous faut une connexion internet. Pour tester si votre API fonctionne, il faut lancer un serveur Web.</p>
+<p>Autre chose, si votre code appelle un autre code, comment vous assurer que cet appel a bien eu lieu ? Il faudrait aussi un logger pour tous les appels, et si le code n&#8217;est pas le vôtre, c&#8217;est encore plus chiant.</p>
+<p>Comme nous savons que les informaticiens sont des grosses larves, il y a forcément une solution, au moins partielle, à ces problèmes. En l’occurrence, on va jouer au docteur, à la dinette, aux cowboys et aux indiens.</p>
+<p>Bref, on va jouer à faire semblant.</p>
+<p><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/vjncyiuwwXQ?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<h2>Les objets mocks</h2>
+<p>Un objet mock, c&#8217;est un objet basé sur le <a href="http://sametmax.com/usages-et-dangers-du-null-object-pattern-en-python/">null object pattern</a> qui sert à faire semblant. Quand on l&#8217;instancie avec n&#8217;importe quoi, ça marche, quand on appelle n&#8217;importe quelle méthode, ça marche et ça renvoie un mock.</p>
+<p>Bien entendu, comme les besoins des tests sont un peu plus raffinés que ça, mock fait plus que du null object pattern, et permet :</p>
+<ul>
+<li>De configurer son API.</li>
+<li>De configurer ses sides effects.</li>
+<li>De configurer sa valeur de retour.</li>
+<li>De monkey patcher un autre objet.</li>
+<li>D&#8217;enregistrer tous les appels qu&#8217;on lui fait.</li>
+</ul>
+<p>Alors évidement, comme ça, je me doute bien que la puissance de l&#8217;outil ne vous frappe pas en face comme le nez au milieu de l&#8217;eureka dans un couloir.</p>
+<p>C&#8217;est pour ça qu&#8217;on va passer aux exemples concrets. D&#8217;abord, assurez-vous de pouvoir faire <code>import unittest.mock</code>, qui est dispo depuis Python 3.3. Si ce n&#8217;est pas le cas, <a href="http://sametmax.com/votre-python-aime-les-pip/">l&#8217;installer</a> avec <code>pip install mock</code> vous permettra de l&#8217;importer sous la forme <code>import mock</code>. Le reste, c&#8217;est pareil.</p>
+<h2>On dirait que moi je t&#8217;attaque et toi tu meurs pas</h2>
+<p>Un objet mock est un <a href="http://sametmax.com/les-trucmuchables-en-python/">callable</a>, c&#8217;est-à-dire qu&#8217;il peut être appelé comme une fonction ou une classe, et il retourne toujours un objet mock :</p>
+<pre lang="python">>>> from unittest.mock import MagicMock # ou from mock import MagicMock
+>>> mock = MagicMock()
+>>> print(mock)
+<MagicMock id='140302100559296'>
+>>> mock()
+<MagicMock name='mock()' id='140302101821704'>
+>>> mock(1, True, [Exception, {}])
+<MagicMock name='mock()' id='140302101821704'></pre>
+<p>On peut appeler n&#8217;importe quoi sur son objet mock, et ça retourne toujours un objet mock :</p>
+<pre lang="python">>>> mock.foo()
+<MagicMock name='mock.foo()' id='140302101723960'>
+>>> mock.nimporte().nawak().je().te().dis()
+<MagicMock name='mock.nimporte().nawak().je().te().dis()' id='140302101825744'>
+>>> mock + mock - 10000
+<MagicMock name='mock.__add__().__sub__()' id='140302134081520'></pre>
+<p>Quand retourner un objet mock n&#8217;est pas possible, l&#8217;objet essaye d&#8217;avoir le comportement qui fera planter le moins possible :</p>
+<pre lang="python">>>> int(mock)
+1
+>>> [m for m in mock]
+[]
+</pre>
+<h2>On dirait que le bâton, là, c&#8217;est un sabre laser</h2>
+<p>Parfois, néanmoins, il est utile de vouloir avoir un comportement spécifique. Il se trouve que les méthodes des objets mocks peuvent être des objets mocks. Mock, mock, mock !!!!!</p>
+<p>Et les objets mocks peuvent être configurés pour avoir un effet de bord ou une valeur de retour :</p>
+<pre lang="python">mock.you = MagicMock(side_effect=ValueError('mofo !')) # un callable marche aussi
+>>> mock.you()
+Traceback (most recent call last):
+  File "<ipython-input-21-a7e6455585e9>", line 1, in <module>
+    mock.you()
+  File "/usr/lib/python3.4/unittest/mock.py", line 885, in __call__
+    return _mock_self._mock_call(*args, **kwargs)
+  File "/usr/lib/python3.4/unittest/mock.py", line 941, in _mock_call
+    raise effect
+ValueError: mofo !
+>>> mock.mock = MagicMock(return_value="moooooooooock")
+>>> mock.mock()
+'moooooooooock'</pre>
+<p>Cela vous permet d&#8217;utiliser les objets mocks comme des remplacements pour des objets réels dans vos tests mais chiants à instancier comme une event loop, un serveur, une connexion à une base de données&#8230; Ca permet aussi de remplacer des appels très longs par des trucs instantanés.</p>
+<p>Mais la partie vraiment fun, c&#8217;est qu&#8217;on peut associer des vrais objets avec des objets mocks :</p>
+<pre lang="python">>>> class VraiObjetSerieuxEtTout:
+...     def faire_un_truc_super_serieux(self):
+...         return "... and don't call me Shirley"
+...     def faire_un_autre_truc_serieux(self):
+...         return "why so serious ?"
+...
+>>> sirius = VraiObjetSerieuxEtTout()
+>>> sirius.faire_un_truc_super_serieux = MagicMock() # It's a kinda magic, magic !
+>>> sirius.faire_un_autre_truc_serieux()
+'why so serious ?'
+>>> sirius.faire_un_truc_super_serieux('ieux').delamort()[3:14] + [1, 2]
+<MagicMock name='mock().delamort().__getitem__().__add__()' id='140302103288296'>
+</pre>
+<p>Et là ça devient super sympa : vous pouvez utilisez vos vrais objets, et pour certains appels, juste vous faciliter la vie pour les tests.</p>
+<h2>On dirait qu&#8217;on compte le nombre de balles que tu as tirées</h2>
+<p>Puisque les objets mocks sont un peu les <a href="http://sametmax.com/merci-de-respecter-les-salopes">grosses salopes</a> de la programmation et acceptent tout ce qui vient (oups, je viens de tuer l’ambiance métaphore enfantine là), il peut être nécessaire de vérifier ce qui s&#8217;est passé. Or il se trouve qu&#8217;ils intègrent un historique des appels :</p>
+<pre lang="python">>>> sirius.faire_un_truc_super_serieux.mock_calls
+[call('ieux'),
+ call().delamort(),
+ call().delamort().__getitem__(slice(3, 14, None)),
+ call().delamort().__getitem__().__add__([1, 2])]</pre>
+<p> Et comme vérifier qu&#8217;un appel a bien eu lieu est une tâche courante, <a href="https://docs.python.org/3/library/unittest.mock.html#unittest.mock.Mock.assert_called_with">des méthodes</a> pour les tests unitaires ont été intégrées :</p>
+<pre lang="python">>>> sirius.faire_un_truc_super_serieux.assert_called_with('ieux')
+>>> sirius.faire_un_truc_super_serieux.assert_called_with('not_ieux')
+Traceback (most recent call last):
+  File "<ipython-input-56-e8c4890f08d9>", line 1, in <module>
+    sirius.faire_un_truc_super_serieux.assert_called_with('not_ieux')
+  File "/usr/lib/python3.4/unittest/mock.py", line 760, in assert_called_with
+    raise AssertionError(_error_message()) from cause
+AssertionError: Expected call: mock('not_ieux')
+Actual call: mock('ieux')</pre>
+<h2>On dirait que tu vas mettre ces porte-jartelles et&#8230;</h2>
+<p>Pour finir, le module <code>mock</code> vient avec <code>patch()</code>, qui sert à, surprise, patcher les objets, et propose des <a href="http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/">context managers</a> et des <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">décorateurs</a> pour se faciliter la vie.</p>
+<p>Par exemple, détourner <code>open()</code> temporairement :</p>
+<pre lang="python">
+>>> from unittest.mock import patch, mock_open
+>>> with patch('__main__.open', mock_open(read_data='wololo'), create=True) as mock:
+...     with open('zefile') as h:
+...         result = h.read()
+...
+>>> mock.assert_called_once_with('zefile')
+>>> assert result == 'wololo'</pre>
+<p>Ou alors avoir une partie d&#8217;un module qui soit un mock pour tout un appel de fonction :</p>
+<pre lang="python">@patch('os.listdir')
+def ah(mock):
+    import os
+    print(os.listdir('.'))
+    # l'objet mock initial est aussi passé en param automatiquement
+    print(mock)
+ah()
+## <MagicMock name='listdir()' id='140302096346864'>
+## <MagicMock name='listdir' id='140302101454688'></pre>
+<p>Le module mock est vraiment très complet, avec des outils pour checker les signatures, passer <code>isinstance()</code>, overrider le contenu d&#8217;un dico, et tout un tas de cas particuliers et corner cases. Donc <a href="https://docs.python.org/3/library/unittest.mock.html#unittest.mock.patch">lisez la doc</a> si vous rencontrez un blocage avant de paniquer.</p>
+<h2>Dis, comment on fait les bébés</h2>
+<p>Exemple prit d&#8217;une base de code IRL, avec une fonction pytest qui teste un objet <code>response</code> représentant une réponse HTTP. Si on appelle <code>write()</code> sur cet objet sous-jacent elle doit faire des appels à deux méthodes privées et une méthode d&#8217;un objet Twisted.</p>
+<p>Problème, ces méthodes :</p>
+<ul>
+<li>Supposent qu&#8217;une event loop est lancée.</li>
+<li>Ecrivent sur le réseau.</li>
+<li>Sont potentiellement appelées de manière asynchrone, en dehors de notre contrôle.</li>
+<li>Ont des side effects donc on veut être certains qu&#8217;elles sont appelées, et avec les bons paramètres.</li>
+</ul>
+<p>Du coup, on les remplace par des objets mocks, et yala :</p>
+<pre lang="python">def test_write(response):
+    assert response.write != response._req.write
+    response._disable_rendering = MagicMock(name='_disable_rendering')
+    response._set_twisted_headers = MagicMock(name='_set_twisted_headers')
+    response.write(b'test')
+    response._set_twisted_headers.assert_called_once_with()
+    response._disable_rendering.assert_called_once_with()
+    assert response.write == response._req.write
+    response._req.write.assert_called_once_with(b'test')</pre>
+<h2>Et pourquoi ? Et pourquoi ? Et pourquoi ?</h2>
+<p>Prochaines étapes, savoir quand tester, et quoi tester, mais aussi comment rendre un code plus testable. Probablement la partie qui sera la plus difficile à écrire pour moi, car c&#8217;est assez subjectif. On parlera sans doute du code coverage, et je gage que je vais devoir créer un petit projet bidon pour tester tout ça, du genre un minifieur d&#8217;URL ou autre. Faudra voir l&#8217;inspiration.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-5/feed/</wfw:commentRss>
+		<slash:comments>12</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">16281</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/05/VLbJSOV.gif" length="937018" type="image/jpg" />	</item>
+		<item>
+		<title>Générer des données factices avec faker</title>
+		<link>http://sametmax.com/generer-des-donnees-factices-avec-faker/</link>
+		<comments>http://sametmax.com/generer-des-donnees-factices-avec-faker/#comments</comments>
+		<pubDate>Thu, 17 Apr 2014 08:30:21 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[mock]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[tests]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10029</guid>
+		<description><![CDATA[Le principe de la lib est très simple : générer des données bidons. Noms, numéros de téléphone, adresses physiques ou email...]]></description>
+				<content:encoded><![CDATA[<p><a href="https://github.com/joke2k/faker">faker</a> fait partie de ses libs que j&#8217;ai toujours voulu écrire sans jamais prendre le temps de le faire. Comme <a href="http://sametmax.com/les-time-zones-en-python/">arrow</a> par exemple. Et puis un jour quelqu&#8217;un le fait, et je suis à la fois soulagé de ne pas avoir tenté de le faire (au risque de ne pas réussir aussi bien) et un peu déçu d&#8217;être passé à côté de la bonne idée.</p>
+<p>Le principe de la lib est très simple : générer des données bidons. Noms, numéros de téléphone, adresses physiques ou email&#8230; C&#8217;est utile pour tout un tas de choses :</p>
+<ul>
+<li>Faire des tests, évidement.</li>
+<li>Créer des bots, des crawlers et tout autre programme qui doit se faire passer pour un utilisateur.</li>
+<li>Remplir une base de données vide en attendant que les utilisateurs réels remplissent le site. Cela évite le sentiment d&#8217;arriver sur un service désert. Tous les sites de rencontre font ça.</li>
+<li>Générer un contexte artificiel, par exemple pour un jeu vidéo.</li>
+</ul>
+<p>Faker est déjà très simple à utiliser :</p>
+<pre lang="python">>>> from faker import Faker
+>>> f = Faker()
+>>> f.phone_number()
+u'+69(4)8833689405'
+>>> f.phone_number()
+u'1-201-240-9452'
+>>> f.phone_number()
+u'+95(8)7680219065'
+>>> f.phone_number()
+u'754-833-9664x654'
+>>> f.email()
+u'bentley.gaylord@batz.org'
+>>> f.email()
+u'ludwig.rohan@adamskoch.info'</pre>
+<p>Et surtout déjà très riche. Il y a <strong>plus d&#8217;une centaine</strong> de choses que vous pouvez générer. Quelques exemples :</p>
+<ul>
+<li><code>f.city</code></li>
+<li><code>f.company</code></li>
+<li><code>f.credit_card_number</code></li>
+<li><code>f.date_time_this_decade</code></li>
+<li><code>f.geo_coordinate</code></li>
+<li><code>f.hex_color</code></li>
+<li><code>f.ipv4</code></li>
+<li><code>f.language_code</code></li>
+<li><code>f.md5</code></li>
+<li><code>f.mime_type</code></li>
+<li><code>f.month_name</code></li>
+<li><code>f.paragraph</code></li>
+<li><code>f.password</code></li>
+<li><code>f.postcode</code></li>
+<li><code>f.ssn</code></li>
+<li><code>f.street_address</code></li>
+<li><code>f.url</code></li>
+<li><code>f.user_agent</code></li>
+<li><code>f.word</code></li>
+</ul>
+<p>faker est très flexible. En effet, beaucoup d&#8217;éléments existent en plusieurs versions ou de manière composée et utilisables séparément. Ainsi, on peut prendre l&#8217;IPV4 ou V6, choisir l&#8217;adresse entière ou le code postal seul, récupérer le nom complet, ou juste le prénom :</p>
+<pre lang="python">>>> f.name()
+u'Olin McCullough'
+>>> f.first_name()
+u'Brandie'</pre>
+<p>Mais en plus, faker est localisé :</p>
+<pre lang="python">>>> f = Faker(locale="fr_FR")
+>>> f.name()
+u'Martine de la Petitjean'
+</pre>
+<p>Enfin, on peut créer ses propres générateurs et fournisseurs de données au besoin.</p>
+<p>Comme dirait Max, c&#8217;est d&#8217;la balle baby !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/generer-des-donnees-factices-avec-faker/feed/</wfw:commentRss>
+		<slash:comments>12</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">10029</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/04/TbAwI.jpg" length="55074" type="image/jpg" />	</item>
+	</channel>
+</rss>

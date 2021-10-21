@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>mutable &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/mutable/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Les trucmuchables en Python</title>
+		<link>http://sametmax.com/les-trucmuchables-en-python/</link>
+		<comments>http://sametmax.com/les-trucmuchables-en-python/#comments</comments>
+		<pubDate>Tue, 23 Dec 2014 23:58:42 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[callable]]></category>
+		<category><![CDATA[indexable]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[mutable]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[slicerable]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=13004</guid>
+		<description><![CDATA[En Python on aime le duck typing. On ne va donc pas s'intéresser à un type, mais à un comportement.]]></description>
+				<content:encoded><![CDATA[<p>Parcourez votre itérable, passez un callable, retournez un indexable&#8230;</p>
+<p>En Python on aime le duck typing. On ne va donc pas s&#8217;intéresser à un type, mais à un comportement.</p>
+<p>Quand vous voyez un suffixe &#8220;-able&#8221; en anglais, ça veut dire &#8220;accepte qu&#8217;on lui fasse quelque chose&#8221;. Par exemple, &#8220;fuckable&#8221; = &#8220;baisable&#8221;.</p>
+<p>Sur ce morceau de poésie, je vous offre un peu de Vivaldi pour faire glisser profondément ce gros article qui va lister les chosables les plus connus.</p>
+<p><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/watQ28Fx2Mg?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<h2>Iterable</h2>
+<p>Le plus important en Python.</p>
+<p>Un itérable est ce qui accepte l&#8217;itération, ce sur quoi on peut itérer, c&#8217;est à dire une collection dont on peut prendre les éléments un à un.</p>
+<p>Pour faire simple, <strong>tout ce sur quoi on peut appliquer une boucle <code>for</code></strong>.</p>
+<p>L&#8217;exemple le plus connu sont les listes :</p>
+<pre lang="python">for x in ['une', 'liste']:
+    print(x)
+une
+liste</pre>
+<p>Mais cela s&#8217;applique à bien d&#8217;autres types :</p>
+<pre lang="python">for x in 'unechaine':
+...     print(x)
+...
+u
+n
+e
+c
+h
+a
+i
+n
+e
+for x in ('un', 'tuple'):
+...     print(x)
+...
+un
+tuple
+for x in {'un': 'dico', 'par': 'cle'}:
+...     print(x)
+...
+un
+par
+for x in set(('un', 'set')):
+...     print(x)
+...
+un
+set
+with open('/tmp/test', 'w') as f:
+    f.write('un\nfichier')
+...
+for x in open('/tmp/test'):
+...     print(x, end="")
+...
+un
+fichier</pre>
+<p>Les tuples, dicos, sets, fichiers, et strings sont itérables. Beaucoup de structures de données du module <a href="http://sametmax.com/ce-que-vous-ne-saviez-pas-sur-les-collections-en-python/">collections</a> (<code>deque</code>, <code>namedtupple</code>, <code>defaultdict</code>) sont itérables.</p>
+<p>Mais surtout, les générateurs sont itérables :</p>
+<pre lang="python">def generator():
+    yield 1
+    yield 2
+
+for x in generator():
+    print(x)
+1
+2</pre>
+<p>Pour vérifier si quelque chose est itérable, on peut utiliser la fonction <code>iter()</code>. Cette fonction prend un iteérable, et retourne un générateur (appelé &#8220;iterator&#8221;) qui permet d&#8217;énumérer chaque élément de l&#8217;iterable :</p>
+<pre lang="python">lst = ['ceci', 'est', 'aussi', 'une', 'liste']
+generateur = iter(lst)
+next(generateur)
+'ceci'
+next(generateur)
+'est'
+next(generateur)
+'aussi'
+next(generateur)
+'une'</pre>
+<p><code>iter()</code> lève <code>TypeError</code> sur un non iterable :</p>
+<pre lang="python">iter(1)
+Traceback (most recent call last):
+  File "", line 1, in 
+    iter(1)
+TypeError: 'int' object is not iterable</pre>
+<p>Pour la culture, c&#8217;est ainsi que la boucle <code>for</code> fonctionne : à coup de <code>next()</code> sur un itérateur.</p>
+<p>On peut rendre n&#8217;importe quelle objet itérable en définissant la méthode <code>__iter__</code>, qui doit retourner un générateur :</p>
+<pre lang="python">class NouvelIterable:
+    def __iter__(self):
+        # mettre des yield marche aussi
+        return iter([1, 2, 3])
+
+for x in NouvelIterable():
+    print(x)
+1
+2
+3</pre>
+<p>Les itérables sont les bidulables les plus important en Python car de très nombreuses fonctions les acceptent :</p>
+<pre lang="python">list(sorted(('AZERTY'))) # tri
+['A', 'E', 'R', 'T', 'Y', 'Z']
+list(reversed('AZERTY')) # inversion
+['Y', 'T', 'R', 'E', 'Z', 'A']
+list(zip('AZERTY', (100, 300, 600))) # lier deux itérables
+[('A', 100), ('Z', 300), ('E', 600)]
+any(set((1, 0, 1, 0, 1, 1, 2))) # un élément au moins est vrai ?
+True
+all(set((1, 0, 1, 0, 1, 1, 2))) # tous les éléments sont vrais ?
+False
+</pre>
+<p>Et elles retournent souvent des itérables également :)</p>
+<p>La plupart des itérables sont compatibles entre eux. Y compris les générateurs. Qui souvent traitent eux même des itérables et retournent des itérables. Cela permet de faire d&#8217;énormes pipelines de traitements connectés les uns aux autres :</p>
+<pre lang="python">s = '123456789'
+res = (int(x) * x for x in s)
+tuple(reversed(list(res)))[:4]
+('999999999', '88888888', '7777777', '666666')</pre>
+<h2>Mutable</h2>
+<p>Dont on peut changer la valeur.</p>
+<p>Quand on assigne une variable en Python, on ne change pas la valeur de l&#8217;objet, on change la valeur de la variable :</p>
+<pre lang="python">a = 1
+a = 2</pre>
+<p>Ici <code>1</code> n&#8217;a pas changé, la valeur stockée dans <code>a</code> a changé.</p>
+<p>C&#8217;est différent de ceci :</p>
+<pre lang="python">a = [1]
+a[0] = 2
+a
+[2]</pre>
+<p>Ici, c&#8217;est la même liste qui est dans <code>a</code>, mais la valeur stockée dans la liste a changé.</p>
+<p>Cette notion est importante car en Python, les variables ne contiennent en fait pas vraiment des valeurs, mais des références à ces valeurs.</p>
+<p>Si je change le contenu de la variable, il n&#8217;y a pas d&#8217;effet de bords :</p>
+<pre lang="python">a = [1, 2, 3]
+b = a # b et a contienne une référence à la même liste
+b
+[1, 2, 3]
+a = [4, 5, 6] # le contenu de a change
+b
+[1, 2, 3] # b et a ont une contenu différents</pre>
+<p>Si je change la valeur de ma structure de données, ici ma liste, alors il y a un effet de bord :</p>
+<pre lang="python">a = [1, 2, 3]
+b = a
+a[0] = 1000
+b # a et b référencent la même liste
+[1000, 2, 3]</pre>
+<p>En effet, <code>a</code> ne contient pas la liste, mais une référence à la liste. Quand on copie le contenu de <code>a</code> vers <code>b</code>, on ne copie pas la liste, mais cette référence. Donc <code>a</code> et <code>b</code> sont des variables qui pointent vers <strong>la même liste</strong>.</p>
+<p>Il est alors important de savoir quelles opérations modifient quelque chose, et lesquelles ne les modifient pas.</p>
+<p>Les listes, les dictionnaires et les sets sont modifiables, on dit qu&#8217;il sont &#8220;mutables&#8221;.</p>
+<p>On peut le voir avec la fonction <code>id()</code> qui renvoie le numéro unique de l&#8217;objet :</p>
+<pre lang="python">une_liste = []
+id(une_liste)
+140693805855368
+une_liste.append(1)
+une_liste
+[1]
+id(une_liste)
+140693805855368</pre>
+<p>La liste a changé, mais l&#8217;id est le même, c&#8217;est le même objet.</p>
+<p>Les opérations qui &#8220;changent la valeur&#8221; sur les types mutables sont performantes en Python car il n&#8217;y a pas besoin de recréer un objet à chaque fois.</p>
+<p>Les tuples, les nombres, les chaînes de caractères ne sont pas modifiables. Il ne sont pas &#8220;mutables&#8221; :</p>
+<pre lang="python">id(une_liste)
+140693805855368
+un_tuple = (1, 2, 3)
+id(un_tuple)
+140693772746040
+un_tuple += (4, 5, 6)
+un_tuple
+(1, 2, 3, 4, 5, 6)
+id(un_tuple)
+140693772879144</pre>
+<p>Le tuple n&#8217;a pas changé : l&#8217;id n&#8217;est pas le même car la variable <code>un_tuple</code> contient un nouvel objet.</p>
+<p>Les opérations qui &#8220;changent la valeur&#8221; sur les types non mutables sont moins performantes en Python car il faut recréer un objet à chaque fois.</p>
+<p>Par défaut, toute classe que vous écrivez crée un objet mutable.</p>
+<h2>Callable</h2>
+<p>Tout ce qui peut être appelé, c&#8217;est à dire qu&#8217;on peut mettre <code>()</code> après le nom de la variable qui le contient pour obtenir un effet.</p>
+<p>Ce qui vient en premier en tête ce sont les fonctions (ou les méthodes):</p>
+<pre lang="python">def foo():
+...     print("Je suis appelée")
+...
+foo() # j'appelle ma fonction
+Je suis appelée</pre>
+<p>Mais, en Python, le concept d&#8217;appeler va plus loin.</p>
+<p>Une classe est un callable :</p>
+<pre lang="python">class Bar:
+    def __init__(self):
+        print("Je suis appelée")
+Bar() # j'instancie en utilisant ()
+
+Je suis appelée</pre>
+<p>Un type est un callable :</p>
+<pre lang="python">set()
+set()</pre>
+<p>Et on peut rendre n&#8217;importe quel objet callable en définissant la méthode <code>__call__</code> :</p>
+<pre lang="python">class UnCallableQuiCreerUnCallable:
+    def __call__(self):
+        print('Je suis appelé')
+
+callable = UnCallableQuiCreerUnCallable()
+callable()
+Je suis appelé</pre>
+<p>Donc quand on vous dit : &#8220;ceci attend un callable en paramètre&#8221;, vous pouvez passer n&#8217;importe quel type de callable. Pas juste une fonction. On peut créer des décorateurs avec et pour n&#8217;importe quel callable.</p>
+<p>Si on essaye d&#8217;appeler un objet qui n&#8217;est pas un callabe, on obtient un <code>TypeError</code> :</p>
+<pre lang="python">lst
+[1]
+lst()
+Traceback (most recent call last):
+  File "", line 1, in 
+    lst()
+TypeError: 'list' object is not callable</pre>
+<h2>Hashable</h2>
+<p>Les clés des dictionnaires n&#8217;ont pas besoin d&#8217;être des chaînes de caractères. Elles peuvent être n&#8217;importe quel objet hashable. Pour les types de base, ce sont les non mutables, soit les strings, mais aussi ints, floats ou tuples :</p>
+<pre lang="python">dico = {('une', 'cle', 'qui', 'est', 'un', 'tuple'): 1}
+len(dico)
+1
+dico[('une', 'cle', 'qui', 'est', 'un', 'tuple')]
+1</pre>
+<p>Pour obtenir cet effet, le dictionnaire prend l&#8217;objet passé en clé, et calcule un hash, une empreinte unique de l&#8217;objet. Pour que cela marche, il faut que le hash d&#8217;un objet donne toujours le même résultat si il est appliqué deux fois au même objet, ou à deux objets parfaitement égaux.</p>
+<p>Un objet hashable est donc un objet qu&#8217;on peut utiliser comme clé de dictionnaire. C&#8217;est un objet qu&#8217;on peut passer à la fonction <code>hash()</code>. Dans la stdlib, les types non mutables sont hashable, et les types mutables ne le sont pas :</p>
+<pre lang="python">hash("fdkslmf")
+4874978338908949266
+hash([])
+Traceback (most recent call last):
+  File "", line 1, in 
+    hash([])
+TypeError: unhashable type: 'list'</pre>
+<p>Mais on peut créer sa propre définition de ce qu&#8217;est un objet hashable avec la méthode <code>__hash__</code>, qui doit retourner un entier :</p>
+<pre lang="python">class Personne:
+    def __init__(self, nom, prenom, age):
+        self.nom = nom
+        self.prenom = prenom
+        self.age = age
+    def __hash__(self):
+        return sum((ord(x) for x in (self.nom + self.prenom))) + self.age
+...
+hash(Personne("bob", "sinclaire", 78))
+1339</pre>
+<p>Vous avez néanmoins intérêt à savoir ce que vous faites en faisant ça, c&#8217;est un nid de frelons.</p>
+<h2>Subscriptables</h2>
+<p>Ce dont on peut récupérer une partie avec <code>[]</code>. Essayer sur un objet qui ne l&#8217;est pas peut lever <code>TypeError: 'x' object is not subscriptable</code> ou une sous erreur.</p>
+<p>Car on peut utiliser <code>[]</code> de deux façons.</p>
+<h3>Indexable</h3>
+<p>Dont on peut récupérer un élément à une position particulière, avec la syntaxe <code>[]</code>. Dans la stdlib, les listes, les chaînes de caractères, les tuples et les dictionnaires sont indexables mais pas les sets :</p>
+<pre lang="python">"fdjskl"[0]
+'f'
+('1', '2')[0]
+'1'
+{'yo': 'man'}['yo']
+'man'
+s = set((1, 2))
+s[0]
+Traceback (most recent call last):
+  File "", line 1, in 
+    s[0]
+TypeError: 'set' object does not support indexing</pre>
+<p>On peut définir son propre comportement d&#8217;indexation avec <code>__getitem__</code> :</p>
+<pre lang="python">class MainGauche:
+    def __getitem__(self, index):
+        return "Index de la main gauche"
+
+main = MainGauche()
+print(main[0])
+Index de la main gauche
+</pre>
+<h3>Sliceable</h3>
+<p>Dont on peut récupérer un sous ensemble des éléments avec la syntaxe <code>[start:stop:step]</code>. Un sliceable est souvent indexable, mais l&#8217;inverse n&#8217;est pas forcément vrai. Dans la stdlib, les listes, les strings et les tuples sont sliceables, mais pas les dictionnaires ni les sets :</p>
+<pre lang="python">"fdjskl"[1::2]
+'dsl'
+('1', '2', True, False)[:-1]
+('1', '2', True)
+{'yo': 'man'}[1:2]
+Traceback (most recent call last):
+  File "", line 1, in 
+    {'yo': 'man'}[1:2]
+TypeError: unhashable type: 'slice'</pre>
+<p>Le slice s&#8217;implémente comme l&#8217;index, avec <code>__getitem__</code>. La différence est qu&#8217;au lieu de recevoir une valeur ordinaire, vous allez recevoir un objet slice :</p>
+<pre lang="python">class MainDroite:
+    def __getitem__(self, slice):
+        print(slice.start, slice.stop)
+        return "Slice de la main droite. Heu..."
+
+main = MainDroite()
+print(main[2:6])
+2 6
+Slice de la main droite. Heu...
+</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-trucmuchables-en-python/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">13004</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/12/P452iMY.gif" length="697109" type="image/jpg" />	</item>
+	</channel>
+</rss>

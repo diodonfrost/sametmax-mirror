@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>clipboard &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/clipboard/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Puis-je copier/coller mon brave ?</title>
+		<link>http://sametmax.com/20808/</link>
+		<comments>http://sametmax.com/20808/#comments</comments>
+		<pubDate>Sun, 23 Oct 2016 07:41:48 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[api]]></category>
+		<category><![CDATA[clipboard]]></category>
+		<category><![CDATA[copier/coller]]></category>
+		<category><![CDATA[html5]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[js]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=20808</guid>
+		<description><![CDATA[Sebsauvage a partagé <a href="http://sebsauvage.net/links/?cKAfaQ">un snippet</a> pour utiliser l'API du clipboard en JS. Et j'ai donc voulu savoir comment détecter que cette functionalité est implémentée par le navivateur en cours. ]]></description>
+				<content:encoded><![CDATA[<p>Dans <a href="0bin.net">0bin</a> on utilise encore flash pour faire le copier/coller, et je pense qu&#8217;on va le virer. Plus de raison de supporter les navigateurs trop vieux et après tout c&#8217;est pas grave de se voir refuser un raccourci pour copier/coller : le reste est utilisable.</p>
+<p>Pourquoi je vous dis ça ?</p>
+<p>Et bien parce que sebsauvage a partagé <a href="http://sebsauvage.net/links/?cKAfaQ">un snippet</a> pour utiliser l&#8217;API du clipboard en JS. Et j&#8217;ai donc voulu savoir comment détecter que cette functionalité est implémentée par le navigateur en cours. </p>
+<p>Je suis ainsi allé voir <a href="https://github.com/Modernizr/Modernizr/pull/659/commits/7354ab3e0167ced43df9fae43c13c25a10f36fcf">les sources de modernizr</a>, et il implémente en fait une combinaisons de 2 techniques.</p>
+<p>D&#8217;abord, vérifier si l&#8217;objet <code>window</code> a un attribut <code>ClipboardEvent</code>. Si oui, c&#8217;est réglé. Si non, il crée un <code>div</code>, on check s&#8217;il a un attribut <code>paste</code>. Le reste sont <a href="http://perfectionkills.com/detecting-event-support-without-browser-sniffing/">les hacks de compatibilité</a> avec les très vieux navs que je ne vais pas retranscrire ici.</p>
+<p>Donc en gros, avant de faire un copier/coller en JS, vérifiez:</p>
+<pre lang="javascript">function implementClipboardAPI(){
+   try {
+     return (!!window.ClipboardEvent || 'onpaste' in document.createElement('div'));
+   } catch(e) {
+     return false;
+   }
+}
+</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/20808/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">20808</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/10/JUaJo1o.jpg" length="105114" type="image/jpg" />	</item>
+	</channel>
+</rss>

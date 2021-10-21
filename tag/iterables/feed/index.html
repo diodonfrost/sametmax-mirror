@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>iterables &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/iterables/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Ce que vous ne saviez pas sur les collections en Python</title>
+		<link>http://sametmax.com/ce-que-vous-ne-saviez-pas-sur-les-collections-en-python/</link>
+		<comments>http://sametmax.com/ce-que-vous-ne-saviez-pas-sur-les-collections-en-python/#comments</comments>
+		<pubDate>Tue, 10 Jul 2012 22:05:52 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[collections]]></category>
+		<category><![CDATA[dicts]]></category>
+		<category><![CDATA[iterables]]></category>
+		<category><![CDATA[lists]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[set]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1101</guid>
+		<description><![CDATA[Batteries included on vous dit...]]></description>
+				<content:encoded><![CDATA[<p>Les collections en Python sont organisées autour de la philosophie du langage, notament <a href="http://docs.python.org/glossary.html#term-eafp">EAFP</a>, et la <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">manie de l&#8217;itération</a>.</p>
+<h2>Les dictionnaires</h2>
+<h3>Valeur par défaut</h3>
+<p>Une fois à l&#8217;aise en Python, on utilise souvent les dictionnaires. Et on fait souvent ça:</p>
+<pre lang="python">
+>>> def get(d, key, default):
+...     try:
+...         return d[key]
+...     except KeyError:
+...         return default
+... 
+>>> d = {'a':1}
+>>> get(d, 'foo', 'bar')
+'bar'
+>>> get(d, 'a', 'bar')
+1
+</pre>
+<p>C&#8217;est parfaitement superflux, puisque Python le propose en standard:</p>
+<pre lang="python">
+>>> d.get("foo", 'bar')
+'bar'
+>>> d.get("a", 'bar')
+1
+</pre>
+<p>Plus tordu encore:</p>
+<pre lang="python">
+>>> def get_and_set_if_not_exist(d, key, default):
+...     try:
+...         return d[key]
+...     except KeyError:
+...         d[key] = default
+...         return default
+... 
+>>> d = {'a':1}
+>>> get_and_set_if_not_exist(d, 'foo', []).append('wololo')
+>>> d
+{'a': 1, 'foo': ['wololo']}
+>>> get_and_set_if_not_exist(d, 'foo', []).append('oyo oyo')
+>>> d
+{'a': 1, 'foo': ['wololo', 'oyo oyo']}
+</pre>
+<p>Python le propose aussi en standard:</p>
+<pre lang="python">
+>>> d = {'a':1}
+>>> d.setdefault('foo', []).append('wololo')
+>>> d.setdefault('foo', []).append('oyo oyo')
+>>> d
+{'a': 1, 'foo': ['wololo', 'oyo oyo']}
+</pre>
+<h3>Clés des dictionnaires</h3>
+<p>Les clés des dictionnaires n&#8217;ont pas à être des strings. N&#8217;importe quel objet hashable fait l&#8217;affaire, par exemple, des tuples:</p>
+<pre lang="python">
+>>> positions = {}
+>>> positions[(48.856614, 48.856614)] = "Paris"
+>>> positions[(40.7143528, -74.0059731)] = "New York"
+>>> positions
+{(48.856614, 48.856614): 'Paris', (40.7143528, -74.0059731): 'New York'}
+>>> positions[(48.856614, 48.856614)]
+'Paris'
+</pre>
+<h2>Les sets</h2>
+<p>Les sets sont un type de structure peu connu: ils représentent un ensemble non ordonné d&#8217;objets uniques. Il n&#8217;y a donc pas d&#8217;ordre évident dans un set, et le résultat est garanti sans doublon:</p>
+<pre lang="python">
+>>> e = set((3, 2, 1, 1, 1, 1, 1))
+>>> e
+set([1, 2, 3])
+>>> e.add(1)
+>>> e.add(1)
+>>> e.add(14)
+>>> e
+set([1, 2, 3, 14])
+</pre>
+<p>Les opérations du set acceptent n&#8217;importe quel <a href="http://sametmax.com/parcourir-un-iterable-par-morceaux-en-python/">itérable</a>. Y compris les opérations ensemblistes:</p>
+<pre lang="python">
+>>> e.update('abcdef')
+>>> e
+set(['a', 1, 2, 3, 'e', 'd', 'f', 'c', 14, 'b'])
+>>> e = set('abc')
+>>> e.union("cde")
+set(['a', 'c', 'b', 'e', 'd'])
+>>> e.difference("cde")
+set(['a', 'b'])
+>>> e.intersection("cde")
+set(['c'])
+</pre>
+<p>Vérifier la présence l&#8217;un élément dans un set (avec l&#8217;opérateur <code>in</code>) est une opération extrêment rapide (compléxité <code>O(1)</code>), beaucoup plus que dans une liste ou un tuple. Le set reste pourtant itérable (mais on ne peut pas compter sur l&#8217;ordre).</p>
+<p>Les opérateurs binaires sont overridés pour les opérations entre sets. De plus on peut utiliser une notation littérale pour décrire un set à partir de Python 2.7:</p>
+<pre lang="python">
+>>> {'a', 'b', 'c'} | {'c', 'd'} # union
+set(['a', 'c', 'b', 'd'])
+>>> {'a', 'b', 'c'} & {'c', 'd'} # intersection
+set(['c'])
+>>> {'a', 'b', 'c'} - {'c', 'd'} # difference
+set(['a', 'b'])
+</pre>
+<h2>Les listes</h2>
+<h3><code>Pop()</code> prend un argument</h3>
+<p>La raison pour laquelle il n&#8217;y a pas de <code>unshift</code> sur les listes en Python, c&#8217;est que l&#8217;on en a pas besoin:</p>
+<pre lang="python">>>
+>>> l = [1, 2, 3, 4, 5]
+>>> l.pop()
+5
+>>> l
+[1, 2, 3, 4]
+>>> l.pop(0)
+1
+>>> l
+[2, 3, 4]
+>>> l.pop(-2)
+3
+>>> l
+[2, 4]</pre>
+<h3>Le slicing accepte un 3eme argument</h3>
+<p>Le slicing, que l&#8217;on peut appliquer à tous les indexables (listes, tuples, strings, etc), est la fonctionalité bien pratique qui permet de récupérer une sous partie de la structure de données:</p>
+<pre lang="python">
+>>> l = range(10)
+>>> l
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+>>> l[2:8]
+[2, 3, 4, 5, 6, 7]
+>>> l[5:]
+[5, 6, 7, 8, 9]
+>>> l[:5]
+[0, 1, 2, 3, 4]
+
+</pre>
+<p>Ca vous connaissiez sûrement. Mais cette syntaxe accepte un 3eme nombre: le pas.</p>
+<p>Le premier nombre dit d&#8217;où l&#8217;on part. Le second où l&#8217;on s&#8217;arrête. Le dernier dit de combien on avance (par défaut de 1).</p>
+<pre lang="python">
+>>> l[2:8:2]
+[2, 4, 6]
+>>> l[2::2] # chaque paramètre est optionel
+[2, 4, 6, 8]
+</pre>
+<p>Et le pas peut être négatif, ce qui est plutôt sympas si vous voulez parcourir une liste ou une string à reculon.</p>
+<pre lang="python">
+>>> l[::-1]
+[9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+</pre>
+<h3><code>extend()</code> accepte n&#8217;importe quel itérable</h3>
+<p>extend() permet de mettre à jour une liste. On l&#8217;utilise souvent en lui passant une autre liste:</p>
+<pre lang="python">
+>>> l = [1, 2, 3]
+>>> l.extend([4, 5, 6])
+>>> l
+[1, 2, 3, 4, 5, 6]
+</pre>
+<p>Mais comme la plupart du code la bibliothèque standard, <code>extend()</code> accepte n&#8217;importe quel itérable.</p>
+<pre lang="python">
+>>> t = (42, 666, 1024) # un tuple
+>>> s = '456' # une string
+>>> d = {'3.14': 'pi'} # un dico
+>>> l = [1, 2, 3]
+>>> l.extend(s)
+>>> l
+[1, 2, 3, '4', '5', '6']
+>>> l.extend(d) #
+>>> l
+[1, 2, 3, '4', '5', '6', '3.14']
+>>> l.extend(t)
+>>> l
+[1, 2, 3, '4', '5', '6', '3.14', 42, 666, 1024]
+</pre>
+<p>Ca marche aussi avec les set, les fichiers, les expressions génératrices. Attention cependant, sachez que l&#8217;itération retourne: par exemple itérer sur un dico retourne ses clés, pas ses valeurs (car on peut récupérer l&#8217;un avec l&#8217;autre, mais pas l&#8217;inverse).</p>
+<h2>Les tuples</h2>
+<p>Ce qui permet de créer un tuple ne sont pas les parenthèses, mais la virgule:</p>
+<pre lang="python">
+>>> 1,2,3 # ceci EST un tuple
+(1, 2, 3)
+>>> 1, # tuple
+(1,)
+>>> 1 # int
+1
+</pre>
+<p>La raison pour laquelle il est recommandé d&#8217;utiliser presque TOUJOURS les parenthèses, c&#8217;est qu&#8217;elles permettent d&#8217;éviter les ambiguïtés, et qu&#8217;elles autorisent la définition sur plusieurs lignes:</p>
+<pre lang="python">
+>>> type(1,2,3) # tuple ou paramètres ?
+Traceback (most recent call last):
+  File "<ipython-input-62-5be61417b8a3>", line 1, in <module>
+    type(1,2,3)
+TypeError: type() argument 1 must be string, not int
+>>> type((1,2,3))
+<type 'tuple'>
+>>> (1, # un gros tuple s'écrit sur plusieurs lignes
+... 2,
+... 3)
+(1, 2, 3)
+</pre>
+<p>Mais il existe des rares cas où il est acceptable de ne pas mettre de parenthèses:</p>
+<pre lang="python">
+>>> def debut_et_fin(lst):
+...     """
+...         Retourne le début et la fin d'une liste
+...     """
+...     debut = lst[0]
+...     fin = lst[-1]
+...     # donner l'illusion de retourner plusieurs valeurs
+...     # alors qu'on retourne en fait un tuple
+...     return debut, fin # 
+... 
+>>> debut, fin = debut_et_fin([1,2,3,4]) # unpacking
+>>> debut
+1
+>>> fin
+4
+>>> debut, fin = fin, debut # variable swap
+>>> debut
+4
+>>> fin
+1
+</pre>
+<h2>Le module <code>collections</code></h2>
+<p>En plus des collections built-in, la bibliothèque standard de Python propose un module <code>collections</code> avec plein d&#8217;outils en bonus.</p>
+<p>Des dictionnaires qui conservent l&#8217;ordre d&#8217;insertion (comme les Arrays en PHP):</p>
+<pre lang="python">
+>>> from collections import OrderedDict
+>>> d = {} # l'ordre d'un dico n'est pas garanti
+>>> d['c'] = 1
+>>> d['b'] = 2
+>>> d['a'] = 3
+>>> d.keys()
+['a', 'c', 'b']
+>>> d = OrderedDict()
+>>> d['c'] = 1
+>>> d['b'] = 2
+>>> d['a'] = 3
+>>> d.keys()
+['c', 'b', 'a']
+</pre>
+<p>Un compteur qui a une interface similaire à un dictionnaire spécialisé.</p>
+<pre lang="python">
+>>> from collections import Counter
+>>> score = Counter()
+>>> score['bob']
+0
+>>> score['robert'] += 1
+>>> score['robert']
+1
+>>> score['robert'] += 1
+>>> score['robert']
+2
+</pre>
+<p>Comme vous pouvez le voir il gère les valeurs par defaut, mais en prime il compte le contenu de n&#8217;importe quel itérable:</p>
+<pre lang="python">
+>>> Counter([1, 1, 1, 1, 1, 1, 2, 3, 3])
+Counter({1: 6, 3: 2, 2: 1})
+>>> Counter('Une petite puce pique plus')
+Counter({'e': 5, ' ': 4, 'p': 4, 'u': 3, 'i': 2, 't': 2, 'c': 1, 'l': 1, 'n': 1, 'q': 1, 's': 1, 'U': 1})
+</pre>
+<p>Des tuples qui ressemblent à des structs en C, mais itérables:</p>
+<pre lang="python">
+>>> from collections import namedtuple
+>>> Fiche = namedtuple("Fiche", "force charisme intelligence")
+>>> f = Fiche(force=18, charisme=17, intelligence=3)
+>>> f
+Fiche(force=18, charisme=17, intelligence=3)
+>>> for x in f:
+...     print x
+...
+18
+17
+3
+>>> f.force
+18
+</pre>
+<p>Des dicos dont la valeur par défaut est le résultat de l&#8217;appel d&#8217;une fonction:</p>
+<pre lang="python">
+>>> from collections import defaultdict
+>>> import datetime
+>>> d = defaultdict(datetime.datetime.now)
+>>> d["jour"]
+datetime.datetime(2012, 7, 10, 17, 34, 7, 265222)
+>>> d["jour"] # la valeur est settée
+datetime.datetime(2012, 7, 10, 17, 34, 7, 265222)
+>>> d["raison"] = "test"
+>>> d.items()
+[("jour", datetime.datetime(2012, 7, 10, 17, 34, 7, 265222)), ("raison", 'test')]
+</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ce-que-vous-ne-saviez-pas-sur-les-collections-en-python/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1101</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/07/sex-toy-collection.jpg" length="437398" type="image/jpg" />	</item>
+	</channel>
+</rss>

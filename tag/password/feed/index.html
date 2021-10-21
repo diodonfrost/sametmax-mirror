@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>password &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/password/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Le bulletin sécu : https pour 0bin et leak de mots de passe</title>
+		<link>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/</link>
+		<comments>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/#comments</comments>
+		<pubDate>Sun, 10 Jan 2016 12:42:33 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[0bin]]></category>
+		<category><![CDATA[chiffrement]]></category>
+		<category><![CDATA[hash]]></category>
+		<category><![CDATA[https]]></category>
+		<category><![CDATA[meta]]></category>
+		<category><![CDATA[password]]></category>
+		<category><![CDATA[sécurité]]></category>
+		<category><![CDATA[sysadmin]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=17638</guid>
+		<description><![CDATA[Bon, soit.]]></description>
+				<content:encoded><![CDATA[<p>Quand letsencrypt est passé live, on m&#8217;a gentiment signalé qu&#8217;on avait plus d&#8217;excuses pour faire tourner 0bin en clair.</p>
+<p>Bon, soit.</p>
+<p>J&#8217;ai mis en place ça hier à titre de test : <a href="https://0bin.net/">https://0bin.net/</a>.</p>
+<p>Pour le moment je vais pas faire de redirection car j&#8217;attends de voir si le truc tient. </p>
+<p>La bonne nouvelle, c&#8217;est que comme l&#8217;installation est juste nginx + zerobin, il n&#8217;y a pas eut grand chose à faire : lancer un script, le laisser nous identifier et installer les dependances pour qu&#8217;il génère le certificat et faire pointer le dit certificat par nginx.</p>
+<p>La moins bonne nouvelle c&#8217;est que notre archi pour <a href="http://sametmax.com">sametmax.com</a> et <a href="http://indexerror.net">indexerror.net</a> est basé sur client => varnish => nginx => worker => site.</p>
+<p>Il faut donc mettre le certif au niveau de varnish.</p>
+<p>Mais comme vous vous en doutez bien, il fallait que ça couille : support de https est un truc récent sur varnish et notre version ne le supporte pas. Donc il reste à :</p>
+<ul>
+<li>Up varnish. Compiler à la main, chercher un mec qui l’a fait, up le serveur ou autre.</li>
+<li>Ou passer varnish derrière nginx et réécrire tout le VLC.</li>
+<li>Ou mettre uniquement HTTPS pour les formulaires de connexions. C’est mieux que rien, mais ça laisse le cookie d’identification en clair et ça va demander de faire des règles milimétriaques.</li>
+<li>Mettre <a href="https://github.com/varnish/hitch">un autre truc</a> en face de varnish juste pour le port 443. </li>
+</ul>
+<p>Oh, du boulot en plus, je ne m’y attendais tellement pas&#8230;</p>
+<p>Merci à tous ceux qui ont proposé et fourni de l’aide néanmoins. C’est cool d’avoir du soutien parmi ses lecteurs.</p>
+<p>Pendant ce temps, et ça n’a rien à voir, un lecteur s’est amusé à brute forcer des hashs de mots de passe qu’on avait leakés connement et a trouvé celui de max au bout de quelques jours. Il nous a gentiment envoyé le résultat de ses recherches par mail. Ce n’est pas ironique, hein. J’apprécie que quand quelqu’un trouve que tu es à poil il te le fasse savoir avec précision et honnêteté.</p>
+<p>Du coup va falloir aussi changer tous les mots de passe du blog et de indexerror. </p>
+<p>Comme ce n’est pas une question de sécurité nationale, je ne suis pas en mode bersek à vouloir faire ça dans la minute, mais sachez-le : changez vos mots de passe à l’occasion. Personne ne va violer votre sœur demain si vous ne le faites pas, mais mieux vaut prévenir que guérir.</p>
+<p>Oh, du boulot en plus, je ne m’y attendais tellement pas&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/feed/</wfw:commentRss>
+		<slash:comments>18</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">17638</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/01/g3i4LZQ.jpg" length="28901" type="image/jpg" />	</item>
+		<item>
+		<title>Solution de l&#8217;exercice d&#8217;hier sur shadow</title>
+		<link>http://sametmax.com/solution-de-lexercice-dhier-sur-shadow/</link>
+		<comments>http://sametmax.com/solution-de-lexercice-dhier-sur-shadow/#comments</comments>
+		<pubDate>Wed, 29 Jan 2014 15:25:53 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[exercice]]></category>
+		<category><![CDATA[password]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unix]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8917</guid>
+		<description><![CDATA[Ça va de soit, mais ça va mieux en le disant, ceci n'est pas la solution unique, mais une solution possible parmi d'autres.]]></description>
+				<content:encoded><![CDATA[<p>Ça va de soit, mais ça va mieux en le disant, ceci n&#8217;est pas la solution unique de l&#8217;<a href="http://sametmax.com/cest-lheure-de-faire-de-lexercice/#comment-19118">exercice d&#8217;hier</a>, mais une solution possible parmi d&#8217;autres.</p>
+<p>On note l&#8217;usage de <a href="http://docs.python.org/2/library/crypt.html?highlight=crypt#crypt">crypt</a>, qui évite de se faire chier à trouver le bon algo de hashing et gère le salt automatiquement. <a href="http://docs.python.org/2/library/spwd.html?highlight=spwd#spwd">spwd</a>, c&#8217;est vraiment pour le grosses larves comme moi qui veulent même pas faire un <code>split</code>.</p>
+<p>Et c&#8217;est du Python 3, yo dog !</p>
+<pre lang="python">
+import io
+import os
+import crypt
+import spwd
+
+from urllib.request import FancyURLopener
+from zipfile import ZipFile
+
+PASSWORDS_SOURCE = "http://xato.net/files/10k%20most%20common.zip"
+PASSWORDS_LIST = '10k most common.txt'
+
+# Le fichier ZIP est derrière cloudflare, qui vous ferme la porte au nez si
+# vous n'avez pas de User-Agent. On va donc créer un UrlOpener, un objet qui
+# ouvre des ressources en utilisant leurs URLs, qui a un User-Agent 'TA MERE'.
+# CloudFlare ne check pas que le UA est valide.
+class FFOpener(FancyURLopener):
+   version = 'TA MERE'
+
+# Si le dictionnaire de passwords n'est pas là, on le télécharge
+# via FFOpener().open(PASSWORDS_SOURCE).read(). C'est verbeux, c'est urllib.
+# Normalement je ferais ça avec requests. Ensuite on lui donne une interface
+# file-like object avec io.BytesIO pour que ZipFile puisse le traiter en mémoire
+# sans avoir à le sauvegarder dans un vrai fichier sur le disque, et on
+# extrait le ZIP.
+if not os.path.isfile(PASSWORDS_LIST):
+    ZipFile(io.BytesIO(FFOpener().open(PASSWORDS_SOURCE).read())).extractall()
+
+# On extrait les mots de passe de la liste sous forme de tuple car c'est rapide
+# à lire. Un petit rstrip vire les sauts de ligne.
+passwords = tuple(l.rstrip() for l in open(PASSWORDS_LIST))
+
+# spwd.getspall() nous évite de parser le fichier shadow à la main.
+for entry in spwd.getspall():
+    print('Processing password for user "%s": ' % entry.sp_nam, end='')
+
+    # Pas de hash ? On gagne du temps avec 'continue'
+    if not '$' in entry.sp_pwd:
+        print('no password hash to process.')
+        continue
+
+    # On teste chaque password avec la fonction crypt, qui accepte en deuxième
+    # paramètre le hash du mot de passe complet. Pas besoin de se faire chier
+    # à le spliter, il va analyser les '$' et se démerder avec ça. On a juste
+    # à comparer le résultat avec le hash d'origine.
+    for pwd in passwords:
+        if crypt.crypt(pwd, entry.sp_pwd) == entry.sp_pwd:
+            print('password is "%s".' % pwd)
+            # On break pour gagner quelques tours de boucles, et pouvoir
+            # utiliser la condition 'else'.
+            break
+    else:
+        print('fail to break password.')</pre>
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2014/janvier/crack_shadow.py">Télécharger le code.</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/solution-de-lexercice-dhier-sur-shadow/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8917</post-id>	</item>
+		<item>
+		<title>C&#8217;est l&#8217;heure de faire de l&#8217;exercice</title>
+		<link>http://sametmax.com/cest-lheure-de-faire-de-lexercice/</link>
+		<comments>http://sametmax.com/cest-lheure-de-faire-de-lexercice/#comments</comments>
+		<pubDate>Tue, 28 Jan 2014 16:19:48 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[bcrypt]]></category>
+		<category><![CDATA[exercice]]></category>
+		<category><![CDATA[mot de pass]]></category>
+		<category><![CDATA[password]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sha]]></category>
+		<category><![CDATA[unix]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8910</guid>
+		<description><![CDATA[Créer un script de brute force de passwords Unix par dictionnaire.]]></description>
+				<content:encoded><![CDATA[<p>Le <a href="http://sametmax.com/petit-exercice-en-python/">dernier exercice</a> avait bien été apprécié, alors je remet ça.</p>
+<p>Consigne :</p>
+<p><em><br />
+Créer un script de brute force de passwords Unix par dictionnaire.</p>
+<p>Puisqu&#8217;on est pas non plus des Kevin Mitnick en puissance, on va supposer que vous êtes connectés sur la machine, que vous avez les droits root dessus et que vous avez localisé les mots de passe comme étant dans &#8220;/etc/shadow&#8221;.</p>
+<p>Votre script va vérifier si il possède un dictionnaire de mots de passe. Si ce n&#8217;est pas le cas, il va télécharger celui-ci et le décompresser : <a href="http://xato.net/files/10k%20most%20common.zip">http://xato.net/files/10k%20most%20common.zip.</a></p>
+<p>Ensuite vous parcourez le fichier shadow, et vous essayez de trouver quel mot de passe se cache  derrière chaque hash. Si il n&#8217;y a pas de hash, vous pouvez ignorer l&#8217;utilisateur.</p>
+<p>Exemple de sortie:</p>
+<pre>
+Processing password for user "root": no password hash to process.
+Processing password for user "daemon": no password hash to process.
+Processing password for user "bin": no password hash to process.
+Processing password for user "sys": no password hash to process.
+Processing password for user "www-data": no password hash to process.
+Processing password for user "sam": fail to break password.
+Processing password for user "test": password is "cheese".
+Processing password for user "messagebus": no password hash to process.
+Processing password for user "avahi-autoipd": no password hash to process.
+Processing password for user "avahi": no password hash to process.
+...</pre>
+<p></em></p>
+<p>Afin de simplifier l&#8217;exercice, il n&#8217;est pas demandé de gestion d&#8217;erreur ou de passage en a paramètre du script.</p>
+<p>Comme d&#8217;habitude, il n&#8217;y a pas de solution ultimate de la mort qui tue, c&#8217;est juste pour le fun.</p>
+<p><a href="http://sametmax.com/solution-de-lexercice-dhier-sur-shadow/">La soluce demain.</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/cest-lheure-de-faire-de-lexercice/feed/</wfw:commentRss>
+		<slash:comments>28</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8910</post-id>	</item>
+		<item>
+		<title>Éviter d&#8217;avoir la queue à l&#8217;air en publique avec TrueCrypt</title>
+		<link>http://sametmax.com/eviter-davoir-la-queue-a-lair-en-publique-avec-truecrypt/</link>
+		<comments>http://sametmax.com/eviter-davoir-la-queue-a-lair-en-publique-avec-truecrypt/#comments</comments>
+		<pubDate>Thu, 28 Jun 2012 11:26:38 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Cul]]></category>
+		<category><![CDATA[chiffrement]]></category>
+		<category><![CDATA[cul]]></category>
+		<category><![CDATA[password]]></category>
+		<category><![CDATA[sécurité]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1001</guid>
+		<description><![CDATA[On cite toujours des raisons sécuritaires pour justifier l'usage de la cryptographie, mais comme vous n'êtes pas un espion, il est peu probable que vous vous sentiez concernés. Je vais vous en donner une bonne raison de chiffrer certains dossiers sur votre disque dur: pour ne pas vous retrouver à oualpé devant des inconnus.]]></description>
+				<content:encoded><![CDATA[<p>On cite toujours des raisons sécuritaires pour justifier l&#8217;usage de la cryptographie, mais comme vous n&#8217;êtes pas un espion, il est peu probable que vous vous sentiez concernés. Je vais vous en donner une bonne raison de chiffrer certains dossiers sur votre disque dur: pour ne pas vous retrouver à oualpé devant des inconnus.</p>
+<h2>Attaché à un lit</h2>
+<p>Sortir avec <a href="http://sametmax.com/merci-de-respecter-les-salopes/">une vraie cochonne</a> ne veut pas dire qu&#8217;elle va faire tout le boulot. Or Max et moi sommes tout à fait ouvert à l&#8217;expérimentation, même si ce n&#8217;est probablement pas pour les mêmes choses. Ainsi je me suis un jour retrouvé menotté à un lit avec divers accessoires et résidus de nourritures sur des parties variées de mon anatomie, quand quelque chose s&#8217;est mal passé.</p>
+<p>Avec le recul, c&#8217;était marrant. D&#8217;ailleurs, la miss qui avait les clés a trouvé ça tellement poilant qu&#8217;elle a pensé à prendre une photo AVANT de me détacher. J&#8217;ai voulu une copie du cliché, parce qu&#8217;il y a des performances qui méritent un souvenir, et le transfert a eu lieu par clé USB.</p>
+<p>Quand la dite clé a été utilisée par la demoiselle pour faire passer un Power Point à un collègue de travail, elle a pu comprendre toute l&#8217;utilité des thumbnails de preview automatique des fichiers JPEG sur les OS récents.</p>
+<h2>Les olympiades de la salle de bains</h2>
+<p>Dans un de mes appartements précédents, j&#8217;avais une salle de bain avec un petit muret et un grand miroir. On pouvait y faire toute sorte de choses à deux, que j&#8217;ai pris en photos avec mon portable pour faire passer les moments de solitude pendant les voyages.</p>
+<p>J&#8217;ai supprimé les clichés du téléphone pour les mettre sur mon ordinateur. Machine que j&#8217;ai perdu lors d&#8217;un voyage. Je me demande encore aujourd&#8217;hui si celui qui a trouvé mon sac a reformaté la machine. A-t-il la main sur les photos de mes acrobaties en tandem ? Les a-t-il mis en ligne ?</p>
+<h2>Truecrypt, la fin du voyeurisme inopiné&#8230;</h2>
+<p>Honnêtement, je ne suis pas très pudique, sinon je n&#8217;écrirais pas ce blog. Sauf que non seulement ce genre de situation est dangereux pour sa propre crédibilité, mais en plus je ne suis pas seul sur ces images. Et généralement, la gente féminine accepte beaucoup moins bien ce genre de pub.</p>
+<p><a href="https://truecrypt.ch/">Truecrypt</a> est un logiciel libre qui fonctionne sous Windows, Mac et Linux. Il permet de créer un fichier de taille personnalisable (plusieurs Go si besoin) chiffré, qui peut être monté comme une partition. Sans le mot de passe, le fichier ressemble à une soupe de bits (sans jeu de mot). Une fois monté avec le mot de passe, il devient une partition ordinaire, et on peut l&#8217;utiliser comme telle de manière parfaitement transparente: créer des dossiers et des fichiers, copier, coller, etc.</p>
+<p>Inutile de dire que je met maintenant systématiquement tout matériel d&#8217;ordre intime sur cette partition. En cas de fuite, je sais qu&#8217;une personne non autorisée aura bien du mal à lire son contenu. Cela ne me dispense pas de faire la chasse aux restes sur les supports amovibles, et ça ne me libère pas de l&#8217;idée que les copies en la possession de mes ex partenaires ne sont pas aussi bien protégées. Mais c&#8217;est un bon début.</p>
+<h2>&#8230; et le début du multimédia vraiment privé</h2>
+<p>Voilà un vrai argument pour l&#8217;usage de TrueCrypt: pas l&#8217;attaque des chinois du FBI ou votre soudaine reconversion en terroriste suicidaire, mais l&#8217;existence même du cul.</p>
+<p>Car on peut faire bien plus que ça: copiez par exemple le dossier<em> .mozilla</em>, <em>.thunderbird</em> et <em>.purple</em> sur la partition puis faites un lien dans le dossier utilisateur. Et hop, voilà votre historique de navigateur, vos fichiers mails et vos traces de chats chiffrés. Votre historique qui contient des URL de sites douteux, vos alertes mails de &#8220;Adopte un mec&#8221; non désactivées alors que vous êtes en couple depuis 6 mois et les archives de la création de nouveaux smileys hyper novateurs avec votre maîtresse sur Gtalk: ils sont maintenant protégés. Si en plus vous utilisez <a href="http://www.cypherpunks.ca/otr/">OTR</a> et <a href="http://www.gnupg.org/">GPG</a>, vous gagnez 2 de TAC0 en back stab.</p>
+<p>Et le double effet kisscool, c&#8217;est que faire un backup de toutes ces données précieuses ne prend qu&#8217;un copier/coller du fichier TrueCrypt (vous faites des sauvegardes, hein ?). Backup qui par nature est lui aussi protégé. Tous ces bénefs sans ralentir votre ordinateur, puisque seules des données très précises sont chiffrées, pas toute votre partition utilisateur (ce qui en plus est le plus sur moyen de tout perdre si votre ordi grille). Bon ok, peut être que l&#8217;affichage du browser en cas d&#8217;usage du cache prend 0.1 ms de plus.</p>
+<p>Au passage j&#8217;ai aussi mon dossier <em>.ssh</em> et <em>.bitcoin</em> dedans, ça ne mange pas de pain. Le prix à payer est seulement d&#8217;entrer son mot de passe (<a href="http://sametmax.com/un-mot-de-passe-facile-a-retenir/">que vous avez choisi bien long et compliqué</a>) quand on désire utiliser un logiciel qui lit ou écrit dans ces dossiers.</p>
+<p>Certes, ont peut toujours vous baiser en installant un keylogger, un rootkit bien vicieux ou avec <a href="http://xkcd.com/538/">une clé à molette</a>. Mais c&#8217;est tellement mieux que d&#8217;avoir les données en clair sur le disque.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/eviter-davoir-la-queue-a-lair-en-publique-avec-truecrypt/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1001</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/06/280px-Lorenz-SZ42-2.jpg" length="20051" type="image/jpg" />	</item>
+		<item>
+		<title>Choisir un mot de passe facile à retenir</title>
+		<link>http://sametmax.com/un-mot-de-passe-facile-a-retenir/</link>
+		<comments>http://sametmax.com/un-mot-de-passe-facile-a-retenir/#comments</comments>
+		<pubDate>Fri, 22 Jun 2012 19:08:51 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[mot de passe]]></category>
+		<category><![CDATA[password]]></category>
+		<category><![CDATA[sécurité]]></category>
+		<category><![CDATA[tryecrypt]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=975</guid>
+		<description><![CDATA[L'important est d'offrir une variété d'approches pour rendre le piratage plus délicat.]]></description>
+				<content:encoded><![CDATA[<p><a href="http://sametmax.com/les-10-meilleures-extensions-firefox-chrome/">Last pass</a> est génial, mais tout le monde n&#8217;a pas forcément envie de l&#8217;installer, et parfois on a juste pas l&#8217;occasion de l&#8217;utiliser (machine d&#8217;entreprise sur intranet mais pas sur internet par exemple).</p>
+<p>Seb a <a href="http://sebsauvage.net/rhaa/index.php?2009/09/11/08/34/55-choisir-de-bons-mots-de-passe">une proposition</a> assez sympas pour créer des mots de passe pour chaque service en ligne qui soient robustes et faciles à retenir. Mais je n&#8217;arrive pas à m&#8217;y faire: c&#8217;est un système qui me demande de trop réfléchir. De plus ça ne fonctionne pas aussi bien quand on a pas de site Web sur lequel appliquer le principe.</p>
+<p>XKCD propose <a href="https://www.xkcd.com/936/">une autre approche</a>. Ca marche niquel, mais choisir 4 mots au hasard ne me parle pas.</p>
+<p>Voici deux autres approches que j&#8217;utilise, l&#8217;important étant d&#8217;en offrir une variété pour rendre le piratage plus délicat.</p>
+<h2>Les pages roses du dictionnaire</h2>
+<p>Si vous ouvrez le Larousse, vous verrez qu&#8217;en son centre il y a des pages roses qui correspondent à une liste de proverbes et de locutions latines ou étrangères. En les parcourant vous vous apercevrez qu&#8217;il y en a plein que vous connaissez par cœur, car elles sont ancrées dans notre culture.</p>
+<p>Il suffit tout simplement d&#8217;utiliser une de ces phrases comme mot de passe, en incluant la ponctuation.</p>
+<p>Par exemple:</p>
+<p><em>Qui vole un oeuf, vole un boeuf.</em></p>
+<p>Ce mot de passe est très facile à retenir, mais il contient 29 caractères, parmi lesquels 5 espaces, 2 caractères spéciaux et une majuscule. C&#8217;est naturellement difficile à cracker, mais facile à retenir, et assez rapide à taper une fois qu&#8217;on l&#8217;a rentré une dizaine de de fois.</p>
+<p>Bien sûr un attaquant pourrait bruteforcer le mot de passe en utilisant toutes les locutions les plus connues, mais qui va savoir que vous utilisez une locution ?</p>
+<p>Quand bien même, on peut très facilement pimenter le mot de passe:</p>
+<p><em>Qui vole un oeuf, vole un boeuf, bordel de merde !</em></p>
+<p>Et voilà un mot de passe solide comme un roc, et léger comme une plume pour votre cerveau. Cela marche aussi avec une citation célèbre (<em>Life is hard and then you die</em>.), un extrait de chanson (<em>Petit frère veut grandir trop vite&#8230;</em>), ou la réplique d&#8217;un personnage dans un film (<em>Cours Forrest, cours !</em>).</p>
+<h2>Mot de passe ex nihilo</h2>
+<p>Si vous n&#8217;êtes pas du genre culturé, ou que vous avez comme moi un humour bizarre, il existe une autre technique.</p>
+<ol>
+<li>Choisir une personne</li>
+<li>Choisir un animal</li>
+<li>Choisir un smiley</li>
+<li>Mélanger le tout dans un ordre aléatoire</li>
+</ol>
+<p>Ex: <em>José Bové vache \o/</em></p>
+<p>21 caractères dont 2 majuscules, 2 caractères non ASCII, 3 espaces et 2 caractères spéciaux. Et en plus vous allez vous poiler à chaque saisie. Le plus beau, c&#8217;est qu&#8217;il suffit de saisir le mot de passe une seule fois pour s&#8217;en souvenir tellement c&#8217;est débile.</p>
+<p>Sachant que le personnage et l&#8217;animal peuvent être imaginaires, je vous laisse imaginer les combinaisons possibles.</p>
+<ul>
+<li><em>Gaston Lagaffe ornithorynque O_o</em></li>
+<li><em>Brontosaure :-* Charly Chaplin</em></li>
+<li><em>;-) Licorne Sam et Max !</em></li>
+</ul>
+<p>&nbsp;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/un-mot-de-passe-facile-a-retenir/feed/</wfw:commentRss>
+		<slash:comments>29</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">975</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/06/mot-de-passe-a-eviter.png" length="445717" type="image/jpg" />	</item>
+		<item>
+		<title>jQuery Visual Password: créer hash un visuel d&#8217;un password en cours de frappe</title>
+		<link>http://sametmax.com/jquery-visual-password-creer-hash-un-visuel-dun-password-en-cours-de-frappe/</link>
+		<comments>http://sametmax.com/jquery-visual-password-creer-hash-un-visuel-dun-password-en-cours-de-frappe/#comments</comments>
+		<pubDate>Sat, 05 May 2012 01:40:57 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[hash]]></category>
+		<category><![CDATA[hash visuel]]></category>
+		<category><![CDATA[jquery]]></category>
+		<category><![CDATA[password]]></category>
+		<category><![CDATA[plugin]]></category>
+		<category><![CDATA[VizHash.js]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=547</guid>
+		<description><![CDATA[Comment s'assurer que l'on a pas fait une faute de frappe quand la page de login se bloque après trois essais infructeux ? Comme être certains que le password choisi à la création d'un compte est bien ce lui que l'on veut ? Une solution intéressante en une ligne de javascript.]]></description>
+				<content:encoded><![CDATA[<p>Comment s&#8217;assurer que l&#8217;on a pas fait une faute de frappe quand la page de login se bloque après trois essais infructeux ? Comme être certains que le password choisi à la création d&#8217;un compte est bien ce lui que l&#8217;on veut ?</p>
+<p><a href="https://github.com/sametmax/jQuery-Visual-Password">jQuery Visual Password</a> est un plugin <a href="http://jquery.com/">jQuery</a> qui répond à cette question sans avoir à mettre le mot de passe en clair : il créé une image unique depuis le mot de passe, puis l&#8217;affiche. L&#8217;image se met à jour au fil de la frappe.</p>
+<p>Impossible de se tromper, l&#8217;image change radicalement si on change le moindre caractère. Et pour cause, ça utilise <a href="http://sametmax.com/vizhash-js-notre-implementation-libre-de-hash-visuel-utilisant-html5-canvas/">VizHash.js</a> :-)</p>
+<p><strong>Essayez :</strong></p>
+<p><iframe style="width: 100%; height: 400px" src="http://jsfiddle.net/TANLB/embedded/result,js,html,css" allowfullscreen="allowfullscreen" frameborder="0"></iframe></p>
+<p>On me sussure à l&#8217;oreille que ça peut être pratique pour les mails aussi, car c&#8217;est plus facile de voir si une image est changée que de chercher une faute de frappe.</p>
+<p>On pourrait imaginer la même chose pour un champ d&#8217;adresse bitcoin, ou une signature PGP, un clé SSH, un hash de commit Git, etc.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/jquery-visual-password-creer-hash-un-visuel-dun-password-en-cours-de-frappe/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">547</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/05/2012-05-05-024617_1024x768_scrot.png" length="5152" type="image/jpg" />	</item>
+	</channel>
+</rss>

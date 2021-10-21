@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>counter &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/counter/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Compter et  grouper : encore plus fainéant</title>
+		<link>http://sametmax.com/compter-et-grouper-encore-plus-faineant/</link>
+		<comments>http://sametmax.com/compter-et-grouper-encore-plus-faineant/#comments</comments>
+		<pubDate>Wed, 01 Jul 2015 19:37:12 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[collections]]></category>
+		<category><![CDATA[counter]]></category>
+		<category><![CDATA[dict]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16529</guid>
+		<description><![CDATA[Après avoir bien galéré à créer un compteur à la main avec un dico, <a href="http://sametmax.com/aller-plus-loin-avec-les-hash-maps-en-python/">vous avez découvert</a> les joies des méthodes <code>dict.get</code> et <code>dict.setdefault</code>. Puis évidemment quelqu'un vous a pointé vers <code>collections.defaultdict</code>, et enfin, vous avez fini par découvrir <code>collections.Counter</code>. Joie.]]></description>
+				<content:encoded><![CDATA[<p>Après avoir bien galéré à créer un compteur à la main avec un dico, <a href="http://sametmax.com/aller-plus-loin-avec-les-hash-maps-en-python/">vous avez découvert</a> les joies des méthodes <code>dict.get</code> et <code>dict.setdefault</code>. Puis évidemment quelqu&#8217;un vous a pointé vers <code>collections.defaultdict</code>, et enfin, vous avez fini par découvrir <code>collections.Counter</code>. Joie.</p>
+<p>Le parcours est à peu près toujours le même quand on veut grouper ou compter des valeurs en Python.</p>
+<p>Malgré cela, je vois encore des gens qui sous utilisent ces collections. Par exemple, <code>Counter</code> peut compter automatiquement :</p>
+<pre lang="python">>>> from collections import Counter
+>>> Counter('jfsqmfjdklmqfjsdqklmfjdsqhfdqsjkhfdshjkl')
+    Counter({'j': 6, 'f': 6, 'q': 5, 's': 5, 'd': 5, 'k': 4, 'l': 3, 'm': 3, 'h': 3})
+</pre>
+<p>Mais ce que ne réalisent pas beaucoup de développeurs, c&#8217;est que cet objet accepte n&#8217;importe quel itérable en paramètre. Nous sommes en Python, et rededjiou, je me tue à répéter que l&#8217;itération est la philosophie centrale du langage.</p>
+<p>Donc le compteur peut prendre une expression génératrice en paramètre.</p>
+<p>Par exemple, si vous voulez compter un truc un peu plus complexe que des éléments, comme mettons, le ratio de lignes commentées dans un fichier, vous n&#8217;avez pas besoin de faire ça :</p>
+<pre lang="python">count = Counter()
+for line in open('/etc/fstab', encoding='ascii'):
+        count[line.startswith('#')] += 1
+ # out : Counter({True: 10, False: 3})
+</pre>
+<p>Ceci marchera parfaitement :</p>
+<pre lang="python">count = Counter(line.startswith('#') for line in open('/etc/fstab', encoding='ascii'))
+# out : Counter({True: 10, False: 3})</pre>
+<p>Vous pouvez également utiliser des générateurs plus complexes. Combien de fichiers par types d&#8217;extensions ?</p>
+<pre lang="python">import os
+import pathlib
+
+def get_extensions(path):
+    for dirpath, dirnames, files in os.walk(path):
+        for name in files:
+            ext = pathlib.Path(name).suffix
+            if ext: # on ignore les fichiers sans extension
+                yield ext
+            
+
+Counter(get_extensions('/etc')).most_common(9)
+ # Out : 
+ # ('.conf', 632),
+ # ('.0', 348),
+ # ('.gz', 323),
+ # ('.jhansonxi', 207),
+ # ('.pem', 177),
+ # ('.load', 127),
+ # ('.ttb', 86),
+ # ('.ktb', 80),
+ # ('.kti', 55)]</pre>
+<p>Notez que le <code>Counter</code> peut faire plus que compter. Ici il nous donne les 9 plus grandes valeurs du classement, mais en prime, il peut aussi nous faire des opérations ensemblistes :</p>
+<pre lang="python">>>> c = Counter("aabbbbbbbbbbbbcccc")
+>>> c & Counter('aaaaaaaaaaaaaaabbcddddddd') # valeurs min
+    Counter({'b': 2, 'a': 2, 'c': 1})
+>>> c | Counter('aaaaaaaaaaaaaaabbcddddddd') # valeurs max
+    Counter({'a': 15, 'b': 12, 'd': 7, 'c': 4})</pre>
+<p>Le compteur fournit par Python est donc naturellement très, très puissant.</p>
+<p>Une autre chose qui est rarement faite : sous-classer ces types.</p>
+<p>Par exemple, si vous avez souvent des opérations où il faut grouper des valeurs :</p>
+<pre lang="python">from collections import defaultdict
+
+class Grouper(defaultdict):
+ 
+    def __init__(self, iterable):
+        super(Grouper, self).__init__(list)
+        self.update(iterable)
+ 
+    def update(self, iterable):
+        try:
+            iterable = iterable.items()
+        except AttributeError:
+            iterable = iterable
+        for k, v in iterable:
+            self[k].append(v)</pre>
+<p>On prend un default dict, on lui dit qu&#8217;un update ajoute les éléments à la liste en valeur plutôt que de la remplacer, et zou, vous avez un dictionnaire qui va grouper toutes les valeurs automatiquement.</p>
+<p>Liste des fichiers par extensions ? Fastoche !</p>
+<pre lang="python">def get_extensions(path):
+    for dirpath, dirnames, files in os.walk(path):
+        for name in files:
+            ext = pathlib.Path(name).suffix
+            if ext: 
+                yield ext, name # on rajoute le name ici
+
+>>>files = Grouper(get_extensions('/etc'))
+>>> files['.tti']
+['en-na-ascii.tti',
+ 'numbers-french.tti',
+ 'devanagari.tti',
+ 'letters-cyrillic.tti',
+ 'punctuation-basic.tti',
+ 'malayalam.tti',
+ 'ascii-basic.tti',
+ 'spaces.tti',
+ 'letters-latin.tti',
+ 'letters-latin-dot8.tti',
+ 'en-chess.tti',
+ 'numbers-dot8.tti',
+ 'punctuation-tibetan.tti',
+ 'boxes.tti',
+ 'gujarati.tti',
+ 'numbers-nemeth.tti',
+ 'punctuation-alternate.tti',
+ 'common.tti',
+ 'blocks.tti',
+ 'gurmukhi.tti',
+ 'kannada.tti',
+ 'telugu.tti',
+ 'tamil.tti',
+ 'numbers-dot6.tti',
+ 'de-chess.tti',
+ 'control-latin.tti',
+ 'letters-tibetan.tti',
+ 'oriya.tti',
+ 'bengali.tti']</pre>
+<p>Bref, compter et grouper sont des opérations si communes : ne vous faites par chier à refaire tout ça à la main.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/compter-et-grouper-encore-plus-faineant/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">16529</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/07/DVKgxFH.gif" length="510930" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Nouvelle release de crossbar : support de Python 3 !</title>
+	<atom:link href="http://sametmax.com/nouvelle-release-de-crossbar-support-de-python-3/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/nouvelle-release-de-crossbar-support-de-python-3/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/nouvelle-release-de-crossbar-support-de-python-3/#comment-179104</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 27 Jun 2016 08:10:20 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16908#comment-179104</guid>
+		<description><![CDATA[&lt;p&gt;La majorité des exemples sont en twisted en effet. Il y a quelques exemples comme:&lt;/p&gt;
+
+&lt;p&gt;https://github.com/crossbario/crossbarexamples/blob/master/work/yun/client.py&lt;/p&gt;
+
+&lt;p&gt;ou&lt;/p&gt;
+
+&lt;p&gt;https://github.com/crossbario/crossbarexamples/blob/master/work/wamplet_asyncio/wamplet1/wamplet1/component1.py&lt;/p&gt;
+
+&lt;p&gt;Après les différences majeures ce sont:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;from autobahn.asyncio.wamp import ApplicationSession
+from autobahn.asyncio.wamp import ApplicationRunner
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Et les onTruc qui sont des coroutines donc du @coroutine ou asyncdef + yield from ou await.&lt;/p&gt;
+
+&lt;p&gt;Le reste est pareil.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>La majorité des exemples sont en twisted en effet. Il y a quelques exemples comme:</p>
+<p><a href="https://github.com/crossbario/crossbarexamples/blob/master/work/yun/client.py" rel="nofollow">https://github.com/crossbario/crossbarexamples/blob/master/work/yun/client.py</a></p>
+<p>ou</p>
+<p><a href="https://github.com/crossbario/crossbarexamples/blob/master/work/wamplet_asyncio/wamplet1/wamplet1/component1.py" rel="nofollow">https://github.com/crossbario/crossbarexamples/blob/master/work/wamplet_asyncio/wamplet1/wamplet1/component1.py</a></p>
+<p>Après les différences majeures ce sont:</p>
+<pre><code>from autobahn.asyncio.wamp import ApplicationSession
+from autobahn.asyncio.wamp import ApplicationRunner
+</code></pre>
+<p>Et les onTruc qui sont des coroutines donc du @coroutine ou asyncdef + yield from ou await.</p>
+<p>Le reste est pareil.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: cooltrane</title>
+		<link>http://sametmax.com/nouvelle-release-de-crossbar-support-de-python-3/#comment-179048</link>
+		<dc:creator><![CDATA[cooltrane]]></dc:creator>
+		<pubDate>Fri, 24 Jun 2016 11:47:44 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16908#comment-179048</guid>
+		<description><![CDATA[Salut,
+
+J’arrive pas mal de temps après la bataille, mais après avoir lu assiduement les posts ici, j’ai enfin un projet qui pourrait tiré parti du WAMP.
+
+J’aimerais le faire en python3 avec du asyncio, je fouille les exemples du repo github, et même si j’ai bien compris que le gros de la différence est dans les import et qu’après c’est pareil, tous les exemples me semblent en twisted ?
+
+J’ai loupé un truc ?
+]]></description>
+		<content:encoded><![CDATA[<p>Salut,</p>
+<p>J’arrive pas mal de temps après la bataille, mais après avoir lu assiduement les posts ici, j’ai enfin un projet qui pourrait tiré parti du WAMP.</p>
+<p>J’aimerais le faire en python3 avec du asyncio, je fouille les exemples du repo github, et même si j’ai bien compris que le gros de la différence est dans les import et qu’après c’est pareil, tous les exemples me semblent en twisted ?</p>
+<p>J’ai loupé un truc ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/nouvelle-release-de-crossbar-support-de-python-3/#comment-175671</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 10 Feb 2016 22:03:24 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16908#comment-175671</guid>
+		<description><![CDATA[&lt;p&gt;Je viens de créer un env avec Python 3.4 et j&#039;ai pip installé crossbar sans souci. Pour t&#039;aider il va donc falloir que tu ailles faire un tour sur indexerror.net où on pourra te poser plus de question.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Je viens de créer un env avec Python 3.4 et j&#8217;ai pip installé crossbar sans souci. Pour t&#8217;aider il va donc falloir que tu ailles faire un tour sur indexerror.net où on pourra te poser plus de question.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Alex</title>
+		<link>http://sametmax.com/nouvelle-release-de-crossbar-support-de-python-3/#comment-175644</link>
+		<dc:creator><![CDATA[Alex]]></dc:creator>
+		<pubDate>Wed, 10 Feb 2016 09:42:38 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16908#comment-175644</guid>
+		<description><![CDATA[Bonjour,
+
+Je fais un pip install crossbar sous python 3.4 mais il me sort l&#039;erreur : No matching distribution found for twisted&#062;=15.5.0 (from crossbar),
+
+Vous savez comment résoudre cela ?
+
+Merci
+]]></description>
+		<content:encoded><![CDATA[<p>Bonjour,</p>
+<p>Je fais un pip install crossbar sous python 3.4 mais il me sort l&#8217;erreur : No matching distribution found for twisted&gt;=15.5.0 (from crossbar),</p>
+<p>Vous savez comment résoudre cela ?</p>
+<p>Merci</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Nasjo</title>
+		<link>http://sametmax.com/nouvelle-release-de-crossbar-support-de-python-3/#comment-174049</link>
+		<dc:creator><![CDATA[Nasjo]]></dc:creator>
+		<pubDate>Wed, 13 Jan 2016 18:44:47 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16908#comment-174049</guid>
+		<description><![CDATA[Yeah ! je cherche aussi un bon post explicatif sur l&#039;authentification. par exemple avec un REST et des token json. Je suis un peu paumé niveau auth avec crossbar, mais depuis que j&#039;ai réussi a m&#039;en servir, je n&#039;en demors plus. Merci pour cette découverte, c&#039;est grâce a toi !
+]]></description>
+		<content:encoded><![CDATA[<p>Yeah ! je cherche aussi un bon post explicatif sur l&#8217;authentification. par exemple avec un REST et des token json. Je suis un peu paumé niveau auth avec crossbar, mais depuis que j&#8217;ai réussi a m&#8217;en servir, je n&#8217;en demors plus. Merci pour cette découverte, c&#8217;est grâce a toi !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/nouvelle-release-de-crossbar-support-de-python-3/#comment-169702</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sun, 06 Dec 2015 11:44:37 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16908#comment-169702</guid>
+		<description><![CDATA[&lt;p&gt;Oh yeah !&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Oh yeah !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Bag</title>
+		<link>http://sametmax.com/nouvelle-release-de-crossbar-support-de-python-3/#comment-169656</link>
+		<dc:creator><![CDATA[Bag]]></dc:creator>
+		<pubDate>Sun, 06 Dec 2015 09:41:42 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16908#comment-169656</guid>
+		<description><![CDATA[Cool !
+
+Merci de l&#039;info.
+
+Il y a de grandes chances que nous adoptions cette techno dans les mois qui viennent, en environnement multi langages PHP / Python.
+
+Je ferais un p&#039;tit retour d&#039;expérience si ca vous dit.
+
+Keep up the gode work !
+]]></description>
+		<content:encoded><![CDATA[<p>Cool !</p>
+<p>Merci de l&#8217;info.</p>
+<p>Il y a de grandes chances que nous adoptions cette techno dans les mois qui viennent, en environnement multi langages PHP / Python.</p>
+<p>Je ferais un p&#8217;tit retour d&#8217;expérience si ca vous dit.</p>
+<p>Keep up the gode work !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/nouvelle-release-de-crossbar-support-de-python-3/#comment-169571</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sat, 05 Dec 2015 10:42:57 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16908#comment-169571</guid>
+		<description><![CDATA[&lt;p&gt;6000 messages / s sur un raspberry pi (avec pypy, certes). Ca suit pas mal. Après le router reste un bottle a surveiller, mais pour le moment j&#039;ai aucun service qui dépasse 1000 req / secondes en HTTP même avec 300 000 visiteur / jours.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>6000 messages / s sur un raspberry pi (avec pypy, certes). Ca suit pas mal. Après le router reste un bottle a surveiller, mais pour le moment j&#8217;ai aucun service qui dépasse 1000 req / secondes en HTTP même avec 300 000 visiteur / jours.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Bag</title>
+		<link>http://sametmax.com/nouvelle-release-de-crossbar-support-de-python-3/#comment-169493</link>
+		<dc:creator><![CDATA[Bag]]></dc:creator>
+		<pubDate>Fri, 04 Dec 2015 17:58:25 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16908#comment-169493</guid>
+		<description><![CDATA[Salut,
+
+Juste une question, comment ça scale crossbar ?
+
+genre pour une app microservices un peu trapue ça suit ou moyen ?
+]]></description>
+		<content:encoded><![CDATA[<p>Salut,</p>
+<p>Juste une question, comment ça scale crossbar ?</p>
+<p>genre pour une app microservices un peu trapue ça suit ou moyen ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/nouvelle-release-de-crossbar-support-de-python-3/#comment-164341</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 10 Sep 2015 15:23:36 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16908#comment-164341</guid>
+		<description><![CDATA[&lt;p&gt;Ah oui effectivement.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Ah oui effectivement.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

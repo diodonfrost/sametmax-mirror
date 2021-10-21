@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>commande &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/commande/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Ecrire une commande Django</title>
+		<link>http://sametmax.com/ecrire-une-commande-django/</link>
+		<comments>http://sametmax.com/ecrire-une-commande-django/#comments</comments>
+		<pubDate>Wed, 04 Dec 2013 07:01:44 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[commande]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[manage.py]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7729</guid>
+		<description><![CDATA[Quand vous avez à faire un script pour un projet Django, il est pratique de l'avoir sous forme de sous-commande de <code>manage.py</code> : c'est portable d'un projet à l'autre et ça permet d'utiliser l'ORM et les templates sans réglage puisqu'on a accès à tous les settings, automatiquement.]]></description>
+				<content:encoded><![CDATA[<p>Quand vous avez à faire un script pour un projet Django, il est pratique de l&#8217;avoir sous forme de sous-commande de <code>manage.py</code> : c&#8217;est portable d&#8217;un projet à l&#8217;autre et ça permet d&#8217;utiliser l&#8217;ORM et les templates sans réglage puisqu&#8217;on a accès à tous les settings, automatiquement.</p>
+<p>Malheureusement le wrapper de Django destiné à cela date un peu, il est plutôt lourd, pas très souple et utilise des pratiques qui ne sont plus au goût du jour depuis quelques années. Rien de rédhibitoire, mais tout de même.</p>
+<p>D&#8217;abord, il faut placer sa commande dans un fichier portant le nom de la commande, et dans un package <code>management.commands</code> d&#8217;une de vos apps.</p>
+<p>Par exemple, si vous voulez faire une commande &#8220;nettoyer_godmichets&#8221; dans l&#8217;application &#8220;sex_shop&#8221;, il faudra la mettre bien profondément dans le tréfonds de votre projet :</p>
+<pre>racine
+│   ├── sex_shop
+│   │   ├── management
+│   │   │   ├── commands
+│   │   │   │   ├── nettoyer_godmichets.py
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── __init__.pyc
+│   │   │   ├── __init__.py</pre>
+<p>Notez les fichiers <em>__init__.py</em>, indispendables sinon votre commande ne sera pas trouvée. Oh, et &#8216;sex_shop&#8217; doit être dans <code>INSTALLED_APPS</code>.</p>
+<p>Ensuite, votre commande doit être une classe héritant de <code>BaseCommand</code>. Sa méthode <code>handle()</code> sera appelée automatiquement au lancement de la commande.</p>
+<pre lang="python">from django.core.management.base import BaseCommand
+from sex_shop.models import Godmichet
+
+class Command(BaseCommand):
+
+    def handle(self, *args, **options):
+        for god in Godmichet.objects.all():
+            god.clean()</pre>
+<p>Et vous pouvez lancer la commande :</p>
+<pre lang="python">./manage.py nettoyer_godmichets</pre>
+<p>Néanmoins généralement on voudra avoir un peu de décorum.</p>
+<pre lang="python">
+
+from optparse import make_option
+
+from django.core.management.base import BaseCommand
+from sex_shop.models import Godmichet, Marque
+
+
+class Command(BaseCommand):
+
+    # ici on peut mettre un message d'aide
+    help = 'Fait briller dard dard les dards'
+
+    # optionellement une aide pour les arguments
+    args = 'marque1, [marque2], marque3'
+
+    # On peut ajouter des options passables à la commande
+    option_list = BaseCommand.option_list + (
+        make_option('--dry-run',
+            action='store_true',
+            dest='dry_run',
+            default=False,
+            help='Affichage uniquement, aucune action réelle'),
+        )
+
+    def handle(self, *args, **options):
+
+        # on retrouve dans args les arguments positionnels de la commande
+
+        if not args:
+            for god in Godmichet.objects.all():
+                # Plutôt que print(), on peut utiliser ce wrapper
+                # pour ecrire sur le terminal. Cela permet de bénéficier
+                # automatiquement de l'option --verbosity
+                self.stdout.write('Processing %s' % god.name)
+
+                # La valeur des options est passée via kwargs.
+                if not options['dry_run']:
+                    god.clean()
+        else:
+            # l'utilisateur a passé des marques ? On nettoie que les gods
+            # de ces marques...
+            for marque in args:
+                try:
+                    gods = Marque.objects.get(name=marque).gods.all()
+                    for god in gods:
+                        self.stdout.write('Processing %s' % god.name)
+
+                        if not options['dry_run']:
+                            god.clean()
+
+                except Marque.DoesNotExist:
+                    # si la marque n'existe pas, on fait une erreur
+                    # ceci arrête le script, retourne un code d'erreur 1
+                    # et met le texte en rouge
+                    raise CommandError('La marque %s n'existe pas' %s marque)
+
+</pre>
+<p>Et voilà, votre commande accepte maintenant optionnellement qu&#8217;on lui passe une liste de marques et/ou une option <code>--dry-run</code>:</p>
+<pre lang="bash">./manage.py nettoyer_godmichet devilmaycry choucroutebestfriend --dry-run</pre>
+<p>En plus de ça, la commande accepte automatiquement :</p>
+<ul>
+<li><code>--help</code></li>
+<li><code>--verbosity</code></li>
+<li><code>--settings</code></li>
+<li><code>--pythonpath</code></li>
+</ul>
+<p>Qui ont le même effet que sur toutes les commandes django officielles.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ecrire-une-commande-django/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">7729</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/12/BZ7BYa_CYAAEiTA.jpglarge.jpeg" length="31412" type="image/jpg" />	</item>
+	</channel>
+</rss>

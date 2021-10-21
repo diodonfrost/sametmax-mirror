@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>bash alias &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/bash-alias/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Un petit alias bash pour git que j&#8217;aime bien</title>
+		<link>http://sametmax.com/un-petit-alias-bash-pour-git-que-jaime-bien/</link>
+		<pubDate>Sun, 16 Sep 2012 11:41:31 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[bash alias]]></category>
+		<category><![CDATA[git]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2167</guid>
+		<description><![CDATA[Une seconde de gagnée par jour]]></description>
+				<content:encoded><![CDATA[<p>Dans mon <em>.bashrc</em>:</p>
+<pre lang="bash">function commit {
+    git commit -m "`echo "$*" | sed -e 's/^./\U&\E/g'`"
+}
+alias co=commit;</pre>
+<p>Et du coup au lieu de taper:</p>
+<pre lang="bash">git commit -m "Encore merci et bonne chance, nous sommes avec vous"</pre>
+<p>Je tape:</p>
+<pre lang="bash">co encore merci et bonne chance, nous sommes avec vous</pre>
+<p>Notez la mise en majuscule automatique, le comble de la feignasse ;-)</p>
+<p>Bon, c&#8217;est juste sur ma machine, car sinon <code>co</code> beaucoup de gens l&#8217;utilisent pour <code>checkout</code>.</p>
+<p>Pour le reste, j&#8217;utilise <a href="http://sametmax.com/scm-breeze-facilite-la-selection-de-vos-fichiers-a-commiter-sous-git-avec/">SCM breeze</a> bien entendu.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">2167</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/09/hamac.jpg" length="20607" type="image/jpg" />	</item>
+	</channel>
+</rss>

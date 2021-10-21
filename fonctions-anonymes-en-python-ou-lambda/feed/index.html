@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Fonctions anonymes en Python (ou lambda)</title>
+	<atom:link href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: FLo</title>
+		<link>http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/#comment-181755</link>
+		<dc:creator><![CDATA[FLo]]></dc:creator>
+		<pubDate>Tue, 11 Oct 2016 14:32:09 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1304#comment-181755</guid>
+		<description><![CDATA[Intéressant ! Cependant, javascript et les closure comporte le même concept de variables avec un index qui prend la valeur de la dernière boucle.
+
+Les explications sont ici: https://openclassrooms.com/courses/dynamisez-vos-sites-web-avec-javascript/les-closures-1
+]]></description>
+		<content:encoded><![CDATA[<p>Intéressant ! Cependant, javascript et les closure comporte le même concept de variables avec un index qui prend la valeur de la dernière boucle.</p>
+<p>Les explications sont ici: <a href="https://openclassrooms.com/courses/dynamisez-vos-sites-web-avec-javascript/les-closures-1" rel="nofollow">https://openclassrooms.com/courses/dynamisez-vos-sites-web-avec-javascript/les-closures-1</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: EtienneEtienneH</title>
+		<link>http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/#comment-178571</link>
+		<dc:creator><![CDATA[EtienneEtienneH]]></dc:creator>
+		<pubDate>Sat, 04 Jun 2016 11:02:38 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1304#comment-178571</guid>
+		<description><![CDATA[Article très intéressant... j&#039;ai presque tout compris.
+
+J&#039;avais oublié depuis mes cours à la fac ce qu&#039;étaient les fonctions lambda. Et je m&#039;aperçoit que j&#039;en utilise parfois sans le savoir.
+]]></description>
+		<content:encoded><![CDATA[<p>Article très intéressant&#8230; j&#8217;ai presque tout compris.</p>
+<p>J&#8217;avais oublié depuis mes cours à la fac ce qu&#8217;étaient les fonctions lambda. Et je m&#8217;aperçoit que j&#8217;en utilise parfois sans le savoir.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/#comment-166776</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 11 Nov 2015 13:42:07 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1304#comment-166776</guid>
+		<description><![CDATA[&lt;p&gt;En effet il y a une erreur. J&#039;ai corrigé pour : &lt;code&gt;d = defaultdict(lambda: ne_fait_rien)&lt;/code&gt;&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>En effet il y a une erreur. J&#8217;ai corrigé pour : <code>d = defaultdict(lambda: ne_fait_rien)</code></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Bruno Flament</title>
+		<link>http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/#comment-166622</link>
+		<dc:creator><![CDATA[Bruno Flament]]></dc:creator>
+		<pubDate>Tue, 10 Nov 2015 11:01:21 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1304#comment-166622</guid>
+		<description><![CDATA[&lt;p&gt;Bonjour Sam ou Max ou les deux&lt;/p&gt;
+
+&lt;p&gt;Dans ton exemple il y a ca :&lt;/p&gt;
+
+&lt;pre lang=&quot;python&quot;&gt;
+decompresseur = defaultdict(lambda x: x)
+&lt;/pre&gt;
+
+&lt;p&gt;Si je test cette fonction j&#039;ai une l&#039;erreur suiviante&lt;/p&gt;
+
+&lt;pre lang=&quot;python&quot;&gt;
+&gt;&gt;&gt;      d = defaultdict(lambda x:x)
+      
+&gt;&gt;&gt;      d[&#039;gz&#039;]
+      
+      Traceback (most recent call last):
+      
+      File &quot;&quot;, line 1, in 
+      
+      TypeError: () takes exactly 1 argument (0 given)
+&lt;/pre&gt;
+
+&lt;p&gt;Ne faut-il pas plutot utiliser lambda: None ?&lt;/p&gt;
+
+&lt;pre lang=&quot;python&quot;&gt;
+decompresseur = defaultdict(lambda: None)
+&lt;/pre&gt;
+
+&lt;p&gt;merci Sam ou Max ou les deux&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Bonjour Sam ou Max ou les deux</p>
+<p>Dans ton exemple il y a ca :</p>
+<pre lang="python">
+decompresseur = defaultdict(lambda x: x)
+</pre>
+<p>Si je test cette fonction j&#8217;ai une l&#8217;erreur suiviante</p>
+<pre lang="python">
+>>>      d = defaultdict(lambda x:x)
+      
+>>>      d['gz']
+      
+      Traceback (most recent call last):
+      
+      File "", line 1, in 
+      
+      TypeError: () takes exactly 1 argument (0 given)
+</pre>
+<p>Ne faut-il pas plutot utiliser lambda: None ?</p>
+<pre lang="python">
+decompresseur = defaultdict(lambda: None)
+</pre>
+<p>merci Sam ou Max ou les deux</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/#comment-164477</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 17 Sep 2015 11:53:47 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1304#comment-164477</guid>
+		<description><![CDATA[&lt;p&gt;L&#039;argument cmp est deprecated et n&#039;existe plus en Python 3.&lt;/p&gt;
+
+&lt;p&gt;Mais même pour l&#039;argument cmp en Python 2, on peut utiliser sans problème une fonction normale. Par ailleurs, le module operator fournie des fonctions toutes faites pour la plupart des use cases.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>L&#8217;argument cmp est deprecated et n&#8217;existe plus en Python 3.</p>
+<p>Mais même pour l&#8217;argument cmp en Python 2, on peut utiliser sans problème une fonction normale. Par ailleurs, le module operator fournie des fonctions toutes faites pour la plupart des use cases.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: bipede</title>
+		<link>http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/#comment-164474</link>
+		<dc:creator><![CDATA[bipede]]></dc:creator>
+		<pubDate>Thu, 17 Sep 2015 10:43:57 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1304#comment-164474</guid>
+		<description><![CDATA[&quot;Il n’existe aucune opération qu’on fasse avec une fonction anonyme qu’on ne puisse faire avec une fonction normale&quot;
+
+Pas tout à fait d&#039;accord...
+
+Une fonction lambda est irremplacable dans certaines opérations, comme par exemple l&#039;argument cmp des fonctions sorted() et list.sort() .
+]]></description>
+		<content:encoded><![CDATA[<p>&#8220;Il n’existe aucune opération qu’on fasse avec une fonction anonyme qu’on ne puisse faire avec une fonction normale&#8221;</p>
+<p>Pas tout à fait d&#8217;accord&#8230;</p>
+<p>Une fonction lambda est irremplacable dans certaines opérations, comme par exemple l&#8217;argument cmp des fonctions sorted() et list.sort() .</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: CactusLibidineux</title>
+		<link>http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/#comment-13023</link>
+		<dc:creator><![CDATA[CactusLibidineux]]></dc:creator>
+		<pubDate>Sat, 10 Aug 2013 11:39:42 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1304#comment-13023</guid>
+		<description><![CDATA[Les fonctions anonymes en Javascript peuvent en au moins un cas être nécessaires : les bookmarklets.
+En effet, pour ne pas risquer de rentrer en conflit avec le JS de la page (nom de fonction déjà utilisée), utiliser une fonction anonyme est la seule solution 100% fiable.]]></description>
+		<content:encoded><![CDATA[<p>Les fonctions anonymes en Javascript peuvent en au moins un cas être nécessaires : les bookmarklets.<br />
+En effet, pour ne pas risquer de rentrer en conflit avec le JS de la page (nom de fonction déjà utilisée), utiliser une fonction anonyme est la seule solution 100% fiable.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/#comment-2003</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sun, 23 Sep 2012 23:47:24 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1304#comment-2003</guid>
+		<description><![CDATA[J&#039;ai trouvé ça dans les stats:
+&lt;strong&gt;
+python fonctions anonymes sans lambda&lt;/strong&gt;
+
+A tout ceux qui cherchent ça, il n&#039;y a PAS de moyen de faire des fonctions anonymes en Python sans lambda.]]></description>
+		<content:encoded><![CDATA[<p>J&#8217;ai trouvé ça dans les stats:<br />
+<strong><br />
+python fonctions anonymes sans lambda</strong></p>
+<p>A tout ceux qui cherchent ça, il n&#8217;y a PAS de moyen de faire des fonctions anonymes en Python sans lambda.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/#comment-915</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 30 Jul 2012 13:42:37 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1304#comment-915</guid>
+		<description><![CDATA[J&#039;ai oublié d&#039;initialiser la liste d&#039;ajouteurs. Ca marche maintenant :-)]]></description>
+		<content:encoded><![CDATA[<p>J&#8217;ai oublié d&#8217;initialiser la liste d&#8217;ajouteurs. Ca marche maintenant :-)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Claudy</title>
+		<link>http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/#comment-909</link>
+		<dc:creator><![CDATA[Claudy]]></dc:creator>
+		<pubDate>Mon, 30 Jul 2012 04:49:07 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1304#comment-909</guid>
+		<description><![CDATA[Bijour, l&#039;exemple de la fin avec &#039;ajouteurs&#039; ne fonctionne pas :(
+
+&#062;IndexError: list assignment index out of range&#060;
+
+Je voulais tester etant donne que je n&#039;ai pas tres bien saisi la notion de portee lexicale dans ce contexte !]]></description>
+		<content:encoded><![CDATA[<p>Bijour, l&#8217;exemple de la fin avec &#8216;ajouteurs&#8217; ne fonctionne pas :(</p>
+<p>&gt;IndexError: list assignment index out of range&lt;</p>
+<p>Je voulais tester etant donne que je n&#039;ai pas tres bien saisi la notion de portee lexicale dans ce contexte !</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

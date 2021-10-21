@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>static files &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/static-files/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Servir les fichiers statiques Django avec un .htaccess Apache</title>
+		<link>http://sametmax.com/servir-les-fichiers-statiques-django-avec-un-httaccess-apache/</link>
+		<comments>http://sametmax.com/servir-les-fichiers-statiques-django-avec-un-httaccess-apache/#comments</comments>
+		<pubDate>Fri, 30 Aug 2013 18:14:43 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[.httaccess]]></category>
+		<category><![CDATA[apache]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[static files]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7235</guid>
+		<description><![CDATA[J'avais fais un giga article pour expliquer <a href="http://sametmax.com/comment-servir-les-fichiers-statiques-avec-django-en-dev-et-en-prod/">comment servir les fichiers statiques Django</a>, mais j'ai réalisé ensuite que les gens n'avaient pas forcément accès aux fichiers de configuration du serveur.]]></description>
+				<content:encoded><![CDATA[<p>Servir le Javascript, les images et le CSS avec Django a toujours été une grande question pour les débutants.</p>
+<p>J&#8217;avais fais un giga article pour expliquer <a href="http://sametmax.com/comment-servir-les-fichiers-statiques-avec-django-en-dev-et-en-prod/">comment servir les fichiers statiques avec ce framework</a>, mais j&#8217;ai réalisé ensuite que les gens n&#8217;avaient pas forcément accès aux fichiers de configuration du serveur.</p>
+<p>Parfois, tout ce qu&#8217;ils ont c&#8217;est un pauvre fichier <em>.htaccess</em>. Tout n&#8217;est pas perdu, avec une petite règle de rewrite :</p>
+<pre>AddHandler fcgid-script .fcgi
+RewriteEngine On
+RewriteRule /static/ /chemin/vers/dossier/racine/apache/static
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ site.fcgi/$1 [QSA,L]</pre>
+<p>Attention à ce que <em>/static/</em> corresponde bien à l&#8217;arborescence <strong>complète</strong> de sous dossiers de <em>/chemin/vers/dossier/racine/apache/</em> et à <code>settings.STATIC_ROOT</code>.</p>
+<p>Par exemple :</p>
+<pre>AddHandler fcgid-script .fcgi
+RewriteEngine On
+RewriteRule /sous/dossier/static/ /chemin/vers/dossier/racine/apache/sous/dossier/static
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ site.fcgi/$1 [QSA,L]</pre>
+<p>Et <code>settings.STATIC_ROOT = "/sous/dossier/static/"</code>.</p>
+<p>En effet, on fait un rewrite ici, on ne sert pas le sous dossier directement.</p>
+<p>P.S: ça va sans le dire, mais ça va mieux en le disant, c&#8217;est de la prod, donc faut faire un <code>manage.py collectstatic</code> avant, et s&#8217;assurer d&#8217;avoir les bonnes valeurs pour <code>settings.STATIC_ROOT</code> et <code>settings.STATIC_URL</code>/</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/servir-les-fichiers-statiques-django-avec-un-httaccess-apache/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">7235</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/08/xirtyXE.jpg" length="152901" type="image/jpg" />	</item>
+		<item>
+		<title>Comment servir les fichiers statiques avec Django en dev et en prod</title>
+		<link>http://sametmax.com/comment-servir-les-fichiers-statiques-avec-django-en-dev-et-en-prod/</link>
+		<comments>http://sametmax.com/comment-servir-les-fichiers-statiques-avec-django-en-dev-et-en-prod/#comments</comments>
+		<pubDate>Mon, 22 Oct 2012 22:57:28 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[css]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[static files]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2706</guid>
+		<description><![CDATA[Servir les fichiers CSS, javascript et les images avec Django a toujours été la plus grande source de confusion (heureusement ça s'est bien amélioré avec la 1.4, donc upgradez si vous pouvez). C'est d'autant plus déroutant que la manière de faire est différente selon la version de Django, et selon que l'on est en production ou en développement.]]></description>
+				<content:encoded><![CDATA[<p>Servir les fichiers CSS, javascript et les images avec Django a toujours été la plus grande source de confusion (heureusement ça s&#8217;est bien amélioré avec la 1.4, donc upgradez si vous pouvez). C&#8217;est d&#8217;autant plus déroutant que la manière de faire est différente selon la version de Django, et selon que l&#8217;on est en production ou en développement.</p>
+<p>Donc, pour profiter de cet article:</p>
+<ul>
+<li>Lisez les parties qui vous concernent uniquement.</li>
+<li>Ne lisez pas en diagonale.</li>
+<li>Si ça ne marche pas, partez de zéro (avec un projet tout neuf), et une fois que ça marche, essayez sur le votre.</li>
+</ul>
+<p>C&#8217;est typiquement le cas où <strong>il faut comprendre ce qui se passe et pas juste copier/coller du code</strong> (ceci est une petite pique à Max qui est en train de décuver comme une loque sur le canap pendant que j&#8217;écris cette partie de l&#8217;article).</p>
+<h2>Préparation</h2>
+<p>Les fichiers statiques se gèrent à base de chemins absolus. Afin de faciliter celà, vous devriez donc toujours avoir ceci tout en haut de votre fichier settings.py:</p>
+<pre lang="python">import os
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))</pre>
+<p>Si votre fichier de settings n&#8217;est pas à la racine du projet (typiquement dans un projet Django 1.4), faites:</p>
+<pre lang="python">import os
+SETTINGS_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_DIR = os.path.dirname(SETTINGS_DIR)</pre>
+<p>Le fichiers de settings étant un fichier Python, on peut mettre tout le code que l&#8217;on souhaite dedans, et ce code nous permet d&#8217;obtenir de manière dynamique le chemin absolu vers votre dossier de projet. Il servira de base pour tous les chemins vers les fichiers statiques.</p>
+<p><code>__file__</code> contient le chemin vers le fichier en cours. <code>abspath()</code> permet d&#8217;obtenir le chemin absolu. <code>dirname()</code> permet d&#8217;obtenir le nom du dossier contenant le fichier.</p>
+<p>Notez aussi l&#8217;emplacement des fichiers statiques de la Django admin dans un coin (dans la doc de votre site par exemple). Ces fichiers se trouvent dans <em>django/contrib/admin/media</em>, mais si vous galerez pour les trouver, vous pouvez toujours lancer la commande:</p>
+<pre lang="base">python -c "import django, os; print os.path.join(os.path.dirname(django.__file__), 'contrib/admin/media')"</pre>
+<p>Moi ça donne un truc comme ça:</p>
+<p><em>/home/sam/.virtualenvs/project_env/local/lib/python2.7/site-packages/django/contrib/admin/media</em></p>
+<h2>En phase de développement, de la version 1.0 à la version 1.2</h2>
+<p>Vous êtes sur votre machine, et vous utilisez la commande <code>runserver</code>. C&#8217;est donc Django qui va servir vos fichier statiques, et nous allons voir comment, pour chaque version de Django, on peut lui demander de le faire.</p>
+<p>C&#8217;est une vieille version, servir les fichiers statiques est assez relou, alors on va gruger pour vous faciliter la vie. Non, ce n&#8217;est pas la meilleur manière de faire, mais c&#8217;est la manière de faire qui vous évitera de retourner sur un forum pour demander pourquoi ça ne marche pas.</p>
+<p>Créez un dossier nommé &#8220;static&#8221; <strong>à la racine de votre projet</strong>. Mettez tous vos fichiers statiques dedans: js, css, images&#8230; Organisez ça en sous-dossier si vous voulez, mais <strong>mettez tout dedans, y compris les fichiers statiques des autres apps Django que vous avez installé</strong> (et qu&#8217;il va falloir copier/coller ou alors faire un lien symbolique). La seule exception est l&#8217;admin.</p>
+<p>Ce n&#8217;est pas particulièrement propre ni pratique, mais ça va marcher. Le surcoût en maintenant sera largement compensé par le fait que ce sera très simple à comprendre et à servir.</p>
+<p>Dans votre fichier de settings, pointez <code>MEDIA_ROOT</code> sur ce dossier:</p>
+<pre lang="python">MEDIA_ROOT = os.path.join(PROJECT_DIR, 'static')</pre>
+<p>Et choissisez un chemin explicite pour <code>MEDIA_URL</code>:</p>
+<pre lang="python">MEDIA_URL = '/static/'
+</pre>
+<p>Ne touchez pas à <code>ADMIN_MEDIA_PREFIX</code>. Ne mettez pas <code>MEDIA_URL</code> égale à <code>ADMIN_MEDIA_PREFIX</code>.</p>
+<p>Dans le fichier urls.py principal, c&#8217;est à dire ce lui est généralement à la racine de votre projet, faites:</p>
+<pre lang="python"># on importe ici tout les trucs nécessaires à urls.py
+from django.conf.urls.defaults import *
+# on va récupérer MEDIA_ROOT depuis le fichier de settngs
+from django.conf import settings
+
+# on active l'admin
+from django.contrib import admin
+admin.autodiscover()
+
+# on créé un pattern vide. Cela va nous permettre d'insérer le service
+# des fichiers statiques en premier
+urlpatterns = patterns('')
+
+# On active maintenant le service des fichiers statiques par Django
+# mais uniquement en mode DEBUG (pour éviter de l'oublier en prod)
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        (r'%s/(?P<path>.*)$' % settings.MEDIA_URL.strip('/'),
+         'django.views.static.serve',
+         {'document_root': settings.MEDIA_ROOT}),
+    )
+
+# Ensuite on déclare nos patterns normalement
+# ATTENTION, le signe doit-être "+=", pas "=", sinon vous allez tout écraser
+urlpatterns += patterns('',
+    # Example:
+    (r'^', include('app.urls')),
+
+    # Uncomment the admin/doc line below and add 'django.contrib.admindocs'
+    # to INSTALLED_APPS to enable admin documentation:
+    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+
+    # Uncomment the next line to enable the admin:
+    (r'^admin/(.*)', admin.site.root),
+)</pre>
+<p>Vous notez que contrairement à ce qu&#8217;on voit la doc officielle, on met l&#8217;url pour les fichiers statiques en premier. Cela donne une forme étrange à la déclation des urls car on a un <code>urlpatterns</code> vide au début, mais c&#8217;est très important: à un moment vous allez déclarer une URl attrape-tout qui court-circuitera tout ce qu&#8217;il y a après, et ce jour là vous passerez des heures à chercher pourquoi vos fichiers statiques ne sont pas déclarés.</p>
+<p>Le <code>strip()</code> n&#8217;est pas obligatoire si vous mettez les slashes correctement partout. Mais ce n&#8217;est jamais le cas.</p>
+<p>Maintenant, dans votre html, vous pouvez faire ceci:</p>
+<pre lang="html"><link href="/static/chemin/du/fichier/a/relatif/au/dossier/static.css"  rel="stylesheet" /></pre>
+<p>Et pareil pour le js, les images, etc.</p>
+<p>Le chemin est bel et bien écrit en dur dans le templates HTML. Encore une fois, ce n&#8217;est pas la meilleure manière de faire, c&#8217;est juste celle qui vous garanti que ça marche. Si vous vous sentez à l&#8217;aise avec le processus, vous pouvez changer celà en utilisant un context_processor pour ajouter <code>MEDIA_URL</code> à chaque template et remplacer <code>/static/</code> par <code>{{ MEDIA_URL }}</code>.</p>
+<p><a href='http://sametmax.com/wp-content/uploads/2012/10/servir_fichiers_statiques_django_1.0_a_1.2.zip'>Télécharger le projet complet d&#8217;exemple</a></p>
+<h2>En phase de développement, pour la version 1.3 et 1.4</h2>
+<p>C&#8217;est globalement beaucoup plus facile. Il suffit de mettre tous vos fichiers statiques dans un dossier nommé &#8220;static&#8221; dans le dossier d&#8217;une de vos app pour qu&#8217;ils soient trouvés automatiquement quand vous lancerez <code>manage.py runserver</code>.</p>
+<p>Voici à quoi ressemblera votre settings.py:</p>
+<pre lang="python">
+# plus rien à voir avec avant, MEDIA_ROOT et MEDIA_URL designent
+# l'endroit où vous voulez que vos utilisateur upload et download des fichiers
+# Ce n'est donc plus un paramètre primordial
+MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
+MEDIA_URL = '/media/'
+
+# Ce qui s'appelait avant MEDIA_ROOT s'appelle maintenant STATIC_ROOT
+# mais il n'est utile pour la prod
+# On le met quand même pour plus tard
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+
+# Le settings le plus important: à quelle adresse servir les fichiers statiques
+# Utile en dev afin de pouvoir bénéficier des templates tags
+STATIC_URL = '/static/'
+
+# Les medias de l'admin sont enfin une URL comme une autre qu'on peut
+# mettre sous notre propre arborescence
+ADMIN_MEDIA_PREFIX = '/static/admin/'
+
+# Vous pouvez OPTIONNELLEMENT rajouter ici une liste de chemin vers
+# des dossiers de fichiers statiques qui seront ainsi aussi servit automatiquement
+# pendant le développement. Par exemple un dossier à la racine
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_DIR, 'more_static'),
+)
+# N'utilisez PAS le même dossier que STATIC_ROOT
+</pre>
+<p>Il n&#8217;y a rien à faire de plus, vos fichiers seront servis automatiquement en dev, pas besoin de toucher aux urls.</p>
+<p>Maintenant il faut juste les déclarer vos URLs dans le template.</p>
+<p>Pour Django 1.3, vous pouvez ajouter un fichiers statiques ainsi pour éviter d&#8217;écrire l&#8217;URL en dur:</p>
+<pre lang="html">{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+
+<link href="{{ STATIC_PREFIX }}app/css/style.css"  rel="stylesheet" /></pre>
+<p>Pour django 1.4, c&#8217;est encore plus simple:</p>
+<pre lang="html">{% load staticfiles %}
+<img src="{% static "app/css/style.css" %}" /></pre>
+<p>Encore un détail, si vous n&#8217;utilisez pas le serveur de dev Django mais un autre serveur de dev (ex: werkzeug), vos fichiers statiques ne seront pas servis automatiquement, mais il est facile d&#8217;y remédier. Ajoutez à votre urls.py:</p>
+<pre lang="python">from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+urlpatterns += staticfiles_urlpatterns()</pre>
+<p><a href='http://sametmax.com/wp-content/uploads/2012/10/servir_fichiers_statiques_django_1.3_et_1.4.zip'>Télécharger le projet complet d&#8217;exemple</a></p>
+<h2>Migration de 1.2 ou moins vers 1.3 ou 1.4</h2>
+<p>Bouger vos fichiers statiques du répertoire à la racine vers le répertoire nommé &#8220;static&#8221; d&#8217;une de vos apps (ou de plusieurs).</p>
+<p>Ajoutez ceci dans votre fichier de config:</p>
+<pre lang="python">STATICFILES_DIRS = (
+)
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+
+</pre>
+<p>Et ajoutez <code>django.contrib.sites</code> à vos <code>INSTALLED_APPS</code>.</p>
+<p>Remplacez toutes les URls en dur dans le HTML par une version avec les templates tags (voir partie précédente).</p>
+<p>Attention, ça ne couvre que la partie pour la gestion des fichiers statiques, il y a d&#8217;autres choses à migrer.</p>
+<h2>En production: toutes versions</h2>
+<p>Je ne vais pas expliquer ici comment mettre Django en production (c&#8217;est un article à lui tout seul, peut être même plusieurs). Ici je vais me concentrer sur comment servir les fichiers statiques, et présupposer <code>DEBUG = False</code>.</p>
+<p>Si vous utilisez Djagno 1.2 ou moins, vous n&#8217;avez rien à faire côté Django. Si vous utilisez Django 1.3 ou 1.4, vous devez maintenant appeler la commande <code>pyhon manage.py collectstatic</code>. Celle-ci va prendre tous les fichiers statiques de tous les dossiers &#8220;static&#8221; des apps et ceux listés dans <code>STATICFILES_DIRS</code> et va les copier dans <code>STATIC_ROOT</code>.</p>
+<p>Dans tous les cas, vous n&#8217;aurez qu&#8217;un seul dossier pour le js, le css et les images à servir avec Nginx ou Apache.</p>
+<h4>Nginx</h4>
+<p>Si vous avez votre propre serveur, je vous conseil Nginx plutôt qu&#8217;Apache pour mettre votre site en prod.</p>
+<p>L&#8217;idée est de dire dans le fichier de configuration nginx que toutes les URLs qui concernent les fichiers statiques sont servies directement par Nginx, et les autres sont passées à Django:</p>
+<pre lang="json">server {
+        listen      8080;
+
+        ############################################################
+        # la partie qui concerne les fichiers statiques commence ici
+        ############################################################
+
+        location /favicon.ico {
+            # favicon.ico doit être à la racine du dossier img
+            root  /chemin/absolu/vers/dossier/img;
+        }
+
+        # on sert nos fichiers statiques
+        # l'url doit correspondre à MEDIA_URL
+        location ~* ^/static/ {
+            root  /chemin/absolu/vers/dossier/PARENT/du/dossier/statique;
+            # on active gzip pour tous les petits fichiers qui contiennent du texte
+            # si le navigateur le supporte
+            gzip  on;
+            gzip_http_version 1.0;
+            gzip_vary on;
+            gzip_comp_level 6;
+            gzip_proxied any;
+            gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+            # petite astuce gzip pour les gros fichier
+            # voir http://blog.leetsoft.com/2007/7/25/nginx-gzip-ssl
+            gzip_buffers 16 8k;
+
+            # on desactive gzip pour les vieux navigateurs
+            gzip_disable ~@~\MSIE [1-6].(?!.*SV1)~@~];
+        }
+
+       # on fait pareil mais pour l'admin Django
+       # l'url doit corresponde à ADMIN_MEDIA_PREFIX
+       location ~* ^/media/ {
+            root  /chemin/absolu/du/dossier/PARENT/du/dossier/media/de/django;
+            gzip  on;
+            gzip_http_version 1.0;
+            gzip_vary on;
+            gzip_comp_level 6;
+            gzip_proxied any;
+            gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+            gzip_buffers 16 8k;
+            gzip_disable ~@~\MSIE [1-6].(?!.*SV1)~@~];
+        }
+
+        ##############################################################
+        # la partie qui concerne les fichiers statiques se termine ici
+        ##############################################################
+
+        location / {
+            proxy_pass http://127.0.0.1:8000;
+        }
+}
+</pre>
+<p>Notez bien que la directive <code>root</code> suppose que vous mettiez le dossier parent du dossier que vous voulez servir, et que le dossier servi a le même nom que le chemin dans l&#8217;url.</p>
+<p>Par exemple, si vos fichiers statiques sont dans <em>/home/sam/project/static</em>, alors l&#8217;url devra être <code>^/static/</code> et on passera à l&#8217;instruction <code>root</code> le chemin <em>/sam/project</em>.</p>
+<h4>Apache</h4>
+<p>Si vous êtes chez un hébergeur qui n&#8217;a qu&#8217;Apache, voici un manière de servir les fichiers statiques. Je ne connais pas Apache aussi bien que Nginx, donc je ne peux pas m&#8217;engager sur la gestion de Gzip.</p>
+<pre lang="xml">
+# TOUS les chemins doivent être accessible pour le user apache (www-data le plus souvent)
+# N'oubliez pas les slashes finaux, ils sont importants
+
+WSGIPythonPath /chemin/absolu/vers/project/:/chemin/absolu/vers/dossier/parent/du/project/:/chemin/vers/site/package/du/virtualenv/
+
+<VirtualHost *:80>
+
+    WSGIScriptAlias / "/chemin/absolu/vers/fichier/project.wsgi"
+
+    ########################################################
+    # Début de la partie qui concerne les fichiers statiques
+    ########################################################
+
+    # on sert les fichiers statiques du site
+    Alias /static/ "/chemin/absolu/vers/dossier/static/"
+    Alias /favicon.ico "/chemin/absolu/vers/dossier/static/img/favicon.ico"
+
+    # on donne l'autorisation à tous de les lire
+    <Directory "/chemin/absolu/vers/dossier/static/">
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+    # on sert les fichiers statiques de l'admin
+    Alias /media/ "/chemin/absolu/vers/dossier/django/contrib/admin/media/"
+    # on donne l'autorisation à tous de les lire
+    <Directory "/chemin/absolu/vers/dossier/django/contrib/admin/media/">
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+    ######################################################
+    # Fin de la partie qui concerne les fichiers statiques
+    ######################################################
+
+</VirtualHost>
+</pre>
+<p>Si vous faites bien gaffe aux droits d&#8217;accès des dossiers (récursivement) et que vous avec pas oublié de &#8220;/&#8221; à la fin d&#8217;un chemin, tout ira bien.</p>
+<p>Pour Apache, servir les fichiers statiques est généralement la partie facile, c&#8217;est faire marcher Django et mod_wsgi qui est difficile: problèmes de droits, mauvaise configuration, Python path qui foine&#8230; Mais je m&#8217;en branle, puisque c&#8217;est pas l&#8217;objet de l&#8217;article, donc démerdez-vous.</p>
+<h2>Notes de fin</h2>
+<p>Jusqu&#8217;à la version 1.2, <code>MEDIA_ROOT</code> et <code>MEDIA_URL</code> ne sont que des conventions qui ne servent pas à grand chose à part à être utilisées par des contexts managers et à vous éviter les chemins en durs dans les templates et urls.py.</p>
+<p>A partir de Django 1.3, <code>STATIC_ROOT</code> et <code>STATIC_URL</code> sont vraiment utilisées: <code>STATIC_ROOT</code> est là où Django va mettre le resultat de la commande <code>collecstatic</code> et <code>STATIC_URL</code> et l&#8217;url que va utiliser la vue <code>staticfiles_urlpatterns</code>.</p>
+<p><code>MEDIA_ROOT</code> et <code>MEDIA_URL</code> existent toujours, mais sont utilisés pour designer le dossier et l&#8217;url qui pointent vers les contenus uploadés et downlodés par les utilisateurs. Si vous voulez les servir, il faut faire exactement la même chose à l&#8217;époque de Django 1.2 et avant: mettre la route à la main dans urls.py (mais cette fois, il y a un <a href="https://docs.djangoproject.com/en/1.3/howto/static-files/#django.conf.urls.static.static">raccourcis</a> pour ça), et rajouter une entrée supplémentaire dans le fichier de conf Nginx ou Apache.</p>
+<p>Sinon, vous pouvez aussi vous éviter tout ce merdier en utilisant le middleware qui sert automatiquement tous les fichiers statiques de <a href="https://github.com/sametmax/django-quicky">django_quicky</a>.</p>
+<p>Enfin, je n&#8217;ai pas abordé les storage backends, tout simplement parce que je n&#8217;en utilise pas, donc je ne peux pas vous donner de bons conseils sur la question.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comment-servir-les-fichiers-statiques-avec-django-en-dev-et-en-prod/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">2706</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/10/19087844.jpg-r_160_240-b_1_D6D6D6-f_jpg-q_x-20090407_062555.jpg" length="11635" type="image/jpg" />	</item>
+	</channel>
+</rss>

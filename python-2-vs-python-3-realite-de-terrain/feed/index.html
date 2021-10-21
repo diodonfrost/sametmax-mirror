@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Python 2 VS Python 3 : réalité de terrain</title>
+	<atom:link href="http://sametmax.com/python-2-vs-python-3-realite-de-terrain/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/python-2-vs-python-3-realite-de-terrain/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Edouard</title>
+		<link>http://sametmax.com/python-2-vs-python-3-realite-de-terrain/#comment-181682</link>
+		<dc:creator><![CDATA[Edouard]]></dc:creator>
+		<pubDate>Sat, 08 Oct 2016 15:27:33 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16045#comment-181682</guid>
+		<description><![CDATA[@mdbrlh Ce n&#039;est pas ce que julien dit..
+
+Il voulait dire que puisque la méthode &#039;keys&#039; renvoie désormais un générateur et non plus une liste, une exception sera levée si tu modifies le dictionnaire à l&#039;intérieur de la boucle.
+]]></description>
+		<content:encoded><![CDATA[<p>@mdbrlh Ce n&#8217;est pas ce que julien dit..</p>
+<p>Il voulait dire que puisque la méthode &#8216;keys&#8217; renvoie désormais un générateur et non plus une liste, une exception sera levée si tu modifies le dictionnaire à l&#8217;intérieur de la boucle.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: mdbrlh</title>
+		<link>http://sametmax.com/python-2-vs-python-3-realite-de-terrain/#comment-180166</link>
+		<dc:creator><![CDATA[mdbrlh]]></dc:creator>
+		<pubDate>Tue, 09 Aug 2016 09:52:02 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16045#comment-180166</guid>
+		<description><![CDATA[@julien, tu n&#039;as pas besoin de transformer ton générateur en list dans pour la boucle for :
+
+&lt;pre&gt;&lt;code&gt;
+dict = {&#039;a&#039; : 1, &#039;b&#039; : 2, &#039;c&#039; : 3}
+
+for k in dict.keys():
+    print(k)
+
+# Affiche :
+#  a
+#  b
+#  c
+&lt;/code&gt;&lt;/pre&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>@julien, tu n&#8217;as pas besoin de transformer ton générateur en list dans pour la boucle for :</p>
+<pre><code>
+dict = {'a' : 1, 'b' : 2, 'c' : 3}
+
+for k in dict.keys():
+    print(k)
+
+# Affiche :
+#  a
+#  b
+#  c
+</code></pre>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/python-2-vs-python-3-realite-de-terrain/#comment-177191</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 16 Mar 2016 12:59:59 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16045#comment-177191</guid>
+		<description><![CDATA[&lt;p&gt;C&#039;est vrai mais le cas où tu modifies le dictionnaire dans une boucle sur le dit dictionnaire est assez rare en Python. Généralement, soit tu boucles sur autre chose et du modifie le dico, soit tu créé une copie du dico (souvent avec une intension). Du coup ils ont optimisé pour le cas le plus courant : itérer dessus en lecture.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>C&#8217;est vrai mais le cas où tu modifies le dictionnaire dans une boucle sur le dit dictionnaire est assez rare en Python. Généralement, soit tu boucles sur autre chose et du modifie le dico, soit tu créé une copie du dico (souvent avec une intension). Du coup ils ont optimisé pour le cas le plus courant : itérer dessus en lecture.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: julien</title>
+		<link>http://sametmax.com/python-2-vs-python-3-realite-de-terrain/#comment-177181</link>
+		<dc:creator><![CDATA[julien]]></dc:creator>
+		<pubDate>Tue, 15 Mar 2016 21:52:45 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16045#comment-177181</guid>
+		<description><![CDATA[Moi, j&#039;ai un peu de mal avec l&#039;extension du domaine des générateurs.
+
+genre dict.keys() n&#039;est plus une liste, mais un générateur. Du coup, si je modifie le dict, il faut faire :
+
+for k in  list(dict.keys())...
+]]></description>
+		<content:encoded><![CDATA[<p>Moi, j&#8217;ai un peu de mal avec l&#8217;extension du domaine des générateurs.</p>
+<p>genre dict.keys() n&#8217;est plus une liste, mais un générateur. Du coup, si je modifie le dict, il faut faire :</p>
+<p>for k in  list(dict.keys())&#8230;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/python-2-vs-python-3-realite-de-terrain/#comment-158935</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Fri, 10 Apr 2015 15:38:23 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16045#comment-158935</guid>
+		<description><![CDATA[&lt;p&gt;Et pip est supporté depuis un bail, il suffit de l&#039;installer. Et l&#039;utf8 et supporté depuis un bail, il suffit de mettre un en-tête, et les litteraux unicodes sont supportés depuis un bail, il suffit d&#039;importer future, et la division flottante est supportée depuis un bail, il suffit de faire operator.truediv, etc, etc. Python 2.7 était déjà turring complet, pourquoi passer à Python 3 ?&lt;/p&gt;
+
+&lt;p&gt;Parce que c&#039;est plus pratique de pas avoir à faire tout ça, banane.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Et pip est supporté depuis un bail, il suffit de l&#8217;installer. Et l&#8217;utf8 et supporté depuis un bail, il suffit de mettre un en-tête, et les litteraux unicodes sont supportés depuis un bail, il suffit d&#8217;importer future, et la division flottante est supportée depuis un bail, il suffit de faire operator.truediv, etc, etc. Python 2.7 était déjà turring complet, pourquoi passer à Python 3 ?</p>
+<p>Parce que c&#8217;est plus pratique de pas avoir à faire tout ça, banane.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: quelqun_dautre</title>
+		<link>http://sametmax.com/python-2-vs-python-3-realite-de-terrain/#comment-158934</link>
+		<dc:creator><![CDATA[quelqun_dautre]]></dc:creator>
+		<pubDate>Fri, 10 Apr 2015 15:28:32 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16045#comment-158934</guid>
+		<description><![CDATA[L&#039;auto-complétion est supportée depuis un bail (Py2.6) via le module rlcompleter, si je ne me trompe pas.
+
+&lt;code&gt;import rlcompleter
+
+rlcompleter.readline.parse_and_bind(&quot;tab: complete&quot;)&lt;/code&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>L&#8217;auto-complétion est supportée depuis un bail (Py2.6) via le module rlcompleter, si je ne me trompe pas.</p>
+<p><code>import rlcompleter</p>
+<p>rlcompleter.readline.parse_and_bind("tab: complete")</code></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/python-2-vs-python-3-realite-de-terrain/#comment-158924</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Fri, 10 Apr 2015 09:59:00 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16045#comment-158924</guid>
+		<description><![CDATA[&lt;p&gt;Dans ipython on peut faire :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;%autocall
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Et les parenthèses deviennent optionelles. Faut pas en abuser (on est pas rubistes), mais pour print c&#039;est pratique.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Dans ipython on peut faire :</p>
+<pre><code>%autocall
+</code></pre>
+<p>Et les parenthèses deviennent optionelles. Faut pas en abuser (on est pas rubistes), mais pour print c&#8217;est pratique.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Mathieu</title>
+		<link>http://sametmax.com/python-2-vs-python-3-realite-de-terrain/#comment-158922</link>
+		<dc:creator><![CDATA[Mathieu]]></dc:creator>
+		<pubDate>Fri, 10 Apr 2015 09:29:34 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16045#comment-158922</guid>
+		<description><![CDATA[from past import print_statement :&#039;(
+]]></description>
+		<content:encoded><![CDATA[<p>from past import print_statement :'(</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: doubleration</title>
+		<link>http://sametmax.com/python-2-vs-python-3-realite-de-terrain/#comment-158915</link>
+		<dc:creator><![CDATA[doubleration]]></dc:creator>
+		<pubDate>Fri, 10 Apr 2015 07:17:51 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16045#comment-158915</guid>
+		<description><![CDATA[Dans le domaine de l&#039;admin, avec des serveurs hétérogènes dont certains ont des vieilles versions d&#039;OS, ici c&#039;est du Python 2. Et si je dois changer, je pars sur du Golang, j&#039;en ai un peu marre de n&#039;utiliser qu&#039;un core, et de galérer à chaque fois quand je dois packager un programme.
+]]></description>
+		<content:encoded><![CDATA[<p>Dans le domaine de l&#8217;admin, avec des serveurs hétérogènes dont certains ont des vieilles versions d&#8217;OS, ici c&#8217;est du Python 2. Et si je dois changer, je pars sur du Golang, j&#8217;en ai un peu marre de n&#8217;utiliser qu&#8217;un core, et de galérer à chaque fois quand je dois packager un programme.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: bob</title>
+		<link>http://sametmax.com/python-2-vs-python-3-realite-de-terrain/#comment-158889</link>
+		<dc:creator><![CDATA[bob]]></dc:creator>
+		<pubDate>Thu, 09 Apr 2015 20:05:00 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16045#comment-158889</guid>
+		<description><![CDATA[Idem, ça fait un moment que je ne fais plus que du 3 sauf pour un projet django qui y passera dès que j&#039;ai un peu de temps à consacrer à cette migration.
+
+La manipulation du texte c&#039;est juste du bonheur.
+]]></description>
+		<content:encoded><![CDATA[<p>Idem, ça fait un moment que je ne fais plus que du 3 sauf pour un projet django qui y passera dès que j&#8217;ai un peu de temps à consacrer à cette migration.</p>
+<p>La manipulation du texte c&#8217;est juste du bonheur.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

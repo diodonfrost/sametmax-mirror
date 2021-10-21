@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>light &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/light/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Utiliser Cherrypy (serveur web léger) avec Bottle (Framework léger)</title>
+		<link>http://sametmax.com/utiliser-cherrypy-serveur-web-leger-avec-bottle-framework-leger/</link>
+		<comments>http://sametmax.com/utiliser-cherrypy-serveur-web-leger-avec-bottle-framework-leger/#comments</comments>
+		<pubDate>Thu, 15 Nov 2012 16:01:38 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[bottle]]></category>
+		<category><![CDATA[cherrypy]]></category>
+		<category><![CDATA[light]]></category>
+		<category><![CDATA[serveur]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3081</guid>
+		<description><![CDATA[Pour les sites/app qu'on developpe en une journée, Bottle et Cherrypy sont deux larons en foire qui s'accouplent parfaitement...]]></description>
+				<content:encoded><![CDATA[<p>Pour les sites/app qu&#8217;on developpe en une journée, <a href="http://bottlepy.org/docs/dev/">Bottle</a> et <a href="http://www.cherrypy.org/">Cherrypy</a> sont deux larons en foire qui s&#8217;accouplent parfaitement&#8230;</p>
+<p><strong>Rappel:</strong></p>
+<p style="padding-left: 30px;"><strong></strong><strong>Bottle:</strong> Framework python light, allez voir <a title="Créer un site avec bottle en 5 minutes" href="http://sametmax.com/creer-un-site-avec-bottle-en-5-minutes-parceque-7-cest-impossible-voyons/">&#8220;Créer un site avec bottle en 5 minutes&#8221;</a><br />
+<strong>Cherrypy:</strong> Framework python light + serveur web</p>
+<p><strong><br />
+Une bonne <a href="http://sametmax.com/votre-python-aime-les-pip/">Pip</a> pour commencer:</strong></p>
+<pre lang="python">monsieur@fion:~# pip install cherrypy</pre>
+<p><strong>Dans votre fichier start.py:</strong></p>
+<pre lang="python">run(host='0.0.0.0', port=80, server='cherrypy')</pre>
+<p><strong>Note:</strong> le 0.0.0.0 permet d&#8217;acceder à votre site depuis l&#8217;extérieur.</p>
+<p>Pour lancer en daemon vous pouvez utiliser <a href="http://supervisord.org/">supervisord</a> <strong>ou</strong> faire un script dans le répertoire où se trouve <em>start.py</em> de votre projet et y coller:</p>
+<pre lang="python">
+#! /bin/sh
+
+### Run server in daemon mode
+nohup python start.py &
+</pre>
+<p><strong>Plusieurs serveurs web sur la même machine:</strong><br />
+Si vous avez un autre serveur web qui tourne sur votre machine et qui vous empêche de lancer cherrypy sur le port 80 vous pouvez utiliser <a href="http://nginx.org/">nginx</a> en <a href="http://wiki.nginx.org/HttpProxyModule">proxy</a>. Pour ce faire modifiez le port de cherrypy dans votre fichier <em>start.py</em> (voir plus haut) et réglez-le sur 7777 par exemple avec un host 127.0.0.1.<br />
+Ouvrez un fichier de conf nginx et copiez ceci:</p>
+<pre lang="python">
+upstream monsite_cherrypy {
+    server 127.0.0.1:7777;
+}
+
+server {
+        listen       80;
+        server_name monsite.com www.monsite.com ;
+
+        location /favicon.ico {
+            root  /home/monsite/static/img;
+        }
+
+        location / {
+            proxy_pass http://monsite_cherrypy; 
+        }
+
+}
+</pre>
+<p>Relancez Nginx (service nginx restart). Et votre site est en place. C&#8217;est ce qu&#8217;on utilise pour <a href="http://multiboards.net/">multiboards</a> par exemple.</p>
+<p>C&#8217;est rapide et simple et ça peut tenir pas mal de visiteurs. ça évite d&#8217;installer des trucs lourds avec 3 tonnes de config.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/utiliser-cherrypy-serveur-web-leger-avec-bottle-framework-leger/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">3081</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/11/cherry.jpeg" length="433436" type="image/jpg" />	</item>
+	</channel>
+</rss>

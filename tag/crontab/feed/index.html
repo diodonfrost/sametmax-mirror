@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>crontab &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/crontab/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Variable d&#8217;environnement PATH et crontab</title>
+		<link>http://sametmax.com/variable-denvironnement-path-et-crontab/</link>
+		<comments>http://sametmax.com/variable-denvironnement-path-et-crontab/#comments</comments>
+		<pubDate>Fri, 26 Oct 2012 06:55:35 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[crontab]]></category>
+		<category><![CDATA[env]]></category>
+		<category><![CDATA[path]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2741</guid>
+		<description><![CDATA[crontab peut réserver des suprises si on oublie de bien déclarer tous les repertoires dans le PATH...]]></description>
+				<content:encoded><![CDATA[<p>Si vous utilisez crontab pour vos tâche, faites attention à un détail : le PATH.</p>
+<p>il y a un fichier de conf que j&#8217;ai pas réussi à faire fonctionner dans /etc/crontab, si vous y arrivez tant mieux sinon éditez votre cron de la sorte:</p>
+<p><strong>1. Version avec PATH défini par tâche:</strong></p>
+<pre lang="python">
+30 23 * * * PATH=$PATH:/usr/local/bin && export PATH && python /home/penetrator/script.py
+</pre>
+<p><strong>2. Version avec variables définies en haut du fichier cron:</strong></p>
+<pre lang="python">
+# Env
+SHELL=/bin/bash
+HOME=/home/prod
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
+
+# Cmd cron
+30 23 * * * python /home/penetrator/script.py
+</pre>
+<p><em>$PATH=PATH:/usr/local/bin &#038;&#038; export PATH</em>  va rajouter /usr/local/bin dans le PATH.<br />
+Ayant installé et compilé un programme dans <em>/usr/local/bin</em> et l&#8217;utilisant dans script.py, il faut que son chemin soit dans le PATH.</p>
+<p><strong>Pour avoir des infos sur l&#8217;env de votre cron:</strong></p>
+<pre lang="python">
+* * * * * PATH=$PATH:/usr/local/bin && export PATH && env > /tmp/cronenv
+</pre>
+<p>faites un <em>tail -f /tmp/cronenv </em>pour voir si votre PATH est bien déclaré.</p>
+<p>ça peut éviter quelques heures à s&#8217;arracher les cheveux pour le debug d&#8217;un script&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/variable-denvironnement-path-et-crontab/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">2741</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/10/homer-wall-clock.jpeg" length="44157" type="image/jpg" />	</item>
+	</channel>
+</rss>

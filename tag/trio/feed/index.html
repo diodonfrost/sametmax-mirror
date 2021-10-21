@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>trio &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/trio/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Super article invité sur Trio que l&#8217;auteur a oublié de titrer</title>
+		<link>http://sametmax.com/super-article-invite-sur-trio-que-lauteur-a-oublie-de-titrer/</link>
+		<comments>http://sametmax.com/super-article-invite-sur-trio-que-lauteur-a-oublie-de-titrer/#comments</comments>
+		<pubDate>Thu, 14 Jun 2018 07:39:52 +0000</pubDate>
+		<dc:creator><![CDATA[touilleMan]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[async]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[await]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[trio]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=24605</guid>
+		<description><![CDATA[C'est bon vous avez cédé à la hype ?]]></description>
+				<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/touilleMan">touilleMan</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<p>C&#8217;est bon vous avez cédé à la hype ?</p>
+<p>Après un n-ème talk sur asyncio vous avez été convaincu que tout vos sites webs doivent être recodé dans cette techno ? Oui, surtout celui de la mairie de Gaudriole-sur-Gironde avec ses 50 visiteurs/jour, Django ça scalera pas et vous aurez sûrement besoin de websockets à l&#8217;avenir.</p>
+<p>Et puis là pan ! En commençant à utiliser asyncio on se rend compte que ça va pas être aussi marrant que ce que vous a vendu l&#8217;enfoiré de hipster dans son talk avec son exemple de crawler web en 20 lignes :</p>
+<ul>
+<li>la doc de asyncio fait 50 putain de pages, <a href="http://lucumr.pocoo.org/2016/10/30/i-dont-understand-asyncio/">même les plus grands déclarent ne rien y comprendre</a></li>
+<li>pdb est aux fraises, un step-over sur un <code>await</code> vous envoi à perpet&#8217; dans l&#8217;event loop</li>
+<li>il faut passer l&#8217;event loop en tant qu&#8217;argument à chaque fonction, évidemment vous n&#8217;allez pas le faire et utiliser <code>get_event_loop()</code> à la place. Et ça va merder sévère à un moment (typiquement quand vous ajouterez des tests non triviaux), et vous allez devoir corriger tout votre code.</li>
+<li>régulièrement une stacktrace d&#8217;une coroutine ayant crashé dégueule de stdout sans que le programme ne bronche, autant de je m&#8217;en foutisme on se croirait revenu en PHP !</li>
+<li>parlons-en de la stacktrace ! Impossible de savoir d&#8217;où vient la coroutine, encore une fois on nous renvoi dans les méandres de l&#8217;event loop.</li>
+<li>Et pour initialiser/finaliser proprement votre système alors là c&#8217;est la fête totale</li>
+</ul>
+<p>Je ne parle même pas des soucis ceinture-noir-2ème-dan du genre high-water mark qui vous tomberons dessus une fois l&#8217;appli en prod.</p>
+<p>Lourd est le parpaing de la réalité sur la tartelette aux fraises de nos illusions&#8230;</p>
+<h2>1 &#8211; Pourquoi c&#8217;est (de) la merde ?</h2>
+<p>Pour faire simple asyncio a été pensé à la base comme une tentative de standardisation de l&#8217;écosystème asynchrone Python où chaque framework (Twisted et Tornado principalement) était incompatible avec les autres et devait re-créer son écosystème de zéro.</p>
+<p>C&#8217;était la bonne chose à faire à l&#8217;époque, ça a eu beaucoup de succès (Twisted et Tornado sont maintenant compatible asyncio), ça a donné une killer-feature pour faire taire les rageux au sujet de Python 3 et ça a créé une émulsion formidable concernant la programmation asynchrone en Python.<br />
+Mais dans le même temps ça a obligé cette nouvelle lib à hériter des choix historiques des anciennes libs : les callbacks.</p>
+<p>Pour faire simple un framework asynchrone c&#8217;est deux choses :</p>
+<ul>
+<li>une grosse boucle infinie (la fameuse « event loop ») qui a configuré les appels d&#8217;IO au kernel en mode non-bloquant et qui poll ceux-ci en continu</li>
+<li>un mécanisme pour garder trace de quel bout de code exécuter quand une IO donnée aura été terminée</li>
+</ul>
+<p>Concernant le 2ème point, cela veut dire que si on a une fonction synchrone comme ceci :</p>
+<pre lang="python">def listen_and_answer(sock):
+    print('start')
+    data = sock.read()
+    print('working with %s' % data)
+    sock.write('ok')
+    print('done')
+</pre>
+<p>Il faut trouver un moyen pour la découper en une série de morceaux de codes et d&#8217;IO.</p>
+<p>Il y la façon « javascript », où on découpe à la main comme un compilo déroulerai une boucle :</p>
+<pre lang="python">def listen_and_answer(sock):
+    print('start')
+
+    def on_listen(data):
+        print('working with %s' % data)
+
+        def on_write(ret):
+            print('done')
+
+        sock.write('ok', on_write)
+
+    sock.read(on_listen)
+</pre>
+<p>Et là j&#8217;ai fait la version simple sans chercher à gérer les exceptions et autres joyeusetés. Autant dire que quand un vieux dev Twisted vous dit le regard vide et la voix chevrotante qu&#8217;il a connu l&#8217;enfer, ne prenez pas ses déclarations à la légère.</p>
+<p>Sinon la façon async/await si chère à asyncio :</p>
+<pre lang="python">async def listen_and_answer(sock):
+    print('start')
+    data = await sock.read()
+    print('working with %s' % data)
+    await sock.write('ok')
+    print('done')
+</pre>
+<p>C&#8217;est clair, c&#8217;est propre, la gestion des exceptions est totalement naturelle, bref c&#8217;est du Python dans toute sa splendeur.<br />
+Sauf que non, tout ça n&#8217;est qu&#8217;un putain d&#8217;écran de fumée : pour être compatible avec Twisted&amp;co sous le capot asyncio fonctionne avec des callbacks.</p>
+<p>Vous vous souvenez de cette sensation de détresse mêlée d’hilarité devant une stacktrace d&#8217;un projet Javascript lambda d&#8217;où vous ne reconnaissez que la première ligne ? C&#8217;est ça les callbacks, et c&#8217;est ça que vous avez dans asyncio.</p>
+<p>Concrètement le soucis vient du fait qu&#8217;une callback n&#8217;est rien d&#8217;autre qu&#8217;une fonction passée telle qu&#8217;elle sans aucune information quant à d&#8217;où elle vient. De fait impossible pour l&#8217;event loop asynchrone de reconstruire une callstack complète à partir de cela.<br />
+Heureusement async/await permettent à python de conserver ces informations de fonction appelante ce qui limite un peu le problème avec asyncio.<br />
+Toutefois en remontant suffisamment haut on finira toujours avec une callback quelque part. Et vous savez qui a l&#8217;habitude de remonter aussi haut que nécessaire ? Les exceptions.</p>
+<pre lang="python">import asyncio
+import random
+
+async def succeed(client_writer):
+    print('Lucky guy...')
+    # Googlez "ayncio high water mark" pour comprender pourquoi c'est
+    # une idée à la con de ne pas avoir cette methode asynchrone
+    client_writer.write(b'Lucky guy...')
+
+async def fail(client_writer):
+    raise RuntimeError('Tough shit...')
+
+async def handle_request_russian_roulette_style(client_reader, client_writer):
+    handlers = (
+        succeed,
+        succeed,
+        succeed,
+        fail,
+    )
+    await handlers[random.randint(0, 3)](client_writer)
+    client_writer.close()
+
+async def start_server():
+    server = await asyncio.start_server(
+        handle_request_russian_roulette_style,
+        host='localhost', port=8080)
+    await server.wait_closed()
+
+asyncio.get_event_loop().run_until_complete(start_server())
+</pre>
+<p>Maintenant si on lance tout ça et qu&#8217;on envoie des <code>curl localhost:8080</code> on va finir avec:</p>
+<pre lang="bash">$ python3 russian_roulette_server.py
+Lucky guy...
+Lucky guy...
+Task exception was never retrieved
+future:  exception=RuntimeError('Tough shit...',)&gt;
+Traceback (most recent call last):
+  File "ex.py", line 18, in handle_request_russian_roulette_style
+    await handlers[random.randint(0, 3)](client_writer)
+  File "ex.py", line 9, in fail
+    raise RuntimeError('Tough shit...')
+RuntimeError: Tough shit...
+Lucky guy...
+Task exception was never retrieved
+future:  exception=RuntimeError('Tough shit...',)&gt;
+Traceback (most recent call last):
+  File "ex.py", line 18, in handle_request_russian_roulette_style
+    await handlers[random.randint(0, 3)](client_writer)
+  File "ex.py", line 9, in fail
+    raise RuntimeError('Tough shit...')
+RuntimeError: Tough shit...
+</pre>
+<p>Le problème saute aux yeux: <code>asyncio.start_server</code> gère sa tambouille avec des callbacks et se retrouve bien embêté quand notre code remonte une exception. Du coup il fait au mieux en affichant la stacktrace et en faisant comme si de rien n&#8217;était. C&#8217;est peut-être le comportement qu&#8217;on attend d&#8217;un serveur web (encore que&#8230; si aviez configuré logging pour envoyer dans un fichier vous êtes bien baïzay) mais il existe des tonnes de usecases pour lesquels ça pose problème (et de toute façon on n&#8217;a vu que la partie émergée de l&#8217;iceberg d&#8217;emmerdes qu&#8217;est la programmation asynchrone).</p>
+<p>Bref, si vous voulez en savoir plus, allez lire <a href="https://vorpus.org/blog/some-thoughts-on-asynchronous-api-design-in-a-post-asyncawait-world/">ce post</a>, d&#8217;ailleurs allez lire tous les posts du blog, ce mec est un génie.</p>
+<h2>2 &#8211; Trio, une façon de faire de l&#8217;asynchrone</h2>
+<p>Ce mec en question, c&#8217;est Nathaniel J. Smith et il a eu la très cool idée de créer sa propre lib asynchrone pour Python: <a href="https://trio.readthedocs.io/">Trio</a></p>
+<p>L&#8217;objectif est simple: rendre la programmation asynchrone (presque) aussi simple que celle synchrone en s&#8217;appuyant sur les nouvelles fonctionnalités offertes par les dernières versions de Python ainsi qu&#8217;un paradigme de concurrence innovant. Cette phrase est digne d&#8217;un marketeux, vous avez le droit de me cracher à la gueule.</p>
+<p>Concrètement ce que ça donne:</p>
+<pre lang="python"># pip install trio asks beautifulsoup4
+import trio
+import asks
+import bs4
+import re
+
+
+# Asks est un grosso modo requests en asynchrone, vu qu'il supporte trio et curio
+# (une autre lib asynchrone dans le même style), il faut donc lui dire lequel utiliser
+asks.init('trio')
+
+
+async def recursive_find(url, on_found, depth=0):
+    # On fait notre requête HTTP en asynchrone
+    rep = await asks.get(url)
+    print(f'depth {depth}, try {url}...')
+
+    # On retrouve le corps de l'article grace à beautiful soup
+    soup = bs4.BeautifulSoup(rep.text, 'html.parser')
+    body = soup.find('div', attrs={"id": 'mw-content-text'})
+
+    # On cherche notre point Godwin
+    if re.search(r'(?i)hitler|nazi|adolf', body.text):
+        on_found(url, depth)
+
+    else:
+        async with trio.open_nursery() as nursery:
+            # On retrouve tous les liens de l'article et relance le recherche
+            # de manière récursive
+            for tag in body.find_all('a'):
+                if tag.has_attr('href') and tag.attrs['href'].startswith('/wiki/'):
+                    child_link = 'https://en.wikipedia.org' + tag.attrs['href']
+                    # On créé une nouvelle coroutine par lien à crawler
+                    nursery.start_soon(recursive_find, child_link, on_found, depth+1)
+
+
+async def godwin_find(url):
+    results = []
+
+    with trio.move_on_after(10) as cancel_scope:
+        def on_found(found_url, depth):
+            results.append((found_url, depth))
+            cancel_scope.cancel()
+
+        await recursive_find(url, on_found)
+
+    if results:
+        found_url, depth = results[0]
+        print(f'Found Godwin point in {found_url} (depth: {depth})')
+    else:
+        print('No point for this article')
+
+
+trio.run(godwin_find, 'https://en.wikipedia.org/wiki/My_Little_Pony')
+</pre>
+<p>L&#8217;idée de ce code est, partant d&#8217;un article wikipedia, de crawler ses liens récursivement jusqu&#8217;à ce qu&#8217;on trouve un article contenant des mots clés.</p>
+<p>Au niveau des trucs intéressants:</p>
+<pre lang="python">async with trio.open_nursery() as nursery:
+    for tag in body.find_all('a'):
+        if tag.has_attr('href') and tag.attrs['href'].startswith('/wiki/'):
+            child_link = 'https://en.wikipedia.org' + tag.attrs['href']
+            nursery.start_soon(recursive_find, child_link, on_found, depth+1)
+</pre>
+<p>En trio, une coroutine doit forcément être connectée à une nurserie. Cela permet deux choses:</p>
+<ul>
+<li>Rattacher la coroutine à sa coroutine parente, de cette façon (et vu que trio est implémenté intégralement en utilisant async/await au lieu de callbacks), on a donc une stacktrace claire et une exception sera toujours propagée jusqu&#8217;à la racine du programme si il le faut.</li>
+<li>Borner la durée de vie de la coroutine. La nurserie est un context manager asynchrone, une fois qu&#8217;on arrive à la fin du <code>async with</code>, la nursery bloque tant que toutes les coroutines qu&#8217;elle gère n&#8217;ont pas terminé. Si une coroutine raise une exception, la nursery va pouvoir cancel les autres coroutines avant de re-raise l&#8217;exception en question (cf. le point précédent)</li>
+</ul>
+<p>Quel intérêt à borner la durée de vie des coroutines ? Si on avait voulu écrire un truc équivalent en asyncio on aurait sans doute utilisé <code>asyncio.gather</code>:</p>
+<pre lang="python">coroutines = [recursive_find(link) for link in links]
+await asyncio.gather(coroutines)
+</pre>
+<p>Maintenant on fait tourner ce code avec une connection internet un peu faiblarde (au hasard sur la box Orange de Sam ces temps ci&#8230;) les ennuis auraient commencé dès qu&#8217;une requête http aurait timeout.<br />
+L&#8217;exception de timeout aurait été récupérée par <code>asyncio.gather</code> qui l&#8217;aurait relancé sans pour autant fermer les autres coroutines qui auraient continué à crawler wikipedia en créant des centaines de coroutines (oui <code>recursive_find</code> est un peu bourrin).<br />
+De fait si on se place dans le cas d&#8217;un code tournant longtemps (typiquement on a un serveur web qui a lancé notre code dans le cadre du traitement d&#8217;une requête entrante) on va avoir bien du mal à retrouver l&#8217;état ayant mené à ce bordel.</p>
+<p>Du coup en trio la seule solution pour avoir une coroutine qui survit à son parent c&#8217;est de lui passer une nursery en paramètre:</p>
+<pre lang="python">async def work(sleep_time, nursery):
+    await trio.sleep(sleep_time)
+    print('work done !')
+    # Je vous ai dit qu'une nurserie contient automatiquement un cancel scope ?
+    nursery.cancel_scope.cancel()
+
+async def work_generator(nursery):
+    print('bootstrapping...')
+    await trio.sleep(1)
+    for sleep_time in range(10):
+        nursery.start_soon(work, sleep_time, nursery)
+
+async def stop_a_first_work_done():
+    async with trio.open_nursery() as nursery:
+        await work_generator(nursery)
+        print('Waiting for a work to finish...')
+</pre>
+<p>Un autre truc cool:</p>
+<pre lang="python">with trio.move_on_after(10) as cancel_scope:
+    def on_found(found_url, depth):
+        results.append((found_url, depth))
+        cancel_scope.cancel()
+
+    await recursive_find(url, on_found)
+</pre>
+<p>Vu qu&#8217;en trio on se retrouve avec un arbre de coroutines, il est très facile d&#8217;appliquer des conditions sur un sous-ensemble de l&#8217;arbre. C&#8217;est le rôle des cancel scope.<br />
+Comme pour les nursery, les cancel scope sont des contexts managers (mais synchrone ceux-ci). On peut les configurer avec un timeout, une deadline, ou bien tout simplement les annuler manuellement via <code>cancel_scope.cancel()</code>.</p>
+<p>Dans notre exemple, on définit un scope dont on sortira obligatoirement au bout de 10s. Pour éviter d&#8217;attendre pour rien, on annule le scope explicitement dans la closure appelée quand un résultat est trouvé.<br />
+Vu que les nurseries définies à chaque appel de <code>recursive_find</code> se trouvent englobées par notre cancel scope, elles seront automatiquement détruites (et toutes les coroutines qu&#8217;elles gèrent avec).</p>
+<p>Pour faire la même chose avec asyncio bonne chance:</p>
+<ul>
+<li>soit on passe un argument de timeout à notre appel pour récupérer la requête HTTP, mais dans ce cas pour peu que chaque requête soit individuellement plus courte que le timeout on ne s&#8217;arrêtera jamais</li>
+<li>soit on gère à la mano le temps à coup de <code>time.monotonic()</code> en passant le temps restant autorisé aux coroutines filles. Bonjour la gueule du code.</li>
+</ul>
+<p>En plus <a href="https://vorpus.org/blog/timeouts-and-cancellation-for-humans/">comme en parlait un mec</a> (décidemment !), la gestion du timeout dans une socket tcp est foireuse, il suffit de recevoir un paquet (et une requête entière peut contenir beaucoup de paquets !) pour que le timeout soit remis à zéro. Donc encore une fois pas de garanties fortes quant à quand le code s&#8217;arrêtera.</p>
+<h2>3 &#8211; <strong>Eeeeet c&#8217;est tout !</strong></h2>
+<p>Au final la doc de l&#8217;api de trio pourrait tenir sur l&#8217;étiquette de mon slip: pas de promise, de futurs, de tasks, de pattern Protocol/Transport legacy. On se retrouve juste avec la sainte trinité (j&#8217;imagine que c&#8217;est de là que vient le nom) async/await, nursery, cancel scope.</p>
+<p>Et évidemment maintenant, l&#8217;enfoiré de hipster qui vous vend une techno à coup de whao effect avec un crawler asynchrone de 20 lignes c&#8217;est moi&#8230;</p>
+<p>Remarquez si vous préférez la version longue je vous conseil <a href="https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-considered-harmful/">cet excellent article</a> de Nathaniel (je vous ai dit que ce mec était un génie ?).</p>
+<h2>4 &#8211; L&#8217;écosystème</h2>
+<p>C&#8217;est là où on se rend compte que asyncio est malgré ses lacunes une super idée: il a suffit d&#8217;écrire une <a href="https://github.com/python-trio/trio-asyncio">implémentation de l&#8217;event loop asyncio en trio</a> pour pouvoir utiliser tout l&#8217;écosystème asyncio (ce qui inclus donc Twisted et Tornado, snif c&#8217;est beau !).</p>
+<p>Allez pour le plasir un exemple d&#8217;utilisation de asyncpg depuis trio:</p>
+<pre lang="python">import trio_asyncio
+import asyncpg
+
+
+class TrioConnProxy:
+    # Le décorateur permet de marquer la frontière entre trio et asyncio
+    @trio_asyncio.trio2aio
+    async def init(self, url):
+        # Ici on est donc dans asyncio
+        self.conn = await asyncpg.connect(url)
+
+    @trio_asyncio.trio2aio
+    async def execute(self, *args):
+        return await self.conn.execute(*args)
+
+    @trio_asyncio.trio2aio
+    async def fetch(self, *args):
+        return await self.conn.fetch(*args)
+
+
+async def main():
+    # Ici on est dans trio, c'est la fête
+
+    conn = TrioConnProxy()
+    await conn.init('postgresql:///')
+
+    await conn.execute('CREATE TABLE IF NOT EXISTS users(name text primary key)')
+
+    for name in ('Riri', 'Fifi', 'Loulou'):
+        await conn.execute('INSERT INTO users(name) VALUES ($1)', name)
+
+    users = await conn.fetch('SELECT * FROM users')
+    print('users:', [user[0] for user in users])
+
+
+# trio_asyncio s'occupe de configurer l'event loop par défaut de asyncio
+# puis lance le <code>trio.run</code> classique trio_asyncio.run(main)</pre>
+<p>En plus de ça trio vient avec son module pytest (avec gestion des fixtures asynchrones s&#8217;il vous plait) et Keneith Reitz a promis que la prochain version de requests supporterait async/await et <a href="https://gist.github.com/kennethreitz/fab0f200f47cfa7926607043aed2b483">trio nativement</a>, elle est pas belle la vie !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/super-article-invite-sur-trio-que-lauteur-a-oublie-de-titrer/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">24605</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/06/0ivzB23.jpg" length="28055" type="image/jpg" />	</item>
+		<item>
+		<title>Go to (in asyncio) considered harmful</title>
+		<link>http://sametmax.com/go-to-in-asyncio-considered-harmful/</link>
+		<comments>http://sametmax.com/go-to-in-asyncio-considered-harmful/#comments</comments>
+		<pubDate>Thu, 07 Jun 2018 07:31:29 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[goto]]></category>
+		<category><![CDATA[nursery]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[trio]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=24534</guid>
+		<description><![CDATA[Dijkstra était un intellectuel pédant mais quand il a écrit cette lettre célèbre, il a comme souvent mis le doigt sur un truc fondamental. Et quand l'auteur de <a href="https://github.com/python-trio/trio">Trio</a>, une stack toute neuve concurrente d'<code>asyncio</code>, <a href="https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-considered-harmful/">lui a fait écho</a> 50 ans plus tard, ça a beaucoup discuté sur les mailing lists et les bugs trackers.]]></description>
+				<content:encoded><![CDATA[<p>Dijkstra était un intellectuel pédant, mais quand il a écrit cette lettre célèbre, il a comme souvent mis le doigt sur un truc fondamental. Et quand l&#8217;auteur de <a href="https://github.com/python-trio/trio">Trio</a>, une stack toute neuve concurrente d&#8217;<code>asyncio</code>, <a href="https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-considered-harmful/">lui a fait écho</a> 50 ans plus tard, ça a beaucoup discuté sur les mailing lists et les bugs trackers.</p>
+<p>Nathaniel J. Smith, le dev susnommé, en a profité pour introduire une nouvelle primitive, actuellement surnommée <a href="http://trio.readthedocs.io/en/latest/reference-core.html#nurseries-and-spawning">la nursery</a>, pour répondre au problème. Une idée visiblement tellement bonne que notre Yury préféré <a href="https://twitter.com/1st1/status/989198832910192640">a décidé</a> de la porter à <code>asyncio</code>. La boucle d&#8217;événements est bouclée, si je puis dire.</p>
+<p>Mais une autre chose intéressante en découle : on a mis en lumière la présence d&#8217;un <a href="https://en.wikipedia.org/wiki/Goto">goto</a> dans asyncio, et qu&#8217;il y a de bonnes pratiques, <a href="https://github.com/python/asyncio/issues/477#issuecomment-269038238">validées par Guido himself</a>, pour coder avec cette lib pour éviter les douleurs.</p>
+<h2>What the fuck are you talking about ?</h2>
+<p>Le problème du <code>goto</code>, c&#8217;est que l&#8217;instruction permet d&#8217;aller de n&#8217;importe où à n&#8217;importe où. Cela rend le flux du programme très dur à suivre. Pour éviter cela, on a catégorisé les usages clean du <code>goto</code>: répéter une action, changer de comportement en fonction d&#8217;un test, sortir d&#8217;un algo en cas de problème, etc. Et on en a fait des primitives : les <code>if</code>, les <code>while</code>, les exceptions&#8230; Dans les langages les plus modernes, on a carrément viré le <code>goto</code> pour éviter les abus et erreurs. Joie.</p>
+<p>Dans <code>asyncio</code>, le &#8220;goto&#8221; en question se trouve quand on veut lancer des tâches en arrière plan, comme ceci :</p>
+<pre lang="python">import asyncio as aio
+loop = aio.get_event_loop()
+aio.ensure_future(foo())  # GOTO !
+aio.ensure_future(bar())  # GOTO !
+loop.run_forever()</pre>
+<p>Le problème d&#8217;<code>ensure_future()</code> est multiple:</p>
+<ul>
+<li>Comme son nom l&#8217;indique, cette fonction retourne un objet&#8230; <code>Task</code>. Ca n&#8217;a rien à voir, mais je tenais à dire à quel point c&#8217;était con de l&#8217;avoir nommé ainsi (même si techniquement, <code>Task</code> hérite de <code>Future</code>).</li>
+<li>Cette ligne ne garantit en aucun cas que <code>foo()</code> ou <code>bar()</code> seront terminées à une zone précise du code. Tout au plus que tuer la boucle tue les taches. Leur flux d’exécution est complètement freestyle et décorrélé de tout le reste du programme, ainsi que de l&#8217;une de l’autres. Si ces coroutines font des <code>await</code>, on peut basculer de n&#8217;importe où du programme vers elles et inversement à tout moment. <code>goto</code></li>
+<li>Cette ligne schedule le démarrage de <code>foo()</code> et <code>bar()</code> dès que la boucle peut les lancer. Ici la boucle ne tourne pas encore. Plus le programme est complexe, plus il va devenir difficile de savoir à quelle étape logique les coroutines vont démarrer.</li>
+</ul>
+<p>En prime <code>run_forever()</code> est un piège à con, car les exceptions qui arrivent dans la boucle sont logguées, mais ne font pas crasher le programme, ce qui rend le debuggage super rude, même avec <a href="https://docs.python.org/3/library/asyncio-dev.html#debug-mode-of-asyncio">debug mode</a> activé (dont de toute façon personne ne soupçonne l&#8217;existence).</p>
+<h2>La solution asyncio</h2>
+<pre lang="python">
+import asyncio as aio
+loop = aio.get_event_loop()
+loop.run_until_complete(aio.gather(foo(), bar())
+</pre>
+<p>En plus d&#8217;être plus court, les exceptions vont faire planter le programme, la loop s&#8217;arrêtera quand les coroutines auront fini leur taff, leur flux a un début et une fin encapsulés par le <code>gather()</code>. Ceci est encore plus visible si on met le même code à l&#8217;intérieur d&#8217;une coroutine à l&#8217;intérieur d&#8217;une coroutine à l&#8217;intérieur d&#8217;une coroutine plutôt qu&#8217;à la racine du programme. En effet dans un exemple si simple, on se borne au démarrage et à l&#8217;arrêt de la boucle. Mais je suis paresseux.</p>
+<p>Donc, c&#8217;est la bonne pratique, mais tout le monde ne le sait pas.</p>
+<p>Pardon, correction.</p>
+<p>Tous les devs Python ne connaissent pas <code>asyncio</code>. Parmi ceux qui connaissent <code>asyncio</code>, une petite partie comprend comme ça marche.</p>
+<p>Dans ce lot rikiki, un pouillième sait que c&#8217;est la bonne pratique.</p>
+<p>En fait, <code>gather()</code> est probablement la fonction la plus importante d&#8217;<code>asyncio</code>, et pourtant elle apparaît à peine dans la doc. C&#8217;est la malédiction d&#8217;<code>asyncio</code>, une lib que tout le monde attendait pour propulser Python dans la league des langages avec frameworks modernes, mais qui commence à peine à devenir utilisable par le commun des mortel en 2018. Et encore.</p>
+<p>Il ne faut jamais utiliser <code>ensure_future()</code> à moins de vouloir attacher un callback à la main dessus, ce qui n&#8217;est probablement jamais ce que vous voulez à cette époque merveilleuse ou existe <code>async/await</code>. <code>ensure_future()</code> est un <code>goto</code>, <code>gather()</code> est un concept de plus haut niveau.</p>
+<p>Mais deux problèmes demeurent&#8230;</p>
+<p>Contrairement au <code>goto</code> banni de Python, <code>ensure_future()</code> est là, et va rester. Donc n&#8217;importe quel connard peut dans un code ailleurs vous niquer profond, et en tâche de fond.</p>
+<p><code>ensure_future()</code> (ou son petit frère <code>EventLoop.create_task()</code>) reste le seul moyen valable pour lancer une tâche, faire quelque chose, lancer une autre tâche, puis enfin faire un <code>gather()</code> sur les deux tâches:</p>
+<pre lang="python">
+async def grrr():
+    task1 = aio.ensure_future(foo())
+    # faire un truc pendant que task1 tourne
+    task2 = aio.ensure_future(bar())
+    # faire un truc pendant que task1 et task2 tournent
+    # On s'assure que tout se rejoint à la fin:
+    await aio.gather(task1, task2)
+</pre>
+<p>Et puis, faire une pyramide de <code>gather()</code> dans tout son code pour s&#8217;assurer que tout va bien de haut en bas, c&#8217;est facile à rater.</p>
+<h2>La nursery : la solution de trio</h2>
+<p>Une nursery agit comme un scope qui pose les limites du cycle de vie des tâches qui lui sont attachées. C&#8217;est un <code>gather()</code>, sous stéroide, et avec une portée visuellement claire:</p>
+<pre lang="python">
+async def grrr():
+    async with trio.open_nursery() as nursery:
+        task1 = nursery.start_soon(foo)
+        # faire un truc pendant que task1 tourne
+        task2 = nursery.start_soon(bar)
+        # faire un truc pendant que task1 et task2 tournent
+</pre>
+<p>Les taches sont garanties, à la sortie du <code>with</code>, de se terminer. Le <code>ensure_future()</code> n&#8217;a pas d&#8217;équivalent en trio, et donc aucun moyen de lancer un truc dans le vent sans explicitement lui passer au moins une nursery à laquelle on souhaite l&#8217;attacher.</p>
+<p>Résultat, on ne peut plus faire de <code>goto</code>, et le flux du program est clair et explicite.</p>
+<p>Notez que, tout comme <code>if</code> et <code>while</code> ne permettaient rien qu&#8217;un utilisateur soigneux de <code>goto</code> ne pouvait faire, la nursery ne permet rien qu&#8217;un utilisateur soigneux de <code>ensure_future()</code> ne peut faire. Mais ça force un ensemble de bonnes pratiques.</p>
+<p>Évidemment, on peut ouvrir une nursery dans un bloc d&#8217;une autre nursery, ce qui permet d&#8217;imbriquer différentes portées, comme on le ferait avec un <code>begin()</code> de transaction de base de données. Or, une exception à l&#8217;intérieur d&#8217;une nursery <a href="http://sametmax.com/gestion-des-erreurs-en-python/">bubble</a> naturellement comme toute exception Python, et stoppe toutes les tâches de la nursery encore en train de tourner. Alors qu&#8217;avec <asyncio>asyncio</asyncio> vous l&#8217;avez dans le cul.</p>
+<p>En définitive, c&#8217;était la pièce manquante. La moitié du boulot avait était faite quand on a introduit un moyen de gérer des tâches asynchrones qui dépendent les unes des autres, en remplaçant les callbacks par un truc de haut niveau : <code>async/await</code>. Il restait la gestion des tâches en parallèle qui se faisait encore selon les goûts et compétences de chacun, mais la nursery va remplir ce vide. </p>
+<p>Cela devrait être intégré à <code>asyncio</code> en Python 3.8, soit une bonne année et demie pour ceux qui ont la chance de pouvoir faire du bleeding edge.</p>
+<p>Comme certains ne voudront pas attendre, je vous ai fait un <a href="https://0bin.net/paste/V5KyhAg-2i5EOyoK#dzBvhdCVeFy8Q2xNcxXyqwtyQFgkxlKI3u5QG0buIcT">POC</a> qui vous montre comment ça pourrait marcher. Mais cette version ne sera jamais utilisée. En effet, elle intercepte <code>ensure_future()</code> (en fait le  <code>create_task()</code> sous-jacent) pour attacher son résultat à la nursery en cours, évitant tout effet <code>goto</code>, et ça péterait trop de code existant. Mon pognon est plutôt sur un gros warning émis par Python quand on fait une gotise.</p>
+<p>Dernier mot: s&#8217;il vous plaît, <strong><a href="https://github.com/python-trio/trio/issues/504">allez voter</a> pour change le nom de nursery</strong>. C&#8217;est beaucoup trop long à taper pour un truc qu&#8217;on va utiliser tout le temps.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/go-to-in-asyncio-considered-harmful/feed/</wfw:commentRss>
+		<slash:comments>26</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">24534</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/06/juY3qQy.jpg" length="120442" type="image/jpg" />	</item>
+	</channel>
+</rss>

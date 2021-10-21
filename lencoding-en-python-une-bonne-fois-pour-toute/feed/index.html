@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: L&#8217;encoding en Python, une bonne fois pour toute</title>
+	<atom:link href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: christophe</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-197288</link>
+		<dc:creator><![CDATA[christophe]]></dc:creator>
+		<pubDate>Sat, 11 Aug 2018 14:34:53 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-197288</guid>
+		<description><![CDATA[Eh bien on peut dire que ça c&#039;est un post aussi long qu&#039;utile !!
+Je me bat depuis deux jours avec un module qui grace à tes lumières m&#039;ont permis de comprendre qu&#039;il ne supporte pas l&#039;unicode (img2pdf)
+Mille merci pour m&#039;avoir éclairé sur ces foutus problèmes de tables, j&#039;ai enfin pu corriger ce qui n&#039;allait pas
+Merci beaucup !]]></description>
+		<content:encoded><![CDATA[<p>Eh bien on peut dire que ça c&#8217;est un post aussi long qu&#8217;utile !!<br />
+Je me bat depuis deux jours avec un module qui grace à tes lumières m&#8217;ont permis de comprendre qu&#8217;il ne supporte pas l&#8217;unicode (img2pdf)<br />
+Mille merci pour m&#8217;avoir éclairé sur ces foutus problèmes de tables, j&#8217;ai enfin pu corriger ce qui n&#8217;allait pas<br />
+Merci beaucup !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-196302</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Tue, 03 Jul 2018 09:48:17 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-196302</guid>
+		<description><![CDATA[&lt;p&gt;Ok, c&#039;est corrigé.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Ok, c&#8217;est corrigé.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: le Fatumbi</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-196301</link>
+		<dc:creator><![CDATA[le Fatumbi]]></dc:creator>
+		<pubDate>Tue, 03 Jul 2018 09:45:37 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-196301</guid>
+		<description><![CDATA[ah bhen super) &lt;em&gt;le&lt;/em&gt; truc à lire avant de tenter d&#039;ouvrir le moindre txt en python 2.7
+
+merci merci :-)
+
+sauf que la video est bloquée pour des raisons de droit d&#039;auteur, mais le reste ça va)
+]]></description>
+		<content:encoded><![CDATA[<p>ah bhen super) <em>le</em> truc à lire avant de tenter d&#8217;ouvrir le moindre txt en python 2.7</p>
+<p>merci merci :-)</p>
+<p>sauf que la video est bloquée pour des raisons de droit d&#8217;auteur, mais le reste ça va)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-195656</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 07 Jun 2018 18:02:07 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-195656</guid>
+		<description><![CDATA[&lt;p&gt;Le comportement de &lt;code&gt;str()&lt;/code&gt; est aberrant parce qu&#039;il ne gère pas du texte, mais des octets bruts representant du texte.&lt;/p&gt;
+
+&lt;p&gt;Quand on a voulu faire le split octets / texte en Python 2, on s&#039;est hurté à un problème: on avait déjà donné le nom &lt;code&gt;str&lt;/code&gt; à quelque chose qui n&#039;était PAS du texte selon la nouvelle API.&lt;/p&gt;
+
+&lt;p&gt;Donc a on fait str / unicode, et str est le nom resté pour représenter ... ce qui n&#039;est pas du texte.&lt;/p&gt;
+
+&lt;p&gt;Du coup tout le monde continue de se gourer en Python 2, voulant manipuler du texte, mais manipulant des bytes sans comprendre la plupart du temps.&lt;/p&gt;
+
+&lt;p&gt;En Python 3, on a corrigé ça, et str() représente / converti bien du texte, tandis que bytes() represente / converti bien des bytes.&lt;/p&gt;
+
+&lt;p&gt;Le comportement de Python est donc logique, et même sain, mais pour des raisons de compatibilité, on ne peut pas avoir une sémantique clair en Python 2. Il est en effet, hors de question de casser python 2.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Le comportement de <code>str()</code> est aberrant parce qu&#8217;il ne gère pas du texte, mais des octets bruts representant du texte.</p>
+<p>Quand on a voulu faire le split octets / texte en Python 2, on s&#8217;est hurté à un problème: on avait déjà donné le nom <code>str</code> à quelque chose qui n&#8217;était PAS du texte selon la nouvelle API.</p>
+<p>Donc a on fait str / unicode, et str est le nom resté pour représenter &#8230; ce qui n&#8217;est pas du texte.</p>
+<p>Du coup tout le monde continue de se gourer en Python 2, voulant manipuler du texte, mais manipulant des bytes sans comprendre la plupart du temps.</p>
+<p>En Python 3, on a corrigé ça, et str() représente / converti bien du texte, tandis que bytes() represente / converti bien des bytes.</p>
+<p>Le comportement de Python est donc logique, et même sain, mais pour des raisons de compatibilité, on ne peut pas avoir une sémantique clair en Python 2. Il est en effet, hors de question de casser python 2.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: pouet</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-195650</link>
+		<dc:creator><![CDATA[pouet]]></dc:creator>
+		<pubDate>Thu, 07 Jun 2018 15:53:40 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-195650</guid>
+		<description><![CDATA[Salut. Je déterre le thread (c&#039;est moche mais tant pis) pour plusieurs raisons.
+
+La première, c&#039;est pour remercier. Ces dernières années j&#039;ai relu cet article un certain et il m&#039;a beaucoup aidé à comprendre comment fonctionne l&#039;encoding en Python, qui soyons clair, est passablement merdique... Donc voilà, merci beaucoup pour ces infos précieuses.
+
+Deuxièmement, pour émettre des réserves sur un principe énoncé ici et que j&#039;ai longtemps essayé d&#039;appliquer sans succès, à savoir préfixer toutes ses chaînes avec u&quot;machin&quot; pour que toutes les chaînes aient le type unicode. De mon expérience, faire ça débouche presque obligatoirement sur de nouveaux plantages d&#039;encoding. Pour deux raisons, mais qui au final reviennent à la même :
+
+1) le type str est différent du type unicode et par conséquent, une fonction qui attend un type str peut avoir un comportement différent si on lui transmet une variable de type unicode voire (et c&#039;est le cas la plupart du temps) planter, souvent pour la raison en 2)
+
+2) la fonction str() de python (en version 2.7 du moins) est de la merde et plantera sur toute variable de type unicode contenant un caractère non-ascii, bien que d&#039;après sa doc officielle &quot;return a string containing a nicely printable representation of an object.&quot;. Peut importe donc que tu te sois fais chier à gentiment décoder ta chaîne avec le bon codec, python s&#039;en branle et essaie de la réencoder en ascii à l&#039;appel de str()...
+
+Or, en revanche, l&#039;appel de str() sur une chaîne encodée (str) contenant des caractères non-ascii ne plante pas. C&#039;est un comportement qu&#039;on peut critiquer, mais on peut aussi le voir autrement en estimant que python délègue simplement la responsabilité d&#039;interpréter les caractères au terminal de sortie, SI terminal de sortie il y a. Et justement, dans de nombreux cas, dans le cadre d&#039;utilisation de la chaîne au sein du programme python, on utilise de nombreuses chaînes &quot;transitoires&quot; qui n&#039;ont pas vocation à être imprimées (par python du moins) : clés de dictionnaire, requêtes SQL, etc. Il n&#039;y a donc strictement aucun intérêt à les décoder.
+
+Pour en revenir au comportement de str(), pour moi c&#039;est une énorme aberration, surtout que par ailleurs, on a le même problème dans l&#039;autre sens : un appel de unicode() sur une chaîne encodée (str donc) contenant des caractères non-ascii va planter. La conséquence misérable, c&#039;est qu&#039;il n&#039;existe aucune fonction universelle en python permettant d&#039;extraire la valeur imprimable d&#039;une variable quel que soit son type, alors que c&#039;est ce que str() devrait faire ! Dès qu&#039;on construit une fonction de type logger() par exemple qui va faire du str() sur toutes les variables qu&#039;on lui envoit (peut importe leur type), on va être obligé de vérifier leur type avant JUSTE pour gérer le cas des chaînes décodées, ce qui soyons clair, est complètement débile....
+
+Je suis ouvert bien sûr aux remarques et critiques  (si vous avez eu le courage de lire mon pavé :P)
+]]></description>
+		<content:encoded><![CDATA[<p>Salut. Je déterre le thread (c&#8217;est moche mais tant pis) pour plusieurs raisons.</p>
+<p>La première, c&#8217;est pour remercier. Ces dernières années j&#8217;ai relu cet article un certain et il m&#8217;a beaucoup aidé à comprendre comment fonctionne l&#8217;encoding en Python, qui soyons clair, est passablement merdique&#8230; Donc voilà, merci beaucoup pour ces infos précieuses.</p>
+<p>Deuxièmement, pour émettre des réserves sur un principe énoncé ici et que j&#8217;ai longtemps essayé d&#8217;appliquer sans succès, à savoir préfixer toutes ses chaînes avec u&#8221;machin&#8221; pour que toutes les chaînes aient le type unicode. De mon expérience, faire ça débouche presque obligatoirement sur de nouveaux plantages d&#8217;encoding. Pour deux raisons, mais qui au final reviennent à la même :</p>
+<p>1) le type str est différent du type unicode et par conséquent, une fonction qui attend un type str peut avoir un comportement différent si on lui transmet une variable de type unicode voire (et c&#8217;est le cas la plupart du temps) planter, souvent pour la raison en 2)</p>
+<p>2) la fonction str() de python (en version 2.7 du moins) est de la merde et plantera sur toute variable de type unicode contenant un caractère non-ascii, bien que d&#8217;après sa doc officielle &#8220;return a string containing a nicely printable representation of an object.&#8221;. Peut importe donc que tu te sois fais chier à gentiment décoder ta chaîne avec le bon codec, python s&#8217;en branle et essaie de la réencoder en ascii à l&#8217;appel de str()&#8230;</p>
+<p>Or, en revanche, l&#8217;appel de str() sur une chaîne encodée (str) contenant des caractères non-ascii ne plante pas. C&#8217;est un comportement qu&#8217;on peut critiquer, mais on peut aussi le voir autrement en estimant que python délègue simplement la responsabilité d&#8217;interpréter les caractères au terminal de sortie, SI terminal de sortie il y a. Et justement, dans de nombreux cas, dans le cadre d&#8217;utilisation de la chaîne au sein du programme python, on utilise de nombreuses chaînes &#8220;transitoires&#8221; qui n&#8217;ont pas vocation à être imprimées (par python du moins) : clés de dictionnaire, requêtes SQL, etc. Il n&#8217;y a donc strictement aucun intérêt à les décoder.</p>
+<p>Pour en revenir au comportement de str(), pour moi c&#8217;est une énorme aberration, surtout que par ailleurs, on a le même problème dans l&#8217;autre sens : un appel de unicode() sur une chaîne encodée (str donc) contenant des caractères non-ascii va planter. La conséquence misérable, c&#8217;est qu&#8217;il n&#8217;existe aucune fonction universelle en python permettant d&#8217;extraire la valeur imprimable d&#8217;une variable quel que soit son type, alors que c&#8217;est ce que str() devrait faire ! Dès qu&#8217;on construit une fonction de type logger() par exemple qui va faire du str() sur toutes les variables qu&#8217;on lui envoit (peut importe leur type), on va être obligé de vérifier leur type avant JUSTE pour gérer le cas des chaînes décodées, ce qui soyons clair, est complètement débile&#8230;.</p>
+<p>Je suis ouvert bien sûr aux remarques et critiques  (si vous avez eu le courage de lire mon pavé :P)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-187982</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 29 Jun 2017 12:57:20 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-187982</guid>
+		<description><![CDATA[&lt;blockquote&gt;
+  &lt;p&gt;C’est une spécificité de Python : si l’encoding du fichier est différent de l’encoding par défaut du langage, il faut le déclarer sinon le programme plantera à la première conversion.&lt;/p&gt;
+&lt;/blockquote&gt;
+]]></description>
+		<content:encoded><![CDATA[<blockquote>
+<p>C’est une spécificité de Python : si l’encoding du fichier est différent de l’encoding par défaut du langage, il faut le déclarer sinon le programme plantera à la première conversion.</p>
+</blockquote>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: vchalmel</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-187980</link>
+		<dc:creator><![CDATA[vchalmel]]></dc:creator>
+		<pubDate>Thu, 29 Jun 2017 08:49:27 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-187980</guid>
+		<description><![CDATA[&lt;p&gt;&lt;span class=&quot;relis&quot;&gt;&lt;/span&gt;Bonjour, et merci pour cet article de référence !&lt;/p&gt;
+
+&lt;p&gt;J&#039;ai un comportement curieux d&#039;un ETL incluant des scripts python&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;&lt;/p&gt;
+
+&lt;h1&gt;-&lt;em&gt;- coding: utf-8 -&lt;/em&gt;-&lt;/h1&gt;
+
+&lt;p&gt;print(type(unicode(&quot;Début Logging&quot;)))&lt;/p&gt;
+
+&lt;p&gt;print(type(u&quot;Début logging&quot;))&lt;/p&gt;
+
+&lt;p&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;renvoient une erreur &#039;utf8&#039; codec can&#039;t decode byte 0xe9&lt;/p&gt;
+
+&lt;p&gt;Et effectivement si je fais un print d&#039;un chardet.detect de la chaîne de caractère (non unicode) dans ce logiciel il retourne &#039;windows-1252&#039; (ou Latin-2 selon les accents que j&#039;utilise, comme tu le dis bien la détection n&#039;est pas une science exacte), du coup j&#039;ai l&#039;impression que python en lisant u&quot;Debut Logging&quot; tente de faire un &quot;Début Logging&quot;.decode(&#039;utf-8&#039;) alors que la chaine d&#039;entrée est resté dans un autre encodage.&lt;/p&gt;
+
+&lt;p&gt;Est-il possible que ma déclaration # coding : utf8 induise en erreur l&#039;interpréteur python ? J&#039;avais l&#039;impression que ce n&#039;était qu&#039;une consigne pour les éditeurs de texte...&lt;/p&gt;
+
+&lt;p&gt;Confirmez vous ? Une solution ?&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p><span class="relis"></span>Bonjour, et merci pour cet article de référence !</p>
+<p>J&#8217;ai un comportement curieux d&#8217;un ETL incluant des scripts python</p>
+<p><code></code></p>
+<h1>-<em>- coding: utf-8 -</em>-</h1>
+<p>print(type(unicode("Début Logging")))</p>
+<p>print(type(u"Début logging"))</p>
+</p>
+<p>renvoient une erreur &#8216;utf8&#8217; codec can&#8217;t decode byte 0xe9</p>
+<p>Et effectivement si je fais un print d&#8217;un chardet.detect de la chaîne de caractère (non unicode) dans ce logiciel il retourne &#8216;windows-1252&#8217; (ou Latin-2 selon les accents que j&#8217;utilise, comme tu le dis bien la détection n&#8217;est pas une science exacte), du coup j&#8217;ai l&#8217;impression que python en lisant u&#8221;Debut Logging&#8221; tente de faire un &#8220;Début Logging&#8221;.decode(&#8216;utf-8&#8217;) alors que la chaine d&#8217;entrée est resté dans un autre encodage.</p>
+<p>Est-il possible que ma déclaration # coding : utf8 induise en erreur l&#8217;interpréteur python ? J&#8217;avais l&#8217;impression que ce n&#8217;était qu&#8217;une consigne pour les éditeurs de texte&#8230;</p>
+<p>Confirmez vous ? Une solution ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-186358</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sun, 19 Mar 2017 15:58:11 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-186358</guid>
+		<description><![CDATA[&lt;p&gt;C&#039;est exactement ça: csv en 2.7 ne gère pas l&#039;unicode. Il existe un backport du module csv de python 3 pour y pallier : https://pypi.python.org/pypi/unicodecsv/0.14.1&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>C&#8217;est exactement ça: csv en 2.7 ne gère pas l&#8217;unicode. Il existe un backport du module csv de python 3 pour y pallier : <a href="https://pypi.python.org/pypi/unicodecsv/0.14.1" rel="nofollow">https://pypi.python.org/pypi/unicodecsv/0.14.1</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: AlainFELER</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-186357</link>
+		<dc:creator><![CDATA[AlainFELER]]></dc:creator>
+		<pubDate>Sun, 19 Mar 2017 15:10:06 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-186357</guid>
+		<description><![CDATA[... je ne comprend pas comment (en Python 2.7) combiner vos infos et l&#039;usage du module csv natif de Python.
+
+Je veux modifier des csv en Windows-1252 ou UTF-8 (je reçois l&#039;info en paramètre).
+
+Par ex. j&#039;ai en entrée des colonnes du genre &quot;Prénom Nom&quot; et des valeurs du genre &#039;Rémi Dufrêne&#039; et je veux en sortie &#039;PRENOM&#039;,&#039;NOM&#039; et &#039;Rémi&#039;,&#039;Dufrêne&#039;
+
+La doc Python https://docs.python.org/2/library/csv.html dit que le module csv ne gère pas l&#039;unicode et explique des trucs en 13.1.5 que je ne comprends pas.
+]]></description>
+		<content:encoded><![CDATA[<p>&#8230; je ne comprend pas comment (en Python 2.7) combiner vos infos et l&#8217;usage du module csv natif de Python.</p>
+<p>Je veux modifier des csv en Windows-1252 ou UTF-8 (je reçois l&#8217;info en paramètre).</p>
+<p>Par ex. j&#8217;ai en entrée des colonnes du genre &#8220;Prénom Nom&#8221; et des valeurs du genre &#8216;Rémi Dufrêne&#8217; et je veux en sortie &#8216;PRENOM&#8217;,&#8217;NOM&#8217; et &#8216;Rémi&#8217;,&#8217;Dufrêne&#8217;</p>
+<p>La doc Python <a href="https://docs.python.org/2/library/csv.html" rel="nofollow">https://docs.python.org/2/library/csv.html</a> dit que le module csv ne gère pas l&#8217;unicode et explique des trucs en 13.1.5 que je ne comprends pas.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: AlainFELER</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-186356</link>
+		<dc:creator><![CDATA[AlainFELER]]></dc:creator>
+		<pubDate>Sun, 19 Mar 2017 14:49:27 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-186356</guid>
+		<description><![CDATA[Depuis le temps que je reviens à cet article... faute d&#039;orthographe dans le titre : une fois pour toute --&#062; une fois pour touteS !
+
+En tout cas merci(s).
+]]></description>
+		<content:encoded><![CDATA[<p>Depuis le temps que je reviens à cet article&#8230; faute d&#8217;orthographe dans le titre : une fois pour toute &#8211;&gt; une fois pour touteS !</p>
+<p>En tout cas merci(s).</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

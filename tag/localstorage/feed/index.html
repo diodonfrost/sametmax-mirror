@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>localStorage &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/localstorage/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Stockez vos données dans le navigateur de l&#8217;utilisateur avec localStorage (HTML 5). </title>
+		<link>http://sametmax.com/stockez-vos-donnees-dans-le-navigateur-de-lutilisateur-avec-localstorage-html-5/</link>
+		<comments>http://sametmax.com/stockez-vos-donnees-dans-le-navigateur-de-lutilisateur-avec-localstorage-html-5/#comments</comments>
+		<pubDate>Sat, 28 Apr 2012 22:12:19 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[données]]></category>
+		<category><![CDATA[html 5]]></category>
+		<category><![CDATA[localStorage]]></category>
+		<category><![CDATA[stocker]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=458</guid>
+		<description><![CDATA[Vous avez des données qui se retrouvent souvent côté client ? des choses à stocker, des trucs à mettre en cache ?
+Pourquoi ne pas utiliser l'espace de stockage (localStorage) du navigateur de votre utlisateur ?]]></description>
+				<content:encoded><![CDATA[<p>Pour un projet récent que nous avons fait, nous nous sommes interressé à cette mignone petite fonctionnalité du HTML 5: le localStorage (<a href="http://dev.w3.org/html5/webstorage/#the-localstorage-attribute">voir les spécifications HTML 5</a>) .<br />
+Son utilisation est plus que simple et ça peut rendre de grands services.</p>
+<p>Voici les principes de bases pour vérifier si le navigateur supporte cette fonctionnalité, stocker une valeur, lire une valeur, effacer une valeur et bien sur tout casser.</p>
+<p>Liste des navigateurs qui supporte le localStorage:<br />
+IE(8+)	Firefox(3.5+)	Safari(4.0+)	Chrome(4.0+)	Opera(10.5+)	IPhone(2.0+)	Android(2.0+)</p>
+<p><strong>Tester si le navigateur support localStorage:<br />
+</strong></p>
+<pre lang="javascript">
+function support_localstorage()  
+{  
+    if (localStorage)  
+        return "Local Storage: Supported";  
+    else  
+        return "Local Storage: Unsupported";  
+}  
+</pre>
+<p><strong>Sauver des données:<br />
+</strong></p>
+<pre lang="javascript">
+localStorage.setItem("key1", "Sam et Max ça déchire");
+ou  
+localStorage["key1"] = "Sam et Max ça déchire";
+</pre>
+<p><strong>Lire des données:<br />
+</strong></p>
+<pre lang="javascript">
+var mydata = localStorage.getItem("key1");  
+var mydata = localStorage["key1"];
+</pre>
+<p><strong>Lister toutes les données:<br />
+</strong></p>
+<pre lang="javascript">
+for (i=0; i<=localStorage.length-1; i++){
+    key = localStorage.key(i) 
+    mydatas = localStorage.getItem(key);
+}
+</pre>
+<p><strong>Effacer des données:<br />
+</strong></p>
+<pre lang="javascript">
+void localStorage.removeItem("key1");
+</pre>
+<p><strong>Tout effacer:<br />
+</strong></p>
+<pre lang="javascript">
+localStorage.clear();
+</pre>
+<p>Comme vous avez pu le constater c'est très simple d'utilisation (ça me fait penser un peu à REDIS) et ça peut rendre pas mal de services.<br />
+Attention quand même à ne pas saturer l'espace qui vous est réservé (environ 5MB) pour celà pensez à effacer les données qui ne vous servent plus.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/stockez-vos-donnees-dans-le-navigateur-de-lutilisateur-avec-localstorage-html-5/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">458</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/04/datas.jpg" length="63614" type="image/jpg" />	</item>
+	</channel>
+</rss>

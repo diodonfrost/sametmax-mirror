@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>log &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/log/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Do you rotate ?</title>
+		<link>http://sametmax.com/do-you-rotate/</link>
+		<comments>http://sametmax.com/do-you-rotate/#comments</comments>
+		<pubDate>Mon, 05 Mar 2018 03:29:27 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[log]]></category>
+		<category><![CDATA[rotation]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=24161</guid>
+		<description><![CDATA[L'explosion de la taille des logs a tué plus d'un serveur. Il est amusant de se dire que c'est du texte qui peut mettre à genoux un serveur de streaming vidéo avec 32 coeurs, 2To de SSD et 64 Go de RAM. Mais un bon access log non contrôlé sous nginx ou même <a href="https://forum.smartcash.cc/t/smartnode-new-start-required-and-other-issues/3105">le log de debug</a> du wallet de la coin smartcash, ça peut prendre par surprise.]]></description>
+				<content:encoded><![CDATA[<p>L&#8217;explosion de la taille des logs a tué plus d&#8217;un serveur. Il est amusant de se dire que c&#8217;est du texte qui peut mettre à genoux un serveur de streaming vidéo avec 32 coeurs, 2To de SSD et 64 Go de RAM. Mais un bon access log non contrôlé sous nginx ou même <a href="https://forum.smartcash.cc/t/smartnode-new-start-required-and-other-issues/3105">le log de debug</a> du wallet de la coin smartcash, ça peut prendre par surprise.</p>
+<p>Le module <a href="http://sametmax.com/ecrire-des-logs-en-python/">logging</a> de Python a d&#8217;excellentes options pour gérer la taille des logs, notamment le <code>RotatingFileHandler</code>.</p>
+<p>Sous Linux, c&#8217;est logrotate qui fait le boulot pour le système. C&#8217;est performant, ça marche super bien, c&#8217;est hyper simple à utiliser, et c&#8217;est dispo partout.</p>
+<p>Bref, en prod, un petit vi sur <code>/etc/logrotate.d/ton_projet</code> et pouf, on peut demander une rotation en 10 lignes:</p>
+<pre>/var/www/ton_projet/*.log
+{
+    size 100K
+    daily
+    rotate 5
+    missingok
+    notifempty
+}</pre>
+<p>Y a rien à activer, un cron lance déjà logrotate tous les jours.</p>
+<p>Par contre, si votre process utilise systemd pour démarrer, inutile de logger manuellement. Tout ce qui est sur la sortie standard est automatiquement loggué avec rotation et accessible avec un petit <code>journalctl -u ton_process.service --since today</code>.</p>
+<p>Bref, attendez encore un peu avant de rajouter logstash à votre stack.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/do-you-rotate/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">24161</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/03/GIFMaker.org_ONuVbD.gif" length="348096" type="image/jpg" />	</item>
+		<item>
+		<title>Décorateur de trace</title>
+		<link>http://sametmax.com/decorateur-de-trace/</link>
+		<comments>http://sametmax.com/decorateur-de-trace/#comments</comments>
+		<pubDate>Mon, 15 Apr 2013 17:33:32 +0000</pubDate>
+		<dc:creator><![CDATA[xonop]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[decorateur]]></category>
+		<category><![CDATA[inspect]]></category>
+		<category><![CDATA[introspection]]></category>
+		<category><![CDATA[log]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5670</guid>
+		<description><![CDATA[Suite aux superbes articles sur les <a href="http://comprendre-les-decorateurs-python-pas-a-pas-partie-1">décorateurs</a> et sur l'écriture des <a href="http://ecrire-des-logs-en-python/">logs en python</a> j'ai voulu mettre en pratique dans mon projet.
+C'est là que les ennuis ont commencé !]]></description>
+				<content:encoded><![CDATA[<p><em>(Ceci est un post invité de <a href="http://sametmax.com/author/xonop/">xonop</a> sous licence creative common 3.0 unported.)</em></p>
+<p>Suite aux superbes articles sur les <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1">décorateurs</a> et sur l&#8217;écriture des <a href="http://sametmax.com/ecrire-des-logs-en-python/">logs en python</a> j&#8217;ai voulu mettre en pratique dans mon projet.<br />
+C&#8217;est là que les ennuis ont commencé !<br />
+<span id="more-5670"></span></p>
+<p><strong>Objectif :</strong></p>
+<p>Créer un décorateur qui me permette de tracer le passage dans certaines méthodes.<br />
+Celui-ci doit :</p>
+<ul>
+<li>Être débrayable facilement.</li>
+<li>Récupérer automatiquement le nom de la méthode, sa classe et son module.</li>
+</ul>
+<p><strong>Première étape : le logger</strong></p>
+<p>Avant toute chose mettons en place l&#8217;environnement pour pouvoir tracer en utilisant le module logging.<br />
+Pour simplifier les exemples, nous associons un seul <em>handler</em> de type <em>terminal</em>.<br />
+La fonction <code>log_debug</code> permet de faire appel au logger pour tracer une information.</p>
+<p><code>logger.py</code> :</p>
+<pre lang="python">
+import functools
+import logging
+
+__DECO_ACTIVATED = True
+__logger = None
+
+def init_logger():
+    global __logger
+    __logger = logging.getLogger()
+    __logger.setLevel(logging.DEBUG)
+    terminalHandler = logging.StreamHandler()
+    terminalHandler.setLevel(logging.DEBUG)
+    __logger.addHandler(terminalHandler)
+
+def log_debug(text):
+    __logger.debug(text)
+</pre>
+<p><strong>Deuxième étape : le décorateur, version basique</strong></p>
+<p>Pour commencer, le décorateur débrayable :</p>
+<p><code>logger.py</code> :</p>
+<pre lang="python">def log_decorator(func):
+    if not __DECO_ACTIVATED:
+        return func
+
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        __logger.debug("BEGIN")
+        data = func(*args, **kwargs)
+        __logger.debug("END")
+        return data
+    return wrapped
+</pre>
+<p><strong>Remarques :</strong></p>
+<ul>
+<li>La fonction est décorée selon la valeur de la variable <code>__DECO_ACTIVATED</code>.</li>
+<li>La fonction <a href="http://docs.python.org/3/library/functools.html#functools.wraps">wraps</a> du module <a href="http://docs.python.org/3/library/functools.html">functools</a> reporte les attributs de la fonction originale sur la version <em>wrappée</em> (dont les docstrings).</li>
+</ul>
+<p>Et maintenant un module pour tester ça :</p>
+<p><code>main.py</code> :</p>
+<pre lang="python">
+import logger
+
+class Generic():
+    @logger.log_decorator
+    def do_it(self, arg1):
+        logger.log_debug(arg1)
+
+if __name__ == "__main__":
+    logger.init_logger()
+    generic = Generic()
+    generic.do_it("NOW")
+</pre>
+<p>Et voilà le résultat :</p>
+<pre lang="python">
+BEGIN
+NOW
+END
+</pre>
+<p><strong>Troisième étape : les noms de module et de fonction</strong></p>
+<p>Ces informations se récupèrent facilement, voici la nouvelle version du décorateur :</p>
+<p><code>logger.py</code> :</p>
+<pre lang="python" highlight="4,5,9">
+def log_decorator(func):
+    if not __DECO_ACTIVATED:
+        return func
+    module_name = func.__module__
+    func_name = func.__name__
+
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        msg = "Module={} Function={}".format(module_name, func_name)
+        __logger.debug("BEGIN " + msg)
+        data = func(*args, **kwargs)
+        __logger.debug("END " + msg)
+        return data
+    return wrapped
+</pre>
+<p>Et maintenant le résultat :</p>
+<pre lang="python">
+BEGIN Module=__main__ Function=do_it
+NOW
+END Module=__main__ Function=do_it
+</pre>
+<p>Jusqu&#8217;ici tout va bien.</p>
+<p><strong>Quatrième étape : le nom de la classe</strong></p>
+<p>Et c&#8217;est maintenant que les choses se corsent !<br />
+Tout d&#8217;abord, l&#8217;objet <code>func</code> que nous manipulons est une fonction et non une méthode de classe :</p>
+<pre lang="python">
+print(func)
+<function Generic.do_it at 0x00C70348>
+</pre>
+<p>En effet lors de l&#8217;exécution du décorateur, la classe en tant qu&#8217;objet n&#8217;existe pas encore.<br />
+Il n&#8217;y a pas de lien direct entre la fonction et sa future classe.</p>
+<p>Bon nombre de développeurs bien intentionnés nous conseillent d&#8217;utiliser <code>self</code> pour déterminer sa classe.</p>
+<p><strong>Oui mais</strong> :</p>
+<ul>
+<li>Si la fonction n&#8217;est pas une méthode, pas de <code>self</code> !</li>
+<li>La classe n&#8217;est pas obligatoirement celle de la méthode. Il peut s&#8217;agir d&#8217;une classe héritée.</li>
+</ul>
+<p>Pour s&#8217;en convaincre, voici le nouveau décorateur :</p>
+<p><code>logger.py</code> :</p>
+<pre lang="python" highlight="9-14">
+def log_decorator(func):
+    if not __DECO_ACTIVATED:
+        return func
+    module_name = func.__module__
+    func_name = func.__name__
+
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        try:
+            class_name = args[0].__class__.__name__
+        except IndexError:
+            class_name = ""
+        msg = "Module={} Class={} Function={}".format(
+            module_name, class_name, func_name)
+        __logger.debug("BEGIN " + msg)
+        data = func(*args, **kwargs)
+        __logger.debug("END " + msg)
+        return data
+    return wrapped
+</pre>
+<p>Et maintenant le module de tests :</p>
+<p><code>main.py</code> :</p>
+<pre lang="python" highlight="8-11,15,16">
+import logger
+
+class Generic():
+    @logger.log_decorator
+    def do_it(self, arg1):
+        logger.log_debug(arg1)
+
+class Specific(Generic):
+    @logger.log_decorator
+    def do_it(self, arg1):
+        super().do_it(arg1)
+
+if __name__ == "__main__":
+    logger.init_logger()
+    specific = Specific()
+    specific.do_it("NOW")
+</pre>
+<p>Et le résultat tant attendu :</p>
+<pre lang="python">
+BEGIN Module=__main__ Class=Specific Function=do_it
+BEGIN Module=__main__ Class=Specific Function=do_it
+NOW
+END Module=__main__ Class=Specific Function=do_it
+END Module=__main__ Class=Specific Function=do_it
+</pre>
+<p>Et là c&#8217;est le drâme, on a perdu la classe <code>Generic</code> ! Mais analysons plutôt l&#8217;exécution :</p>
+<ul>
+<li>Appel de la méthode <code>Specific.do_it()</code> vu que l&#8217;objet <code>generic</code> est une instance de cette classe.</li>
+<li>Appel de la méthode <code>Generic.do_it()</code> par le biais de l&#8217;instruction <code>super().do_it()</code></li>
+</ul>
+<p>Comme prévu, la classe de l&#8217;objet <code>self</code> ne change pas que l&#8217;on soit dans une méthode de la classe ou de l&#8217;une de ses super-classes.</p>
+<p><strong>Quatrième étape : autre approche</strong></p>
+<p>Ne pouvant déterminer directement la classe d&#8217;appartenance de la fonction, essayons de la chercher dans le module.<br />
+Pour commencer il nous faut l&#8217;objet <code>module</code> alors que nous ne connaissons que son nom.<br />
+Le module <a href="http://docs.python.org/3/library/inspect.html">inspect</a> propose justement ce service grâce à <a href="http://docs.python.org/3/library/inspect.html#inspect.getmodule">getmodule</a>.<br />
+Voici le décorateur modifié :</p>
+<p><code>logger.py</code> :</p>
+<pre lang="python" highlight="7-17">
+import inspect
+
+def log_decorator(func):
+    if not __DECO_ACTIVATED:
+        return func
+    module_name = func.__module__
+    module_obj = inspect.getmodule(func)
+    class_name = "UNKNOWN"
+    for key, obj in module_obj.__dict__.items():
+        try:
+            members = obj.__dict__
+            method = members[func.__name__]
+            if method == func:
+                class_name = key
+                break
+        except (KeyError, AttributeError):
+            pass
+    func_name = func.__name__
+
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        msg = "Module={} Class={} Function={}".format(
+            module_name, class_name, func_name)
+        __logger.debug("BEGIN " + msg)
+        data = func(*args, **kwargs)
+        __logger.debug("END " + msg)
+        return data
+
+    return wrapped
+</pre>
+<p>Pour rechercher la fonction, le décorateur doit :</p>
+<ul>
+<li>Lister les objets du module.</li>
+<li>Rechercher pour chaque objet le nom de la fonction dans les attributs de celui-ci. Si l&#8217;attribut correspond à notre fonction, c&#8217;est gagné !</li>
+</ul>
+<p>Nous obtenons alors :</p>
+<pre lang="python">
+BEGIN Module=__main__ Class=UNKNOWN Function=do_it
+BEGIN Module=__main__ Class=UNKNOWN Function=do_it
+NOW
+END Module=__main__ Class=UNKNOWN Function=do_it
+END Module=__main__ Class=UNKNOWN Function=do_it
+</pre>
+<p>Pas glop ça marche pas !<br />
+Regardons le contenu du module avant la recherche :</p>
+<pre lang="python">
+print(module_obj.__dict__.keys())
+dict_keys(['__builtins__', '__name__', '__file__', '__doc__', '__loader__',
+           '__cached__', 'logger', '__package__'])
+</pre>
+<p>Curieusement les classes n&#8217;apparaissent pas, mais c&#8217;est tout à fait normal.<br />
+Comme vu précédemment, lors de l&#8217;exécution du décorateur la classe est en instance de création.<br />
+Il faut donc faire cette recherche lors de l&#8217;exécution de la fonction <em>wrappée</em>.</p>
+<p>Le décorateur devient donc :</p>
+<p><code>logger.py</code> :</p>
+<pre lang="python" highlight="10-21">
+def log_decorator(func):
+    if not __DECO_ACTIVATED:
+        return func
+    module_name = func.__module__
+    module_obj = inspect.getmodule(func)
+    func_name = func.__name__
+
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        class_name = "UNKNOWN"
+        for key, obj in module_obj.__dict__.items():
+            try:
+                members = obj.__dict__
+                method = members[func.__name__]
+                if method == func:
+                    class_name = key
+                    break
+            except (KeyError, AttributeError):
+                pass
+        msg = "Module={} Class={} Function={}".format(
+            module_name, class_name, func_name)
+        __logger.debug("BEGIN " + msg)
+        data = func(*args, **kwargs)
+        __logger.debug("END " + msg)
+        return data
+
+    return wrapped
+</pre>
+<p>Et le résultat :</p>
+<pre lang="python">
+BEGIN Module=__main__ Class=UNKNOWN Function=do_it
+BEGIN Module=__main__ Class=UNKNOWN Function=do_it
+NOW
+END Module=__main__ Class=UNKNOWN Function=do_it
+END Module=__main__ Class=UNKNOWN Function=do_it
+</pre>
+<p>Pas glop 2 le retour !<br />
+Faisons appel au débogueur suprême : <code>print</code></p>
+<pre lang="python">
+key    = Generic
+method = <function Generic.do_it at 0x00D07C90>
+func   = <function Specific.do_it at 0x00D07CD8>
+
+key    = Specific
+method = <function Specific.do_it at 0x00D07D20>
+func   = <function Specific.do_it at 0x00D07CD8>
+</pre>
+<p>Effectivement les références ne correspondent pas, et encore une fois, rien de plus normal.<br />
+La fonction d&#8217;origine a été <em>wrappée</em> donc celle présente dans le module n&#8217;est plus celle d&#8217;origine.<br />
+Qu&#8217;à cela ne tienne, recherchons-là !</p>
+<p>Après la déclaration de la fonction <code>wrapped</code>, le décorateur la mémorise dans la variable <code>wrapped_function</code>.<br />
+Elle sera utilisée à l&#8217;exécution de la fonction.</p>
+<p><code>logger.py</code> :</p>
+<pre lang="python" highlight="15,27">
+def log_decorator(func):
+    if not __DECO_ACTIVATED:
+        return func
+    module_name = func.__module__
+    module_obj = inspect.getmodule(func)
+    func_name = func.__name__
+
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        class_name = "UNKNOWN"
+        for key, obj in module_obj.__dict__.items():
+            try:
+                members = obj.__dict__
+                method = members[func.__name__]
+                if method == wrapped_function:
+                    class_name = key
+                    break
+            except (KeyError, AttributeError):
+                pass
+        msg = "Module={} Class={} Function={}".format(
+            module_name, class_name, func_name)
+        __logger.debug("BEGIN " + msg)
+        data = func(*args, **kwargs)
+        __logger.debug("END " + msg)
+        return data
+
+    wrapped_function = wrapped
+    return wrapped
+</pre>
+<p>Et maintenant le résultat :</p>
+<pre lang="python">
+BEGIN Module=__main__ Class=Specific Function=do_it
+BEGIN Module=__main__ Class=Generic Function=do_it
+NOW
+END Module=__main__ Class=Generic Function=do_it
+END Module=__main__ Class=Specific Function=do_it
+</pre>
+<p>Ouf ! Ca marche !</p>
+<p>Au menu du prochain épisode : logger la valeur de certains paramètres passés à la fonction décorée.</p>
+<p><em>Xavier O. avec l&#8217;aide précieuse de Laurent B.</em></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/decorateur-de-trace/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">5670</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/04/4Y6lBye.jpg" length="47403" type="image/jpg" />	</item>
+		<item>
+		<title>Rechercher dans l&#8217;historique de Git</title>
+		<link>http://sametmax.com/rechercher-dans-lhistorique-de-git/</link>
+		<comments>http://sametmax.com/rechercher-dans-lhistorique-de-git/#comments</comments>
+		<pubDate>Wed, 17 Oct 2012 13:47:53 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[log]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=545</guid>
+		<description><![CDATA[Parce qu'avoir un historique ça ne sert à rien si on ne peut pas chercher dedans]]></description>
+				<content:encoded><![CDATA[<p>Si vous voulez trouver tous les commits dont les messages contiennent une chaîne de caractères:</p>
+<pre lang="bash">git log --grep="le truc a chercher"</pre>
+<p>Comme grep, on peut y adjoindre <code>-i</code> pour le rendre insensible à la casse, et <code>-E</code> pour utiliser des regex PCRE.</p>
+<p>Si vous voulez trouver tous les commits dans lequel une chaîne a été retirée ou introduite dans un des fichiers:</p>
+<pre lang="bash">git log -S"le truc a chercher"</pre>
+<p>Et dans ce cas vous voudrez probablement passer aussi <code>-p --color=auto</code> qui va vous permettre d&#8217;avoir un diff coloré et mis en contexte pour savoir ce qui a été modifié.</p>
+<p>On peut limiter sa recherche dans le temps en utilisant <code>--before</code> et <code>--after</code>. Par exemple, pour chercher dans tous les commits créés après le 1er juillet et jusqu&#8217;à il y a 2 semaines:</p>
+<pre lang="bash">git log --before="2 weeks ago" --after="2012-07-01" </pre>
+<p>Ou alors choisir deux commits et chercher entre ces deux commits:</p>
+<pre lang="bash">git log 710f0f..8a5cbc</pre>
+<p>Ce qui va limiter la recherche à la branche en cours. En parlant de branche, on peut voir les commits qui sont sur une branche et pas l&#8217;autre:</p>
+<pre lang="bash">git log master..develop</pre>
+<p>Ici on aura tout ce qui est sur <code>develop</code> qui n&#8217;est pas encore mergé dans <code>master</code>. L&#8217;inverse est bien sur possible.</p>
+<p>Parfois on a besoin de savoir <a href="http://sametmax.com/quel-est-labruti-qui-a-fait-ca/">qui est le connard qui a fait ça</a>, et on peut lister les commits d&#8217;un utilisateur:</p>
+<pre lang="bash">git log --author sam</pre>
+<p>Ou</p>
+<pre lang="bash">git log --author lesametlemax@notremail.com</pre>
+<p>En fait ça marche même avec une partie du nom.</p>
+<p>Les critères ci-dessus peuvent être utilisés en même temps, et les résultats obtenus seront ceux correspondant à au moins un des critères (OU). Mais si vous voulez les commits qui correspondent à tous ces critères (ET), utilisez <code>--all-match</code>.</p>
+<p>Tout ça cherche dans l&#8217;historique entier, mais si vous êtes plutôt intéressé par certains fichiers en particulier, vous pouvez préciser des paths après <code>--</code>.</p>
+<pre lang="bash">git log --author max --before="1 day ago" -- project/settings.py project/settings_local.py</pre>
+<p>Et oui, ça marche récursivement sur les dossiers.</p>
+<p>La plupart du temps les commits juste après les merges ne vous intéresse pas. On peut les ignorer avec <code>–-no-merges</code>.</p>
+<p>Enfin si vous avez merdé et que vous pensez avoir perdu quelque chose dans Git, vous pouvez chercher dans le reflog avec <code>--walk-reflogs</code>. Cela vous donnera accès à tous les commits qui ne sont pas sur des branches ou plus accessibles facilement pour une raison ou une autre.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/rechercher-dans-lhistorique-de-git/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">545</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/10/history-art-histoire.jpg" length="83703" type="image/jpg" />	</item>
+		<item>
+		<title>Se loguer automatiquement sur Facebook avec Selenium, automation de tâches.</title>
+		<link>http://sametmax.com/se-loguer-automatiquement-sur-facebook-avec-selenium-automation-de-taches/</link>
+		<comments>http://sametmax.com/se-loguer-automatiquement-sur-facebook-avec-selenium-automation-de-taches/#comments</comments>
+		<pubDate>Fri, 04 May 2012 14:59:28 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[facebook]]></category>
+		<category><![CDATA[ide]]></category>
+		<category><![CDATA[log]]></category>
+		<category><![CDATA[logguer]]></category>
+		<category><![CDATA[selenium]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=527</guid>
+		<description><![CDATA[Vous aimez Facebook n'est-ce pas ? Vous aimeriez automatiser certaines tâches, comme se loguer, acceptez les demandes d'ajouts d'amis automatiquement, etc...
+Et bien c'est possible avec Selenium et c'est ce que l'on va voir.]]></description>
+				<content:encoded><![CDATA[<p>Facebook, la conciergerie du monde où vous pouvez savoir à tous moments ce que font vos (pseudos) amis. C&#8217;est bien joli mais vous avez peut être plusieurs profils (le pro, le public, le fashion, le privé, le déjanté, le mytho) et vous aimeriez vous y logguer automatiquement et exécuter certaines tâches&#8230; Alors voici comment faire.<br />
+Avant d&#8217;aller plus loin sachez qu&#8217;il vous faudra des connaissances en javascript, <a href="http://www.w3schools.com/xpath/default.asp">Xpath</a> et savoir installer une extension XPI pour Firefox.</p>
+<p>Tout d&#8217;abord il faut posséder <a href="http://www.mozilla.org/fr/firefox/new/">Firefox</a>. Ensuite téléchargez l&#8217;extension <a href="http://seleniumhq.org/download/">Selenium IDE</a> (attention de bien choisir la version IDE, l&#8217;autre version étant réservée à un usage orienté serveur).</p>
+<p>Une fois tout ça installé ouvrez votre Selenium en allant dans Outils > Selenium IDE. Une boite va apparaitre vous laissant entrer des commandes. En fait Selenium est un automatiseur de tâche, il va simuler vos actions sur le navigateur. L&#8217;astuce va donc consister à simuler l&#8217;identification de votre profil sur Facebook et de valider.</p>
+<p>J&#8217;ai fais une copie d&#8217;écran pour vous donnez un aperçu de à quoi devra ressembler votre script.</p>
+<p> <a href="http://sametmax.com/wp-content/uploads/2012/05/facebook_login1.png" class="grouped_elements" rel="tc-fancybox-group527"><img src="http://sametmax.com/wp-content/uploads/2012/05/facebook_login1.png" alt="" title="facebook_login" width="550" class="alignnone wp-image-536" /></a></p>
+<p>Voyons ces lignes de plus près:</p>
+<pre lang="bash">
+
+# open ouvre une url
+open | http://www.facebook.com 
+
+# waitForVisible va attrendre que l'élément soit afficher avant de continuer
+# ici on attend que le bouton Connexion soit affiché avant de remplir le formulaire (on utilise Xpath)
+waitForVisible | //input[@value='Connexion']
+
+# type simule l'entrée au clavier dans un champs (input, textarea, etc)
+# ici on sélectionne l'élément qui a l'ID pass (le champs mot de passe) et on lui entre la valeur mon_mot_de_passe_facebook
+type | id=pass | mon_mot_de_passe_facebook
+
+# type simule l'entrée au clavier dans un champs (input, textarea, etc)
+# ici on sélectionne l'élément qui a l'ID email (le champs email) et on lui entre la valeur mon_email_facebook
+type | id=email | mon_email_facebook
+
+# submit simule la soumission d'un formulaire
+# ici on sélectionne l'élément qui a l'ID login_form (le formulaire dans lequel on rentre ses identifiants Facebook) et on soumet le tout.
+submit | id=login_form
+
+# waitForVisible va attrendre que l'élément soit afficher avant de continuer
+# ici on attend l'élément qui a l'ID navHome (le bouton accueil) soit affiché, preuve qu'on est bien logué.
+waitForVisible | //li[@id='navHome']/a
+
+</pre>
+<p>Vous pouvez télécharger le cas de test ici et l&#8217;importer dans votre Selenium: <a href="http://sametmax.com/wp-content/uploads/2012/05/selenium_log_to_facebook.html">Se loguer sur Facebook avec Selenium</a></p>
+<p>Je n&#8217;irais pas plus loin mais sachez que vous pouvez tout faire ou presque avec Selenium en terme d&#8217;automation. Pour la connexion à plusieurs comptes facebook vous faites une boucle qui va se connecter aux différents comptes (n&#8217;oubliez pas de vous déconnecter) et faire les tâches que vous aurez définis. vous pouvez cliquez sur des likes, ajouter un status, etc. Je vous laisse chercher mais tout est là dans ces quelques lignes, faites marcher vos méninges ;)</p>
+<p>Liens utiles:</p>
+<p>Attention: Pour faire des boucles vous aurez besoin d&#8217;ajouter cette extension à Selenium: <a href="https://github.com/darrenderidder/sideflow">https://github.com/darrenderidder/sideflow</a></p>
+<p><a href="http://seleniumhq.org/docs/">La doc Selenium</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/se-loguer-automatiquement-sur-facebook-avec-selenium-automation-de-taches/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">527</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/05/facebook-log-in-with-name.jpg" length="23830" type="image/jpg" />	</item>
+		<item>
+		<title>Log des requêtes SQL faites par l&#8217;ORM Django en temps réel</title>
+		<link>http://sametmax.com/log-des-requetes-sql-faites-par-lorm-django-en-temps-reel/</link>
+		<pubDate>Fri, 16 Mar 2012 17:30:01 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[log]]></category>
+		<category><![CDATA[orm]]></category>
+		<category><![CDATA[sql]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=262</guid>
+		<description><![CDATA[Il existe une solution plus simple que  la <code>django-debug-toolbar</code> ou <code>connection.queries</code> pour suivre les requêtes SQL de l'ORM Django.]]></description>
+				<content:encoded><![CDATA[<p>Même en recherchant sur les sites spécialisés en anglais, je tombe toujours sur des solutions basées sur la <a href="https://github.com/django-debug-toolbar/django-debug-toolbar">django-debug-toolbar</a>, l&#8217;affichage de <a href="https://docs.djangoproject.com/en/dev/faq/models/#how-can-i-see-the-raw-sql-queries-django-is-running">connection.queries</a> ou l&#8217;usage de <a href="https://github.com/dcramer/django-devserver">devserver</a>. Ça a son utilité (surtout la fabuleuse <code>django-debug-toolbar</code>), mais c&#8217;est compliqué, long à mettre en oeuvre, et pas très pratique. </p>
+<p>Il y a beaucoup plus simple, et le plus beau, c&#8217;est que Django le propose en natif.</p>
+<p>Par default, Django loggue toutes les requêtes SQL dans <em>django.db.backends</em> si <code>DEBUG = True</code>. Il suffit donc de configurer le logger, dans votre <em>settings.py</em>:</p>
+<pre lang='python'>
+import os
+import tempfile
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'tempfile': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'verbose',
+            'filename': os.path.join(tempfile.gettempdir(), 'django-debug.log'),
+        },
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console', 'tempfile'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+</pre>
+<p>Lancez <code>./manage.py shell</code>:</p>
+<pre lang='python'>
+In [1]: m = Table.objects.filter(title__isnull=False)
+
+In [2]: m
+DEBUG (0.018) SELECT "table"."id", "table"."title", "table"."original_title" FROM "table" WHERE "table"."title" IS NOT NULL LIMIT 21; args=()
+Out[2]: [< Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, '...(remaining elements truncated)...']
+</pre>
+<p>Une version plus verbeuse sera aussi logguée dans un fichier temporaire. Par exemple, sous Linux il sera dans <code>/tmp/django-debug.log</code>.</p>
+<p>Toutes les requêtes faites par le site Web seront également affichées dans le terminal sur lequel tourne le serveur, et dans le fichier temporaire. </p>
+<p>Une fois que vous maitrisez le concept, je vous recommande plutot de mettre le logger <em>django.db.backends</em> dans votre <em>local_settings.py</em>, histoire d&#8217;éviter de l&#8217;avoir en prod :</p>
+<pre lang='python'>
+LOGGING['loggers'].update({
+        'django.db.backends': {
+            'handlers': ['console', 'tempfile'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    }
+)
+</pre>
+<p>Autre bénéfice, il suffit de commenter cette partie quand on ne souhaite plus afficher autant d&#8217;informations.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">262</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/03/lumber_from_log_lg.jpg" length="460459" type="image/jpg" />	</item>
+	</channel>
+</rss>

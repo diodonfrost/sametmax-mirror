@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>limit_conn &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/limit_conn/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>nginx et limitation de connexion par IP avec limit_conn_zone</title>
+		<link>http://sametmax.com/nginx-et-limitation-de-connexion-par-ip-avec-limit_conn_zone/</link>
+		<comments>http://sametmax.com/nginx-et-limitation-de-connexion-par-ip-avec-limit_conn_zone/#comments</comments>
+		<pubDate>Fri, 06 Jul 2012 13:54:20 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[connexion]]></category>
+		<category><![CDATA[ip]]></category>
+		<category><![CDATA[limitation]]></category>
+		<category><![CDATA[limit_conn]]></category>
+		<category><![CDATA[limit_conn_zone]]></category>
+		<category><![CDATA[nginx]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=921</guid>
+		<description><![CDATA[Limiter une IP à une ou plusieurs connexion avec nginx, pratique si vous voulez proposer par exemple un seul téléchargement de fichier à la fois par IP sur votre serveur.]]></description>
+				<content:encoded><![CDATA[<p>Limiter une IP à une ou plusieurs connexion avec <a href="http://wiki.nginx.org/Main">nginx</a> peut s&#8217;averer utile si vous voulez proposer par exemple un seul téléchargement de fichier à la fois par IP sur votre serveur (économie de bande passante, éviter de se faire aspirer tout le site d&#8217;un coup, etc.)</p>
+<p>Nginx rappelons le est actuellement l&#8217;un des serveurs web les plus performant, gratuit qui plus est.</p>
+<p>L&#8217;exemple ci-dessous va limiter une IP à 5 connexions sur l&#8217;ensemble des images servies par votre serveur. On peut bien sur modifier la regex Location pour limiter aux videos, pdf, etc&#8230;</p>
+<p><strong><br />
+dans le fichier de config de nginx:</strong><br />
+<strong><br />
+Dans http:</strong></p>
+<pre lang="bash">
+http {
+limit_conn_zone $binary_remote_addr zone=limit:10m; 
+}
+</pre>
+<p>10m veut dire qu&#8217;il va logguer les IPs connectées dans 10 MB de mémoire après il efface et recommence, ça permet de stocker les IPs connectées récement.</p>
+<p><strong><br />
+Dans server:</strong></p>
+<pre lang="bash">
+server {
+    location ~ \.(jpg|jpeg|gif|png)$ {
+      limit_conn limit 5; # limit to 5 cnx by IP
+    } 
+}
+</pre>
+<p>PS: limit est le nom de zone que vous donnez à votre règle, ça peut prendre la forme que ça veut comme dirait Egon dans Ghostbusters&#8230;</p>
+<p>Pour en savoir plus : <a href="http://wiki.nginx.org/HttpLimitZoneModule">Doc nginx HttpLimitZoneModule</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/nginx-et-limitation-de-connexion-par-ip-avec-limit_conn_zone/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">921</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/06/feu-rouge.jpeg" length="37223" type="image/jpg" />	</item>
+	</channel>
+</rss>

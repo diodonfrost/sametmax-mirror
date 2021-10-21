@@ -1,0 +1,1393 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>encoding &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/encoding/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Le type bytes n&#8217;est pas du texte</title>
+		<link>http://sametmax.com/le-type-bytes-nest-pas-du-texte/</link>
+		<pubDate>Fri, 11 Jan 2019 11:30:10 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[binaire]]></category>
+		<category><![CDATA[bits]]></category>
+		<category><![CDATA[bytes]]></category>
+		<category><![CDATA[encodage]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[octets]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sharset]]></category>
+		<category><![CDATA[str]]></category>
+		<category><![CDATA[string]]></category>
+		<category><![CDATA[texte]]></category>
+		<category><![CDATA[unicode]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=25125</guid>
+		<description><![CDATA[J'ai beau essayer très fort de ne pas répondre en ligne, des fois <a href="https://news.ycombinator.com/item?id=18874232">je craque</a>. Mais je me soigne, globalement j'ai récupéré plein de temps, et ça se voit sur mon quotidien.
+
+Et ce craquage, et bien il est cette fois dû à une totale mécompréhension des types de texte en Python 3.]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;ai beau essayer très fort de ne pas répondre en ligne, des fois <a href="https://news.ycombinator.com/item?id=18874232">je craque</a>. Mais je me soigne, globalement j&#8217;ai récupéré plein de temps, et ça se voit sur mon quotidien.</p>
+<p>Et ce craquage, et bien il est cette fois dû à une totale mécompréhension des types de texte en Python 3.</p>
+<p>Mais c&#8217;est bien normal: Python 3 ne gère pas le texte de la même manière que la grande majorité des langages de programmation, justement à cause de la débâcle qu&#8217;on a eue en Python 2. Du coup, de nombreux programmeurs arrivent avec leur expérience d&#8217;ailleurs, et tentent de l&#8217;appliquer tel un utilisateur de SVN migrant sur git. En surface ça semble coller, malheuseuement à l&#8217;usage, ça fait faire des erreurs.</p>
+<p>Donc un peu d&#8217;explications.</p>
+<p>En informatique, tout est une histoire de convention. On dit que tel mot clé a tel effet. Que tel nom suppose telle chose. Que tel code de retour implique telle erreur. Que tel schéma XML représente tel type de document.</p>
+<p>Essentiellement, tout cela est arbitraire: des gens ont décidé qu&#8217;il en serait ainsi. Impossible de deviner que ce que fait <code>yield</code> ou <code>with</code> si vous n&#8217;avez pas d&#8217;expérience similaire avant. Impossible de savoir que le code <code>0</code> en bash ou <code>200</code> en HTTP signifie tout va bien sans qu&#8217;on vous transmette l&#8217;information, ou faire de nombreux tests.</p>
+<p>Quand je dis arbitrairement, évidemment je ne veux pas dire complètement sans raison. Il y a des raisons techniques, politiques, économiques, et parfois esthétiques à ces conventions. Cela n&#8217;en retire en rien l&#8217;aspect parfaitement artificiel de ces choix.</p>
+<p>La convention la plus omniprésente, et pourtant aujourd&#8217;hui la plus masquée dans un monde où on utilise massivement des langages de haut niveau comme Javascript, Ruby, PHP et Python, est celle de l&#8217;organisation des octets.</p>
+<p>Musique !</p>
+<p><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/SBjQ9tuuTJQ?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<h2>   &#8230;je vois même plus le code : tout ce que je vois, c&#8217;est des blondes, des brunes, des rousses.<br />
+</h2>
+<p>Tout ce qui passe par nos ordinateurs n&#8217;est qu&#8217;une suite de zéros et de uns, que nous avons groupés par paquets de 8:</p>
+<p>Seulement la grande révélation, le &#8220;aaaaaaahhhhh okayyyyyyy&#8221; qui arrive un jour dans toute vie de dev, c&#8217;est que <strong>ces paquets de 8 ne veulent rien dire.</strong> Rien. C&#8217;est nous qui avons décidé, arbitrairement encore une fois, de leur signification.</p>
+<p>Vous voyez ce moment dans les films et séries où un personnage arrive à &#8220;lire du binaire&#8221; ?</p>
+<div id="attachment_25161" style="width: 560px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2019/01/IS1.png" class="grouped_elements" rel="tc-fancybox-group25125"><img src="http://sametmax.com/wp-content/uploads/2019/01/IS1.png" alt="Evidement, &quot;c&#039;est une representation binaire ASCII de coordonnées WGS 84 Web Mercator&quot; est plus dur à caser dans un dialogue" width="550" height="281" class="size-full wp-image-25161" /></a><p class="wp-caption-text">Evidement, &#8220;c&#8217;est une representation binaire ASCII de coordonnées WGS 84 Web Mercator&#8221; est plus dur à caser dans un dialogue</p></div>
+<p>C&#8217;est de <a href="https://youtu.be/FvHHlKp923A?t=1132">l&#8217;enculage de dauphin</a>.</p>
+<p>Le binaire n&#8217;est pas un langage, pas plus que les lettres &#8220;abcdefghijklmnopqrstuvwxyz&#8221;. Vous pouvez utiliser ces lettres pour représenter certains mots italiens, français, anglais, un nom propre (sans langue), le label d&#8217;un immeuble (sans langue encore) ou un chiffre latin. </p>
+<p>Que veut dire &#8220;les gosses&#8221; ? Pour la même combinaisons de lettres, cela signifie &#8220;les enfants&#8221; avec la convention française européenne, et &#8220;les couilles&#8221; avec la convention québéquoise.</p>
+<p>Pour le binaire c&#8217;est pareil, ce que veut dire un octet dépend de la convention que vous avez choisie.</p>
+<p>Par exemple, que signifie cette suite d&#8217;octets ?</p>
+<p><code>1100001 1100010 1100011 1100100</code></p>
+<p>Bah rien. Mais <a href="https://www.youtube.com/watch?v=3c-irSUdij4">on peut lui donner un sens</a> en lui appliquant une convention.</p>
+<p>Je peux lui appliquer la convention ASCII, et donc supposer que c&#8217;est un texte dans un certain format. Voici ce que ça donne en Python:</p>
+<pre lang="python">     
+>>> data = bytearray([0b1100001, 0b1100010, 0b1100011, 0b1100100])     
+>>> print(data.decode('ascii'))     
+abcd </pre>
+<div id="attachment_25162" style="width: 310px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2019/01/binary_mock.jpg" class="grouped_elements" rel="tc-fancybox-group25125"><img src="http://sametmax.com/wp-content/uploads/2019/01/binary_mock.jpg" alt="Les processeurs modernes ne comprenent pas nativement l&#039;american apparel" width="300" height="448" class="size-full wp-image-25162" /></a><p class="wp-caption-text">Les processeurs modernes ne comprenent pas nativement l&#8217;american apparel</p></div>
+<p>Ou je peux lui appliquer une autre convention, et decider de lire ces octets comme si ils étaient le dump d&#8217;une structure C. Interprettons en Python ces octets comme un entier non signé en big-endian:</p>
+<pre lang="python">     
+>>> data = bytearray([0b1100001, 0b1100010, 0b1100011, 0b1100100])     
+>>> import struct     
+>>> struct.unpack('>I', data)     
+(1633837924,)
+</pre>
+<p>Même suite de bits, mais selon la convention choisie, elle veut dire les lettres &#8220;abcd&#8221; ou le nombre &#8220;1633837924&#8221;. Et oui, comme il n&#8217;y a pas une infinité de combinaisons de 0 et de 1 qui tiennent dans un espace mémoire limité, différentes conventions vont utiliser les mêmes octets mais décider que ça veut dire quelque chose de différent.</p>
+<p>En fait, même des conventions pour le même type usage ne veulent pas forcément dire la même chose. Par exemple, prenez l&#8217;octet:</p>
+<p><code>11101001</code></p>
+<p>Un octet somme toute sympathique, de bonne famille. Il ne paie pas de mine, mais c&#8217;est un membre utile de la société.</p>
+<p>Et maintenant, quelqu&#8217;un vous donne un indice, il vous dit que cet octet représente&#8230; du texte.</p>
+<p>Super !</p>
+<p>Oui, mais du texte avec quelle convention ? Car les pays du monde entier ont créé leur propre convention pour représenter du texte.</p>
+<p>Avec la convention &#8220;latin-1&#8221;, <a href="https://en.wikipedia.org/wiki/Windows-1252">utilisé par 0.7% de tous les sites Web du monde</a> ?</p>
+<pre lang="python"> 
+>>> bytearray([0b11101001]).decode('latin-1') 
+'é' </pre>
+<p>Avec la convention &#8220;cp850&#8221;, utilisé par la console DOS ?</p>
+<pre lang="python"> 
+>>> bytearray([0b11101001]).decode('cp850')
+'Ú'
+</pre>
+<p>Vous voulez rire ? Le premier à remplacé presque partout le second parce qu&#8217;<a href="https://en.wikipedia.org/wiki/Code_page_850">ils contiennent les mêmes lettres</a>. Elles ne sont juste pas représentées par la même combinaison d&#8217;octets.</p>
+<p>Et cet octet, que veut-il dire avec la convention &#8220;utf8&#8221;, qui est aujourd&#8217;hui le standard international recommandé pour représenter du texte ?</p>
+<pre lang="python"> 
+>>> bytearray([0b11101001]).decode('utf8')
+Traceback (most recent call last):
+File "<stdin>", line 1, in <module>
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe9 in position 0: unexpected end of data </pre>
+<p>Il n&#8217;a pas de correspondance. Cet octet n&#8217;est pas de l&#8217;utf8 valide.</p>
+<p>Si vous voulez représenter ces lettres en utf8, il faut utiliser une convention différente, en utilisant non pas un seul octet, mais une séquence d&#8217;octets:</p>
+<pre lang="python"> 
+>>> list(map(bin, 'é'.encode('utf8')))
+['0b11000011', '0b10101001']
+>>> list(map(bin, 'Ú'.encode('utf8')))
+['0b11000011', '0b10011010']
+</pre>
+<p>Vous pourriez croire que puisque le texte est particulièrement compliqué, c&#8217;est normal d&#8217;avoir des conventions qui divergent. Mais non, c&#8217;est juste la nature des conventions. Puisqu&#8217;elles sont arbitraires, l&#8217;une n&#8217;est pas plus &#8220;la vérité&#8221; qu&#8217;une autre. On retrouve la même chose avec les nombres:</p>
+<pre lang="python">
+>>> struct.unpack("h", bytearray([0b11101001, 0b11101001]))
+(-5655,)
+>>> struct.unpack("H", bytearray([0b11101001, 0b11101001])) 
+(59881,)
+</pre>
+<p>La même suite d&#8217;octets peut représenter deux nombres totalement différents, selon que je décide de les lire comme des &#8220;short&#8221;, ou des &#8220;unsigned short&#8221;.</p>
+<p>Et l&#8217;inverse est aussi vrai.</p>
+<p>Ben oui, si quelque chose peut être interprété de plusieurs façons, on a aussi le fait que deux représentations <em>différentes</em> peuvent être interprétées &#8230; pour aboutir au même résultat.</p>
+<p>Par exemple, le nombre des doigts de ma main peut être représenté de plein de façons différentes:</p>
+<ul>
+<li>         <strong>décimal</strong>: 5     </li>
+<li>         <strong>français écrit</strong>: cinq     </li>
+<li>         <strong>chiffre latin</strong>: V     </li>
+<li>         <strong>anglais écrit</strong>: five     </li>
+<li>         <strong>espagnol écrit</strong>: cinco     </li>
+<li>         <strong>base deux</strong>: 101     </li>
+<li>         <strong>structure C d&#8217;un signed short en little-endian avec Python</strong>: bytearray([0b101, 0b0])     </li>
+</ul>
+<p>Que de manières différentes, pour le même concept ! En plus, il y a confusion possible: V est une lettre également. cinq, five et cinco utilisent le même alphabet, mais pas les mêmes symboles spécifiques, pour représenter la même chose. Et le plus confusionant, 101 est une représentation binaire, mais <code>bytearray([0b101, 0b0])</code> aussi.</p>
+<p>Bref, voilà toute la complexité de la différence entre la donnée, un concept abstrait qui n&#8217;existe pas, et sa représentation, une convention humaine concrète qui nous permet de communiquer entre nous.</p>
+<p>Donc, pour lire &#8220;du binaire&#8221;, ou faire n&#8217;importe quoi en informatique, il faut connaitre la convention utilisée. Mais pas juste en informatique: pour lire le journal, il faut connaitre la convention des symboles imprimés sur les pages, pour conduire sans se faire tuer, il faut connaitre la convention des panneaux, et pour parler, il faut connaitre la convention de la compression des molécules d&#8217;air émise par l&#8217;appareil buccal et respiratoire d&#8217;un individu qui vient rencontrer votre système auditif.</p>
+<p>Vous êtes un être très conventionnel au fond.</p>
+<p>Évidemment on trouve la même chose en Python. Par exemple vous pouvez utiliser plusieurs conventions pour demander à Python de créer le même nombre en mémoire:</p>
+<pre lang="python">
+>>> 245 # base 10
+245
+>>> 0xF5 # hexadecimal
+245
+>>> 0b11110101 # binaire
+245
+>>> 245 == 0xF5 == 0b11110101
+True     
+>>> type(245)     
+<class 'int'>     
+>>> type(0xF5)     
+<class 'int'>     
+>>> type(0b11110101)     
+<class 'int'> </pre>
+<p>Inversement, <code>"1"</code> et <code>1</code> paraissent similaire, mais ils ont différents buts. Le premier est un outil destiné à l&#8217;affichage, qui matérialise le caractère représentant le chiffre arabe après le zéro. Il est stocké en interne avec une séquence d&#8217;octets similaire à:</p>
+<pre lang="python">
+>>> bin(ord("1"))
+'0b110001'
+</pre>
+<p>Tandis que que le second est un outil fait pour faire des calculs avec la plus petite valeur positive entière non nulle. Il est stocké en interne avec une séquence d&#8217;octets similaire à:</p>
+<pre lang="python">
+>>> list(map(bin, struct.pack('l', 1)))
+['0b1', '0b0', '0b0', '0b0', '0b0', '0b0', '0b0', '0b0']
+</pre>
+<p>Je simplifie bien entendu, en vérité la representation interne des nombres et du texte en Python est plus complexe que cela, et dépend de l&#8217;implémentation choisie, du type de processeur, de la taille de la donnée et de votre configuration.</p>
+<h2>
+Retour sur le type bytes </h2>
+<p>J&#8217;ai soigneusement évité d&#8217;utiliser le type <code>bytes</code> durant cette démonstration, le remplaçant techniquement inutilement (mais pédagogiquement brillamment, car je suis génial) par <code>bytearray</code>.</p>
+<p>En effet, toute cette leçon est là pour arriver à la conclusion que <code>bytes</code> ne représente pas du texte, mais si je vous avais montré tout ça avec lui, voilà qui vous aurait interloqué:</p>
+<pre lang="python">     
+>>> bytes([0b1100001, 0b1100010, 0b1100011, 0b1100100])     
+b'abcd' </pre>
+<p>&#8220;Heu, mais c&#8217;est du texte !&#8221; me dirait alors un lecteur ayant diagonalisé l&#8217;article.</p>
+<p>Mais bien entendu que non.</p>
+<p><code>bytes</code> ne présente pas du texte, c&#8217;est une structure de données dont le but est de permettre de manipuler une séquence d&#8217;octets ordonnée, et ce manuellement. N&#8217;importe laquelle.</p>
+<p>Or, il se trouve que beaucoup de langages de programmation représentent le texte comme un array d&#8217;octets, et y attachent quelques opérations de manipulation. C&#8217;est le cas du C, ou de Python 2 par exemple. Les gens ayant eu cette expérience pensent donc que <code>b'abcd'</code> représente du texte, allant parfois jusqu&#8217;à aller lui donner l&#8217;appellation de &#8220;byte string&#8221;.</p>
+<p>Il n&#8217;existe rien de tel en Python 3.</p>
+<p>En Python 3, vous avez deux types pour manipuler des séquences d&#8217;octets: <code>bytes</code> et <code>bytearray</code>. Ils sont équivalents, à ceci près que <code>bytes</code> est non mutable (non modifiable) alors que <code>bytearray</code> est mutable (modifiable).</p>
+<p>Ces types peuvent contenir n&#8217;importe quels octets, et nous avons vu ensemble qu&#8217;une même séquence d&#8217;octets pouvait être interprétée différemment selon la convention choisie pour la lire. Évidemment il est préférable de la lire avec la même convention qui a été utilisée pour la produire, sans quoi on ne comprendra pas ce que le producteur de la donnée à voulu dire.</p>
+<p>Sauf que&#8230;</p>
+<p>Beaucoup d&#8217;outils en informatique utilisent les conventions ASCII et hexadécimale pour symboliser les valeurs des octets. Si vous lancez <a href="https://www.wireshark.org/docs/wsug_html_chunked/ChapterIntroduction.html#ChIntroFeatures">Wireshark</a> pour regarder les paquets d&#8217;un protocole réseau ou si vous ouvrez un PNG avec <code>xxd</code>, on va vous représenter le contenu avec un mélange de ces conventions. </p>
+<p>Pour des raisons pratiques, Python fait donc la même chose, et permet ainsi de visualiser (ou produire) le type <code>bytes</code> à l&#8217;aide d&#8217;une notation ASCII:</p>
+<pre lang="python">    
+>>> print(b'abcd'.decode('ascii'))     
+abcd     
+>>> struct.unpack('>I', b'abcd')     
+(1633837924,)
+</pre>
+<p>Ou d&#8217;une notation héxa (ironiquement, l&#8217;héxa est representé par une combinaison de caractères ASCII \o/) si les valeurs ne tiennent pas dans la table ASCII:</p>
+<pre lang="python">     
+>>> "é".encode('utf8')  # hexa C3 A9   
+b'\xc3\xa9'     
+>>> struct.unpack('h', b'\xc3\xa9')    
+(-22077,)
+</pre>
+<p>Donc <code>bytes</code>, bien qu&#8217;il puisse contenir des octets interprétables comme du texte, n&#8217;est pas particulièrement fait pour manipuler du texte. Il peut contenir n&#8217;importe quoi. Mais pour des raisons pratiques, sa représentation dans le terminal est faite avec une convention familière. Après tout, il faut bien l&#8217;écrire en quelque chose pour l&#8217;affiquer à l&#8217;écran.</p>
+<p>Si on veut manipuler du texte en Python 3, il faut utiliser le type <code>str</code>, qui est l&#8217;outil spécialisé dans la representation et la manipulation textuelle. Si vous savez qu&#8217;un type <code>bytes</code> contient des octets qui representent du texte, alors utilisez la méthode <code>décode()</code> avec la bonne convention (appelée &#8220;charset&#8221;), pour récupérer un <code>str</code>:</p>
+<pre lang="python">     
+>>> print(b'P\xc3\xa8re No\xc3\xabl'.decode('utf8'))
+Père Noël </pre>
+<p>On a <a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/ ">un très bon article sur l&#8217;encoding en Python</a> sur le blog, d&#8217;ailleurs.</p>
+<p>Toute cela n&#8217;était bien entendu pas vrai en Python 2. En Python 2, le type <code>str</code> était un array d&#8217;octets, rendant tout cela bien confus, et amenant à plein d&#8217;erreurs. L&#8217;introduction lors de la version 2.0 de l&#8217;objet <code>unicode</code> pour pallier le problème, bien que très utile, n&#8217;a fait que rajouter à l&#8217;incomprehension des nouveaux venus.</p>
+<p>Or le monde extérieur, lui, n&#8217;a pas d&#8217;abstraction pour le texte. Faire des abstractions, c&#8217;est le rôle du langage de programmation. Si vous écrivez dans un terminal, ou lisez depuis un terminal, un nom de fichier, le contenu d&#8217;une base de données, une requête AJAX, etc., ce sont évidemment des octets qui sont échangés, et il vous faut la bonne convention pour faire partie de la discussion.</p>
+<p>Le type bas niveau <code>bytes</code> est un outil qui sert donc à communiquer avec le monde extérieur, tandis que les types haut niveau (<code>str</code>, <code>int</code>, <code>list</code>, etc.) sont des outils qui font l&#8217;abstraction de ces conventions, pour vous permettre de manipuler confortablement un concept général (du texte, un nombre, une collection ordonnée) à l&#8217;interieur des murs de votre programme.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">25125</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2019/01/definitionwrong.jpg" length="60849" type="image/jpg" />	</item>
+		<item>
+		<title>La maison des horreurs de l&#8217;encoding</title>
+		<link>http://sametmax.com/la-maison-des-horreurs-de-lencoding/</link>
+		<comments>http://sametmax.com/la-maison-des-horreurs-de-lencoding/#comments</comments>
+		<pubDate>Sun, 29 Jan 2017 14:58:51 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unicode]]></category>
+		<category><![CDATA[utf8]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=22198</guid>
+		<description><![CDATA[En 2017, on se touche la nouille pour savoir qui a son architecture multi-services load balancée web scale à base de NOSQL, de containers orchestrés et de serveurs asynchrones. Mais pour afficher du texte y a plus personne hein…]]></description>
+				<content:encoded><![CDATA[<p>Ah, l&#8217;encoding, le truc que tout le monde veut mettre sous le tapis. Il faut dire que c&#8217;est dur à gérer. En fait tellement dur que:</p>
+<ul>
+<li>Les logiciels et pages web continuent parfois d&#8217;afficher des ?? en 2017. Tous les langages laxistes laissent des données corrompues plutôt que d&#8217;avertir le codeur qui du coup n&#8217;apprend jamais à faire les choses correctement.</li>
+<li>PHP a littéralement <a href="http://www.slideshare.net/andreizm/the-good-the-bad-and-the-ugly-what-happened-to-unicode-and-php-6">abandonné la version 6</a> car impossible de trouver une solution propre avec leur design.</li>
+<li>Perl a mis 10 ans à sortir la version 6 qui <a href="https://perl6advent.wordpress.com/2015/12/07/day-7-unicode-perl-6-and-you/">gère proprement l&#8217;unicode</a>.</li>
+<li>NodeJS <a href="http://stackoverflow.com/questions/14551608/list-of-encodings-that-node-js-supports">ignore juste la question</a>, fout tout en utf8 et vous dit de télécharger une lib externe si vous voulez gérer autre chose.</li>
+</ul>
+<p>Tout ce bordel amène les devs à essayer d&#8217;ignorer le problème le plus longtemps possible. Ca marche assez bien pour les anglophones car leur environnement est assez homogène, orienté ASCII, et certains peuvent faire une très belle carrière en restant joyeusement ignorant.</p>
+<p>Ca marche beaucoup moins bien pour les européens, et pas du tout pour le monde arabe et asiatique. Néanmoins, pas besoin de chercher bien loin pour trouver des échecs critiques.</p>
+<p>Naviguez tranquillement sur <a href="http://www.airedefiesta.com/76-pinatas-y-chuches.html">un site espagnol</a> a priori joli, moderne, utilisant des tildes et tout ce qu&#8217;il faut. Maintenant regardez la requête HTTP, vous noterez que le serveur n&#8217;indique pas le charset du contenu. Fort heureusement dans le HTML vous trouvez:</p>
+<pre lang="html"><meta http-equiv="Content-Type" content="ISO-8859-1"></pre>
+<p>Nickel, récupérons le texte du bouton &#8220;Ver más ideas&#8221;:</p>
+<pre lang="python">
+>>> import requests
+>>> res = requests.get('http://www.airedefiesta.com/76-pinatas-y-chuches.html') 
+>>> data = res.content.split(b'http://www.airedefiesta.com/ideas.html?c=76">')[1].split(b'</a>')[0]
+>>> data
+b'Ver m\xc3\xa1s ideas'</pre>
+<p>Une suite de bits comme maman les aime. On décode:</p>
+<pre lang="python">>>> data.decode('ISO-8859-1')
+'Ver mÃ¡s ideas'</pre>
+<div id="attachment_22201" style="width: 510px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2017/01/Dl28IBk.gif" class="grouped_elements" rel="tc-fancybox-group22198"><img src="http://sametmax.com/wp-content/uploads/2017/01/Dl28IBk.gif" alt="Chenille dans labyrinthe" width="500" height="216" class="size-full wp-image-22201" /></a><p class="wp-caption-text">Et puis on ne voudrait pas que vous arriviez au château trop vite</p></div>
+<p>Enfer et sodomie ! Le charset déclaré n&#8217;est pas celui utilisé. Tentons un truc au hasard:</p>
+<pre lang="python">>>> data.decode('utf8')
+'Ver más ideas'</pre>
+<p>Bref, en 2017, on se touche la nouille pour savoir qui a son architecture multi-services load balancée web scale à base de NoSQL, de containers orchestrés et de serveurs asynchrones. Mais pour afficher du texte y a plus personne hein&#8230;</p>
+<p>Vous croyez que ce ne sont que les amateurs qui font ces erreurs. Naaaaaaaaa. Par exemple le standard pour les fichiers zip a une vision <a href="https://marcosc.com/2008/12/zip-files-and-encoding-i-hate-you/">très&#8230; hum&#8230; personnelle</a> du traitement de l&#8217;encoding des noms de fichier.</p>
+<p>L&#8217;encoding, c&#8217;est la raison majeur de l’incompatibilité de Python 2 et 3, mais aussi un signe de la bonne santé de la techno puisque c&#8217;est un des rares vieux langages (je rappelle que Python est plus vieux que Java) à gérer la chose correctement. A savoir:</p>
+<ul>
+<li>Avoir un type haut niveau qui fait abstraction de l&#8217;encoding pour le texte.</li>
+<li>Forcer le développeur à spécifier l&#8217;encoding pour les entrées et les sorties.</li>
+<li>Eviter toute conversion automatique.</li>
+<li>Avoir de l&#8217;utf8 par défaut là où ça a du sens.</li>
+<li>Lever des erreurs plutôt que de corrompre les données.</li>
+<li>Avoir une API unifiée autour de la notion de &#8220;codec&#8221; qui marche pour le FS, le réseau, les chaînes internes, etc.</li>
+</ul>
+<p>Python n&#8217;est pas parfait pour autant. Par exemple il garantit un accès 0(1) indexing sur les strings, ce qui à mon sens est inutile. Swift a un meilleur design pour ce genre de choses. Mais globalement c&#8217;est quand même super bon.</p>
+<p>Si ne savez toujours pas comment ça marche, on a évidement <a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/">un tuto pour ça</a>.</p>
+<p>Alors pourquoi l&#8217;encoding c&#8217;est un truc compliqué ? </p>
+<p>Et bien parce que comme pour le temps ou l&#8217;<a href="http://sametmax.com/linternationalisation-cest-long-et-dur-et-ca-racle-le-fond/">i18n</a>, ça touche à la culture, au langage, à la politique, et on a accumulé les problèmes au fil des années. </p>
+<div id="attachment_22203" style="width: 466px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2017/01/SBygvL4.png" class="grouped_elements" rel="tc-fancybox-group22198"><img src="http://sametmax.com/wp-content/uploads/2017/01/SBygvL4.png" alt="A solid dick from an iron man" width="456" height="390" class="size-full wp-image-22203" /></a><p class="wp-caption-text">Mais je vous jure ça avait du sens y a 40 ans !</p></div>
+<p>Par exemple, parlons un peu d&#8217;UTF.</p>
+<p>Vous savez, on vous dit toujours d&#8217;utiliser utf8 partout pour être tranquille&#8230;</p>
+<p>Mais déjà se pose la question : avec ou sans BOM ?</p>
+<p>Le BOM, c&#8217;est une suite d&#8217;octets qui indique en début de fichier qu&#8217;il contient de l&#8217;UTF. Si ça à l&#8217;air pratique, c&#8217;est parce que ça l&#8217;est. Malheureusement, celui-ci n&#8217;est pas obligatoire, certaines applications le requièrent, d&#8217;autres l&#8217;ignorent, et d&#8217;autres plantent face au BOM. D&#8217;ailleurs, <a href="http://www.unicode.org/versions/Unicode5.0.0/ch02.pdf">le standard unicode</a> lui-même ne le recommande pas:</p>
+<blockquote><p>Use of a BOM is neither required nor recommended for UTF-8</p></blockquote>
+<p>Ca aide vachement à faire son choix.</p>
+<p>Perso je ne le mets jamais, sauf si je dois mélanger des fichiers de différents encodings et les différencier plus tard. </p>
+<p>Mais Powershell et Excel par exemple, fonctionnent parfois mieux si vous leur passez des données avec le BOM :)</p>
+<p>Si vous avez un peu creusé la question, vous savez qu&#8217;il existe aussi UTF16 (par défaut dans l&#8217;API de Windows 7 et 8 et les chaînes de .NET), UTF32 et UTF64. Ils ont des variantes Big et Little Endians, qui ne supportent pas le BOM, et une version neutre qui le supporte, pour faciliter la chose. </p>
+<p>Bien, bien, bien.</p>
+<p>Mais saviez-vous qu&#8217;il existe aussi UTF-1, 5 et 6 ? Si, si. Et UTF9 et UTF18 aussi, mais sauf que eux ce sont des poissons d&#8217;avril, parce que les gens qui écrivent les RFC sont des mecs trop funs en soirées.</p>
+<p>Que sont devenus ces derniers ? Et bien ils ont été proposés comme encoding pour l&#8217;internationalisation des noms de domaine. UTF5 est un encoding en base 32, comme son nom l&#8217;indique. Si, 2 puissance 5 ça fait 32. Funs en soirée, tout ça.</p>
+<p>Néanmoins quelqu&#8217;un est arrivé avec une plus grosse bit(e), <a href="https://en.wikipedia.org/wiki/Punycode">punycode</a>, en base 36, et a gagné la partie. J&#8217;imagine que les gens se sont dit qu&#8217;utiliser base64 était déjà trop fait par tout le monde et qu&#8217;on allait pas se priver de cette occasion fabuleuse de rajouter un standard.</p>
+<p>Standard qui ne vous dispense pas, dans les URLs, d&#8217;encoder DIFFÉREMMENT ce qui n&#8217;est pas le nom de domaine avec les bons escaping. Et son lot de <a href="http://treerex.blogspot.fr/2013/08/a-url-encoding-horror-story.html">trucs fantastiques</a>. Encoding qui est différent pour les valeurs de formulaire.</p>
+<p>Python supporte par ailleurs très bien tout ça:</p>
+<pre lang="python">>>> 'Père noël'.encode('punycode')
+b'Pre nol-2xa6a'
+>>> import urllib
+>>> urllib.parse.quote('Père Noël')
+'P%C3%A8re%20No%C3%ABl'
+>>> urllib.parse.quote_plus('Père Noël')
+'P%C3%A8re+No%C3%ABl'
+</pre>
+<p>En plus, si Punycode est l&#8217;encoding par défaut utilisé dans les noms de domaine, c&#8217;est donc aussi celui des adresses email. Ce qui vous permettra de profiter des interprétations diverses de la spec, comme par exemple le retour de la valeur d&#8217;un HTML input marqué &#8220;email&#8221;, qui <a href="https://www.grepular.com/The_Sad_State_of_HTML_Email_Input_Fields_and_IDNs">diffère selon les navigateurs</a>.</p>
+<div id="attachment_22204" style="width: 510px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2017/01/f9aqtmt.gif" class="grouped_elements" rel="tc-fancybox-group22198"><img src="http://sametmax.com/wp-content/uploads/2017/01/f9aqtmt.gif" alt="Président faisant un fuck dans idiocracy" width="500" height="281" class="size-full wp-image-22204" /></a><p class="wp-caption-text">If you don&#8217;t encode in Tarrlytons&#8230;fuck you!</p></div>
+<p>Pourquoi je vous parle des adresses emails tout à coup ? Ah ah ah ah ah ah ah !</p>
+<p>Mes pauvres amis.</p>
+<p>Je ne vous avais jamais parlé d&#8217;utf7 ?</p>
+<p>Non, je ne me fous pas de votre gueule. Je suis très sérieux.</p>
+<p>Figurez-vous que le format email MIME <a href="https://en.wikipedia.org/wiki/UTF-7">accepte l&#8217;utilisation d&#8217;utf7</a> en lieu et place de base64.</p>
+<p>Mais ce n&#8217;est pas ça le plus drôle.</p>
+<p>Y a mieux, je vous jure.</p>
+<p>UTF7 est en effet l&#8217;encoding par défaut pour IMAP, particulièrement les noms des boîtes aux lettres. Vous savez, &#8220;INBOX&#8221;, &#8220;Spams&#8221; et &#8220;Messages envoy&#038;AOk-s&#8221; ;)</p>
+<p>Or comme l&#8217;enculerie ne serait pas aussi délicieuse sans un peu de sable&#8230;</p>
+<p>La version utilisée maintenant (et pour toujourssssssss) par IMAP est une version d&#8217;UTF7 <a href="https://bugs.python.org/issue5305">non standard et modifiée</a>.</p>
+<p>Pourquoi ? Ben parce qu&#8217;allez-vous faire foutre.</p>
+<div id="attachment_22202" style="width: 437px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2017/01/tvNESh1.jpg" class="grouped_elements" rel="tc-fancybox-group22198"><img src="http://sametmax.com/wp-content/uploads/2017/01/tvNESh1.jpg" alt="The choosen one, crying" width="427" height="231" class="size-full wp-image-22202" /></a><p class="wp-caption-text">The choosen one would soon realize that some things survived outside of the vault. Like bad UI and terrible IT standards. And his &#8216;science&#8217; skills is at 42% and life sucks.</p></div>
+<p>Au final je n&#8217;ai fait que parloter d&#8217;UTF, mais souvenez-vous que:</p>
+<pre lang="python">>>> import encodings
+>>> len(encodings.aliases.aliases)
+322
+</pre>
+<p>Donc on n&#8217;a fait qu&#8217;effleurer la surface de l&#8217;anus boursouflé de la mouche. </p>
+<p>J&#8217;espère que la nuit, à 3h du mat, lorsque votre prochaine mise en prod agonisera sur un <code>UnicodeDecodeError</code>, vous penserez à moi et pendant un instant, un sourire se dessinera sous vos larmes.</p>
+<div id="attachment_22199" style="width: 310px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2017/01/heptapod-writing-in-arrival-300x158.png" class="grouped_elements" rel="tc-fancybox-group22198"><img src="http://sametmax.com/wp-content/uploads/2017/01/heptapod-writing-in-arrival-300x158.png" alt="Ecriture extra-terrestre de the arrival" width="300" height="158" class="size-full wp-image-22199" /></a><p class="wp-caption-text">Militaire : Votre avis ? &#8211; Unicode Consortium : Tuez les tous.</p></div>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-maison-des-horreurs-de-lencoding/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">22198</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/01/RkYxhXw.jpg" length="65463" type="image/jpg" />	</item>
+		<item>
+		<title>Un header d&#8217;encoding plus simple pour Python</title>
+		<link>http://sametmax.com/un-header-dencoding-plus-simple-pour-python/</link>
+		<comments>http://sametmax.com/un-header-dencoding-plus-simple-pour-python/#comments</comments>
+		<pubDate>Tue, 14 Apr 2015 12:15:40 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16074</guid>
+		<description><![CDATA[Je sais pas pour vous, mais moi je me souviens jamais de :
+
+<pre lang="python"># -*- coding: utf-8 -*-</pre>
+
+Je le copie/colle à chaque fois, et sur sublime j'ai snippet pour le tapper.]]></description>
+				<content:encoded><![CDATA[<p>Je sais pas pour vous, mais moi je me souviens jamais de :</p>
+<pre lang="python"># -*- coding: utf-8 -*-</pre>
+<p>Je le copie/colle à chaque fois, et sur sublime j&#8217;ai un snippet pour le taper.</p>
+<p>Je viens d&#8217;apprendre, après 10 putain d&#8217;années à coder en python, que le header suivant était parfaitement valide :</p>
+<pre lang="python"># coding: utf-8</pre>
+<p>Bordel de merde, pourquoi c&#8217;est pas écrit dans tous les tutos ? Pourquoi on se tape encore l&#8217;ancien ? </p>
+<p>Évidement avec Python 3, y a souvent plus besoin d&#8217;en-tête du tout, mais shit, ce genre détail c&#8217;est super con. Vous imaginez pas le nombre d&#8217;élèves à qui j&#8217;ai fait apprendre la première version toute pourrie alors que la seconde est si simple.</p>
+<p>Grr, dirais-je.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/un-header-dencoding-plus-simple-pour-python/feed/</wfw:commentRss>
+		<slash:comments>19</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">16074</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/04/sys5WBK.jpg" length="126451" type="image/jpg" />	</item>
+		<item>
+		<title>assert &#8220;а&#8221; == &#8220;a&#8221; # lol</title>
+		<link>http://sametmax.com/assert-%d0%b0-a-lol/</link>
+		<comments>http://sametmax.com/assert-%d0%b0-a-lol/#comments</comments>
+		<pubDate>Mon, 09 Jun 2014 08:45:51 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unicode]]></category>
+		<category><![CDATA[utf8]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10433</guid>
+		<description><![CDATA[Python 3, le bonheur d'avoir UTF8 comme encoding par défaut !]]></description>
+				<content:encoded><![CDATA[<p>Python 3, le bonheur d&#8217;avoir UTF8 comme encoding par défaut !</p>
+<p>En plus, ça ajoute un petit potentiel de lulz.</p>
+<p>Par exemple, ceci marche très bien :</p>
+<pre lang="python">def test():
+    print('Youpi')
+    print('Youpi')</pre>
+<p>Et ceci&#8230;</p>
+<pre lang="python">def test():
+    print('Arg')
+    print('Arg')</pre>
+<p>&#8230; provoque une syntaxe error !</p>
+<pre lang="python">  File "<stdin>", line 2
+       print('Arg')
+    ^
+SyntaxError: invalid character in identifier</pre>
+<p>La raison est que la première ligne print(&#8216;Arg&#8217;) contient le caractère unicode U+0020, qui est un espace inimprimable, mais pas le même que l&#8217;ascii :)</p>
+<p>Bon, vous allez-me dire, on pouvait déjà mélanger les tabs et les espaces, s&#8217;amuser avec les espaces insécables, ou simplement déclarer manuellement l&#8217;encoding et faire pareil&#8230;</p>
+<p>Allons plus loin. Saviez-vous qu&#8217;on pouvait utiliser des caractères non-ASCII <strong>dans les identifiants</strong> en Python 3 ?</p>
+<p>Ceci est donc parfaitement valide :</p>
+<pre lang="python">éôà = 1</pre>
+<p>Ce qui invite bien entendu a des choses tout à fait amusantes comme :</p>
+<pre lang="python">def аttention():
+    print('!')
+
+>>> аttention()
+!
+>>> attention()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'attention' is not defined</pre>
+<p>En effet, j&#8217;ai utilisé le caractère &#8220;а&#8221; cyrilique comme première lettre, et non le &#8220;a&#8221; ASCII. Ils n&#8217;ont pas le même code :</p>
+<pre lang="python">
+>>> ord("а"), ord("a")
+(1072, 97)
+>>> "а" == "a"
+False</pre>
+<p>Quand j&#8217;étais au lycée, une bonne blague qu&#8217;on faisait aux profs était de faire une capture d&#8217;écran du bureau de leur ordi, la mettre en fond d&#8217;écran, virer les icônes et régler la barrer des tâches pour se cacher automatiquement. Ils pensaient que leur machine était freezée, et un reboot ne changeait rien. Des heures à s&#8217;arracher les cheveux.</p>
+<p>Avec les identifiants unicodes je pense qu&#8217;on peut retrouver cette merveilleuse créativité avec ses collègues.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/assert-%d0%b0-a-lol/feed/</wfw:commentRss>
+		<slash:comments>19</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">10433</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/06/iyqfDLr.jpg" length="303031" type="image/jpg" />	</item>
+		<item>
+		<title>En Python 3, le type bytes est un array d&#8217;entiers</title>
+		<link>http://sametmax.com/en-python-3-le-type-bytes-est-un-array-dentiers/</link>
+		<comments>http://sametmax.com/en-python-3-le-type-bytes-est-un-array-dentiers/#comments</comments>
+		<pubDate>Thu, 05 Dec 2013 16:00:32 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[ascii]]></category>
+		<category><![CDATA[bytes]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[str]]></category>
+		<category><![CDATA[unicode]]></category>
+		<category><![CDATA[utf8]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8160</guid>
+		<description><![CDATA[Le plus gros changement quand on passe de Python 2 à Python 3, c'est la gestion des chaînes de caractères.]]></description>
+				<content:encoded><![CDATA[<p>Le plus gros changement quand on passe de Python 2 à Python 3, c&#8217;est la gestion des chaînes de caractères.</p>
+<p>Pour rappel :</p>
+<ul>
+<li>En 2.7, les chaînes sont par défaut des arrays d&#8217;octets, et il faut les décoder pour obtenir de l&#8217;unicode.</li>
+<li>En 3, les chaînes sont par défaut de type &#8216;unicode&#8217;, et il faut les encoder pour obtenir de un array d&#8217;octets.</li>
+</ul>
+<p>Si vous avez besoin d&#8217;une mise à jour sur l&#8217;encoding en Python, on <a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/">a un article pour ça</a>.</p>
+<p>Comme toute entrée ou sortie est forcément un flux d&#8217;octets, mais pas forcément dans le même encodage, Python 2.7 pouvait poser problème pour le débutant qui essayait de comprendre pourquoi son programme plantait, bordel de merde.</p>
+<p>La version 3 prend plusieurs mesures pour éviter les bugs vicieux liés à l&#8217;encodage de caractères:</p>
+<ul>
+<li>L&#8217;encodage par défaut du code est UTF8.</li>
+<li>L&#8217;encodage par défaut de lecture et d&#8217;écriture est UTF8.</li>
+<li>On ne peut plus mélanger &#8216;bytes&#8217; et &#8216;unicode&#8217;.</li>
+<li>Les messages d&#8217;erreur expliquent clairement et tôt tout problème.</li>
+</ul>
+<p>La plupart du temps, quand on va manipuler du texte, on va donc toujours manipuler de l&#8217;unicode, en Python 3. Ce dernier va nous forcer à faire le décodage / encodage au bon moment.</p>
+<p>Mais il restera quelques fois le besoin de manipuler du <code>bytes</code>, et ce type a subi un lifting&#8230;</p>
+<h2>La base</h2>
+<p>Créer un array d&#8217;octets (le type <code>bytes</code>&#8216;, en Python 3) demande de préfixer une chaîne avec &#8216;b&#8217; :</p>
+<pre lang="python">>>> s = b'I am evil, stop laughing!'
+>>> type(s)
+<class 'bytes'>
+>>> print(s)
+b'I am evil, stop laughing!'</pre>
+<p>Première remarque, on ne peut plus utiliser ce type pour afficher quoi que ce soit, puisque l&#8217;affichage est une représentation du type (appel à <code>__repr__</code>), et pas du texte mis en forme. Déjà Python vous indique la couleur : si vous voulez manipulez du texte, n&#8217;utilisez pas ce type.</p>
+<p>Comparez avec le type unicode :</p>
+<pre lang="python">>>> u = s.decode('utf8')
+>>> type(u)
+<class 'str'>
+>>> print(u)
+I am evil, stop laughing!</pre>
+<p>L&#8217;affichage marche comme on s&#8217;y attend. Bref, vous êtes forcé de toujours rester sur de l&#8217;unicode (le type <code>str</code> en Python 3, ce qui porte à confusion) si vous manipulez du texte. Heureusement, c&#8217;est quasiment toujours ce que vous aurez.</p>
+<p>Par exemple, si vous ouvrez un fichier en Python 3 :</p>
+<pre lang="python">>>> content = open('/etc/fstab').read()
+>>> type(content)
+<class 'str'></pre>
+<p>C&#8217;est du texte. A moins de demander qu&#8217;il soit ouvert en mode binaire :</p>
+<pre lang="python">>>>> content = open('/etc/fstab', 'rb').read()
+>>> type(content)
+<class 'bytes'></pre>
+<p>Une autre différence MAJEURE, c&#8217;est que, si dans Python 2.7, les arrays d&#8217;octets pouvaient être manipulés comme un array de lettres :</p>
+<pre lang="python">>>> s = 'I put the goal in golem...' 
+>>> s[0] # en Python 2.7
+>>> 'I'</pre>
+<p>En Python 3, les array d&#8217;octets sont au mieux manipulables comme un array d&#8217;entiers :</p>
+<pre lang="python">>>> s = b'I put the goal in golem...'
+>>> s[0] # en Python 3
+73</pre>
+<p>La représentation sous forme de lettre est gardée pour l&#8217;initialisation pour des raisons pratiques, mais sous le capot, il se passe ça:</p>
+<pre lang="python">>>> bytes([73, 32, 112, 117, 116, 32, 116, 104, 101, 32, 103, 111, 97, 108, 32, 105, 110, 32, 103, 111, 108, 101, 109, 46, 46, 46])
+b'I put the goal in golem...'</pre>
+<p>D&#8217;ailleurs, on ne peut même plus faire d&#8217;opérations de formatage avec des octets comme en Python 2.7 :</p>
+<pre lang="python">>>> b"Welcome to the league of %s" % input('')
+Draven
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: unsupported operand type(s) for %: 'bytes' and 'str'</pre>
+<p><code>format()</code> ne marche pas non plus. On est assez proche du tableau d&#8217;octets en C, sauf qu&#8217;en plus, on ne peut pas le modifier :</p>
+<pre lang="python">>>> s = b"My right arm is a lot stronger than my left arm."
+>>> s[0] = 1
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'bytes' object does not support item assignment</pre>
+<p>Les arrays d&#8217;octets sont donc maintenant essentiellement des outils de communication avec le monde extérieur.</p>
+<h2>Bytearray</h2>
+<p>Il existe encore des raisons de manipuler des arrays d&#8217;octets : les applications scientifiques. Typiquement, les algos de crypto opérent sur des arrays d&#8217;octets.</p>
+<p>Pour cette raison, Python 3 vient également avec un nouveau type de base : <code>bytearray</code>, un array d&#8217;octets modifiable.</p>
+<pre lang="python">>>> s = bytearray(b"this tasted purple !")
+>>> s[2:4] = b'at'
+>>> print(s)
+bytearray(b'that tasted purple !')</pre>
+<p>Et on a toutes les opérations de liste dessus, comme <code>append</code>, <code>pop()</code>, etc :</p>
+<pre lang="python">>>> for x in b' ,puY':
+...     s.insert(0, x)
+... 
+>>> print(s)
+bytearray(b'Yup, that tasted purple !')</pre>
+<p>Attention par contre, ces opérations attendent un entier en paramètres et NON un array d&#8217;octets.</p>
+<p>Et un dernier détail :</p>
+<pre lang="python">
+>>> isinstance(bytes, bytearray)
+False
+>>> isinstance(bytearray, bytes)
+False
+</pre>
+<h2>Différence entre string et array d&#8217;octets</h2>
+<p>Il est facile de confondre tout ce merdier.</p>
+<p>En Python 2.7, le type <code>str</code> était un array d&#8217;octets, et on le manipulait comme une chaîne, d&#8217;où la difficulté de transition.</p>
+<p>En Python 3, bien qu&#8217;on puisse créer un array d&#8217;octets avec une syntaxe utilisant des lettres, ils ne sont plus du tout utilisés pour la manipulation de texte. Si vous voulez manipuler du texte qui vient de l&#8217;extérieur de votre programme, il faudra toujours le décoder pour obtenir un type <code>str</code> (qui est l&#8217;ancien type <code>unicode</code> de Python 2.7).</p>
+<p>Le décodage sera fait automatiquement dans la plupart des cas, et plantera si on tombe sur un cas où vous devez le faire à la main et que vous ne le faites pas. Du coup, plus de difficulté à trouver d&#8217;où vient ce bug d&#8217;encoding, car on a toujours l&#8217;erreur à la source. </p>
+<p>En ce sens, Python 3 est beaucoup plus clair : les octets d&#8217;un côté, le texte de l&#8217;autre. Bon, tout ça c&#8217;est de la surcouche, au final, tout est octet. Mais on a rarement envie de manipuler un octet directement, sinon on coderait encore en assembleur.</p>
+<p>Avec ce système, Python 3 est le langage le plus sain que j&#8217;ai pu rencontrer dans sa gestion de l&#8217;encodage : il ne cache rien, oblige l&#8217;utilisateur à coder avec de bonnes habitudes, facilite le débugage et met sur le devant de la scène la problématique de l&#8217;encoding, qui est le plus souvent cachée vite fait sous le tapis.</p>
+<p>L&#8217;alternative intelligente la plus proche étant celle de node.js, qui <a href="https://github.com/joyent/node/blob/master/lib/buffer.js#L126">interdit tout simplement la plupart des encodings dans son API</a>.</p>
+<p>La bonne nouvelle ? 99% du temps, vous n&#8217;aurez même pas à vous en soucier, car ASCII est inclus dans UTF8, et ce sont les encodings les plus utilisés. Avec Python 3 forçant UTF8 par défaut partout et des chaînes en unicode dès le départ, il n&#8217;y a presque rien à faire. Je doute que la plupart des gens aient même à manipuler le type <code>bytes</code>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/en-python-3-le-type-bytes-est-un-array-dentiers/feed/</wfw:commentRss>
+		<slash:comments>19</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8160</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/12/CRutQrO.jpg" length="140436" type="image/jpg" />	</item>
+		<item>
+		<title>L&#8217;encoding en Python, une bonne fois pour toute</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/</link>
+		<comments>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comments</comments>
+		<pubDate>Sun, 21 Apr 2013 07:02:43 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[ascii]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unicode]]></category>
+		<category><![CDATA[utf8]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5824</guid>
+		<description><![CDATA[A la fin de cet article, vous saurez vous sortir de toutes les situations merdiques liées aux encodages.]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;avais oublié la zik, je rajoute:</p>
+<p><iframe width="560" height="315" src="https://www.youtube.com/embed/i-MAErg8q0w" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></p>
+<p>Vous avez tous un jour eu l&#8217;erreur suivante :</p>
+<pre lang="python">UnicodeDecodeError: 'machine' codec can't decode character 'trucmuche' in position x: ordinal not in range(z)</pre>
+<p>Et là, pour vous en sortir, vous en avez chié des ronds de pâté.</p>
+<p>Le problème vient du fait que la plupart du temps, ignorer l&#8217;encoding marche : nous travaillons dans des environnements homogènes et toujours avec des données dans le même format, ou un format plus ou moins compatible.</p>
+<p>Mais le texte, c&#8217;est compliqué, terriblement compliqué, et le jour où ça se gâte, si vous ne savez pas ce que vous faites, vous ne vous en sortirez pas.</p>
+<p>C&#8217;est d&#8217;autant plus vrai en Python car :</p>
+<ul>
+<li>Par défaut, Python plante sur les erreurs d&#8217;encoding là où d&#8217;autres langages (comme le PHP) se débrouillent pour vous sortir un truc (qui ne veut rien dire, qui peut corrompre toute votre base de données, mais qui ne plante pas).</li>
+<li>Python est utilisé dans des environnements hétérogènes. Quand vous codez en JS sur le navigateur, vous n&#8217;avez presque jamais à vous soucier de l&#8217;encoding : le browser gère quasiment tout pour vous. En Python dès que vous allez lire un fichier et l&#8217;afficher dans un terminal, cela fait potentiellement 3 encoding différents.</li>
+<li>Python 2.7 a des réglages par défaut très stricts, et pas forcément adaptés à notre informatique moderne (fichier de code en ASCII par exemple).</li>
+</ul>
+<p>A la fin de cet article, vous saurez vous sortir de toutes les situations merdiques liées aux encodages.</p>
+<h2>Règle numéro 1 : Le texte brut n&#8217;existe pas.</h2>
+<p>Quand vous avez du texte quelque part (un terminal, un fichier, une base de données&#8230;), il est forcément représenté sous forme de 0 et de 1.</p>
+<p>La corrélation entre cette suite de 0 et de 1 et la lettre est faite dans un énorme tableau qui contient toutes les lettres d&#8217;un côté, et toutes les combinaisons de 0 et de 1 de l&#8217;autre. Il n&#8217;y a pas de magie. C&#8217;est un énorme tableau stocké quelque part dans votre ordinateur. <strong>Si vous n&#8217;avez pas ce tableau, vous ne pouvez pas lire du texte. Même le texte le plus simple.</strong></p>
+<p>Malheureusement, au début de l&#8217;informatique, <strong>presque chaque pays a créé son propre tableau, et ces tableaux sont incompatibles entre eux</strong> : pour la même combinaison de 0 et de 1, ils donnent un caractère différent voire rien du tout.</p>
+<p>La mauvaise nouvelle, c&#8217;est qu&#8217;ils sont encore utilisés aujourd&#8217;hui.</p>
+<p>Ces tableaux, c&#8217;est ce qu&#8217;on appelle les encodings, et il y en a beaucoup. Voici la liste de ceux que Python gère :</p>
+<pre lang="python">>>> import encodings
+>>> print ''.join('- ' + e + '\n' for e in sorted(set(encodings.aliases.aliases.values())))
+- ascii
+- base64_codec
+- big5
+- big5hkscs
+- bz2_codec
+- cp037
+- cp1026
+- cp1140
+- cp1250
+- cp1251
+- cp1252
+- cp1253
+- cp1254
+- cp1255
+- cp1256
+- cp1257
+- cp1258
+- cp424
+- cp437
+- cp500
+- cp775
+- cp850
+- cp852
+- cp855
+- cp857
+- cp858
+- cp860
+- cp861
+- cp862
+- cp863
+- cp864
+- cp865
+- cp866
+- cp869
+- cp932
+- cp949
+- cp950
+- euc_jis_2004
+- euc_jisx0213
+- euc_jp
+- euc_kr
+- gb18030
+- gb2312
+- gbk
+- hex_codec
+- hp_roman8
+- hz
+- iso2022_jp
+- iso2022_jp_1
+- iso2022_jp_2
+- iso2022_jp_2004
+- iso2022_jp_3
+- iso2022_jp_ext
+- iso2022_kr
+- iso8859_10
+- iso8859_11
+- iso8859_13
+- iso8859_14
+- iso8859_15
+- iso8859_16
+- iso8859_2
+- iso8859_3
+- iso8859_4
+- iso8859_5
+- iso8859_6
+- iso8859_7
+- iso8859_8
+- iso8859_9
+- johab
+- koi8_r
+- latin_1
+- mac_cyrillic
+- mac_greek
+- mac_iceland
+- mac_latin2
+- mac_roman
+- mac_turkish
+- mbcs
+- ptcp154
+- quopri_codec
+- rot_13
+- shift_jis
+- shift_jis_2004
+- shift_jisx0213
+- tactis
+- tis_620
+- utf_16
+- utf_16_be
+- utf_16_le
+- utf_32
+- utf_32_be
+- utf_32_le
+- utf_7
+- utf_8
+- uu_codec
+- zlib_codec</pre>
+<p>Et certains ont plusieurs noms (des alias), donc on pourrait en compter plus:</p>
+<pre lang="python">>>> len(encodings.aliases.aliases.keys())
+307</pre>
+<p>Quand vous affichez du texte sur un terminal avec un simple <code>print</code>, votre ordinateur va implicitement chercher le tableau qu&#8217;il pense être le plus adapté, et fait la traduction. Même pour le texte le plus simple. Même pour un espace tout seul.</p>
+<p><strong>Mais surtout, ça veut dire que votre propre code EST dans un encoding. Et vous DEVEZ savoir lequel.</strong></p>
+<h2>Règle numéro 2 : utf8 est le langage universel, utilisez-le</h2>
+<p>Il existe un encoding qui essaye des regrouper toutes les langues du monde, et il s&#8217;appelle unicode. Unicode est un tableau gigantesque qui contient des combinaisons de 1 et de 0 d&#8217;un côté, et les caractères de toutes la langues possibles de l&#8217;autre : chinois, arabe, français, espagnol, russe&#8230;</p>
+<p>Bon, il ne contient pas encore absolument tout, mais il couvre suffisamment de terrain pour éliminer 99.999999999% des problèmes de communications de texte entre machines dans le monde.</p>
+<p>Le défaut d&#8217;Unicode est qu&#8217;il est plus lent et prend plus de place que d&#8217;autres représentations du même texte. Aujourd&#8217;hui le téléphone le plus pourri a 10 fois la puissance nécessaire, et ce n&#8217;est plus un souci : il peut être utilisé presque partout (sauf peut-être dans l&#8217;embarqué drastique) sans même réfléchir à la question. Tous les langages les plus importants, tous les services les plus importants, tous les logiciels les plus importants gèrent unicode.</p>
+<p>Il y a plusieurs implémentations concrètes d&#8217;unicode, la plus célèbre est &#8220;UTF 8&#8221;.</p>
+<p><strong>Moralité, par défaut, utilisez utf-8.</strong></p>
+<p>Une fois, à l&#8217;entretien d&#8217;embauche, un mec m&#8217;avait reproché d&#8217;utiliser UTF8 parce que &#8220;ça posait des problèmes d&#8217;encoding&#8221;. Comprenez bien qu&#8217;utf-8 ne pose aucun problème d&#8217;encoding. Ce sont tous les autres codecs du monde qui posent des problèmes d&#8217;encoding. UTF-8 est certainement le seul à justement, ne poser aucun problème.</p>
+<p>UTF 8 est le seul encoding vers lequel, aujourd&#8217;hui, on puisse convertir vers et depuis (pratiquement) n&#8217;importe quel autre codec du monde. C&#8217;est un espéranto. C&#8217;est une pierre de rosette. C&#8217;est au texte ce que l&#8217;or est à l&#8217;économie.</p>
+<p>Si UTF8 vous pose &#8220;un problème d&#8217;encoding&#8221;, c&#8217;est que vous ne savez pas dans quel encoding votre texte est actuellement ou comment le convertir. C&#8217;est tout.</p>
+<p>Il n&#8217;y a presque aucune raison de ne pas utiliser UTF8 aujourd&#8217;hui (à part sur des vieux systèmes ou des systèmes où les ressources sont tellement limitées que vous n&#8217;utiliseriez pas Python de toute façon).</p>
+<p><strong>Utilisez utf8. Partout. Tout le temps.</strong></p>
+<p>Si vous communiquez avec un système qui ne comprend pas UTF8, convertissez.</p>
+<p>Mais gardez votre partie en UTF8.</p>
+<h2>Règle numéro 3 : il faut maîtriser l&#8217;encoding de son code</h2>
+<p>Le fichier dans lequel vous écrivez votre code est dans un encoding et ce n&#8217;est pas lié à votre OS. C&#8217;est votre éditeur qui s&#8217;en occupe. Apprenez à régler votre éditeur pour qu&#8217;il utilise l&#8217;encoding que vous voulez.</p>
+<p>Et l&#8217;encoding que vous voulez est UTF8.</p>
+<p><strong>Si vous ne savez pas dans quel encoding est votre code, vous ne pouvez pas manipuler du texte et garantir l&#8217;absence de bug.</strong></p>
+<p>Vous ne POUVEZ PAS.</p>
+<p>Donc réflexe : vous configurez votre éditeur de texte pour sauvegarder tous vos nouveaux fichiers par défaut en UTF8. Maintenant. Tout de suite.</p>
+<p>Regardez dans la doc de l&#8217;éditeur, dans l&#8217;aide ou tapez sur Google, mais faites le.</p>
+<p>Puis il faut déclarer cet encoding à la première ligne de chaque fichier de code avec l&#8217;expression suivante :</p>
+<pre lang="python"># coding: encoding </pre>
+<p>Par exemple :</p>
+<pre lang="python"># coding: utf8 </pre>
+<p>C&#8217;est une spécificité de Python : si l&#8217;encoding du fichier est différent de l&#8217;encoding par défaut du langage, il faut le déclarer sinon le programme plantera à la première conversion. En Python 2.7, l&#8217;encoding par défaut est ASCII, donc il faut presque toujours le déclarer. En Python 3, l&#8217;encoding par défaut est UTF8 et on peut donc l&#8217;omettre si on l&#8217;utilise. Ce que vous allez faire après la lecture de cet article.</p>
+<p>Ensuite, il existe deux types de chaînes de caractères en Python :</p>
+<ul>
+<li>La chaîne de caractères encodée: type &#8216;str&#8217; en Python 2.7, &#8216;byte&#8217; en Python 3.</li>
+<li>La chaîne de caractères décodée: type &#8216;unicode&#8217; en Python 2.7, et &#8216;str&#8217; en python 3 (sic).</li>
+</ul>
+<p>Illustration :</p>
+<pre lang="python">
+$ python2.7
+Python 2.7.3 (default, Aug  1 2012, 05:14:39) 
+[GCC 4.6.3] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> type('chaine') # bits => encodée
+<type 'str'>
+>>> type(u'chaine') # unicode => décodée
+<type 'unicode'>
+</pre>
+<pre lang="python">
+$ python3
+Python 3.2.3 (default, Oct 19 2012, 20:10:41) 
+[GCC 4.6.3] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> type("chaine") # unicode => decodée
+<class 'str'>
+>>> type(b"chaine") # bits => encodée
+
+<class 'bytes'>
+</pre>
+<p>Votre but, c&#8217;est de n&#8217;avoir dans votre code que des chaînes de type &#8216;unicode&#8217;.</p>
+<p>En Python 3, c&#8217;est automatique. Toutes les chaînes sont de type &#8216;unicode&#8217; (appelé &#8216;str&#8217; dans cette version, je sais, je sais, c&#8217;est confusionant à mort) par défaut.</p>
+<p>En Python 2.7 en revanche, il faut préfixer la chaîne par un <code>u</code>.</p>
+<p>Donc, dans votre code, TOUTES vos chaînes doivent être déclarées ainsi :</p>
+<pre lang="pyhton">u"votre chaîne"</pre>
+<p>Oui, c&#8217;est chiant. Mais c&#8217;est indispensable. Encore une fois, il n&#8217;y a pas d&#8217;alternative (dites le avec la voix de Thatcher si ça vous excite).</p>
+<p>Si vous voulez, vous pouvez activer le comportement de Python 3 dans Python 2.7 en mettant ceci au début de CHACUN de vos modules :</p>
+<pre lang="python">from __future__ import unicode_literals</pre>
+<p>Ceci n&#8217;affecte que le fichier en cours, jamais les autres modules.</p>
+<p>On peut le mettre <a href="http://sametmax.com/personnalisez-le-demarrage-dipython/">au démarrage d&#8217;iPython également</a>.</p>
+<p>Je résume :</p>
+<ul>
+<li>Réglez votre éditeur sur UTF8.</li>
+<li>Mettez <code># coding: utf8 </code> au début de vos modules.</li>
+<li>Préfixez toutes vos chaînes de <code>u</code> ou faites <code>from __future__ import unicode_literals</code> en début de chaque module.</li>
+</ul>
+<p>Si vous ne faites pas cela, votre code marchera. La plupart de temps. Et un jour, dans une situation particulière, il ne marchera plus. Plus du tout.</p>
+<p>Oh, et ce n&#8217;est pas grave si vous avez d&#8217;anciens modules dans d&#8217;autres encodings. Tant que vous utilisez des objets &#8216;unicode&#8217; partout, ils marcheront sans problème ensemble.</p>
+<h2>Règle numéro 4 : décodez toutes les entrées de votre programme</h2>
+<p>La partie difficile de ce conseil, c&#8217;est de savoir ce qu&#8217;est une entrée.</p>
+<p>Je vais vous donner une définition simple : <strong>tout ce qui ne fait pas partie du code de votre programme et qui est traité dans votre programme est une entrée.</strong></p>
+<p>Le texte des fichiers, le nom de ces fichiers, le retour des appels système, le retour d&#8217;une ligne de commande parsée, la saisie utilisateur sur un terminal, le retour d&#8217;une requête SQL, le téléchargement d&#8217;une donnée sur le Web, etc.</p>
+<p>Ce sont toutes des entrées.</p>
+<p><strong>Comme tous les textes du monde, les entrées sont dans un encoding. Et vous DEVEZ savoir lequel.</strong></p>
+<p>Comprenez bien, si vous ne connaissez pas l&#8217;encoding de vos entrées, ça marchera la plupart du temps, et un jour, ça va planter.</p>
+<p>Il n&#8217;y a pas d&#8217;alternative (bis).</p>
+<p>Or, <strong>il n&#8217;y a pas de moyen de détecter un encoding de façon fiable.</strong></p>
+<p>Donc, soit le fournisseur de la donnée vous donne cette information (settings dans la base de données, doc de votre logiciel, configuration de votre OS, spec du client, coup de fils au fournisseur&#8230;), soit vous êtes baisés.</p>
+<p>On ne peut pas lire un simple fichier si on ne connait pas son encoding. Point.</p>
+<p>Si cela a marché jusqu&#8217;ici pour vous, c&#8217;est que vous avez eu de la chance : la plupart de vos fichiers étaient dans l&#8217;encoding de votre éditeur et de votre système. Tant qu&#8217;on travaille sur sa machine, tout va bien.</p>
+<p>Si vous lisez une page HTML, l&#8217;encoding est souvent déclaré dans la balise META ou dans un header.</p>
+<p>Si vous écrivez dans un terminal, l&#8217;encoding du terminal est accessible avec <code>sys.(stdin|stdout).encoding</code>.</p>
+<p>Si vous manipulez des noms de fichier, on peut récupérer l&#8217;encoding du file system en cours avec <code>sys.getfilesystemencoding()</code>.</p>
+<p>Mais parfois il n&#8217;y a pas d&#8217;autres moyens d&#8217;obtenir cette information que de demander à la personne qui a produit la donnée. Parfois même, l&#8217;encoding déclaré est faux.</p>
+<p>Dans tous les cas, vous avez besoin de cette information.</p>
+<p>Et une fois que vous l&#8217;avez, il faut décoder le texte reçu.</p>
+<p>La manière la plus simple de faire cela est :</p>
+<pre lang="python">votre_chaine = votre_chaine.decode('nom_du_codec')</pre>
+<p>Le texte sera de type &#8216;str&#8217;, et <code>decode()</code> retourne (si vous lui fournissez le bon codec ;-)), une version &#8216;unicode&#8217;.</p>
+<p>Exemple, obtenir une chaîne &#8216;unicode&#8217; depuis une chaîne &#8216;str&#8217; encodée en utf8 :</p>
+<pre lang="python">>>> une_chaine = 'Chaîne' # mon fichier est encodé en UTF8, donc la chaine est en UTF8
+>>> type(une_chaine)
+<type 'str'>
+>>> une_chaine = une_chaine.decode('utf8')
+>>> type(une_chaine)
+<type 'unicode'>
+</pre>
+<p>Donc dès que vous lisez un fichier, récupérez une réponse d&#8217;une base de données ou parsez des arguments d&#8217;un terminal, appelez <code>decode()</code> sur la chaîne reçue.</p>
+<h2>Règle numéro 5 : encodez toutes les sorties de votre programme</h2>
+<p>La partie difficile de ce conseil, c&#8217;est de savoir ce qu&#8217;est une sortie.</p>
+<p>Encore une fois, une définition simple : <strong>toute donnée que vous traitez et qui va être lue par autre chose que votre code est une sortie.</strong></p>
+<p>Un <code>print</code> dans un terminal est une sortie, un <code>write()</code> dans un fichier est une sortie, un <code>UPDATE</code> en SQL est une sortie, un envoi dans une socket est une sortie, etc.</p>
+<p>Le reste du monde ne peut pas lire les objets &#8216;unicode&#8217; de Python. Si vous écrivez ces objets dans un fichier, un terminal ou dans une base de données, Python va les convertir automatiquement en objet &#8216;str&#8217;, et l&#8217;encoding utilisé dépendra du contexte.</p>
+<p>Malheureusement, il y a une limite à la capacité de Python à décider du bon encoding.</p>
+<p>Donc, tout comme il vous faut connaitre l&#8217;encoding d&#8217;un texte en entrée, il vous faut connaitre l&#8217;encoding attendu par le système avec lequel vous communiquez en sortie : sachez quel est l&#8217;encoding du terminal, de votre base de données ou système de fichiers sur lequel vous écrivez.</p>
+<p>Si vous ne pouvez pas savoir (page Web, API, etc), utilisez UTF8.</p>
+<p>Pour ce faire, il suffit d&#8217;appelez <code>encode()</code> sur tout objet de type &#8216;unicode&#8217; :</p>
+<pre lang="python">
+une_chaine = une_chaine.encode('nom_du_codec')
+</pre>
+<p>Par exemple, pour convertir un objet &#8216;unicode&#8217; en &#8216;str&#8217; utf8:</p>
+<pre lang="python">>>> une_chaine = u'Chaîne'
+>>> type(une_chaine)
+<type 'unicode'>
+>>> une_chaine = une_chaine.encode('utf8')
+>>> type(une_chaine)
+<type 'str'>
+</pre>
+<h2>Résumé des règles</h2>
+<ol>
+<li>Le texte brut n&#8217;existe pas.</li>
+<li>Utilisez UTF8. Maintenant. Partout.</li>
+<li>Dans votre code, spécifiez l&#8217;encoding du fichier et déclarez vos chaînes comme &#8216;unicode&#8217;.</li>
+<li>À l&#8217;entrée, connaissez l&#8217;encoding de vos données, et décodez avec <code>decode()</code>.</li>
+<li>A la sortie, encodez dans l&#8217;encoding attendu par le système qui va recevoir la données, ou si vous ne pouvez pas savoir, en UTF8, avec <code>encode()</code>.</li>
+</ol>
+<p>Je sais que ça vous démange de voir un cas concret, alors voici un pseudo programme (<a href="https://github.com/sametmax/codes-des-articles/blob/master/2013/avril/encoding.py">téléchargeable ici</a>) :</p>
+<pre lang="python"># coding: utf-8 
+
+
+# toutes les chaines sont en unicode (même les docstrings)
+from __future__ import unicode_literals
+
+"""
+    Un script tout pourri qui télécharge plein de page et les sauvegarde
+    dans une base de données sqlites.
+
+    On écrit dans un fichier de log les opérations effectuées.
+"""
+
+import re
+import urllib2
+import sqlite3
+
+pages = (
+    ('Snippets de Sebsauvage', 'http://www.sebsauvage.net/python/snyppets/'),
+    ('Top 50 de bashfr', 'http://danstonchat.com/top50.html'),
+)
+
+# création de la base de données
+conn = sqlite3.connect(r"backup.db")
+c = conn.cursor()
+
+try:
+    c.execute('''
+        CREATE TABLE pages (
+            id INTEGER PRIMARY KEY,
+            nom TEXT,
+            html TEXT
+        )'''
+    )
+except sqlite3.OperationalError:
+    pass
+
+log = open('backup.log', 'wa')
+
+for nom, page in pages:
+
+    # ceci est une manière très fragile de télécharger et
+    # parser du HTML. Utilisez plutôt scrapy et beautifulsoup
+    # si vous faites un vrai crawler
+    response = urllib2.urlopen(page)
+    html = response.read(100000)
+
+    # je récupère l'encoding à l'arrache
+    encoding = re.findall(r'<meta.*?charset=["\']*(.+?)["\'>]', html, flags=re.I)[0]
+
+    # html devient de l'unicode
+    html = html.decode(encoding)
+
+    # ici je peux faire des traitements divers et varié avec ma chaîne
+    # et en fin de programme...
+
+    # la lib sqlite convertie par défaut tout objet unicode en UTF8
+    # car c'est l'encoding de sqlite par défaut donc passer des chaînes
+    # unicode marche, et toutes les chaînes de mon programme sont en unicode
+    # grace à mon premier import
+    c.execute("""INSERT INTO pages (nom, html) VALUES (?, ?)""", (nom, html))
+
+    # j'écris dans mon fichier en UTF8 car c'est ce que je veux pouvoir lire
+    # plus tard
+    msg = "Page '{}' sauvée\n".format(nom)
+    log.write(msg.encode('utf8'))
+
+    # notez que si je ne fais pas encode(), soit:
+    # - j'ai un objet 'unicode' et ça plante
+    # - j'ai un objet 'str' et ça va marcher mais mon fichier contiendra
+    #   l'encoding de la chaîne initiale (qui ici serait aussi UTF8, mais
+    #   ce n'est pas toujours le cas)
+
+conn.commit()
+c.close()
+
+log.close()
+</pre>
+<h2>Quelques astuces</h2>
+<p>Certaines bibliothèques acceptent indifféremment des objets &#8216;unicode&#8217; et &#8216;str&#8217; :</p>
+<pre lang="python">>>> from logging import basicConfig, getLogger
+>>> basicConfig()
+>>> log = getLogger()
+>>> log.warn("Détécé")
+WARNING:root:Détécé
+>>> log.warn(u"Détécé")
+WARNING:root:Détécé
+</pre>
+<p>Et ce n&#8217;est pas forcément une bonne chose car si il y a derrière écriture dans un fichier de log, cela peut poser problème.</p>
+<p>D&#8217;autres ont besoin qu&#8217;on leur précise:</p>
+<pre lang="python">>>> import re
+>>> import re
+>>> re.search('é', 'télé')
+<_sre.SRE_Match object at 0x7fa4d3f77238>
+>>> re.search(u'é', u'télé', re.UNICODE)
+<_sre.SRE_Match object at 0x7fa4d3f772a0></pre>
+<p>Le module <code>re</code> par exemple aura des résultats biaisés sur une chaîne &#8216;unicode&#8217; si on ne précise pas le flag <code>re.UNICODE</code>.</p>
+<p>D&#8217;autres n&#8217;acceptent pas d&#8217;objet &#8216;str&#8217;:</p>
+<pre lang="python">>>> import io
+>>> >>> io.StringIO(u'é')
+<_io.StringIO object at 0x14a96d0>
+>>> io.StringIO(u'é'.encode('utf8'))
+Traceback (most recent call last):
+  File "<ipython-input-5-16988a0d4ac4>", line 1, in <module>
+    io.StringIO('é'.encode('utf8'))
+TypeError: initial_value must be unicode or None, not str</pre>
+<p>D&#8217;autres encore n&#8217;acceptent pas d&#8217;objet &#8216;unicode&#8217;:</p>
+<pre lang="python">>>> import base64
+>>> base64.encodestring('é'.encode('utf8'))
+'w6k=\n'
+>>> base64.encodestring(u'é')
+Traceback (most recent call last):
+  File "<ipython-input-3-1714982ca68e>", line 1, in <module>
+    base64.encodestring('é')
+  File "/usr/lib/python2.7/base64.py", line 315, in encodestring
+    pieces.append(binascii.b2a_base64(chunk))
+UnicodeEncodeError: 'ascii' codec can't encode character u'\xe9' in position 0: ordinal not in range(128)</pre>
+<p>Cela peut être pour des raison de performances (certaines opérations sont plus rapides sur un objet &#8216;str&#8217;), ou pour des raisons historiques, d&#8217;ignorance ou de paresse.</p>
+<p>Vous ne pouvez pas le deviner à l&#8217;avance. Souvent c&#8217;est marqué dans la doc, sinon il faut tester dans le shell.</p>
+<p>Une bibliothèque bien faite demandera de l&#8217;unicode et vous retournera de l&#8217;unicode, vous libérant l&#8217;esprit. Par exemple, <a href="sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">requests</a> et l&#8217;ORM <a href="http://sametmax.com/quels-gros-sites-sont-faits-en-django/">Django</a> le font, et communiquent avec le reste du monde (en l&#8217;occurence le Web et les bases de données) dans le meilleur encoding possible automatiquement de manière transparente. Quand c&#8217;est possible bien entendu, parfois il faudra forcer l&#8217;encoding car le fournisseur de votre donnée déclare le mauvais. Vous n&#8217;y pouvez rien, c&#8217;est pareil pour tous les langages du monde.</p>
+<p>Enfin il existe des raccourcis pour certaines opérations, utilisez-les autant que possible. Par exemple, pour lire un fichier, au lieu de faire un simple <code>open()</code>, vous pouvez faire :</p>
+<pre lang="python">from codecs import open
+
+# open() de codec à exactement la même API, y compris avec "with"
+f = open('fichier', encoding='encoding')</pre>
+<p>Les chaînes récupérées seront automatiquement sous forme d&#8217;objet &#8216;unicode&#8217; au lieu d&#8217;objet &#8216;str&#8217; qu&#8217;il vous aurait fallu convertir à la main.</p>
+<h2>Les outils de la dernière chance</h2>
+<p>Je vous ai menti, si vous ne connaissez pas l&#8217;encoding de vos entrées ou de vos sorties, il vous reste encore quelques options.</p>
+<p>Sachez cependant que ces options sont des hacks, des trucs à tenter quand tout ce qui a été décrit plus haut a foiré.</p>
+<p>Si vous faites bien votre boulot, ça ne doit pas arriver souvent. Une à deux fois max dans votre année, sauf environnement de travail très très merdique.</p>
+<p>D&#8217;abord, parlons de l&#8217;entrée.</p>
+<p>Si vous recevez un objet et qu&#8217;il vous est impossible de trouver l&#8217;encoding, vous pouvez forcer un décodage imparfait avec <code>decode()</code> en spécifiant le paramètre <code>error</code>.</p>
+<p>Il peut prendre les valeurs suivantes :</p>
+<ul>
+<li><code>'strict'</code> : lever une exception en cas d&#8217;erreur. C&#8217;est le comportement par défaut.</li>
+<li><code>'ignore'</code> : tout caractère qui provoque une erreur est ignoré.</li>
+<li><code>'replace'</code> : tout caractère qui provoque une erreur est remplacé par un point d&#8217;interrogation.</li>
+</ul>
+<pre lang="python">>>> print 'Père Noël'.decode('ascii')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xc3 in position 1: ordinal not in range(128)
+>>> print 'Père Noël'.decode('ascii', errors='ignore')
+Pre Nol
+>>> print 'Père Noël'.decode('ascii', errors='replace')
+P��re No��l</pre>
+<p>Mozilla vient également à la rescousse avec sa lib <a href="https://pypi.python.org/pypi/chardet">chardet</a> qu&#8217;il faut donc <a href="http://sametmax.com/votre-python-aime-les-pip/">installer</a> :</p>
+<pre lang="bash">pip install chardet</pre>
+<p>Et qui TENTE (du verbe &#8216;tenter&#8217;, &#8220;qui essaye&#8221;, et qui donc peut échouer et se tromper) de détecter l&#8217;encoding utilisé.</p>
+<pre lang="python">>>> chardet.detect(u'Le Père Noël est une ordure'.encode('utf8'))
+{'confidence': 0.8063275188616134, 'encoding': 'ISO-8859-2'}
+>>> chardet.detect(u"Le Père Noël est une ordure j'ai dis enculé".encode('utf8'))
+{'confidence': 0.87625, 'encoding': 'utf-8'}</pre>
+<p>Cela marche pas trop mal, mais n&#8217;attendez pas de miracles. Plus il y a de texte, plus c&#8217;est précis, et plus le paramètre <code>confidence</code> est proche de 1.</p>
+<p>Parlons maintenant de la sortie, c&#8217;est à dire le cas où le système qui va recevoir vos données est une grosse quiche qui plante dès qu&#8217;on lui donne autre chose que de l&#8217;ASCII.</p>
+<p>Je ne veux balancer personne, mais mon regard se tourne vers l&#8217;administration américaine. Subtilement. De manière insistante.</p>
+<p>D&#8217;abord, <code>encode()</code> accepte les mêmes valeurs pour <code>errors</code> que <code>decode()</code>. Mais en prime, il accepte <code>'xmlcharrefreplace'</code>, très pratique pour les fichiers XML :</p>
+<pre lang="python">>>> u"Et là-bas, tu vois, c'est la coulée du grand bronze".encode('ascii', errors='xmlcharrefreplace')
+"Et l&#224;-bas, tu vois, c'est la coul&#233;e du grand bronze"</pre>
+<p>Enfin, on peut essayer d&#8217;obtenir un texte potable en remplaçant les caractères spéciaux par leur équivalent ASCII le plus proche.</p>
+<p>Avec l&#8217;alphabet latin, c&#8217;est très facile :</p>
+<pre lang="python">>>> unicodedata.normalize('NFKD', u"éçûö").encode('ascii', 'ignore')
+'ecuo'</pre>
+<p>Pour des trucs plus avancés comme le cyrilique ou le mandarin, il faut installer <a href="https://pypi.python.org/pypi/Unidecode">unidecode</a> :</p>
+<pre lang="bash">pip install unidecode</pre>
+<pre lang="python">>>> from unidecode import unidecode
+>>> print unidecode(u"En russe, Moscou s'écrit Москва")
+En russe, Moscou s'ecrit Moskva</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/feed/</wfw:commentRss>
+		<slash:comments>119</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">5824</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/04/OxpEP.jpg" length="87049" type="image/jpg" />	</item>
+		<item>
+		<title>s&#038;m.5.lezy&#8230;out@spamgourmet.net =&gt; erreur</title>
+		<link>http://sametmax.com/sm-5-lezy-outspamgourmet-net-erreur/</link>
+		<comments>http://sametmax.com/sm-5-lezy-outspamgourmet-net-erreur/#comments</comments>
+		<pubDate>Thu, 14 Mar 2013 15:40:05 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[codec]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[streaming]]></category>
+		<category><![CDATA[video]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5419</guid>
+		<description><![CDATA[Bilou, je veux bien te répondre, mais ton adresse me donne une "Delivery Status Notification"]]></description>
+				<content:encoded><![CDATA[<p>Bilou, je veux bien te répondre, mais ton adresse me donne une &#8220;Delivery Status Notification&#8221;</p>
+<blockquote><p>Salut les gars,</p>
+<p>J&#8217;ai cru comprendre que vous avez des sites de vidéos, vous vous<br />
+démerdez comment pour envoyer la vidéo en streaming tous en l&#8217;encodant.<br />
+Par exemple j&#8217;ai des mkv qui doivent être passer en mk4.<br />
+Une petite idée ?</p>
+<p>Merci d&#8217;avance,</p></blockquote>
+<p>Yop,</p>
+<p>On encode pas à la volée. On a des workers (powered by kombu) avec des files d&#8217;attente qui encodent les videos avec ffmpeg, et qui déclarent quand elles sont prêtes. Derrière on streamp tout ça avec nginx.  Ca demande beaucoup de tests (il n&#8217;y a pas de commande magique car ça dépend de ta cible client), et surtout, des disques durs énormes pour stocker tout ça.</p>
+<p>Pour ton cas particulier, n&#8217;oublie pas qu&#8217;il y a 3 choses à prendre en compte:</p>
+<ul>
+<li>le codec video (h264, mpeg-2, etc)</li>
+<li>le codec audio (mp3, aac, etc)</li>
+<li>le conteneur (mkv, avi, mov, etc)</li>
+</ul>
+<p>Donc il ne s&#8217;agit pas juste de streamer (c&#8217;est le plus facile, il suffit de compiler nginx avec l&#8217;extension qui va bien et payer un bon serveur), mais bien de trouver la combinaison des 3 qui corresponde à sa cible. Tester si on vise : le HTML5 ? Un lecteur flash ? Un truc lisible sur téléphone mobile (et quels modèles&#8230; ?). Quelle définition ? Quelle bande passante ? Quel traffic ?</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/sm-5-lezy-outspamgourmet-net-erreur/feed/</wfw:commentRss>
+		<slash:comments>18</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">5419</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/03/STvuXrN.gif" length="1032370" type="image/jpg" />	</item>
+		<item>
+		<title>Transformer des caractères spéciaux en ASCII</title>
+		<link>http://sametmax.com/transformer-des-caracteres-speciaux-en-ascii/</link>
+		<comments>http://sametmax.com/transformer-des-caracteres-speciaux-en-ascii/#comments</comments>
+		<pubDate>Sat, 01 Dec 2012 14:23:37 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unicode]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3419</guid>
+		<description><![CDATA[Dans beaucoup de cas, plutôt que de se taper la gestion de l'encodage, on préfère tout ramener au plus petit dénominateur commun: l'ASCII. Pas d'accent, pas de problème, comme disait mon grand-père juif. Ça devait être un autre contexte. Mais quand même.]]></description>
+				<content:encoded><![CDATA[<p>Dans beaucoup de cas, plutôt que de se taper la gestion de l&#8217;encodage, on préfère tout ramener au plus petit dénominateur commun: l&#8217;ASCII. Pas d&#8217;accent, pas de problème, comme disait mon grand-père juif. Ça devait être un autre contexte. Mais quand même.</p>
+<h2>Remplacer les accents par leurs équivalents ASCII les plus proches</h2>
+<p>Une astuce que j&#8217;ai lue pour la toute première fois dans les excellents <a href="http://www.sebsauvage.net/python/snyppets/">snippets Python</a> de Sauvage (encore et toujours&#8230;).</p>
+<pre lang="python">
+>>> import unicodedata
+>>> chaine_unicode = u"Vous êtes le Père Noël ? s'étonna le petit garçon."
+>>> unicodedata.normalize('NFKD', chaine_unicode).encode('ascii', 'ignore')
+"Vous etes le Pere Noel ? s'etonna le petit garcon."</pre>
+<p>Si un caractère n&#8217;est pas vraiment remplaçable, on peut choisir plusieurs stratégies. Ignorer le caractère:</p>
+<pre lang="python">
+>>> unicodedata.normalize('NFKD', u"Bei Jing en chinois s'écrit 北亰").encode('ascii', 'ignore')
+"Bei Jing en chinois s'ecrit "
+</pre>
+<p>Remplacer le caractère par un point d&#8217;interrogation:</p>
+<pre lang="python">
+>>> unicodedata.normalize('NFKD', u"Bei Jing en chinois s'écrit 北亰").encode('ascii', 'replace')
+"Bei Jing en chinois s'e?crit ??"
+</pre>
+<p>Notez l&#8217;effet sur le caractère accentué&#8230;</p>
+<p>Ou se vautrer comme une grosse loutre bourrée à la bière:</p>
+<pre lang="python">
+>>> unicodedata.normalize('NFKD', u"Bei Jing en chinois s'écrit 北亰").encode('ascii')
+Traceback (most recent call last):
+  File "<ipython-input-21-24181c80fc7f>", line 1, in <module>
+    unicodedata.normalize('NFKD', u"Bei Jing en chinois s'écrit 北亰").encode('ascii')
+UnicodeEncodeError: 'ascii' codec can't encode character u'\u0301' in position 23: ordinal not in range(128)
+</pre>
+<p>Ce qui pour nous a un intérêt limité.</p>
+<p>Certains alphabets, comme le hongrois, ont des caractères qui pourraient être extrapolés vers l&#8217;ASCII, mais la normalisation NFKD ne le permet pas. On peut alors faire appel à une bibliothèque externe.</p>
+<h2>Unidecode, la cafetière de l&#8217;encoding</h2>
+<p><a href="https://github.com/iki/unidecode">Unidecode</a> est une lib <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> installable qui permet la translittération de caractères. Ce n&#8217;est pas toujours très rigoureux, mais c&#8217;est toujours très pratique.</p>
+<p>Par exemple, vous voulez créer un site Web de mode à destination du marché Hongrois. Si, si. C&#8217;est un marché en pleine expansion, j&#8217;vous dis. </p>
+<p>Et bien entendu vous avez une rubrique manteau, qui se dit en hongrois, comme nous le savons tous: &#8220;kožušček&#8221;.</p>
+<p>Bon, si vous essayé de mettre ça en slug dans vos URL, ça va être un peu chiant à taper, et malheureusement l&#8217;astuce précédente ne va pas vous aider:</p>
+<pre lang="python">
+In [5]: unicodedata.normalize('NFKD', u"kožušček").encode('ascii', 'replace')
+Out[5]: 'koz?us?c?ek'
+</pre>
+<p>Partant de là, vous pouvez soit:</p>
+<ul>
+<li>choisir d&#8217;inviter tous vos utilisateurs à lire <a href="http://fr.wikipedia.org/wiki/%C3%89loge_des_femmes_m%C3%BBres">l&#8217;éloge des femmes mûres</a> dans la langue de l&#8217;auteur et arrêter d&#8217;acheter des manteaux de merde qui sont de toute façon faits en Chine.</li>
+<li>soit utiliser <code>unidecode</code>.</li>
+</ul>
+<pre lang="python">
+In [7]: from unidecode import unidecode
+In [8]: unidecode(u"kožušček")
+Out[8]: 'kozuscek'</pre>
+<h2>
+Encore plus fastoche, dans le XML et HTML</h2>
+<p>Dans ces formats à balise, on peut s&#8217;affranchir des problème d&#8217;encodage en transformant chaque caractère en une entité XML / HTML. On récupère alors du texte ASCII et le client se tapera le boulot d&#8217;afficher tous les caractères tordus auxquels l&#8217;humanité a pu penser:</p>
+<pre lang="python">
+In [11]: print u"Le Père Noël m'a offert un kožušček à 北亰".encode('ascii', 'xmlcharrefreplace')
+Le P&#232;re No&#235;l m'a offert un ko&#382;u&#353;&#269;ek &#224; &#21271;&#20144;
+</pre>
+<h2>Et dans tous les autres cas ?</h2>
+<p>Ben c&#8217;est comme d&#8217;hab: <code>str.decode()</code> pour tout ce qui rentre pour récupérer une chaîne unicode, et <code>unicode.encode()</code> pour tout ce qui sort pour rebalancer une chaîne de caractères au monde extérieur.</p>
+<p>Ça mérite peut être un article d&#8217;ailleurs&#8230;</p>
+<p>P.S: <a href="http://sametmax.com/les-10-meilleures-extensions-firefox-chrome/">Lazarus</a> vient de me sauver la mise en restaurant cet article suite à un clic malheureux. Vive lazarus.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/transformer-des-caracteres-speciaux-en-ascii/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">3419</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/12/pomme_de_terre.jpg" length="91567" type="image/jpg" />	</item>
+		<item>
+		<title>Quelques erreurs tordues et leurs solutions en Python</title>
+		<link>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/</link>
+		<comments>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/#comments</comments>
+		<pubDate>Sun, 24 Jun 2012 02:29:56 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[encodage]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[erreur]]></category>
+		<category><![CDATA[error]]></category>
+		<category><![CDATA[generator]]></category>
+		<category><![CDATA[import]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=995</guid>
+		<description><![CDATA[Bien que Python soit un langage dont l'une des grandes qualités est la cohérence, voici une liste d'erreurs et leurs solutions qui ont tendance à énerver.
+]]></description>
+				<content:encoded><![CDATA[<p>Quand vous débuggez, rappelez-vous que <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">pdb est votre ami</a>, et qu&#8217;il est souvent bon de <a href="http://sametmax.com/purger-les-fichiers-pyc-et-un-hook-git-en-bonus/">supprimer tous les fichiers <code>.pyc</code></a> pour éviter la confusion. Mais parfois l&#8217;erreur semble n&#8217;avoir aucun sens. Bien que Python soit un langage dont l&#8217;une des grandes qualités soit la cohérence, voici une liste d&#8217;erreurs et leurs solutions qui ont tendance à énerver (les erreurs hein, pas les solutions).</p>
+<h2><code>NameError: name 'x' is not defined</code></h2>
+<p>Python plante en annonçant que la variable n&#8217;est pas définie. Vous allez à la ligne donnée, et elle est là. Vous vérifiez qu&#8217;il n&#8217;y a pas de faute de frappe (genre un zéro mélangé avec la lettre O), ni une majuscule ou une minuscule échangée quelque part (Python est sensible à la casse).</p>
+<p>Et rien.</p>
+<p>Tout est niquel.</p>
+<p>Alors pourquoi ça plante bordel de merde ?</p>
+<p>Et bien ce message qui n&#8217;aide absolument pas peut venir du fait que <a href="http://sametmax.com/closure-en-python-et-javascript/">les closures sont en lecture seule en Python</a>. En résumé, vous avez essayé de faire un truc comme ça:</p>
+<pre lang="python">chose = 'truc'
+def fonction():
+    chose = 'machin'
+    # ou chose += machin ou une variante</pre>
+<p>La solution est simple: ne modifiez pas <code>chose</code>. Si vous avez besoin de modifier son contenu, utilisez une variable intermédiaire:</p>
+<pre lang="python">chose = 'truc'
+def fonction():
+    bidule = chose
+    bidule += 'machin' # je sais c'est bidon, c'est pour l'exemple</pre>
+<p>En Python 3.0, vous pouvez utiliser le mot clé <code>nonlocal</code> pour y palier: vous modifierez alors la variable du scope du dessus. </p>
+<pre lang="python">chose = 'truc'
+def fonction():
+    nonlocal chose
+    chose += 'machin' # je sais c'est bidon, c'est pour l'exemple</pre>
+<p>Évitez d&#8217;utiliser <code>global</code>, qui a un fort potentiel d&#8217;effet de bord.</p>
+<h2><code>ImportError: cannot import name bidule</code> et <code>ImportError: No module named truc</code></h2>
+<p>Une fois que vous avez vérifié qu&#8217;un module existe bien avec ce nom (regardez de près, parfois c&#8217;est subtile), voici 3 possibilités:</p>
+<h3>Pas de fichier __init__.py</h3>
+<p>Un dossier n&#8217;est pas un module importable si il ne contient pas de fichier <code>__init__.py</code>. Vérifiez qu&#8217;il y en a un, et dans le cas contraire, créez en un vide.</p>
+<p><H3>Erreur de Python Path</H3></p>
+<p>Quand vous faites <code>import bidule</code>, <code>bidule</code> ne peut être importé que si le dossier qui le contient est dans le <strong>Python Path</strong>. Le Python Path est une variable qui contient une liste de dossiers dans lesquels chercher les modules à importer.</p>
+<p>Le dossier courrant, le dossier contenant la bibliothèque standard de Python et le dossier où sont installés les bibliotèques Python de votre système d&#8217;exploitation sont automatiquement présents dans le Python Path.</p>
+<p>Première chose: assurez-vous d&#8217;être à la racine du projet que vous lancez (erreur typique quand on utilise la commande <code>./manage.py</code> avec Django par exemple).</p>
+<p>Deuxième chose: si vous utilisez une bibliothèque qui n&#8217;est pas dans le Python Path (ça arrive assez souvent avec les tests unitaires: on éxécute les tests depuis le dossier de test, et le projet est dans un dossier à côté, donc pas dans le Python Path), vous pouvez ajouter manuellement un chemin dans le Python Path.</p>
+<p>Pour se faire, avant l&#8217;import qui va foirer:</p>
+<pre lang="python">import sys
+sys.path.append('/chemin/vers/le/dossier/parent/du/module/a/importer')</pre>
+<p>On peut tout à fait spécifier un dossier relativement au dossier courant. Il n&#8217;est pas rare d&#8217;ajouter le dossier parent du dossier courrant au Python Path:</p>
+<pre lang="python">import sys
+import os
+
+DOSSIER_COURRANT = os.path.dirname(os.path.abspath(__file__))
+DOSSIER_PARENT = os.path.dirname(DOSSIER_COURRANT)
+sys.path.append(DOSSIER_PARENT)
+</pre>
+<p>Par exemple, souvent dans le dossier d&#8217;un projet Django je fais un sous-dossier &#8216;apps&#8217;, puis je rajoute ceci au fichier <code>settings.py</code>:</p>
+<pre lang="python">import sys
+import os
+
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(PROJECT_DIR, 'apps'))</pre>
+<p>Il y a deux avantages à cela:</p>
+<ul>
+<li>Mes applications sont regroupées dans un dossier et pas en vrac à la racine du projet, mais je peux quand même les importer en faisant <code>import nom</code> et pas <code>import apps.nom</code>.</li>
+<li> J&#8217;ai maintenant une variable <code>PROJECT_DIR</code> que je peux utiliser partout, notamment pour définir où sont certains dossiers comme le dossiers des fichiers statiques:</li>
+</ul>
+<pre lang="python">STATIC = os.path.join(PROJECT_DIR, 'static')</pre>
+<h3>Imports circulaires</h3>
+<p>Si vous importez <code>poisson.rouge</code> dans <code>force.py</code>, et <code>force.bleu</code> dans <code>poisson.py</code>, vous aurez aussi ce message d&#8217;erreur (qui n&#8217;aide pas beaucoup, on est d&#8217;accord).</p>
+<p>Il n&#8217;y a pas vraiment de façon élégante de s&#8217;en sortir, c&#8217;est une des plus grosses couillasses en Python.</p>
+<p>Solution 1: vous refactorez votre code pour avoir <code>bleu</code> et <code>rouge</code> dans un fichier <code>couleur.py</code>, lequel est importé dans <code>poisson.py</code> et <code>force.py</code>. C&#8217;est propre, mais parfois ça n&#8217;a aucun sens, et parfois ce n&#8217;est juste pas possible.<br />
+Solution 2: vous mettez l&#8217;import dans une fonctions ou une méthode dans un des deux modules (n&#8217;importe lequel):</p>
+<pre lang="python">def make_bouillabaisse():
+    from poisson import rouge</pre>
+<p>C&#8217;est moche, mais c&#8217;est facile. Et je le répète, je n&#8217;ai jamais vu quelqu&#8217;un en 10 ans de Python proposer une solution élégante à ce problème. C&#8217;est un What The Fuck d&#8217;or.</p>
+<h2><code>UnicodeDecodeError: 'ascii' codec can't decode byte 0xc3 in position 0: ordinal not in range(128)</code></h2>
+<p>Arf. L&#8217;erreur à la con. Parce que généralement elle vient du fait que l&#8217;on ne comprend pas vraiment ce qu&#8217;on fait. Or difficile de résoudre un problème quand on ne comprend pas de quoi il est question. Ne vous sentez pas mal, on s&#8217;est tous retrouvé comme un demeuré devant un problème d&#8217;encodage.</p>
+<p>A noter que ce n&#8217;est pas une erreur spécifique à Python, mais si vous venez d&#8217;un langage comme PHP qui passe silencieusement ce genre d&#8217;erreur et affiche en prod des texts illisibles, voire une grosse erreur à l&#8217;écran peut surprendre.</p>
+<p>Voici des causes très fréquentes:</p>
+<h3>Encodage du fichier.py</h3>
+<p>Comme il peut y avoir 1 million de possibilités, forcez vous à:</p>
+<p>&#8211; TOUJOURS avoir votre éditeur de texte réglé pour utiliser UTF-8. Surtout sur Windows. Si votre chef vous l&#8217;interdit parce que &#8220;ça pose des problèmes d&#8217;encodage&#8221; (sic), quittez votre job (meilleur choix) ou faites vous former pour comprendre comment marchent les encodages et travailler dans cet environnement hostile.<br />
+&#8211; TOUJOURS avoir votre encodage (UTF-8 j&#8217;ai dis !) déclaré en haut du <code>fichier.py</code>: <code># -*- coding: utf-8 -*-</code></p>
+<h3>Vérifiez que les textes en entrée sont dans l&#8217;encodage prévu</h3>
+<p>Le contenu des bases de données ne sont parfois pas dans l&#8217;encodage déclaré de la table ou de la base. Le contenu d&#8217;une page HTML n&#8217;est parfois pas encodé dans l&#8217;encodage déclaré dans le HEAD. Le contenu d&#8217;un fichier n&#8217;est parfois pas encodé dans l&#8217;encodage par défaut de votre OS.</p>
+<p>Il n&#8217;y a pas de secret. Pas de moyen infaillible de détection automatique. Il faut vérifier.</p>
+<h3>Vous confondez encodage et décodage (Python 2.7 et moins)</h3>
+<p>En Python, on DECODE pour passer d&#8217;un texte en encodé (UTF8, ISO-8859, CP1552, etc) et donc de type &#8216;str&#8217; c&#8217;est à dire un flux de bits, à un texte unicode, une représentation interne, un objet non imprimable. Il est recommandé de décoder tout texte venant d&#8217;une source extérieur à votre programme, pour tout uniformiser.</p>
+<p>A l&#8217;inverse, on ENCODE pour passer du type &#8216;unicode&#8217; à un type &#8216;str&#8217;. Il <strong>obligatoire</strong> d&#8217;encoder un texte pour le communiquer au monde extérieur. Si vous ne le faites pas manuellement, Python le fera automatiquement, en essayant de deviner. Il n&#8217;est pas excellent à deviner.</p>
+<p>En résumé:</p>
+<pre lang="python">In [7]: texte = open('/etc/fstab').read() # ou un téléchargement, ou une requete SQL...
+In [8]: type(texte)
+Out[8]: str
+In [9]: texte = texte.decode('UTF8')
+In [10]: type(texte)
+Out[10]: unicode
+In [11]: print texte # encode automatiquement le texte car votre terminal ne comprend qu'un text encodé
+# /etc/fstab: static file system information.
+#
+[.............]
+In [12]: type(texte.encode('UTF8')) # à faire avant de faire un write
+Out[12]: str</pre>
+<p>Si ça continue de foirer, prenez tous les fichiers de votre application un par un: changez toutes les strings en unicode (les précéder d&#8217;un &#8220;u&#8221;), assurez vous que tout ce qui entre est converti en unicode (unicode() après urllib, open, etc) et tout ce qui sort est converti dans un encodage adapté (souvent UTF8) (encode(&#8216;UTF-8&#8217;) avant send(), write() ou print).</p>
+<p>Si ça ne marche toujours pas, embauchez un mec comme moi qui est payé cher pour se taper la tête contre les murs à la place des autres.</p>
+<h2>TypeError: &#8216;int&#8217; object has no attribute &#8216;__getitem__&#8217; et autres erreurs sur les tuples</h2>
+<h3>Tuples d&#8217;un seul élément</h3>
+<p>CECI N&#8217;EST PAS UN TUPLE: (1)</p>
+<p>Ceci est un tuple: (1,)</p>
+<pre lang="python">>>> type((1))
+<type 'int'>
+>>> type((1,))
+<type 'tuple'>
+>>> t = (1,)
+>>> t[0]
+1
+>>> t = (1)
+>>> t[0]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'int' object has no attribute '__getitem__'</pre>
+<p>Et il y a plus vicieux:</p>
+<pre lang="python">
+>>> a = ("12345")
+>>> b = ("12345",)
+>>> a[0]
+'1'
+>>> b[0]
+'12345'
+</pre>
+<p>C&#8217;est très dur à débugguer car on dans les deux cas il n&#8217;y a pas d&#8217;erreur étant donné que c&#8217;est une opération tout à fait légitime.</p>
+<h3>Concaténation automatique</h3>
+<p>Python vient avec une fonctionnalité qui concatène automatiquement les descriptions littérales de chaînes de caractères:</p>
+<pre lang="python">>>> "Ceci est un"                                  " test"
+'Ceci est un test'</pre>
+<p>C&#8217;est très pratique pour les chaînes longues:</p>
+<pre lang="python">>>> print ("Ceci est une chaîne longue "
+... "et je peux la diviser sur plusieurs lignes"
+... " sans me fouler")
+'Ceci est une chaîne longue et je peux la diviser sur plusieurs lignes sans me fouler'</pre>
+<p>Mais si vous oubliez une virgule dans un tuple (par exemple dans <code>INSTALLED_APPS</code> dans le fichier de <code>settings.py</code> de Django):</p>
+<pre lang="python">>>> REGLES = (
+...     "Ne jamais parler du fight club",
+...     "Ne jamais croiser les effluves",
+...     "Ne jamais appuyer sur le petit bouton rouge" # <===== virgule oubliée !
+...     "Ne jamais goûter"
+... )
+>>> print REGLES[3]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+IndexError: tuple index out of range
+>>> print REGLES[-1]
+Ne jamais appuyer sur le petit bouton rougeNe jamais goûter</pre>
+<h2>Le fichier/la liste est vide</h2>
+<p><a href="http://sametmax.com/python-love-les-listes-en-intention-partie-2/">On ne peut lire qu&#8217;une seule fois les générateurs en Python</a>.</p>
+<p>Si vous faites:</p>
+<pre lang="python">toto = (blague.title() for blague in histoire)</pre>
+<p>ou</p>
+<pre lang="python">toto = open('histoire.txt')</pre>
+<p>Et ensuite:</p>
+<pre lang="python">for blague in toto:
+    print toto
+
+len(list(toto))</pre>
+<p>La dernière ligne ne marchera pas. Toto aura été vidé par la première boucle for. Si vous souhaitez utiliser plusieurs fois le résultat de votre générateur, il faut le transformer en liste:</p>
+<pre lang="python">toto = list(toto)
+for blague in toto:
+    print toto
+
+len(list(toto))</pre>
+<p>Attention, car vous avez maintenant l&#8217;intégralité des données chargées en RAM.</p>
+<h2>TypeError: ma_function() takes exactly x argument (y given)</h2>
+<p>Cette erreur est très explicite, et la plupart du temps ne pose aucun problème: vérifiez que vous passez le bon nombre d&#8217;arguments à la fonction. Faites particulièrement attention si vous utilisez <a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">l&#8217;opérateur splat</a>.</p>
+<p>Il existe néanmoins un cas particulier un peu taquin:</p>
+<pre lang="python">
+>>> class Americaine(object):
+...     def dernier_mot(mot):
+...         print mot
+... 
+>>> homme_le_plus_classe_du_monde = Americaine()
+>>> homme_le_plus_classe_du_monde.dernier_mot("Monde de merde !")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: dernier_mot() takes exactly 1 argument (2 given)
+</pre>
+<p>On définie une seul argument (<code>mot</code>) et on en passe un seul (<code>"Monde de merdes !"</code>), alors pourquoi Python n&#8217;est pas d&#8217;accord ?</p>
+<p>C&#8217;est parce que l&#8217;on déclare une méthode sans <code>self</code> dans la signature. Or Python va passer automatiquement (et de manière invisible) la référence à l&#8217;objet courrant en premier argument, du coup la méthode reçoit deux arguments: la référence à <code>homme_le_plus_classe_du_monde</code> et <code>"Monde de merde !"</code>. Ca ne marche pas puisque la méthode est déclarée pour n&#8217;accepter qu&#8217;un seul argument.</p>
+<p>Il y a deux solutions. La plus simple, ajoutez <code>self</code>:</p>
+<pre lang="python">
+>>> class Americaine(object):
+...     def dernier_mot(self, mot):
+...         print mot
+... 
+>>> homme_le_plus_classe_du_monde = Americaine()
+>>> homme_le_plus_classe_du_monde.dernier_mot("Monde de merde !")
+Monde de merde !
+</pre>
+<p>Une seconde solution consiste à déclarer une méthode statique. Du coup on a plus besoin d&#8217;instance:</p>
+<pre lang="python">
+>>> class Americaine(object):
+...     @staticmethod
+...     def dernier_mot(mot):
+...         print mot
+... 
+>>> Americaine.dernier_mot("Monde de merde !")
+Monde de merde !
+</pre>
+<h2>Ma structure de données par défaut n&#8217;est pas la bonne</h2>
+<p>Piège classique en Python, qu&#8217;il est important de répéter encore et encore tant il est la source de frustration chez les personnes qui ne le connaissent pas.</p>
+<pre lang="python">
+>>> from random import choice
+>>> def bioman(forces=['rouge', 'bleu', 'vert', 'rose', 'jaune devant, marron derriere'], invite=None):
+...     if invite is not None:
+...         forces.append(invite)
+...     return choice(forces)
+... 
+>>> bioman()
+'rose'
+>>> bioman()
+'rouge'
+>>> bioman(invite='magenta a pois gris')
+'vert'
+>>> bioman()
+'jaune devant, marron derriere'
+>>> bioman() # WTF ??????????
+'magenta a pois gris'
+</pre>
+<p>Dans le dernier appel &#8216;magenta a pois gris&#8217; est tiré au sort alors qu&#8217;on ne l&#8217;a pas passé en paramètre. Comment cela est-il possible ?</p>
+<p>Cela vient du fait que les paramètres par défaut sont initialisés <strong>une seule fois</strong> pour tout le programme: dès que le module est chargé.</p>
+<p>Si vous utilisez un objet mutable (liste, set, dico) et que vous le modifiez (ici avec <code>append</code>), le prochain appel de la fonction utilisera toujours la référence de cet objet, et donc de sa versio modifiée.</p>
+<p>La solution est soit de ne pas utiliser d&#8217;objet mutable (tuple, strings, int, etc), soit de ne pas modifier l&#8217;objet:</p>
+<pre lang="python">
+>>> def bioman(forces=('rouge', 'bleu', 'vert', 'rose', 'jaune devant, marron derriere'), invite=None):
+...     if invite is not None:
+...         forces += (invite,) # ne modifie pas l'ancien objet
+...     return choice(forces)
+</pre>
+<p>Ou alors (et ceci est souvent utilisé même si c&#8217;est moche):</p>
+<pre lang="python">
+>>> def bioman(forces=None, invite=None):
+...     if forces is None:
+...        forces = ['rouge', 'bleu', 'vert', 'rose', 'jaune devant, marron derriere']
+...     if invite is not None:
+...         forces.append(invite)
+...     return choice(forces)
+</pre>
+<p>Toutes les parties qui sont éxécutées à l&#8217;inialisation du code (en opposition à celles qui le sont à l&#8217;appel du code) sont concernées par ce problème: les paramètres par défaut, les variables à la racine des modules, les attributs de classe déclarés <strong>en dehors</strong> d&#8217;une méthode, etc.</p>
+<p><strong>ItZ naute a beuhgue, Itse fitiure</strong></p>
+<p>Néanmoins cela a aussi son utilité. On peut en effet l&#8217;utiliser pour partager des états:</p>
+<pre lang="python">
+class Model(object):
+    _pool = {
+        'mysql': MySQL().connect('test'),
+        'sqlite': Sqlite.open('test.db')
+    }
+    default_connection = 'mysql'
+
+    def query(self, connection=default_connection, *params):
+        connection.super_query(*params)
+</pre>
+<p>Et vous avez maintenant une classe de modèle qui gère plusieurs connections. Si vous l&#8217;étendez, les enfants de la classe et toutes les instances partageront le même objet connection, mais tout le reste sera unique à chacun d&#8217;eux. Cela évite un effet de bord du singleton qui oblige à partager un état et une identité. Ici on ne partage que la partie de l&#8217;état que l&#8217;on souhaite, et pas l&#8217;identité.</p>
+<p>On gagne sur les deux tableaux: si on update la connection MySQL (par exemple parcequ&#8217;on a détecté qu&#8217;elle était stale), toutes les instances ont accès à l&#8217;objet modifé. Mais si on veut overrider la connection pour une seule classe, on peut le faire sans affecter les autres simplement en remplaçant l&#8217;objet à la déclaration de la classe.</p>
+<p>On peut aussi utiliser cette fonctionnalité pour créer un cache. On appelle ça &#8220;mémoiser&#8221;:</p>
+<pre lang="python">
+def fonction_lente(param1, param2, _cache={}):
+    # les tuples peuvent être des clés de dico \o/
+    key = (param1, param2)
+    if key not in _cache:
+        _cache[key] = process_lent(param1, param2)
+    return _cache[key]
+</pre>
+<p>Tous les résultats sont alors stockés en mémoire vive.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/feed/</wfw:commentRss>
+		<slash:comments>23</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">995</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/06/Funny-Batman-Pictures-103.jpg" length="69437" type="image/jpg" />	</item>
+		<item>
+		<title>Résoudre les problèmes d&#8217;encoding avec Python Mechanize</title>
+		<link>http://sametmax.com/resoudre-les-problemes-dencoding-avec-python-mechanize/</link>
+		<comments>http://sametmax.com/resoudre-les-problemes-dencoding-avec-python-mechanize/#comments</comments>
+		<pubDate>Wed, 28 Mar 2012 17:02:46 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[mechanize]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=306</guid>
+		<description><![CDATA[Mechanize boude et l'erreur <code>
+UnicodeDecodeError: 'utf8' codec can't decode byte machin in position truc
+</code> vous fait faire des cauchemars ? Suivez le guide.]]></description>
+				<content:encoded><![CDATA[<p>Un de ces jours, il faudra qu&#8217;on fasse un petit post sur la gestion de l&#8217;encoding en Python. En attendant, voici une astuce pour éviter une des erreurs les plus énervantes pour un débutant :</p>
+<pre lang="python">UnicodeDecodeError: 'utf8' codec can't decode byte machin in position truc</pre>
+<p>De quoi choper un SMIC d&#8217;amende pour <a href="https://www.youtube.com/watch?v=uotBQ-7XWSI" >infraction au code de moralité du langage</a>.</p>
+<p>Contrairement à <a href="http://www.crummy.com/software/BeautifulSoup/" data-mce-href="http://www.crummy.com/software/BeautifulSoup/">BeautifulSoup</a>, <a href="http://wwwsearch.sourceforge.net/mechanize/" data-mce-href="http://wwwsearch.sourceforge.net/mechanize/">Mechanize</a> n&#8217;essaie pas de détecter l&#8217;encoding de la page, et vous retourne directement la soupe de bytes qu&#8217;il reçoit en réponse. Ça marche, jusqu&#8217;à ce que vous tombiez sur un site avec un encodage différent de celui de votre système.</p>
+<p>Heureusement, maintenant, la plupart des sites ont la politesse de déclarer leur encoding dans une balise meta, que l&#8217;on peut récupérer dans les headers. Du coup, on peut convertir facilement le HTML de la page en unicode :</p>
+<pre lang="python">import re
+import mechanize
+response = mechanize.Browser().open('http://google.com')
+# on chope l'encoding dans les headers
+# si ça marche pas on beugle une exception
+content_type = response.info().getheader('content-type') 
+try:
+    encoding = re.search(r'charset=([^\s]+)', content_type).groups()[0]
+except AttributeError, IndexError:
+    raise ValueError('Unable to guess the page encoding')
+# et on decode tout ça
+return response.read().decode(encoding)
+</pre>
+<p>Par facilité, nous on utilise carrément une sous-classe, vu que 99% du temps on a besoin que du HTML, et qu&#8217;on se sert essentiellement de Mechanize comme un gros urllib2 avec plein de paramètres :</p>
+<pre lang="python">import re
+import mechanize
+class Browser(mechanize.Browser):
+
+    def get_content_as_unicode(self, url):
+        response = self.open(url)
+        content_type = response.info().getheader('content-type')
+        try:
+            encoding = re.search(r'charset=([^\s]+)', content_type).groups()[0]
+        except AttributeError, IndexError:
+            raise ValueError('Unable to guess the page encoding')
+        return response.read().decode(encoding)
+</pre>
+<p>Hop :</p>
+<pre lang="python">
+>>> type(Browser().get_content_as_unicode('http://google.com'))
+<type 'unicode'>
+</pre>
+<p>Plus besoin de coquillages maintenant !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/resoudre-les-problemes-dencoding-avec-python-mechanize/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">306</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/03/17290642.jpg" length="41701" type="image/jpg" />	</item>
+	</channel>
+</rss>

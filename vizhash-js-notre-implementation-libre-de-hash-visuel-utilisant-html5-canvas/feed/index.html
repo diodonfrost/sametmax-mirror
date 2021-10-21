@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: VizHash.js, notre implémentation libre de hash visuel utilisant HTML5 canvas</title>
+	<atom:link href="http://sametmax.com/vizhash-js-notre-implementation-libre-de-hash-visuel-utilisant-html5-canvas/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/vizhash-js-notre-implementation-libre-de-hash-visuel-utilisant-html5-canvas/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Xavier Combelle</title>
+		<link>http://sametmax.com/vizhash-js-notre-implementation-libre-de-hash-visuel-utilisant-html5-canvas/#comment-179969</link>
+		<dc:creator><![CDATA[Xavier Combelle]]></dc:creator>
+		<pubDate>Sun, 31 Jul 2016 11:19:21 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=488#comment-179969</guid>
+		<description><![CDATA[Je sais qu&#039;il y a des problèmes de sécurité plus important que vizhash. Ceci dit, il n&#039;y a pas de raison que vizhash soit le maillon faible alors qu&#039;on peut très facilement augmenter sa force: il s&#039;agit seulement de faire un truc aussi simple que  hash = hash &#038; 0xFFF
+]]></description>
+		<content:encoded><![CDATA[<p>Je sais qu&#8217;il y a des problèmes de sécurité plus important que vizhash. Ceci dit, il n&#8217;y a pas de raison que vizhash soit le maillon faible alors qu&#8217;on peut très facilement augmenter sa force: il s&#8217;agit seulement de faire un truc aussi simple que  hash = hash &amp; 0xFFF</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/vizhash-js-notre-implementation-libre-de-hash-visuel-utilisant-html5-canvas/#comment-179967</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sun, 31 Jul 2016 10:32:21 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=488#comment-179967</guid>
+		<description><![CDATA[&lt;p&gt;Oui mais il faudrait prendre un photo pour pouvoir faire un brut force dessus plus tard. Ca commence à être super tordu, et suppose que tu es dans un environnement où:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;tu as des infos super importantes;&lt;/li&gt;
+&lt;li&gt;quelqu&#039;un veut VRAIMENT te les voler;&lt;/li&gt;
+&lt;li&gt;tu es dans un environnement qui permet à cette personne de mettre en place ce hack. Vu les 2 lignes du dessus, visiblement tu as des problèmes plus grave que vizhash.&lt;/li&gt;
+&lt;li&gt;tu as un système qui utilises vizhash  et pour un système d&#039;auth à simple facteur.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Ca fait beaucoup de si. Ta critique reste valable, mais étant donné la taille et le contexte du projet, je pense qu&#039;on peut garder toute modification sous le coude pour quand la probabilité d&#039;une telle attaque sera plus réaliste.&lt;/p&gt;
+
+&lt;p&gt;On pourra alors imaginer faire un backend pour le hashing, et le rendering, et permettre aux utilisateur de choisir un backend a fortes collisions, un rendering different de l&#039;image par défaut, etc.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Oui mais il faudrait prendre un photo pour pouvoir faire un brut force dessus plus tard. Ca commence à être super tordu, et suppose que tu es dans un environnement où:</p>
+<ul>
+<li>tu as des infos super importantes;</li>
+<li>quelqu&#8217;un veut VRAIMENT te les voler;</li>
+<li>tu es dans un environnement qui permet à cette personne de mettre en place ce hack. Vu les 2 lignes du dessus, visiblement tu as des problèmes plus grave que vizhash.</li>
+<li>tu as un système qui utilises vizhash  et pour un système d&#8217;auth à simple facteur.</li>
+</ul>
+<p>Ca fait beaucoup de si. Ta critique reste valable, mais étant donné la taille et le contexte du projet, je pense qu&#8217;on peut garder toute modification sous le coude pour quand la probabilité d&#8217;une telle attaque sera plus réaliste.</p>
+<p>On pourra alors imaginer faire un backend pour le hashing, et le rendering, et permettre aux utilisateur de choisir un backend a fortes collisions, un rendering different de l&#8217;image par défaut, etc.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Xavier Combelle</title>
+		<link>http://sametmax.com/vizhash-js-notre-implementation-libre-de-hash-visuel-utilisant-html5-canvas/#comment-179952</link>
+		<dc:creator><![CDATA[Xavier Combelle]]></dc:creator>
+		<pubDate>Sat, 30 Jul 2016 13:17:45 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=488#comment-179952</guid>
+		<description><![CDATA[@Sam, pas forcément,  tu peux voir le vizhash sans accéder au coté client. par exemple dans le cas d&#039;utilisation du mot de passe, tu peux regarder l&#039;écriture du mot de passe par dessus l&#039;épaule (c&#039;est contre ce type d&#039;attaque qu&#039;il est masqué)
+]]></description>
+		<content:encoded><![CDATA[<p>@Sam, pas forcément,  tu peux voir le vizhash sans accéder au coté client. par exemple dans le cas d&#8217;utilisation du mot de passe, tu peux regarder l&#8217;écriture du mot de passe par dessus l&#8217;épaule (c&#8217;est contre ce type d&#8217;attaque qu&#8217;il est masqué)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/vizhash-js-notre-implementation-libre-de-hash-visuel-utilisant-html5-canvas/#comment-179946</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sat, 30 Jul 2016 10:16:06 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=488#comment-179946</guid>
+		<description><![CDATA[&lt;p&gt;Pour que ce soit un problème, il faudrait que l&#039;on ait l&#039;image de la chose qu&#039;on veut matcher. Si tu as cette image, puisqu&#039;elle est générée uniquement de manière ephémère côté client, c&#039;est que tu as accès à la page et vizhash est le dernier des problèmes.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Pour que ce soit un problème, il faudrait que l&#8217;on ait l&#8217;image de la chose qu&#8217;on veut matcher. Si tu as cette image, puisqu&#8217;elle est générée uniquement de manière ephémère côté client, c&#8217;est que tu as accès à la page et vizhash est le dernier des problèmes.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Xavier Combelle</title>
+		<link>http://sametmax.com/vizhash-js-notre-implementation-libre-de-hash-visuel-utilisant-html5-canvas/#comment-179931</link>
+		<dc:creator><![CDATA[Xavier Combelle]]></dc:creator>
+		<pubDate>Fri, 29 Jul 2016 19:17:55 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=488#comment-179931</guid>
+		<description><![CDATA[Je viens de me faire la réflexion suivante (sur https://www.reddit.com/r/sametmax/comments/4v785h/code_review/d5w8hzv ): dans le cas de génération des avatars ou des mots de passe, par exemple pour zerobin, la fonction de hachage à tout interêt à &lt;strong&gt;ne pas être&lt;/strong&gt; résistante aux collisions, son seul rôle étant d&#039;avoir un avatar unique pour chaque ip/adresse mail/mot de passe dans le contexte d&#039;une discussion/d&#039;un site/d&#039;un utilisateur. (il faut juste que le nombre de différents avatars/mots de passe dans un contexte soit suffisamment grand).  Au contraire utiliser une fonction résistante au collision permet d&#039;utiliser le vizhash comme un oracle pour vérifier si un mot de passe/une adresse mail/adresse ip correspond a un vizhash donné. Bien sur, si on veut juste vérifier si une adresse mail ou une adresse ip est bien celle d&#039;un utilisateur, dans ce cas on peut en avoir la certitude avec une probabilité de l&#039;ordre de (à la louche) 1-1/nombre de hash différent. Ceci dit c&#039;est beaucoup mieux que en être sur avec une certitude absolue.
+]]></description>
+		<content:encoded><![CDATA[<p>Je viens de me faire la réflexion suivante (sur <a href="https://www.reddit.com/r/sametmax/comments/4v785h/code_review/d5w8hzv" rel="nofollow">https://www.reddit.com/r/sametmax/comments/4v785h/code_review/d5w8hzv</a> ): dans le cas de génération des avatars ou des mots de passe, par exemple pour zerobin, la fonction de hachage à tout interêt à <strong>ne pas être</strong> résistante aux collisions, son seul rôle étant d&#8217;avoir un avatar unique pour chaque ip/adresse mail/mot de passe dans le contexte d&#8217;une discussion/d&#8217;un site/d&#8217;un utilisateur. (il faut juste que le nombre de différents avatars/mots de passe dans un contexte soit suffisamment grand).  Au contraire utiliser une fonction résistante au collision permet d&#8217;utiliser le vizhash comme un oracle pour vérifier si un mot de passe/une adresse mail/adresse ip correspond a un vizhash donné. Bien sur, si on veut juste vérifier si une adresse mail ou une adresse ip est bien celle d&#8217;un utilisateur, dans ce cas on peut en avoir la certitude avec une probabilité de l&#8217;ordre de (à la louche) 1-1/nombre de hash différent. Ceci dit c&#8217;est beaucoup mieux que en être sur avec une certitude absolue.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/vizhash-js-notre-implementation-libre-de-hash-visuel-utilisant-html5-canvas/#comment-152851</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 17 Dec 2014 11:37:10 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=488#comment-152851</guid>
+		<description><![CDATA[Le code Javascript lui-même est immonde, c&#039;est une transcription litérale du code PHP afin de garder des images similaires.
+
+Je tweet ton truc.]]></description>
+		<content:encoded><![CDATA[<p>Le code Javascript lui-même est immonde, c&#8217;est une transcription litérale du code PHP afin de garder des images similaires.</p>
+<p>Je tweet ton truc.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Marien</title>
+		<link>http://sametmax.com/vizhash-js-notre-implementation-libre-de-hash-visuel-utilisant-html5-canvas/#comment-152849</link>
+		<dc:creator><![CDATA[Marien]]></dc:creator>
+		<pubDate>Wed, 17 Dec 2014 10:58:34 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=488#comment-152849</guid>
+		<description><![CDATA[Comme j&#039;en ai eu besoin dernièrement mais qu&#039;il n&#039;y avait pas d&#039;implémentation en Python je me suis permis de le faire. C&#039;est honteusement repompé de votre code JavaScript (ce qui me fait douter sur l&#039;aspect Pythonesque de mon code) et les hashs sont assez différents (j&#039;ai l&#039;impression que j&#039;ai un problème de coordonnées) mais ça marche quand même globalement bien ;).
+
+Mon implémentation a l&#039;avantage de pouvoir être aussi utilisée en ligne de commande et le désavantage de se baser sur Pillow qui est assez pénible à installer.
+
+Le code est &lt;a href=&quot;https://github.com/marienfressinaud/vizhash.py&quot; rel=&quot;nofollow&quot;&gt;sur GitHub&lt;/a&gt; et j&#039;ai gardé la même licence.]]></description>
+		<content:encoded><![CDATA[<p>Comme j&#8217;en ai eu besoin dernièrement mais qu&#8217;il n&#8217;y avait pas d&#8217;implémentation en Python je me suis permis de le faire. C&#8217;est honteusement repompé de votre code JavaScript (ce qui me fait douter sur l&#8217;aspect Pythonesque de mon code) et les hashs sont assez différents (j&#8217;ai l&#8217;impression que j&#8217;ai un problème de coordonnées) mais ça marche quand même globalement bien ;).</p>
+<p>Mon implémentation a l&#8217;avantage de pouvoir être aussi utilisée en ligne de commande et le désavantage de se baser sur Pillow qui est assez pénible à installer.</p>
+<p>Le code est <a href="https://github.com/marienfressinaud/vizhash.py" rel="nofollow">sur GitHub</a> et j&#8217;ai gardé la même licence.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: bastoch</title>
+		<link>http://sametmax.com/vizhash-js-notre-implementation-libre-de-hash-visuel-utilisant-html5-canvas/#comment-74</link>
+		<dc:creator><![CDATA[bastoch]]></dc:creator>
+		<pubDate>Fri, 04 May 2012 05:24:20 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=488#comment-74</guid>
+		<description><![CDATA[Merci pour l&#039;information !
+Je trouve néanmoins vos hash plus parlant, notamment par le fait que le votre génère aussi une forme, et pas seulement un code de quatre couleur.
+Mais je suppose qu&#039;on ne peut pas tout avoir...]]></description>
+		<content:encoded><![CDATA[<p>Merci pour l&#8217;information !<br />
+Je trouve néanmoins vos hash plus parlant, notamment par le fait que le votre génère aussi une forme, et pas seulement un code de quatre couleur.<br />
+Mais je suppose qu&#8217;on ne peut pas tout avoir&#8230;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/vizhash-js-notre-implementation-libre-de-hash-visuel-utilisant-html5-canvas/#comment-72</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 03 May 2012 22:26:00 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=488#comment-72</guid>
+		<description><![CDATA[Tout à fait, d&#039;ailleurs VizHash s&#039;est inspiré du projet watchdog, de Mozilla, qui fait exactement ce que vous suggérez:
+
+https://addons.mozilla.org/en-US/firefox/addon/visual-hashing/]]></description>
+		<content:encoded><![CDATA[<p>Tout à fait, d&#8217;ailleurs VizHash s&#8217;est inspiré du projet watchdog, de Mozilla, qui fait exactement ce que vous suggérez:</p>
+<p><a href="https://addons.mozilla.org/en-US/firefox/addon/visual-hashing/" rel="nofollow">https://addons.mozilla.org/en-US/firefox/addon/visual-hashing/</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: bastoch</title>
+		<link>http://sametmax.com/vizhash-js-notre-implementation-libre-de-hash-visuel-utilisant-html5-canvas/#comment-70</link>
+		<dc:creator><![CDATA[bastoch]]></dc:creator>
+		<pubDate>Thu, 03 May 2012 19:58:23 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=488#comment-70</guid>
+		<description><![CDATA[Peut on imaginer coller ça dans une extension firefox/chrome, notamment pour la partie mot de passe et surcharger des pages existantes avec votre bout de javascript ?]]></description>
+		<content:encoded><![CDATA[<p>Peut on imaginer coller ça dans une extension firefox/chrome, notamment pour la partie mot de passe et surcharger des pages existantes avec votre bout de javascript ?</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

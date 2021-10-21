@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>bug &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/bug/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>&#8220;BlockingIOError: [Errno 11] Resource temporarily unavailable&#8221; pour Python 3.6</title>
+		<link>http://sametmax.com/blockingioerror-errno-11-resource-temporarily-unavailable-pour-python-3-6/</link>
+		<comments>http://sametmax.com/blockingioerror-errno-11-resource-temporarily-unavailable-pour-python-3-6/#comments</comments>
+		<pubDate>Tue, 28 Feb 2017 09:39:18 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[bug]]></category>
+		<category><![CDATA[ppa]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[ubuntu]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=22573</guid>
+		<description><![CDATA[La toute première version de Python 3.6 avait <a href="https://bugs.python.org/issue29208">un bug</a> assez vicieux qui ne se manifestait que sous certaines conditions, généralement dans un daemon sur un serveur, et en important certains modules qui finissent par déclencher par réaction en chaîne l'usage de <code>random</code>.
+]]></description>
+				<content:encoded><![CDATA[<p>La toute première version de Python 3.6 avait <a href="https://bugs.python.org/issue29208">un bug</a> assez vicieux qui ne se manifestait que sous certaines conditions, généralement dans un daemon sur un serveur, et en important certains modules qui finissent par déclencher par réaction en chaîne l&#8217;usage de <code>random</code>.</p>
+<p><code>django</code> est concerné.</p>
+<p>On tombait dessus généralement assez tard, à la mise en prod, avec un message cryptique:</p>
+<pre> 
+BlockingIOError: [Errno 11] Resource temporarily unavailable 
+  
+ The above exception was the direct cause of the following exception: 
+
+Traceback (most recent call last): 
+   .... <- des imports de votre code qui ne font rien de mal
+   File "/usr/local/lib/python3.6/site-packages/pkg_resources/__init__.py", line 36, in <module> 
+     import email.parser 
+   File "/usr/local/lib/python3.6/email/parser.py", line 12, in <module> 
+     from email.feedparser import FeedParser, BytesFeedParser 
+   File "/usr/local/lib/python3.6/email/feedparser.py", line 27, in <module> 
+     from email._policybase import compat32 
+   File "/usr/local/lib/python3.6/email/_policybase.py", line 9, in <module> 
+     from email.utils import _has_surrogates 
+   File "/usr/local/lib/python3.6/email/utils.py", line 28, in <module> 
+     import random 
+   File "/usr/local/lib/python3.6/random.py", line 742, in <module> 
+     _inst = Random() 
+ SystemError: <class 'random.Random'> returned a result with an error set 
+</pre>
+<p>Cela a été corrigé rapidement, et le binaire patché ajoute juste un &#8220;+&#8221; à sa version:</p>
+<pre lang="bash">$ python --version
+Python 3.6.0+</pre>
+<p>En théorie vous ne pouvez pas tomber dessus, tous les liens de téléchargement ont été mis à jour, les distributions ont changé leurs dépôts, etc.</p>
+<p>Mais hier je me suis fait bien niqué, et j&#8217;ai perdu 1h à debugguer cette surprise qui n&#8217;avait aucun sens (puisque mon code allait bien) : les bugs dans les binaires officiels sont rares et c&#8217;est le dernier endroit où je cherche.</p>
+<p>En effet, certaines sources non-officielles pour installer Python n&#8217;ont pas été mises à jour, et c&#8217;est le cas du très populaire PPA <code>deadsnakes</code>.</p>
+<p>Si vous avez installé Python 3.6 en faisant :</p>
+<pre lang="bash">sudo add-apt-repository ppa:fkrull/deadsnakes
+sudo apt-get update
+sudo apt-get install python3.6</pre>
+<p>vous l&#8217;avez dans le cul.</p>
+<p>Il existe un PPA plus à jour si vous avez besoin de corriger le tir :</p>
+<pre lang="bash">sudo add-apt-repository ppa:jonathonf/python-3.6
+sudo apt-get update
+sudo apt-get install python3.6</pre>
+<p>Donc si vous avez compilé Python à la main ou utilisé un PPA, assurez-vous bien d&#8217;avoir la bonne version, et sinon upgradez. En attendant j&#8217;ai un bug report à faire à <code>deadsnakes</code>&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/blockingioerror-errno-11-resource-temporarily-unavailable-pour-python-3-6/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">22573</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/02/HGk9X0b.jpg" length="82072" type="image/jpg" />	</item>
+		<item>
+		<title>Reportez, il en restera toujours quelque chose</title>
+		<link>http://sametmax.com/reportez-il-en-restera-toujours-quelque-chose/</link>
+		<comments>http://sametmax.com/reportez-il-en-restera-toujours-quelque-chose/#comments</comments>
+		<pubDate>Sat, 28 Mar 2015 09:54:38 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[bug]]></category>
+		<category><![CDATA[nuikta]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16001</guid>
+		<description><![CDATA[L'année dernière j'ai reporté <a href="http://bugs.nuitka.net/issue136">un bug</a> sur <a href="http://nuitka.net/">nuitka</a>, un compilateur Python.
+
+Mon rapport était incomplet, et on m'a demandé plus d'informations. J'ai pris du temps, mais j'ai répondu. 
+
+Malheureusement à la deuxième demande d'informations, j'ai trainé la patte. Je l'ai mis dans ma todo list, et ai regardé en chien de fusil l'entrée pendant des mois.]]></description>
+				<content:encoded><![CDATA[<p>L&#8217;année dernière j&#8217;ai reporté <a href="http://bugs.nuitka.net/issue136">un bug</a> sur <a href="http://nuitka.net/">nuitka</a>, un compilateur Python.</p>
+<p>Mon rapport était incomplet, et on m&#8217;a demandé plus d&#8217;informations. J&#8217;ai pris du temps, mais j&#8217;ai répondu. </p>
+<p>Malheureusement à la deuxième demande d&#8217;informations, j&#8217;ai trainé la patte. Je l&#8217;ai mis dans ma todo list, et ai regardé en chien de fusil l&#8217;entrée pendant des mois.</p>
+<p>Il fallait réinstaller nuitka, me replonger dans ce que je voulais faire à l&#8217;époque, lancer la compilation, répondre sur le bug tracker. Une heure dépensée au moins.</p>
+<p>C&#8217;est ça dont les gens ne se rendent pas compte : participer à l&#8217;open source, ou à un quelconque effort collectif, ça prend énormément de temps. Entre les interruptions que ça génère, l&#8217;historique qu&#8217;il faut remonter à chaque fois, le changement de contexte, et bien entendu l&#8217;activité elle-même.</p>
+<p>Donc, quand on vous rapporte un bug, même de manière énervée, bénissez le Dieu de la procrastination que la personne ait pris le temps de le faire. Vous ne vous devez rien l&#8217;un à l&#8217;autre, et c&#8217;est un beau moment de synergie humaine.</p>
+<p>En l’occurrence, donc, mon interlocuteur a fini par marquer le bug comme &#8220;lack of feedback&#8221;.</p>
+<p>D&#8217;un certain côté, ça m&#8217;a soulagé, je n&#8217;avais plus du tout envie de m&#8217;y remettre.</p>
+<p>D&#8217;un autre côté, j&#8217;ai culpabilisé, me disant que quand même, j&#8217;utilise du FOSS, faudrait contribuer plus, et que j&#8217;avais fais perdre du temps à l&#8217;auteur.</p>
+<p>Au final, cette semaine, je reçois une notification comme quoi une autre personne a continué le fil : il a le même problème.</p>
+<p>J&#8217;avais oublié ce détail : en prenant le temps d&#8217;ouvrir un fil de discussion, je lui avais donné vie. Je lui avait donné une légitimité. Et il se trouve qu&#8217;avec les infos fournies par le nouvel arrivant, le ticket a été marqué en bug, et sera corrigé.</p>
+<p>C&#8217;est un effort collectif, et même si je n&#8217;ai pas fais autant que ce que j&#8217;aurais voulu, j&#8217;ai joué mon rôle. Un rôle imparfait, mais utile.</p>
+<p>Donc souvenez-vous : reportez vos bugs, il en restera toujours quelque chose.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/reportez-il-en-restera-toujours-quelque-chose/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">16001</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/03/dp7iUhp.jpg" length="268293" type="image/jpg" />	</item>
+		<item>
+		<title>Le colonel moutarde dans la cuisine avec le chandelier</title>
+		<link>http://sametmax.com/le-colonel-moutarde-dans-la-cuisine-avec-le-chandelier/</link>
+		<comments>http://sametmax.com/le-colonel-moutarde-dans-la-cuisine-avec-le-chandelier/#comments</comments>
+		<pubDate>Thu, 15 Aug 2013 07:37:50 +0000</pubDate>
+		<dc:creator><![CDATA[golgotha]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[bug]]></category>
+		<category><![CDATA[debugging]]></category>
+		<category><![CDATA[rache]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7096</guid>
+		<description><![CDATA[On a parfois du mal à localiser l'origine d'un bug dans une longue requête sql ou un code spaghetti de 5000 lignes écris en 1999 par un biologiste recruté dans une SSII.]]></description>
+				<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/golgotha/">Golgotha</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<p>On a parfois du mal à localiser l&#8217;origine d&#8217;un bug dans une longue requête sql ou un code spaghetti de 5000 lignes écris en 1999 par un biologiste recruté dans une SSII. Bien sur vous pouvez tenter la méthode traditionnelle, essayer de comprendre d&#8217;où viens le bug, de façon logique&#8230; ou bien gagner du temps et appliquer la méthode que je préfère dans ce genre de situation : la dichotomie.</p>
+<p>Le principe est simple, couper en deux le code défectueux (commenter la moitié), re-faire un test, si le code marche, l&#8217;erreur viens de la partie commentée ou inversement, ensuite prenez la partie défectueuse et recommencez. Vous tomberez assez rapidement sur le bug, généralement en quelques minutes grand max, sans avoir réfléchi, c&#8217;est pratique quand vous devez trouver un bug rapidement en prod dans la panique générale.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-colonel-moutarde-dans-la-cuisine-avec-le-chandelier/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">7096</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/08/fXIaZLD.jpg" length="254064" type="image/jpg" />	</item>
+	</channel>
+</rss>

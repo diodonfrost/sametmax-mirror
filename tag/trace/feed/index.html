@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>trace &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/trace/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Afficher le queryset d&#8217;une requête dans les logs SQL sous Django</title>
+		<link>http://sametmax.com/afficher-le-queryset-dune-requete-dans-les-logs-sql-sous-django/</link>
+		<comments>http://sametmax.com/afficher-le-queryset-dune-requete-dans-les-logs-sql-sous-django/#comments</comments>
+		<pubDate>Wed, 25 Dec 2013 11:38:12 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[mysql]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[trace]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8447</guid>
+		<description><![CDATA[L'ORM de django pour les bases de données est chouette, agréable à utiliser mais construit des requêtes SQL qu'on ne peut reconnaître lors de l'analyse des logs MYSQL du premier coup d'oeil à moins d'avoir des années de pratique. J'ai une app django pour vous permettre de faire des débug sql éclairs !]]></description>
+				<content:encoded><![CDATA[<p>C&#8217;est Noël, 2 articles rien que pour vous dont un <a href="http://sametmax.com/est-ce-que-framework-x-supporte-la-charge/" title="Est-ce que “framework x” supporte la charge ?">très interressant de Sam</a>.</p>
+<p>L&#8217;ORM de django pour les bases de données est chouette, agréable à utiliser mais construit des requêtes SQL qu&#8217;on ne peut reconnaître lors de l&#8217;analyse des logs MYSQL du premier coup d&#8217;oeil. Et quand on a des centaines de requêtes par secondes c&#8217;est carrément impossible de s&#8217;y retrouver.</p>
+<p>Ce que je vous propose ici c&#8217;est d&#8217;afficher le queryset (sa ligne et le fichier qui le contient) qui a permit d&#8217;exêcuter la requête SQL que vous voyez défiler dans les logs SQL sous forme de <a href="http://dev.mysql.com/doc/refman/5.0/en/comments.html">commentaires SQL</a>.</p>
+<p>L&#8217;application se nomme <a href="https://pypi.python.org/pypi/django-sql-stacktrace/">Django Sql StackTrace</a>. C&#8217;est facile à installer et ça peut sauver des heures de debug.</p>
+<p><strong>Installation Django Sql StackTrace:</strong></p>
+<p><strong>Une bonne PIP comme toujours pour bien commencer.</strong></p>
+<pre lang="bash">
+pip install django-sql-stacktrace
+</pre>
+<p><strong>Dans votre fichier settings de django.</strong></p>
+<pre lang="bash">
+INSTALLED_APPS = (
+    .........................
+    'sqlstacktrace',
+    .........................
+)
+
+SQL_STACKTRACE = True
+</pre>
+<p>La variable SQL_STACKTRACE sert à activer le debug.<br />
+Pensez à le désactiver lorsque vous n&#8217;en avez pas besoin.</p>
+<p><strong>Où se trouve mes super infos de debug ?</strong></p>
+<p><a href="http://adw0rd.com/2012/8/23/django-sql-stacktrace/en/#.Urq_5mRdU98">D&#8217;après la doc</a> vous pouvez executer un <a href="http://pwet.fr/man/linux/commandes/watch">watch</a></p>
+<pre lang="bash">
+watch -n1 mysqladmin -u login -pmot_de_passe processlist --verbose
+</pre>
+<p>Chez moi ça n&#8217;a rien donné. Mais du côté des logs MySQL la magie a opérée.<br />
+Vérifiez tout d&#8217;abord que vos logs sont activés dans mysql.</p>
+<pre lang="bash">vi /etc/my.cnf</pre>
+<pre lang="bash">
+[mysqld]
+......
+log = /var/logs/mysql.log
+......
+</pre>
+<p><strong>Comment on teste ça ?</strong></p>
+<p>Redemarrez votre serveur web, surfez sur les pages de votre projet et observez les logs MySql. Vous deviez voir quelques chose de similaire:</p>
+<pre lang="bash">
+tail -F /var/logs/mysql.log
+</pre>
+<pre lang="bash">
+		  644 Query	SELECT `auth_user`.`id`, `auth_user`.`password`, `auth_user`.`last_login`, `auth_user`.`is_superuser`, `auth_user`.`username`, `auth_user`.`first_name`, `auth_user`.`last_name`, `auth_user`.`email`, `auth_user`.`is_staff`, `auth_user`.`is_active`, `auth_user`.`date_joined` FROM `auth_user` WHERE `auth_user`.`id` = 65290
+/* File "/Users/max/work/mon_projet/apps/mon_apps/views/others.py", line 146, in user_public_page
+	user = User.objects.get(pk=user_id)
+*/
+
+</pre>
+<p>Observez cette merveille !<br />
+Entre <strong>/* */</strong> sont les infos générées par django-sql-stacktrace. J&#8217;ai nettoyé quelques fichiers pour plus de lisibilité.<br />
+Vous avez droit au chemin du fichier de la requête, à la ligne de la requête et à la requête django elle-même.</p>
+<p><strong>Une alternative ? J&#8217;ai pas envie d&#8217;installer d&#8217;app.</strong></p>
+<p>Pour les grosses feignasses ou si vous voulez juste tester occasionnellement quelques queries vous pouvez utiliser la méthode extra pour ajouter vos propres commentaires.</p>
+<pre lang="bash">
+videos = Video.objects.filter(status='online').extra(where=['1=1 /* ceci apparaitra dans les logs mysql ! */'])
+</pre>
+<p>Cependant le WHERE 1=1 peut causer quelques baisses de performances, mais lorsqu&#8217;on est en debug en local ça peut servir !</p>
+<p>PS: Je rappelle également le formidable outil <a href="https://github.com/django-debug-toolbar/django-debug-toolbar">django-debug-toolbar</a> qui devient vite indispensable.</p>
+<p>Alors ? Elle est pas belle la vie ?</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/afficher-le-queryset-dune-requete-dans-les-logs-sql-sous-django/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8447</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/12/fontaine_chocolat.jpg" length="26691" type="image/jpg" />	</item>
+	</channel>
+</rss>

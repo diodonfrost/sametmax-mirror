@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>unittest &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/unittest/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Comment mocker une coroutine ?</title>
+		<link>http://sametmax.com/comment-mocker-une-coroutine/</link>
+		<comments>http://sametmax.com/comment-mocker-une-coroutine/#comments</comments>
+		<pubDate>Mon, 25 Jan 2016 10:34:23 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[mock]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unittest]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=17976</guid>
+		<description><![CDATA[Dans <a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-5/">le guide sur les tests</a> en python (que je dois toujours terminer, je sais...), je vous parle des objets mocks.
+
+Si vous avez eu le plaisir de jouer avec asyncio, vous avez du noter que unittest.mock n'a aucun outil pour gérer gérer les coroutines.]]></description>
+				<content:encoded><![CDATA[<p>Dans <a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-5/">le guide sur les tests</a> en python (que je dois toujours terminer, je sais&#8230;), je vous parle des objets mocks.</p>
+<p>Si vous avez eu le plaisir de jouer avec <code>asyncio</code>, vous avez du noter que <code>unittest.mock</code> n&#8217;a aucun outil pour gérer gérer les coroutines.</p>
+<p>En attendant que ce soit intégré à la stdlib, voici une petite recette :</p>
+<pre lang="python">import asyncio
+from unittest.mock import Mock
+
+# on utilise toute la machinerie du Mock original
+class AMock(Mock):
+
+
+    def __call__(self, *args, **kwargs):
+        # la référence du parent doit se récupérer hors
+        # hors de la closure
+        parent = super(AMock, self) 
+        # sauf qu'à l'appel on créé une fonction coroutine
+        @asyncio.coroutine
+        def coro():
+            # Qui fait le vrai Mock.__call__ (et donc popule l'historique 
+            # des appels), mais seulement après l'évent loop l'ait éxécuté
+            return parent.__call__(*args, **kwargs)
+
+        # On appelle la fonction coroutine pour générer une coroutine
+        # (les coroutines marchent comme les générateurs)
+        return coro()
+
+
+</pre>
+<p>Je propose qu&#8217;en l&#8217;honneur de ce bidouillage, on l&#8217;appelle&#8230; mockoroutine !</p>
+<p>Ca va s&#8217;utiliser comme ça:</p>
+<pre lang="python">mockorourine = AMock()
+yield from mockorourine()</pre>
+<p>Après le <code>yield from</code>, <code>mockorourine.call_count == 1</code>, et <code>mockorourine.assert_called_once_with()</code>passe. </p>
+<p>Si vous êtes en 3.5+, on peut même faire:</p>
+<pre lang="python">class AMock(Mock):
+
+    def __call__(self, *args, **kwargs):
+        parent = super(AMock, self)
+        async def coro():
+            return parent.__call__(*args, **kwargs)
+        return coro()
+
+    def __await__(self):
+        # on delegue le await à la couroutine créée par __call__
+        return self().__await__()</pre>
+<p>Puis:</p>
+<pre lang="python">await AMock()</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comment-mocker-une-coroutine/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">17976</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/01/SRxfAmq.jpg" length="87995" type="image/jpg" />	</item>
+		<item>
+		<title>Est-ce que cet outil existe en Python ?</title>
+		<link>http://sametmax.com/est-ce-que-cet-outil-existe-en-python/</link>
+		<comments>http://sametmax.com/est-ce-que-cet-outil-existe-en-python/#comments</comments>
+		<pubDate>Fri, 01 May 2015 08:35:33 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unittest]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16157</guid>
+		<description><![CDATA[Le test unitaire le plus simple, c'est de vérifier que son API publique n'a pas changé.]]></description>
+				<content:encoded><![CDATA[<p>Le test unitaire le plus simple, c&#8217;est de vérifier que son API publique n&#8217;a pas changé.</p>
+<p>Ça veut dire :</p>
+<ul>
+<li>vérifier que les modules ont bien les mêmes définitions (un nom qui était importable n&#8217;a pas disparu).</li>
+<li>vérifier que les fonctions et méthodes ont bien la même signature (les arguments avec le même nom n&#8217;ont pas changé de place, et les keywords arguments n&#8217;ont pas changé de nom).</li>
+<li>vérifier que les classes ont le même nom, les mêmes méthodes publiques avec les mêmes signatures et les mêmes attributs.</li>
+</ul>
+<p>Ce sont des tests super cons qui demandent d&#8217;écrire du code du genre :</p>
+<pre lang="python">class Foo:
+    bar = True
+    def __init__(self, stuff=False):
+        self.stuff
+
+    def thing(self):
+        return "doh"
+
+# et dans les tests
+self.assertTrue(hasattr(Foo, 'bar'))
+self.assertTrue(hasattr(Foo, 'thing'))
+self.assertTrue(hasattr(Foo(), 'stuff'))</pre>
+<p>Et personne ne le fait, car déjà les tests c&#8217;est relou, mais écrire des tautologies à la main, c&#8217;est au dela du tolérable.</p>
+<p>Pourtant, ce genre de tests m&#8217;aurait déjà sauvé les gosses plusieurs fois. Une faute de frappe qui se glisse, un attribut qu&#8217;on rend privé, un méthode qu&#8217;on déplace et on pense avoir tout refactoré, un pote qui change un truc qu&#8217;on utilisait, etc.</p>
+<p>Je me demandais donc si il existait un truc qui permette de faire :</p>
+<pre lang="python">self.assertStablePublicAPI("package.module") # scanne tout le module et tous les objets
+self.assertStablePublicAPI("package.module:Class") # check juste la classe
+self.assertStablePublicAPI("package.module:func") # check juste la function</pre>
+<p>Le but étant que quand on lance les test, ça check si ça rencontre un nouvel objet/attribut/param et sauvegarde tout un dans un JSON. Aux prochains tests, si on a modifier l&#8217;API publique, le test foire jusqu&#8217;à ce qu&#8217;on modifie explicitement le fichier JSON.</p>
+<p>On doit bien entendu pouvoir régler le truc pour ignorer ou ajouter explicitement des choses à checker, par exemple par défaut ça ignore tous les machins avec des underscores dans le nom.</p>
+<p>J&#8217;ai cherché sur le net, mais j&#8217;arrive pas à trouver ça. Des pistes ?</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/est-ce-que-cet-outil-existe-en-python/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">16157</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/05/QwHfenI.jpg" length="121964" type="image/jpg" />	</item>
+		<item>
+		<title>Se simplifier les tests Python avec Pytest</title>
+		<link>http://sametmax.com/se-simplifier-les-tests-python-avec-pytest/</link>
+		<comments>http://sametmax.com/se-simplifier-les-tests-python-avec-pytest/#comments</comments>
+		<pubDate>Wed, 07 Nov 2012 12:04:50 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[pytest]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unit tests]]></category>
+		<category><![CDATA[unittest]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2884</guid>
+		<description><![CDATA[Et si on pouvait rendre les tests plus simples à écrire et à lire, aussi simple qu'un <code>assert</code>, mais un résultat plus clair que <code>unittest</code> en sortie ?]]></description>
+				<content:encoded><![CDATA[<p>Personne n&#8217;aime faire des tests unitaires. C&#8217;est un peu comme les impôts: on sait que c&#8217;est utile, mais on est jamais content de s&#8217;en occuper.</p>
+<p>Réchèr m&#8217;a dernièrement <a href="http://sametmax.com/quelques-innovation-de-python-3-backportees-en-python-2-7/#comment-2870">posé la question</a> de l&#8217;abondance des méthodes <code>assertTruc()</code> et leur utilité, et je lui ai répondu que chaque méthode donnait des infos adaptées au test effectué.</p>
+<p>Max m&#8217;a dernièrement fait la remarque que les tests &#8220;c&#8217;est bien mais c&#8217;est compliqué&#8221;. J&#8217;avoue être à court de contre-argument.</p>
+<p>Et si on pouvait rendre les tests plus simples à écrire et à lire, aussi simples qu&#8217;un <code>assert</code>, mais avec un résultat plus clair que <code>unittest</code> en sortie ?</p>
+<p><code><a href="http://sametmax.com/votre-python-aime-les-pip/">pip install</a> pytest </code></p>
+<p><a href="http://pytest.org/latest/index.html">Pytest</a> est une lib de test à utiliser à la place de <a href="http://docs.python.org/2/library/unittest.html">unittest</a>. Ses créateurs utilisent l&#8217;introspection et l&#8217;injection de dépendance pour créer des tests magiquement.</p>
+<p>D&#8217;ordinaire, la magie, on aime pas trop ça en Python, et on laisse ça aux rubistes. Mais dans le domaine du test, qui n&#8217;est pas un code de production avec les mêmes contraintes de lecture, de recherche de bugs architecturaux et d&#8217;interactions entre devs, mais qui a par contre une forte contrainte &#8220;j&#8217;ai pas envie d&#8217;écrire un caractère de plus&#8221;, ça a du sens.</p>
+<p>Voilà comment ça se passe: on vire tout ce qui est classe et setup verbeux. On laisse juste les imports de vos libs, et les tests. Avec des <code>assert</code>. Pytest va alors analyser tout ça, et faire tout le boulot autour pour vous.</p>
+<p>Exemple:</p>
+<p>Dans votre lib:</p>
+<pre lang="python">def ma_fonction_a_tester(a, b):
+    return a + b</pre>
+<p>Dans votre fichier <code>test.py</code>:</p>
+<pre lang="python">from malib import ma_fonction_a_tester
+
+def test_function():
+    assert ma_fonction_a_tester(1, 1) == 2</pre>
+<p>Et on lance :</p>
+<pre lang="bash">py.test test.py</pre>
+<p>Pour obtenir:</p>
+<pre>====== test session starts ======
+platform linux2 -- Python 2.7.3 -- pytest-2.3.2
+collected 1 items
+
+Bureau/test.py .
+
+====== 1 passed in 0.02 seconds ======
+</pre>
+<p>Et voilà, les tests redeviennent bêtes et simples. Mais ils ne perdent pas en puissance. Car Pytest analyse le <code>assert</code>, et le transforme à la volée. Du coup, pour les <a href="http://sametmax.com/quest-ce-quune-structure-de-donnees/">structures de données</a> complexes, Pytest va vous sortir les infos de debug utiles que <code>assertTruc()</code> de unittest vous aurait sorties.</p>
+<p>Exemple avec des tuples:</p>
+<pre lang="python">def ma_fonction_a_tester(a, b):
+    return (a * 2, b * 2)
+
+
+def test_function():
+    assert ma_fonction_a_tester(1, 1) == (2, 2, 3)</pre>
+<p>Va donner:</p>
+<pre>
+====== test session starts ======
+platform linux2 -- Python 2.7.3 -- pytest-2.3.2
+collected 1 items
+
+Bureau/test.py F
+
+====== FAILURES ======
+______ test_function ______
+
+    def test_function():
+>       assert ma_fonction_a_tester(1, 1) == (2, 2, 3)
+E       assert (2, 2) == (2, 2, 3)
+E         Right contains more items, first extra item: 3
+
+Bureau/test.py:7: AssertionError
+====== 1 failed in 0.02 seconds ======</pre>
+<p>On nous indique clairement qu&#8217;il y a un item de trop dans mon résultat, et lequel.</p>
+<p>En prime, Pytest nous affranchit des fonctions <code>setUp()</code> et <code>tearDown()</code> génériques. Le problème de ces méthodes dans unittest, c&#8217;est qu&#8217;elles sont exécutées à chaque début de test. On en a pas forcément besoin, et on a pas les mêmes besoins pour chaque test.</p>
+<p>Pytest ajoute encore un peu de magie pour régler le problème:</p>
+<p>Dans votre lib, vous avez ça:</p>
+<pre lang="python">import re
+
+def extraire_title(html):
+    """
+        Extrait le title d'une page HTML à base de regex. C'est mal.
+    """
+    try:
+        return re.search(r'<title[^>]*>(.*)</title>', html).groups()[0]
+    except IndexError, AttributeError:
+        return None</pre>
+<p>Dans votre fichier de tests, vous aurez:</p>
+<pre lang="python">import urllib2
+
+import pytest
+
+@pytest.fixture
+def exemple_html():
+    return urllib2.urlopen('http://www.google.com').read()
+
+def test_extraire_title(exemple_html):
+    assert extraire_title(exemple_html) == 'Google'</pre>
+<p>Qu&#8217;est-ce qui va se passer ?</p>
+<p><code>exemple_html()</code> va être déclarée comme une &#8220;fixture&#8221;, c&#8217;est à dire quelque chose qui contient ou génère des données de tests.</p>
+<p>Quand Pytest va lancer les tests, il va voir qu&#8217;un argument de <code>test_extraire_title()</code> porte le même nom que la fonction <code>exemple_html</code>. Alors, il va automatiquement appeler <code>exemple_html()</code>, et passer le résultat à <code>test_extraire_title()</code> pour lancer le test.</p>
+<p>On peut donc avoir des tas de fonctions de setup, partagées entre plein de fonctions de tests.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/se-simplifier-les-tests-python-avec-pytest/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">2884</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/11/fat-free-product-4001.jpg" length="186363" type="image/jpg" />	</item>
+	</channel>
+</rss>

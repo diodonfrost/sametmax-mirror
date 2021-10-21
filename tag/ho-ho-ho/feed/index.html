@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>ho ho ho &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/ho-ho-ho/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>L&#8217;un de vous a un cadeau de Noël qui l&#8217;attend au pied du sapin&#8230;</title>
+		<link>http://sametmax.com/lun-de-vous-a-un-cadeau-de-noel-qui-lattend-au-pied-du-sapin/</link>
+		<comments>http://sametmax.com/lun-de-vous-a-un-cadeau-de-noel-qui-lattend-au-pied-du-sapin/#comments</comments>
+		<pubDate>Thu, 13 Dec 2012 18:38:55 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[cadeau]]></category>
+		<category><![CDATA[ho ho ho]]></category>
+		<category><![CDATA[noel]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3659</guid>
+		<description><![CDATA[C'est Noël, On se lâche on offre un cadeau à un de nos lecteurs. Ca fait plaisir et ça vient du coeur.]]></description>
+				<content:encoded><![CDATA[<div id="attachment_3662" style="width: 394px" class="wp-caption aligncenter"><img class=" wp-image-3662 " title="mere-noel-sexy (1)" src="http://sametmax.com/wp-content/uploads/2012/12/mere-noel-sexy-1.jpg" alt="" width="384" height="191" /><p class="wp-caption-text">J&#39;ai un cadeau en-dessous...</p></div>
+<p>On &#8216;a pas beaucoup d&#8217;argent, on n&#8217;a pas d&#8217;ami, on n&#8217;a pas de chien, on n&#8217;a pas de bagnole mais on a un peu de coeur.Le ptit Sam et moi-même avons reçu la visite de la mère Noëlle l&#8217;autre soir vers 10 heures du matin. Et entre deux Ricards elle nous a gentillement pom&#8230; proposée de venir livrer un cadeau de Noël à un de nos lecteurs chéri.</p>
+<p>On n&#8217;a pas fait d&#8217;annonce avant du genre &#8220;inscrivez-vous&#8221;, &#8220;jeu sans obligation d&#8217;achat&#8221;, etc car chez les Rougemonts on ne parle pas, on agit ! Donc juste un ptit article vite fait.</p>
+<p>Et puis pour que cet article soit constructif Sam vous propose un petit code en Python de tirage au sort. Le script va prendre au hasard un pseudo parmis le top 20 des commentateurs.</p>
+<pre lang="python">
+import argparse
+import random
+
+import MySQLdb
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument('database', type=str)
+parser.add_argument('--host', type=str, default="localhost")
+parser.add_argument('--port', type=int, default=3306)
+parser.add_argument('--user', type=str, default="")
+parser.add_argument('--passwd', type=str, default="")
+
+args = parser.parse_args()
+
+db = MySQLdb.connect(host=args.host, port=args.port, user=args.user,
+                     passwd=args.passwd, db=args.database)
+
+cursor = db.cursor()
+
+results = cursor.execute("""
+    SELECT comment_author, comment_author_email, count(*) as total
+    FROM wp_comments
+    WHERE comment_author NOT IN ('sam', 'max')
+    GROUP BY comment_author
+    ORDER BY total DESC
+    LIMIT 22
+""")
+
+users = list(cursor)
+
+print "Choosing among:"
+
+for user in users:
+    print "\t- %s" % user[0].decode('latin-1')
+
+print "\nAnd the winner is...\n"
+
+print u"%s (%s)\n" % tuple(s.decode('latin-1') for s in random.choice(users)[:2])
+
+print "Ta da!"
+</pre>
+<pre lang="bash">
+
+$ python tirage.py sametmax --user sametmax --passwd voussaurezpas@!
+Choosing among:
+    - roro
+    - foxmask
+    - Recher
+    - etienne
+    - Muchos
+    - Baronsed
+    - JeromeJ
+    - Luigi
+    - JEEK
+    - desfrenes
+    - Freak0
+    - fero14041
+    - Kontre
+    - François
+    - anthony
+    - LowsLiago
+    - H3
+    - Soli
+    - kinezana
+    - chassegnouf
+    - Xavier Combelle
+    - pfroot
+
+And the winner is...
+
+foxmask (xxxx@xxxxxxx)
+
+Ta da!
+</pre>
+<p>D&#8217;après le script c&#8217;est <strong>foxmask</strong> qui a gagné(e), merci de nous <a href="http://sametmax.com/contactez-nous/">envoyer ton adresse postale</a> pour recevoir au plus vite ton cadeau.<br />
+Ce n&#8217;est pas une blague, on a vraiment un cadeau pour toi (et c&#8217;est PAS de la merde!) ;)</p>
+<p>Merci de nous lire et passez tous de bonnes fêtes, mettez-vous en plein la panse!</p>
+<p>PS: Pour les autres ben&#8230;Vous l&#8217;avez dans le cul ! Au prochain tirage au sort :)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/lun-de-vous-a-un-cadeau-de-noel-qui-lattend-au-pied-du-sapin/feed/</wfw:commentRss>
+		<slash:comments>80</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">3659</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/12/7894a475.png" length="738487" type="image/jpg" />	</item>
+	</channel>
+</rss>

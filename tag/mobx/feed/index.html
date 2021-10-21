@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>mobx &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/mobx/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Le don du mois: mobx</title>
+		<link>http://sametmax.com/le-don-du-mois-mobx/</link>
+		<comments>http://sametmax.com/le-don-du-mois-mobx/#comments</comments>
+		<pubDate>Mon, 02 Jul 2018 10:41:28 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[don]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[mobx]]></category>
+		<category><![CDATA[react]]></category>
+		<category><![CDATA[reactjs]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=24750</guid>
+		<description><![CDATA[Quand je vous dis que j'ai donné 50 balles à <a href="https://github.com/mobxjs/mobx">Mobx</a>, c'est que le projet déchire. Et il déchire <strong>malgré</strong> le fait qu'il soit codé en JS.]]></description>
+				<content:encoded><![CDATA[<p>Si vous avez suivi un peu les différents <a href="http://sametmax.com/tag/don/">dons du mois</a> au fur et à mesure de la vie du blog, vous avez du vous rendre compte de 2 choses:</p>
+<ul>
+<li>Le don du mois n&#8217;est pas mensuel. Il est juste limité à un par mois. Ça m&#8217;évite la pression d&#8217;être un bon samaritain. Sauf que du coup, j&#8217;oublie parfois pendant trèèèèèèès longtemps :)</li>
+<li>Il n&#8217;y a pas beaucoup de projets JS dans le lot. Ahem.</li>
+</ul>
+<p>En fait le seul et unique projet JS supporté a été <a href="http://sametmax.com/le-don-du-mois-vue-js/">VueJS</a>. C&#8217;est dire que la barre est haute, étant donné la qualité exceptionnelle de ce projet.</p>
+<p>Donc quand je vous dis que j&#8217;ai donné 50 balles à <a href="https://github.com/mobxjs/mobx">Mobx</a>, c&#8217;est que le projet déchire. Et il déchire <strong>malgré</strong> le fait qu&#8217;il soit codé en JS.</p>
+<p>Mobx permet, en gros, de surveiller les modifications à une structure de données. Vous posez un marqueur sur la structure, et un sur les fonctions utilisant la structure, et c&#8217;est tout:</p>
+<pre lang="javascript">class TodoList {
+    @observable todos = []; // dire à mobx de surveiller
+}
+
+...
+
+@observer // dire à mobx de tenir à jour
+class TodoListView extends Component {
+    render() {
+        return <ul>
+            {this.props.todoList.todos.map(todo =>)}
+        </ul>
+    }
+
+</pre>
+<p> C&#8217;est là la brillance du système: malgré sa simplicité, mobx va récursivement réagir à toute modifications, même sur des données complexes imbriquées; Et calculer toutes les dépendances de chaque fonction pour ne les appeler qu&#8217;au meilleur moment.</p>
+<p>C&#8217;est facile à utiliser, et étonnamment rapide à exécuter.</p>
+<p>Le résultat ? Quand un client me force à utiliser ReactJS, je saute redux, et je met Mobx à la place. Ca donne <em>presque</em> l&#8217;impression d&#8217;utiliser Vue: le code de manipulation d&#8217;état est simple à comprendre, gentil sur le CPU et les mutations d&#8217;état restent courtes et élégantes. Le reste est toujours moche, mais ça on y peut rien.</p>
+<p>Bref, mobx est ce qui rend react acceptable. Et tout ce qui peut apaiser la douleur du dev en front-end n&#8217;a pas de prix.</p>
+<p>J&#8217;ai regardé le code source, et la popote interne est bien complexe. Mais à chaque fois que je veux l&#8217;utiliser je me dis que ça ne pourra pas être si simple&#8230; et si.</p>
+<p>La page de don, <a href="https://mobx.js.org/donate.html">c&#8217;est par là</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-don-du-mois-mobx/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">24750</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/07/mmGrMWi.png" length="482085" type="image/jpg" />	</item>
+	</channel>
+</rss>

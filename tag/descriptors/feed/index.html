@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>descriptors &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/descriptors/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Les descripteurs en Python</title>
+		<link>http://sametmax.com/les-descripteurs-en-python/</link>
+		<comments>http://sametmax.com/les-descripteurs-en-python/#comments</comments>
+		<pubDate>Sat, 24 Nov 2012 13:11:56 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[descriptors]]></category>
+		<category><![CDATA[properties]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3276</guid>
+		<description><![CDATA[Un descripteur est une classe qu'on instancie comme attribut d'une autre classe pour faire office de setter et de getter sur cet attribut. Le descripteur doit implémente les méthodes <code>__get__</code> et <code>__set__</code> qui seront exécutées quand on essayer d'assigner ou lire l'attribut. ]]></description>
+				<content:encoded><![CDATA[<p>Un descripteur est une classe qu&#8217;on instancie comme attribut d&#8217;une autre classe pour faire office de setter et de getter sur cet attribut. Le descripteur doit implémenter les méthodes <code>__get__</code> et <code>__set__</code> qui seront exécutées quand on essaye d&#8217;assigner ou lire l&#8217;attribut. Respecter cette signature, c&#8217;est adopter ce qu&#8217;on appelle pompeusement le &#8220;descriptor protocol&#8221;.</p>
+<p>Si le principe vous rappelle les <a href="http://docs.python.org/2/library/functions.html#property">propriétés</a>, c&#8217;est normal, les propriétés sont implémentées en utilisant des descripteurs.</p>
+<p>Exemple balot et complètement arbitraire :</p>
+<pre lang="python">class JeSuisUnDescripteurEtJeVousEmmerde(object):
+
+    # les noms des attributs sont des conventions
+    def __get__(self, obj, objtype):
+        return obj, objtype
+
+    def __set__(self, obj, value):
+        print obj, value
+
+
+class JeSuisUneClasseNormaleEtJeVousAime(object):
+
+    ze_attribute = JeSuisUnDescripteurEtJeVousEmmerde()
+
+
+>>> objet_affecteux = JeSuisUneClasseNormaleEtJeVousAime()
+>>> print objet_affecteux.ze_attribute
+<__main__.JeSuisUneClasseNormaleEtJeVousAime object at 0x1cb20d0> <class '__main__.JeSuisUneClasseNormaleEtJeVousAime'>
+>>> objet_affecteux.ze_attribute = 'dtc '
+<__main__.JeSuisUneClasseNormaleEtJeVousAime object at 0x1cedf10> dtc</pre>
+<p>Vous noterez que <code>obj</code> est donc toujours l&#8217;instance de l&#8217;objet qui possède l&#8217;attribut sur lequel on agit. Dans <code>__get__</code>, <code>objtype</code> est la classe de cet objet. Dans <code>__set__</code>, <code>value</code> est la nouvelle valeur qu&#8217;on assigne à l&#8217;objet.</p>
+<p>Vous allez me dire: pourquoi utiliser les descriptors plutôt que les properties ?</p>
+<p>D&#8217;abord, les descripteurs sont des unités de code indépendantes. Vous pouvez faire un module avec vos descripteurs, et les distribuer en tant que lib. Donc c&#8217;est réutilisable. Ensuite, vous n&#8217;êtes pas limités à votre méthode en cours, vous avez accès à tout l&#8217;arsenal de la programmation OO.</p>
+<p>Par exemple, si vous pouvez faire un descriptor d&#8217;alerte, qui envoie un signal à tous les abonnés pour cette valeur:</p>
+<pre lang="python">class SignalDescriptor(object):
+
+    abonnements = {}
+
+    @classmethod
+    def previens_moi(cls, obj, attr, callback):
+        cls.abonnements.setdefault(obj, {}).setdefault(attr, set()).add(callback)
+
+    def __init__(self, nom, valeur_initiale=None):
+        self.nom = nom
+        self.valeur = valeur_initiale
+
+    def __get__(self, obj, objtype):
+        for callback in self.abonnements.get(obj, {}).get(self.nom, ()):
+            callback('get', obj, self.nom, self.valeur)
+        return self.valeur
+
+    def __set__(self, obj, valeur):
+        for callback in self.abonnements.get(obj, {}).get(self.nom, ()):
+            callback('set', obj, self.nom, self.valeur, valeur)
+        self.valeur = valeur
+
+</pre>
+<p>Et voilà, vous pouvez distribuer ça sur Github, c&#8217;est plug and play.</p>
+<p>Par exemple, pour créer un objet <code>Joueur</code> sur lequel on veut monitorer le nombre de crédits :</p>
+<pre lang="python">class Joueur(object):
+
+    credits = SignalDescriptor("credits", 0)</pre>
+<p>On l&#8217;utilise normalement:</p>
+<pre lang="python">>>> j = Joueur()
+>>> j.credits
+0
+>>> j.credits = 15
+>>> j.credits
+15
+>>> j.credits += 5
+>>> j.credits
+20</pre>
+<p>Mais si on rajoute un abonné :</p>
+<pre lang="python">
+
+def monitorer_credits(action, obj, attribut, valeur_actuelle, nouvelle_valeur=None):
+
+   if action == 'set':
+       print "Les crédits ont changé:"
+   else:
+       print "Les crédits ont été consultés:"
+   print action, obj, attribut, valeur_actuelle, nouvelle_valeur
+
+>>> SignalDescriptor.previens_moi(j, 'credits', monitorer_credits)</pre>
+<p>Alors à chaque action sur les crédits, tous les abonnés sont appelés :</p>
+<pre lang="python">>>> j.credits
+Les crédits ont été consultés:
+get <__main__.Joueur object at 0x1f6b190> credits 20 None
+20
+>>> j.credits = -20
+Les crédits ont changé:
+set <__main__.Joueur object at 0x1f6b190> credits 20 -20
+>>> j.credits -= 10 # get ET set
+Les crédits ont été consultés:
+get <__main__.Joueur object at 0x1f6b190> credits -20 None
+Les crédits ont changé:
+set <__main__.Joueur object at 0x1f6b190> credits -20 -30
+</pre>
+<p>On vient d&#8217;implémenter une version encapsulée du <a href="http://sametmax.com/le-pattern-observer-en-utilisant-des-decorateurs">pattern observer</a> dédié à un attribut. On peut faire de nombreuses choses avec les descripteurs: grouper des attributs, les transformer à la volée, les sauvegarder ailleurs (imaginez un objet de config qui sauvegarde automatiquement chaque modification de ses attributs dans un fichier…).</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-descripteurs-en-python/feed/</wfw:commentRss>
+		<slash:comments>17</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">3276</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/11/wmygplyl.jpg" length="78327" type="image/jpg" />	</item>
+	</channel>
+</rss>

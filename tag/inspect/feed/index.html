@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>inspect &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/inspect/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Décorateur de trace</title>
+		<link>http://sametmax.com/decorateur-de-trace/</link>
+		<comments>http://sametmax.com/decorateur-de-trace/#comments</comments>
+		<pubDate>Mon, 15 Apr 2013 17:33:32 +0000</pubDate>
+		<dc:creator><![CDATA[xonop]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[decorateur]]></category>
+		<category><![CDATA[inspect]]></category>
+		<category><![CDATA[introspection]]></category>
+		<category><![CDATA[log]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5670</guid>
+		<description><![CDATA[Suite aux superbes articles sur les <a href="http://comprendre-les-decorateurs-python-pas-a-pas-partie-1">décorateurs</a> et sur l'écriture des <a href="http://ecrire-des-logs-en-python/">logs en python</a> j'ai voulu mettre en pratique dans mon projet.
+C'est là que les ennuis ont commencé !]]></description>
+				<content:encoded><![CDATA[<p><em>(Ceci est un post invité de <a href="http://sametmax.com/author/xonop/">xonop</a> sous licence creative common 3.0 unported.)</em></p>
+<p>Suite aux superbes articles sur les <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1">décorateurs</a> et sur l&#8217;écriture des <a href="http://sametmax.com/ecrire-des-logs-en-python/">logs en python</a> j&#8217;ai voulu mettre en pratique dans mon projet.<br />
+C&#8217;est là que les ennuis ont commencé !<br />
+<span id="more-5670"></span></p>
+<p><strong>Objectif :</strong></p>
+<p>Créer un décorateur qui me permette de tracer le passage dans certaines méthodes.<br />
+Celui-ci doit :</p>
+<ul>
+<li>Être débrayable facilement.</li>
+<li>Récupérer automatiquement le nom de la méthode, sa classe et son module.</li>
+</ul>
+<p><strong>Première étape : le logger</strong></p>
+<p>Avant toute chose mettons en place l&#8217;environnement pour pouvoir tracer en utilisant le module logging.<br />
+Pour simplifier les exemples, nous associons un seul <em>handler</em> de type <em>terminal</em>.<br />
+La fonction <code>log_debug</code> permet de faire appel au logger pour tracer une information.</p>
+<p><code>logger.py</code> :</p>
+<pre lang="python">
+import functools
+import logging
+
+__DECO_ACTIVATED = True
+__logger = None
+
+def init_logger():
+    global __logger
+    __logger = logging.getLogger()
+    __logger.setLevel(logging.DEBUG)
+    terminalHandler = logging.StreamHandler()
+    terminalHandler.setLevel(logging.DEBUG)
+    __logger.addHandler(terminalHandler)
+
+def log_debug(text):
+    __logger.debug(text)
+</pre>
+<p><strong>Deuxième étape : le décorateur, version basique</strong></p>
+<p>Pour commencer, le décorateur débrayable :</p>
+<p><code>logger.py</code> :</p>
+<pre lang="python">def log_decorator(func):
+    if not __DECO_ACTIVATED:
+        return func
+
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        __logger.debug("BEGIN")
+        data = func(*args, **kwargs)
+        __logger.debug("END")
+        return data
+    return wrapped
+</pre>
+<p><strong>Remarques :</strong></p>
+<ul>
+<li>La fonction est décorée selon la valeur de la variable <code>__DECO_ACTIVATED</code>.</li>
+<li>La fonction <a href="http://docs.python.org/3/library/functools.html#functools.wraps">wraps</a> du module <a href="http://docs.python.org/3/library/functools.html">functools</a> reporte les attributs de la fonction originale sur la version <em>wrappée</em> (dont les docstrings).</li>
+</ul>
+<p>Et maintenant un module pour tester ça :</p>
+<p><code>main.py</code> :</p>
+<pre lang="python">
+import logger
+
+class Generic():
+    @logger.log_decorator
+    def do_it(self, arg1):
+        logger.log_debug(arg1)
+
+if __name__ == "__main__":
+    logger.init_logger()
+    generic = Generic()
+    generic.do_it("NOW")
+</pre>
+<p>Et voilà le résultat :</p>
+<pre lang="python">
+BEGIN
+NOW
+END
+</pre>
+<p><strong>Troisième étape : les noms de module et de fonction</strong></p>
+<p>Ces informations se récupèrent facilement, voici la nouvelle version du décorateur :</p>
+<p><code>logger.py</code> :</p>
+<pre lang="python" highlight="4,5,9">
+def log_decorator(func):
+    if not __DECO_ACTIVATED:
+        return func
+    module_name = func.__module__
+    func_name = func.__name__
+
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        msg = "Module={} Function={}".format(module_name, func_name)
+        __logger.debug("BEGIN " + msg)
+        data = func(*args, **kwargs)
+        __logger.debug("END " + msg)
+        return data
+    return wrapped
+</pre>
+<p>Et maintenant le résultat :</p>
+<pre lang="python">
+BEGIN Module=__main__ Function=do_it
+NOW
+END Module=__main__ Function=do_it
+</pre>
+<p>Jusqu&#8217;ici tout va bien.</p>
+<p><strong>Quatrième étape : le nom de la classe</strong></p>
+<p>Et c&#8217;est maintenant que les choses se corsent !<br />
+Tout d&#8217;abord, l&#8217;objet <code>func</code> que nous manipulons est une fonction et non une méthode de classe :</p>
+<pre lang="python">
+print(func)
+<function Generic.do_it at 0x00C70348>
+</pre>
+<p>En effet lors de l&#8217;exécution du décorateur, la classe en tant qu&#8217;objet n&#8217;existe pas encore.<br />
+Il n&#8217;y a pas de lien direct entre la fonction et sa future classe.</p>
+<p>Bon nombre de développeurs bien intentionnés nous conseillent d&#8217;utiliser <code>self</code> pour déterminer sa classe.</p>
+<p><strong>Oui mais</strong> :</p>
+<ul>
+<li>Si la fonction n&#8217;est pas une méthode, pas de <code>self</code> !</li>
+<li>La classe n&#8217;est pas obligatoirement celle de la méthode. Il peut s&#8217;agir d&#8217;une classe héritée.</li>
+</ul>
+<p>Pour s&#8217;en convaincre, voici le nouveau décorateur :</p>
+<p><code>logger.py</code> :</p>
+<pre lang="python" highlight="9-14">
+def log_decorator(func):
+    if not __DECO_ACTIVATED:
+        return func
+    module_name = func.__module__
+    func_name = func.__name__
+
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        try:
+            class_name = args[0].__class__.__name__
+        except IndexError:
+            class_name = ""
+        msg = "Module={} Class={} Function={}".format(
+            module_name, class_name, func_name)
+        __logger.debug("BEGIN " + msg)
+        data = func(*args, **kwargs)
+        __logger.debug("END " + msg)
+        return data
+    return wrapped
+</pre>
+<p>Et maintenant le module de tests :</p>
+<p><code>main.py</code> :</p>
+<pre lang="python" highlight="8-11,15,16">
+import logger
+
+class Generic():
+    @logger.log_decorator
+    def do_it(self, arg1):
+        logger.log_debug(arg1)
+
+class Specific(Generic):
+    @logger.log_decorator
+    def do_it(self, arg1):
+        super().do_it(arg1)
+
+if __name__ == "__main__":
+    logger.init_logger()
+    specific = Specific()
+    specific.do_it("NOW")
+</pre>
+<p>Et le résultat tant attendu :</p>
+<pre lang="python">
+BEGIN Module=__main__ Class=Specific Function=do_it
+BEGIN Module=__main__ Class=Specific Function=do_it
+NOW
+END Module=__main__ Class=Specific Function=do_it
+END Module=__main__ Class=Specific Function=do_it
+</pre>
+<p>Et là c&#8217;est le drâme, on a perdu la classe <code>Generic</code> ! Mais analysons plutôt l&#8217;exécution :</p>
+<ul>
+<li>Appel de la méthode <code>Specific.do_it()</code> vu que l&#8217;objet <code>generic</code> est une instance de cette classe.</li>
+<li>Appel de la méthode <code>Generic.do_it()</code> par le biais de l&#8217;instruction <code>super().do_it()</code></li>
+</ul>
+<p>Comme prévu, la classe de l&#8217;objet <code>self</code> ne change pas que l&#8217;on soit dans une méthode de la classe ou de l&#8217;une de ses super-classes.</p>
+<p><strong>Quatrième étape : autre approche</strong></p>
+<p>Ne pouvant déterminer directement la classe d&#8217;appartenance de la fonction, essayons de la chercher dans le module.<br />
+Pour commencer il nous faut l&#8217;objet <code>module</code> alors que nous ne connaissons que son nom.<br />
+Le module <a href="http://docs.python.org/3/library/inspect.html">inspect</a> propose justement ce service grâce à <a href="http://docs.python.org/3/library/inspect.html#inspect.getmodule">getmodule</a>.<br />
+Voici le décorateur modifié :</p>
+<p><code>logger.py</code> :</p>
+<pre lang="python" highlight="7-17">
+import inspect
+
+def log_decorator(func):
+    if not __DECO_ACTIVATED:
+        return func
+    module_name = func.__module__
+    module_obj = inspect.getmodule(func)
+    class_name = "UNKNOWN"
+    for key, obj in module_obj.__dict__.items():
+        try:
+            members = obj.__dict__
+            method = members[func.__name__]
+            if method == func:
+                class_name = key
+                break
+        except (KeyError, AttributeError):
+            pass
+    func_name = func.__name__
+
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        msg = "Module={} Class={} Function={}".format(
+            module_name, class_name, func_name)
+        __logger.debug("BEGIN " + msg)
+        data = func(*args, **kwargs)
+        __logger.debug("END " + msg)
+        return data
+
+    return wrapped
+</pre>
+<p>Pour rechercher la fonction, le décorateur doit :</p>
+<ul>
+<li>Lister les objets du module.</li>
+<li>Rechercher pour chaque objet le nom de la fonction dans les attributs de celui-ci. Si l&#8217;attribut correspond à notre fonction, c&#8217;est gagné !</li>
+</ul>
+<p>Nous obtenons alors :</p>
+<pre lang="python">
+BEGIN Module=__main__ Class=UNKNOWN Function=do_it
+BEGIN Module=__main__ Class=UNKNOWN Function=do_it
+NOW
+END Module=__main__ Class=UNKNOWN Function=do_it
+END Module=__main__ Class=UNKNOWN Function=do_it
+</pre>
+<p>Pas glop ça marche pas !<br />
+Regardons le contenu du module avant la recherche :</p>
+<pre lang="python">
+print(module_obj.__dict__.keys())
+dict_keys(['__builtins__', '__name__', '__file__', '__doc__', '__loader__',
+           '__cached__', 'logger', '__package__'])
+</pre>
+<p>Curieusement les classes n&#8217;apparaissent pas, mais c&#8217;est tout à fait normal.<br />
+Comme vu précédemment, lors de l&#8217;exécution du décorateur la classe est en instance de création.<br />
+Il faut donc faire cette recherche lors de l&#8217;exécution de la fonction <em>wrappée</em>.</p>
+<p>Le décorateur devient donc :</p>
+<p><code>logger.py</code> :</p>
+<pre lang="python" highlight="10-21">
+def log_decorator(func):
+    if not __DECO_ACTIVATED:
+        return func
+    module_name = func.__module__
+    module_obj = inspect.getmodule(func)
+    func_name = func.__name__
+
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        class_name = "UNKNOWN"
+        for key, obj in module_obj.__dict__.items():
+            try:
+                members = obj.__dict__
+                method = members[func.__name__]
+                if method == func:
+                    class_name = key
+                    break
+            except (KeyError, AttributeError):
+                pass
+        msg = "Module={} Class={} Function={}".format(
+            module_name, class_name, func_name)
+        __logger.debug("BEGIN " + msg)
+        data = func(*args, **kwargs)
+        __logger.debug("END " + msg)
+        return data
+
+    return wrapped
+</pre>
+<p>Et le résultat :</p>
+<pre lang="python">
+BEGIN Module=__main__ Class=UNKNOWN Function=do_it
+BEGIN Module=__main__ Class=UNKNOWN Function=do_it
+NOW
+END Module=__main__ Class=UNKNOWN Function=do_it
+END Module=__main__ Class=UNKNOWN Function=do_it
+</pre>
+<p>Pas glop 2 le retour !<br />
+Faisons appel au débogueur suprême : <code>print</code></p>
+<pre lang="python">
+key    = Generic
+method = <function Generic.do_it at 0x00D07C90>
+func   = <function Specific.do_it at 0x00D07CD8>
+
+key    = Specific
+method = <function Specific.do_it at 0x00D07D20>
+func   = <function Specific.do_it at 0x00D07CD8>
+</pre>
+<p>Effectivement les références ne correspondent pas, et encore une fois, rien de plus normal.<br />
+La fonction d&#8217;origine a été <em>wrappée</em> donc celle présente dans le module n&#8217;est plus celle d&#8217;origine.<br />
+Qu&#8217;à cela ne tienne, recherchons-là !</p>
+<p>Après la déclaration de la fonction <code>wrapped</code>, le décorateur la mémorise dans la variable <code>wrapped_function</code>.<br />
+Elle sera utilisée à l&#8217;exécution de la fonction.</p>
+<p><code>logger.py</code> :</p>
+<pre lang="python" highlight="15,27">
+def log_decorator(func):
+    if not __DECO_ACTIVATED:
+        return func
+    module_name = func.__module__
+    module_obj = inspect.getmodule(func)
+    func_name = func.__name__
+
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        class_name = "UNKNOWN"
+        for key, obj in module_obj.__dict__.items():
+            try:
+                members = obj.__dict__
+                method = members[func.__name__]
+                if method == wrapped_function:
+                    class_name = key
+                    break
+            except (KeyError, AttributeError):
+                pass
+        msg = "Module={} Class={} Function={}".format(
+            module_name, class_name, func_name)
+        __logger.debug("BEGIN " + msg)
+        data = func(*args, **kwargs)
+        __logger.debug("END " + msg)
+        return data
+
+    wrapped_function = wrapped
+    return wrapped
+</pre>
+<p>Et maintenant le résultat :</p>
+<pre lang="python">
+BEGIN Module=__main__ Class=Specific Function=do_it
+BEGIN Module=__main__ Class=Generic Function=do_it
+NOW
+END Module=__main__ Class=Generic Function=do_it
+END Module=__main__ Class=Specific Function=do_it
+</pre>
+<p>Ouf ! Ca marche !</p>
+<p>Au menu du prochain épisode : logger la valeur de certains paramètres passés à la fonction décorée.</p>
+<p><em>Xavier O. avec l&#8217;aide précieuse de Laurent B.</em></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/decorateur-de-trace/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">5670</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/04/4Y6lBye.jpg" length="47403" type="image/jpg" />	</item>
+	</channel>
+</rss>

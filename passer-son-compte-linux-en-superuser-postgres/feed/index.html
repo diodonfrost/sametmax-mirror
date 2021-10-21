@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Passer son compte linux en superuser postgres</title>
+	<atom:link href="http://sametmax.com/passer-son-compte-linux-en-superuser-postgres/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/passer-son-compte-linux-en-superuser-postgres/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: freeflyer</title>
+		<link>http://sametmax.com/passer-son-compte-linux-en-superuser-postgres/#comment-190653</link>
+		<dc:creator><![CDATA[freeflyer]]></dc:creator>
+		<pubDate>Thu, 09 Nov 2017 09:35:47 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17820#comment-190653</guid>
+		<description><![CDATA[Salut
+
+Je suis de l&#039;avis de Fred je préconise :
+
+&lt;code&gt;# sudo -u postgres psql &lt;/code&gt;
+
+ou au pire:
+
+&lt;code&gt;# alias psql=&quot;sudo -u postgres psql&quot; &lt;/code&gt;
+
+Avec ce qu&#039;il faut dans le sudoers..
+]]></description>
+		<content:encoded><![CDATA[<p>Salut</p>
+<p>Je suis de l&#8217;avis de Fred je préconise :</p>
+<p><code># sudo -u postgres psql </code></p>
+<p>ou au pire:</p>
+<p><code># alias psql="sudo -u postgres psql" </code></p>
+<p>Avec ce qu&#8217;il faut dans le sudoers..</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: foxmask</title>
+		<link>http://sametmax.com/passer-son-compte-linux-en-superuser-postgres/#comment-174296</link>
+		<dc:creator><![CDATA[foxmask]]></dc:creator>
+		<pubDate>Sat, 16 Jan 2016 10:00:17 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17820#comment-174296</guid>
+		<description><![CDATA[@fred J&#039;ai même iptables sur ma station alors je mets md5 partout , trust nobody ;) #parano mais serein
+]]></description>
+		<content:encoded><![CDATA[<p>@fred J&#8217;ai même iptables sur ma station alors je mets md5 partout , trust nobody ;) #parano mais serein</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/passer-son-compte-linux-en-superuser-postgres/#comment-174295</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sat, 16 Jan 2016 09:45:03 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17820#comment-174295</guid>
+		<description><![CDATA[&lt;p&gt;C&#039;est pour le dev en local, pas en prod.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>C&#8217;est pour le dev en local, pas en prod.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Fred</title>
+		<link>http://sametmax.com/passer-son-compte-linux-en-superuser-postgres/#comment-174259</link>
+		<dc:creator><![CDATA[Fred]]></dc:creator>
+		<pubDate>Fri, 15 Jan 2016 18:17:06 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17820#comment-174259</guid>
+		<description><![CDATA[Bonjour
+
+Désolé je ne valide pas. Ce serait comme revenir à dire &quot;si vous voulez un second user avec les droits root, suffit de lui mettre le uid à 0 dans /etc/passwd&quot; et ce serait totalement unsecure.
+
+Il y a un admin pour la machine, c&#039;est root. De même, il y a un admin pour Postgres et c&#039;est postgres. Et celui qui veut se connecter à une bdd Postgres il tape &lt;code&gt;psql -U postgres&lt;/code&gt; et (selon la config pg_hba.conf) il entre le mot de passe ou pas (perso je mets à trust pour la socket locale, trust pour localhost et md5 pour les accès réseaux que je peux affincer avec le masque)
+
+Surtout qu&#039;il y a pg_ident.conf qui peut-être paramétré aussi pour associer des noms systèmes à des users postgres (y compris postgres s&#039;il le faut)..
+
+Désolé les gars, autant j&#039;adore tout ce que vous écrivez, autant là ça reste très criticable.
+
+Mais ne vous inquiétez pas, cette faiblesse ne compte pas face à vos 4 milliards d&#039;excellence et sera vite oubliée...
+
+PS (typo): # on se &lt;i&gt;&lt;b&gt;loggue&lt;/b&gt;&lt;/i&gt; (ou &quot;on se connecte&quot;) &lt;i&gt;&lt;b&gt;comme&lt;/b&gt;&lt;/i&gt; &quot;postgres&quot;..
+]]></description>
+		<content:encoded><![CDATA[<p>Bonjour</p>
+<p>Désolé je ne valide pas. Ce serait comme revenir à dire &#8220;si vous voulez un second user avec les droits root, suffit de lui mettre le uid à 0 dans /etc/passwd&#8221; et ce serait totalement unsecure.</p>
+<p>Il y a un admin pour la machine, c&#8217;est root. De même, il y a un admin pour Postgres et c&#8217;est postgres. Et celui qui veut se connecter à une bdd Postgres il tape <code>psql -U postgres</code> et (selon la config pg_hba.conf) il entre le mot de passe ou pas (perso je mets à trust pour la socket locale, trust pour localhost et md5 pour les accès réseaux que je peux affincer avec le masque)</p>
+<p>Surtout qu&#8217;il y a pg_ident.conf qui peut-être paramétré aussi pour associer des noms systèmes à des users postgres (y compris postgres s&#8217;il le faut)..</p>
+<p>Désolé les gars, autant j&#8217;adore tout ce que vous écrivez, autant là ça reste très criticable.</p>
+<p>Mais ne vous inquiétez pas, cette faiblesse ne compte pas face à vos 4 milliards d&#8217;excellence et sera vite oubliée&#8230;</p>
+<p>PS (typo): # on se <i><b>loggue</b></i> (ou &#8220;on se connecte&#8221;) <i><b>comme</b></i> &#8220;postgres&#8221;..</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: foxmask</title>
+		<link>http://sametmax.com/passer-son-compte-linux-en-superuser-postgres/#comment-174253</link>
+		<dc:creator><![CDATA[foxmask]]></dc:creator>
+		<pubDate>Fri, 15 Jan 2016 16:18:39 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17820#comment-174253</guid>
+		<description><![CDATA[ca peut etre (ca devrait etre?) un user pas &quot;systeme&quot; et on fera
+
+&lt;code&gt;psql -U ce_user_dedie_a_ma_base ma_base &lt;/code&gt;
+
+sinon &lt;code&gt;createuser -s foxmask&lt;/code&gt; pour me faire superman ;)
+]]></description>
+		<content:encoded><![CDATA[<p>ca peut etre (ca devrait etre?) un user pas &#8220;systeme&#8221; et on fera</p>
+<p><code>psql -U ce_user_dedie_a_ma_base ma_base </code></p>
+<p>sinon <code>createuser -s foxmask</code> pour me faire superman ;)</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

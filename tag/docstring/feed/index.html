@@ -1,0 +1,774 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>docstring &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/docstring/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Un gros guide bien gras sur les tests unitaires en Python, partie 4</title>
+		<link>http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-4/</link>
+		<comments>http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-4/#comments</comments>
+		<pubDate>Sat, 06 Dec 2014 20:34:40 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[docstring]]></category>
+		<category><![CDATA[doctest]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[tests unitaires]]></category>
+		<category><![CDATA[unit tests]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12717</guid>
+		<description><![CDATA[<a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-3/">Après avoir vu pytest</a>, un outil typiquement pythonique sont les doctests, des tests unitaires intégrés dans les <a href="http://sametmax.com/les-docstrings/">docstrings</a>.]]></description>
+				<content:encoded><![CDATA[<p>Python est un langage très pro, et il y a beaucoup, beaucoup d&#8217;outils pour faire des tests.</p>
+<p><a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-3/">Après avoir vu pytest</a>, un outil typiquement pythonique sont les doctests, des tests unitaires intégrés dans les <a href="http://sametmax.com/les-docstrings/">docstrings</a>.</p>
+<p>Pour rappel, les docstrings, ce sont ces chaînes de caractères qu&#8217;on retrouve au début des modules, sous la signature des fonctions ou dans la définition des classes. Elles servent à la documentation de ceux-ci, ainsi on peut la lire dans le code, et dans les vraies docs car les outils standards savent les extraire.</p>
+<p>Ça ressemble à ça :</p>
+<pre lang="python">def une_fonction():
+    """ Ceci est une docstring.
+
+        On peut la lire dans le code source, avec help() dans le shell ou
+        dans les docs générés par pydoc et sphinx.
+    """
+    pass</pre>
+<p>Et bien ces docstrings, on peut mettre des tests unitaires dedans formatés comme des sessions de shell Python. Cela permet de donner des exemples d&#8217;usage, tout en testant son code. C&#8217;est chouette.</p>
+<p>Musique ?</p>
+<p>Musique.</p>
+<p><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/hUSm87nvG3k?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<h2>Hello doctests</h2>
+<p>Faire des doctests n&#8217;est pas bien compliqué car c&#8217;est du copier coller. On fait une session shell avec ce qu&#8217;on veut tester, et on copie-colle le tout dans la docstring. Fastoche.</p>
+<pre lang="python"># on copie juste la session de shell tel quel
+def ajouter(a, b):
+    """
+        >>> ajouter(1, 2)
+        3
+    """
+    return a + b
+
+# et on demande à Python de parser les doctests. Directement dans votre fichier
+# de code. Si, si. Pas de fichier de tests à part.
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()</pre>
+<p>On lance ensuite directement notre fichier de code :</p>
+<pre lang="bash">python mon_module.py</pre>
+<p>Et ça n&#8217;affiche absolument rien. C&#8217;est parce qu&#8217;il n&#8217;y a pas d&#8217;erreur. On peut avoir le topo en demandant un peu de verbosité avec <code>-v</code> :</p>
+<pre lang="bash">python mon_module.py -v
+Trying:
+    ajouter(1, 2)
+Expecting:
+    3
+ok
+1 items had no tests:
+    __main__
+1 items passed all tests:
+   1 tests in __main__.ajouter
+1 tests in 2 items.
+1 passed and 0 failed.
+Test passed.
+</pre>
+<p>Les doctests marchent purement en se basant sur le formatage texte. Python va prendre la ligne avec <code>>>></code>, l&#8217;exécuter, si la ligne suivante ne contient pas de <code>>>></code>, il va comparer le résultat de l&#8217;exécution de la ligne précédente avec le contenu de la ligne qui la suit.</p>
+<p>Ceci passe :</p>
+<pre lang="python">"""
+    >>> ajouter(1, 2)
+    3
+"""
+</pre>
+<p>Mais ceci échoue :</p>
+<pre lang="python">"""
+    >>> ajouter(1, 2)
+    4
+"""
+</pre>
+<p>Car le résultat AFFICHÉ dans le shell est 3, et non 4.</p>
+<p>En cas d&#8217;échec, Python vous en dit un peu plus :</p>
+<pre lang="bash">python mon_module.py
+**********************************************************************
+File "mon_module.py", line 6, in __main__.ajouter
+Failed example:
+    ajouter(1, 2)
+Expected:
+    4
+Got:
+    3
+**********************************************************************
+1 items had failures:
+   1 of   1 in __main__.ajouter</pre>
+<h2>Formater ses doctests</h2>
+<p>Les doctests sont faits pour s&#8217;intégrer de manière transparente aux docstrings. On peut donc en mettre autant qu&#8217;on veut, au milieu du texte ordinaire de la docstring. Python se base sur les chevrons (<code>>>></code>) pour savoir quand commence un test, et le saut de ligne pour savoir quand ça se termine. Au delà de ça, le style est libre.</p>
+<pre lang="python">def ajouter(a, b):
+    """ Je peux mettre n'importe quoi ici.
+
+        Et ici aussi.
+
+        Puis intégrer des tests:
+
+        >>> ajouter(1, 2)
+        3
+        >>> ajouter(2, 2)
+        4
+
+        Et un saut de ligne indique que les tests sont terminés. Mais je peux
+        encore en ajouter après si je veux.
+
+        >>> ajouter(0, 0)
+        0
+
+    """
+    return a + b</pre>
+<p>Néanmoins, l’intérêt des doctests est de documenter son code à travers les tests, et donc on adoptera généralement un format tel que :</p>
+<pre lang="python">def ajouter(a, b):
+    """ Additionne deux elements.
+
+        Exemple :
+
+            >>> # on peut mettre des commentaires ici
+            >>> ajouter(1, 2) # ou là
+            3
+            >>> ajouter(2., 2) # fonctionne sur tous les types de nombre
+            4.0
+
+        La fonction fonctionne en duck typing, et accepte donc tout objet
+        qui possède la méthode magique __add__ :
+
+            >>> ajouter('a', 'b')
+            'ab'
+            >>> ajouter([1], [2])
+            [1, 2]
+    """
+    return a + b</pre>
+<p>Notez comme il est agréable de lire cette docstring : on comprend tout de suite comment utiliser la fonction. En prime, ce sont des tests unitaires qui garantissent que notre fonction va continuer de fonctionner correctement et nous oblige à garder cette doc à jour.</p>
+<p>On peut faire des imports dedans ou utiliser temporairement <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">pdb</a> pour debugger. N&#8217;importe quel code de shell est valide mais faites attention à ne pas démarrer des boucles infinies comme les event loops des GUI ou lib async.</p>
+<p>Voici ce que donnerait l&#8217;exemple des articles précédents avec des docstests :</p>
+<pre lang="python">def get(data, index, default=None):
+    """ Implémente l'équivalent de dict.get() pour les indexables.
+
+        Example :
+
+            >>> simple_comme_bonjour = ('pomme', 'banane')
+            >>> get(simple_comme_bonjour, 0)
+            'pomme'
+            >>> get(simple_comme_bonjour, 1000, 'Je laisse la main')
+            'Je laisse la main'
+    """
+    try:
+        return data[index]
+    except IndexError:
+        return default</pre>
+<h2>Problèmes et solutions</h2>
+<p>Les doctests ne sont pas la Panacée, particulièrement parce que le test se fera sur le résultat AFFICHÉ dans le shell. Cela peut facilement amener à des erreurs.</p>
+<p>Déjà, il faut faire attention à la représentation des objets dans le shell Python. <strong>La représentation n&#8217;est pas forcément la valeur de saisie</strong> :</p>
+<pre lang="python">>>> 1.
+1.0
+>>> "1"
+'1'
+>>> {"foo": "bar", "une apostrophe : '": "est échapée ainsi qu'un accent"}
+{"une apostrophe : '": "est \xc3\xa9chap\xc3\xa9e ainsi qu'un accent", 'foo': 'bar'}
+</pre>
+<p>La solution à ce problème est de tester dans le shell les valeurs de retour, et non de le faire de tête. Faites bien gaffe aux espaces qui sont donc significatifs, surtout ceux en fin de ligne. Mon éditeur est configuré pour les virer par défaut, et ça m&#8217;a niqué en écrivant l&#8217;article :)</p>
+<p>Ensuite, il y a des cas où la représentation ne sera pas la même d&#8217;un appel à l&#8217;autre.</p>
+<p>C&#8217;est le cas avec les dictionnaires, puisque l&#8217;ordre des éléments n&#8217;est pas garanti par nature. Ne faites donc pas :</p>
+<pre lang="python">>>> retourne_un_dico()
+{'ordre': 'non garanti', 'le': 'resultat'}</pre>
+<p>Mais plutôt quelque chose qui vous garantit l&#8217;affichage :</p>
+<pre lang="python">"""
+>>> res = list(retourne_un_dico().items())
+>>> res.sort()
+[('le', 'resultat'), ('ordre', 'non garanti')]
+>>> # ou
+>>> retourne_un_dico() == {'ordre': 'non garanti', 'le': 'resultat'}
+True
+"""
+</pre>
+<p>Parfois, on ne peut juste pas garantir l&#8217;affichage. Par exemple avec des nombres non prévisibles comme les hash ou les id des objets :</p>
+<pre lang="python">"""
+>>> class Test(): pass
+>>> repr(Test())
+''
+"""</pre>
+<p><code>7f4687d30fc8</code> n&#8217;est ici pas prévisible. Python met certains cas spéciaux comme celui-ci des flags activables via le commentaire <code># doctest: +NOM_DU_FLAG</code>.</p>
+<p>Par exemple, le flag <code>ELLIPSIS</code> permet de placer <code>...</code> dans le résultat en guise de joker :</p>
+<pre lang="python">"""
+>>> repr(Test()) # doctest: +ELLIPSIS
+''
+"""</pre>
+<p>D&#8217;autres problèmes similaires peuvent être résolus ainsi. Le flag <code>SKIP</code> permet de sauter un test que vous voulez mettre là, en exemple, mais qui ne doit pas être testé :</p>
+<pre lang="python">"""
+>>> # ce test va être ignoré
+>>> repr(Test()) # doctest: +SKIP
+''
+"""</pre>
+<p><code>NORMALIZE_WHITESPACE</code> permet de considérer toute séquence de caractères non imprimables comme un espace. 8 tabs ou 4 espaces dans le résultat seront tous considérés comme un espace.</p>
+<pre lang="python">"""
+>>> 'ceci est une assez longue ligne divisible' # doctest: +NORMALIZE_WHITESPACE
+'ceci    est     une assez longue    ligne divisible'
+"""
+</pre>
+<p>Les flags sont cumulables, si on les sépare par des virgules dans le commentaire.</p>
+<p>Autre astuce, si votre sortie doit contenir un saut de ligne, Python va l’interpréter comme la fin des tests. On peut pallier cela en utilisant <code>&lt;BLANKLINE&gt;</code> :</p>
+<pre lang="python">"""
+>>> print('Un saut de ligne\\n')
+Un saut de ligne
+
+"""
+</pre>
+<p>Faites attention aux antislash et autres caractères spéciaux dans vos docstests puisque toute string est parsée deux fois : une fois à l&#8217;écriture de la docstring, puis une fois à son exécution. Ici vous voyez que je suis tenu d&#8217;échapper mon <code>\n</code> On peut d&#8217;ailleurs utiliser les préfixes <code>r</code> (cf: les <a href="http://sametmax.com/comment-marchent-les-raw-strings-en-python/">raw strings</a>) et <code>u</code> sur les docstrings, si un jour vous êtes bloqué par trop d&#8217;échappements ou des caractères non ASCII en pagaille, pensez-y.</p>
+<p>Un cas particulier est celui des exceptions. LOL, n&#8217;est-il pas ?</p>
+<p>Pour y répondre, Python décide qu&#8217;une expression est levée si il voit <code>Traceback (most recent call last):</code>. Il ignore ensuite tout le texte &#8211; qui est donc optionnel et que vous pouvez omettre &#8211; jusqu&#8217;à ce qu&#8217;il rencontre le nom de l&#8217;exception levée. À partir de là, il vérifie que le test passe.</p>
+<p>Par exemple, si votre exception génère ce traceback :</p>
+<pre lang="python">Traceback (most recent call last):
+  File "", line 1, in 
+  File "test.py", line 41, in ajouter
+    1 / 0
+ZeroDivisionError: integer division or modulo by zero</pre>
+<p>Vous pouvez faire dans votre doctest :</p>
+<pre lang="python">"""
+>>> je_leve_une_exception()
+Traceback (most recent call last):
+ZeroDivisionError: integer division or modulo by zero
+"""
+</pre>
+<p>Seule la dernière ligne est comparée.</p>
+<p>Il est également possible de mettre les doctests dans un fichier texte à part, mais je ne vous le recommande pas. Cela retire l’intérêt principal des doctests : avoir du code exécutable dans la doc. Si on doit avoir un fichier séparé, autant utiliser des tests normaux, bien plus pratiques et complets.</p>
+<p>Car il n&#8217;y a pas de tear down, setup ou fixtures avec les docstests. Ca reste un outil basique.</p>
+<p>Sachez néanmoins que les doctests sont parfaitement compris par <code>pytest</code>, il suffit juste de lui demander de les exécuter avec l&#8217;option suivante :</p>
+<pre lang="bash">py.test --doctest-modules</pre>
+<p>Dans ce cas, il n&#8217;est pas nécessaire de faire à la fin de chaque fichier contenant des doctests :</p>
+<pre lang="python">if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
+</pre>
+<h2>Quand utiliser les doctests ?</h2>
+<p>Généralement, on utilise un mélange des tests ordinaires (dans notre cas des tests <code>pytest</code> plutôt que <code>unittest</code>) et des doctests.</p>
+<p>On utilisera des doctests pour les objets ou les fonctions simples et indépendantes. J&#8217;entends par là, des fonctions et des objets qui prennent uniquement des types basiques en paramètres, et qui retournent uniquement ces types basiques en paramètres. Pour les objets, ils doivent avoir peu de méthodes.</p>
+<p>Pour tout le reste, on utilisera des tests ordinaires.</p>
+<p>Par exemple, si vous avez une fonction comme notre exemple <code>get()</code>, les doctests sont un bon choix. En revanche, si vous avez un objet <code>Server</code> qui est un serveur HTTP, ou une fonction qui prend un objet <code>Server</code> en paramètre, il vaut mieux utiliser les tests ordinaires.</p>
+<p>Il est tout à fait possible, et même agréable, de mettre quelques tests simples en doctests qui aident à la documentation, et de faire les tests les plus compliqués via <code>pytest</code>.</p>
+<p>Prochaine étape, <a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-5/">les mocks</a>. Parti de là, je pourrai vous dire quelles parties de votre programme tester en priorité, et comment. Au début je voulais faire l&#8217;inverse, mais finalement, c&#8217;est plus pratique.</p>
+<hr />
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2014/decembre/docstests.py">Télécharger le code de l&#8217;article</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-4/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">12717</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/12/tumblr_n5i7twM2SY1r539hzo1_500.gif" length="598099" type="image/jpg" />	</item>
+		<item>
+		<title>La plus belle manière de parser les arguments de script en python</title>
+		<link>http://sametmax.com/la-plus-belle-maniere-de-parser-les-arguments-de-script-en-python/</link>
+		<comments>http://sametmax.com/la-plus-belle-maniere-de-parser-les-arguments-de-script-en-python/#comments</comments>
+		<pubDate>Mon, 03 Mar 2014 14:06:35 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[argparse]]></category>
+		<category><![CDATA[arguments]]></category>
+		<category><![CDATA[docopt]]></category>
+		<category><![CDATA[docstring]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[scripting]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9662</guid>
+		<description><![CDATA[Depuis que j'ai rencontré <a href="https://github.com/docopt/docopt/">docopt</a>, j'ai largué clize (c'est pas moi chérie, c'est toi) et on vit en amoureux tous les deux en élevant des script dans une ferme dans les Alpes.]]></description>
+				<content:encoded><![CDATA[<p>On peut parser <code>sys.argv</code> à la main, mais c&#8217;est fragile.</p>
+<p>On peut utiliser <a href="http://docs.python.org/2/library/getopt.html#module-getopt">getopt</a> ou <a href="http://docs.python.org/2/library/optparse.html">optpase</a>, mais c&#8217;est déprécié.</p>
+<p>On peut adopter le nouveau module de la stdlib, vers <a href="http://docs.python.org/3.4/library/argparse.html">argparse</a>, mais c&#8217;est compliqué.</p>
+<p>Alors j&#8217;installais toujours <a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">clize</a>.</p>
+<p>Mais depuis que j&#8217;ai rencontré <a href="https://github.com/docopt/docopt/">docopt</a>, j&#8217;ai largué clize (c&#8217;est pas moi chérie, c&#8217;est toi) et on vit en amoureux tous les deux en élevant des scripts dans une ferme dans les Alpes.</p>
+<pre lang="bash">pip install docopt</pre>
+<p>Docopt fonctionne à l&#8217;envers de la plupart des libs de ce genre : vous écrivez le message d&#8217;aide de votre script, et ça génère le parsing des arguments. La syntaxe de l&#8217;aide est de type posix, donc si vous avez utilisez un <code>-h</code> ou la commande <code>man</code> un jour, vous la connaissez déjà.</p>
+<p>Voici comment ça marche :</p>
+<pre lang="python">help = """Le nom de mon programme trop cool
+
+Usage:
+  nom_du_script.py <argument_positionel> [<argument_positionel_optionel>] [--flag-optionel]
+
+Options:
+  -h --help          C'est généré automatiquement.
+  --option=<valeur>  Description de l'option.
+
+Woot, un footer !
+"""
+
+from docopt import docopt
+
+arguments = docopt(help)
+print(arguments)
+</pre>
+<p>Si on passe rien de valide au script, l&#8217;usage est affiché automatiquement :</p>
+<pre lang="bash">$ python nom_du_script.py 
+Usage:
+  nom_du_script.py <argument_positionel> [<argument_positionel_optionel>] [--flag-optionel]
+</pre>
+<p>Si on demande l&#8217;aide, en option, ben, l&#8217;aide quoi :</p>
+<pre lang="bash">$ python nom_du_script.py -h
+Le nom de mon programme trop cool
+
+Usage:
+  nom_du_script.py <argument_positionel> [<argument_positionel_optionel>] [--flag-optionel]
+
+Options:
+  -h --help          C'est généré automatiquement.
+  --option=<valeur>  Description de l'option.
+
+Woot, un footer !</pre>
+<p>Et si on passe des arguments, on les récupère dans un simple dictionnaire :</p>
+<pre lang="bash">$ python nom_du_script.py yo
+{'--flag-optionel': False,
+ '<argument_positionel>': 'yo',
+ '<argument_positionel_optionel>': None}
+
+$ python nom_du_script.py yo man
+{'--flag-optionel': False,
+ '<argument_positionel>': 'yo',
+ '<argument_positionel_optionel>': 'man'}
+
+ $ python nom_du_script.py yo --flag-optionel
+{'--flag-optionel': True,
+ '<argument_positionel>': 'yo',
+ '<argument_positionel_optionel>': None}</pre>
+<p>Ça peut générer des choses complexes avec des tas de combinaisons d&#8217;options, des sous-commandes et tout le bordel.</p>
+<p>Généralement on en profite pour faire ça proprement, en mettant l&#8217;usage en docstring du script, en calant une version et en rajoutant un <code>if __main__</code>:</p>
+<pre lang="python">
+
+"""Uber script.
+
+Usage:
+  schnell.py scheisse 
+  schnell.py bier 
+
+Options:
+  -h --help      _o/
+  --version      \o_
+  --blitz=krieg  \o/
+
+"""
+
+from docopt import docopt
+
+
+if __name__ == '__main__':
+    # __doc__ contient automatiquement la docstring du module
+    # en cours
+    arguments = docopt(__doc__, version='0.1')
+    print(arguments)
+
+</pre>
+<pre lang="bash">$ python schnell.py --version
+0.1
+
+$ python schnell.py bier
+{'bier': True,
+ 'scheisse': False}</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-plus-belle-maniere-de-parser-les-arguments-de-script-en-python/feed/</wfw:commentRss>
+		<slash:comments>23</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">9662</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/03/RqCz8f2.png" length="350640" type="image/jpg" />	</item>
+		<item>
+		<title>Les docstrings en Python</title>
+		<link>http://sametmax.com/les-docstrings/</link>
+		<comments>http://sametmax.com/les-docstrings/#comments</comments>
+		<pubDate>Wed, 06 Mar 2013 09:34:00 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[docstring]]></category>
+		<category><![CDATA[doctest]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=570</guid>
+		<description><![CDATA[Du fait de la nature du tuto, exceptionellement je ne respecterai pas le nouveau format de rédaction. Mais y aura quand même de la zik : Une des mes fonctionnalités favorites en Python est son mécanisme de documentation du code : les doctrings. En effet, je crois qu&#8217;il est très important de rendre simple les [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Du fait de la nature du tuto, exceptionellement je ne respecterai pas le <a href="http://sametmax.com/quelques-changements-sur-le-blog/">nouveau format de rédaction</a>. Mais y aura quand même de la zik :</p>
+
+<!-- iframe plugin v.4.3 wordpress.org/plugins/iframe/ -->
+<iframe width="560" height="315" src="http://www.youtube.com/embed/ls-LYas5j8U" frameborder="0" 0="allowfullscreen" scrolling="yes" class="iframe-class"></iframe>
+
+<p>Une des mes fonctionnalités favorites en Python est son mécanisme de documentation du code : les doctrings. En effet, je crois qu&#8217;il est très important de rendre simple les tâches over chiantes comme <a href="http://sametmax.com/se-simplifier-les-tests-python-avec-pytest/">les tests unitaires</a> ou la doc car moins il y a de frein à le faire, plus il y a de chances qu&#8217;on le fasse.</p>
+<h2>Principe</h2>
+<p>La docstring est une chaîne de caractères que l&#8217;on n&#8217;assigne pas, et qui est placée à un endroit spécifique du code pour décrire ce dernier.</p>
+<p>La docstring la plus courante est placée sous une fonction. Voici une fonction SANS docstring :</p>
+<pre lang="python">def ajouter(a, b):
+    return a + b</pre>
+<p>Et voici une fonction AVEC docstring :</p>
+<pre lang="python">def ajouter(a, b):
+    """
+        Ajoute deux nombres l'un à l'autre et retourne
+        le résultat.
+    """
+    return a + b</pre>
+<p>La chaîne de caractère doit être placée juste en dessous de la signature de la fonction.</p>
+<p>Écrire des docstrings offrent de nombreux avantages :</p>
+<ul>
+<li>La fonction <code>help()</code> affiche cette documentation dans un shell.</li>
+<li>Les outils de programmation tels que les shells ou les IDE affichent cette documentation quand le développeur qui ne lit pas votre code, mais l&#8217;utilise, en a besoin.</li>
+<li>On peut générer une bonne doc du code avec des commandes qui extraient ces docstrings.</li>
+<li>C&#8217;est un mécanisme standardisé de documentation : tout le monde sait que si c&#8217;est là, et que ça a cette forme, c&#8217;est une documentation.</li>
+<li>Le code Python peut utiliser la docstring pour la lire ou l&#8217;afficher.</li>
+<li>On peut mettre des tests dans les docstrings, qui servent alors d&#8217;exemples d&#8217;utilisation.</li>
+</ul>
+<h2>Usage</h2>
+<p>Si vous avez une fonction ainsi faite :</p>
+<pre lang="python">def ajouter(a, b):
+    """
+        Ajoute deux nombres l'un à l'autre et retourne
+        le résultat.
+    """
+    return a + b</pre>
+<p>Alors dans un shell, toute personne qui va utiliser votre fonction pourra faire :</p>
+<pre lang="python">>>> help(ajouter)
+Help on function ajouter in module __main__:
+
+ajouter(a, b)
+    Ajoute deux nombres l'un à l'autre et retourne
+    le résultat.</pre>
+<p>Il y a ainsi une documentation de votre fonction DANS le shell, sans avoir à se connecter à Internet ou quoi que ce soit. Il n&#8217;a pas à ouvrir le moindre fichier.</p>
+<p>On peut documenter également les modules en plaçant la docstring comme première expression Python (qui n&#8217;est pas un commentaire) tout en haut du fichier :</p>
+<pre lang="python">#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+
+"""
+    Ceci est un module génial qui va faire 
+    plein de trucs super cool.
+"""
+
+import threading
+import multiprocessing
+from functools import wraps
+from Queue import Empty
+
+class BaseAsbtractAdapterStrategyFactoryMock(object):
+    pass</pre>
+<p>On peut aussi documenter une classe et ses méthodes :</p>
+<pre lang="python">class ADallas(object):
+    """
+        Cette classe vous donne le classe à Dallas
+        quand vous en avez vraiment besoin.
+    """
+
+    def univers_impitoyable(self):
+        """
+            Retourne un objet univers, prêt
+            à être impitoyable.
+        """</pre>
+<p>La plupart des fonctions et modules de la lib standard sont ainsi documentées, vous pouvez donc faire :</p>
+<pre lang="python">>>> import os
+>>> help(os)
+>>> from functools import partial
+>>> help(partial)
+>>> help(str)
+>>> help('foo'.upper)</pre>
+<h2>Bonnes pratiques</h2>
+<p>D&#8217;abord, et malgré mes exemples à caractère purement pédagogique précédents, votre docstring devrait être en anglais. Même quand vous travaillez uniquement avec des français. L&#8217;anglais est la lingua franca (oui, oui, je sais&#8230;) de l&#8217;informatique, et de plus vous évitez tout problème d&#8217;encoding car vous n&#8217;avez aucun moyen de savoir si cette doc sera lue dans un shell rêglé avec les pieds (comme celui de Windows).</p>
+<p>J&#8217;écrirai un article pour motiver les résistants à se mettre à l&#8217;anglais une bonne fois pour toute.</p>
+<p>L&#8217;anglais est votre ami. Il est la novlang de notre métier. C&#8217;est pas vendeur ça ?</p>
+<p>Bref.</p>
+<p>Ensuite, il existe plusieurs manières de formater une docstring, et il y a même un <a href="http://www.python.org/dev/peps/pep-0257/">PEP 257</a> qui ne parle que de ça. En résumé :</p>
+<pre lang="python">def foo():
+    """Docstring d'une ligne"""
+
+
+def foo():
+    """Résumé de la docstring de plusieurs lignes.
+
+    Contenu détaillé de la doctstring.
+    Contenu détaillé de la doctstring.
+    Contenu détaillé de la doctstring.
+
+    """</pre>
+<p>Je ne respecte jamais cette convention. Généralement je fais plutôt :</p>
+<pre lang="python">def foo():
+    """
+        Docstring d'une ligne.
+    """
+
+def foo():
+    """
+        Résumé de la docstring de plusieurs lignes.
+
+        Contenu détaillé de la doctstring.
+        Contenu détaillé de la doctstring.
+        Contenu détaillé de la doctstring.
+    """
+
+</pre>
+<p>Je trouve ça immensément plus lisible dans le code. Je ne peux pas vous recommander de faire comme moi, puisque c&#8217;est aller à l&#8217;encontre du PEP. Tout ce que je peux vous dire c&#8217;est que personne ne s&#8217;est jamais plaint de cette habitude. En matière de docstring, la plupart des gens sont juste déjà trop heureux qu&#8217;il y en ait.</p>
+<p>En revanche, tout le monde est d&#8217;accord sur le fait qu&#8217;une ligne de la docstring ne doit pas faire plus de 80 caractères. Donc indentez en conséquence. Le plugin SublimeText <a href="https://github.com/ehuss/Sublime-Wrap-Plus">Wrap-Plus</a> permet de le faire automatiquement avec <kbd>Alt</kbd> + <kbd>Q</kbd> (et bien plus). Un must have.</p>
+<h2>Usage avancé</h2>
+<p>Python étant un langage qui aime l&#8217;instrospection, la docstring est accessible depuis le code sous la forme de l&#8217;attribut <code>__doc__</code> :</p>
+<pre lang="python">>>> def foo():
+...     """
+...         Can foo a bar with ease
+...     """
+...     pass
+...
+>>> foo.__doc__
+'\n        Can foo a bar with ease\n    '
+>>></pre>
+<p>Vous ne vous en servirez pas souvent, mais c&#8217;est utile pour créer le help d&#8217;un script (c&#8217;est ce que fait <a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">clize</a>) ou faire une popup dans un IDE.</p>
+<p>Une autre particularité des docstrings, c&#8217;est qu&#8217;elles sont très utilisées dans les générateurs de documentation comme <a href="http://sphinx-doc.org/">sphinx</a>. Et ils comprennent généralement très bien <a href="http://thomas-cokelaer.info/tutorials/sphinx/docstring_python.html">le format RST</a>.</p>
+<p>Le format RST est une convention de balisage pour formater du texte. Il garde le texte lisible, mais permet de générer du HTML, du PDF et un tas d&#8217;autres trucs plus propres. Aussi je vous invite à l&#8217;utiliser si vous avez une docstring dont vous sentez qu&#8217;elle a besoin d&#8217;être aussi complète que possible.</p>
+<p>Voici toutes les balises à votre disposition :</p>
+<pre>:param arg1: description
+:param arg2: description
+:type arg1: type
+:type arg1: type
+:return: description de la valeur de retour
+:rtype: type de la valeur de retour
+
+:Example:
+
+Un exemple écrit après un saut de ligne.
+
+.. seealso:: Référence à une autre partie du code
+.. warning:: Avertissement
+.. note:: Note
+.. todo:: A faire</pre>
+<p>On peut aussi utilise <code>``element``</code> pour signaler un morceau de code au milieu du texte. Sur les docstrings très longues (il n&#8217;est pas rare qu&#8217;une docstring soit plus longue que le code qu&#8217;elle documente), comme celles des modules, on peut sous-ligner les titres et sous-titres avec des <code>=</code> et des <code>-</code>.</p>
+<p>Par exemple :</p>
+<pre lang="python">
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+    The ``obvious`` module
+    ======================
+
+    Use it to import very obvious functions.
+
+    :Example:
+
+    >>> from obvious import add
+    >>> add(1, 1)
+    2
+
+    This is a subtitle
+    -------------------
+
+    You can say so many things here ! You can say so many things here !
+    You can say so many things here ! You can say so many things here !
+    You can say so many things here ! You can say so many things here !
+    You can say so many things here ! You can say so many things here !
+
+    This is another subtitle
+    ------------------------
+
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+
+"""
+
+def add(a, b):
+    """
+        Adds two numbers and returns the result.
+
+        This add two real numbers and return a real result. You will want to
+        use this function in any place you would usually use the ``+`` operator
+        but requires a functional equivalent.
+
+        :param a: The first number to add
+        :param b: The second number to add
+        :type a: int
+        :type b: int
+        :return: The result of the addition
+        :rtype: int
+
+        :Example:
+
+        >>> add(1, 1)
+        2
+        >>> add(2.1, 3.4)  # all int compatible types work
+        5.5
+
+        .. seealso:: sub(), div(), mul()
+        .. warning:: This is a completly useless function. Use it only in a 
+                      tutorial unless you want to look like a fool.
+        .. note:: You may want to use a lambda function instead of this.
+        .. todo:: Delete this function. Then masturbate with olive oil.
+    """
+    return a + b</pre>
+<p>Aucun champ n&#8217;est obligatoire, aucuns ne sont interdépendant. Cela vous donne une grande flexibilité pour savoir jusqu&#8217;à quel point vous voulez documenter votre fonction.</p>
+<p>La section la plus importante à mon sens est <code>:Example:</code>. Avec ça une personne peut généralement avoir une bonne idée de ce qui se passe, et en plus ça sert de tests (comme on le verra plus loin).</p>
+<p>La section la plus inutile est de loin <code>.. todo::</code>. En fait je vous recommande de ne pas l&#8217;utiliser. Si vous avez des todos, utilisez plutôt la convention de commentaire :</p>
+<p><code># TODO: un truc à faire</code></p>
+<p>Car :</p>
+<ul>
+<li>Je pense que vos TODO n&#8217;ont rien à foutre dans la doc.</li>
+<li>Il faut mieux avoir un TODO le plus proche du truc qu&#8217;il doit modifier. Le mettre en haut de la fonction n&#8217;a pas toujours de sens.</li>
+<li>De très nombreux outils et services détectent ce format automatiquement et en font quelque chose d&#8217;utile.</li>
+</ul>
+<p>Le typage des arguments et de la valeur de retour n&#8217;est pas toujours utile, surtout avec Python faisant massivement usage du duck typing. La description est plus importante. Mettez le typage quand le type n&#8217;est pas intuitif ou signalez une caratéristique comme : itérable, indexable, file-like object, etc.</p>
+<p><em>EDIT: ah, y aussi un field <code>raises</code> pour déclarer que le code peut lever une exception en particulier. J&#8217;avais zappé. On m&#8217;a aussi demandé si il y avait des équivalent à <code>@since</code> et <code>@depreciated</code> mais non, en général on fout ça dans <code>.. note::</code> ou <code>.. warning:: </code></em></p>
+<h2>Doc tests<br />
+</h2>
+<p>Une fonctionalité controversée des docstrings sont les doctests, des tests unitaires directement intégrés dans la docstring.</p>
+<p>Mon conseil : utilisez les docstests pour des petites fonctions simples ou pour quelques exemples sur les fonctions complexes, et complétez les avec des tests ordinnaires. Ce sont des bons compléments, mais pas forcément idéales pour contenir TOUS les tests. Après, si c&#8217;est le seul truc qui vous motive pour écrire des tests, mettez tout dedans, il vaut mieux ça que rien du tout.</p>
+<p>Une doc test est donc la rédaction d&#8217;une partie de la docstring avec la syntaxe d&#8217;un shell :</p>
+<pre lang="python">def add(a, b):
+    """
+        Do I neeed to explain this ?
+
+        :Example:
+
+        >>> add(1, 1)
+        2
+        >>> add(2.1, 3.4)  # all int compatible types work
+        5.5
+
+    """
+    return a + b
+
+# A la fin de votre script, mettez ce snippet qui va activer les doctest
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
+</pre>
+<p>Si vous importez ce module, il ne se passera rien. Mais si vous faites <code>python script.py</code>, Python va exécuter <code>add(1, 1)</code> et vérifier que cela affiche bien <code>2</code>, puis exécuter <code>add(2.1, 3.4)</code> et vérifier que cela affiche bien <code>5.5</code>.</p>
+<p>Si il n&#8217;y a aucune erreur, le script se termine silencieusement (il donne des détails si on utilise l&#8217;option <code>-v</code>). Sinon, il beugle. Par exemple si je rajoute :</p>
+<pre lang="python">        
+>>> add(1, 1)
+3</pre>
+<p>On obtient en sortie :</p>
+<pre>$ python script.py
+*******************************************
+File "script.py", line 7, in __main__.add
+Failed example:
+    add(1, 1)
+Expected:
+    3
+Got:
+    2
+*******************************************
+1 items had failures:
+   1 of   2 in __main__.add
+***Test Failed*** 1 failures.</pre>
+<p><strong>Attention !</strong></p>
+<p>Python compare non pas la valeur, mais CE QUI S&#8217;AFFICHE. Ça peut être très déroutant. Si j&#8217;ai les tests :</p>
+<pre lang="python">        
+>>> print str(add(1, 1))        
+2        
+>>> str(add(1, 1))        
+2</pre>
+<p>Ça va planter :</p>
+<pre>$ python script.py
+*******************************************
+File "script.py", line 10, in __main__.add
+Failed example:
+    str(add(1, 1))
+Expected:
+    2
+Got:
+    '2'
+*******************************************
+1 items had failures:
+   1 of   2 in __main__.add
+***Test Failed*** 1 failures.</pre>
+<p>Il aurait fallu que j&#8217;écrive :</p>
+<pre lang="python">
+>>> print str(add(1, 1))
+2
+>>> str(add(1, 1))
+'2'</pre>
+<p>Notez les guillemets. C&#8217;est ainsi que ça s&#8217;afficherait dans le shell. Donc c&#8217;est ce que teste Python.</p>
+<p>C&#8217;est la raison pour laquelle les docstests ne sont pas parfaites pour les gros tests. Si vous testez des caratères d&#8217;échappements ou du texte unicode, il vous faudra préfixer vos doctests de <code>ur</code> sinon ça va échouer :</p>
+<pre lang="python">
+ur"""
+    Ceci est une doctring écrite en unicode, sans interprétation des caractères
+    d'échappement.
+"""
+</pre>
+<p>Même problème pour les textes longs. Il faut préciser qu&#8217;on veut tester une sortie tronquée avec <code>+ELLIPSIS</code> :</p>
+<pre lang="python">>>> print range(1000) # doctest: +ELLIPSIS
+[0, 1, ..., 18, 999]</pre>
+<p>Car vous allez pas écrire les 1000 entiers pour le fun dans le test. Pareil pour les stacktraces.</p>
+<p>Les espaces sont signficatifs, du coup il faut parfois marquer les tests avec <code>+NORMALIZE_WHITESPACE</code> :</p>
+<pre lang="python">>>> print range(20) # doctest: +NORMALIZE_WHITESPACE
+[0,   1,  2,  3,  4,  5,  6,  7,  8,  9,
+10,  11, 12, 13, 14, 15, 16, 17, 18, 19]</pre>
+<p>Sinon c&#8217;est galère car il faut reformater la sortie à la main correctement.</p>
+<p>Enfin, sur les structures de données comme les dicos, l&#8217;ordre des éléments n&#8217;est pas garanti, donc l&#8217;ordre d&#8217;affichage non plus. Quand aux données aléatoires&#8230;</p>
+<p>Bref, les docstests, c&#8217;est cool, mais il ne faut pas en abuser.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-docstrings/feed/</wfw:commentRss>
+		<slash:comments>28</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">570</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/03/291486324_426.jpg" length="57343" type="image/jpg" />	</item>
+		<item>
+		<title>Quelques bonnes raisons de plus d&#8217;utiliser iPython</title>
+		<link>http://sametmax.com/quelques-bonnes-raisons-de-plus-dutiliser-ipython/</link>
+		<comments>http://sametmax.com/quelques-bonnes-raisons-de-plus-dutiliser-ipython/#comments</comments>
+		<pubDate>Sun, 23 Dec 2012 18:01:36 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[docstring]]></category>
+		<category><![CDATA[ipython]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[shell]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3644</guid>
+		<description><![CDATA[Le shell Python est vraiment pratique pour expérimenter, apprendre le langage, tester un snippet vitos ou administrer son site à distance. Mais <a href="http://ipython.org/">iPython</a>, ola, iPython, il déchire sa génitrice avec une poutrelle en verre pilé.]]></description>
+				<content:encoded><![CDATA[<p>Le shell Python est vraiment pratique pour expérimenter, apprendre le langage, tester un snippet vitos ou administrer son site à distance. Mais <a href="http://ipython.org/">iPython</a>, ola, iPython, il déchire sa génitrice avec une poutrelle en verre pilé.</p>
+<p>Voici quelques commandes qui vous donneront moult raisons de plus pour très vite installer ce shell alternatif.</p>
+<h2>Autocall</h2>
+<p>Taper des parenthèses et des guillemets, c&#8217;est sooooooo 1995.  iPython peut vous les rajouter automatiquement dans les appels de fonctions, il faut juste préfixer de &#8220;/&#8221;, &#8220;,&#8221; ou &#8220;;&#8221; votre appel de fonction pour qu&#8217;il fasse la conversion:</p>
+<pre lang="python">/f 1,2 => f(1,2)
+,f 1 2 => f("1","2")
+;f 1 2 => f("1 2")</pre>
+<h2>Accès au shell système</h2>
+<p>Préfixez votre commande d&#8217;un &#8220;!&#8221; bien couillu, et iPython va vous exécuter ça dans le shell système (par exemple bash) et vous retourner le résulat:</p>
+<pre lang="python">>>> ! cat /etc/fstab | grep 'ext4'
+UUID=e33c5b98-1570-44d6-a32f-5e7970e1e588 /               ext4    errors=remount-ro 0       1</pre>
+<p>Oui, oui, on est dans un shell Python là. Ou comment bien faire chier la coloration syntaxique de votre blog.</p>
+<p>Et on peut mettre tout ça dans une variable et le traiter en Python derrière:</p>
+<pre lang="python">>>> files = !ls
+>>> [f.upper() for f in files]
+['BUREAU', 'DOCUMENTS', 'EXAMPLES.DESKTOP', 'IMAGES', 'MOD\xc3\xa8LES', 'MUSIQUE', 'PUBLIC', 'T\xc3\xa9L\xc3\xa9CHARGEMENTS', 'UBUNTU ONE', 'VID\xc3\xa9OS',]
+</pre>
+<p>A noter que tout est exécuté dans un autre process, ainsi <code>!cd</code> n&#8217;aura aucun effet. Mais tout est prévu: <code>%cd</code> et <code>%pwd</code> proxient tout ça vers <code>os.chdir</code> et <code>os.getcwd</code> :-)</p>
+<h2>Debugger</h2>
+<p>Entrez <code>%timeit</code> expression pour qu&#8217;il qu&#8217;iPython vous l&#8217;exécute 10000000 fois et vous donne sa performance.</p>
+<pre lang="python">>>> %timeit x=2**100
+10000000 loops, best of 3: 22.5 ns per loop</pre>
+<p>Autre commande: <code>%pdb</code> vous lancera automatiquement votre <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">débuggeur favoris</a> si une exception se lève durant votre session.</p>
+<h2>Se faciliter la vie</h2>
+<p><code>%edit</code> ouvre un editeur (par défault VI sous nunux, mais c&#8217;est <a href="http://sametmax.com/personnalisez-le-demarrage-dipython/">configurable</a>), et si vous sauvegardez, le contenu tapé est récupéré et exécuté par iPython. Génial pour les bouts de code trop relou à taper sur le prompt.</p>
+<p><code>%gui qt|wx|gtk</code> lance l&#8217;intégration de la main loop d&#8217;un des toolkits graphiques afin pour de pouvoir faire mumuse avec des widgets sans bloquer votre shell.</p>
+<p>Vous étiez vous demandé pourquoi le prompt iPython était plein de <code>In</code> et de <code>Out</code>, et pas de <code>>>></code> ? Parce que tout l&#8217;historique est numéroté, et accessible:</p>
+<pre lang="python">In [38]: 1 + 1
+Out[38]: 2
+
+In [39]: In[38]
+Out[39]: u'1 + 1'
+
+In [40]: Out[38]
+Out[40]: 2</pre>
+<p>Mais vous pouvez aussi utiliser <code>%doctest_mode</code> qui donne à votre prompt un air de shell Python normal. L&#8217;avantage ? On peut copier le contenu d&#8217;un autre shell dedans (et donc d&#8217;une doctest) avec les chevrons !</p>
+<pre lang="python">In [49]: %doctest_mode
+Exception reporting mode: Plain
+Doctest mode is: ON
+>>> >>> for pom in ('pom', 'pom', 'pom', 'pom'):
+...     ...     print pom
+...     ... 
+pom
+pom
+pom
+pom</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quelques-bonnes-raisons-de-plus-dutiliser-ipython/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">3644</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/12/277EB_mac-gyver.jpg" length="14600" type="image/jpg" />	</item>
+	</channel>
+</rss>

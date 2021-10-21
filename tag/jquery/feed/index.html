@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>jquery &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/jquery/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title> La protection CSRF de Django et les requêtes Ajax</title>
+		<link>http://sametmax.com/la-protection-csrf-de-django-et-les-requetes-ajax/</link>
+		<comments>http://sametmax.com/la-protection-csrf-de-django-et-les-requetes-ajax/#comments</comments>
+		<pubDate>Tue, 10 Jun 2014 04:18:36 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[ajax]]></category>
+		<category><![CDATA[angularjs]]></category>
+		<category><![CDATA[cookie]]></category>
+		<category><![CDATA[csrf]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[header]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[jquery]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10438</guid>
+		<description><![CDATA[La protection contre les <a href="https://fr.wikipedia.org/wiki/CSRF">attaques CSRF</a> est dans le top 10 des erreurs les plus chiantes en Django, main dans la main avec les fichiers statiques qui ne marchent pas, les URL qui ne matchent pas et les CBV qui nheuuuu, juste pas.]]></description>
+				<content:encoded><![CDATA[<p>La protection contre les <a href="https://fr.wikipedia.org/wiki/CSRF">attaques CSRF</a> est dans le top 10 des erreurs les plus chiantes en Django, main dans la main avec les fichiers statiques qui ne marchent pas, les URL qui ne matchent pas et les CBV qui nheuuuu, juste pas.</p>
+<p>Une fois qu&#8217;on a compris le principe, ça va pour la prog normal, mais un jour on a besoin de faire un POST en Ajax, et on se retrouve avec une erreur invisible. Après avoir dégainé Firebug, on comprend qu&#8217;on a une 403 forbidden, et votre cerveau finit (la durée galérienne est plus ou moins longue selon les profiles, les heures de sommeil et les phases de la lune) par réaliser qu&#8217;on n&#8217;a pas envoyé le token CSRF. Merde.</p>
+<p>C&#8217;est là que généralement les gens sortent du <code>@csrf_exempt</code>, ou carrément, en finissent avec cette solution radicale :</p>
+<pre lang="python">MIDDLEWARE_CLASSES = (
+    'django.middleware.gzip.GZipMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+)</pre>
+<p>Mais c&#8217;est quand même dommage d&#8217;en arriver là alors qu&#8217;on peut le faire proprement.</p>
+<p>D&#8217;abord, le token est sauvegardé dans un cookie. Il faut donc le récupérer.</p>
+<pre lang="javascript">
+// ue petite fonction pour récupérer la valeur d'un cookie,
+// puisque bien entendu, comme toutes les APIS javascripts,
+// les choses qu'on fait le plus souvent ne sont pas incluses
+// en natif. Oui je suis aigri.
+function getCookie(name) {
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                return decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+}</pre>
+<p>Sinon, pour les fainéants, il y a y a un <a href="https://github.com/carhartl/jquery-cookie">plugin jquery</a> qui permet de faire <code>$.cookie('nom')</code>.</p>
+<p>Ensuite, on attache cette valeur en header avec toutes les requêtes POST. Comme ça, plus besoin de l'inclure manuellement, on peut faire ses requêtes sans y penser.</p>
+<p>Avec jQuery :</p>
+<pre lang="javascript">$.ajaxSetup({
+    // fonction appelée avant d'envoyer une requête AJAX
+    beforeSend: function(xhr, settings) {
+         // on ajoute le header que si la requête est pour le site en cours
+         // (URL relative) et est de type POST
+         if (!/^https?:.*/.test(settings.url)  && settings.type == "POST") {
+             // attachement du token dans le header
+             xhr.setRequestHeader("X-CSRFToken",  getCookie('csrftoken'));
+         }
+     }
+});</pre>
+<p>Avec AngularJs :</p>
+<pre lang="javascript">
+// interception de la configuration du provider HTTP
+// qui possède un mécanisme déjà tout prêt pour ça
+votre_app.config(function($httpProvider) {
+    $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+});
+</pre>
+<p>Attention, si l'app n'est pas servie par Django (template statique avec uniquement des appels Ajax), il faut faire au moins un GET avant de faire son premier POST afin d'obtenir le cookie.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-protection-csrf-de-django-et-les-requetes-ajax/feed/</wfw:commentRss>
+		<slash:comments>19</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">10438</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/06/tumblr_n68oe9Se2S1r539hzo1_500.jpg" length="39875" type="image/jpg" />	</item>
+		<item>
+		<title>Deferred, Future et Promise : le pourquoi, le comment, et quand est-ce qu&#8217;on mange</title>
+		<link>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/</link>
+		<comments>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/#comments</comments>
+		<pubDate>Wed, 04 Jun 2014 13:19:22 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asynchrone]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[deferred]]></category>
+		<category><![CDATA[future]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[jquery]]></category>
+		<category><![CDATA[promise]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[twisted]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10418</guid>
+		<description><![CDATA[Les promesses sont une des manières de rendre un code asynchrone plus facile à gérer. On dit : ce groupe de fonctions doit s'exécuter dans un ordre. Elles sont dépendantes les unes des autres.]]></description>
+				<content:encoded><![CDATA[<p>Si vous avez plongé dans le monde de la programmation asynchrone non bloquante, vous avez du vous heurter aux <a href="http://sametmax.com/quest-ce-quun-callback/">callbacks</a>. Si ce n&#8217;est pas le cas, aller lire l&#8217;article, et faites vos armes sur jQuery, je vais m&#8217;en servir en exemple.</p>
+<p>Signalement de rigueur que l&#8217;article est long :</p>
+
+<!-- iframe plugin v.4.3 wordpress.org/plugins/iframe/ -->
+<iframe width="560" height="315" src="//www.youtube.com/embed/E8b4xYbEugo" frameborder="0" 0="allowfullscreen" scrolling="yes" class="iframe-class"></iframe>
+
+<p>Un callback, ça va.</p>
+<p>Deux callbacks, pour un seul appel, ça commence à être chiant, mais c&#8217;est compréhensible.</p>
+<p>Quand les callbacks appellent eux aussi des callbacks, ça donne des codes imbitables :</p>
+<pre lang="javascript">$(function(){
+  $.post('/auth/token', function(token){
+    saveToken(token);
+    $.get('/sessions/last', function(session){
+      if (session.device != currentDevice){
+        $.get('/session/ ' + session.id + '/context', function(context){
+          loadContext(function(){
+            startApp(function(){
+              initUi()
+            })
+          })}
+        )}
+      else {
+        startApp(function(){
+          initUi()
+        })
+      }}
+    )
+  })
+});</pre>
+<p>Il y a pire que de lire ce code : le modifier ! Retirez un bloc, pour voir. Oh, et histoire de vous faire partager l&#8217;expérience complète, j&#8217;ai volontairement déplacé l&#8217;indentation d&#8217;une parenthèse et de deux brackets.</p>
+<p>Or les codes asynchrones ont besoin de callback afin d’enchainer certaines opérations dans le bon ordre, sinon on ne peut pas récupérer le résultat d&#8217;une fonction et l&#8217;utiliser dans une autre, puisqu&#8217;on ne sait pas quand l&#8217;opération se termine.</p>
+<p>Dans notre exemple, <code>$.post</code> et <code>$.get</code> font des requêtes POST et GET, et comme on ne sait pas quand le serveur va répondre, il faut mettre un callback pour gérer la réponse quand elle arrive. C&#8217;est plus performant que de bloquer jusqu&#8217;à ce que la première requête soit terminée car pendant ce temps, notre programme peut faire autre chose. Mais c&#8217;est aussi super relou à écrire et comprendre.</p>
+<p>Entrent en jeu les promesses (promises). Ou les deferred. Ou les futures.</p>
+<p>Typiquement, on retrouve des deferreds dans <a href="https://twistedmatrix.com/trac/">Twisted</a>, des promises pour <a href="http://api.jquery.com/jquery.ajax/">l&#8217;AJAX avec jQuery,</a> des futures pour <a href="http://docs.python.org/3.4/library/asyncio-protocol.html">asyncio</a>&#8230; Mais il y en a un peu partout de nos jours, et une lib peut utiliser plusieurs de ces concepts.</p>
+<p>En fait c&#8217;est la même chose, un nom différent donné au même concept, par des gens qui l&#8217;ont réinventé dans leur coin. Les puristes vous diront qu&#8217;il y a des différences dans l&#8217;implémentation, ou alors que la promesse est l&#8217;interface tandis que le deferred est l&#8217;objet retourné, bla, bla, bla.</p>
+<p>Fuck it, on va considérer que c&#8217;est tout pareil.</p>
+<p>Les promesses sont une des manières de rendre un code asynchrone plus facile à gérer. On dit : ce groupe de fonctions doit s&#8217;exécuter dans un ordre car elles sont dépendantes les unes des autres.</p>
+<p>Il y a d&#8217;autres moyens de gérer le problème de l&#8217;asynchrone: des événements, des queues, etc. L&#8217;avantage des promesses c&#8217;est que c&#8217;est assez simple, et ça marche là où on utilisait des callbacks avant, donc on a pu les rajouter aux libs qui étaient blindées de callbacks.</p>
+<h2>Le principe</h2>
+<p>La promesse est un moyen de dire que certaines fonctions, bien que non bloquantes et asynchrones, sont liées entre elles, et doivent s&#8217;exécuter les unes à la suite des autres. Cela permet de donner un ordre d&#8217;exécution à un groupe de fonctions, et surtout, que chaque fonction puisse accéder au résultat de la fonction précédente. Tout ceci sans bloquer le reste du système asynchrone.</p>
+<p>En résumé, <strong>cela donne un gout de programmation synchrone, à quelque chose qui ne l&#8217;est pas.</strong></p>
+<p>Cela se passe ainsi :</p>
+<ul>
+<li>La fonction asynchrone retourne un objet immédiatement : la promesse.</li>
+<li>On ne passe pas de callback à la fonction. On rajoute un callback à la promesse.</li>
+<li>Le callback prend en paramètre le résultat de la fonction asynchrone.</li>
+<li>Le callback retourne le résultat de son traitement.</li>
+<li>On peut rajouter autant de callbacks qu&#8217;on veut à la promesse, chacun devant accepter le résultat du callback précédent et retourner son propre résultat.</li>
+<li>Si un des callbacks retourne une promesse, elle est fusionnée avec la promesse initiale, et c&#8217;est son résultat que le prochain callback va récupérer</li>
+</ul>
+<p>Voilà un exemple :</p>
+<pre lang="javascript">// $.get est asynchrone. On a pas le résultat tout de suite, mais en attendant
+// on a une promesse tout de suite.
+var $promesse = $.get('/truc/machin');
+
+// premier callback. Il sera appelé quand $.get aura récupéré son
+// résultat
+$promesse.then(function(resultat){
+  // faire un truc avec le résultat
+  // puis on retourne le nouveau résultat
+  return nouveau_resultat;
+});
+
+// deuxième callback. Il sera appelé quand le premier callback
+// aura retourné son résultat.
+$promesse.then(function(nouveau_resultat){
+  // faire un truc
+});</pre>
+<p>Notez bien que c&#8217;est TRES différent de ça (en Python):</p>
+<pre lang="python">resultat = request.get('/truc/marchin')
+
+def function(resultat):
+  # faire un truc
+  return nouveau_resultat
+nouveau_resultat = function(resultat)
+
+def autre_function(nouveau_resultat):
+  # faire un truc
+autre_function(nouveau_resultat)</pre>
+<p>En Python, le code est bloquant par défaut. Ça va marcher, mais pendant que le code attend la réponse du serveur, votre ordinateur est en pause et ne travaille pas.</p>
+<h2>Un plus beau code</h2>
+<p>On se retrouve avec un code asynchrone, mais qui s&#8217;exécute dans l&#8217;ordre de lecture. Et comme on peut chainer les <code>then()</code> et donc ne pas réécrire <code>$promesse</code> à chaque fois, on obtient quelque chose de beaucoup plus lisible :</p>
+<pre lang="javascript">$.get('/truc/machin')
+.then(function(resultat){
+  // faire un truc
+  return nouveau_resultat;
+})
+.then(function(nouveau_resultat){
+  // faire un truc
+});</pre>
+<p>Si on reprend notre premier exemple, ça donne ça :</p>
+<pre lang="javascript">
+$(function(){
+
+// create new token
+$.post('/auth/token')
+
+// then save token and get last session
+.then(function(token){
+  saveToken(token);
+  return $.get('/sessions/last');
+})
+
+// then init session
+.then(function(session){
+  if (session.device != currentDevice){
+    
+    $.get('/session/ ' + session.id + '/context')
+    .then(function(context){
+      loadContext(function(){
+        startApp(function(){
+          initUi()
+        })
+      })
+    })
+
+  }
+  else {
+    startApp(function(){
+      initUi()
+    })
+  }}
+})
+
+});
+</pre>
+<p>Tout ça s’exécute de manière non bloquante (d&#8217;autres fonctions ailleurs dans le programme peuvent s&#8217;exécuter pendant qu&#8217;on attend la réponse du serveur), mais dans l&#8217;ordre de lecture, donc on comprend bien ce qui se passe. Si on veut retirer un bloc, c&#8217;est beaucoup plus facile.</p>
+<h2>Comment ça marche à l&#8217;intérieur ?</h2>
+<p>Histoire d&#8217;avoir une idée de comment une promise marche, on va faire une implémentation, simpliste et naïve, mais compréhensible, d&#8217;une promesse en Python. Pour rendre l&#8217;API un peu sympa,je vais utiliser <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">les décorateurs.</a></p>
+<pre lang="python">class Promise:
+
+    # La promesse contient une liste de callbacks, donc une liste de fonctions.
+    # Pas le résultat des fonctions, mais bien les fonctions elles mêmes,
+    # puisque les fonctions sont manipulables en Python.
+    def __init__(self):
+        self.callbacks = []
+
+    # Point d'entrée pour ajouter un callback à la promesse
+    def then(self, callback):
+        self.callbacks.append(callback)
+
+    # Cette méthode est celle qui sera appelée par le code asynchrone
+    # quand il reçoit son résultat.
+    def resolve(self, resultat):
+
+        # Ici, on obtient le résultat du code asycnhrone, donc on boucle
+        # sur les callbacks pour les appeler
+        while self.callbacks:
+            # On retire le premier callback de la liste, et on l'appelle
+            # avec le résultat
+            resultat = self.callbacks.pop(0)(resultat)
+
+            # Si le resultat est une promesse, on dit à cette nouvelle promesse
+            # de nous rappeler quand elle a reçu ses résultats à elle avant
+            # d'aller le reste de nos callbacks à nous : on fusionne les deux
+            # promesses :
+            # Promesse 1
+            #  - callback1
+            #  - callback2
+            #  - Promesse 2
+            #      * callback 1
+            #      * callback 2
+            #  - callback 3
+            if isinstance(resultat, Promise):
+                resultat.then(self.resolve)
+                break</pre>
+<p>Maintenant, créons un code asynchrone:</p>
+<pre lang="python">from threading import Timer
+
+def func1(v1):
+    # On dit complètement artificiellement d'afficher le résultat
+    # de la fonction dans 3 secondes, sans bloquer histoire d'avoir
+    # un peu de nonbloquitude dans notre code et justifier l'asynchrone.
+    def callback1():
+        print(v1)
+    t = Timer(3, callback1)
+    t.start()
+
+def func2(v2):
+    # Le même, mais pour 2 secondes
+    def callback2():
+        print(v2)
+    t = Timer(2, callback2)
+    t.start()
+
+# Deux fonctions normales
+def func3(v3):
+    print(v3)
+
+def func4(v4):
+    print(v4)
+
+# Et si on les enchaines...
+print('Je commence')
+func1(1)
+print('Juste après')
+func2(2)
+func3(3)
+func4(4)
+
+# ... le résultat est bien désordonné :
+
+## Je commence
+## Juste après
+## 3
+## 4
+## 2
+## 1</pre>
+<p>Parfois c&#8217;est ce que l&#8217;on veut, que les choses s’exécutent dans le désordre, sans bloquer.</p>
+<p>Mais quand on a des fonctions qui dépendent les unes des autres, au milieu d&#8217;un code asynchrone, on veut qu&#8217;elles se transmettent le résultat les unes aux autres au bon moment. Pour cela, utilisons notre promesse :</p>
+<pre lang="python">
+from threading import Timer
+
+
+# La mise en place de promesses suppose que le code 
+# écrit en fasse explicitement usage. Notre code est
+# définitivement lié à cette manière de faire.
+
+def func1(v1):
+    # Notre fonction doit créer la promesse et la retourner
+    p = Promise()
+    def callback1():
+        print(v1)
+        # Dans le callback, elle doit dire quand la promesse est tenue
+        p.resolve(v1)
+    t = Timer(3, callback1)
+    t.start()
+    return p
+
+# On lance la première fonction.
+print('Je commence')
+promise = func1(1)
+print('Juste après')
+
+# On ajoute des callbacks à notre promesse.
+
+@promise.then
+def func2(v2):
+    p = Promise()
+    def callback2():
+        # Pour justifier l’enchainement des fonctions, on fait en sorte que
+        # chaque fonction attend le résultat de la précédente, et
+        # l'incrémente de 1.
+        print(v2 + 1)
+        p.resolve(v2 + 1)
+    t = Timer(2, callback2)
+    t.start()
+    # Ce callback retourne lui-même une promesse, qui sera fusionnée
+    return p
+
+# Ces callbacks ne retournent pas de promesses, et seront chainés
+# normalement
+@promise.then
+def func3(v3):
+    print(v3 + 1)
+    return v3 + 1
+
+@promise.then
+def func4(v4):
+    print(v4 + 1)
+
+# Nos fonctions s'exécutent dans le bon ordre, mais bien de manière
+# asynchrone par rapport au reste du programme.
+
+## Je commence
+## Juste après
+## 1
+## 2
+## 3
+## 4
+</pre>
+<p>Notez bien :</p>
+<ul>
+<li>Le résultat &#8220;1&#8221; n&#8217;apparait que trois secondes après &#8220;Juste après&#8221;. Les fonctions sont donc bien non bloquantes.</li>
+<li>Le resultat &#8220;2&#8221; apparait deux secondes après &#8220;1&#8221;: c&#8217;est aussi asynchrone, MAIS, n&#8217;est lancé que quand la première fonction a terminé son travail.</li>
+<li>La deuxième fonction retourne une promesse, qui est fusionnée: tous ses callbacks vont s&#8217;exécuter en file avant que <code>func3</code> soit lancé. </li>
+</ul>
+<p>Évidement, n&#8217;utilisez pas cette implémentation de promise à la maison, c&#8217;est pédagogique. Ça ne gère pas les erreurs, ni le cas où le callback est enregistré après l&#8217;arrivée du résultat, et tout un tas d&#8217;autres cas tordus.</p>
+<h2>Syntaxe alternative</h2>
+<p>En Python, beaucoup de frameworks ont une approche plus agréable pour gérer les promesses à grand coup de <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">yield</a>. Twisted fait ça avec son <code>@inlineCallback</code>, <code>asyncio</code> avec <code>@coroutine</code>. C&#8217;est juste du sucre syntaxique pour vous rendre la vie plus facile.</p>
+<p>Il s&#8217;agit de transformer une fonction en générateur, et à chaque fois qu&#8217;on appelle <code>yield</code> sur une promesse, elle est fusionnée avec la précédente. Ça donne presque l&#8217;impression d&#8217;écrire un code bloquant normal :</p>
+<pre lang="python"># un appel de fonction asyncrone typique de twisted
+@inlineCallback
+def une_fonction(data):
+  data = yield func1(data)
+  data = yield func2(data)
+  data = yield func3(data)
+
+une_fonction(truc)</pre>
+<p>Les fonctions 1, 2 et 3 vont ainsi être appelées de manière asynchrone par rapport au reste du programme, mais bien s’enchainer les unes à la suite des autres.</p>
+<p>Ouai, tout ce bordel parce que l&#8217;asynchrone, c&#8217;est dur, donc on essaye de le faire ressembler à du code synchrone, qui lui est facile.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/feed/</wfw:commentRss>
+		<slash:comments>19</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">10418</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/06/D8GwE.png" length="222229" type="image/jpg" />	</item>
+		<item>
+		<title>Faire cohabiter plusieurs versions de jQuery</title>
+		<link>http://sametmax.com/faire-cohabiter-plusieurs-versions-de-jquery/</link>
+		<comments>http://sametmax.com/faire-cohabiter-plusieurs-versions-de-jquery/#comments</comments>
+		<pubDate>Sun, 12 May 2013 13:08:25 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[jquery]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3946</guid>
+		<description><![CDATA[jQuery est très bien foutu, non content de permettre d'utiliser des libs concurrentes utilisant la même API avec <code>noConflict()</code> (c'est beau l'open source quand même), elle permet également d'utiliser en même temps une version plus récente ou plus ancienne de son code, facilitant les migrations.]]></description>
+				<content:encoded><![CDATA[<p>jQuery est très bien foutu, non content de permettre d&#8217;utiliser des libs concurrentes utilisant la même API avec <code>noConflict()</code> (c&#8217;est beau l&#8217;open source quand même), elle permet également d&#8217;utiliser en même temps une version plus récente ou plus ancienne de son code, facilitant les migrations.</p>
+<p>Pour utiliser noConflict à bon escient, il faut simplement faire très attention à l&#8217;ordre d&#8217;inclusion de ses scripts&#8230;</p>
+<p>D&#8217;abord, loader les deux versions de jQuery :</p>
+<pre lang="html"><script type="text/javascript" src="version1-de-jquery.js"></script>
+<script type="text/javascript" src="plugin-qui-utilise-cette-version.js"></script></pre>
+<p>Ensuite utilise <code>noConflict()</code> pour sauvegarder une référence à cette version :</p>
+<pre lang="html"><script type="text/javascript">
+var version1dejQuery = $.noConflict(true);
+</script></pre>
+<p>Et on charge la deuxième fournée :</p>
+<pre lang="html"><script type="text/javascript" src="autre-version-de-jquery.js"></script>
+<script type="text/javascript" src="plugin-qui-utilise-cette-autre-version.js"></script></pre>
+<p>On sauvegarde aussi cette version dans une variable :</p>
+<pre lang="html"><script type="text/javascript">
+var autreVersionDejQuery = $.noConflict(true);
+</script></pre>
+<p>Et du coup on peut utiliser les deux en parallèle. Au lieu d&#8217;appeler <code>$</code>, les appelle par leur p&#8217;tit nom :</p>
+<pre lang="javascript">autreVersionDejQuery('a').click(truc);</pre>
+<p>Et comme d&#8217;hab, vous pouvez utiliser la technique de la <a href="http://sametmax.com/la-fonction-anonyme-appelee-immediatement-en-javascript-function/">fonction anonyme immédiatement appelée</a> pour créer un alias local et réutiliser <code>$</code>.</p>
+<pre lang="javascript">(function($) {
+    $('img').hover(bidule);
+})(version1dejQuery);</pre>
+<p>D&#8217;ailleurs, je pense que ça ne marche que si les plugins inclus utilisent cette technique, ce qui est normalement une convention dans le monde de jQuery.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/faire-cohabiter-plusieurs-versions-de-jquery/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">3946</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/05/10hRh.jpg" length="71942" type="image/jpg" />	</item>
+		<item>
+		<title>Utilisez des variables globales avec JSLint</title>
+		<link>http://sametmax.com/utilisez-des-variables-globales-avec-jslint/</link>
+		<comments>http://sametmax.com/utilisez-des-variables-globales-avec-jslint/#comments</comments>
+		<pubDate>Wed, 17 Apr 2013 16:13:05 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[jquery]]></category>
+		<category><![CDATA[jslint]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5508</guid>
+		<description><![CDATA[Petite astuce si vous utilisez JSlint (par exemple via le <a href="https://github.com/SublimeLinter/SublimeLinter">super plugin Sublime Text</a>).]]></description>
+				<content:encoded><![CDATA[<p>Petite astuce si vous utilisez <a href="http://www.jslint.com/">JSlint </a>(par exemple via le <a href="https://github.com/SublimeLinter/SublimeLinter">super plugin Sublime Text</a>).</p>
+<p>Il va vous mettre en avant toutes les variables globales ou non déclarées précédement. C&#8217;est génial la plupart du temps, mais c&#8217;est un peu chiant pour des variables qui sont volontairement globales et mises à dispo par d&#8217;autres scripts comme les frameworks et libs.</p>
+<p>Par exemple, il va vous déclarer que jQuery est une variable globale ou non déclarée. Pour éviter ça, mettez ce commentaire tout en haut du fichier :</p>
+<pre lang="javascript">/*global jQuery:true, $:true */</pre>
+<p>JSLint va le prendre en compte et ignorer ces variables.</p>
+<p>On peut lister autant de variables qu&#8217;on le souhaite.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/utilisez-des-variables-globales-avec-jslint/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">5508</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/04/kBhkJhC.jpg" length="101439" type="image/jpg" />	</item>
+		<item>
+		<title>Mettez vos sites Web et apps en plein écran avec l&#8217;API HTML 5 fullscreen</title>
+		<link>http://sametmax.com/utiliser-lapi-html5-fullscreen-pour-mettre-votre-site-app-en-plein-ecran/</link>
+		<comments>http://sametmax.com/utiliser-lapi-html5-fullscreen-pour-mettre-votre-site-app-en-plein-ecran/#comments</comments>
+		<pubDate>Sun, 30 Dec 2012 04:40:49 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[fullscreen]]></category>
+		<category><![CDATA[html5]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[jquery]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3916</guid>
+		<description><![CDATA[Fini  le temps où votre site restait prisonnier de son canvas en 800x600, maintenant votre dernière application de calcul de budget de croquettes pour hérisson peut enfin s'exprimer dans toute la hauteur et la largeur d'un écran Retanal grâce à <code>requestFullscreen()</code>, qui va vous permettre ... d'appuyer sur F11 à la place de l'utilisateur.]]></description>
+				<content:encoded><![CDATA[<p>Il est loin le temps où le JS était un sous langage utilisé uniquement par des deumeurés en mal de &lt;blink&gt;. Maintenant c&#8217;est un sous langage utilisé par des gens très sérieux. PHP l&#8217;a bien prouvé, on peut être parfaitement utile en ayant une syntaxe daubée, et Javascript se pare donc de tout un tas de trucs surpuissants en ces temps de HTML5, CSS3 et Rambo8.</p>
+<p>Fini donc le temps où votre site restait prisonnier de son canvas en 800&#215;600, maintenant votre dernière application de calcul de budget de croquettes pour hérisson peut enfin s&#8217;exprimer dans toute la hauteur et la largeur d&#8217;un écran Retanal grâce à <code>requestFullscreen()</code>, qui va vous permettre &#8230; d&#8217;appuyer sur F11 à la place de l&#8217;utilisateur.</p>
+<p>Mais il aura à faire un clic de confirmation quand même. Car il aura un gros prompt bien alarmant avant. Le progrès je vous dis !</p>
+<h2>Le code, en 2 / 2</h2>
+<p>Parce que bien entendu c&#8217;est incompatible avec les tondeuses à gazons et que selon les marques de votre pétrolettes, le prefix ne sera pas le même, on va commencer par vérifier le support du bouzin.</p>
+<pre lang="javascript">function supportFullScreen(){
+    var doc = document.documentElement;
+    return ('requestFullscreen' in doc) || ('mozRequestFullScreen' in doc && document.mozFullScreenEnabled) || ('webkitRequestFullScreen' in doc);
+}</pre>
+<p>Puis on va demander à l&#8217;utilisateur si on a le droit, s&#8217;il-te-plait-pitié-déconne-pas-putain, de mettre votre site en plein écran. Car figurez vous qu&#8217;il y a un sérieux risque de phishing, comme en voici <a href="http://feross.org/html5-fullscreen-api-attack/">la démonstration rigolote</a>.</p>
+<pre lang="javascript">function requestFullScreen(elem){
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullScreen) {
+        elem.webkitRequestFullScreen();
+    }
+}</pre>
+<p>Ca s&#8217;utilise ainsi:</p>
+<pre lang="javascript">requestFullScreen(document.body)</pre>
+<p>A ce moment là l&#8217;écran de le navigateur passe en plein écran avec un gros panel d&#8217;avertissement genre &#8220;le certificat du site est invalide&#8221;, mais en gris. Et si l&#8217;utilisateur lit le message avant de se ruer sur le bouton &#8220;annuler&#8221; par réflexe, il s’apercevra qu&#8217;on lui explique ce qui se passe pour pas qu&#8217;il finisse de mourir de sa crise cardiaque.</p>
+<p>Vous pouvez utiliser n&#8217;importe quel autre élément que <code>body</code>, et donc mettre en plein écran de tout petit widgets. Attention cependant, il va prendre la taille de tout l&#8217;écran, déclenchant tout un tas d&#8217;events de changement de taille, de display, changeant les overflows et gagnant un style par défaut qui sera différent selon le navigateur. Le W3C a un deal avec les browser vendors pour s&#8217;assurer que les devs Web ne soient jamais prêt d&#8217;être au chômage.</p>
+<p>Passons.</p>
+<p>Le problème quand on demande, c&#8217;est qu&#8217;on peut se voir répondre &#8220;non&#8221;. Donc en prime, il vaut mieux se concocter un fallback si jamais mémé s&#8217;affole devant la menace de voir ses onglets avalés par le viewport. Ici, je vous pond ça en jQuery, parceque la gestion des events à la main, c&#8217;est juste relou.</p>
+<pre lang="javascript">function onFullScreenEvent(callback){
+    $(document).live("fullscreenchange mozfullscreenchange webkitfullscreenchange", function(){
+        callback(document.fullscreen || document.mozFullScreen || document.webkitIsFullScreen);
+    });
+}
+</pre>
+<p>Bon, normalement on utilise &#8216;on()&#8217; maintenant chez les gens branchés, mais j&#8217;arrive à le faire marche une fois sur deux. Donc ça s&#8217;utilise comme ça:</p>
+<pre lang="javascript">onFullScreenEvent(function(isFullscreen){
+    faire un truc selon que l'on est en fullscreen ou pas, comme pousser mémé dans les orties
+});</pre>
+<h2>Clusions ensemble entre cons</h2>
+<p>Et voilà, vous avez une application fullscreenable. Il ne vous reste plus rien à faire. A part rajouter un bouton pour le permettre à l&#8217;utilisateur de mettre en fullscreen. Puis un autre pour sortir du fullscreen. Puis de gérer la transition des états de votre app. Les différences de rendu selon la taille des éléments et du style par défaut appliqué par le navigateur. Et bien entendu le plus dur: faire comprendre tout ce bordel à votre utilisateur final.</p>
+<p>Plus rien à faire je vous dis: on vous a mâché le travail.</p>
+<p>Si vous avez pas le temps, vous pouvez aussi mettre <code>alert('appuyez sur F11 pour passer en plein écran')</code>. Mais bon, j&#8217;écrirais des articles sur quoi moi après ?</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/utiliser-lapi-html5-fullscreen-pour-mettre-votre-site-app-en-plein-ecran/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">3916</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/12/th1.jpeg" length="10491" type="image/jpg" />	</item>
+		<item>
+		<title>Echaper du HTML en Python ou avec jQuery</title>
+		<link>http://sametmax.com/echaper-le-html/</link>
+		<pubDate>Wed, 28 Nov 2012 15:02:56 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[html]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[jquery]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3395</guid>
+		<description><![CDATA[La question bateau du jour: mais comment transforme-t-on des tags HTML en entités HTML pour sécuriser les inputs utilisateurs qui seront affichées sur le site ?]]></description>
+				<content:encoded><![CDATA[<p>La question bateau du jour: mais comment transforme-t-on des tags HTML en entités HTML pour sécuriser les inputs utilisateurs qui seront affichées sur le site ?</p>
+<h2>En Python</h2>
+<p>On peut utiliser le module <code>sax</code>, qui a la base sert à échaper les caractères pour du XML. On va juste étendre sa table de caractères pour rajouter le simple et le double quote.</p>
+<pre lang="python">from xml.sax.saxutils import escape, unescape
+
+a_echapper = {'"': "&quot;", "'": "&apos;"}
+a_reconstituer = dict((value, key) for key, value in a_echapper.iteritems())
+
+def echape_html(text, a_echapper=a_echapper):
+    return escape(text, a_echapper)
+
+def reconstitue_html(text, a_reconstituer=a_reconstituer):
+    return unescape(text, a_reconstituer)</pre>
+<h2>Avec jQuery</h2>
+<p>En pur JS, ce sera galère. Mais avec jQuery, c&#8217;est :</p>
+<pre lang="javascript">
+$('<div></div>').text(text_a_echaper).html();
+</pre>
+<p>Je ne sais pas comment on peut faire facilement l&#8217;opération inverse par contre.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">3395</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/11/Ape_Escape_Pal.jpg" length="313189" type="image/jpg" />	</item>
+		<item>
+		<title>Le meilleur de l&#8217;actu IT fr, le temps d&#8217;un café: le multiboards</title>
+		<link>http://sametmax.com/le-meilleur-de-lactu-it-le-temps-dun-cafe-le-multiboards/</link>
+		<comments>http://sametmax.com/le-meilleur-de-lactu-it-le-temps-dun-cafe-le-multiboards/#comments</comments>
+		<pubDate>Tue, 14 Aug 2012 19:49:10 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Web]]></category>
+		<category><![CDATA[bottle]]></category>
+		<category><![CDATA[jquery]]></category>
+		<category><![CDATA[multiboards]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1697</guid>
+		<description><![CDATA[Max vous disais qu'il avait concocté un exemple de ce qu'on peut faire rapidement avec cette lib...]]></description>
+				<content:encoded><![CDATA[<p>Dans son tuto sur <a href="http://sametmax.com/creer-un-site-avec-bottle-en-5-minutes-parceque-7-cest-impossible-voyons/">bottle</a>, Max vous disait qu&#8217;il avait concocté un exemple de ce qu&#8217;on peut faire rapidement avec cette lib.</p>
+<p>Ainsi est né <a href="http://multiboards.net/">multiboards.net</a>.</p>
+<p>C&#8217;est très simple: il déteste les flux RSS, et veut juste rapidement avoir toutes les infos intéressantes sur l&#8217;actu informatique en buvant son kawa le matin, sans se fouler.</p>
+<p>Le multiboards répond simplissimement à ce besoin en offrant sur une page qui s&#8217;auto refresh :</p>
+<ul>
+<li>les actus des meilleurs blogs (sélectionnés par le dictateur Max) IT;</li>
+<li>les actus des meilleurs sites généralistes IT;</li>
+<li>les offres d&#8217;emplois IT en France, principalement Python;</li>
+<li>des actus plus générales de Google news;</li>
+<li>tout ça enrobé de conneries pour le lulz venant de imgur, bashfr et vdm;</li>
+<li>et une radio intégrée dans le menu en haut qui vous diffuse de la zik si vous êtes d&#8217;humeur à cliquer dessus.</li>
+</ul>
+<div id="attachment_1698" style="width: 472px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2012/08/Multiboards-les-infos-fraîches-de-vos-sites-préférés-2012-08-14-15-54-00.png" class="grouped_elements" rel="tc-fancybox-group1697"><img class=" wp-image-1698  " title="Des articles, des news, de bêtises, en un coup d'oeil" src="http://sametmax.com/wp-content/uploads/2012/08/Multiboards-les-infos-fraîches-de-vos-sites-préférés-2012-08-14-15-54-00.png" alt="Capture d'écran du multiboards" width="462" height="241" /></a><p class="wp-caption-text">Des articles, des news, de bêtises, en un coup d&#39;oeil</p></div>
+<p>C&#8217;est du bottle, donc du Python, et massivement du jQuery, avec un petit peut de Redis mais alors vraiment pour la couleur. Car en fait, quasiment tout se passe côté client et ne tape quasiment pas notre serveur. Très KISS.</p>
+<p>Il n&#8217;y aura pas de version qu&#8217;on peut customiser par user, qui demande une registration ou quoique ce soit. Le multiboard, c&#8217;est ça, et juste ça.</p>
+<p>Maintenant chers amis, il va falloir tous spammer de commentaires ce post pour motiver l&#8217;auteur afin qu&#8217;il mette le code source sous licence libre. Parceque c&#8217;est une feignasse, le Max, je vous le rappelle, et que ça voudrait dire qu&#8217;il devrait écrire une doc et nettoyer le <code>random.randint()</code> qu&#8217;il a mis pour le compteur de visiteurs.</p>
+<p><strong>Ah oui, on a rajouté le lien dans le menu.</strong></p>
+<p>&nbsp;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-meilleur-de-lactu-it-le-temps-dun-cafe-le-multiboards/feed/</wfw:commentRss>
+		<slash:comments>25</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1697</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/08/coffee2.png" length="85865" type="image/jpg" />	</item>
+		<item>
+		<title>jQuery Visual Password: créer hash un visuel d&#8217;un password en cours de frappe</title>
+		<link>http://sametmax.com/jquery-visual-password-creer-hash-un-visuel-dun-password-en-cours-de-frappe/</link>
+		<comments>http://sametmax.com/jquery-visual-password-creer-hash-un-visuel-dun-password-en-cours-de-frappe/#comments</comments>
+		<pubDate>Sat, 05 May 2012 01:40:57 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[hash]]></category>
+		<category><![CDATA[hash visuel]]></category>
+		<category><![CDATA[jquery]]></category>
+		<category><![CDATA[password]]></category>
+		<category><![CDATA[plugin]]></category>
+		<category><![CDATA[VizHash.js]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=547</guid>
+		<description><![CDATA[Comment s'assurer que l'on a pas fait une faute de frappe quand la page de login se bloque après trois essais infructeux ? Comme être certains que le password choisi à la création d'un compte est bien ce lui que l'on veut ? Une solution intéressante en une ligne de javascript.]]></description>
+				<content:encoded><![CDATA[<p>Comment s&#8217;assurer que l&#8217;on a pas fait une faute de frappe quand la page de login se bloque après trois essais infructeux ? Comme être certains que le password choisi à la création d&#8217;un compte est bien ce lui que l&#8217;on veut ?</p>
+<p><a href="https://github.com/sametmax/jQuery-Visual-Password">jQuery Visual Password</a> est un plugin <a href="http://jquery.com/">jQuery</a> qui répond à cette question sans avoir à mettre le mot de passe en clair : il créé une image unique depuis le mot de passe, puis l&#8217;affiche. L&#8217;image se met à jour au fil de la frappe.</p>
+<p>Impossible de se tromper, l&#8217;image change radicalement si on change le moindre caractère. Et pour cause, ça utilise <a href="http://sametmax.com/vizhash-js-notre-implementation-libre-de-hash-visuel-utilisant-html5-canvas/">VizHash.js</a> :-)</p>
+<p><strong>Essayez :</strong></p>
+<p><iframe style="width: 100%; height: 400px" src="http://jsfiddle.net/TANLB/embedded/result,js,html,css" allowfullscreen="allowfullscreen" frameborder="0"></iframe></p>
+<p>On me sussure à l&#8217;oreille que ça peut être pratique pour les mails aussi, car c&#8217;est plus facile de voir si une image est changée que de chercher une faute de frappe.</p>
+<p>On pourrait imaginer la même chose pour un champ d&#8217;adresse bitcoin, ou une signature PGP, un clé SSH, un hash de commit Git, etc.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/jquery-visual-password-creer-hash-un-visuel-dun-password-en-cours-de-frappe/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">547</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/05/2012-05-05-024617_1024x768_scrot.png" length="5152" type="image/jpg" />	</item>
+	</channel>
+</rss>

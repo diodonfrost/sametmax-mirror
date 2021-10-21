@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>r &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/r/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Le pandas c&#8217;est bon, mangez en</title>
+		<link>http://sametmax.com/le-pandas-cest-bon-mangez-en/</link>
+		<comments>http://sametmax.com/le-pandas-cest-bon-mangez-en/#comments</comments>
+		<pubDate>Sat, 10 May 2014 06:30:35 +0000</pubDate>
+		<dc:creator><![CDATA[joshuafr]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[data]]></category>
+		<category><![CDATA[numpy]]></category>
+		<category><![CDATA[pandas]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[r]]></category>
+		<category><![CDATA[sql]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10113</guid>
+		<description><![CDATA[Bonjour à tous, jeunes tailleurs de bambou, suite à un article d'introduction à numpy par le grand maître Sam <a href="http://sametmax.com/les-bases-de-numpy/" title="Les bases de Numpy" target="_blank">Les bases de Numpy</a>, je m'en vais vous présenter une lib qui roxx du poney dans le calcul numérique : <a href="http://pandas.pydata.org/" title="Pandas" target="_blank">Pandas</a>.]]></description>
+				<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/joshuafr/">joshuafr</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<p>Bonjour à tous, jeunes tailleurs de bambou, suite à un article d&#8217;introduction à numpy par le grand maître Sam <a href="http://sametmax.com/les-bases-de-numpy/" title="Les bases de Numpy" target="_blank">Les bases de Numpy</a>, je m&#8217;en vais vous présenter une lib qui roxx du poney dans le calcul numérique : <a href="http://pandas.pydata.org/" title="Pandas" target="_blank">Pandas</a>.</p>
+<p>Pour faire simple, Pandas apporte à Python la possibilité de manipuler de grands volumes de données structurées de manière simple et intuitive, chose qui faisait défaut jusqu&#8217;ici. Il y a bien eu quelques tentatives comme <a href="https://pypi.python.org/pypi/la">larry</a>, mais rien n&#8217;avait jamais pu égaler les fonctionnalités du langage R. Aujourd&#8217;hui Pandas y arrive en fournissant notamment le célèbre type <strong>dataframe</strong> de R, avec en prime tout un tas d&#8217;outils pour agréger, combiner, transformer des données, et tout ça sans se casser le cul. Que du bonheur!</p>
+<p>Donc pour commencer, on installe le bousin par un simple : <code>pip install pandas</code> qui va si vous ne l&#8217;avez pas déjà fait, aussi télécharger/compiler/installer tout un tas de librairies dont numpy. Je vous conseille aussi d&#8217;utiliser <a href="http://ipython.org/">ipython</a> afin d&#8217;avoir une meilleure interaction avec les libs, notamment avec <a href="http://matplotlib.org/">matplotlib</a> en utilisant le switch <code>ipython --pylab</code> afin d&#8217;avoir directement les graphiques en mode interactif, ainsi que toute la bibliothèque numpy directement importée (en interne, ipython fera un <code>import numpy as np</code>).<br />
+On appelle la bête d&#8217;un simple:</p>
+<pre lang="python">In [1]: import pandas as pd</pre>
+<p>Oui je sais, la grande classe&#8230;</p>
+<h2>Tout est Series</h2>
+<p>Le type de base en Pandas est la Series. On peut le voir comme un tableau de données à une dimension:</p>
+<pre lang="python">In [2]: pd.Series(np.arange(1,5))
+Out[2]: 
+0    1
+1    2
+2    3
+3    4
+dtype: int64
+</pre>
+<p>La colonne de gauche représente l&#8217;index de la Series, normalement unique pour chaque entrée. La colonne de droite correspond à nos valeurs sur lesquelles nous voulons travailler.<br />
+L&#8217;index n&#8217;est pas forcément une suite d&#8217;entiers, et la Series peut être nommée:</p>
+<pre lang="python">In [3]: s=pd.Series([1,2,3.14,1e6], index=list('abcd'), name='ma_series')
+In [4]: s
+Out[4]: 
+a          1.00
+b          2.00
+c          3.14
+d    1000000.00
+Name: ma_series, dtype: float64
+</pre>
+<p>A noter qu&#8217;un type-casting est systématiquement appliqué afin d&#8217;avoir un tableau de type uniforme (ici le data-type est du float64) qui peut être modifié (dans une certaine mesure) via <code>Series.astype</code>.</p>
+<p>Le slicing c&#8217;est comme du fisting avec une bonne dose de vaseline, ça glisse tout seul:</p>
+<pre lang="python">In [5]: s['b':'d']
+Out[5]: 
+b          2.00
+c          3.14
+d    1000000.00
+Name: ma_series, dtype: float64</pre>
+<p>Et oui, la sélection par indexation se fait sur&#8230; l&#8217;index de la Series. Ainsi s[&#8216;a&#8217;] renverra la ligne dont l&#8217;index est &#8216;a&#8217;, mais Pandas est assez intelligent pour reconnaître si on lui demande de nous renvoyer des valeurs suivant l&#8217;ordonnancement du tableau de valeurs (comme numpy). Ainsi s[0] renverra la première valeur du tableau, qui ici est égale à s[&#8216;a&#8217;].<br />
+Là où ça peut poser problème c&#8217;est quand notre index est une suite d&#8217;entiers, comme par exemple avec <code>x=pd.Series(np.arange(1,5), index=np.arange(1,5))</code>. Si vous demandez <code>x[1]</code>, Pandas ne retrouve pas ses petits et vous retournera une zolie <code>KeyError</code>. Pour ces cas ambigus, il existe l&#8217;indexation stricte sur le nom de index de la Series via <code>x.loc[nom_d'index]</code>, et l&#8217;indexation stricte sur le numéro d&#8217;ordre dans le tableau via <code>x.iloc[numéro_d'ordre]</code>. Essayez <code>x.loc[0]</code> et <code>x.iloc[0]</code> pour vous rendre compte de la différence.<br />
+Comme pour les préliminaires où il est bon de tâter un peu de tout avec de pénétrer dans le vif du sujet, laissons pour le moment l&#8217;indexation sur laquelle nous reviendrons plus tard, pour regarder d&#8217;un peu plus près comment faire joujou avec nos valeurs.</p>
+<p>Un peu à la manière des arrays de numpy, on peut appliquer des fonctions mathématiques directement sur la Serie, ou passer par des fonctions raccourcis:</p>
+<pre lang="python">In [6]: s.sum()
+Out[6]: 1000006.14</pre>
+<p>Ce qui revient au même que de faire <code>np.sum(s)</code> (rappelez vous, ipython avec &#8211;pylab a importé numpy dans la variable np).</p>
+<p>La fonction <code>describe</code> est bien utile pour avoir un aperçu rapide de ce à quoi on a affaire:</p>
+<pre lang="python">In [7]: s.describe()
+Out[7]: 
+count          4.000000
+mean      250001.535000
+std       499998.976667
+min            1.000000
+25%            1.750000
+50%            2.570000
+75%       250002.355000
+max      1000000.000000
+Name: ma_series, dtype: float64</pre>
+<p>ce qui donne le nombre de données, la moyenne globale, la déviation standard, le minimum, les quartiles et le maximum de la Serie. </p>
+<p>Le truc à retenir est que c&#8217;est l&#8217;index qui est primordial dans un grand nombre d&#8217;opérations. Ainsi si l&#8217;on veut additionner 2 Series ensemble, il faut que leurs index soient alignés :</p>
+<pre lang="python">In [8]: s2=pd.Series(np.random.rand(4), index=list('cdef'), name='autre_serie')
+
+In [9]: s+s2
+Out[9]: 
+a               NaN
+b               NaN
+c          4.021591
+d    1000000.401511
+e               NaN
+f               NaN
+dtype: float64</pre>
+<p>Ici, seuls les index &#8216;c&#8217; et &#8216;d&#8217; étaient présents dans les 2 Series, Pandas effectuant avant l&#8217;opération d&#8217;addition une union basée sur l&#8217;index. Les autres entrées sont marquées en <code>NaN</code>, soit Not a Number. Une possibilité pour contrer ce phénomène et de dire à Pandas de remplacer les résultats manquants lors de l&#8217;union par 0:</p>
+<pre lang="python">In [10]: s.add(s2, fill_value=0)
+Out[10]: 
+a          1.000000
+b          2.000000
+c          4.021591
+d    1000000.401511
+e          0.563508
+f          0.655915
+Name: ma_series, dtype: float64</pre>
+<p>Mais si ce sont uniquement les valeurs qui nous intéressent, et non les indexations, il est possible de les supprimer:</p>
+<pre lang="python">In [11]: s.reset_index(drop=True)+s2.reset_index(drop=True)
+Out[11]: 
+0          1.881591
+1          2.401511
+2          3.703508
+3    1000000.655915
+dtype: float64</pre>
+<p>Oh joie, oh bonheur, je peux faire ce que je veux avec mes cheveux, enfin mes données&#8230;</p>
+<h2>Et PAN! dans ta frame</h2>
+<p>La DataFrame est l&#8217;extension en 2 dimensions des Series. Elle peut être vue comme un empilement de Series dont les index sont partagés (et donc intrinsèquement alignés), ou comme dans un tableur où les index sont les numéros de lignes et les noms des Series les noms des colonnes. Je ne vais pas décrire toutes les manières de créer une DataFrame, sachez juste qu&#8217;on peut les obtenir à partir de dictionnaires, de liste de liste ou de liste de Series, d&#8217;arrays ou de records numpy, de fichier excel ou csv et même depuis des bases de données, de fichier JSON ou HTML, et depuis le presse-papiers.</p>
+<pre lang="python">
+In [14]: genre=[['femme','homme'][x] for x in np.random.random_integers(0,1,100)]
+
+In [15]: lateral=[['droite','gauche'][x] for x in np.random.random_integers(0,1,100)]
+
+In [16]: age=np.random.random_integers(1,100,100)
+
+In [17]: df=pd.DataFrame({'Genre':genre, 'Lateral':lateral, 'Age':age})
+
+In [18]: df
+Out[18]: 
+    Age  Genre Lateral
+0    69  femme  droite
+1    46  homme  droite
+2    89  homme  droite
+3    14  homme  droite
+4    74  homme  droite
+5     5  femme  gauche
+6    66  femme  droite
+7    73  homme  gauche
+8    99  homme  gauche
+9    17  homme  gauche
+    ...    ...     ...
+
+[100 rows x 3 columns]
+
+</pre>
+<p>L&#8217;affichage par défaut depuis la version 0.13 est en mode &#8216;truncate&#8217; où la fin de la DataFrame est tronquée suivant la hauteur de votre terminal, mais ça peut se changer via les divers paramètres à regarder sous <code>pd.options.display</code>.</p>
+<p>Là donc nous avons une DataFrame de 3 colonnes (plus un index), chaque colonne étant en réalité une Serie :</p>
+<pre lang="python">In [20]: type(df['Age'])
+Out[20]: pandas.core.series.Series</pre>
+<p>La sélection peut se faire de plusieurs manières, à chacun de choisir sa préférée (moi c&#8217;est Dafnée avec ses gros nénés). Ainsi pour avoir les 3 premières lignes des âges</p>
+<pre lang="python">In [21]: df['Age'][0:3]
+Out[21]: 
+0    69
+1    46
+2    89
+Name: Age, dtype: int64
+
+In [22]: df[0:3]['Age']
+Out[22]: 
+0    69
+1    46
+2    89
+Name: Age, dtype: int64
+
+In [23]: df.Age[0:3]
+Out[23]: 
+0    69
+1    46
+2    89
+Name: Age, dtype: int64
+
+In [24]: df.loc[0:3, 'Age']
+Out[24]: 
+0    69
+1    46
+2    89
+3    14
+Name: Age, dtype: int64</pre>
+<p>et oui, les noms de colonnes peuvent aussi être utilisés comme des attributs de la DataFrame. Pratique (qu&#8217;on n&#8217;attend pas).</p>
+<p>L&#8217;une des forces de Pandas est de nous proposer tout un tas de solutions pour répondre à des questions existentielles tel que &#8220;quel est l&#8217;âge moyen par genre et par latéralité?&#8221;. Comme en SQL où la réponse sortirait du fondement d&#8217;une clause GROUP BY et d&#8217;une fonction d’agrégation, il en va de même ici :</p>
+<pre lang="python">In [25]: df.groupby(['Genre','Lateral']).aggregate(np.mean)
+Out[25]: 
+                     Age
+Genre Lateral           
+femme droite   45.476190
+      gauche   49.208333
+homme droite   41.571429
+      gauche   55.823529
+
+[4 rows x 1 columns]</pre>
+<p>OMG! c&#8217;est quoi c&#8217;t&#8217;index de malade? Un <strong>MultiIndex</strong> jeune padawan, qui te permettra d&#8217;organiser tes données par catégorie/niveau, et d&#8217;y accèder par le paramètre <code>level</code> dans pas mal de fonctions, mais ça je te laisse le découvrir par toi-même. Je ne vais pas non plus m&#8217;étendre plus sur toutes les possibilités offertes par les DataFrame, il y a tellement à dire qu&#8217;il faudrait plusieurs articles pour en faire le tour. Juste conclusionner sur la facilité d&#8217;intégration Pandas/matplotlib en vous disant que les Series et DataFrame ont une fonction <code>plot</code> permettant directement de visualiser les données, et ça, c&#8217;est juste jouissif.</p>
+<h2>Datetime dans les index</h2>
+<p>Je vous avez dit qu&#8217;on reviendrait sur les indexes, et là c&#8217;est pour rentrer dans le lourd (mais non pas toi Carlos). Pandas donc supporte l&#8217;indexation sur les dates, en reprenant et en élargissant les possibilités offertes par feu le module <a href="http://pytseries.sourceforge.net/">scikits.timeseries</a>.<br />
+Prenons l&#8217;exemple de données (complètement bidons) fournies par un capteur à intervalle régulier sur un pas de temps horaire:</p>
+<pre lang="python">In [26]: dtindex=pd.date_range(start='2014-04-28 00:00', periods=96, freq='H')
+
+In [27]: data=np.random.random_sample(96)*50
+
+In [28]: df=pd.DataFrame(data, index=dtindex, columns=['mesure'])
+
+In [29]: df.head()
+Out[29]: 
+                        mesure
+2014-04-28 00:00:00  49.253929
+2014-04-28 01:00:00   1.910280
+2014-04-28 02:00:00   7.534761
+2014-04-28 03:00:00  39.416415
+2014-04-28 04:00:00  44.213409
+
+[5 rows x 1 columns]
+
+In [30]: df.tail()
+Out[30]: 
+                        mesure
+2014-05-01 19:00:00  25.291453
+2014-05-01 20:00:00  26.520291
+2014-05-01 21:00:00  33.459766
+2014-05-01 22:00:00  44.521813
+2014-05-01 23:00:00  28.486003
+
+[5 rows x 1 columns]</pre>
+<p><code>dtindex</code> est un <strong>DatetimeIndex</strong> initialisé au 28 avril 2014 à 0 heure comportant 96 périodes de fréquence horaire, soit 4 jours. La fonction <code>date_range</code> peut aussi prendre en arguments des objets datetime purs au lieu de chaine de caractère (manquerait plus que ça&#8230;), et le nombre de périodes peut être remplacé par une date de fin.<br />
+Si l&#8217;on veut calculer, disons le maximum (horaire) par jour, rien de plus simple, il suffit de &#8220;resampler&#8221; en données journalières (&#8216;D&#8217; pour Day) et de dire comment aggréger le tout:</p>
+<pre lang="python">In [31]: df.resample('D', how=np.max)
+Out[31]: 
+               mesure
+2014-04-28  26.298282
+2014-04-29  28.385418
+2014-04-30  26.723353
+2014-05-01  24.106092
+
+[4 rows x 1 columns]
+</pre>
+<p>Mais on peut aussi convertir en données quart-horaire (upsampling) en remplissant les données manquantes par celles de l&#8217;heure fixe:</p>
+<pre lang="python">In [32]:  df[:3].resample('15min', fill_method='ffill')
+Out[32]: 
+                        mesure
+2014-04-28 00:00:00  49.253929
+2014-04-28 00:15:00  49.253929
+2014-04-28 00:30:00  49.253929
+2014-04-28 00:45:00  49.253929
+2014-04-28 01:00:00   1.910280
+2014-04-28 01:15:00   1.910280
+2014-04-28 01:30:00   1.910280
+2014-04-28 01:45:00   1.910280
+2014-04-28 02:00:00   7.534761
+
+[9 rows x 1 columns]</pre>
+<p>Cependant, Pandas propose aussi d&#8217;autres possibilités non dépendantes des DatetimeIndex mais qu&#8217;il est bon de connaître, notamment celle pour remplacer les données manquantes avec <code>fillna</code> ou celle pour interpoler entre les données valides avec <code>interpolate</code></p>
+<pre lang="python">In [52]:  df[:3].resample('15min')
+Out[52]: 
+                        mesure
+2014-04-28 00:00:00  49.253929
+2014-04-28 00:15:00        NaN
+2014-04-28 00:30:00        NaN
+2014-04-28 00:45:00        NaN
+2014-04-28 01:00:00   1.910280
+2014-04-28 01:15:00        NaN
+2014-04-28 01:30:00        NaN
+2014-04-28 01:45:00        NaN
+2014-04-28 02:00:00   7.534761
+
+[9 rows x 1 columns]
+
+In [53]:  df[:3].resample('15min').fillna(df.mean())
+Out[53]: 
+                        mesure
+2014-04-28 00:00:00  49.253929
+2014-04-28 00:15:00  26.378286
+2014-04-28 00:30:00  26.378286
+2014-04-28 00:45:00  26.378286
+2014-04-28 01:00:00   1.910280
+2014-04-28 01:15:00  26.378286
+2014-04-28 01:30:00  26.378286
+2014-04-28 01:45:00  26.378286
+2014-04-28 02:00:00   7.534761
+
+[9 rows x 1 columns]
+
+In [54]:  df[:3].resample('15min').interpolate()
+Out[54]: 
+                        mesure
+2014-04-28 00:00:00  49.253929
+2014-04-28 00:15:00  37.418016
+2014-04-28 00:30:00  25.582104
+2014-04-28 00:45:00  13.746192
+2014-04-28 01:00:00   1.910280
+2014-04-28 01:15:00   3.316400
+2014-04-28 01:30:00   4.722520
+2014-04-28 01:45:00   6.128641
+2014-04-28 02:00:00   7.534761
+
+[9 rows x 1 columns]</pre>
+<p>Voilà, j&#8217;espère que vous aurez plaisir à travailler avec cette librairie, il manquait vraiment un outil de cette trempe en Python pour l&#8217;analyse de données et je pense qu&#8217;on n&#8217;a plus trop grand chose à envier maintenant par rapport à des langages spécilisés. Je n&#8217;ai pas parlé de <code>Panel</code> qui est le passage à la troisième dimension, ni des possibilités d&#8217;export, notamment la <code>df.to_html</code> que je vous laisse le soin de découvrir.</p>
+<p>A plus, et amusez vous bien avec votre bambou.</p>
+<p>\o/</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-pandas-cest-bon-mangez-en/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">10113</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/05/post-16916-Panda-Deal-With-It-b3do.gif" length="277789" type="image/jpg" />	</item>
+	</channel>
+</rss>

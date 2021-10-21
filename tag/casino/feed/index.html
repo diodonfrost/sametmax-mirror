@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>casino &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/casino/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>La martingale à la roulette en Python</title>
+		<link>http://sametmax.com/la-martingale-a-la-roulette-en-python/</link>
+		<comments>http://sametmax.com/la-martingale-a-la-roulette-en-python/#comments</comments>
+		<pubDate>Thu, 01 May 2014 10:17:42 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[auchan]]></category>
+		<category><![CDATA[casino]]></category>
+		<category><![CDATA[champion]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8930</guid>
+		<description><![CDATA[Sur internet, c'est bien connu, on peut perdre du poids, trouver une fille facile prêt de chez soit, et gagner beaucoup d'argent facilement et sans risque.
+
+Une de ces techniques qu'on vous vend est la fameuse <a href="Martingale">martingale</a>, mais appliquée aux casinos en ligne. ]]></description>
+				<content:encoded><![CDATA[<p>Sur internet, c&#8217;est bien connu, on peut perdre du poids, trouver une fille facile près de chez soi, et gagner beaucoup d&#8217;argent rapidement et sans risque.</p>
+<p>Une de ces techniques qu&#8217;on vous vend est la fameuse <a href="https://fr.wikipedia.org/wiki/Martingale">martingale</a>, mais appliquée aux casinos en ligne. Outre le fait que vous ne pouvez pas vous fier à un serveur distant pour ne pas tricher, les jeux de hasard sont de toute façon toujours en faveur de la banque.</p>
+<p>Nous allons nous intéresser à la martingale la plus simple, celle appliquée à la roulette. Quand j&#8217;étais à l&#8217;université, entre deux parties de Munchkins, nous cherchions un moyen de faire du pognon. Et on a failli s&#8217;organiser une session au casino de notre ville pour appliquer la technique suivante :</p>
+<ol>
+<li>Jouer une petite mise sur une couleur;</li>
+<li>Si on perd, revenir en 1 mais avec une mise équivalent au double de ses pertes.</li>
+<li>Si on gagne, encaisser, retourner en 1, mais avec la toute petite mise de départ.</li>
+</ol>
+<p>L&#8217;idée était que si tu perdais, tu doublais ta mise jusqu&#8217;à ce que ça te rembourse tes pertes. Sinon, tu gagnes, et tu empoches. Seulement voilà, la roulette à la couleur, ce n&#8217;est pas 50% de chance, car il y a le zéro, qui n&#8217;est ni rouge, ni noir.</p>
+<p>Comme on était des petits cons nuls en probas, mais des petits cons programmeurs, on avait simulé le jeu avec un programme Python, juste au cas où :</p>
+<pre lang="python">import random
+
+# Une roulette (en France), c'est un 0 vert, et des numéros de
+# 1 à 36 alternativement rouges et noirs.
+roulette = ["green"]
+roulette.extend("red" for i in range(1, 37, 2))
+roulette.extend("black" for i in range(2, 37, 2))
+
+# Regardons ce que donne la proba de choper le rouge avec le générateur
+# de nombre pseudo-aléatoires de Python.
+count = 0
+for i in range(100000):
+    count += random.choice(roulette) == "red"
+print("Average chance of picking red: %s" % (count / 100000 * 100))
+
+# Time to play ! Insérer ici la musique d'un film américain ambiance Las Vegas.
+def play(rounds, budget=10000, color="red", start_bet=5):
+    initial_budget = budget
+    max_bet = start_bet
+    bet = start_bet
+    loss = 0
+    # On limite le nombre de paris
+    for round in range(rounds):
+        # On mise
+        budget -= bet
+        if random.choice(roulette) != color:
+            # On a perdu, on mise le double de ses pertes.
+            loss += bet
+            bet = loss * 2
+            # Si jamais c'est plus que notre pognon, on se couche et on chiale.
+            if bet > budget:
+                break
+            # On garde une trace de notre mise max pour évaluer le budget max.
+            if (max_bet < bet):
+                max_bet = bet
+        else:
+            # Si on gagne, on récupère notre mise et le gain, et on recommence.
+            budget += bet * 2
+            bet = start_bet
+            loss = 0
+
+    return budget - initial_budget, max_bet
+
+print("10 rounds | balance: %s (max=%s)" % play(10))
+print("100 rounds | balance: %s (max=%s)" % play(100))
+print("1000 rounds | balance: %s (max=%s)" % play(1000))
+print("10000 rounds | balance: %s (max=%s)" % play(1000))</pre>
+<p>Là le budget est large, mais nous on avait 800 euros... Bref, le résultat :</p>
+<pre lang="bash">
+$ python3 roulette.py
+Average chance of picking red: 48.78
+10 rounds | balance: 10 (max=90)
+100 rounds | balance: 1835 (max=2430)
+1000 rounds | balance: -3585 (max=2430)
+10000 rounds | balance: -3495 (max=2430)
+
+$ python3 roulette.py
+Average chance of picking red: 48.67
+10 rounds | balance: 15 (max=30)
+100 rounds | balance: -3620 (max=2430)
+1000 rounds | balance: -3180 (max=2430)
+10000 rounds | balance: -4670 (max=7290)
+
+$ python3 roulette.py
+Average chance of picking red: 48.507
+10 rounds | balance: 45 (max=90)
+100 rounds | balance: 1800 (max=2430)
+1000 rounds | balance: -3370 (max=2430)
+10000 rounds | balance: -3455 (max=2430)
+
+$ python3 roulette.py
+Average chance of picking red: 48.4
+10 rounds | balance: 50 (max=30)
+100 rounds | balance: 1940 (max=2430)
+1000 rounds | balance: 1435 (max=7290)
+10000 rounds | balance: -970 (max=7290)
+
+$ python3 roulette.py
+Average chance of picking red: 48.853
+10 rounds | balance: -115 (max=270)
+100 rounds | balance: -3535 (max=2430)
+1000 rounds | balance: -2100 (max=7290)
+10000 rounds | balance: -2120 (max=7290)</pre>
+<p>C'est pas vraiment la fortune assurée et en prime, dès qu'on veut jouer un peu sérieusement, il faut un budget max énorme. Mais surtout, il y a une grosse contrainte de temps, puisque 10 rounds c'est une bonne heure de jeu dans un casino réel.</p>
+<hr />
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2014/mai/roulette.py">Télécharger le code de l'article.</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-martingale-a-la-roulette-en-python/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8930</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/05/7U2Uby3.jpg" length="158314" type="image/jpg" />	</item>
+	</channel>
+</rss>

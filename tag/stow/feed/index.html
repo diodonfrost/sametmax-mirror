@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>stow &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/stow/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Regrouper ses fichiers de settings avec stow</title>
+		<link>http://sametmax.com/regrouper-ses-fichiers-de-settings-avec-stow/</link>
+		<comments>http://sametmax.com/regrouper-ses-fichiers-de-settings-avec-stow/#comments</comments>
+		<pubDate>Fri, 06 Oct 2017 08:24:03 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[configuration]]></category>
+		<category><![CDATA[settings]]></category>
+		<category><![CDATA[stow]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=23681</guid>
+		<description><![CDATA[Sous Linux, le dossier utilisateur est blindé de fichiers de configuration. Les fameux <code>.machins</code>. Par exemple le <code>.bashrc</code> pour la config du bash, le <code>.mozilla</code> qui contient toutes vos données Firefox, le <code>.ssh</code> avec toutes vos clés privées, le <code>.local/share/virtualenvs</code> avec les envs virtuels Python créés par pew ou <code>.config/sublime-text-3</code> pour la configuration de Sublime text, etc.]]></description>
+				<content:encoded><![CDATA[<p>Sous Linux, le dossier utilisateur est blindé de fichiers de configuration. Les fameux <code>.machins</code>. Par exemple le <code>.bashrc</code> pour la config du bash, le <code>.mozilla</code> qui contient toutes vos données Firefox, le <code>.ssh</code> avec toutes vos clés privées, le <code>.local/share/virtualenvs</code> avec les envs virtuels Python créés par pew ou <code>.config/sublime-text-3</code> pour la configuration de Sublime text, etc.</p>
+<p>Au final, voici tous les fichiers de conf qui sont importants pour moi de près ou de loin:</p>
+<pre>
+├── .autoenv
+├── .bashrc
+├── .config
+│   ├── autostart
+│   ├── Code
+│   ├── copyq
+│   ├── fish
+│   ├── gtg
+│   ├── liferea
+│   ├── pulse
+│   ├── stremio
+│   ├── sublime-text-3
+│   ├── transmission
+│   ├── user-dirs.dirs
+│   ├── user-dirs.locale
+│   ├── variety
+│   ├── VeraCrypt
+│   ├── Zeal
+│   └── zim
+├── .django-completion.bash
+├── .editorconfig
+├── .git-aware-prompt
+├── .git-completion.bash
+├── .gitconfig
+├── .gitignore
+├── .git-prompt.sh
+├── .git.scmbrc
+├── .jupyter
+├── .lastpass
+├── .liferea_1.8
+├── .local
+│   └── share
+        ├── gtg
+        ├── keyrings
+        ├── liferea
+        ├── omf
+        ├── TowerFall
+        ├── virtualenvs
+        └── Zeal
+├── .mozilla
+├── .netrc
+├── .oh-my-zsh
+├── .openambit
+├── .pypirc
+├── .scmbrc
+├── .scm_breeze
+├── .sshplus
+├── .vscode
+│   └── extensions
+└── .zshrc
+</pre>
+<p>Quand on bidouille, on les change souvent. On les backup aussi, pour pouvoir les porter d&#8217;un laptop à un autre, les synchroniser, les uploader sur un serveur ou les récup lors d&#8217;une réinstallation. Parce que quand on a tuné ses terminaux et éditeurs aux petits oignons, on a pas envie de recommencer à poil.</p>
+<p>Pour bien faciliter les choses, ils sont éparpillés un peu partout, dans des sous-dossiers différents. </p>
+<p>Et je sais pas quel vil individu a suggéré une fois que faire une partition séparée pour <code>/home</code> était la solution de Skippy à tous les soucis, mais perso, ça me cause plus de bugs qu&#8217;autre chose quand on change de versions d&#8217;OS.</p>
+<p>Bref, laissez tomber vos vieilles croyances issues de charlatans de sectes. Moi, j&#8217;ai vu la lumière (lien de don bitcoin en bas à droite de la page), et elle s&#8217;appelle <code>GNU stow</code>.</p>
+<p>Stow est un vieil utilitaire (donc sagesse millénaire des anciens, vous pouvez avoir confiance, prenez ce cristal aussi il est en promo), qui est grosso merdo un <code>ln -s</code> récursive. C&#8217;est-à-dire que ça fait des symlinks des fichiers et des dossiers que vous lui passez.</p>
+<p>On peut l&#8217;utiliser pour plein de choses, mais l&#8217;usage sacré implique le sacrifice d&#8217;une vierge à Max, puis de déplacer tous les fichiers de settings qu&#8217;on souhaite gérer dans un seul dossier.</p>
+<p>Par exemple, moi j&#8217;ai:</p>
+<pre>
+/home/user/church/settings/
+
+    ├── .autoenv
+    ├── .bashrc
+    ├── .config
+    │   ├── autostart
+    │   ├── Code
+    │   ├── copyq
+    │   ├── fish
+    │   ├── gtg
+    ...
+</pre>
+<p>Au lieu de les avoir éparpillées partout, toutes les brebis sont maintenant regroupées dans une seule église. </p>
+<p>Il est très important de garder l&#8217;organisation des dossiers et des sous-dossiers d&#8217;origine. Ici vous voyez que j&#8217;ai le dossier <code>Code</code>, qui est le dossier de settings de VSCode. Mais il est DANS un dossier <code>.config</code>, car avant mon regroupement il était dans <code>/home/user/.config/</code>.</p>
+<p>En revanche, il n&#8217;est pas du tout nécessaire que <code>.config</code> contienne tous les dossiers qu&#8217;il avait précédemment. Seuls ceux qui vous intéressent. Le reste peut rester à sa place initiale, dans le <code>/home/user/.config/</code>.</p>
+<p>Donc je résume:</p>
+<ul>
+<li>Listez les fichiers et dossiers de settings qui vous intéressent.</li>
+<li>Déplacez les tous dans un dossier commun en gardant une arborescence similaire.</li>
+<li>Laissez les fichiers qui ne vous intéressent pas là où ils sont.</li>
+<li>Priez (une bonne pratique avant toute opération informatique).</li>
+</ul>
+<p>Arrive le messie, Stow.</p>
+<p>D&#8217;abord, il faut l&#8217;installer, mais comme c&#8217;est un outil vénérable, il est dans les dépôts. Sous Ubuntu, le psaume &#8220;apt install stow&#8221; fera l&#8217;affaire.</p>
+<p>Ensuite, on prêche. Je me perds dans mes propres paraboles, mais les voies du seigneur sont impénétrables, contrairement à celles d&#8217;Abella Anderson. Bref on demande à <code>stow</code> de traiter récursivement tout le contenu du dossier <code>settings</code> qui est dans <code>/home/user/church</code> afin de le linker vers <code>/home/user/</code>:</p>
+<pre lang="bash">stow -d /home/user/church -t /home/user/ settings</pre>
+<p>Stow va prendre récursivement tous les dossiers qui sont dans <code>/home/user/church/settings</code>, et les comparer à ceux dans <code>/home/user</code>. Si ils existent, il va ne rien faire, mais si ils n&#8217;existent pas, il va créer un lien vers chacun de ceux manquants. Pour les fichiers, si ils n&#8217;existent pas, il va créer un lien, sinon il va vous afficher une erreur, afin de ne pas écraser quelque chose d&#8217;important et vous signalez qu&#8217;il y un souci.</p>
+<p>Le but de tout ça ?</p>
+<p>Pour votre système et tous vos logiciels, ça ne change rien. Ils vont tomber sur les liens et avoir l&#8217;impression que tous les fichiers de configs sont à leur place et vont continuer à fonctionner dans la joie et le gospel.</p>
+<p>Et pour vous, ben vous avez un seul endroit où tous les fichiers importants sont regroupés. Plus besoin de les chercher. Facile à backuper et à restaurer. On peut même tout foutre sous Git.</p>
+<p>Loué soit le sauveur.</p>
+<p>Vive moi.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/regrouper-ses-fichiers-de-settings-avec-stow/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">23681</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/10/s4UjYDb.jpg" length="232781" type="image/jpg" />	</item>
+	</channel>
+</rss>

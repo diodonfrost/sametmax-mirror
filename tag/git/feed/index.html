@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>git &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/git/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Mon prompt bash est tout cassé !</title>
+		<link>http://sametmax.com/mon-prompt-bash-est-tout-casse/</link>
+		<comments>http://sametmax.com/mon-prompt-bash-est-tout-casse/#comments</comments>
+		<pubDate>Thu, 14 Jan 2016 09:43:33 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[prompt]]></category>
+		<category><![CDATA[virtualenv]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=17806</guid>
+		<description><![CDATA[Ça m'était déjà arrivé plusieurs fois après avoir ajouté mon env virtuel et ma branch git dans mon prompt : soudainement il se met à faire n'importe quoi. Des mixes de caratères, des sauts de ligne qui se font pas, la fusion de la ligne de commande sur elle-même.]]></description>
+				<content:encoded><![CDATA[<p>Ça m’était déjà arrivé plusieurs fois après avoir ajouté mon env virtuel et ma branch git dans mon prompt : soudainement il se met à faire n’importe quoi. Des mixes de caractères, des sauts de ligne qui se font pas, la fusion de la ligne de commande sur elle-même.</p>
+<p>Inutilisable.</p>
+<p>Aujourd’hui plutôt que de subir le problème, j’ai cherché une solution, <a href="http://superuser.com/questions/367275/linux-coloring-bash-prompt-will-break-carriage-return">et pouf</a> : quand on utilise des couleurs dans son prompt, il faut entourer tout le balisage de <code>[]</code>.</p>
+<p>Mais le balisage qui colore le prompt est composé de séquences d’échappements, qui contiennent aussi <code>[]</code>, donc il faut mettre des anti-slash.</p>
+<p>Du coup on passe de ça :</p>
+<p><code>export PS1="\[\033[01;34m\]\$(basename '$VIRTUAL_ENV')\e[0m $PS1"</code></p>
+<p>à :</p>
+<p><code>export PS1="\[\033[01;34m\]\$(basename '$VIRTUAL_ENV')[\e[0m] $PS1"<br />
+</code></p>
+<p>à la solution qui marche :</p>
+<p><code>export PS1="\[\033[01;34m\]\$(basename '$VIRTUAL_ENV')\[\e[0m\] $PS1"</code></p>
+<p>Évidemment à appliquer à tous les codes d’échappement chelou qu’on a réparti un peu partout.</p>
+<p>J’ai un tampon prêt à tirer pour le premier qui me parle de zsh.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/mon-prompt-bash-est-tout-casse/feed/</wfw:commentRss>
+		<slash:comments>24</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">17806</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/01/mJT7sDs.jpg" length="657543" type="image/jpg" />	</item>
+		<item>
+		<title>IndexErrorCoders, le compte github de la communauté d&#8217;IndexError</title>
+		<link>http://sametmax.com/indexerrorcoders-le-compte-github-de-la-communaute-dindexerror/</link>
+		<comments>http://sametmax.com/indexerrorcoders-le-compte-github-de-la-communaute-dindexerror/#comments</comments>
+		<pubDate>Tue, 16 Jun 2015 13:59:52 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[github]]></category>
+		<category><![CDATA[indexerror]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16396</guid>
+		<description><![CDATA[C'est pas moi, j'ai rien fais !]]></description>
+				<content:encoded><![CDATA[<p>C&#8217;est pas moi, j&#8217;ai rien fais !</p>
+<p>J&#8217;ai reçu une notif m&#8217;invitant à participer à <a href="https://github.com/indexerrorcoders">ce groupe de travail</a>, et en regardant de plus près, j&#8217;ai vu qu&#8217;il s&#8217;appelait IndexErrorCoders.</p>
+<p>Après investigation, il est né <a href="http://indexerror.net/1957/design-patterns-votre-caisse-%C3%A0-outils?show=2051#c2051">d&#8217;une question sur IndexError</a> qui, commentaire après commentaire, à abouti à la création d&#8217;un <a href="https://github.com/indexerrorcoders/python-patterns">repo git dédié aux design patterns Python.</a></p>
+<p>C&#8217;est toujours sympas de voir les trucs qui se forment autour de notre petite communauté, on a l&#8217;impression de vivre dans une coloc avec tout le monde :)</p>
+<p>Bonne chance au projet.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/indexerrorcoders-le-compte-github-de-la-communaute-dindexerror/feed/</wfw:commentRss>
+		<slash:comments>24</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">16396</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/06/9ee113b7a68b4a51bf9ed2fda309e59054bd6ba66deea0bef6c221550bf5890a_original.gif" length="502249" type="image/jpg" />	</item>
+		<item>
+		<title>Rapatrier une branche d&#8217;un repo distant en local</title>
+		<link>http://sametmax.com/rapatrier-une-branche-dun-repo-distant-en-local/</link>
+		<comments>http://sametmax.com/rapatrier-une-branche-dun-repo-distant-en-local/#comments</comments>
+		<pubDate>Tue, 21 Oct 2014 17:00:28 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[branch]]></category>
+		<category><![CDATA[checkout]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[local]]></category>
+		<category><![CDATA[remote]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12534</guid>
+		<description><![CDATA[Vous avez un repo local et un remote. Une branche a été créé sur le remote, et vous voulez la récupérer en local.]]></description>
+				<content:encoded><![CDATA[<p>Vous avez un repo local et un remote. Une branche a été créée sur le remote, et vous voulez la récupérer en local :</p>
+<pre lang="bash">git checkout --track nom_du_remote/nom_de_la_branche</pre>
+<p>Par exemple :</p>
+<pre lang="bash">git checkout --track origin/dev</pre>
+<p>Ce qui va avoir pour effet de créer une branche &#8220;dev&#8221; sur votre repo local, de vous switcher dessus, et la lier à la branche &#8220;dev&#8221; du remote &#8220;origin&#8221;.</p>
+<p>Comme d&#8217;hab, assurez-vous que votre copie de travail est bien propre avant sinon ça va merder au moment de changer de branche.</p>
+<p>Ouais, ouais, je sais, <code>checkout</code> est la commande fourre-tout de git qui fait absolument n&#8217;importe quoi. C&#8217;est relou. </p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/rapatrier-une-branche-dun-repo-distant-en-local/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">12534</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/10/AchievementUnlockedTemplate1.jpg" length="52388" type="image/jpg" />	</item>
+		<item>
+		<title>Oblitérer un fichier de l&#8217;historique Git</title>
+		<link>http://sametmax.com/obliterer-un-fichier-de-lhistorique-git/</link>
+		<comments>http://sametmax.com/obliterer-un-fichier-de-lhistorique-git/#comments</comments>
+		<pubDate>Mon, 07 Jul 2014 13:24:06 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[git]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=11331</guid>
+		<description><![CDATA[Si vous avez commité votre clé privée dans un repo, il existe un moyen de la dégommer de l'historique.]]></description>
+				<content:encoded><![CDATA[<p>Si vous avez commité votre clé privée dans un repo, il existe un moyen de la dégommer de l&#8217;historique.</p>
+<p><strong>ATTENTION, CECI EST UNE OPERATION DANGEREUSE.</strong></p>
+<pre lang="bash">git filter-branch -f --index-filter "git rm -r --cached --ignore-unmatch chemin/vers/fichier" --prune-empty --tag-name-filter cat -- --all</pre>
+<p>Si le fichier a été dans plusieurs endroits durant sa vie, il faut relancer la commande pour chaque chemin.</p>
+<p>Puis :</p>
+<pre lang="bash">git push remote branch --force</pre>
+<p>Cette seconde commande est à lancer pour chaque branche et chaque tag concerné.</p>
+<p>Comme tout ce qui change l&#8217;historique, il faut que tous les autres repos appliquent aussi cette opération.</p>
+<p>Tous vos collègues devront, soit appliquer eux aussi &#8220;filter-branch&#8221;, soit faire un rebase de toutes les branches basées sur celles modifiées par vous.</p>
+<p>La commande peut prendre pas mal de temps à tourner. L&#8217;opération totale avec syncro entre collègues, je ne vous en parle pas. Et si vous foirez une étape, je vous garantis que ça va être la merde.</p>
+<p>Mais c&#8217;est possible, en cas d&#8217;extrême urgence.</p>
+<p>Pour se simplifier la tâche, il existe un <a href="http://rtyley.github.io/bfg-repo-cleaner/">petit soft</a> spécialisé pour ça qui est bien plus rapide et avec moins de risques.</p>
+<p>Mais <a href="http://www.magiccorporation.com/scan/8th_edition/obliterate.jpg" class="grouped_elements" rel="tc-fancybox-group11331">ça reste dangereux</a>, donc mollo.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/obliterer-un-fichier-de-lhistorique-git/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">11331</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/07/M23rGi5.gif" length="580799" type="image/jpg" />	</item>
+		<item>
+		<title>Annuler les derniers commits avec Git</title>
+		<link>http://sametmax.com/inverser-les-derniers-commits-avec-git/</link>
+		<comments>http://sametmax.com/inverser-les-derniers-commits-avec-git/#comments</comments>
+		<pubDate>Sun, 29 Jun 2014 08:59:06 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[history]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=11208</guid>
+		<description><![CDATA[Use case typique : on a merdé les derniers commits, et on veut oublier tout ce qu'on a fait et retourner à l'état d'il y a x commits précédents.
+]]></description>
+				<content:encoded><![CDATA[<p><em>(Amélioration de ce dont je parle <a href="http://sametmax.com/git-revert-pour-annuler-proprement-le-dernier-commit/">ici</a>)</em></p>
+<p>Use case typique : on a merdé les derniers commits, et on veut oublier tout ce qu&#8217;on a fait et retourner à l&#8217;état d&#8217;il y a x commits précédents.</p>
+<p>Par exemple, là je veux revenir à mon commit <code>85711ad...</code> :</p>
+<pre>commit 093bab5aa9d41f580037d51421b7c5d0db73e2ce
+Author: sam <lesametlemax@gmail.com>
+Date:   Sat Jun 28 09:37:55 2014 +0700
+
+    Ok, c'est la merde internationale
+
+commit 0b768f1c0e37a6141e6cd4c472eb3f369f4334d7
+Author: sam <lesametlemax@gmail.com>
+Date:   Sat Jun 28 09:37:36 2014 +0700
+
+    Je commence à merder
+
+commit 85711ad1e8c54f3fd3048d405addef48921e90fd
+Author: sam <lesametlemax@gmail.com>
+Date:   Sat Jun 28 09:37:20 2014 +0700
+
+    J'adore ce commit</pre>
+<p>Il y a plein de manières de faire, et on voit sur la toile beaucoup de solutions à base de <code>checkout</code> et de <code>reset</code>. La plupart sont dangereuses ou ont un résultat inattendu, présuppose un état de votre repo ou va vous mettre dans une situation que vous ne maîtrisez pas.</p>
+<p>Devinez quoi ? Il y a plus simple, et plus propre.</p>
+<h2>Etape 1: avoir une copie de travail propre</h2>
+<p>Avant d&#8217;inverser des commits, assurez vous que votre copie de travail est nette. Pas de fichiers modifiés en attente d&#8217;être commités. Le moins de fichiers non trackés par git possible (idéalement zéro, soit c&#8217;est commité, soit c&#8217;est dans le .gitignore).</p>
+<p>Si vous avez des fichiers modifiés, vous pouvez soit les mettre de côté temporairement avec <a href="http://sametmax.com/soyez-relax-faites-vous-un-petit-git-stash/">git stash</a>, soit annuler toutes les modifications avec <code>git reset --hard HEAD</code>. Attention, cette dernière commande n&#8217;est pas réversible et va mettre à plat votre copie de travail pour qu&#8217;elle soit l&#8217;exacte copie du dernier commit de votre histo.</p>
+<h2>Etape 2</h2>
+<p>???</p>
+<h2>Etape 3: profit !</h2>
+<pre lang="bash">git revert --no-commit 85711ad1..HEAD</pre>
+<p>Ceci va modifier la copie de travail (donc les fichiers que vous avez sur le disque dur en direct, pas l&#8217;histo git) en appliquant des patchs qui contiennent les différences entre HEAD et le commit avec ce hash.</p>
+<p>En clair : vos fichiers vont être dans l&#8217;état dans lequel ils étaient à ce commit. En prime, l&#8217;index est mis à jour.</p>
+<p>Vous pouvez alors faire les derniers ajustements que vous le souhaitez. Il faut ensuite finaliser la procédure par un commit avec un message significatif :</p>
+<pre lang="bash">git commit -m "Abort ! Abort ! Inversion des 2 derniers commits, retour à 85711a"</pre>
+<p>Si vous aviez fait un <code>stash</code>, c&#8217;est le moment de faire un <code>stash apply</code> derrière.</p>
+<p>Maintenant, si vous matez l&#8217;histo, vous verrez qu&#8217;on n&#8217;a pas effacé les commits précédents, on a juste fait un commit qui inverse tout ce qu&#8217;ils avaient fait :</p>
+<pre>
+commit 03e55de36ad29a26a461874988d4066ebf6fe6be
+Author: sam <lesametlemax@gmail.com>
+Date:   Sat Jun 28 09:43:32 2014 +0700
+
+    Abort ! Abort ! Inversion des 2 derniers commits, retour à 85711a
+
+commit 093bab5aa9d41f580037d51421b7c5d0db73e2ce
+Author: sam <lesametlemax@gmail.com>
+Date:   Sat Jun 28 09:37:55 2014 +0700
+
+    Ok, c'est la merde internationale
+
+commit 0b768f1c0e37a6141e6cd4c472eb3f369f4334d7
+Author: sam <lesametlemax@gmail.com>
+Date:   Sat Jun 28 09:37:36 2014 +0700
+
+    Je commence à merder
+
+commit 85711ad1e8c54f3fd3048d405addef48921e90fd
+Author: sam <lesametlemax@gmail.com>
+Date:   Sat Jun 28 09:37:20 2014 +0700
+
+    J'adore ce commit
+</pre>
+<p>Ce qui évite bien des problèmes : pas de réécriture de l&#8217;histo, possibilité de récupérer du code dans les commits inversés plus tard, claire indication de ce qui s&#8217;est passé&#8230;</p>
+<p>N&#8217;oubliez pas que souvent, revenir à un commit précédent est overkill. Il est généralement beaucoup plus simple de juste récupérer un ou deux fichiers dans l&#8217;état de l&#8217;époque avec :</p>
+<pre lang="bash">git checkout [hash] -- chemin/vers/fichier</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/inverser-les-derniers-commits-avec-git/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">11208</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/06/wZEpnUc.gif" length="668627" type="image/jpg" />	</item>
+		<item>
+		<title>Configurer un outil de merge pour git sous Windows</title>
+		<link>http://sametmax.com/configurer-un-outil-de-merge-pour-git-sous-windows/</link>
+		<comments>http://sametmax.com/configurer-un-outil-de-merge-pour-git-sous-windows/#comments</comments>
+		<pubDate>Sat, 08 Mar 2014 23:04:12 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[kdiff3]]></category>
+		<category><![CDATA[merge]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9725</guid>
+		<description><![CDATA[Si vous utilisez msysgit, il n'y a pas d'outil pratique préinstallé pour gérer ce qui suit un  <code>git mergetool</code>. Le plus simple à configurer est kdiff3.]]></description>
+				<content:encoded><![CDATA[<p>Si vous utilisez msysgit, il n&#8217;y a pas d&#8217;outil pratique préinstallé pour gérer ce qui suit un  <code>git mergetool</code>. Le plus simple à configurer est kdiff3. Il suffit de le <a href="http://sourceforge.net/projects/kdiff3/files/">télécharger</a> et installer, puis de rajouter ceci dans votre fichier .gitconfig :</p>
+<pre lang="ini">[diff]
+    tool = kdiff3
+	keepBackup = false
+	prompt = false
+[merge]
+    tool = kdiff3
+	keepBackup = false
+	prompt = false
+[mergetool "kdiff3"]
+    path = C:/Program Files (x86)/KDiff3/kdiff3.exe
+    trustExitCode = false
+</pre>
+<p>Remplacez &#8220;C:/Program Files (x86)/KDiff3/kdiff3.exe&#8221; par le bon chemin selon votre système, bien entendu.</p>
+<p>kdiff3 a tendance à laisser trainer des fichiers *.orig après le merge, et ça peut se régler dans <code>Configure/Options > Directory Merge > Backup Files (*.orig).<br />
+</code><br />
+Ainsi votre prochain merge ouvrira tranquilement kdiff3 pour chaque conflit.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/configurer-un-outil-de-merge-pour-git-sous-windows/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">9725</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/03/tumblr_n22jp0n5kN1r539hzo1_500.jpg" length="78874" type="image/jpg" />	</item>
+		<item>
+		<title>Listez vos formateurs</title>
+		<link>http://sametmax.com/listez-vos-formateurs/</link>
+		<comments>http://sametmax.com/listez-vos-formateurs/#comments</comments>
+		<pubDate>Thu, 06 Feb 2014 12:10:50 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[formation]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[meta]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9067</guid>
+		<description><![CDATA[Trouver une bonne formation, c'est pas évident. Donc je me dis qu'il faudrait que j'ai une page sur le site avec un listing de bonnes adresses. Le truc, c'est que je ne peux pas vraiment le faire à partir d'adresses que je connais, car mes clients me grilleraient dans la seconde.]]></description>
+				<content:encoded><![CDATA[<p>EDIT: <a href="http://sametmax.com/trouver-un-formateur-python/">la liste est ici.</a></p>
+<p>Trouver une bonne formation, c&#8217;est pas évident. Donc je me dis qu&#8217;il faudrait que j&#8217;ai une page sur le site avec un listing de bonnes adresses. Le truc, c&#8217;est que je ne peux pas vraiment le faire à partir d&#8217;adresses que je connais, car mes clients me grilleraient dans la seconde.</p>
+<p>Donc voilà le plan : </p>
+<p><strong>Si vous avez fait une formation Python / Django / Git (et rien d&#8217;autre) dont vous avez été satisfait, donnez en commentaire le site de l&#8217;entreprise ou du formateur indépendant avec qui vous l&#8217;avez faite.</strong> Ajoutez un petit texte d&#8217;explication sur le sujet de la formation, la date, la durée et une appréciation. Sans ça on ignorera le commentaire. Il n&#8217;y a PAS de limite de zone géographique.</p>
+<p><strong>Si vous êtes un formateur INDEPENDANT (pas un organisme de formation ou une grosse boîte Python), mettez un lien vers votre site Web</strong> afin qu&#8217;on vous donne un petit coup de pouce. Si vous n&#8217;avez pas de site ou êtes limités à une zone géographique, ajoutez des précisions. Précisez aussi si vous acceptez le DIF.</p>
+<p>Une fois que j&#8217;aurais quelques liens, je ferai une page permanente sur le site qui va permettre à ceux qui cherchent de tomber sur des bonnes formations. Et ceux qui sont des petits formateurs pourront bénéficier un peu de notre ref, car je sais que c&#8217;est pas facile pour eux.</p>
+<p>Attention, si vous faites partie d&#8217;un organisme de formation et que vous essayez de tricher en vous faisant passer pour un client, vous prenez un risque. Si vous vous faites choper, on fera en sorte que toute la communauté Python française sache que vous êtes des connards. A bon entendeur&#8230;</p>
+<p>Si vous avez un doute sur le fait que vous soyez acceptable ou pas dans le listing, postez un commentaire avec la question, on ne vous mordra pas. Vouloir un lien vers son site n&#8217;est pas un crime.</p>
+<p>On ne mettra pas d&#8217;organisme de formation, ou de société spécialisée dans le Python qui fait aussi des formations, sous prétexte qu&#8217;ils ont bonne réputation. Par exemple : Logilab est une très belle société Python pour laquelle j&#8217;ai beaucoup de respect. Mais si personne ne donne un témoignage de formation avec eux, je ne les mettrai pas dans le listing. De toute façon je pense qu&#8217;ils n&#8217;en ont pas besoin :)</p>
+<p>Vous avez tout à fait le droit de demander à un de vos anciens clients de venir exprès poster sur le site pour apparaitre dans le listing. Un client satisfait reste un client satisfait.</p>
+<p>Il n&#8217;y a pas de limite de temps, si vous revenez dans 6 mois pour poster un truc ici, je mettrai la liste à jour.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/listez-vos-formateurs/feed/</wfw:commentRss>
+		<slash:comments>35</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">9067</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/02/pyqtppN.jpg" length="154659" type="image/jpg" />	</item>
+		<item>
+		<title>Marre des mots de passe pour push sur git ?</title>
+		<link>http://sametmax.com/marre-des-mots-de-passe-pour-push-sur-git/</link>
+		<comments>http://sametmax.com/marre-des-mots-de-passe-pour-push-sur-git/#comments</comments>
+		<pubDate>Tue, 19 Nov 2013 08:36:34 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[auth]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[git]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8013</guid>
+		<description><![CDATA[Vous êtes dans une situation où vous ne pouvez pas utiliser uniquement un clé pour vous authentifier, et il faut taper votre putain de mot de passe à chaque push.]]></description>
+				<content:encoded><![CDATA[<p>Vous êtes dans une situation où vous ne pouvez pas utiliser uniquement une clé pour vous authentifier, et il faut taper votre putain de mot de passe à chaque push.</p>
+<p><a href="http://sametmax.com/git-push-via-http-ou-comment-travailler-au-macdo/">Ça sent le vécu n&#8217;est-ce pas ?</a></p>
+<p>Mais bien entendu git vient avec une option bien cachée au fond de son fion pour adresser ce problème :</p>
+<pre lang="bash">git config credential.helper 'cache --timeout=3600'</pre>
+<p>Et votre authentification sera gardée en mémoire pour une heure. Vous pouvez faire :</p>
+<pre lang="bash">git config --global credential.helper 'cache --timeout=3600'</pre>
+<p>Pour l&#8217;étendre à tous les repos de votre machine.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/marre-des-mots-de-passe-pour-push-sur-git/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8013</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/11/cdempDI.jpg" length="51081" type="image/jpg" />	</item>
+		<item>
+		<title>Git push via HTTP (ou comment travailler au MacDo)</title>
+		<link>http://sametmax.com/git-push-via-http-ou-comment-travailler-au-macdo/</link>
+		<comments>http://sametmax.com/git-push-via-http-ou-comment-travailler-au-macdo/#comments</comments>
+		<pubDate>Mon, 19 Aug 2013 18:03:53 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[https]]></category>
+		<category><![CDATA[push]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=647</guid>
+		<description><![CDATA[Le Mac wifi est annoncé comme "Internet gratuit Illimité", ce qui en langage commercial ignorant signifie une partie du Web censurée et les ports de emails ouverts si vous nous achetez un Maxi best of.]]></description>
+				<content:encoded><![CDATA[<p>Hier, j’ai dû pusher du Mac Do. Parce que je suis dans un pli d&#8217;une circonvolution du sphincter du trou du cul du monde, à savoir chez mes grands-parents. Inutile de dire que j&#8217;avais un meilleur accès Internet à Kisumu, au Kenya. Si, si.</p>
+<p>Bien entendu, le Mac wifi est annoncé comme &#8220;Internet gratuit Illimité&#8221;, ce qui en langage commercial ignorant signifie une partie du Web censurée et les ports de emails ouverts si vous nous achetez un maxi best of.</p>
+<p>Donc pas de SSH.</p>
+<p>Heurement Github est grand, Github est beau, et Github accepte les push via HTTPS.</p>
+<p>Modifiez juste une ligne dans votre fichier .git/config de :</p>
+<pre>
+[remote "origin"]
+	url = git@github.com/votre_pseudo/votre_repo.git</pre>
+<p>Vers :</p>
+<pre>
+[remote "origin"]
+	url = https://github.com/votre_pseudo/votre_repo.git</pre>
+<p>La commande git devrait vous prompter pour username (mettez votre email) et mot de passe, et hop : le monde du télétravail à la campagne s&#8217;ouvre à vous.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/git-push-via-http-ou-comment-travailler-au-macdo/feed/</wfw:commentRss>
+		<slash:comments>17</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">647</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/08/SbR55.jpg" length="80437" type="image/jpg" />	</item>
+		<item>
+		<title>Le fichier .gitkeep</title>
+		<link>http://sametmax.com/le-fichier-gitkeep/</link>
+		<comments>http://sametmax.com/le-fichier-gitkeep/#comments</comments>
+		<pubDate>Sat, 20 Jul 2013 06:34:32 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[gitignore]]></category>
+		<category><![CDATA[gitkeep]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6731</guid>
+		<description><![CDATA[On ne peut pas commiter les dossiers vides avec git, si il n'y a pas de fichier dedans, git ignorera le dossier. Parfois, quand on veut partager une arborescence très précise, c'est handicapant. Il s'est donc créé une convention dans la communauté : le fichier <em>.gitkeep</em>.]]></description>
+				<content:encoded><![CDATA[<p>On ne peut pas commiter les dossiers vides avec git, si il n&#8217;y a pas de fichier dedans, git ignorera le dossier. Parfois, quand on veut partager une arborescence très précise, c&#8217;est handicapant. Il s&#8217;est donc créé une convention dans la communauté : le fichier <em>.gitkeep</em>.</p>
+<p>C&#8217;est un fichier vide, nommé, comme vous pouvez l&#8217;imaginer, <em>.gitkeep</em>, et que l&#8217;on met dans chaque dossier que l&#8217;on veut garder. On ajouter le fichier à l&#8217;index, et on commit. Dès que le dossier n&#8217;est plus vide, on supprime le fichier <em>.gitkeep</em>, et on le commit.</p>
+<p>Cependant on veut parfois garder un dossier vide, et qu&#8217;il n&#8217;y ait jamais de fichier dedans, comme par exemple le dossier <em>/static/</em> de Django si vous distribuez un software à base de ce framework, puisqu&#8217;il doit servir à vos utilisateurs pour y mettre <strong>leurs</strong> fichiers statiques plus tard. Il serait donc embêtant de mettre un fichier dedans par erreur et le commiter.</p>
+<p>Pour éviter cela, il suffit de créer un fichier <em>.gitignore</em> dedans, et de lui donner ces règles :</p>
+<pre lang="bash">
+*           # git ignore tous les fichiers
+!.gitignore # sauf celui-ci
+</pre>
+<p>Ce qui aura pour effet d&#8217;interdire le moindre ajout de fichier du dossier en question dans Git, à part le <em>.gitignore</em>, évidement.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-fichier-gitkeep/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">6731</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/07/KrknU9B.jpg" length="41316" type="image/jpg" />	</item>
+	</channel>
+</rss>

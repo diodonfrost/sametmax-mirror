@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>serialisation &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/serialisation/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>plist, pickle, hdf5, protocol buffers&#8230; : les formats binaires</title>
+		<link>http://sametmax.com/plist-pickle-hdf5-protocol-buffer-les-formats-binaires/</link>
+		<comments>http://sametmax.com/plist-pickle-hdf5-protocol-buffer-les-formats-binaires/#comments</comments>
+		<pubDate>Mon, 15 Jul 2013 19:24:18 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[binaire]]></category>
+		<category><![CDATA[bson]]></category>
+		<category><![CDATA[format]]></category>
+		<category><![CDATA[hdf5]]></category>
+		<category><![CDATA[json]]></category>
+		<category><![CDATA[msgpack]]></category>
+		<category><![CDATA[pickle]]></category>
+		<category><![CDATA[plist]]></category>
+		<category><![CDATA[protocol buffer]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[serialisation]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6654</guid>
+		<description><![CDATA[Dans un article précédent, on avait fait un petit tour des formats texte, et j'avais promis qu'on verrait les formats binaires.
+
+Contrairement à cette fois là, je vais faire un peu plus technique, et donc <strong>il est probable que ça ne parle pas aux non informaticiens</strong>.]]></description>
+				<content:encoded><![CDATA[<p>Dans <a href="http://sametmax.com/yaml-xml-json-csv-ini-quest-ce-que-cest-et-a-quoi-ca-sert/">un article précédent</a>, on avait fait un petit tour des formats texte, et j&#8217;avais promis qu&#8217;on verrait les formats binaires.</p>
+<p>Contrairement à cette fois là, je vais faire un peu plus technique, et donc <strong>il est probable que ça ne parle pas aux non informaticiens</strong>.</p>
+<p>Avant toute chose, il faut faire un peu de ménage. En effet, tous les formats de données sont des formats binaires, même les formats texte. Quand bien même on retire les formats texte par convention, tout le reste sont des formats binaires.</p>
+<p>tar.gz, zip, 7zip, rar, iso, dmg et compagnie sont des formats binaires. Il servent à l&#8217;archivage.</p>
+<p>doc, xls, ppt, pps, etc. sont des formats binaires. Ils servent à sauvegarder un document édité sous une suite Microsoft Office.</p>
+<p>jpg, tiff, png, gif ou webp sont des formats binaires. Ils servent à représenter des images.</p>
+<p>wav, mp3, ogg, acc, opus et monkey sont des formats binaires. Ils servent à stocker des données sonores.</p>
+<p>mkv, avi, mov, mp4, ogm, webm&#8230; sont des formats binaires. Ils servent à contenir des informations vidéos.</p>
+<p>Bref, tout fichier est un format binaire, toute donnée transmise d&#8217;un système informatique à un autre est un format binaire.</p>
+<p>Alors qu&#8217;est-ce qu&#8217;on entend ici par &#8220;format binaire&#8221; ?</p>
+<p>Principalement, format de <strong>sérialisation</strong> binaire.</p>
+<p>En effet JSON, XML ou CSV sont avant tout, bien que pas uniquement, des formats de sérialisation, et nous allons donc voir des équivalents dans le monde du binaire. Attention cependant, il existe de centaines de formats, et beaucoup sont très utilisés même si je n&#8217;en ai jamais entendu parler. Les formats de sérialisation binaires sont en effet moins universels, c&#8217;est à dire qu&#8217;on les retrouve plus souvent liés à un usage ou un corps de métier. Les scientifiques ont les leurs, les industriels les leurs, les concepteurs d&#8217;OS les leurs, les constructeur de matériel les leurs, etc. Le fait que je ne les connaisse pas ne veut pas du tout dire qu&#8217;ils ne sont pas massivement utilisés. Cela veut juste dire que je ne les ai jamais croisés dans mon activité.</p>
+<p>Par ailleurs je ne présenterai pas tous ceux que j&#8217;ai effectivement croisés. Voyez l&#8217;article comme une base de travail qui va vous permettre d&#8217;évaluer les autres formats binaires plutôt qu&#8217;un listing exhaustif.</p>
+<p>En théorie, on distingue des données binaires, et des données encodées en binaire. En pratique, on s&#8217;en branle.</p>
+<h2>Séria-quoi ?</h2>
+<p>A la conception d&#8217;un programme se pose la question de savoir comment stocker ses données dans un fichier ou les transmettre par le réseau. Vous avez vos données sous forme de code, par exemple en Python une collections d&#8217;instances de vos propres classes, des dictionnaires, des listes, des entiers, des chaînes, etc. Ces objets, il va falloir les transformer en quelque chose qui puisse sauvegardé dans un fichier. Ou envoyé sur le réseau.</p>
+<p>Cette opération de transformation, c&#8217;est ce qu&#8217;on appelle la sérialisation.</p>
+<p>Quand on lit le fichier ou que l&#8217;on récupère la donnée via un réseau, on doit la transformer pour obtenir des objets manipulables sous forme de code : les collections d&#8217;instances de vos propres classes, des dictionnaires, des listes, des entiers, des chaînes qui étaient là à l&#8217;origine.</p>
+<p>Cette opération de transformation, c&#8217;est ce qu&#8217;on appelle la dé-sérialisation.</p>
+<p>Prenons un exemple en Python. J&#8217;ai une classe <code>Personne()</code> :</p>
+<pre lang="python">>>> class Personne(object):
+...    def __init__(nom, age):
+...         self.nom = nom
+...         self.age = age</pre>
+<p>Et j&#8217;ai un calendrier qui liste les personnes présentes selon les jours de la semaine :</p>
+<pre lang="python">>>> gertrude = Personne("Gertrude", 18)
+>>> monique = Personne("Monique", 12)
+>>> jenifer = Personne("Jenifer", 97)
+>>> cal = {
+"lundi": [gertrude],
+"mardi": [gertrude, monique],
+"mercredi": [],
+"jeudi": [monique],
+"vendredi": [gertrude, jenifer],
+"samedi": [gertrude, monique, jenifer],
+"dimanche": [gertrude]
+}
+</pre>
+<p>On a donc un format riche ici, avec plusieurs types imbriqués : du dico, de la liste, de l&#8217;instance de classe perso, de l&#8217;entier et des strings. On a donc des primitives, des données associatives, des séquences ordonnées et un structure complexe.</p>
+<p>Pour sauvegarder ça dans un fichier ou le faire passer sur un réseau, il va falloir écrire un sacré bout de code. Par exemple si vous voulez le transformer en XML ou en JSON, il n&#8217;y a pas de type &#8220;Personne&#8221; dans ces formats. Il va donc falloir vous mettre d&#8217;accord sur une convention, écrire le code qui génère les données formatées selon cette convention, et également le code qui permet de lire ces données formatées et recréer les bons objets derrière. Sans parler du fait que la techno qui écrit ne va peut être pas être celle qui lit. C&#8217;est ça, la problématique de la sérialisation.</p>
+<p>Les formats binaires se prêtent bien au jeu de la sérialisation, bien qu&#8217;ils puissent, eux aussi, servir à bien d&#8217;autre chose. Il sont compacts, et non limités par un besoin de lisibilité, ils contiennent souvent des moyens de contenir des données au format complexe. Ils sont aussi en général rapides à traiter, et prennent peu de place.</p>
+<h2>Pickle</h2>
+<p><a href="http://docs.python.org/2/library/pickle.html?highlight=pickle#pickle">Pickle</a> est un format de sérialisation spécialisé pour Python. Seul un programme Python peut écrire et lire du Pickle, même si <a href="https://github.com/terryf/Phpickle">des projets existent</a> pour faire le pont avec d&#8217;autres langages.</p>
+<p>Voilà ce que ça donne à l&#8217;usage, en reprenant notre calendrier précédent :</p>
+<pre lang="python">>>> import pickle
+>>> pickle.dumps(cal)
+"(dp0\nVmardi\np1\n(lp2\nccopy_reg\n_reconstructor\np3\n(c__main__\nPersonne\np4\nc__builtin__\nobject\np5\nNtp6\nRp7\n(dp8\nS'nom'\np9\nVGertrude\np10\nsS'age'\np11\nI18\nsbag3\n(g4\ng5\nNtp12\nRp13\n(dp14\ng9\nVMonique\np15\nsg11\nI12\nsbasVsamedi\np16\n(lp17\ng7\nag13\nag3\n(g4\ng5\nNtp18\nRp19\n(dp20\ng9\nVJenifer\np21\nsg11\nI97\nsbasVvendredi\np22\n(lp23\ng7\nag19\nasVjeudi\np24\n(lp25\ng13\nasVlundi\np26\n(lp27\ng7\nasVdimanche\np28\n(lp29\ng7\nasVmercredi\np30\n(lp31\ns."</pre>
+<p>Ce blougi blouga est une représentation sérialisée de notre calendrier. Si vous le sauvegardez dans un fichier ou que vous l&#8217;envoyez à un autre programme Python, il peut récupérer les objets initiaux :</p>
+<pre lang="python">>>> cal2 = pickle.loads("(dp0\nVmardi\np1\n(lp2\nccopy_reg\n_reconstructor\np3\n(c__main__\nPersonne\np4\nc__builtin__\nobject\np5\nNtp6\nRp7\n(dp8\nS'nom'\np9\nVGertrude\np10\nsS'age'\np11\nI18\nsbag3\n(g4\ng5\nNtp12\nRp13\n(dp14\ng9\nVMonique\np15\nsg11\nI12\nsbasVsamedi\np16\n(lp17\ng7\nag13\nag3\n(g4\ng5\nNtp18\nRp19\n(dp20\ng9\nVJenifer\np21\nsg11\nI97\nsbasVvendredi\np22\n(lp23\ng7\nag19\nasVjeudi\np24\n(lp25\ng13\nasVlundi\np26\n(lp27\ng7\nasVdimanche\np28\n(lp29\ng7\nasVmercredi\np30\n(lp31\ns.")
+>>> type(cal2)
+<type 'dict'>
+>>> for jour, personnes in cal2.items():
+...     print(jour)
+...     for personne in personnes:
+...         print("\t- {}".format(personne.nom))
+...
+mardi
+    - Gertrude
+    - Monique
+samedi
+    - Gertrude
+    - Monique
+    - Jenifer
+vendredi
+    - Gertrude
+    - Jenifer
+jeudi
+    - Monique
+lundi
+    - Gertrude
+dimanche
+    - Gertrude
+mercredi</pre>
+<p>On utilisera Pickle essentiellement par fainéantise, quand on veut sauvegarder des objets Python et qu&#8217;on souhaite les récupérer plus tard, mais qu&#8217;on ne veut pas coder un code de sérialisation. Il existe des formes hybrides de cette approche, comme <a href="http://jsonpickle.github.io/">cette lib</a> qui essaye de mélanger JSON et une forme de sérialisation d&#8217;objets complexes.</p>
+<p>Quel que soit l&#8217;approche choisit, restaurer des objets complets, et non juste des primitives, comporte sont lot de risques de sécurité. En effet, un fichier Pickle malicieux sera exécuté comme code Python valide sans aucune vérification.</p>
+<p>A noter que Python vient avec un autre format de sérialisation : <a href="http://docs.python.org/2/library/marshal.html">marshall</a>. Il est utilisé par Python en interne pour les fichiers .pyc et n&#8217;est pas recommandé pour un usage de persistance de données car le format évolue avec les versions de Python.</p>
+<h2>plist</h2>
+<p>Il existe de nombreux formats binaires qu&#8217;utilisent les OS comme .DS_store ou Thumbs.db. plist est l&#8217;un deux, et on va le voir parce qu&#8217;il est relativement simple à comprendre par rapport aux autres. Le principe est le même pour tous : on a des données, on les stock dans le fichier.</p>
+<p>plist est un format qui existe aujourd&#8217;hui en XML, preuve que le même rôle peut très bien être rempli par deux formats différents. Il sert à stocker les réglages qu&#8217;on effectue dans le finder de Mac OS X, et ceux pour chaque dossier. Il sait représenter les types suivant : string, nombre, boolean, date, array, dictionnaire et des données arbitraires en base64 (un encodage binaire représentable sous forme de texte. Qu&#8217;est-ce qu&#8217;on se marre ^^).</p>
+<p>Ce qui signifie par exemple, qu&#8217;il n&#8217;est pas capable de représenter un objet <strong>Personne()</strong> tel quel. Par contre il a des équivalents des types list, int, str, etc, ce qui en fait un format facile à manipuler en Python, surtout étant donné que la lib standard contient <a href="http://docs.python.org/2/library/plistlib.html?highlight=plist#plistlib">un module pour ça</a> :</p>
+<pre lang="python">gertrude = ("Gertrude", 18)
+monique = ("Monique", 12)
+jenifer = ("Jenifer", 97)
+cal = {
+"lundi": [gertrude],
+"mardi": [gertrude, monique],
+"mercredi": [],
+"jeudi": [monique],
+"vendredi": [gertrude, jenifer],
+"samedi": [gertrude, monique, jenifer],
+"dimanche": [gertrude]
+}
+
+>>> gertrude = ("Gertrude", 18)
+>>> monique = ("Monique", 12)
+>>> jenifer = ("Jenifer", 97)
+>>> cal = {
+... "lundi": [gertrude],
+... "mardi": [gertrude, monique],
+... "mercredi": [],
+... "jeudi": [monique],
+... "vendredi": [gertrude, jenifer],
+... "samedi": [gertrude, monique, jenifer],
+... "dimanche": [gertrude]
+... }
+>>> plistlib.writePlistToString(cal)
+'<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0">\n<dict>\n\t<key>dimanche</key>\n\t<array>\n\t\t<array>\n\t\t\t<string>Gertrude</string>\n\t\t\t<integer>18</integer>\n\t\t</array>\n\t</array>\n\t<key>jeudi</key>\n\t<array>\n\t\t<array>\n\t\t\t<string>Monique</string>\n\t\t\t<integer>12</integer>\n\t\t</array>\n\t</array>\n\t<key>lundi</key>\n\t<array>\n\t\t<array>\n\t\t\t<string>Gertrude</string>\n\t\t\t<integer>18</integer>\n\t\t</array>\n\t</array>\n\t<key>mardi</key>\n\t<array>\n\t\t<array>\n\t\t\t<string>Gertrude</string>\n\t\t\t<integer>18</integer>\n\t\t</array>\n\t\t<array>\n\t\t\t<string>Monique</string>\n\t\t\t<integer>12</integer>\n\t\t</array>\n\t</array>\n\t<key>mercredi</key>\n\t<array>\n\t</array>\n\t<key>samedi</key>\n\t<array>\n\t\t<array>\n\t\t\t<string>Gertrude</string>\n\t\t\t<integer>18</integer>\n\t\t</array>\n\t\t<array>\n\t\t\t<string>Monique</string>\n\t\t\t<integer>12</integer>\n\t\t</array>\n\t\t<array>\n\t\t\t<string>Jenifer</string>\n\t\t\t<integer>97</integer>\n\t\t</array>\n\t</array>\n\t<key>vendredi</key>\n\t<array>\n\t\t<array>\n\t\t\t<string>Gertrude</string>\n\t\t\t<integer>18</integer>\n\t\t</array>\n\t\t<array>\n\t\t\t<string>Jenifer</string>\n\t\t\t<integer>97</integer>\n\t\t</array>\n\t</array>\n</dict>\n</plist>\n'</pre>
+<p>Bon, là j&#8217;ai un peu foiré mon exemple parce que la lib standard, elle pond la version XML (puisque la version binaire est obsolète), pas la version binaire de plist, et maintenant que j&#8217;ai écris tout ça, ça me fait chier de tout refaire. Heureusement j&#8217;ai trouvé <a href="https://github.com/wooster/biplist">une lib sur le net</a> qui va sauver mon honneur :</p>
+<pre lang="python">>>> biplist.writePlistToString(cal)
+'bplist00bybiplist1.0\x00\xd7\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0ee\x00m\x00a\x00r\x00d\x00if\x00s\x00a\x00m\x00e\x00d\x00ih\x00v\x00e\x00n\x00d\x00r\x00e\x00d\x00ie\x00j\x00e\x00u\x00d\x00ie\x00l\x00u\x00n\x00d\x00ih\x00d\x00i\x00m\x00a\x00n\x00c\x00h\x00eh\x00m\x00e\x00r\x00c\x00r\x00e\x00d\x00i\xa2\x0f\x10\xa2\x11\x12h\x00G\x00e\x00r\x00t\x00r\x00u\x00d\x00e\x10\x12\xa2\x13\x14g\x00M\x00o\x00n\x00i\x00q\x00u\x00e\x10\x0c\xa3\x15\x16\x17\xa2\x11\x12\xa2\x13\x14\xa2\x18\x19g\x00J\x00e\x00n\x00i\x00f\x00e\x00r\x10a\xa2\x1a\x1b\xa2\x11\x12\xa2\x18\x19\xa1\x1c\xa2\x13\x14\xa1\x1d\xa2\x11\x12\xa1\x1e\xa2\x11\x12\xa0\x15$/<MXct\x85\xb2\xd0\xd9\xde\xe3\xe8\x88\x9e\x8b\x9c\xa1\xb0\xb6\xb9\xbc\xbf\xce\xd3\xd6\xdb\xe0\xe5\x00\x00\x00\x00\x00\x00\x01\x01\x00\x00\x00\x00\x00\x00\x00\x1f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xe9'
+>>> biplist.readPlistFromString(r'bplist00bybiplist1.0\x00\xd7\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0ee\x00m\x00a\x00r\x00d\x00if\x00s\x00a\x00m\x00e\x00d\x00ih\x00v\x00e\x00n\x00d\x00r\x00e\x00d\x00ie\x00j\x00e\x00u\x00d\x00ie\x00l\x00u\x00n\x00d\x00ih\x00d\x00i\x00m\x00a\x00n\x00c\x00h\x00eh\x00m\x00e\x00r\x00c\x00r\x00e\x00d\x00i\xa2\x0f\x10\xa2\x11\x12h\x00G\x00e\x00r\x00t\x00r\x00u\x00d\x00e\x10\x12\xa2\x13\x14g\x00M\x00o\x00n\x00i\x00q\x00u\x00e\x10\x0c\xa3\x15\x16\x17\xa2\x11\x12\xa2\x13\x14\xa2\x18\x19g\x00J\x00e\x00n\x00i\x00f\x00e\x00r\x10a\xa2\x1a\x1b\xa2\x11\x12\xa2\x18\x19\xa1\x1c\xa2\x13\x14\xa1\x1d\xa2\x11\x12\xa1\x1e\xa2\x11\x12\xa0\x15$/<MXct\x85\xb2\xd0\xd9\xde\xe3\xe8\x88\x9e\x8b\x9c\xa1\xb0\xb6\xb9\xbc\xbf\xce\xd3\xd6\xdb\xe0\xe5\x00\x00\x00\x00\x00\x00\x01\x01\x00\x00\x00\x00\x00\x00\x00\x1f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xe9')
+{u'mardi': [('Gertrude', 18), ('Monique', 12)], 'samedi': [('Gertrude', 18), ('Monique', 12), ('Jenifer', 97)], 'vendredi': [('Gertrude', 18), ('Jenifer', 97)], 'jeudi': [('Monique', 12)], 'lundi': [('Gertrude', 18)], 'dimanche': [('Gertrude', 18)], 'mercredi': []}</pre>
+<p>Pourquoi utiliser plist ? A part quand on est en Objectif-C où c'est le format le plus simple à parser ou si on veut communiquer avec finder, il n'y a pas vraiment de raison. C'est le cas typique d'un format qui a été créé parce qu'à l'époque il n'y avait rien d'aussi bien, les parsers XML étaient alors trop lents pour scanner toutes les plist de tous les dossiers récursivement.</p>
+<h2>hdf5</h2>
+<p>hdf5 est très intéressant, c'est le cas typique d'un format qui existe pour un usage très très particulier, et que des formats ordinaires ne comblent pas, ne peuvent pas par nature combler. C'est un format cross-plateforme qui peut contenir de très grosses quantités de données numériques (un fichier peut avoir une taille virtuellement illimitée), et les manipuler pour faire des calculs complexes. Cela ressemble à un système de fichiers... qui tient dans un fichier. En effet, il peut contenir une arborescence de données, et gère la compression transparente, mais les données sont essentiellement des arrays à plusieurs dimensions, appelés ici datasets.</p>
+<p>On peut y mettre des arrays, des labels, des attributs, organiser tout ça par groupe et même avoir des références vers des données extérieures. L'avantage c'est qu'on peut bosser dessus presque de manière transparente, comme si c'était en RAM. Tout ce qui est array est stocké tel quel, et donc très rapide d'accès (bien plus qu'une colonne de base SQL), pour le reste, c'est indexé avec arbre binaire, donc facilement triable.</p>
+<p>Pour manipuler ce format avec Python, on va utiliser la lib <a href="http://www.h5py.org">h5py</a> :</p>
+<pre lang="python">sudo apt-get install libhdf5-serial-dev python-dev # sur ubuntu en tout cas
+pip install numpy
+pip install h5py</pre>
+<p>La normalement, ça compile à mort pendant 10 minutes.</p>
+<p>Et pif paf pouf :</p>
+<p>>>> import numpy # hdf5 s'utilise beaucoup avec les libs scientifiques type numpy<br />
+>>> import h5py<br />
+>>> array = numpy.ones((1000000000, 1000000000)) # une grosse matrice<br />
+>>> f = h5py.File('data.hdf5')<br />
+>>> dset = f.create_dataset("Nom du dataset", data=array)<br />
+>>> dset<br />
+<HDF5 dataset "Nom du dataset": shape (100, 100), type "<i8"><br />
+>>> f.close()</p>
+<p>Et voilà, on vient de créer array contenant 1000000000 lignes de 1000000000 de 1000000000 de int ayant pour valeur "1", et stocké tout ça dans un fichier au format hdf5. Ca prend quelques secondes, et le fichier fait quand même 800 Mo !</p>
+<p>On le voit ici, hdf5 est entre le format de sérialisation et la base de données, et il est très orienté chiffre. Il existe tout un tas de formats binaires spécialisés pour un usage en particulier comme hdf5, à votre charge, donc, de chercher si il en existe un pour le votre. Ou même si vous en avez besoin d'un.</p>
+<p>Des libs de haut niveau ont été construite en utilisant hdf5, telles que <a href="http://www.pytables.org/">pytables</a>, qui permettent de traiter très facilement d'énormes jeux de données tabulaires.</p>
+<h2>Protocol Buffers</h2>
+<p>Aussi appelé protobuf par ses amis, c'est un format de sérialisation <a href="https://developers.google.com/protocol-buffers/">inventé par Google</a> qu'il utilise pour communiquer entre ses machines. On a donc vu un format de sérialisation orienté persistance avec Pickle, un orienté configuration, un orienté "grosse quantité de données" et voilà un dernier orienté communication réseau.</p>
+<p>Protocol Buffers est un espèce d'hybride, puisqu'il utilise une description du schéma pour générer du code qui va sérialiser les donner en binaire. Vous suivez ? Non ?</p>
+<p>Attendez ça va devenir plus clair.</p>
+<p>Reprenons notre bonne vielle personne. Pour utiliser protobuf, vous allez décrire à quoi ressemble votre personne, dans un <strong>format texte</strong> spécialement conçu :</p>
+<pre lang="java">message Personne {
+  required string nom = 1;
+  required int32 age = 2;
+}</pre>
+<p>Vous constatez qu'on décrit ici un message, qui va devoir contenir au minimum un nom et un age, de type string et entier. Les chiffres représentent des identifiants uniques de champs qui seront utilisés dans le message binaire.</p>
+<p>Ceci n'est pas du code d'un langage particulier, c'est la syntaxe de modèle de protobuf.</p>
+<p>On sauvegarde tout ça dans un fichier <em>personne.proto</em>, et on utilise la commande <code>protoc</code> pour transformer cette description en code dans le langage de son choix. C++ et Java sont supportés, nous on va utiliser Python :</p>
+<pre lang="bash">protoc personne.proto --python_out=.</pre>
+<p>Et il va nous pondre un fichier <em>personne_pb2.py</em>, qui est un module Python valide qui va contenir une classe <code>Personne</code> :</p>
+<pre lang="python">>>> from personne_pb2 import Personne
+>>> p = Personne(nom="Gertrude", age=12)
+>>> p.SerializeToString()
+'\n\x08Gertrude\x10\x0c'</pre>
+<p>Il vous suffit d'envoyer ça par un socket, et de l'autre côté, une machine qui possède le même fichier .proto peut le lire et récupérer la donnée sous forme d'un objet Python, Java ou C++. Il a donc l'avantage d'un pickle, multi langages.</p>
+<p>Parmi les bénéfices de protobuf, il y a que sa sortie est assez courte :</p>
+<pre lang="python">>>> json.dumps({"nom":"Gertrude", "age":12})
+'{"nom": "Gertrude", "age": 12}'
+>>> pickle.dumps({"nom":"Gertrude", "age":12})
+'(dp0\nVnom\np1\nVGertrude\np2\nsVage\np3\nI12\ns.'</pre>
+<p>Ca fait moins de données à envoyer par le réseau.</p>
+<p>Et en prime on a la validation des données :</p>
+<pre lang="python">>>> p.age = "12"
+Traceback (most recent call last):
+  File "<ipython-input-4-d897accc3848>", line 1, in <module>
+    p.age = "12"
+  File "/usr/lib/python2.7/dist-packages/google/protobuf/internal/python_message.py", line 435, in setter
+    type_checker.CheckValue(new_value)
+  File "/usr/lib/python2.7/dist-packages/google/protobuf/internal/type_checkers.py", line 104, in CheckValue
+    raise TypeError(message)
+TypeError: u'12' has type <type 'unicode'>, but expected one of: (<type 'int'>, <type 'long'>)</pre>
+<p>Du coup on peut utiliser protobuf en lieu et place d'un XML + DTD, en tout cas pour les cas simples.</p>
+<p>Normalement, c'est aussi un format très rapide à parser.</p>
+<p>Bref, Google a voulu le format pour les utilisations industrielles : c'est un peu chiant à mettre en place, mais c'est performant, robuste et ça marche avec les 3 langages qu'ils utilisent en interne.</p>
+<p>Néanmoins ce n'est pas le seul à avoir pensé à ça : <a lang="http://msgpack.org/">msgpack</a> est une sorte de JSON binaire plus rapide à parser et qui prend moins de place. Il est assez utilisé avec les outils de file d'attente genre celery ou de communication type ZeroMq. Mais il perd un intérêt fort du JSON : sa transparence pour javascript, et n'a pas la vérification des données comme protobuf. <a href="http://bsonspec.org/">BSON</a> existe aussi dans le même genre, et sert de format de stockage pour mongodb, en supportant nativement des types avancées comme les dates.</p>
+<p>Comme je vous le disais, des formats binaire, il y en a <a href="http://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Pastiches/Pifom%C3%A8tre#Les_unit.C3.A9s_du_syst.C3.A8me_pifom.C3.A8trique">une bonne chiée</a>.</p>
+<p>La prochaine et dernière session, on se fera un petit tour des bases de données SQL et NoSQL.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/plist-pickle-hdf5-protocol-buffer-les-formats-binaires/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">6654</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/07/xzGrVLH.png" length="466059" type="image/jpg" />	</item>
+	</channel>
+</rss>

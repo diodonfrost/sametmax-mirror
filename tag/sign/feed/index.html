@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>sign &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/sign/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>PYTHON, WHY U NO HAZ A SIGN FUNCTION ?</title>
+		<link>http://sametmax.com/python-why-u-no-haz-a-sign-function/</link>
+		<comments>http://sametmax.com/python-why-u-no-haz-a-sign-function/#comments</comments>
+		<pubDate>Sat, 24 Aug 2013 12:36:22 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[math]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sign]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7165</guid>
+		<description><![CDATA[Bien que Python soit un langage massivement utilisé par la communauté scientifique, la lib standard ne contient pas de fonction aussi simple que <code>sign()</code>.]]></description>
+				<content:encoded><![CDATA[<p>Bien que Python soit un langage massivement utilisé par la communauté scientifique, la lib standard ne contient pas de fonction aussi simple que <code>sign()</code>. Et on voit ça et là des libs qui contiennent quelque chose comme ça:</p>
+<pre lang="python">def sign(x):
+    if x > 0:
+        return 1
+    if x == 0:
+        return 0
+    return -1
+
+>>> sign(3)
+1
+>>> sign(-3)
+-1
+>>> sign(0)
+0</pre>
+<p>Comme <a href="http://sametmax.com/pourquoi-join-en-python/">d&#8217;autres de choix étonnants</a> dans l&#8217;architecture de Python, il y a une raison raisonnablement raisonnable : il n&#8217;existe aucun standard sur ce que doit faire une telle fonction dans les cas ambigües.</p>
+<p>En effet, que doit faire la fonction avec <code>NaN</code> ? Avec un complexe ?</p>
+<p>Il y a eu un débat sur ce qu&#8217;il faut faire dans ce cas, et <a href="http://bugs.python.org/msg59137">un consensus n&#8217;a PAS été trouvé</a>.</p>
+<p>Par contre, il existe <a href="http://en.wikipedia.org/wiki/IEEE_floating_point">un standard international</a> définissant une autre opération : celle de copier un signe. Elle a donc été implémentée :</p>
+<pre lang="python">>>> from math import copysign
+>>> copysign(10, -3)
+-10.0
+>>> copysign(10, 22)
+10.0
+>>> copysign(10, float('-NaN'))
+-10
+>>> copysign(10, -2j)
+Traceback (most recent call last):
+  File "<ipython-input-13-ece93d1317dc>", line 1, in <module>
+    copysign(10, -2j)
+TypeError: can't convert complex to float</pre>
+<p>Copier le signe n&#8217;est pas la même chose que de retourner quelque chose selon le signe, et donc sémantiquement, choisir quoi retourner était plus facile. Comme la plupart du temps, on veut récupérer <code>-1</code> ou <code>1</code> pour le multiplier avec quelque chose et justement copier le signe, cela résolvait pas mal de problèmes.</p>
+<p>Mais même dans le rare cas où on a besoin du résultat que renverrait <code>sign()</code>, il est très facile à obtenir en une ligne :</p>
+<pre lang="python">>>> mon_nombre = 3
+>>> mon_nombre and copysign(1, mon_nombre)
+1.0
+>>> mon_nombre = -3
+>>> mon_nombre and copysign(1, mon_nombre)
+-1.0
+>>> mon_nombre = 0
+>>> mon_nombre and copysign(1, mon_nombre)
+0
+</pre>
+<p>Et pour ce cas de figure, les retours sur des valeurs ambigües sont laissés à la charge du codeur.</p>
+<p>P.S: je sais qu&#8217;il y a des exemples sur le net montrant <code>cmp(0, mon_nombre)</code> pour obtenir la même fonctionnalité. Sachez que <code>cmp</code> a été retirée de Python 3, donc faites attention si vous l&#8217;utilisez.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/python-why-u-no-haz-a-sign-function/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">7165</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/08/Yz4Ki.jpg" length="120970" type="image/jpg" />	</item>
+	</channel>
+</rss>

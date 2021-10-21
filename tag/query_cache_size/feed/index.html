@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>query_cache_size &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/query_cache_size/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Optimiser Mysql en mettant en cache les requetes SELECT avec query_cache_size + benchmark</title>
+		<link>http://sametmax.com/optimiser-mysql-en-utilisant-le-cache-query_cache_size/</link>
+		<comments>http://sametmax.com/optimiser-mysql-en-utilisant-le-cache-query_cache_size/#comments</comments>
+		<pubDate>Tue, 28 Aug 2012 23:25:24 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[benchmark]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[mysql]]></category>
+		<category><![CDATA[query_cache_size]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1912</guid>
+		<description><![CDATA[Petite astuce pour mettre en cache les requetes mysql à la lecture. Avantage: On a juste le fichier de conf mysql à éditer, pas besoin de toucher aux applications.]]></description>
+				<content:encoded><![CDATA[<p>Voici une petite astuce pour mettre en cache les requetes mysql. Pour donner une idée du gain j&#8217;ai fait un petit script de benchmark, le gain à la lecture est plutôt convaincant. Je ne suis pas benchmarkeur de profession alors si il y en a dans la salle qui pensent que ce test n&#8217;est pas réaliste merci d&#8217;apporter votre contribution ;)</p>
+<p><strong>Editer le fichier my.cnf pour activer le cache des requetes:</strong></p>
+<pre lang="bash">query_cache_type = 1
+query_cache_size = 256M</pre>
+<p>query_cache_type est le type de cache que l&#8217;on va adopter:<br />
+0 = pas de cache<br />
+1 = met en cache toutes les requetes sauf celles qui ont le flag &#8220;SELECT S_NO_CACHE&#8221;<br />
+2 = met en cache seulement les requetes qui comportent le flag &#8220;SELECT SQL_CACHE&#8221;</p>
+<p><strong>Ci dessous le script pour tester les perfs:</strong></p>
+<pre lang="python">#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import MySQLdb as mdb
+import sys
+
+from timeit import Timer 
+
+def benchmark(cur):
+    """
+        execute query
+    """
+    cur.execute("SELECT * FROM Writers")
+    rows = cur.fetchall()
+    #     for row in rows:
+    #         print row
+
+def create_fixtures():
+    """
+        Create dummy datas for test
+    """
+
+    with con:
+        cur = con.cursor()
+        cur.execute("DROP TABLE IF EXISTS Writers")
+        cur.execute("CREATE TABLE IF NOT EXISTS Writers(Id INT PRIMARY KEY AUTO_INCREMENT, Name VARCHAR(25))")
+        cur.execute("INSERT INTO Writers(Name) VALUES('Jack London')")
+        cur.execute("INSERT INTO Writers(Name) VALUES('Honore de Balzac')")
+        cur.execute("INSERT INTO Writers(Name) VALUES('Lion Feuchtwanger')")
+        cur.execute("INSERT INTO Writers(Name) VALUES('Emile Zola')")
+        cur.execute("INSERT INTO Writers(Name) VALUES('Adolf Hitler')")
+        cur.execute("INSERT INTO Writers(Name) VALUES('Ronald McDonalds')")
+        cur.execute("INSERT INTO Writers(Name) VALUES('Mamie Nova')")
+        cur.execute("INSERT INTO Writers(Name) VALUES('Sam &amp; Max')")
+
+def set_query_cache(query_cache_type=1):
+    """
+        Set query cache
+        0 : Don't cache results in or retrieve results from the query cache.
+        1 : Cache all query results except for those that begin with SELECT S_NO_CACHE.
+        2 : Cache results only for queries that begin with SELECT SQL_CACHE
+    """
+
+    with con:
+        cur = con.cursor()
+        cur.execute("SET GLOBAL query_cache_size = 16777216")
+        cur.execute("SET SESSION query_cache_type = %s" % str(query_cache_type)) 
+
+def start_benchmark(nb_queries=1000, cached_queries=1):
+    """
+
+    """
+    # use cached query benchmark
+    print "Starting benchmark: %s reads - query cache type = %s" % (nb_queries, cached_queries)
+
+    # set query cache
+    set_query_cache(cached_queries)
+
+    # run the test
+    t = Timer("queries()", "from __main__ import queries")
+    print t.timeit(number=nb_queries) 
+
+if __name__ == '__main__':
+
+    # connect to db
+    con = mdb.connect('localhost', 'root', '12345', 'test');
+
+    # create dummy datas
+    create_fixtures()
+
+    with con:
+        cur = con.cursor()
+        queries = lambda: benchmark(cur=cur)
+
+    # launch benchmark
+    start_benchmark(nb_queries=10000, cached_queries=1)
+    start_benchmark(nb_queries=10000, cached_queries=0)
+
+    con.close()</pre>
+<p><strong>Ce qui me donne&#8230;</strong></p>
+<pre lang="shell">python mysql_tests.py
+Starting benchmark: 10000 reads - query cache type = 1
+1.47591710091
+Starting benchmark: 10000 reads - query cache type = 0
+1.96538686752</pre>
+<p><strong>Conclusion:</strong><br />
+Il semblerait qu&#8217;en effet le gain dû au cache est plutôt pas mal, en plus c&#8217;est juste 2 params à mettre dans son fichier de config.</p>
+<p>Faites part de vos retours, ça peut toujours servir ;)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/optimiser-mysql-en-utilisant-le-cache-query_cache_size/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1912</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/08/asian-slut-bound-in-metal-fucking-machine.jpeg" length="21315" type="image/jpg" />	</item>
+	</channel>
+</rss>

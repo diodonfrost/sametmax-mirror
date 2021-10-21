@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>vue &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/vue/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Vue, j&#8217;l&#8217;avais pas vu</title>
+		<link>http://sametmax.com/vue-jlavais-pas-vu/</link>
+		<comments>http://sametmax.com/vue-jlavais-pas-vu/#comments</comments>
+		<pubDate>Sun, 14 May 2017 13:10:42 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[js]]></category>
+		<category><![CDATA[react]]></category>
+		<category><![CDATA[reactjs]]></category>
+		<category><![CDATA[vue]]></category>
+		<category><![CDATA[vue.js]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=23281</guid>
+		<description><![CDATA[Dans le dernier article, je vous offrais votre dose maintenant obligatoire de bashing de l'écosystème JS. En l’occurrence en suggérant que React était un bouquet de roses avec plus d'épines que de pétales. Mais vue ?]]></description>
+				<content:encoded><![CDATA[<p><em>(Pour Max: je t&#8217;ai mis un exemple de code tout fait en bas de page car je sais que ça va te saouler de tout lire)<br />
+</em><br />
+Elle était facile, mais ça fait des années que le blog est up, je peux pas avoir de l&#8217;inspiration tout le temps.</p>
+<p><a href="http://sametmax.com/reaction-a-reactjs/">Dans le dernier article</a>, je vous offrais votre dose maintenant obligatoire de bashing de l&#8217;écosystème JS. En l’occurrence en suggérant que React était un bouquet de roses avec plus d&#8217;épines que de pétales.</p>
+<p>Mais bon, si les gens utilisent React, ça n&#8217;est pas QUE parce que c&#8217;est la mode. C&#8217;est parce que cette techno répond à un besoin de plus en plus impérieux en dev front end : avoir un outil valable pour créer des GUI avancées en JS.</p>
+<p>Parce que le combo jQuery + moteur de template, ça nous a mené loin, mais on arrive au stade où ça scale plus.</p>
+<p>Pas mal de tentatives ont été faites pour répondre au problème : knockout, angular 1, polymer, etc.</p>
+<p>La nouvelle génération (react, riot, vue, angular 2+, etc) est beaucoup plus mature et performante, et offre des fonctionnalités très sympas:</p>
+<ul>
+<li>DOM virtuel qui permet de faire des mises à jour fréquentes sur de très nombreux objets à l&#8217;écran sans freezer le browser.</li>
+<li>Découplage très élégant des données et de leurs représentations.</li>
+<li>Facilité de manipulation des éléments HTML, des events et du cycle de vie de tout le bordel.</li>
+<li>Création de composants graphiques isolés et réutilisables.</li>
+</ul>
+<p>En gros, partout où on faisait avant <code>$(selecteur).trucmuche(element)</code>, on peut maintenant faire ça plus facilement, plus rapidement et plus proprement. (Par contre Vue/React/etc font pas l&#8217;AJAX, tournez-vous vers <a href="https://github.com/mzabriskie/axios">axios</a> ou gardez jQuery sous le coude).</p>
+<p>Bon, si ils offrent TOUS ces éléments là, pourquoi diable est-ce que j&#8217;ai une préférence pour Vue.JS plutôt que Riot, Angular ou React ?</p>
+<p>Souvenez-vous, je reprochais essentiellement ceci à React:</p>
+<ul>
+<li>Grosse courbe d&#8217;apprentissage. Ce qui impacte la productivité de tout nouveau dans l&#8217;équipe.</li>
+<li>Mauvaise ergonomie du JSX qui du coup s&#8217;écrit, se lit et se debug lentement.</li>
+<li>Mauvaise foi totale de la communauté qui prétend qu&#8217;on peut utiliser React sans la tonne de nutella autour, ce qui est comme argumenter qu&#8217;on peut faire du Java sans IDE.</li>
+<li>Nutella sus-nommé qui est blindé d&#8217;huile de palme et de vidange.</li>
+<li>Globalement une API inélégante et peu intuitive.</li>
+</ul>
+<p>Mais alors, qu&#8217;est-ce que <a href="https://vuejs.org/">Vue.js</a> fait de mieux ?</p>
+<p>Ben tout, mes amis. Tout.</p>
+<h2>Légèreté</h2>
+<p>A l&#8217;heure où les codeurs hypes de la vibe du flex ont tous un fichier de conf webpack de 3 km, mais déjà obsolète et qui pétera à la prochaine upgade, Vue offre un point de vue rafraîchissant sur la question.</p>
+<p>TOUTE, j&#8217;ai bien dit TOUTE, la puissance de vue.js est accessible avec une simple inclusion de balise script. </p>
+<p>Vous en avez marre des pages de 3Mo ? Minifié et gzippé, Vue.js pèse moins de 30ko.</p>
+<p>Dans un monde où il faut soit faire un site Web, soit faire une SPA (aux chiottes l&#8217;amélioration progressive !), Vue permet de ne remplacer que quelques bouts de vos pages si vous n&#8217;avez pas envie de tout transformer en un monstre de JS.</p>
+<p>La doc, très bien faite, vous permettra de prendre l&#8217;outil en main en une après-midi. En buvant du thé.</p>
+<p>Le tout, sans besoin d&#8217;aucun écosystème particulier. Aucun. Rien. Ca marche out of the box.</p>
+<p>En gros, là où tout le monde vous vend du scale up, Vue vous permet de scale down.</p>
+<h2>Puissance</h2>
+<p>Malgré cela, Vue reste parfaitement adaptée aux gros projets. En fait, elle a été créée pour et par l&#8217;équipe du site du géant chinois, alibaba.com. Alors oui, c&#8217;est sûr, c&#8217;est pas Facebook et son milliard d&#8217;utilisateurs, mais comme mes projets ne servent pas 10 millions de pages par jour, contrairement à Alibaba, je pense que je suis ok.</p>
+<p>Dans la pratique, qu&#8217;est-ce que ça veut dire ?</p>
+<p>Et bien d&#8217;abord, <a href="http://www.stefankrause.net/wp/?p=316">Vue est plus rapide que React</a>. Ouais ça fait mal au cul de lire ça quand on vient de finir d&#8217;optimiser son pipeline de rendu JSX, surtout que la techno a été créée pour la vitesse. Mais voilà, c&#8217;est le cas.</p>
+<p>Vue supporte aussi parfaitement l&#8217;inclusion dans un écosystème plus gros si le besoin s&#8217;en fait sentir :</p>
+<ul>
+<li>Vous pouvez utiliser Vue avec <a href="https://github.com/vuejs-templates/webpack">Webpack</a>.</li>
+<li>Vous avez <a href="https://vuex.vuejs.org">un store</a> et <a href="https://vuex.vuejs.org">un routeur</a> pour vue.</li>
+<li>Vous pouvez <a href="https://github.com/vuejs/babel-plugin-transform-vue-jsx">utiliser du JSX</a> si vous êtes maso.</li>
+<li>Vous pouvez créer des SPA avec une hiérarchie de <a href="https://vuejs.org/v2/guide/components.html">composants</a>.</li>
+<li>Vous pouvez faire le <a href="https://vuejs.org/v2/guide/ssr.html">rendu des templates côté serveur</a>.</li>
+</ul>
+<p>En gros, Vue peut faire absolument tout ce que les autres font. Mais ne vous oblige pas à commencer en sortant le bazooka. Vue est ce que React aurait dû être depuis le début.</p>
+<p>Notez qu&#8217;on peut remercier les devs de React pour avoir popularisé de nombreux concepts que Vue utilise. Standing on the giants&#8217; shoulders et tout, et tout. Vue n&#8217;aurait jamais existé sans React. Mais maintenant que Vue est là, on peut laisser React en paix.</p>
+<h2>Elégance</h2>
+<p>De par son design, Vue vous permet donc de commencer doucement, en ajoutant 30ko à votre projet et en l&#8217;utilisant un peu ici et là. Puis quand vous en avez besoin, vous pouvez commencer à utiliser des fonctionnalités avancées.</p>
+<p>Par exemple, vous pouvez comme avec Angular 1 balancer toutes vos variables et binding dans le HTML de votre page en vrac. Et plus tard tout refactoriser en composant comme avec React. Tranquille.</p>
+<p>L&#8217;API de Vue est petite, et surtout, facile à comprendre car tout est bien nommé, et bien rangé. Voyez plutôt:</p>
+<pre lang="javascript">
+Vue({
+  el: "#app", // l'élément sur lequel attacher la vue
+  created: function(){
+    // code lancé au démarrage
+  },
+  mounted: function(){
+    // code lancé quand la vue est attachée à la page
+  },
+  updated: function(){
+    // code lancé quand la vue est mise à jour
+  },
+  destroyed: function(){
+    // code lancé quand la vue est détruite
+  }
+  data: {
+    // ben ici y a vous données statiques
+  },
+  methods: {
+    // ici les fonctions à rendre disponibles dans le HTML
+  },
+  computed: {
+    // ici on met les données à recalculer à la volée
+    // à chaque refresh
+  }
+})
+</pre>
+<p>Voilà vous avez là 50% de l&#8217;API de Vue. Very hard indeed.</p>
+<p>On sent partout que les devs ont apporté des soins à des petits détails comme:</p>
+<pre lang="html">
+<!-- Lance truc() juste au premier click.
+Appelle preventDefault automatiquement. -->
+<a v-on:click.once.prevent="truc()">Foo</a>
+</pre>
+<p>D&#8217;une manière générale, tout template Vue est du HTML valide, ce qui fait qu&#8217;il est très facile d&#8217;insérer du Vue sur un site existant.</p>
+<h2>Un petit bout de vue</h2>
+<p>Mais alors, pour tous ceux qui en sont restés à jQuery et handlebar.js, à quoi ça ressemble tout ça ?</p>
+<p>Ben un todo ressemble à ça en Vue:</p>
+<pre lang="html">
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Todo</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<!-- Cette partie va être contrôlée par la vue -->
+<div id="app">
+
+<!-- Quand on soumet le formulaire, on ajoute la tâche -->
+<form v-on:submit.prevent="addTask(newTask)">
+  <!-- L'input est maintenant lié à la variable newTask -->
+  <p><input v-model="newTask"> <button>Ajouter</button></p>
+</form>
+
+<ul>
+  <!-- Créer un li pour chaque tache dans mon array 'tasks' -->
+  <li v-for="task in tasks">{{task}}</li>
+</ul>
+  
+</div>
+
+<script type="text/javascript">
+app = new Vue({
+  el: "#app", // j'attache cette vue à l'élément avec l'id App
+  data: {
+    tasks: [], // mes tâches seront stockées dans l'array 'tasks'
+    newTask: "", // ce que contient l'input du formulaire
+  },
+  methods: {
+    addTask: function(task){
+      this.tasks.push(task); // on ajoute la tâche dans l'array
+      this.newTask = ""; // on vide l'input
+    }
+  }
+})
+</script>
+
+</body>
+</html>
+</pre>
+<p>(Vous pouvez littéralement copier-coller ce code dans un fichier todo.html et ça marche. Essayez de faire ça avec React&#8230;)</p>
+<p>Comme avec Angular/React/Riot on a séparé complètement la logique de manipulation des données de celle de l&#8217;affichage qui est mis à jour automatiquement quand les données changent.</p>
+<p>Contrairement à React, on n&#8217;est pas obligé de créer un arbre complexe de composants qui transforme toute sa page en soupe de JS(X). Mais contrairement à Angular, on n&#8217;est pas obligé de rester sur cet exemple simple, et on peut créer une hiérarchie de composants. </p>
+<p>Un composant peut complètement isoler le JS, le HTML et le CSS (qui n&#8217;affecte alors que le composant):</p>
+<p><img src="https://vuejs.org/images/vue-component.png"></img></p>
+<p>Et pour que ça marche, pas besoin de préprocesseur, pas besoin de ES6, ES7, typescript, babel, webpack, npm&#8230; Vous pouvez les utiliser. Sur un gros projet je me fais chier à setup ce qui vaut le coup. Mais vous n&#8217;êtes pas obligé. </p>
+<h2>La communauté</h2>
+<p>La communauté est importante pour un projet, et celle de vue est très agréable. Ce sont des gens polis, humbles, et compétents. Ils pensent aux petits détails. Regardez par exemple <a href="https://vuex.vuejs.org/en/intro.html">cette page</a> pleine de jolis schémas.</p>
+<p>En comparaison, la communauté React est criarde. Les confs des devs de Facebook sont faites par <a href="https://www.youtube.com/watch?v=XxVg_s8xAms">des présentateurs tout droit sortis de South Park</a>. Quand on critique react, on se fait insulter personnellement sur twitter par les fan boys plutôt que de tenter de discuter, preuve systématique de l&#8217;absence d&#8217;arguments.</p>
+<p>Enfin les seuls éléments donnés pour combattre les critiques sont les raisons des problèmes, un rappel de la taille des utilisateurs et des &#8220;moi j&#8217;aime&#8221; laconiques. </p>
+<p>Mais faites un test. Prenez 3 dev, un react, un jquery, un vue. Faites leur faire un agenda CRUD avec recherche et autocompletion qui tape en Ajax dans un backend Django/Rails/Whatever. Donnez leurs des machines vierges. Et sortez le pop corn.</p>
+<p>Pour le moment, React possède encore deux avantages: react native, et la masse (fb, les utilisateurs, le nombre de plugins, etc). </p>
+<p>Mais honnêtement ? Il y a très peu de bénéfices à utiliser React plutôt que Vue sur la plupart des projets pur Web. Et un coût garanti d&#8217;être élevé.</p>
+<p>Angular 1 est en train de mourir de l&#8217;abandon de Google. Après la sucette de l&#8217;incompatibilité d&#8217;Angular 2, je n&#8217;ai aucune confiance en la techno et ne compte donc pas réinvestir de billes dedans. De plus Angular 2+ souffre du même problème d&#8217;obligation d&#8217;installer la terre entière avant de commencer à coder.</p>
+<p>Riot est une meilleure alternative, mais l&#8217;obligation de passer par des composants est un no-go IMO. Créer des composants pour moi est l&#8217;exception, pas la règle. Je le fais en dernier, à la phase de refactoring.</p>
+<p>Donc ne vous emmerdez pas, prenez quelques heures pour jouer avec Vue, ça coûte pas cher, et c&#8217;est chouette.</p>
+<p>&#8212;&#8212;&#8212;&#8212;-</p>
+<p>On me signale dans l&#8217;oreillette de linker dans <a href="https://fr.vuejs.org/">la doc française</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/vue-jlavais-pas-vu/feed/</wfw:commentRss>
+		<slash:comments>53</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">23281</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/05/v1qeO3S.jpg" length="56355" type="image/jpg" />	</item>
+		<item>
+		<title>Le don du mois : vue.js</title>
+		<link>http://sametmax.com/le-don-du-mois-vue-js/</link>
+		<comments>http://sametmax.com/le-don-du-mois-vue-js/#comments</comments>
+		<pubDate>Mon, 01 May 2017 08:37:43 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[don]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[js]]></category>
+		<category><![CDATA[vue]]></category>
+		<category><![CDATA[vue.js]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=23211</guid>
+		<description><![CDATA[Le pognon rentre à nouveau et c'est donc le retour du don du mois.]]></description>
+				<content:encoded><![CDATA[<p>Le pognon rentre à nouveau et c&#8217;est donc le retour du don du mois.</p>
+<p>Ça ne fait que quelques temps que j&#8217;utilise <a href="https://vuejs.org/">Vue.js</a>, mais globalement c&#8217;est déjà mon outil par défaut pour toute UI en JS.</p>
+<p>J&#8217;ai encore des demandes de formations et projets pour Angular 1 et React, mais si j&#8217;ai le choix il n&#8217;y a aucune hésitation.</p>
+<p>J&#8217;ai essayé quelques alternatives, comme Riot, mais on arrive jamais à cette combinaison parfaite de simplicité, légèreté, puissance et performance. Ce projet est un petit bijoux du monde de l&#8217;open source. Un truc rare en Javascript.</p>
+<p>Bref, c&#8217;est bien beau de cracher toujours sur JS, mais ça résout pas le problème. Il faut aussi aider, et c&#8217;est donc pour ça que je fais un don de 50 €, <a href="https://vuejs.org/support-vuejs/">par ici</a>.</p>
+<p>Et si vous regrettiez l&#8217;époque de la simplicité de jQuery mais que vous avez envie de quelque chose qui automatise bien plus comme un framework moderne, vous savez ce qu&#8217;il vous reste à essayer :)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-don-du-mois-vue-js/feed/</wfw:commentRss>
+		<slash:comments>18</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">23211</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/05/trJulgf.jpg" length="20067" type="image/jpg" />	</item>
+		<item>
+		<title>La vérité sur le nombre de vues</title>
+		<link>http://sametmax.com/la-verite-sur-le-nombre-de-vues/</link>
+		<comments>http://sametmax.com/la-verite-sur-le-nombre-de-vues/#comments</comments>
+		<pubDate>Thu, 31 Jan 2013 08:45:20 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[blog]]></category>
+		<category><![CDATA[meta]]></category>
+		<category><![CDATA[vue]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4260</guid>
+		<description><![CDATA[Que ce soit sur Youtube ou sur votre blog, le nombre de vue est généralement grossièrement surévalué. En effet, les compteurs sont généralement limités à une IP ou un cookie, mais avec une contrainte de temps. Passé cette contrainte, retourner sur la page compte pour une vue de plus.]]></description>
+				<content:encoded><![CDATA[<p>Que ce soit sur Youtube ou sur votre blog, le nombre de vues est généralement grossièrement surévalué. En effet, les compteurs sont généralement limités à une IP ou un cookie, mais avec une contrainte de temps. Passée cette contrainte, retourner sur la page compte pour une vue de plus.</p>
+<p>Or, il y a beaucoup de raisons pour que ce nombre ne corresponde pas au nombre de &#8220;nouvelles vues&#8221; effectif :</p>
+<ul>
+<li>L&#8217;utilisateur a clické au mauvais endroit et ne voulait pas arriver sur votre site (dans l&#8217;histo, les recherches, le forum, etc). Ca m&#8217;arrive tout le temps.</li>
+<li>La relecture : le même mec revient pour voir s&#8217;il n&#8217;a pas raté un truc, lire à tête reposée, finir l&#8217;article, etc. Vous regardez à nouveau votre contenu pour checker.</li>
+<li>L&#8217;utilisateur clic, reste 5 secondes et se casse rien qu&#8217;à la gueule du site ou parce que c&#8217;est trop lent à se charger.</li>
+<li>L&#8217;utilisateur clic, reste 1 minute et se casse car le sujet ne l&#8217;intéresse pas.</li>
+<li>Quelqu&#8217;un vient voir s&#8217;il n&#8217;y a pas un nouveau com ou vient en poster un.</li>
+<li>Un lecteur vient sur la page juste pour avoir l&#8217;URL dans la barre d&#8217;adresse et la copier / coller (très fréquent).</li>
+<li>Bot (je ne parle PAS des search engine, mais des centaines d&#8217;autres).</li>
+</ul>
+<p>Bref, il y a probablement la moitié de nos vues qui sont des vues &#8220;artificielles&#8221;, quel que soit le média.</p>
+<p>&nbsp;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-verite-sur-le-nombre-de-vues/feed/</wfw:commentRss>
+		<slash:comments>31</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">4260</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/01/36619.jpg" length="45879" type="image/jpg" />	</item>
+	</channel>
+</rss>

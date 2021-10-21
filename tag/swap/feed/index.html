@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>swap &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/swap/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Afficher la liste des process qui utilisent la SWAP</title>
+		<link>http://sametmax.com/afficher-la-liste-des-process-qui-utilise-la-swap/</link>
+		<comments>http://sametmax.com/afficher-la-liste-des-process-qui-utilise-la-swap/#comments</comments>
+		<pubDate>Thu, 10 May 2012 20:52:37 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[mémoire]]></category>
+		<category><![CDATA[ram]]></category>
+		<category><![CDATA[swap]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=588</guid>
+		<description><![CDATA[Un petit script bien pratique pour trouver quel process lancé par quelle ligne de commande utilise la SWAP de votre serveur.]]></description>
+				<content:encoded><![CDATA[<p>Voici un petit script bien pratique pour trouver quel process lancé par quelle ligne de commande utilise la SWAP de votre serveur.</p>
+<p>(Pour savoir si votre serveur utilise la SWAP vous pouvez utiliser un outil comme <a href="http://sametmax.com/htop-un-visualiseur-interactif-de-process/">htop</a>)</p>
+<p>Ouvrez un fichier getswap.sh avec vi ou autre et ajouter ces lignes:</p>
+<pre lang="bash">#!/bin/bash
+# Get current swap usage for all running processes
+# Usage: ./getswap.sh | sort -n -k 5
+# Erik Ljungstrom 27/05/2011
+SUM=0
+OVERALL=0
+for DIR in `find /proc/ -maxdepth 1 -type d | egrep "^/proc/[0-9]"` ; do
+PID=`echo $DIR | cut -d / -f 3`
+PROGNAME=`ps -p $PID -o comm --no-headers`
+PROGPATH=`cat /proc/$PID/cmdline`
+for SWAP in `grep Swap $DIR/smaps 2&gt;/dev/null| awk '{ print $2 }'`
+do
+let SUM=$SUM+$SWAP
+done
+echo "PID=$PID - Swap used: $SUM - ($PROGNAME - $PROGPATH)"
+let OVERALL=$OVERALL+$SUM
+SUM=0
+
+done
+echo "Overall swap used: $OVERALL"</pre>
+<p><strong>Pour afficher les process lancez le avec la ligne de commande suivante:</strong><br />
+les options <strong>-n</strong> et <strong>-k</strong> de sort vont respectivement trier par ordre numérique la 5eme colone (quantité de swap utilisée)</p>
+<pre lang="shell">./getswap.sh | sort -n -k 5</pre>
+<p><strong>Ce qui donne:</strong></p>
+<pre lang="shell">...
+PID=854 - Swap used: 1356 - (php-cgi - /usr/local/bin/php-cgi)
+PID=2107 - Swap used: 1948 - (hald - hald)
+PID=11720 - Swap used: 2604 - (scrapy - /home/scrpamanga/.virtualenvs/scrpamanga/bin/python26/home/scrpamanga/.virtualenvs/scrpamanga/bin/scrapy crawl wikipedia)
+PID=30152 - Swap used: 4004 - (supervisord - /usr/bin/python/usr/bin/supervisord-csupervisor.ini)
+PID=2791 - Swap used: 7188 - (yum-updatesd - /usr/bin/python-tt/usr/sbin/yum-updatesd)</pre>
+<p>Dans notre exemple on voit qu&#8217;un process (11720) Fait swapper le système, après une plus grand investiguation un problème a été trouvé dans le script, consommant beaucoup et saturant la mémoire système obligeant ce dernier à swapper.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/afficher-la-liste-des-process-qui-utilise-la-swap/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">588</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/05/surcharge.jpg" length="34212" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>gevent &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/gevent/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Le piège d&#8217;écrire du code couplé à une implémentation</title>
+		<link>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/</link>
+		<comments>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/#comments</comments>
+		<pubDate>Wed, 03 Feb 2016 09:17:15 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[gevent]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[twisted]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=18044</guid>
+		<description><![CDATA[On a reproché à la communauté de Twisted que c’était un silo fermé. Une lib écrite pour Twisted ne marchait que pour Twisted.
+
+Puis on a reproché à la communauté de gevent la même chose.
+
+Et maintenant la communauté d’asyncio recommence à faire la même erreur.]]></description>
+				<content:encoded><![CDATA[<p>On a reproché à la communauté de Twisted que c’était un silo fermé. Une lib écrite pour Twisted ne marchait que pour Twisted.</p>
+<p>Puis on a reproché à la communauté de gevent la même chose.</p>
+<p>Et maintenant la communauté d’asyncio recommence à faire la même erreur.</p>
+<p>Regardez, <a href="https://github.com/aio-libs">pleins de libs compatibles asyncio</a>, c’est génial non ?</p>
+<p>Je ne vais pas dire non. Ça boost l’utilisabilité, l’adoption, etc.</p>
+<p>Mais c’est aussi un énorme travail qui passe à côté de toute l’expérience (bugs, cas extrêmes, best practices, perfs&#8230;) des communautés précédentes. Et qui a une date de péremption, qui sera foutu à la poubelle à la prochaine vague.</p>
+<p>Pourquoi ?</p>
+<p>Parce que toutes ces libs se concentrent sur l’implémentation.</p>
+<p>Vous ne pouvez pas réutiliser le code d’une lib SMTP Twisted, car elle est liée au reactor. Pourtant cette lib contient des milliers d’infos utiles, la gestion de ce serveur bizarre, la correction de cette erreur de calcul de date, qui n’ont rien à voir avec Twisted.</p>
+<p>C’est la même chose avec ces libs pour asyncio.</p>
+<p>Que faire alors ?</p>
+<p>Et bien d’abord écrire une lib neutre. Qui contient des choses comme :</p>
+<ul>
+<li>Le parsing des packets.</li>
+<li>Le workflow.</li>
+<li>Les constantes.</li>
+<li>Les convertisseurs de données.</li>
+<li>Les vérificateurs de données.</li>
+<li>Les bases de connaissances sur le monde extérieur.</li>
+</ul>
+<p>Il faut écrire cette lib de manière à ce qu’elle puisse être réutilisée dans tout contexte. À base de callbacks simples, de hooks, de points d’entrées.</p>
+<p>Puis, vous rajoutez dans un sous-module, le support pour votre plateforme favorite. Un adaptateur qui utilise ces hooks pour Twisted, ou asyncio, ou gevent.</p>
+<p>Cela a de multiples bénéfices:</p>
+<ul>
+<li>Quand vous changez de plateforme ou que le nouveau joujou à la mode sort, une grande partie du travail peut être réutilisé.</li>
+<li>Toute la partie neutre de la lib peut être réutilisée par toute la communauté Python, pas juste celle qui utilise la même plateforme.</li>
+<li>Cela encourage les contributions à votre lib, puisque n’importe qui peut rajouter un module pour une plateforme et l’enrichir, et corriger des bugs sur la partie neutre.</li>
+<li>Votre lib est beaucoup plus facile à tester.</li>
+<li>Votre lib va cumuler du savoir sur la problématique qu’elle résout pendant bien plus de temps, puisqu’elle traverse les modes des implémentations. Au long terme, ce sera la lib la plus stable et complète.</li>
+</ul>
+<p>Toutes les plateformes ont une manière ou un autre pour attaquer ce problème. Twisted par exemple a une classe protocole qui est indépendante du reactor. Oui, mais elle est dépendante de la manière de penser en Twisted. Personne ne documente ces protocoles de manière neutre. Personne n’utilise ces protocoles de manière neutre.</p>
+<p>gevent utilise carrément le monkey patching pour essayer de se rendre transparent. Évidemment ça veut dire que c’est très dépendant de l’implémentation. Si CPython change, ça casse. Si on utilise une implémentation différente de Python, ça ne marche pas. Si on fait des expérimentations comme actuellement sur le JIT, les résultats sont imprévisibles.</p>
+<p><code>async</code>/<code>await</code> a l’énorme bénéfice de proposer une interface commune à tout travail asynchrone. Fut-ce de l’IO, du thread, du multi-processing, du sous-processing, du multi-interpretteur ou des callbacks ordinaires&#8230; Cela va donc énormément gommer ces problèmes de compatibilité, même si la séparation des responsabilités que je recommande n’est pas suivie. Mais pour le moment tout le monde n’implémente pas <code>__await__</code>. Et si <code>__await__</code> lance le code sur l’autre plateforme, ça fait un truc en plus à gérer. Ce n’est pas tout à faire neutre.</p>
+<p>Attention, je comprends très bien que cette séparation que je recommande ne soit pas suivie.</p>
+<p>C’est très difficile de faire une API agnostique par rapport à la plateforme. Ça demande beaucoup plus de taf, de connaissance, etc. Je suis le premier à ne pas le faire pas fainéantise ou ignorance. </p>
+<p>Mais il faut bien comprendre qu’à chaque fois, on réinvente la roue, une roue jetable par ailleurs.</p>
+<p>Bien entendu, je dis ça pour l’async, mais c’est vrai pour tout.</p>
+<p>Par exemple, des centaines de code ont leur propre moyen de définir un schéma et valider les données en entrée. Les ORM sont particulièrement coupable de cela, les libs de form aussi, mais on a tous codé ce genre de truc. C’est idiot, c’est un code qui n’a pas à être lié à une plateforme.</p>
+<p>Des centaines de libs ont leur code de persistance lié à une plateforme. Même celles qui utilisent un ORM, au final, se lient à certaines bases de données (raison pour laquelle je suis <a href="https://facebook.github.io/react/blog/2015/05/01/graphql-introduction.html">GraphQL</a> de très près).</p>
+<p>La généricité a ses limites, et c’est toujours un compromis entre le coût immédiat, et le bénéfice futur. Si on fait tout générique, on se retrouve avec un truc qui évolue à 2 à l’heure et qui a 15 surcouches pour faire un print. On se retrouve avec Zope. Dont personne, et c’est ironique, ne réutilise les composants parce que c’est devenu trop compliqué de les comprendre.</p>
+<p>Car évidemment, qui dit découplage, dit doc bien faite, qui explique clairement comment bénéficier de ce découplage. Mais dit aussi que le code utilisant les adapteurs doit être aussi simple que si on avait un fort couplage, ce qui est dur à faire.</p>
+<p>Et on tombe ici sur un autre problème : la compétence pour faire ce genre de code. Si il faut 10 ans d’expérience pour faire une lib propre, alors on va réduire considérablement le nombre de personnes qui vont oser coder des libs.</p>
+<p>Aussi cet article n’est en aucun cas un savon que je souhaite passer aux auteurs. Merci de coder ces libs. Merci de donner de votre temps. </p>
+<p>Non, cet article est juste là pour dire : <em>dans la mesure du possible, il est très bénéfique sur le long terme de se découpler de la plateforme</em>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">18044</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/02/XYdAlhh.jpg" length="35788" type="image/jpg" />	</item>
+	</channel>
+</rss>

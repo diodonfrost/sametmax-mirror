@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>middleware &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/middleware/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Qu&#8217;est ce qu&#8217;un middleware Django ?</title>
+		<link>http://sametmax.com/quest-ce-quun-middleware-django/</link>
+		<comments>http://sametmax.com/quest-ce-quun-middleware-django/#comments</comments>
+		<pubDate>Sun, 07 Oct 2012 19:47:22 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[middleware]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1674</guid>
+		<description><![CDATA[Vous savez qu'il y a un settings MIDDLEWARE_CLASSES. Vous savez qu'il est important. Vous ne savez pas vraiment pourquoi.]]></description>
+				<content:encoded><![CDATA[<aside style="text-align:center; font-size:60%"><em>Cet article a été mis à jour et contient maintenant du code Python en version 3</em></aside>
+<p><strong>Avec Django 1.10, les middlewares ont changé. Allez à la fin de l&#8217;article pour en savoir plus.</strong></p>
+<p>Vous savez qu&#8217;il y a un settings qui ressemble à ça:</p>
+<pre lang="python">MIDDLEWARE_CLASSES = (
+    'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+)</pre>
+<p>Vous savez qu&#8217;il est important. Vous ne savez pas vraiment pourquoi.</p>
+<h2>WaT iZ a MideulWaire ?</h2>
+<p>Un <a href="https://docs.djangoproject.com/en/1.10/topics/http/middleware/">middleware</a> est un moyen d&#8217;exécuter du code à toutes requêtes et/ou à toutes les réponses reçues et envoyées par Django. Si vous ne voyez pas comment fonctionne le cycle de requêtes/réponses, faites un petit saut sur notre <a href="http://sametmax.com/schema-de-fonctionnement-general-de-django/">schéma de fonctionnement général de Django</a>.</p>
+<p>Un middleware, c&#8217;est <strong>une classe Python ordinaire</strong>, avec deux méthodes: une appelée pour les requêtes, une appelée pour les réponses.</p>
+<h2>L&#8217;exemple bidon habituel</h2>
+<pre lang="python">class MideulWaireForEverReturnsTheRevenge3:
+
+    # cette méthode sera appelée automatiquement pour chaque requête
+    # et Django lui passera la requête en cours
+    def process_request(self, request):
+        print("Hey, une requête est arrivée !")
+        # on est pas obligé de retourner quoi que ce soit
+
+    # cette méthode sera appelée automatiquement pour chaque réponse
+    # et Django lui passera la réponse en cours et la requête
+    # à laquelle on répond
+    def process_response(self, request, response):
+        print("Hey, on a répondu a une requête !")
+        # on DOIT retourner une réponse
+        return response</pre>
+<p>On met tout ça dans un fichier <em>mon_projet/mon_app/middlewares.py</em>, et on active le middleware en le rajoutant dans les settings:</p>
+<pre lang="python">MIDDLEWARE_CLASSES = (
+    'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'mon_projet.mon_app.middlewares.MideulWaireForEverReturnsTheRevenge3'
+)</pre>
+<p>Et à chaque reload de page, dans l&#8217;affichage du terminal de dev, on a ça:</p>
+<div id="attachment_2527" style="width: 520px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2012/10/Espace-de-travail-1_013.jpg" class="grouped_elements" rel="tc-fancybox-group1674"><img class=" wp-image-2527 " title="./manage.py runserver" src="http://sametmax.com/wp-content/uploads/2012/10/Espace-de-travail-1_013.jpg" alt="Capture d'écran de l'output terminal de ./mange.py runserver avec un middleware qui print sur stdout" width="510" height="328" /></a><p class="wp-caption-text">./manage.py runserver</p></div>
+<p>Et voici ce qui se passe dans le fonctionnement de Django: il trouve la liste des classes de middlewares, et pour chaque requête et réponse, il appelle les méthodes <code>process_response</code> et <code>process_request</code> de chaque middleware.</p>
+<div id="attachment_2514" style="width: 479px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2012/10/middleware_django2.png" class="grouped_elements" rel="tc-fancybox-group1674"><img class=" wp-image-2514 " title="C'est l'histoire de la viiiiiiiiiiiiiie. C'est le cycle éterneeeeeleuuuuuuuuuuuu" src="http://sametmax.com/wp-content/uploads/2012/10/middleware_django2.png" alt="Schéma de fonctionnement des middlewares en Django" width="469" height="454" /></a><p class="wp-caption-text">C&#39;est l&#39;histoire de la viiiiiiiiiiiiiie. C&#39;est le cycle éterneeeeeleuuuuuuuuuuuu</p></div>
+<h2>Les points les plus importants</h2>
+<p>Aucune méthode n&#8217;est obligatoire, vous pouvez créer un middleware avec uniquement l&#8217;une ou l&#8217;autre.</p>
+<p>Si <code>process_request</code> renvoie une réponse, tout s&#8217;arrête. Les <code>process_request</code> des autres middlewares ne sont pas appelés, vos vues ne sont pas appelées, et c&#8217;est le cycle de réponse qui commence directement. Très utile si par exemple vous voulez faire une redirection brutale pour toutes les requêtes qui correspondent à un certain critère (par exemple rediriger vers un site mobile).</p>
+<p>Les middlewares sont appelés dans leur ordre de déclaration dans <code>MIDDLEWARE_CLASSES</code> pour chaque requête, et dans l&#8217;ordre inverse pour chaque réponse. Mettez donc votre middleware au bon endroit dans la file: inutile de mettre un middleware qui vérifie si un user a des droits avant le middleware d&#8217;authentification, puisque l&#8217;utilisateur n&#8217;est pas encore authentifié.</p>
+<p>Un middleware peut posséder 3 autres méthodes également facultatives: <code>process_view</code> (appelée juste avant l&#8217;appel de chaque vue, et permettant de modifier l&#8217;instance de la vue elle-même), <code>process_template_response</code> (appelée sur chaque instance implémentant une méthode render, et surtout utilisée pour injecter des données dans TemplateResponse) et <code>process_exception</code> (appelée quand une vue lève une exception).</p>
+<h2>Pour quoi utiliser les middleware ?</h2>
+<p>Exemples de quelques middlewares qui viennent d&#8217;office avec Django:</p>
+<ul>
+<li><strong>UpdateCacheMiddleware, FetchFromCacheMiddleware</strong>: ils cachent l&#8217;intégralité des pages.</li>
+<li><strong>GZipMiddleware</strong>: retourne une réponse compressée si le browser le gère.</li>
+<li><strong>LocaleMiddleware</strong>: set la langue que Djando doit utiliser, en fonction du navigateur.</li>
+<li><strong>MessageMiddleware</strong>: gestion des &#8220;flash-messages&#8221;.</li>
+<li><strong>SessionMiddleware</strong>: gestion des sessions.</li>
+<li><strong>AuthenticationMiddleware</strong>: authentifier un utilisateur.</li>
+</ul>
+<p>Il y en a beaucoup d&#8217;autres, et il y en a plein qui trainent sur internet. Mais bien entendu le plus chouette, c&#8217;est d&#8217;en faire un soi-même.</p>
+<p>Par exemple, quand je développe (pas en prod, hien !), j&#8217;utilise souvent ce petit middleware que j&#8217;ai fait avec amour:</p>
+<pre lang="python">class ForceSuperUserMiddleWare(object):
+    def process_request(self, request):
+        request.user = User.objects.filter(is_superuser=True)[0]</pre>
+<p>Comme ça je suis toujours connecté en tant que super user, même sur les projets avec des timeout courts pour la session, des doubles authentifications super relous et tout le toutim des clients paranos (traduction: des américains).</p>
+<h2>Les middlewares en Django 1.10 et plus</h2>
+<p>À partir de Django 1.10 (publié en 2016), les middlewares ont changé de tête et deviennent des fonctions qui doivent retourner&#8230; une fonction.</p>
+<p>Cela ressemble à ça (si vous avez suivi <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">le tuto sur les décorateurs</a>, vous ne serez pas trop perdu):</p>
+<pre lang="python">
+# la première fonction est une factory, c'est-à-dire une fonction
+# dont le but est de définir et retourner une autre fonction
+def middleware_factory(get_response):
+
+    # On met ici le code d'initialisation du middleware
+    # qui ne sera appelée qu'une fois au démarrage de 
+    # django
+
+    def middleware(request):
+        # On met ici le code a exécuter à chaque requête, 
+        # avant la vue
+
+        # récupération de la réponse. Ouai, le paramètre 
+        # get_reponse est une fonction. Bienvenu dans la
+        # programmation fonctionnelle.
+        response = get_response(request)
+
+        # On met ici le code a exécuter pour chaque requête,
+        # après que la réponse soit créée.
+
+        # n'oubliez pas de retourner la réponse
+        return response
+
+    # n'oubliez pas de retourner votre middleware
+    return middleware
+</pre>
+<p>Alors je ne sais pas trop ce qu&#8217;ils ont fumé chez Django, car d&#8217;un côté ils ont soûlé tout le monde avec les class based views, et de l&#8217;autre ils passent en FP pour les middlewares. Mais bon, perso j&#8217;aime bien ce nouveau look, je trouve ça plus facile, mais je comprends qu&#8217;un débutant regarde ça avec des yeux ronds.</p>
+<p>Voici notre premier exemple, avec le nouveau style:</p>
+<pre lang="python">
+def mideulwaire_for_ever_returns_the_revenge_3(get_response):
+
+    def middleware(request):
+
+        print("Hey, une requête est arrivée !")
+        response = get_response(request)
+        print("Hey, on a répondu a une requête !")
+
+        return response
+
+    return middleware
+</pre>
+<p>Pour éviter de tout mélanger, le settings pour les nouveaux middlewares est appelé <code>MIDDLEWARES</code>, et non plus <code>MIDDLEWARE_CLASSES</code>. Vous pouvez déclarer l&#8217;un ou l&#8217;autre, mais pas les deux.</p>
+<p>La bonne nouvelle, c&#8217;est qu&#8217;<a href="https://docs.djangoproject.com/en/1.10/topics/http/middleware/#upgrading-middleware">il est possible</a> de coder des middlewares qui soient compatibles avec les deux versions. En fait, tous ceux fournis avec Django par défaut le sont, donc si vous utilisez seulement ceux par défaut vous pouvez juste renommer le settings et vous êtes bons.</p>
+<p>Si par contre vous devez transformer un de vos anciens middlewares avec un nouveau,vous pouvez hériter <code>django.utils.deprecation.MiddlewareMixin</code> qui 90% du temps suffit à transformer votre vieux middleware en version compatible avec le nouveau style. Si vous préférez le faire à la main parce que vous avez un comportement très spécial, vous pouvez toujours overrider <a href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-6/">__call__</a> puisque ça marche avec n&#8217;importe quel <a href="http://sametmax.com/quest-ce-quun-callable-en-python/">callable</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quest-ce-quun-middleware-django/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1674</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/10/figurines-22-470x550.jpg" length="36259" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,1039 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>cbv &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/cbv/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Histoire de ne pas perdre le fil : TrackingFields</title>
+		<link>http://sametmax.com/histoire-de-ne-pas-perdre-le-fil-trackingfields/</link>
+		<comments>http://sametmax.com/histoire-de-ne-pas-perdre-le-fil-trackingfields/#comments</comments>
+		<pubDate>Sun, 07 Feb 2016 11:03:06 +0000</pubDate>
+		<dc:creator><![CDATA[foxmask]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cbv]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=18067</guid>
+		<description><![CDATA[La première partie va planter le décor en démarrant par vous montrer comment s'articule une application avec formulaire composé d'un sous formulaire en sus (j'expliquerai pourquoi après :)
+
+Pour ce faire, je vous emmène dans l'univers du 7° art, viendez on va refaire StarWars!
+
+Un modèle, un formulaire, une vue, un template et ca sera fini.
+]]></description>
+				<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/Foxmask/">Foxmask</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<p><strong>Préambule</strong></p>
+<p>Je sais bien qu&#8217;une partie de ce billet ne plaira pas à Sam&#038;Max (thanks to the Django CBV &#038; Mixin:)</p>
+<p><strong>Introduction</strong><br />
+Le but du billet sera de montrer comment, sans rien changer dans un formulaire, on peut arriver à pister les modifications des données effectuées dans l&#8217;application.</p>
+<p>La première partie va planter le décor en commençant par vous montrer comment s&#8217;articule une application avec formulaire composé d&#8217;un sous formulaire en sus (j&#8217;expliquerai pourquoi après :)</p>
+<p>Pour ce faire, je vous emmène dans l&#8217;univers du 7° art, viendez on va refaire StarWars!</p>
+<p>Un modèle, un formulaire, une vue, un template et ca sera fini.</p>
+<p>le <strong>models.py</strong></p>
+<pre lang="python">
+    from django.db import models
+
+
+    class Movie(models.Model):
+        """
+            Movie
+        """
+        name = models.CharField(max_length=200, unique=True)
+        description = models.CharField(max_length=200)
+
+        def __str__(self):
+            return "%s" % self.name
+
+
+    class Episode(models.Model):
+        """
+           Episode - for Trilogy and So on ;)
+        """
+        name = models.CharField(max_length=200)
+        scenario = models.TextField()
+        movie = models.ForeignKey(Movie)
+
+        def __str__(self):
+            return "%s" % self.name
+</pre>
+<p>le <strong>forms.py</strong>, tout rikiki :</p>
+<pre lang="python">
+    from django import forms
+    from django.forms.models import inlineformset_factory
+
+    from starwars.models import Movie, Episode
+
+
+    class MovieForm(forms.ModelForm):
+
+        class Meta:
+            """
+                As I have to use : "exclude" or "fields"
+                As I'm very lazy, I dont want to fill the list in the "fields"
+                so I say that I just want to exclude ... nothing :P
+            """
+            model = Movie
+            exclude = []
+
+    # a formset based on the model of the Mother "Movie" and Child "Episode" + 1 new empty lines
+    # for more details, have a look at https://docs.djangoproject.com/fr/1.9/topics/forms/modelforms/#inline-formsets
+    EpisodeFormSet = inlineformset_factory(Movie, Episode, fields=('name', 'scenario'), extra=1)
+</pre>
+<p>la vue <strong>views.py</strong>, très sèche, très DRY ;)</p>
+<pre lang="python">
+    from django.http import HttpResponseRedirect
+    from django.core.urlresolvers import reverse
+    from django.views.generic import CreateView, UpdateView, ListView
+
+    from starwars.models import Movie
+    from starwars.forms import MovieForm, EpisodeFormSet
+
+
+    class MovieMixin(object):
+        model = Movie
+        form_class = MovieForm
+
+        def get_context_data(self, **kw):
+            """ init form with data if any """
+            context = super(MovieMixin, self).get_context_data(**kw)
+            if self.request.POST:
+                context['episode_form'] = EpisodeFormSet(self.request.POST)
+            else:
+                context['episode_form'] = EpisodeFormSet(instance=self.object)
+            return context
+
+        def get_success_url(self):
+            """ where to go back, once data are validated """
+            return reverse("home")
+
+        def form_valid(self, form):
+            """ form validation """
+            formset = EpisodeFormSet((self.request.POST or None), instance=self.object)
+            if formset.is_valid():
+                self.object = form.save()
+                formset.instance = self.object
+                formset.save()
+
+            return HttpResponseRedirect(reverse('home'))
+
+
+    class Movies(ListView):
+        model = Movie
+        context_object_name = "movies"
+        template_name = "base.html"
+
+
+    class MovieCreate(MovieMixin, CreateView):
+        """
+            MovieMixin manages everything for me ...
+        """
+        pass
+
+
+    class MovieUpdate(MovieMixin, UpdateView):
+        """
+            ... and as I'm DRY I wont repeat myself myself myself ;)
+        """
+        pass
+</pre>
+<p><strong>Pour finir de planter le décors et les costumes (merci <a href="https://fr.wikipedia.org/wiki/Au_th%C3%A9%C3%A2tre_ce_soir#Anecdotes">Roger Hart et Donald Cardwell</a>)</strong></p>
+<p>le template <strong>base.html</strong></p>
+<pre lang="html">
+    <!DOCTYPE html>
+    <html lang="fr">
+    <head>
+        <title>Manage stories for StarWars</title>
+    </head>
+    <body>
+    <h1>Stories Manager for Starwars</h1>
+    {% block content %}
+    <a href="{% url 'movie_create' %}">Add a movie</a><br/>
+    <h2>Movie list</h2>
+    <ul>
+    {% for movie in movies %}
+    <li><a href="{% url 'movie_edit' movie.id %}">{{ movie.name }}</a></li>
+    {% endfor %}
+    </ul>
+    {% endblock %}
+    </body>
+    </html>
+</pre>
+<p>enfin <strong>movie_form.html</strong> (le template utilisé par les UpdateView &#038; CreateView)</p>
+<pre lang="html">
+    {% extends "base.html" %}
+    {% block content %}
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        <table>
+        {{ form.as_table }}
+        </table>
+        <table>
+        {{ episode_form.as_table }}
+        </table>
+        <button>Save</button>
+    </form>
+    {% endblock %}
+</pre>
+<p><strong>Mise à jour de la base de données</strong></p>
+<p>cela s&#8217;impose :</p>
+<pre lang="shell">
+(starwars) foxmask@foxmask:~/DjangoVirtualEnv/starwars/starwars $  ./manage.py migrate
+
+Operations to perform:
+  Synchronize unmigrated apps: messages, starwars, staticfiles
+  Apply all migrations: contenttypes, admin, sessions, auth
+Synchronizing apps without migrations:
+  Creating tables...
+    Creating table starwars_movie
+    Creating table starwars_episode
+    Running deferred SQL...
+  Installing custom SQL...
+</pre>
+<p>Voilà le tout est prêt (après le lancement du serveur bien sûr), je peux allégrement créer ma double trilogie pépère tel George Lucas.</p>
+<p><strong>Trackons l&#8217;impie</strong></p>
+<p>Seulement un jour arrive où, moi, George Lucas, je vends StarWars à Walt Disney, mais comme je ne veux pas rater de ce qu&#8217;ils vont faire de mon &#8220;bébé&#8221;, je rajoute un &#8220;tracker de modifications&#8221; à mon application, pour ne pas perdre le &#8220;field&#8221; de l&#8217;Histoire. </p>
+<p><strong>Installation de Tracking Fields</strong></p>
+<p>en prérequis <strong>django-tracking-fields</strong> requiert <strong>django-cuser</strong>, donc ze pip qui va bien donne :</p>
+<pre lang="shell">
+    (starwars) foxmask@foxmask:~/DjangoVirtualEnv/starwars/starwars $ pip install django-tracking-fields django-cuser
+    Collecting django-tracking-fields
+      Downloading django-tracking-fields-1.0.6.tar.gz (58kB)
+        100% |████████████████████████████████| 61kB 104kB/s 
+    Collecting django-cuser
+      Downloading django-cuser-2014.9.28.tar.gz
+    Requirement already satisfied (use --upgrade to upgrade): Django>=1.5 in /home/foxmask/DjangoVirtualEnv/starwars/lib/python3.5/site-packages (from django-cuser)
+    Installing collected packages: django-tracking-fields, django-cuser
+      Running setup.py install for django-tracking-fields ... done
+      Running setup.py install for django-cuser ... done
+    Successfully installed django-cuser-2014.9.28 django-tracking-fields-1.0.6
+</pre>
+<p>comme de coutume, après un <code>pip install</code>, une modification dans le <code>settings.py</code> suit,</p>
+<pre lang="python">
+INSTALLED_APPS = (
+        ...
+        'cuser',
+        'tracking_fields',
+        ...
+    )
+    MIDDLEWARE_CLASSES = (
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.common.CommonMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+        'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        'django.middleware.security.SecurityMiddleware',
+        'cuser.middleware.CuserMiddleware',  ## <=== ne pas oublier, pour chopper le user qui fait le con avec mes films;)
+    )
+</pre>
+<p>le petit migrate qui va bien aussi pour ajouter les tables pour les modèles de <code>django-tracking-fields</code></p>
+<pre lang="shell">
+    (starwars) foxmask@foxmask:~/DjangoVirtualEnv/starwars/starwars $  ./manage.py migrate
+    Operations to perform:
+      Synchronize unmigrated apps: staticfiles, messages, cuser, starwars
+      Apply all migrations: auth, sessions, contenttypes, tracking_fields, admin
+    Synchronizing apps without migrations:
+      Creating tables...
+        Running deferred SQL...
+      Installing custom SQL...
+    Running migrations:
+      Rendering model states... DONE
+      Applying tracking_fields.0001_initial... OK
+      Applying tracking_fields.0002_auto_20160203_1048... OK
+</pre>
+<p>et nous voilà prêts à joueur les trackers.</p>
+<p><strong>Utilisation</strong></p>
+<p>On ne peut pas rêver plus simple, cela se résume à un décorateur sur le modèle qui identifie quelles données sont modifiées, et un field <code>histo</code> qui va lier le modele TrackingEvent de l'application TrackingFields, à ma table à surveiller. Et là, bien que le modele ait été modifié, inutile de faire un nouveau <code>python manage.py migrate</code>, rien ne bougera, <code>histo</code> sera une <a href="https://docs.djangoproject.com/fr/1.8/ref/contrib/contenttypes/#generic-relations">GenericRelation()</a>. En effet, TrackingEvent repose sur <a href="https://docs.djangoproject.com/fr/1.9/ref/contrib/contenttypes/">ContenType</a> aka "L'Infrastructure des Types de Contenu". Si vous avez déjà tripoté la gestion des permissions, vous avez déjà dû vous y frotter;)</p>
+<p>Pour la faire courte, en clair ça donne :</p>
+<p>le <strong>models.py</strong> arrangé pour l'occasion du décorateur</p>
+<pre lang="python">
+    from django.db import models
+    from django.contrib.contenttypes.fields import GenericRelation
+
+    from tracking_fields.decorators import track
+    from tracking_fields.models import TrackingEvent
+
+
+    @track('name', 'description')   # decorator added
+    class Movie(models.Model):
+        """
+            Movie
+        """
+        name = models.CharField(max_length=200, unique=True)
+        description = models.CharField(max_length=200)
+        # to get the changes made on movie
+        histo = GenericRelation(TrackingEvent, content_type_field='object_content_type')
+
+        def episodes(self):
+            return Episode.objects.filter(movie=self)
+
+        def __str__(self):
+            return "%s" % self.name
+
+    @track('name', 'scenario')   # decorator added
+    class Episode(models.Model):
+        """
+           Episode - for Trilogy and So on ;)
+        """
+        name = models.CharField(max_length=200)
+        scenario = models.TextField()
+        movie = models.ForeignKey(Movie)
+        # to get the changes made on episode
+        histo = GenericRelation(TrackingEvent, content_type_field='object_content_type')
+
+        def __str__(self):
+            return "%s" % self.name
+</pre>
+<p>bon là c'est simplissime comme une recette de pate à crêpes: 3 imports de rigueur, le décorateur et la GenericRelation() on mélange le tout et ca donne ce qui suit J'ai, au passage, rajouté une fonction episodes à ma classe Movie, dont je vous reparlerai plus bas.</p>
+<p>le template de la <strong>DetailView</strong> (pour afficher uniquement les details d'un film) qui va bien</p>
+<pre lang="html">
+    <table>
+       <caption>History of the modification of {{ object }} </caption>
+       <thead>
+       <tr><th>Old Value</th><th>New Value</th><th>By</th><th>at</th></tr>
+       </thead>
+       <tbody>
+    {% for h in object.histo.all %}
+       {% for f in h.fields.all %}
+           <tr><td>{{ f.old_value }}</td><td>{{ f.new_value }}</td><td>{{ h.user }}</td><td>{{ h.date }}</td></tr>
+       {% endfor %}
+    {% endfor %}
+       </tbody>
+    </table>
+</pre>
+<p>A présent si je me rends dans ma page pour modifier le scénario d'un Episode, mon template ci dessus, ne m'affichera pas ces modications ! Pourquoi bou diou ? Parce qu'ici j'affiche "l'histo" de <em>Movie</em> pas de <del datetime="2016-02-06T14:44:25+00:00">Episode</del>... On comprend à présent ici mon intéret pour le sous formulaire. Le "problème" aurait été masqué si je m'étais arrêté à un seul simple formulaire. </p>
+<p><strong>Corrigeons</strong></p>
+<p>c'est là qu'entre en jeu la fonction <code>episodes</code> à ma classe <code>Movie</code>, pour me permettre d'itérer dessus et afficher tout le toutim</p>
+<p>le template de la <strong>DetailView</strong> qui va bien (bis)</p>
+<pre lang="html">
+    <table>
+        <caption>History of the modifications of {{ object }} </caption>
+        <thead>
+            <tr><th>Old Value</th><th>New Value</th><th>By</th><th>at</th></tr>
+        </thead>
+        <tbody>
+    {% for h in object.histo.all %}
+       {% for f in h.fields.all %}
+           <tr><td>{{ f.old_value }}</td><td>{{ f.new_value }}</td><td>{{ h.user }}</td><td>{{ h.date }}</td></tr>
+       {% endfor %}
+    {% endfor %}
+        </tbody>
+    </table>
+    {% for ep in object.episodes %}
+        {% if ep.histo.all %}
+    <table>
+        <caption>history of the modifications of Episode</caption>
+        <thead>
+            <tr><th>Old Value</th><th>New Value</th><th>By</th><th>at</th></tr>
+        </thead>
+        <tbody>
+            {% for h in ep.histo.all %}
+                {% for f in h.fields.all %}
+                {% if f.old_value == f.new_value %} {# they are the same when the new value is created to avoid to display "null" #}
+                {% else %}
+                <tr><td>{{ f.old_value }}</td><td>{{ f.new_value }}</td><td>{{ h.user }}</td><td>{{ h.date }}</td></tr>
+                {% endif %}
+                {%  endfor %}
+            {% endfor %}
+        </tbody>
+     </table>
+        {% endif %}
+    {% endfor %}
+</pre>
+<p>Voili voilou ! Et en prime, si vous êtes curieux, coté admin, vous avez aussi la liste de toutes les modifications si besoin ;)</p>
+<p>Aux utilisateurs avertis qui diraient :</p>
+<blockquote><p>pourquoi l'avoir recodé coté front puisque c'est déjà géré coté admin sans lever le petit doigt ?</p></blockquote>
+<p>Parce que George Lucas veut montrer les modifications apportées à son bébé StarWars par Walt Disney, au monde entier pardi !</p>
+<p>Ah un détail en passant : dans l'admin la vue qui affiche la liste des modifications donne : "Episode Object" ou "Movie Object". Pour éviter ça, zavez dû remarquer que j'ai mis la fonction <code>__str__</code> dans mes modèles ce qui vous rendra une valeur plus "lisible" sur ce qui a été modifié.</p>
+<p><strong>Conclusion :</strong></p>
+<p>Dans la vraie vie de votre serviteur, ne se voyait pas créer un modele "history" lié "physiquement" par une FK à chaque modèle, entreprenait de chercher au travers de la toile quelques ressources.</p>
+<p>C'est finallement sur <a href="irc://irc.freenode.net/#django-fr">#django-fr@freenode</a> qu'il a posé la question et a obtenu de <a href="https://github.com/gagaro">Gagaro</a> le grââl : une application nommée <a href="https://github.com/makinacorpus/django-tracking-fields">tracking-fields</a>, dont il est l'auteur.</p>
+<p>Pour une fois qu'il fait sa faignasse en ne codant pas tout by himself, <a href="https://github.com/makinacorpus/django-tracking-fields">ça fait plaisir de tomber sur une appli pareille</a> !</p>
+<p>Si vous voulez jouer avec le code de ce gestionnaire de films <a href="https://github.com/foxmask/tracking-starwars">c'est par ici la bonne soupe</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/histoire-de-ne-pas-perdre-le-fil-trackingfields/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">18067</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/02/fqP0EET.jpg" length="147258" type="image/jpg" />	</item>
+		<item>
+		<title>Je n&#8217;expliquerai plus les CBV</title>
+		<link>http://sametmax.com/je-nexpliquerai-plus-les-cbv/</link>
+		<comments>http://sametmax.com/je-nexpliquerai-plus-les-cbv/#comments</comments>
+		<pubDate>Mon, 11 May 2015 11:42:49 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cbv]]></category>
+		<category><![CDATA[class]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[poo]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16221</guid>
+		<description><![CDATA[ Avant, les vues génériques étaient sous forme de fonction, simples, pratiques, c'était parfait. Et ça a été retiré du framework pour des versions OO sous prétexte que c'était plus flexible.
+
+Maintenant, ce sont ces gros tas immondes, avec un ordre d'appel de méthodes complexes, des mixins dans tous les sens et une chaine d'héritage velue. ]]></description>
+				<content:encoded><![CDATA[<p>Les <a href="http://sametmax.com/des-vues-normales-aux-vues-generiques-django/">Class Based Views</a> sont des vues génériques réutilisables qui permettent de faire automatiquement des tâches courantes dans Django comme :</p>
+<ul>
+<li>Récupérer et afficher une ou plusieurs entrées en base de données.</li>
+<li>Afficher et valider un formulaire.</li>
+<li>Faire un mix des deux pour modifier des entrées en base.</li>
+</ul>
+<p><a href="http://sametmax.com/des-annees-plus-tards-je-naime-toujours-pas-les-cbv/">Je ne les ai jamais aimées</a>. Avant, les vues génériques étaient sous forme de fonction, simples, pratiques, c&#8217;était parfait. Et ça a été retiré du framework pour des versions OO sous prétexte que c&#8217;était plus flexible.</p>
+<p>Maintenant, ce sont ces gros tas immondes, avec un ordre d&#8217;appel de méthodes complexes, des mixins dans tous les sens et une chaine d&#8217;héritage velue. </p>
+<p>Je pense que c&#8217;est une bonne occasion pour rappeler que la POO n&#8217;est pas faite pour être utilisée partout, tout le temps. Aucun putain de paradigme de programmation n&#8217;est fait pour être utilisé partout, tout le temps. C&#8217;est pour ça qu&#8217;il y en a plusieurs.</p>
+<p>Dans notre cas des CBV, la conséquence est que c&#8217;est <a href="http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/">un enfer</a> pour expliquer tout usage qui ne soit pas un hello world, ce que la doc se garde bien de faire.</p>
+<p>Après il y a toujours un malin pour dire &#8220;mais si tu vois tu fais ça, et ça, ça prend 5 lignes, c&#8217;est pas si dur&#8221;. Ouai, maintenant va expliquer ça à un stagiaire, et donne lui un exercice avec une form view qui doit modifier un objet, le lier à un user seulement si il a la permission de le faire. Juste pour voir en combien de temps il trouve. Je vais en WE à Barcelone en attendant. Je prévoie une extension à Rome pour quand il devra relire son code le trimestre prochain.</p>
+<p>Et si encore c&#8217;était pour un gain de productivité évident, je fermerais les yeux. Mais c&#8217;est pas le cas. Même moi qui sait utiliser ces&#8230; ces choses&#8230; je dois regarder dans la doc à chaque fois que j&#8217;en utilise une. Et ensuite quand je relis mon code quelques mois plus tard, je chope de pattes d&#8217;oies aux coins des yeux.</p>
+<blockquote><p>If you have to refer to the documentation every time you use a module, find (or build) a new module.</p></blockquote>
+<p>Dixit Kenneth Reitz, le mec qui a pondu <a href="https://github.com/kennethreitz/requests">requests</a>. Donc on va user something else que les CBV, si vous le voulez bien.</p>
+<p>Un lecteur m&#8217;a (encore) pointé du doigt qu&#8217;un schéma du MRO et de l&#8217;ordre d&#8217;appel des méthodes serait utile. Vous vous rendez compte du truc ? On peut comprendre l&#8217;ORM sans schéma alors que c&#8217;est une machine de guerre, et il faut une carte pour comprendre comment faire un listing un peu custo avec une CBV ? J&#8217;ai évalué la somme de travail pour faire ledit schéma, et elle est énorme : trop de classes, trop de méthodes, trop de subtilités.</p>
+<p>Bref, je jette le tablier, fuck les CBV. Je ne les inclurai plus dans mes formations, mes tutos, mes aides sur les forums, etc.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/je-nexpliquerai-plus-les-cbv/feed/</wfw:commentRss>
+		<slash:comments>17</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">16221</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/05/9cbXVwS.gif" length="202631" type="image/jpg" />	</item>
+		<item>
+		<title>Des années plus tard, je n&#8217;aime toujours pas les CBV</title>
+		<link>http://sametmax.com/des-annees-plus-tards-je-naime-toujours-pas-les-cbv/</link>
+		<comments>http://sametmax.com/des-annees-plus-tards-je-naime-toujours-pas-les-cbv/#comments</comments>
+		<pubDate>Tue, 21 May 2013 08:52:09 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cbv]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5976</guid>
+		<description><![CDATA[Les Class Bbased Views se trouvent maintenant partout en Django. Je les comprends maintenant très bien, et les utilise souvent au mieux. Dernièrement j'ai du utiliser <a href="http://django-rest-framework.org/">django-rest-framework</a>, une très belle application, qui fait un usage utile et massif des CBV, et effectivement, cette architecture m'a rendu très productif.
+
+Mais je maintiens ce que je dis depuis le début : ce n'est pas un pas en avant.]]></description>
+				<content:encoded><![CDATA[<p>Les Class Based Views se trouvent maintenant partout en Django. Je les comprends aujourd&#8217;hui très bien, et les utilise souvent au mieux. Dernièrement j&#8217;ai dû utiliser <a href="http://django-rest-framework.org/">django-rest-framework</a>, une très belle application, qui fait un usage utile et massif des CBV, et effectivement, cette architecture m&#8217;a rendu très productif.</p>
+<p>Mais je maintiens ce que je dis depuis le début : ce n&#8217;est pas un pas en avant.</p>
+<p>D&#8217;abord, qui dit CBV dit référence constante à la documentation. J&#8217;ai été productif avec CBV parce que :</p>
+<ul>
+<li>Je connais l&#8217;API Django sur le bout des doigts.</li>
+<li>Je comprends parfaitement les CBV (et la POO en Python en général).</li>
+<li>Je lis très vite, et j&#8217;ai l&#8217;habitude de fouiller dans les docs.</li>
+<li>Je me balade dans le code source naturellement.</li>
+</ul>
+<p>Mais ce n&#8217;est pas comme ça que c&#8217;est censé être. Si vous utilisez une belle API, comme <a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">requests ou path.py</a>, vous n&#8217;avez PAS besoin de tout cela. Vous jetez un coup d’œil à la doc, et vous faites 80% du boulot dans le shell, puis de temps à autre, vous vous référez à la documentation sur les points ambiguës. Je n&#8217;ai jamais du aller dans le code source de <code>requests</code>, je n&#8217;ai jamais eu besoin de comprendre <code>urllib</code> de fond en comble pour utiliser <code>requests</code>, et je n&#8217;ai pas besoin de connaître les subtilités de plusieurs paradigmes de programmation pour utiliser <code>requests</code>.</p>
+<p>Alors oui, <code>requests</code> ne peut en aucun cas être comparé à Django en terme de taille et de couverture de besoin, et certes, en tant que professionnel averti, je suis tenu d&#8217;être capable de faire tout cela. Mais il y a quand même une énorme différence d&#8217;effort à fournir, et de qualification à avoir, pour l&#8217;usage de cette techno.</p>
+<p>En prime, il est TRÈS difficile de débugger une CBV :</p>
+<ul>
+<li>Dans une vue générique sous forme de fonction, on peut juste faire <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">import ipdb</a>, et faire un step puis débugger tranquillement. Dans une CBV, vous le mettez où le break point ? Soit vous overridez une méthode (et il faut savoir par cœur laquelle), soit vous faites un wrapper provisoir sous forme de fonction (!), soit vous mettez le break cash dans le code source de la lib. C&#8217;est nul à chier, et improductif. Et certainement pas à la portée d&#8217;un débutant.</li>
+<li>Les mixins ont un tas de comportements implicites, qu&#8217;il faut connaître pour comprendre pourquoi ceci fait cela. Et comme il y a généralement 3 ou 4 mixins (d&#8217;ailleurs, combien de dev peuvent donner la définition d&#8217;un mixin ?), et bien si il y a un problème, il y a 4 sources possibles. Qui héritent parfois d&#8217;autres classes, ce qui démultiplie le truc.</li>
+<li>Quand ça plante le stack trace est blindée de références à droite et à gauche. Un putain de labyrinthe.</li>
+</ul>
+<p>Rajoutez à cela que la syntaxe est verbeuse comme c&#8217;est pas permis :</p>
+<pre lang="python">
+def get_context_data(self, *args, **kwargs):
+    context = super(MaClass, self).get_context_data(*args, **kwargs)
+    context['ma_var'] = "ma valeur"
+    return context
+</pre>
+<p>Pour rajouter UNE variable dans le contexte ? Rhaaaaaaaaaaa. Je code en Python, pas en Java !</p>
+<p>Et terminez sur le fait que pour utiliser tous les décorateurs codés depuis 5 ans, vous avez <a href="http://stackoverflow.com/questions/6069070/how-to-use-permission-required-decorators-on-django-class-based-views">une syntaxe bien pourrie</a> ou alors des <a href="https://github.com/lukaszb/django-guardian/issues/48">réimplementations complètes</a> sous forme de mixins. Yeah !</p>
+<p>Vous comprendrez que ça me gonfle.</p>
+<p>Tout ça pour quel gain ? Oui on gagne un peu en flexibilité, mais ça ne compense pas tout le reste, et ça ne permet en rien de faire des choses qu&#8217;on ne pouvait pas faire avant.</p>
+<p>Je n&#8217;ai pas vu encore la moindre utilisation des CBV qui me fasse dire, &#8220;putain c&#8217;est tellement mieux qu&#8217;avant pour cette partie&#8221;. Ni aucune lib qui me fasse dire : &#8220;ouais, on aurait pas pu le faire aussi bien avec des vues sous forme de fonctions&#8221;.</p>
+<p>Avec les CBV devenant la manière par défaut de coder les vues en Django, le framework devient beaucoup moins accessible au débutant, alors que sa facilité d&#8217;usage était un de ses points forts.</p>
+<p>Bref, je suis de <a href="http://www.boredomandlaziness.org/2012/05/djangos-cbvs-are-not-mistake-but.html">l&#8217;avis de Nick Coghlan</a>, les CBV ne sont pas une erreur, elles ont leur utilité, mais balancer à la poubelle les vues sous forme de fonction est une vaste connerie.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/des-annees-plus-tards-je-naime-toujours-pas-les-cbv/feed/</wfw:commentRss>
+		<slash:comments>24</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">5976</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/05/complots23.jpg" length="38284" type="image/jpg" />	</item>
+		<item>
+		<title>Une alternative aux class base views en Django</title>
+		<link>http://sametmax.com/une-alternative-aux-class-base-views-en-django/</link>
+		<comments>http://sametmax.com/une-alternative-aux-class-base-views-en-django/#comments</comments>
+		<pubDate>Sun, 26 Aug 2012 14:26:06 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cbv]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1898</guid>
+		<description><![CDATA[C'est léger, et ça répond à pas mal de use cases.]]></description>
+				<content:encoded><![CDATA[<p>Ce n&#8217;est pas un secret que nous <a href="http://sametmax.com/des-vues-normales-aux-vues-generiques-django/">n&#8217;aimons pas trop les CBV sur ce blog</a>. Pourtant des tas de gens continuent de les utiliser car avoir des vues sous forme de classe leur permet plus de réutilisabilité.</p>
+<p>Ce n&#8217;est pourtant pas nécessaire.</p>
+<p>On vous a déjà dit qu&#8217;une <a href="http://sametmax.com/schema-de-fonctionnement-general-de-django/">vue Django n&#8217;était qu&#8217;une fonction ordinaire</a>, qui prenait en paramètre une requête, et retournait une réponse.</p>
+<p>On ne vous a pas tout dit.</p>
+<p>En fait Django accepte <strong>n&#8217;importe quel callable</strong> comme vue, pas juste une fonction. Et Python permet de réagir à l&#8217;appel de n&#8217;importe quel objet grâce à la méthode <strong>__call__</strong>.</p>
+<p>Du coup:</p>
+<pre lang="python">
+class MaVue(object):
+    def __call__(self, request):
+        # mettre ici le code de la vue
+        # comme si c'était une vue foncton
+
+ma_vue = MaVue()</pre>
+<p>Puis dans urls.py:</p>
+<pre lang="python">url('/', 'ma_vue')</pre>
+<p>Marche parfaitement.</p>
+<p>Et vous pouvez hériter de <code>MaVue</code>, faire des mixins, et tout le toutim. Sans avoir à ajouter de la complexité, comme si c&#8217;était une vue fonction normale. </p>
+<p>Il y a juste un truc à savoir: tout ce qu&#8217;on met dans <strong>self.attribut</strong> est partagé entre toutes les instances. Donc sur ce type de vue sous forme de classe, <strong>on évite de stocker un truc dans self</strong>, on fait des méthodes de classes auxquelles on passe des paramètres. </p>
+<p>Sinon on évite juste d&#8217;utiliser les vues sous forme de classe. on vit très bien sans.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/une-alternative-aux-class-base-views-en-django/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1898</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/08/Ersatz-Brothers1.jpeg" length="36333" type="image/jpg" />	</item>
+		<item>
+		<title>Explication de code: des mixins et des décorateurs de méthode pour Django</title>
+		<link>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/</link>
+		<comments>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/#comments</comments>
+		<pubDate>Tue, 21 Aug 2012 14:37:57 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cbv]]></category>
+		<category><![CDATA[decorator]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[mixin]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1812</guid>
+		<description><![CDATA[J'ai une préférence pour mon profile de 3-quart gauche.]]></description>
+				<content:encoded><![CDATA[<p>Suite à notre <a href="http://sametmax.com/envoyez-nous-les-scripts-que-vous-ne-pigez-pas/">appel à l&#8217;envoi de code à expliquer</a>, nous avons reçu ceci:</p>
+<blockquote><p>Pouvez-vous m&#8217;aider à comprendre ce code?</p>
+<p><a href="https://gist.github.com/3092600">https://gist.github.com/3092600</a></p>
+<p>La fonction dispatch, à quoi sert-elle?</p>
+<p>L&#8217;appel via super, on appelle le parent de la classe?</p>
+<p>Merci, je vous ferai une statue un jour!
+</p></blockquote>
+<p>Prépare le marbre.</p>
+<h2>Programmation orientée objet</h2>
+<p>Commençons par:</p>
+<blockquote><p>L&#8217;appel via super, on appelle le parent de la classe?</p></blockquote>
+<p>Oui, très exactement.</p>
+<p>Et j&#8217;en profite pour rappeler que si vous utilisez les <a href="sametmax.com/des-vues-normales-aux-vues-generiques-django/">CBV</a>, il va vous falloir vous toucher en programmation orientée objet: définition de classe, héritage multiple, overriding, et autres joyeusetés.</p>
+<p>Comme ce genre d&#8217;infos peut faire l&#8217;objet d&#8217;une série d&#8217;articles à part entière, je vais être obligé de partir du principe que vous savez coder en objet pour expliquer ce code. Sinon, ce post ferait quelques milliers de lignes. Si ce n&#8217;est pas votre cas, lisez notre <a href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-1/">dossier sur la POO</a>, et revenez après.</p>
+<h2>Worflow des CBV</h2>
+<blockquote><p>La fonction <code>dispatch</code>, à quoi sert-elle? </p></blockquote>
+<p>Les CBV ont un ordre d&#8217;éxécution pour leurs méthodes: <code>render_to_response()</code> retourne la vue, mais elle est appelée depuis <code>get()</code> ou <code>post()</code>, qui appellent aussi <code>get_context_data()</code> pour créer le <code>context</code> du template. Et <code>get_context_data()</code> appelle <code>get_query_set()</code> pour les vues qui utilisent l&#8217;ORM. Il faudrait que je fasse un gros schéma de tout ça un jour.</p>
+<p><code>Dispatch()</code> est la méthode qui appelle toutes les autres. Elle choisi notament si on appelle la méthode <code>get()</code> ou <code>post()</code>. C&#8217;est en quelque sorte la méthode mère. Si on veut faire un truc avant que la vue ne travaille, c&#8217;est la dedans qu&#8217;il faut agir.</p>
+<h2>Les décorateurs de méthode</h2>
+<p>Comme vous l&#8217;avez vu, le code utilise <code>@method_decorator</code>. Encore une fois, je vais partir du principe que vous vous touchez avec les décorateurs, si ce n&#8217;est pas le cas, <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">il y a un article pour ça</a><img src="https://s.w.org/images/core/emoji/2.4/72x72/2122.png" alt="™" class="wp-smiley" style="height: 1em; max-height: 1em;" />.</p>
+<p>Néanmoins, dans l&#8217;article on ne parle que des décorateurs de fonctions. Comment décorer une méthode ? Et bien c&#8217;est pareil, sauf qu&#8217;il faut que votre décorateur accepte <code>self</code> en plus comme argument dans la fonction qu&#8217;il retourne.</p>
+<p>Afin d&#8217;éviter de réécrire tous les décorateurs en double, on utilise <code>@method_decorator</code> qui est un décorateur&#8230; pour décorateurs ^^ Il transforme un décorateur pour fonction afin qu&#8217;il soit applicable à une méthode.</p>
+<p>Ainsi quand vous voyez  <code>@method_decorator(login_required)</code>, ça veut dire &#8220;tranformer le décorateur <code>login_required</code> pour qu&#8217;il marche sur les méthodes, et l&#8217;apppliquer sur la méthode juste en dessous&#8221;</p>
+<h2>Les mixins</h2>
+<p>Je suis sûr que vous n&#8217;avez pas pu vous empêcher de vous demander, à la vue de ça:</p>
+<pre lang="python">LoginRequiredMixin(object):
+    """
+        View mixin which requires that the user is authenticated.
+    """</pre>
+<p>Mais c&#8217;est quoi un mixin non de diou ?</p>
+<p>Alors, déjà, on se rassure, ce n&#8217;est pas encore un nouveau truc compliqué à apprendre, c&#8217;est juste le nom d&#8217;un truc que vous connaissez déjà.</p>
+<p>Un mixin, c&#8217;est le nom qu&#8217;on donne à une classe dont le but est exclusivement d&#8217;être utilisé pour l&#8217;héritage, afin de rajouter une fonctionalité à la classe enfant.</p>
+<p>En gros, ce n&#8217;est qu&#8217;un nom, ça n&#8217;a rien de spécial, c&#8217;est une classe normale. Mixin est juste le rôle de la classe.</p>
+<p>Les mixins ne sont PAS des interfaces, car ils font toujours quelque chose. Ils sont utilisés quand on a un code générique qu&#8217;on veut réutiliser dans plusieurs classes.</p>
+<p>Les mixins changent le comportement, mais PAS la nature de la classe enfant. Il n&#8217;y a pas de <code>AnimalMixing</code> dont hériterait une class <code>Chien</code>, ou <code>Chat</code>. Ca c&#8217;est de l&#8217;héritage normal. On ne parle de mixin que pour le comportement.</p>
+<p>Les mixins ne marchent que dans les langages qui autorisent l&#8217;héritage multiple, car on doit pouvoir hériter de plein de mixins d&#8217;un coup pour que ça soit utile.</p>
+<h2>Explication du premier Snippet</h2>
+<p>Vous vous souvenez du temps où c&#8217;était si simple de protéger une vue ?</p>
+<pre lang="python">@login_required
+def ma_vue(request):</pre>
+<p>Avec les CBV, ce temps là est finit mes amis. C&#8217;est pour ça que je n&#8217;ai pas beaucoup d&#8217;amour pour elles.</p>
+<p>Pour protéger une CBV on a plusieurs choix:</p>
+<pre lang="python">class MaView(ListView):
+    ...
+
+ma_vue = login_required(MaView.as_view())</pre>
+<p>Et on importe <code>ma_vue</code> dans <em>urls.py</em>.</p>
+<p>OU directement dans <em>urls.py</em>:</p>
+<pre lang="python">...
+url('/this/is/not/a/url', login_required(MaView.as_view()))
+...</pre>
+<p>OU la méthode <a href="https://docs.djangoproject.com/en/1.4/topics/class-based-views/#decorating-the-class">recommandée</a> par les mecs de Django, méga simple et intuitive:</p>
+<pre lang="python">class MaView(ListView):
+    ...
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ProtectedView, self).dispatch(*args, **kwargs)</pre>
+<p>On applique le décorateur <code>@login_required</code> à la méthode <code>dispatch()</code>. Comme c&#8217;est la méthode qui appelle toutes les autres, la vue est ainsi protégée.</p>
+<p>Seulement voilà, tout celà est bien relou, et l&#8217;auteur des snippets y remédie:</p>
+<pre lang="python">class LoginRequiredMixin(object):
+    """
+      View mixin which requires that the user is authenticated.
+    """
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(LoginRequiredMixin, self).dispatch(
+            self, request, *args, **kwargs)</pre>
+<p>Ce faisant, il créé un mixin qui va appliquer ce décorateur. Mixin qu&#8217;on peut réutiliser ainsi:</p>
+<pre lang="python">class MaView(LoginRequiredMixin, ListView):
+    ...</pre>
+<p>Et protéger une vue redevient simple à nouveau !</p>
+<p>Attention, il faut bien mettre le mixin en premier dans la liste de parents. En effet, <code>dispatch()</code> de <code>MaView</code> va appeler celui de <code>LoginRequiredMixin</code> qui va appeler <code>super()</code> qui va va ainsi appeler <code>dispatch()</code> de <code>ListView</code>. C&#8217;est ce qu&#8217;on appelle le MRO (Method Résolution Order), <a href="https://fuhm.net/super-harmful/">l&#8217;ordre à vachement d&#8217;importance</a>, et ça mériterait un article à lui tout seul.</p>
+<p>Je résume:</p>
+<p><code>dispatch()</code> est la méthode d&#8217;un vue qui appelle toutes les autres. <code>LoginRequiredMixin</code> a sa méthode <code>dispatch()</code> protégée pour qu&#8217;elle ne soit accessible que par les utilisateurs enregistrés. <code>MaView</code> hérite du mixin pour intégrer cette fonctionalité. Du coup son <code>dispatch()</code> va utiliser le <code>dispatch()</code> de <code>LoginRequiredMixin</code>, qui est protégé. Comme <code>LoginRequiredMixin</code> est bien faites, son <code>dispatch()</code> appelle celui de <code>ListView</code>, et ainsi la vue fonctionne correctement.</p>
+<h2>Les autres snippets</h2>
+<p>On peut maintenant aller plus vite.</p>
+<p>Le deuxième mixin permet de n&#8217;autoriser l&#8217;accès à une vue que si on a les permissions nécessaires (Django vient en effet avec toute une gestion des permissions dans son app contrib &#8216;auth&#8217;)</p>
+<pre lang="python">class PermissionsRequiredMixin(object):
+    # les permissions nécessaires sont stockées dans cet attribut
+    required_permissions = ()
+
+    # dispatch est encore une fois protégée contre les users non loggés
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        # on rajoute une subtilité:
+        # on vérifie si le user a les permissions exigées avant
+        # d'appler le dispatch() du parent
+        # si on a pas les permissions, on rajoute un message d'erreur
+        # et on redirige vers la page de login
+        # sinon on appelle le dispatch() du parent comme d'hab
+        if not request.user.has_perms(self.required_permissions):
+            messages.error(
+                request,
+                'You do not have the permission required to perform the '
+                'requested operation.')
+            return redirect(settings.LOGIN_URL)
+        return super(PermissionsRequiredMixin, self).dispatch(
+            request, *args, **kwargs)</pre>
+<p>Ca s&#8217;utilise comme ça:</p>
+<pre lang="python">class MaVue(PermissionsRequiredMixin, ListView):
+    required_permissions = (
+        'dealer.create_cocaine',
+        'dealer.delete_cocaine',
+    )</pre>
+<p>Un utilisateur qui n&#8217;a pas les permissions <code>create_cocaine</code> et <code>delete_cocaine</code> de l&#8217;app &#8216;dealer&#8217; sera redirigé vers la page de login.</p>
+<p>En effet, <code>MaVue.dispatch</code> appelle la méthode <code>PermissionsRequiredMixin.dispatch</code>, mais avec une subtilité: le <code>self</code> passé en paramètre est celui de <code>MaVue</code>. <code>self.required_permissions</code> dans <code>PermissionsRequiredMixin.dispatch</code> est donc en vérité <code>MaVue.required_permissions</code>. Relisez ce paragraphe plusieurs fois.</p>
+<p>Notez en revanche que la page de redirection n&#8217;est pas configurable, ce qui est bien dommage. Ca se corrige facilement:</p>
+<pre lang="python">class PermissionsRequiredMixin(object):
+    required_permissions = ()
+    redirect_url = settings.LOGIN_URL # <== HOP
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perms(self.required_permissions):
+            messages.error(
+                request,
+                'You do not have the permission required to perform the '
+                'requested operation.')
+            return redirect(self.redirect_url) # <== HOP
+        return super(PermissionsRequiredMixin, self).dispatch(
+            request, *args, **kwargs)</pre>
+<p>Du coup on a plus de marge de manoeuvre.</p>
+<p><strong>Le 3eme et 4eme snippet, c'est la même chose. Kiff kiff. Pareil.</strong></p>
+<p>Mais au lieu de vérifier les permissions, on vérifie juste si l'utilisateur à accès à l'admin Django (<code>is_staff</code>) ou que l'utilisateur est un superutilisateur (<code>is_superuser</code>: il a toutes les permissions):</p>
+<pre lang="python">class StaffRequiredMixin(object):
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        # j'ai pas besoin de vous expliquer ça quand même ?
+        if not request.user.is_staff:
+            messages.error(
+                request,
+                'You do not have the permission required to perform the '
+                'requested operation.')
+            return redirect(settings.LOGIN_URL)
+        return super(StaffRequiredMixin, self).dispatch(request,
+            *args, **kwargs)
+
+class SuperUserRequiredMixin(object):
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        # je pense que c'est assez explicite
+        if not request.user.is_superuser:
+            messages.error(
+                request,
+                'You do not have the permission required to perform the '
+                'requested operation.')
+            return redirect(settings.LOGIN_URL)
+        return super(SuperUserRequiredMixin, self).dispatch(request,
+            *args, **kwargs)</pre>
+<p>Comme je le disais plus haut, on peut utiliser plusieurs mixins en même temps. Par exemple, si je veux limiter l'accès à une vue aux dealers qui font partie de mon staff:</p>
+<pre lang="python">class MaVue(PermissionsRequiredMixin, StaffRequiredMixin, ListView):
+    required_permissions = (
+        'dealer.create_cocaine',
+        'dealer.delete_cocaine',
+    )</pre>
+<p>Notez encore une fois que les mixins sont là en premier, car <code>MaVue.dispatch</code> appelle <code>PermissionsRequiredMixin.dispatch</code> qui appelle <code>StaffRequiredMixin.dispatch</code> qui appelle <code>ListView.dispatch</code>.</p>
+<p>En revanche, dans ce cas précis l'ordre des mixins, entre eux, n'a pas d'importance. Ce ne sera pas toujours le cas: il faut comprendre comment les mixins agissent pour savoir si certains doivent être mis en premier. C'est tout le problème des CBV: pour en faire un usage productif, la somme de choses à savoir est assez démente.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/feed/</wfw:commentRss>
+		<slash:comments>24</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1812</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/08/monument_miniature.jpg" length="14088" type="image/jpg" />	</item>
+		<item>
+		<title>Des vues normales aux vues génériques Django</title>
+		<link>http://sametmax.com/des-vues-normales-aux-vues-generiques-django/</link>
+		<comments>http://sametmax.com/des-vues-normales-aux-vues-generiques-django/#comments</comments>
+		<pubDate>Wed, 15 Aug 2012 18:18:20 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cbv]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[views]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1715</guid>
+		<description><![CDATA[Nous avons reçu plusieurs demandes d'explication des class based views et une explication de <a href="http://blog.sietch-tabr.com/index.php/post/2011/04/01/Django-passage-aux-vues-generiques-basees-sur-des-classes,-par-l-exemple">ce code</a> dans le cadre de notre opération <a href="http://sametmax.com/envoyez-nous-les-scripts-que-vous-ne-pigez-pas/">père castor, commente nous un snippet</a>. Je me suis dis que j'allais faire d'une pierre deux coups et trois mouvements.]]></description>
+				<content:encoded><![CDATA[<p>Nous avons reçu plusieurs demandes d&#8217;explication des class based views et une explication de <a href="http://blog.sietch-tabr.com/index.php/post/2011/04/01/Django-passage-aux-vues-generiques-basees-sur-des-classes,-par-l-exemple">ce code</a> dans le cadre de notre opération <a href="http://sametmax.com/envoyez-nous-les-scripts-que-vous-ne-pigez-pas/">père castor, commente nous un snippet</a>.</p>
+<p>Je me suis dis que j&#8217;allais faire d&#8217;une pierre deux coups et trois mouvements.</p>
+<h2>Rappel sur les bases des vues</h2>
+<p><strong>Une vue, c&#8217;est une fonction ORDINNAIRE qui prends une requête en paramètre et qui revoie une réponse.</strong></p>
+<p>Si vous avez un <em>urls.py</em> qui ressemble à ça:</p>
+<pre lang="python">from mon_app.views import home, tous_les_utilisateurs
+from django.contrib.auth.views import login
+
+urlpatterns = patterns('',
+    url(r'^/', home),
+    url(r'^login/', login),
+    url(r'^list/', tous_les_utilisateurs),
+)</pre>
+<p>Et une vue dans <em>views.py</em> qui ressemble à ça:</p>
+<pre lang="python">from django.shortcurts import render
+from django.contrib.auth.models import User
+
+def tous_les_utilisateurs(request):
+    context = {"utilisateurs": User.objects.all()}
+    return render(request, "tous_les_utilisateur.html", context)</pre>
+<p>Voilà ce qui va se passer si l&#8217;utilisateur visite <em>http://monsite.com/list/</em>:</p>
+<div id="attachment_1723" style="width: 477px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2012/08/dessin2.png" class="grouped_elements" rel="tc-fancybox-group1715"><img class=" wp-image-1723  " title="L'important ici est de comprendre que tout ça fonctionne à base d'arc-en-ciels distillés" src="http://sametmax.com/wp-content/uploads/2012/08/dessin2.png" alt="Fonctionnement d'une vue Django" width="467" height="470" /></a><p class="wp-caption-text">L&#39;important ici est de comprendre que tout ça fonctionne à base d&#39;arc-en-ciels distillés</p></div>
+<p>Seulement voilà, vous allez vouloir rajouter des trucs, genre, la pagination.</p>
+<p>Et votre vue va se changer en ça:</p>
+<pre lang="python">def tous_les_utilisateurs(request):
+
+    # montrer 25 users par page
+    paginator = Paginator(User.objects.all(), 25)
+
+    # récupérer la page en cours
+    page = request.GET.get('page')
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        # si la page n'est pas un entier, on affiche la page un
+        users = paginator.page(1)
+    except EmptyPage:
+        # Si la page déborder, on affiche la dernière page
+        users = paginator.page(paginator.num_pages)
+
+    context = {"utilisateurs": users, "page": page}
+
+    return render(request, "tous_les_utilisateur.html", context)</pre>
+<p>Et vous allez faire ça pour 512 vues. Des listings, c&#8217;est pas ce qui manque. Prendre un objet et afficher son détail, le modifier, vérifier si il existe, valider un formulaire, faire un listing d&#8217;objets, tout ça sont des tâches très courantes.</p>
+<p>Pour cette raison, Django fournit des vues génériques, des fonctions NORMALES, mais qui sont paramétrables afin de pouvoir faire des listings, des validations de formulaire, etc, de tout et n&#8217;importe quoi. Sans avoir à écrire le code.</p>
+<h2>Les vues génériques sous forme de fonction</h2>
+<p>Une vue générique n&#8217;a rien de magique, c&#8217;est une vue ordinaire, seulement elle a des tas et des tas d&#8217;arguments pour pouvoir en faire ce qu&#8217;on veut. Chaque vue générique à un but précis. Par exemple, la vue générique <code>object_list</code> à pour but de créer des listings de n&#8217;importe quel objet, avec pagination.</p>
+<p>Si on devait écrire notre vue précédente avec une vue générique, ça donnerait ça:</p>
+<pre lang="python">from django.views.generic.list_detail import object_list
+
+def tous_les_utilisateurs(request):
+    return object_list(request, queryset=User.objects.all(), paginate_by=25,
+                       template_name="tous_les_utilisateur.html",        
+                       template_object_name="utilisateurs")</pre>
+<p><code>object_list</code> est une vue normale, donc elle attend en paramètre un objet request, et retourne une réponse. Ainsi, on lui passe <code>request</code> de <code>tous_les_utilisateurs</code>, et on récupère sa réponse, qu&#8217;on retourne comme si c&#8217;était la notre.</p>
+<p>La différence, c&#8217;est que <code>object_list</code> à plein de paramètres en plus:</p>
+<ul>
+<li><code>queryset</code> est le paramètre qui dit quel objet lister;</li>
+<li><code>template_name</code> est le paramètre qui dit quel template utiliser;</li>
+<li><code>template_object_name</code> est le paramètre qui dit quel nom donner à la liste d&#8217;objets dans le template.</li>
+</ul>
+<p><code>object_list</code> s&#8217;occupe du reste, notamment de la pagination et de la gestion des erreurs. Elle frabrique l&#8217;objet <code>context</code> et le passe au template. Il n&#8217;y a donc plus qu&#8217;à écrire le template.</p>
+<p>C&#8217;est d&#8217;ailleurs la partie difficile au début: comment on écrit le template ? En fait tout à fait normalement, il faut juste savoir quelles variables (et ce quelles contiennent) sont mises à disposition dans le template par la vue générique. Il faut lire la doc quoi :-) Ou faire comme moi et utiliser <a href="https://github.com/codysoyland/django-template-repl">django-template-repl</a> qui est une sorte de <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">pdb</a> pour template.</p>
+<p>Dans notre cas, le template va contenir la variable <code>pag_obj</code> (qui est l&#8217;objet de pagination) et la variables <code>utilisateurs</code> qui est une liste d&#8217;objets <code>User</code>.</p>
+<p>Les vues génériques suivent des conventions de nommage, et si on s&#8217;y tient, on peut même raccourcir le code encore plus:</p>
+<pre lang="python">
+def tous_les_utilisateurs(request):
+    return object_list(request, queryset=User.objects.all(), paginate_by=25)</pre>
+<p>Mais dans ce cas il faut nommer obligatoirement notre template <em>[app_label]/[model_name]_list.html</em> (dans notre cas<em>monapp/user_list.html</em>) et dans ce template, récupérer la liste d&#8217;utilisateurs dans la variable de nom <code>object_list</code> (facile à retenir, c&#8217;est le même nom que la vue).</p>
+<p>Comme toutes les vues génériques, <code>object_list</code> est très paramétrable. Supposons qu&#8217;on veuille rajouter la date du jour dans la page, il suffit de le rajouter dans le template et de faire ceci:</p>
+<pre lang="python">def tous_les_utilisateurs(request):
+    aujourdhui = datetime.datetime.now()
+    return object_list(request, queryset=User.objects.all(),
+                       template_name="tous_les_utilisateur.html",
+                       paginate_by=25,
+                       template_object_name="utilisateurs",
+                       extra_context={'date_du_jour': aujourdhui})</pre>
+<p>Et le template aura automatiquement accès à la variable <code>date_du_jour</code>.</p>
+<p>Les vues génériques font gagner beaucoup de temps, mais elles font un peu peur au début car on ne sait pas trop ce qu&#8217;elles font à l&#8217;intérieur, ni comment faire le template.</p>
+<p>Pour cette raison, je ne recommande pas aux débutants de les utiliser, faites des vues à la main d&#8217;abord, et quand vous aurez assez de code derrière vous pour comprendre les points communs entre toutes ces vues, vous saurez exactement ce que fait une vue générique: ce que vous avez réécrit 100 fois.</p>
+<p>En cas de doute, la doc de Django explique <a href="https://docs.djangoproject.com/en/1.4/topics/generic-views/">comment utiliser les vues génériques</a>, et surtout, une <a href="https://docs.djangoproject.com/en/1.4/ref/generic-views/">liste des vues génériques disponibles</a> pour chaque cas d&#8217;utilisation.</p>
+<p>Parmi les vues génériques les plus utiles:</p>
+<ul>
+<li>object_list: lister un objet et paginer la liste</li>
+<li>direct_to_template: retourner juste le template sans rien d&#8217;autre</li>
+<li>redirect_to: une redirection pure et simple</li>
+<li>object_detail: afficher un objet en particulier, ou une 404 si il n&#8217;existe pas</li>
+<li>create_object: afficher un formulaire pour créer une objet</li>
+<li>update_object: afficher un formulaire pour modifier un objet</li>
+<li>delete_object: supprimer un objet, avec une confirmation</li>
+</ul>
+<p>Rappelez-vous, <strong>les vues génériques sont des vues normales, et les vues sont des fonctions ordinnaire</strong>s. La seule chose dont il faut se souvenir: elles acceptent en paramètre un objet <code>Request</code>, et retourne un objet <code>Response</code>. On peut donc faire tout ce qu&#8217;on fait d&#8217;habitude avec les fonctions: forcer des arguments,  utilisers plusieurs vues dans une, faire des callbacks, etc.</p>
+<p>Mais le plus important, on peut donc mettre une vue générique directement dans <em>urls.py</em>. Ainsi ceci:</p>
+<pre lang="python">from mon_app.views import tous_les_utilisateurs
+urlpatterns = patterns('',
+    url(r'^list/', tous_les_utilisateurs),
+)</pre>
+<p>Peut tout à fait être remplacé par cela:</p>
+<pre lang="python">import datetime
+from django.views.generic.list_detail import object_list
+urlpatterns = patterns('',
+    url(r'^list/', object_list, {"queryset": User.objects.all(),
+                                 'template_name': 'tous_les_utilisateur',
+                                 "template_object_name: "utilisateurs,
+                                 "paginate_by": 25,
+                                 extra_context={'date_du_jour': datetime.datetime.now})
+)</pre>
+<p><code>object_list</code> étant une vue normale, elle peut être appelée directement par <em>urls.py</em>. Il faut juste s&#8217;assurer de mettre le dictionnaire de paramètres additionels avec pour qu&#8217;elle soit configurée correctement. Du coup, on a zero code dans <em>views.py</em>.</p>
+<p>On utilise rarement cela pour des vues comme object_list (ça pourrit un peut le urls.py qui doit rester facile à lire). Par contre, les vues <code>direct_to_template</code> et <code>redirect_to</code> sont très souvent utilisées de cette manière.</p>
+<p>En conclusion, notez que vous pouvez très bien créer vos propres vues génériques. Une vue générique est juste une vue normale avec plein de paramètres pour qu&#8217;elle soit très souple et réutilisable.</p>
+<h2>Les vues génériques sous forme de classes</h2>
+<p>Les <a href="https://docs.djangoproject.com/en/1.4/topics/class-based-views/">class base views</a>, ou CBV, sont exactement la même chose que précédément, mais sous forme de classe. Elles se configurent plus de manière déclarative. Ainsi notre exemple précédent se ferait ainsi:</p>
+<pre lang="python">from django.views.generic import ListView
+from django.contrib.auth.models import User
+class TousLesUtilisateurs(ListView):
+   context_object_name = "utilisateur"
+   queryset = User.objects.all()
+   template_name = "tous_les_utilisateurs.html"</pre>
+<p>Et dans <em>urls.py</em>:</p>
+<pre lang="python">from mon_app.views import TousLesUtilisateurs
+urlpatterns = patterns('',
+    url(r'^list/', TousLesUtilisateurs.as_view()),
+)</pre>
+<p>Néanmoins, quand il faut rajouter des valeurs dans le context, ça se gate. En effet, une classe, c&#8217;est de l&#8217;objet, qui dit objet, dit (sauf prototypage) héritage, et héritage, dit overriding.</p>
+<p>Les class based views sont bien faites: tout leur comportement peut être configuré. Le problème, c&#8217;est que ça suppose que vous sachiez exactement comment elles marchent. Par exemple, pour rajouter un objet dans le context, il faut overrider la méthode <code>get_context_data</code>:</p>
+<pre lang="python">import datetime
+
+from django.contrib.auth.models import User
+from django.views.generic import ListView
+
+class TousLesUtilisateurs(ListView):
+   context_object_name = "utilisateur"
+   queryset = User.object.all()
+   template_name = "tous_les_utilisateurs.html"
+
+   def get_context_data(self, **kwargs):
+        # qui dit overriding, dit appel de la méthode parent...
+        context = super(TousLesUtilisateurs, self).get_context_data(**kwargs)
+        # et on rajoute la date du jour dans le context
+        context['aujourdhui'] = datetime.datetime.now()
+        # le context retourner sera automatiquement injecté dans le template
+        # dans la méthode render(), que vous ne voyez pas...
+        return context</pre>
+<p>L&#8217;idée derrière ces classes, c&#8217;est que vous pouvez réutiliser du code bien plus facilement: on peut faire hériter des vues les unes des autres, et overrider seulement certaines méthodes. D&#8217;ailleurs, elles sont très bien pensées, et il y a des hooks partout.</p>
+<p>Par exemple, si vous voulez tous les users, vous pouvez faire:</p>
+<pre lang="python">class TousLesUtilisateurs(ListView):
+   model = User</pre>
+<p>Si vous voulez un filtrage particulier, vous pouvez faire:</p>
+<pre lang="python">class TousLesUtilisateurs(ListView):
+   querset = User.object.filter(truc=machin)</pre>
+<p>Et si vous voulez un filtrage dynamique vous pouvez faire:</p>
+<pre lang="python">class TousLesUtilisateurs(ListView):
+
+    def get_queryset(self):
+        """
+            Listing de tous les users, ou seulement de ceux qui ont accès
+            à l'admin Django
+        """
+        # self.args[0] suppose que l'url prend un paramètre, ce que nous 
+        # n'avons pas fait.  C'est pour l'exemple.
+        if self.args[0] == "staff":
+            return User.objects.filter(is_staff=True)
+        return User.object.all()</pre>
+<p>Et la chaîne logique c&#8217;est: <code>get_queryset</code> est appelé automatiquement dans <code>get_context_data</code>, si c&#8217;est le votre, il override, sinon il essaye <code>cls.queryset</code>, et si il n&#8217;existe pas, il essaye de créer le <code>queryset</code> à partir de <code>cls.model</code>. Et sinon il fait une erreur.</p>
+<p>C&#8217;est logique. Certes.</p>
+<p>Mais c&#8217;est chiant.</p>
+<p>Car c&#8217;est comme ça pour tout: il faut tout connaitre. Par coeur. Pareil pour les formulaires, les update des objets, etc. Et ensuite se rajoute la complexité des mixins. En plus la doc est super nulle sur ce point. Et il y a une sacrée <a href="https://docs.djangoproject.com/en/1.4/ref/class-based-views/">liste de CBV</a>.</p>
+<p>Et franchement, le <code>get_context_data</code>, vous trouvez ça lisible ? Je vous garantie que quand on tombe sur une méthode de 10 lignes overridées d&#8217;une classe custom qui utilise 2 mixins sur un code qu&#8217;on a laissé depuis 3 mois, ça fait tout drôle.</p>
+<p>Pour cette raison, je recommande ne ne PAS utiliser les CBV. Pour votre bien être, et celui de vos collègues. Certains de mes clients m&#8217;imposent d&#8217;ailleurs de ne pas le faire, contractuellement. Max en a horreur. Et après un an de mise en production de mes premières CBV, je confirme: le temps et la lisibilité perdus ne sont pas compensés par le gain en flexibilité.</p>
+<p>Malheureusement les CBV sont la nouvelle manière de faire, les vues génériques sous forme de fonctions ont été marquées &#8220;deprecated&#8221;. Néanmoins, et tant que c&#8217;est possible, je recommande de continuer à les préférer aux CBV: comme les vues fonctions sont des vues et fonctions ordinnaires, il sera toujours facile de récupérer le code de Django qui font ces vues, même si elles sont retirées des version futures.</p>
+<h2>Explication du code</h2>
+<p>Bah, oui, parce qu&#8217;à la base, je devrais expliquer <a href="http://blog.sietch-tabr.com/index.php/post/2011/04/01/Django-passage-aux-vues-generiques-basees-sur-des-classes,-par-l-exemple">ce code</a>, souvenez-vous&#8230;</p>
+<h3>Code 1</h3>
+<pre lang="python">urlpatterns = patterns('',
+    # On associe la vue "listview" à l'url "monsupersite.com/list/". Cette
+    # association est appelée une route. Une route est donc une ligne dans
+    # "urlpatterns" de urls.py.
+    # {} est un dictionnaire de paramètres optionels
+    # 'myobject_list' est le nom (appelé parfois "urlname") qu'on donne à
+    # cette route
+    (r'^list/', listview, {}, 'myobject_list'),
+)
+</pre>
+<p>Avec ce model:</p>
+<pre lang="python">## models.py
+from django.contrib.auth.models import User
+
+# MyObject est un model tout simple avec une foreign key qui pointe vers
+# le modèle User fournit par l'application "auth" de Django
+# User est un modèle tout fait pour gérer les utilisateurs, mots de passes
+# préférence, permissions, etc.
+class MyObject(models.Model):
+    ...
+    author = models.ForeignKey(User)</pre>
+<p>Et cette vue:</p>
+<pre lang="python">## views.py
+# on protège cette vue pour qu'elle ne soit accessible que pour les
+# utilisateurs authentifiés
+@login_required
+def listview(request,
+          queryset=MyObject.objects.all(),
+          template_name='myproject/myobject_list.html'):
+
+    # notez que l'auteur à ajouté des paramètres additionels à sa propre
+    # vue: ils lui permettront d'avoir une vue plus souple et réutilisable
+
+    # on récupère l'utilsiateur courant (request.user)
+    # et on filtre MyObject.objects.all() pour qu'il ne contienne que les
+    # objets qui soient pour cet utilisateurs
+    qs = queryset.filter(author=request.user)
+
+    # on retourne la réponse d'une vue générique qui va nous faire le listing
+    # de ces objets
+    return object_list(request, queryset=qs, template_name=template_name)
+
+    # En gros, l'auteur à CREER lui même sa propre vue générique
+    # car je le rappelle, une vue générique est une vue normale (et une fonction
+    # normale), mais qui a plein de paramètres pour la rendre souple et
+    # réutilisable.
+    # Sa vue générique à pour but de faire un listing d'objets appartenant
+    # à l'utilisateur courant. Il délègue quand même le gros
+    # du boulot à une vue générique de Django, parceque faut pas déconner, hein...</pre>
+<p>La vue peut être traduite ainsi en mode vue générique:</p>
+<pre lang="python">## views.py
+
+class ListView(generic.ListView):
+    queryset = MyObject.objects.all()
+    template_name = "myproject/myobjects_list.html"
+
+    def get_queryset(self):
+        # c'est ici qu'on fait le filtre par l'utilisateur courant
+        return self.queryset.filter(author=self.request.user)
+
+# comme un décorateur ne fonctionne pas sur une classe, cette astuce
+# permet de récupérer l'équivalent d'une vue wrappées et importable directement
+# dans urls.py
+listview = login_required(ListView.as_view())</pre>
+<p>Et c&#8217;est une bonne illustration de ce qui est relou avec les vues génériques:</p>
+<pre lang="python">
+class ListView(generic.ListView):
+    queryset = MyObject.objects.all()
+    template_name = "myproject/myobjects_list.html"
+    def get_queryset(self):
+        return self.queryset.filter(author=self.request.user)
+listview = login_required(ListView.as_view())</pre>
+<p>VERSUS</p>
+<pre lang="python">
+@login_required
+def listview(request, queryset=MyObject.objects.all(),
+             template_name='myproject/myobject_list.html'):
+    qs = queryset.filter(author=request.user)
+    return object_list(request, queryset=qs, template_name=template_name)</pre>
+<p>Pour avoir les mêmes fonctionalités. Le bénéfice de l&#8217;un sur l&#8217;autre n&#8217;est pas énorme (il se trouve dans la réutilisabilité, dans des cas très poussés). Et il faut apprendre tout l&#8217;API des CBV pour faire la première.</p>
+<p>Mais surtout, on perd le potentiel KISS dans le premier cas, car soyons franc, le plus souvent on a juste bsoin de ça:</p>
+<pre lang="python">
+@login_required
+def listview(request):
+    return object_list(request,
+                       queryset=MyObject.objects.filter(author=request.user),
+                       template_name='myproject/myobject_list.html')</pre>
+<p>Et ça, dans 3 mois, je le comprends tout de suite. Ca prends moins de place dans mon fichier. Et Max ne m&#8217;envoie pas de mails d&#8217;insultes.</p>
+<h3>Code 2</h3>
+<p>Routing:</p>
+<pre lang="python">## urls.py
+urlpatterns = patterns('',
+    (r'^list/', listview, {}, 'myobject_list'),
+    # on rajoute une chtite vue pour créer une objet
+    (r'^create/', createview, {}, 'myobject_create'),
+)</pre>
+<p>Formulaire:</p>
+<pre lang="python">## forms.py
+# on créé un formulaire à partir du model MyObject
+# ce  formulaire permettra donc de créer une objet MyObject
+class MyObjectForm(ModelForm):
+    class Meta:
+        model = MyObject
+        exclude = ('author',)
+
+    # le dev a ici choisi d'excluse le champ 'author' du formulaire
+    # il veut en effet passer l'utilisateur en cours à la sauvegarde
+    # afin que l'objet créé ait toujours pour autheur l'utilsateur courrant
+    def save(self, user=None):
+        # ici rien de fou, on fait un override du save, on appel le parent
+        # et l'objet est créé. Amen.
+        myobject = super(MyObjectForm, self).save(commit=False)
+        myobject.author = user
+        myobject.save()</pre>
+<p>Vue:</p>
+<pre lang="python">## views.py
+from myproject.forms import MyObjectForm
+
+# voici une vue normale, faite à la main
+# elle elle réservée aux utilisateurs authentifiés
+# mais accepte un paramètre pour lui dire sur quel formulaire travailler
+# c'est donc encure une fois une vue générique faite à la mano
+# puisque je vous le rappelle... Non, je déconne.
+@login_required
+def createview(request, form_class=MyObjectForm):
+
+    # on check si la requête est une requête POST
+    if request.method == 'POST':
+        # si oui on prend les paramètres de la requête
+        # et on les passe au formulaire
+        # puis on vérifie si le formulaire est valide (pas d'erreurs de saisie)
+        form = form_class(request.POST)
+        if form.is_valid():
+            # dans ce cas: on sauvegarde le formulaire en lui passant l'utilisateur
+            # courant: un objet MyObjet est créé avec pour auteur
+            # l'utilisateur courant
+            myobject = form.save(user=request.user)
+            # et on redirige sur la page décrivant l'objet
+            # Ne cherchez pas comment il obtient ceci,
+            # ce n'est pas expliqué dans son code surement volontairement
+            # pour simplifier l'article, ce qui n'est pas plus mal
+            return HttpResponseRedirect(myobject.get_absolute_url())
+
+        # si le formulaire n'est pas valide, render_to_response
+        # contiendra le formulaire avec les erreurs
+    else:
+        # si ce n'est pas une requête POST, on créé juste un formulaire
+        # vierge à afficher
+        form = form_class()
+
+    # on retourne une réponse normale, avec le formulaire dans le context
+    # et vous pouvez ignorer RequestContext, ça n'a pas d'importance pour nous
+    # ici
+    return render_to_response('myproject/myobject_form.html',
+                              {'form': form},
+                              context_instance=RequestContext(request))</pre>
+<p>Vous noterez que la vue précédent n&#8217;utilise pas de vue générique Django pour déléguer le boulot, ce qui explique qu&#8217;elle est longue.</p>
+<p>Et voilà à quoi ressemblerait la vue en version CBV :</p>
+<p>## views.py</p>
+<pre lang="python">from myproject.forms import MyObjectForm
+
+class CreateView(generic.CreateView):
+    form_class = MyObjectForm
+    template_name = "myproject/myobject_form.html"
+
+    # tous les classes génériques ont des hooks différent
+    # ici on étend la CreateView, qui a a une méthode spécialement concue
+    # pour la validation de formulaire
+    # on l'override pour sauvegarder le formulaire en passant le user courant
+    def form_valid(self, form):
+        self.object = form.save(user=self.request.user)
+        return super(CreateView, self).form_valid(form)
+
+# idem que précédement
+createview = login_required(CreateView.as_view())</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/des-vues-normales-aux-vues-generiques-django/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1715</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/08/kamagra_gold.jpg" length="46334" type="image/jpg" />	</item>
+	</channel>
+</rss>

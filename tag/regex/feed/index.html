@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>regex &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/regex/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title> Les expressions rationnelles en Python, parfois overkill</title>
+		<link>http://sametmax.com/les-expressions-rationnelles-en-python-parfois-overkill/</link>
+		<comments>http://sametmax.com/les-expressions-rationnelles-en-python-parfois-overkill/#comments</comments>
+		<pubDate>Wed, 07 Aug 2013 11:40:11 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[regex]]></category>
+		<category><![CDATA[string]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7042</guid>
+		<description><![CDATA[J'adore les regex, et d'ailleurs il faudra que je fasse une série d'articles sur le sujet, un peu comme le guide de la POO.
+
+Mais dans un langage comme Python, il y a de nombreuses solutions à mettre en oeuvre avant d'utiliser les regex.]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;adore les regex, et d&#8217;ailleurs il faudra que je fasse une série d&#8217;articles sur le sujet, un peu comme le guide de la POO.</p>
+<p>Mais dans un langage comme Python, il y a de nombreuses solutions à mettre en oeuvre avant d&#8217;utiliser les regex.</p>
+<p>Pour vérifier si une chaîne est dans une autre, utilisez <code>in</code> :</p>
+<pre lang="python">>>> 'a' in 'chat'
+True
+>>> 'a' in 'chien'
+False
+>>> 'a' in 'CHAT'.lower() # ignorer la casse
+True</pre>
+<p>Pour savoir si un chaîne est au début ou à la fin, utilisez <code>startswith()</code> et <code>endswith()</code> :</p>
+<pre lang="python">>>> 'achat'.startswith('a')
+True
+>>> 'chat'.startswith('a')
+False
+>>> 'acheta'.endswith('a')
+True</pre>
+<p>Pour savoir si la chaîne est d&#8217;un type particulier, utiliser les méthodes <code>is*</code> :</p>
+<pre lang="python">>>> '555'.isdigit()
+True
+>>> ''.isdigit()
+False
+>>> '⑦'.isdigit()
+True
+>>> '444'.isdecimal()
+True
+>>> '444.55'.isdecimal()
+False
+>> '⑦'.isdecimal()
+False
+>>> '879fds'.isalpha()
+False
+>>> 'fsdqfsqd'.isalpha()
+True
+>>> 'fsdqfsqd'.islower()
+True
+>>> 'fsdqFFsqd'.islower()
+False
+>>> '879fds'.isalnum()
+True
+>>> '879fds-'.isalnum()
+False
+>>> ' \t\n'.isspace()
+True
+>>> ' \t\n fdsfd'.isspace()
+False</pre>
+<p>Si vous voulez manipuler la chaîne pour en extraire une partie, utilisez <code>split()</code> (ou <code>rsplit()</code>, <code>lsplit()</code> pour travailler sur la droite ou la gauche de la chaîne) :</p>
+<pre lang="python">>>> s = """Mais, vous savez, moi je ne crois pas qu'il y ait de bonne ou de mauvaise situation. Moi, si je devais résumer ma vie aujourd'hui avec vous, je dirais que c'est d'abord des rencontres, des gens qui m'ont tendu la main, peut-être à un moment où je ne pouvais pas, où j'étais seul chez moi. Et c'est assez curieux de se dire que les hasards, les rencontres forgent une destinée... Parce que quand on a le goût de la chose, quand on a le goût de la chose bien faite, le beau geste, parfois on ne trouve pas l'interlocuteur en face, je dirais, le miroir qui vous aide à avancer. Alors ce n'est pas mon cas, comme je le disais là, puisque moi au contraire, j'ai pu ; et je dis merci à la vie, je lui dis merci et je chante la vie, je danse la vie... Je ne suis qu'amour ! Et finalement, quand beaucoup de gens aujourd'hui me disent "Mais comment fais-tu pour avoir cette humanité ?", et bien je leur réponds très simplement, je leur dis que c'est ce goût de l'amour, ce goût donc qui m'a poussé aujourd'hui à entreprendre une construction mécanique, mais demain, qui sait, peut-être simplement à me mettre au service de la communauté, à faire le don... le don de soi."""
+>>> s.split()
+[u'Mais,', u'vous', u'savez,', u'moi', u'je', u'ne', u'crois', u'pas', u"qu'il", u'y', u'ait', u'de', u'bonne', u'ou', u'de', u'mauvaise', u'situation.', u'Moi,', u'si', u'je', u'devais', u'r\xe9sumer', u'ma', u'vie', u"aujourd'hui", u'avec', u'vous,', u'je', u'dirais', u'que', u"c'est", u"d'abord", u'des', u'rencontres,', u'des', u'gens', u'qui', u"m'ont", u'tendu', u'la', u'main,', u'peut-\xeatre', u'\xe0', u'un', u'moment', u'o\xf9', u'je', u'ne', u'pouvais', u'pas,', u'o\xf9', u"j'\xe9tais", u'seul', u'chez', u'moi.', u'Et', u"c'est", u'assez', u'curieux', u'de', u'se', u'dire', u'que', u'les', u'hasards,', u'les', u'rencontres', u'forgent', u'une', u'destin\xe9e...', u'Parce', u'que', u'quand', u'on', u'a', u'le', u'go\xfbt', u'de', u'la', u'chose,', u'quand', u'on', u'a', u'le', u'go\xfbt', u'de', u'la', u'chose', u'bien', u'faite,', u'le', u'beau', u'geste,', u'parfois', u'on', u'ne', u'trouve', u'pas', u"l'interlocuteur", u'en', u'face,', u'je', u'dirais,', u'le', u'miroir', u'qui', u'vous', u'aide', u'\xe0', u'avancer.', u'Alors', u'ce', u"n'est", u'pas', u'mon', u'cas,', u'comme', u'je', u'le', u'disais', u'l\xe0,', u'puisque', u'moi', u'au', u'contraire,', u"j'ai", u'pu', u';', u'et', u'je', u'dis', u'merci', u'\xe0', u'la', u'vie,', u'je', u'lui', u'dis', u'merci', u'et', u'je', u'chante', u'la', u'vie,', u'je', u'danse', u'la', u'vie...', u'Je', u'ne', u'suis', u"qu'amour", u'!', u'Et', u'finalement,', u'quand', u'beaucoup', u'de', u'gens', u"aujourd'hui", u'me', u'disent', u'"Mais', u'comment', u'fais-tu', u'pour', u'avoir', u'cette', u'humanit\xe9', u'?",', u'et', u'bien', u'je', u'leur', u'r\xe9ponds', u'tr\xe8s', u'simplement,', u'je', u'leur', u'dis', u'que', u"c'est", u'ce', u'go\xfbt', u'de', u"l'amour,", u'ce', u'go\xfbt', u'donc', u'qui', u"m'a", u'pouss\xe9', u"aujourd'hui", u'\xe0', u'entreprendre', u'une', u'construction', u'm\xe9canique,', u'mais', u'demain,', u'qui', u'sait,', u'peut-\xeatre', u'simplement', u'\xe0', u'me', u'mettre', u'au', u'service', u'de', u'la', u'communaut\xe9,', u'\xe0', u'faire', u'le', u'don...', u'le', u'don', u'de', u'soi.']
+>>> s.split()[0]
+u'Mais,'
+>>> s.split()[5:7]
+[u'ne', u'crois']
+>>> s.split(',')
+[u'Mais', u' vous savez', u" moi je ne crois pas qu'il y ait de bonne ou de mauvaise situation. Moi", u" si je devais r\xe9sumer ma vie aujourd'hui avec vous", u" je dirais que c'est d'abord des rencontres", u" des gens qui m'ont tendu la main", u' peut-\xeatre \xe0 un moment o\xf9 je ne pouvais pas', u" o\xf9 j'\xe9tais seul chez moi. Et c'est assez curieux de se dire que les hasards", u' les rencontres forgent une destin\xe9e... Parce que quand on a le go\xfbt de la chose', u' quand on a le go\xfbt de la chose bien faite', u' le beau geste', u" parfois on ne trouve pas l'interlocuteur en face", u' je dirais', u" le miroir qui vous aide \xe0 avancer. Alors ce n'est pas mon cas", u' comme je le disais l\xe0', u' puisque moi au contraire', u" j'ai pu ; et je dis merci \xe0 la vie", u' je lui dis merci et je chante la vie', u" je danse la vie... Je ne suis qu'amour ! Et finalement", u' quand beaucoup de gens aujourd\'hui me disent "Mais comment fais-tu pour avoir cette humanit\xe9 ?"', u' et bien je leur r\xe9ponds tr\xe8s simplement', u" je leur dis que c'est ce go\xfbt de l'amour", u" ce go\xfbt donc qui m'a pouss\xe9 aujourd'hui \xe0 entreprendre une construction m\xe9canique", u' mais demain', u' qui sait', u' peut-\xeatre simplement \xe0 me mettre au service de la communaut\xe9', u' \xe0 faire le don... le don de soi.']
+>>> s.split('.')
+[u"Mais, vous savez, moi je ne crois pas qu'il y ait de bonne ou de mauvaise situation", u" Moi, si je devais r\xe9sumer ma vie aujourd'hui avec vous, je dirais que c'est d'abord des rencontres, des gens qui m'ont tendu la main, peut-\xeatre \xe0 un moment o\xf9 je ne pouvais pas, o\xf9 j'\xe9tais seul chez moi", u" Et c'est assez curieux de se dire que les hasards, les rencontres forgent une destin\xe9e", u'', u'', u" Parce que quand on a le go\xfbt de la chose, quand on a le go\xfbt de la chose bien faite, le beau geste, parfois on ne trouve pas l'interlocuteur en face, je dirais, le miroir qui vous aide \xe0 avancer", u" Alors ce n'est pas mon cas, comme je le disais l\xe0, puisque moi au contraire, j'ai pu ; et je dis merci \xe0 la vie, je lui dis merci et je chante la vie, je danse la vie", u'', u'', u' Je ne suis qu\'amour ! Et finalement, quand beaucoup de gens aujourd\'hui me disent "Mais comment fais-tu pour avoir cette humanit\xe9 ?", et bien je leur r\xe9ponds tr\xe8s simplement, je leur dis que c\'est ce go\xfbt de l\'amour, ce go\xfbt donc qui m\'a pouss\xe9 aujourd\'hui \xe0 entreprendre une construction m\xe9canique, mais demain, qui sait, peut-\xeatre simplement \xe0 me mettre au service de la communaut\xe9, \xe0 faire le don', u'', u'', u' le don de soi', u'']</pre>
+<p>Et n&#8217;oubliez pas que vous pouvez appeler <code>join()</code> derrière.</p>
+<p>Si vous devez altérer la chaîne, utilisez <code>strip()</code> (et <code>rstrip()</code>, <code>lstrip()</code>) ou <code>replace()</code> :</p>
+<pre lang="python">>>> "Les nouilles cuisent au jus de canne".replace('noui', 'coui').replace('cui', 'nui').replace('jus', 'cul').replace('canne', 'jeanne')
+u'Les couilles nuisent au cul de jeanne'
+>>> "                               .                       ".strip()
+u'.'
+>>> "===                               .                       ======".strip("= ")
+u'.'</pre>
+<p>En plus, les chaînes sont itérables, indexables et sliceables, donc :</p>
+<pre lang="python">>>> s = """And I will strike down upon thee with great vengeance and furious anger those who attempt to poison and destroy my brothers. And you will know my name is the Lord when I lay my vengeance upon you!"""
+>>> s[3:30:3]
+u' wltkdnp '
+>>> s.split()
+[u'And', u'I', u'will', u'strike', u'down', u'upon', u'thee', u'with', u'great', u'vengeance', u'and', u'furious', u'anger', u'those', u'who', u'attempt', u'to', u'poison', u'and', u'destroy', u'my', u'brothers.', u'And', u'you', u'will', u'know', u'my', u'name', u'is', u'the', u'Lord', u'when', u'I', u'lay', u'my', u'vengeance', u'upon', u'you!']
+>>> s[0]
+u'A'
+>>> ''.join([(l.upper() if i % 2 else l) for i, l in enumerate(s)])
+u'ANd I wIlL StRiKe dOwN UpOn tHeE WiTh gReAt vEnGeAnCe aNd fUrIoUs aNgEr tHoSe wHo aTtEmPt tO PoIsOn aNd dEsTrOy mY BrOtHeRs. AnD YoU WiLl kNoW My nAmE Is tHe LOrD WhEn I lAy mY VeNgEaNcE UpOn yOu!'</pre>
+<p>Bref, avant de sortir le bazooka, souvenez-vous que vous avez un arsenal déjà très approprié pour traiter les strings, dont les perfs seront en plus probablement meilleures.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-expressions-rationnelles-en-python-parfois-overkill/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">7042</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/08/40375599.jpg" length="107260" type="image/jpg" />	</item>
+		<item>
+		<title>Comment parser du HTML avec des Regex ?</title>
+		<link>http://sametmax.com/comment-parser-de-html-avec-des-regex/</link>
+		<comments>http://sametmax.com/comment-parser-de-html-avec-des-regex/#comments</comments>
+		<pubDate>Wed, 05 Jun 2013 18:24:09 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[html]]></category>
+		<category><![CDATA[lol]]></category>
+		<category><![CDATA[regex]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=216</guid>
+		<description><![CDATA[Il y a longtemps que je voulais traduire cette réponse de StackOverflow, qui donne une bonne fois pour toute la réponse à cette question souvent posée.]]></description>
+				<content:encoded><![CDATA[<p>Il y a longtemps que je voulais traduire <a href="http://stackoverflow.com/a/1732454">cette réponse</a> de StackOverflow, qui donne une bonne fois pour toute la réponse à cette question souvent posée.</p>
+<p>Voici (le formatage exotique a été conservé au maximum):</p>
+<blockquote><p>Vous ne pouvez pas analyser [X]HTML avec des regex. Parce qu&#8217;HTML ne peut être analysé par des regex. Les regex sont un outil qui ne peut être utilisé pour analyser correctement du HTML. Comme je l&#8217;ai répondu dans des question HTML-et-regex ici de nombreuses fois auparavant, l&#8217;utilisation de regex ne permet pas de consommer du HTML. Les expressions rationnelles sont un outil qui n&#8217;est pas suffisamment sophistiqué pour comprendre les constructions employées par HTML. HTML n&#8217;est pas une langage rationnel, et de fait ne peut être parsé par des expressions rationnelles. Les requêtes par regex ne sont pas équipées pour diviser du HTML en parties qui ont du sens. Tant de fois, mais je ne m&#8217;en lasse pas. Même des expressions irrationnelles telles qu&#8217;utilisées par Perl en sont pas à la hauteur de la tâche que représente l&#8217;analyse de HTML. Vous ne me ferez pas céder. HTML est un langage d&#8217;une complexité telle qu&#8217;il ne peut être analysé par des expressions rationnelles. Même Chuck Norris ne peut analyser du HTML avec des expressions rationnelles. Chaque fois que vous essayez d&#8217;analyser du HTML avec des expressions rationnelles, l&#8217;enfant damné pleure du sang de vierge, et des hackers russes pown votre webapp. Analyser du HTML avec des regex invoque des âmes perdues dans le royaume des vivants. HTML et les regex vont ensemble comme l&#8217;amour, le mariage et les rituels infanticides. Le &lt;center&gt; ne peut tenir, il est trop tard. La force des regex et du HTML ensemble dans le même espace conceptuel détruira votre esprit comme l&#8217;humidité détruit les joints. Si vous analysez du HTML avec des regex, vous vous adonnez à Eux et leurs traditions blasphématoires qui nous condamnent tous à un labeur inhumain pour Celui dont le Nom ne peut être exprimé avec le Plan Multilingue Basique, il arrive. HTML-plus-regex liquéfiera les nerfs des êtres les plus sensibles sous vos yeux, votre psyché dépérissant sous les assauts de l&#8217;horreur. Les an̷al̵y͘s̕e͝urs ̸HT͝M͡L basés sur les regex sont le cancer qui tue StackOverflow <em>il est trop tard il est trop tard nous ne pouvons être sauvé</em>s la trangession d&#8217;un en̵f͝ant amènera les regex à consommer tout tissue vivant (excepté pour le HTML puisqu&#8217;il ne le peut, tel que prophétisé précédemment) <em>oh seigneur aide nous comment qui que ce soit peut-il survire à cet fléau</em> utiliser des regex pour analyser du HTML a condamné l&#8217;humanité à la terreur de la torture and aux failles de sécurité <em>utiliser les regex</em> comme outil pour travailler du HTML établie un brèche<em> entre ce monde</em> et le royaume terrifiant des entités corrompues (comme les entités SGML, mais plus<em> corrompues) un bref regard</em> vers le monde des analy<strong>seurs regex pour HTML transportera ins</strong>tantanément la <em>conscience d&#8217;un programmeur</em> d<em>a</em>ns un <em>m</em>onde de cris sans fin, il arrive, la <del>nauséabonde</del> plaie des infections regex <strong>dévoreront votre parser HT</strong>ML, votre application et votre existence pour l&#8217;éternité comme l&#8217;a fait Visual Basic mais en pire<em> il arrive il arrive ne vous déba</em>ttez pas <em>i̢l͞ a͘rr̸i҉v̡é,̨ <strong>sa radiance</strong> damnée</em> détruisant toute illumination, <em>des ͠t̕a̕g͡s ̶<strong>H͞TM̵L͞ ̕c̸o͜ùlan͜t̀ de̶ vos͜ ͟y͏eưx te̷l̛s̡ de l͜a̶ ̛d͝ǫ</strong>u͜lȩur҉ ͝l̡iquid͝ee,</em> la chanson de l&#8217;ana<del>lyse par expressions</del> rationnelles <em>reduit a<strong>u silence les voix de l&#8217;homme mortel depuis la sp</strong>hère je peux le voir pouvez-vous le voir c&#8217;est magnifique</em> l&#8217;expurgation de tous les mensonges de l&#8217;Homme  TOUT EST PERDU TOUT EST PERDU le poney il arrive i͟l arrive il̸ ̕arr̴i҉ve͢ ̕l&#8217;̵ich҉or ̸p̴é͝n͘è͟t̡r͞e tout MON V̴ISA҉ĢE͘͜ M̵̢͟O̶N ͢͏V͏I̧̨S͞AG̶̕͞E̷̡̕ oh mon dieu no Ņ̵̨ON̕ ̢҉̀N̸͡͞OO͏̢͝O̶͠O̷҉N҉͝ ͡N̶͘͏O̧N͟ ́͜͡s̀͟͡t̶͟o̧͝p̧ ̕͘l̴e҉͠s ͟ań̴gl͏ę̀͏s͢͝ ͜͝n̡e͏̡ ́so҉͜nt̵̡ ͢p̧͘a̛s̀ ̸͞r͞é̕͞e̛l̸͏s̨ ̧̀ZA̷Ĺ͝GO̸ ̸E̴͜͝Ş̵̛T̴̸͠ ̨T̨̢Ó͜N͡Y̢ ̷̨̕L̀E̵͠ PONE̕Y͟ I͖̮̝̥̞͟L̴̬͈͍͞ ̞̦A̴҉͕̩͉R͎͉̯̼̹̫͈̹R̩͎̙̥̦I̶̢͓̘̗V̤̳͓͓͇̯̭̯̥͜͢͢E̹̣͚̩̯̙͡.</p>
+<p>Avez vous essayé un parser XML à la place ?</p></blockquote>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comment-parser-de-html-avec-des-regex/feed/</wfw:commentRss>
+		<slash:comments>26</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">216</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/06/zalgo_boxxy1.jpg" length="10115" type="image/jpg" />	</item>
+		<item>
+		<title>Grin, le grep Python sous steroïd</title>
+		<link>http://sametmax.com/grin-le-grep-python-sous-steroid/</link>
+		<comments>http://sametmax.com/grin-le-grep-python-sous-steroid/#comments</comments>
+		<pubDate>Sat, 25 Aug 2012 16:52:53 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[grin]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[regex]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1883</guid>
+		<description><![CDATA[Chercher un mot dans 500 fichiers est un truc que nous, pauvres développeurs, avons besoin de faire assez souvent...]]></description>
+				<content:encoded><![CDATA[<p>Chercher un mot dans 500 fichiers est un truc que nous, pauvres développeurs, avons besoin de faire assez souvent.</p>
+<p>Sublime Text le fait très bien avec <kbd>Maj</kbd> + <kbd>Ctrl</kbd> + <kbd>F</kbd>, mais on est pas toujours dans son éditeur. La recherche dans tout le système type Spotlight est généralement bien large, et la seule solution qui ait la bonne puissance de frappe, tout en affichant plein de détails reste <a href="https://en.wikipedia.org/wiki/Grep">grep</a>. Problème, il faut connaître un max d&#8217;options de grep, utiliser egrep pour avoir de bonnes regex, et piper la sortie pour avoir certains résultats.</p>
+<p>Le monde de perl a trouvé depuis longtemps une solution à ce problème au travers de <a href="http://betterthangrep.com/">ack</a>, et comme les pythonistes, <a href="http://sametmax.com/vizhash-js-notre-implementation-libre-de-hash-visuel-utilisant-html5-canvas/">c&#8217;est que des gros copieurs</a>, ils ont fait leur version: <a href="http://pypi.python.org/pypi/grin">grin</a>.</p>
+<p>C&#8217;est sur <a href="http://sametmax.com/votre-python-aime-les-pip/">pypi</a>:</p>
+<pre lang="bash">pip install grin</pre>
+<p>Et ça s&#8217;utilise ainsi:</p>
+<pre lang="bash">grin test</pre>
+<p>Et il va vous sortir la liste des fichiers qui contiennent &#8220;test&#8221;, et dans quel contexte, avec coloration:</p>
+<div id="attachment_1889" style="width: 543px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2012/08/Espace-de-travail-1_001.jpg" class="grouped_elements" rel="tc-fancybox-group1883"><img class=" wp-image-1889 " title="Génial quand on est en remote sur un serveur" src="http://sametmax.com/wp-content/uploads/2012/08/Espace-de-travail-1_001.jpg" alt="Capture d'écran de la sortie du programme grin" width="533" height="340" /></a><p class="wp-caption-text">Génial quand on est en remote sur un serveur</p></div>
+<p>Grin vient avec quelques goodies en plus:</p>
+<ul>
+<li>Récursif par défaut.</li>
+<li>Ignore les dossiers .git, .svn, etc et les fichiers temporaires (~, .tmp, etc) par défaut.</li>
+<li>Cherche à l&#8217;intérieur de certaines archives.</li>
+<li>Très rapide.</li>
+<li>Accepte une expression rationnelle Python à la place du mot à chercher !</li>
+</ul>
+<p>Par exemple pour chercher uniquement les fichiers qui contiennent le mot &#8220;test&#8221; ou &#8220;tests&#8221; à la fin d&#8217;une ligne dans un fichier Python, récursivement:</p>
+<pre lang="bash">~/Work $ grin tests?$ -I *.py
+./archives/client/project/apps/accounts/tests.py:
+   65 :     # Used in Login test
+./archives/client/project/apps/grants/tests.py:
+   16 : # moving settings for testing to settings_test
+./archives/client/project/apps/hivtest/tests.py:
+  293 :         # print updated_hivtest
+./archives/client/project/apps/home/tests.py:
+   15 : # moving settings for testing to settings_test
+...</pre>
+<p>Le <a href="https://svn.enthought.com/svn/sandbox/grin/trunk/">code source</a> est simple à comprendre, et il est fait de manière modulaire de telle sorte qu&#8217;on puisse réutiliser <code>grin</code> comme une lib externe pour chercher des choses avec son propre programme.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/grin-le-grep-python-sous-steroid/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1883</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/08/steroid_freak.jpg" length="54260" type="image/jpg" />	</item>
+		<item>
+		<title>Valider une adresse email avec une regex en Python</title>
+		<link>http://sametmax.com/valider-une-adresse-email-avec-une-regex-en-python/</link>
+		<comments>http://sametmax.com/valider-une-adresse-email-avec-une-regex-en-python/#comments</comments>
+		<pubDate>Tue, 06 Mar 2012 23:55:21 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[email]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[regex]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=253</guid>
+		<description><![CDATA[Problème de tous les jours, et on a tous essayé de concocter notre solution maison. Mais il se trouve que <a href="https://www.ietf.org/rfc/rfc5322.txt">la norme</a> qui définit le format des adresses emails est vraiment tordue.]]></description>
+				<content:encoded><![CDATA[<p>Problème de tous les jours, et on a tous essayé de concocter notre solution maison. Mais il se trouve que <a href="https://www.ietf.org/rfc/rfc5322.txt">la norme</a> qui définit le format des adresses emails est vraiment tordue.</p>
+<p>Si on est trop rigide, on interdit les cas contre-intuitifs comme le signe &#8216;+&#8217; dans le destinataire, le domaine &#8220;.museum&#8221;, l&#8217;adresse IP dans l&#8217;email ou le sous domaine comportant un seul caractère.</p>
+<p>Si on est trop flexible, l&#8217;utilisateur va rentrer <code>truc@chose</code> et ne pas s’apercevoir de sa faute de frappe. Il oubliera alors votre site, sans email pour le contacter.</p>
+<p>Il existe une version bullet proof de regex qui valide une adresse email, mais <a href="http://ex-parrot.com/~pdw/Mail-RFC822-Address.html">c&#8217;est un truc de malade</a>.</p>
+<p>Au final, on veut juste attraper 99% des cas les plus courrants, un compromis en solidité et praticité. Le code source de Django nous fournit justement une solution équilibrée dans le fichier <em>core/validators.py</em>:</p>
+<pre lang="python">
+>>> email_re = re.compile(
+r"(^[-!#$%&'*+/=?^_`{}|~0-9A-Z]+(\.[-!#$%&'*+/=?^_`{}|~0-9A-Z]+)*"  # dot-atom
+r'|^"([\001-\010\013\014\016-\037!#-\[\]-\177]|\\[\001-011\013\014\016-\177])*"' # quoted-string
+r')@(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+[A-Z]{2,6}\.?$', re.IGNORECASE)  # domain
+>>> email_re.search('test+12@moi.n.museum')
+<_sre.SRE_Match object at 0x1205160>
+>>> email_re.search('test@moi')
+>>>
+</pre>
+<p>Par contre, ça ne gère pas l&#8217;adresse IP en tant que nom de domaine, mais c&#8217;est le plus souvent suffisant.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/valider-une-adresse-email-avec-une-regex-en-python/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">253</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/03/What-your-email-address-says-about-your-computer-skills-The-Oatmeal.png" length="646149" type="image/jpg" />	</item>
+	</channel>
+</rss>

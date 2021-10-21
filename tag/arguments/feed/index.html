@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>arguments &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/arguments/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>La plus belle manière de parser les arguments de script en python</title>
+		<link>http://sametmax.com/la-plus-belle-maniere-de-parser-les-arguments-de-script-en-python/</link>
+		<comments>http://sametmax.com/la-plus-belle-maniere-de-parser-les-arguments-de-script-en-python/#comments</comments>
+		<pubDate>Mon, 03 Mar 2014 14:06:35 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[argparse]]></category>
+		<category><![CDATA[arguments]]></category>
+		<category><![CDATA[docopt]]></category>
+		<category><![CDATA[docstring]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[scripting]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9662</guid>
+		<description><![CDATA[Depuis que j'ai rencontré <a href="https://github.com/docopt/docopt/">docopt</a>, j'ai largué clize (c'est pas moi chérie, c'est toi) et on vit en amoureux tous les deux en élevant des script dans une ferme dans les Alpes.]]></description>
+				<content:encoded><![CDATA[<p>On peut parser <code>sys.argv</code> à la main, mais c&#8217;est fragile.</p>
+<p>On peut utiliser <a href="http://docs.python.org/2/library/getopt.html#module-getopt">getopt</a> ou <a href="http://docs.python.org/2/library/optparse.html">optpase</a>, mais c&#8217;est déprécié.</p>
+<p>On peut adopter le nouveau module de la stdlib, vers <a href="http://docs.python.org/3.4/library/argparse.html">argparse</a>, mais c&#8217;est compliqué.</p>
+<p>Alors j&#8217;installais toujours <a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">clize</a>.</p>
+<p>Mais depuis que j&#8217;ai rencontré <a href="https://github.com/docopt/docopt/">docopt</a>, j&#8217;ai largué clize (c&#8217;est pas moi chérie, c&#8217;est toi) et on vit en amoureux tous les deux en élevant des scripts dans une ferme dans les Alpes.</p>
+<pre lang="bash">pip install docopt</pre>
+<p>Docopt fonctionne à l&#8217;envers de la plupart des libs de ce genre : vous écrivez le message d&#8217;aide de votre script, et ça génère le parsing des arguments. La syntaxe de l&#8217;aide est de type posix, donc si vous avez utilisez un <code>-h</code> ou la commande <code>man</code> un jour, vous la connaissez déjà.</p>
+<p>Voici comment ça marche :</p>
+<pre lang="python">help = """Le nom de mon programme trop cool
+
+Usage:
+  nom_du_script.py <argument_positionel> [<argument_positionel_optionel>] [--flag-optionel]
+
+Options:
+  -h --help          C'est généré automatiquement.
+  --option=<valeur>  Description de l'option.
+
+Woot, un footer !
+"""
+
+from docopt import docopt
+
+arguments = docopt(help)
+print(arguments)
+</pre>
+<p>Si on passe rien de valide au script, l&#8217;usage est affiché automatiquement :</p>
+<pre lang="bash">$ python nom_du_script.py 
+Usage:
+  nom_du_script.py <argument_positionel> [<argument_positionel_optionel>] [--flag-optionel]
+</pre>
+<p>Si on demande l&#8217;aide, en option, ben, l&#8217;aide quoi :</p>
+<pre lang="bash">$ python nom_du_script.py -h
+Le nom de mon programme trop cool
+
+Usage:
+  nom_du_script.py <argument_positionel> [<argument_positionel_optionel>] [--flag-optionel]
+
+Options:
+  -h --help          C'est généré automatiquement.
+  --option=<valeur>  Description de l'option.
+
+Woot, un footer !</pre>
+<p>Et si on passe des arguments, on les récupère dans un simple dictionnaire :</p>
+<pre lang="bash">$ python nom_du_script.py yo
+{'--flag-optionel': False,
+ '<argument_positionel>': 'yo',
+ '<argument_positionel_optionel>': None}
+
+$ python nom_du_script.py yo man
+{'--flag-optionel': False,
+ '<argument_positionel>': 'yo',
+ '<argument_positionel_optionel>': 'man'}
+
+ $ python nom_du_script.py yo --flag-optionel
+{'--flag-optionel': True,
+ '<argument_positionel>': 'yo',
+ '<argument_positionel_optionel>': None}</pre>
+<p>Ça peut générer des choses complexes avec des tas de combinaisons d&#8217;options, des sous-commandes et tout le bordel.</p>
+<p>Généralement on en profite pour faire ça proprement, en mettant l&#8217;usage en docstring du script, en calant une version et en rajoutant un <code>if __main__</code>:</p>
+<pre lang="python">
+
+"""Uber script.
+
+Usage:
+  schnell.py scheisse 
+  schnell.py bier 
+
+Options:
+  -h --help      _o/
+  --version      \o_
+  --blitz=krieg  \o/
+
+"""
+
+from docopt import docopt
+
+
+if __name__ == '__main__':
+    # __doc__ contient automatiquement la docstring du module
+    # en cours
+    arguments = docopt(__doc__, version='0.1')
+    print(arguments)
+
+</pre>
+<pre lang="bash">$ python schnell.py --version
+0.1
+
+$ python schnell.py bier
+{'bier': True,
+ 'scheisse': False}</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-plus-belle-maniere-de-parser-les-arguments-de-script-en-python/feed/</wfw:commentRss>
+		<slash:comments>23</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">9662</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/03/RqCz8f2.png" length="350640" type="image/jpg" />	</item>
+	</channel>
+</rss>

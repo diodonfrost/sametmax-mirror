@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>fonctions &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/fonctions/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Refactoriser ses vérifications en Python</title>
+		<link>http://sametmax.com/refactoriser-ses-verifications-en-python/</link>
+		<comments>http://sametmax.com/refactoriser-ses-verifications-en-python/#comments</comments>
+		<pubDate>Sun, 23 Jun 2013 21:56:00 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[decorators]]></category>
+		<category><![CDATA[fonctions]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6437</guid>
+		<description><![CDATA[On nous a interpelé sur Twitter pour nous demander comment faire un code comme ceci (en tout cas similaire) plus propre.]]></description>
+				<content:encoded><![CDATA[<p>On nous a interpelé sur Twitter pour nous demander comment faire un code comme ceci (en tout cas similaire) plus propre:</p>
+<pre lang="python">
+# -*- coding: utf-8 -*
+
+from __future__ import unicode_literals
+
+import random
+
+def verification1(val):
+    return bool(random.randint(0, 1))
+
+verification2 = verification1
+verification3 = verification1
+
+def function(valeur):
+
+    if not verification1(valeur):
+        print("Erreur, la vérification 1 n'est pas passée")
+
+    if not verification2(valeur):
+        print("Erreur, la vérification 2 n'est pas passée")
+
+    if not verification3(valeur):
+        print("Erreur, la vérification 3 n'est pas passée")
+
+    return valeur</pre>
+<p>Ceci est évidement un exemple tout bidon, mais la problématique, c&#8217;est qu&#8217;on a plein de vérifications à faire, et un code à lancer si jamais ces vérifications échouent. Et chaîner les <code>if</code>, c&#8217;est vrai que c&#8217;est pas super mignon (même si c&#8217;est tout à fait valide, faut pas non plus se prendre trop la tête avec ça).</p>
+<p>En Python, on a plusieurs manières de s&#8217;occuper de ça. La première, j&#8217;en ai déjà parlé, c&#8217;est <a href="http://sametmax.com/quest-ce-quun-callback/">l&#8217;injection de dépendances</a>. On va passer ces checks en paramètres.</p>
+<p>Car je le rappelle, on peut passer des fonctions en paramètres, on peut mettre des fonctions dans des listes, et on peut même passer des listes de fonctions en paramètres. Ce qui ici va nous permettre de :</p>
+<ul>
+<li>Regrouper les traitements.</li>
+<li>Permettre de changer les traitements à la volée.</li>
+<li>Avoir malgré tout un traitement par défaut.</li>
+<li>Rendre les groupes de vérifications réutilisables</li>
+</ul>
+<pre lang="python">
+
+
+VERIF = (
+    (verification1, "Erreur, la vérification 1 n'est pas passée"),
+    (verification2, "Erreur, la vérification 2 n'est pas passée"),
+    (verification3, "Erreur, la vérification 3 n'est pas passée"),
+    ((lambda v: not bool(random.randint(0, 1))),
+    "Erreur, la vérification 4 n'est pas passée")
+)
+
+def faire_verifications(verifications):
+    for verif, msg in verifications:
+        if not verif(valeur):
+            print msg
+
+def function(valeur, verifications=VERIF):
+    faire_verifications(verifications)
+    return valeur</pre>
+<p>Cette manière de faire est plus verbeuse si votre liste de <code>if</code> est courte, ou si vous n&#8217;avez à le faire que pour une fonction. Mais elle devient vite plus courte et clair dans le cas où votre code grandi.</p>
+<p>Elle aussi l&#8217;avantage de pouvoir insérer ou retirer une modification très simplement (même avec une simple lambda). Enfin, le code de vérification est découplé du code de la fonction ce qui ajoute les bénéfices suivant :</p>
+<ul>
+<li>Votre code de vérification peut être déplacé dans un module dédié.</li>
+<li>Si vous avez des vérifications en plusieurs endroits, il n&#8217;y a qu&#8217;un seul endroit pour corriger les bugs des vérifications, et un seul pour faire une modification des vérifications.</li>
+<li>Le code de la fonction redevient simple : elle fait une vérification (on s&#8217;en branle de comment ça marche, on sait que ça vérifie), et ensuite elle s&#8217;occupe de SON boulot. C&#8217;est la partie du code qui nous intéresse quand on va voir la fonction.</li>
+</ul>
+<p>On peut évidement imaginer autre chose qu&#8217;un print: lever une exception, faire un log, ou même carrément aussi passer une fonction en lieu et place du message d&#8217;erreur qui fait office de callback quand la vérification échoue (et qui par défaut print, le meilleur des deux mondes).</p>
+<p>Si vos vérifications deviennent très courantes, alors, l&#8217;utilisation de décorateurs prend tout son sens. Je ne vais pas rentrer sur comment écrire son décorateur, il y a <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1">un autre article pour ça</a>, mais on peut obtenir un résultat du genre :</p>
+<pre lang="python">def verif(verification, message):
+    def decorateur(func):
+        def wrapper(*args, **kwargs):
+            if not verification(*args, **kwargs):
+                print message
+            return func(*args, **kwargs)
+        return wrapper
+    return decorateur
+
+# si on utilise souvent une vérif, on peut l'avoir 
+# tout le temps tout la main
+verif3 = verif(verification3, "Erreur, la vérification 3 n'est pas passée")
+
+# et ensuite il suffit d'appliquer autant de décorateur qu'on le souhaite
+@verif(lambda v: not bool(random.randint(0, 1)), "Erreur, la vérification 4 n'est pas passée")
+@verif3
+@verif(verification2, "Erreur, la vérification 2 n'est pas passée")
+@verif(verification1, "Erreur, la vérification 1 n'est pas passée")
+def function(valeur):
+    return valeur</pre>
+<p>Les avantages ici sont :</p>
+<ul>
+<li>Corps de la fonction initial vide de toute vérification. Les vérifications sont purement déclaratives (comme par exemple la vérification de login dans Django).</li>
+<li>Chaque vérif est très facilement réutilisable, il suffit de mettre le décorateur. Si on utilise une vérif très souvent, alors on peut même mettre le décorateur dans une variable et juste déclarer <code>@ma_verif</code>.</li>
+<li>C&#8217;est très pythonique comme style.</li>
+</ul>
+<p>En résumé : si vous avez un petit code, ne vous prenez pas la tête. Une série de if est tout à fait valide, ça marche bien, c&#8217;est clair et lisible. Il faut savoir aller au plus simple. Mais si votre code devient touffu, utiliser une liste de fonction peut aider à faire le ménage. Si vous commencer carrément à avoir un gros projet ou que vous codez une lib réutilisable, les décorateurs seront de précieux alliés : ils permettent à celui qui passe derrière vous de se foutre complètement de savoir comment ça marche et de juste assembler son code comme un légo.</p>
+<hr />
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2013/juin/verification.py">Télécharger le code de l&#8217;article</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/refactoriser-ses-verifications-en-python/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">6437</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/06/EoH7ChB.jpg" length="115889" type="image/jpg" />	</item>
+	</channel>
+</rss>

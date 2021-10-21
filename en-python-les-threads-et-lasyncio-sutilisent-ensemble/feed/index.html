@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: En Python, les threads et l&#8217;asyncio s&#8217;utilisent ensemble</title>
+	<atom:link href="http://sametmax.com/en-python-les-threads-et-lasyncio-sutilisent-ensemble/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/en-python-les-threads-et-lasyncio-sutilisent-ensemble/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/en-python-les-threads-et-lasyncio-sutilisent-ensemble/#comment-174248</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Fri, 15 Jan 2016 14:08:41 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17796#comment-174248</guid>
+		<description><![CDATA[&lt;p&gt;Merci.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Merci.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: SebCorbin</title>
+		<link>http://sametmax.com/en-python-les-threads-et-lasyncio-sutilisent-ensemble/#comment-174239</link>
+		<dc:creator><![CDATA[SebCorbin]]></dc:creator>
+		<pubDate>Fri, 15 Jan 2016 09:55:34 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17796#comment-174239</guid>
+		<description><![CDATA[Petite coquille : &quot;charge de travaille&quot;, sinon cay kewl
+]]></description>
+		<content:encoded><![CDATA[<p>Petite coquille : &#8220;charge de travaille&#8221;, sinon cay kewl</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Victor Stinner</title>
+		<link>http://sametmax.com/en-python-les-threads-et-lasyncio-sutilisent-ensemble/#comment-174234</link>
+		<dc:creator><![CDATA[Victor Stinner]]></dc:creator>
+		<pubDate>Fri, 15 Jan 2016 08:39:17 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17796#comment-174234</guid>
+		<description><![CDATA[Tout à fait. asyncio ne tire pas vraiment sa force du côté asynchrone. Mike Bayer (qui touche sa bille en base de données) a par exemple montré qu&#039;une API asynchrone pour accéder à une base données est plut lente que l&#039;API synchrone : http://techspot.zzzeek.org/2015/02/15/asynchronous-python-and-databases/
+
+C&#039;est contre intuitif pour les fanboys de l&#039;asynchrone comme moi. Non, asyncio tire sa force de sa capacité à coupler plusieurs briques très différentes et offrir une API générique : réseau, threads, base de données, etc.
+
+Au sujet des accès disque : bien qu&#039;il existe des syscalls dans le noyau Linux, le code est plus lent que les accès bloquants. Le projet aiofiles permet d&#039;accéder à un fichier sur le disque avec asyncio en lançant tous les accès disques dans des threads de manière transparent pour l&#039;utiisateur. La PEP 492 (async/await) prend tout son sens ici : on peut écrire &quot;async for line in file: ...&quot; qui va itérer sur les lignes d&#039;un fichier texte de manière asynchrone !
+
+Note : en mode debug, asyncio émet un avertissement si une tâche prend plus de 100 ms (délai configurable). Ca aide pour détecter quelles fonctions doivent être lancées dans des threads. https://docs.python.org/dev/library/asyncio-dev.html#debug-mode-of-asyncio
+]]></description>
+		<content:encoded><![CDATA[<p>Tout à fait. asyncio ne tire pas vraiment sa force du côté asynchrone. Mike Bayer (qui touche sa bille en base de données) a par exemple montré qu&#8217;une API asynchrone pour accéder à une base données est plut lente que l&#8217;API synchrone : <a href="http://techspot.zzzeek.org/2015/02/15/asynchronous-python-and-databases/" rel="nofollow">http://techspot.zzzeek.org/2015/02/15/asynchronous-python-and-databases/</a></p>
+<p>C&#8217;est contre intuitif pour les fanboys de l&#8217;asynchrone comme moi. Non, asyncio tire sa force de sa capacité à coupler plusieurs briques très différentes et offrir une API générique : réseau, threads, base de données, etc.</p>
+<p>Au sujet des accès disque : bien qu&#8217;il existe des syscalls dans le noyau Linux, le code est plus lent que les accès bloquants. Le projet aiofiles permet d&#8217;accéder à un fichier sur le disque avec asyncio en lançant tous les accès disques dans des threads de manière transparent pour l&#8217;utiisateur. La PEP 492 (async/await) prend tout son sens ici : on peut écrire &#8220;async for line in file: &#8230;&#8221; qui va itérer sur les lignes d&#8217;un fichier texte de manière asynchrone !</p>
+<p>Note : en mode debug, asyncio émet un avertissement si une tâche prend plus de 100 ms (délai configurable). Ca aide pour détecter quelles fonctions doivent être lancées dans des threads. <a href="https://docs.python.org/dev/library/asyncio-dev.html#debug-mode-of-asyncio" rel="nofollow">https://docs.python.org/dev/library/asyncio-dev.html#debug-mode-of-asyncio</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/en-python-les-threads-et-lasyncio-sutilisent-ensemble/#comment-174139</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 14 Jan 2016 13:37:22 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17796#comment-174139</guid>
+		<description><![CDATA[&lt;p&gt;Yé soui un bouleto.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Yé soui un bouleto.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Gordon</title>
+		<link>http://sametmax.com/en-python-les-threads-et-lasyncio-sutilisent-ensemble/#comment-174132</link>
+		<dc:creator><![CDATA[Gordon]]></dc:creator>
+		<pubDate>Thu, 14 Jan 2016 12:16:15 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17796#comment-174132</guid>
+		<description><![CDATA[Il reste un oubli : tu as laissé le paramètre executor dans la déclaration de main
+]]></description>
+		<content:encoded><![CDATA[<p>Il reste un oubli : tu as laissé le paramètre executor dans la déclaration de main</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/en-python-les-threads-et-lasyncio-sutilisent-ensemble/#comment-174042</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 13 Jan 2016 16:13:30 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17796#comment-174042</guid>
+		<description><![CDATA[&lt;p&gt;En effet j&#039;ai fais un mix bidon de deux codes : celui ou j&#039;ai testé celui par défaut, et celui où j&#039;ai testé un custo.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>En effet j&#8217;ai fais un mix bidon de deux codes : celui ou j&#8217;ai testé celui par défaut, et celui où j&#8217;ai testé un custo.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Geekingfrog</title>
+		<link>http://sametmax.com/en-python-les-threads-et-lasyncio-sutilisent-ensemble/#comment-174034</link>
+		<dc:creator><![CDATA[Geekingfrog]]></dc:creator>
+		<pubDate>Wed, 13 Jan 2016 14:09:39 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17796#comment-174034</guid>
+		<description><![CDATA[C&#039;est l&#039;import qui est en trop. run_in_executor utilise l&#039;executor par défaut (un threadpoolexecutor) si aucun ne lui est fournit.
+]]></description>
+		<content:encoded><![CDATA[<p>C&#8217;est l&#8217;import qui est en trop. run_in_executor utilise l&#8217;executor par défaut (un threadpoolexecutor) si aucun ne lui est fournit.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Gordon</title>
+		<link>http://sametmax.com/en-python-les-threads-et-lasyncio-sutilisent-ensemble/#comment-174025</link>
+		<dc:creator><![CDATA[Gordon]]></dc:creator>
+		<pubDate>Wed, 13 Jan 2016 12:48:23 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17796#comment-174025</guid>
+		<description><![CDATA[Il manquerait pas un bout de ton snippet, genre la création du ThreadPoolExecutor et son passage à main(), l’import de aiohttp… ?
+]]></description>
+		<content:encoded><![CDATA[<p>Il manquerait pas un bout de ton snippet, genre la création du ThreadPoolExecutor et son passage à main(), l’import de aiohttp… ?</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>assert &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/assert/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Programmation par contrat avec assert</title>
+		<link>http://sametmax.com/programmation-par-contrat-avec-assert/</link>
+		<pubDate>Sat, 08 Sep 2018 19:40:11 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[assert]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=24956</guid>
+		<description><![CDATA[Le mot clé assert est populaire en Python essentiellement grâce à la lib pytest, dont on vous a parlé dans le dossier sur les tests unitaires. En dehors de ce cas d&#8217;usage, personne ne comprend bien son utilité. Déjà, dans les tutoriaux, on vous signale de ne pas l&#8217;utiliser pour faire des vérifications importantes, à [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Le mot clé <code>assert</code> est populaire en Python essentiellement grâce à la lib pytest, dont on vous a parlé dans <a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-3/">le dossier sur les tests unitaires</a>.</p>
+<p>En dehors de ce cas d&#8217;usage, personne ne comprend bien son utilité. </p>
+<p>Déjà, dans les tutoriaux, on vous signale de ne pas l&#8217;utiliser pour faire des vérifications importantes, à cause d&#8217;une particularité d&#8217;<code>assert</code>: il peut disparaitre à tout moment ! </p>
+<p>En effet, si vous lancez Python toutes voiles dehors avec l&#8217;option <code>-o</code> (pour &#8220;optimize&#8221;), les lignes contenant ce mot clé sont ignorées.</p>
+<p>Alors, mille millions de mille sabords, pourquoi se faire chier à avoir ajouté ce truc ?</p>
+<p>A quoi un machin qui peut disparaitre à tout instant peut-il bien servir ?</p>
+<p>Well, it&#8217;s not a bug, it&#8217;s a feature, my dear.</p>
+<p>Voyez-vous, on connait souvent le premier effet kisskool d&#8217;<code>assert</code>:</p>
+<pre lang="python">
+    assert condition
+</pre>
+<p>Et si la condition est fausse, on se tape une exception <code>AssertionError</code>.</p>
+<p>En revanche, ce que les gens savent moins, c&#8217;est qu&#8217;il existe une seconde forme, beaucoup plus utile:</p>
+<pre lang="python">
+    assert condition, "Message en cas d'erreur"
+</pre>
+<p>Qui fait tout pareil, mais permet de donner un feedback a qui tombe sur l&#8217;erreur susnommée.</p>
+<p>Et c&#8217;est là que c&#8217;est intéressant: parce que ça vous permet de mettre des vérifications complexes dans le code, qui vont permettre aux devs d&#8217;éviter les âneries. C&#8217;est ce qu&#8217;on appelle un contrat.</p>
+<p>Imaginez une fonction qui prend en paramètre une valeur, qui est la clé d&#8217;un dictionnaire:</p>
+<pre lang="python">
+    ARTIBUSES = {
+        'truc': 1,
+        'bidule': 1,
+        'machin': '2',
+        'chose': '3',
+        'chouette': '3',
+        'foo': '4',
+        # ...
+    }
+    
+    def souquer_les_artibuses(artibuse):
+    
+        target = ARTIBUSES[artibuse]
+        # un code de souquage professionnel s'ensuit
+</pre>
+<p>Si quelqu&#8217;un utilise votre code, et insère la mauvaise artibuse (le vil flibustier !), notre fonction va (s&#8217;)échouer sur une <code>KeyError</code>. Ceci va obliger le contrevenant (le perfide faquin !) à regarder dans le code source et comprendre le code pour trouver la source de son désarroi. Quelle perte de temps pour notre dev (le fils de pute !).</p>
+<p>Une solution est alors de mettre:</p>
+<pre lang="python">
+    def souquer_les_artibuses(artibuse):
+        if artibuse not in ARTIBUSES:
+            raise ValueError(
+                f"'{artibuse}'' n'est pas une artibuse valide. "
+                f"Utilisez une valeur parmi: {', '.join(ARTIBUSES)}"
+            )
+        target = ARTIBUSES[artibuse]
+</pre>
+<p>Et c&#8217;est certes une bonne solution, claire et explicite. </p>
+<p>Mais elle a un défaut majeur: à chaque appel, on rajoute le poids d&#8217;un test qui n&#8217;a aucun intérêt pour le fonctionnement normal du programme. En fait, la majorité des appels de cette fonction se feront avec les bonnes valeurs (logique sinon le code planterait), et donc notre test est un poids superflu.</p>
+<p>Ce problème se cumule quand les tests deviennent plus nombreux, plus complexes, et plus lourds, tandis que la fonction est appelée de plus en plus de fois.</p>
+<p>Comment concilier donc son besoin impérieux d&#8217;aider son prochain, qui est probablement soi-même un vendredi à 3h du mat après un push qu&#8217;on n’aurait pas du faire en fin de semaine, et éviter ce gâchis de ressource ?</p>
+<p>Ventre-saint-gris de sa race ! Avec <code>assert</code> bien entendu !</p>
+<pre lang="python">
+
+    def souquer_les_artibuses(artibuse):
+
+        assert artibuse in ARTIBUSES, (
+            f"'{artibuse}'' n'est pas une artibuse valide. "
+            f"Utilisez une valeur parmi: {', '.join(ARTIBUSES)}}"
+        )
+
+        target = ARTIBUSES[artibuse]
+</pre>
+<p>En dev, ou quand on debug en production, on obtient toutes les vérifications et infos nécessaires. Le contrat à remplir avec notre fonction est vérifié. On peut mettre autant de clauses à notre contrat qu&#8217;on le souhaite, aussi lourdes qu&#8217;on veut ! </p>
+<p>Quand on est prêt à relancer la prod en mode propre, on exécute tout avec <code>-o</code></p>
+<p>Les vérifications faites en amont d&#8217;une fonction sont ce qu&#8217;on appelle des pré-conditions dans le jargon de la programmation par contrat. Ce sont les plus faciles à comprendre et les plus courantes. On peut néanmoins faire également des vérifications à la fin de la fonction, qui permette de vérifier qu&#8217;on est bien dans un état cohérent à la sortie de celle-ci. </p>
+<p>C&#8217;est ce qu&#8217;on appelle des post-conditions: c&#8217;est moins courant, et moins facile à écrire, mais très puissant car on se souci d&#8217;un état final (est-ce que mon résultat est > 3 ?), et non de comment on y arrive. Un moyen bien plus souple d&#8217;attraper des erreurs plutôt que de chercher toutes les combinaisons de ce qu&#8217;on peut mal faire.</p>
+<h2>Effets secondaires de -o</h2>
+<p>Le saviez-vous ? Python vient aussi avec une variable magique, <code>__debug__</code>, qui est à <code>True</code> par défaut. Utiliser <code>-o</code> met cette variable a <code>False</code>. Plus fort encore, toute condition sur <code>__debug__</code> sera retirée du code !</p>
+<pre lang="python">
+if __debug__:
+    un_dump_log_de_porc()
+</pre>
+<p>Pouf, avec <code>-o</code>, plus de dump.</p>
+<p>Il existe même <code>-oo</code> pour retirer en plus les docstrings, et économiser un peu de mémoire.</p>
+<h2>Le problème avec assert</h2>
+<p>Le problème avec <code>assert</code>, c&#8217;est vous. Enfin je dis vous, le vous du passé, celui qui ne savait pas. En effet, plein de devs vont utiliser des <code>assert</code> dans leur code sans penser à mal. Et vous arrivez avec votre <code>-o</code>, et boom, le code est tout cassé. C&#8217;est bien con de ne pas pouvoir stripper ses <code>assert</code> à soi sous prétexte qu&#8217;une dépendance est codée par un <del>connard</del> Bachi-bouzouk.</p>
+<p>Or <code>assert</code> est très souple, et permet de tester littéralement n&#8217;importe quoi. Du coup, cela demande un peu d&#8217;expérience pour savoir quand l&#8217;utiliser, et quand ne pas le faire.</p>
+<p>Le concept général est: si votre erreur concerne la fonctionnalité fondamentale de votre fonction, levez toujours une exception. Si en revanche vous testez si les valeurs des paramètres correspondent à quelque chose de sain, <strong>et qu&#8217;une erreur n&#8217;aurait pas d&#8217;effet de bord</strong>, vous pouvez (ce n&#8217;est pas du tout obligatoire, une exception normale reste un usage correct) utiliser <code>assert</code>.</p>
+<p>Donc, n&#8217;utilisez pas assert pour tester la logique de votre programme, ni pour protéger l&#8217;intégrité de vos données face à une erreur.</p>
+<p>Une dernière chose: n&#8217;utilisez pas <code>assert</code> pour fournir un contrat basé sur les types (comme par exemple, appeler <code>isinstance()</code>), puisque mypy et les <a href="http://sametmax.com/point-rapide-sur-les-types-hints/">types hints</a> le font déjà et qu&#8217;ils sont maintenant très agréables à utiliser.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">24956</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/09/egUwx5Q.gif" length="782969" type="image/jpg" />	</item>
+		<item>
+		<title>Un gros guide bien gras sur les tests unitaires en Python, partie 1</title>
+		<link>http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-1/</link>
+		<comments>http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-1/#comments</comments>
+		<pubDate>Wed, 15 Jan 2014 15:26:00 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[assert]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unit tests]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8764</guid>
+		<description><![CDATA[Les tests unitaires font partie de ces "bonnes pratiques" que tout le monde semble appliquer sur le net. Tous les devs hypes parlent de tests unitaires : les conférences, les blogs, les tutos, les livres, whooooo !
+
+Dans la vraie vie vivante, on croise pourtant peu de gens qui les utilisent vraiment. On les retrouvent surtout dans les gros projets et les grosses boîtes, et encore.]]></description>
+				<content:encoded><![CDATA[<p>La zik maintenant traditionelle :</p>
+<p><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/1pm4fQRl72k?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<p>Les tests unitaires font partie de ces &#8220;bonnes pratiques&#8221; que tout le monde semble appliquer sur le net. Tous les devs hypes parlent de tests unitaires : les conférences, les blogs, les tutos, les livres, whooooo !</p>
+<p>Dans la vraie vie vivante, on croise pourtant peu de gens qui les utilisent vraiment. On les retrouvent surtout dans les gros projets et les grosses boîtes, et encore.</p>
+<p>Il y a plusieurs raisons à cela. D&#8217;une part, beaucoup, beaucoup, beaucoup de développeurs n&#8217;ont aucune idée de ce qu&#8217;est un test unitaire. Ceux qui savent, ne voient pas forcément l’intérêt, et ceux qui en voient l’intérêt n&#8217;ont pas forcément l&#8217;expérience nécessaire à leur mise en œuvre.</p>
+<p>Je connais des tas de dev qui codent des tas d&#8217;excellents projets sans le moindre test unitaires.</p>
+<p>L&#8217;adage selon lequel un code sans test unitaire est un code buggé est parfaitement faux puisque existe bien d&#8217;autres manières de tester son code. De plus, même un code bien testé est un code buggé. Je le sais, je l&#8217;ai codé.</p>
+<p>Malgré cela, vous devriez maitriser l&#8217;usage des tests unitaires, car quand vous arrivez à vous sortir les extrémités digitales de la terminaison dorsale afin de les mettre en place, le bénéfice est très important. Mais aussi parce que certains projets ne peuvent pas s&#8217;en passer, et donc que vous ne pourrez pas travailler dessus sans savoir en faire. Certains projets sur Github n&#8217;acceptent pas de pull request sans couverture de tests, et certaines personnes n&#8217;utiliseront pas votre lib si elle n&#8217;est pas testée. C&#8217;est un gage de qualité.</p>
+<p>Je n&#8217;en ferai pas une question morale ou de principe, les projets que l&#8217;on publie sur Sam et Max sont parfaitement exempt de tests unitaires, et d&#8217;ailleurs, la plupart des projets pros avec Max n&#8217;ont aucun tests non plus.</p>
+<p>En revanche, en tant que freelance, je prends généralement le temps d&#8217;en faire.</p>
+<p>Pas de dogmatisme du test donc, mais passé le goût de crabe dans la bouche, ça vaut le coup, alors lisez ce guide.</p>
+<h2>Qu&#8217;est-ce qu&#8217;un test unitaire</h2>
+<p>Le test unitaire est un bout de code qui fait exactement ce que son nom dit : il teste une unité de code.</p>
+<p>Le problème c&#8217;est quoi tester, qu&#8217;est-ce qu&#8217;une &#8220;unité de code&#8221;, ce n&#8217;est pas quelque chose d&#8217;évident à définir, et vient avec la pratique. En théorie c&#8217;est un bout de code minimaliste, que l&#8217;on ne peut pas réduire plus. En pratique, on choisit avec pragmatisme un truc assez petit, mais pas trop, parce que merde, hein.</p>
+<p>Mais alors que veut-on dire par &#8220;tester&#8221; ?</p>
+<p>Et bien c&#8217;est d&#8217;une banalité affligeante : on donne des entrées au code, et on vérifie que ses sorties sont celles attendues pour ces entrées.</p>
+<p>Bref, généralement (mais pas toujours) on teste une fonction. Souvent avec une autre fonction. Et c&#8217;est d&#8217;un manque d&#8217;originalité terrible.</p>
+<p>Le test unitaire le plus bête qu&#8217;on puisse avoir en Python :</p>
+<pre lang="python"># Fichier de code
+def fonction_a_tester(param1, param2):
+    return param1 + param2
+</pre>
+<pre lang="python">
+# Fichier de test
+
+from fichier_de_code import fonction_a_tester
+
+assert fonction_a_tester(1, 1) == 2  # test de l'addition
+assert fonction_a_tester(1, -1) == 0 # test avec chiffre négatif
+assert fonction_a_tester(4, 2) == 6 # test avec autre chose que des 1
+assert fonction_a_tester(4.5, 2) == 6.5 # test avec des floats</pre>
+<p>Deux constats :</p>
+<ul>
+<li>C&#8217;est parfaitement chiant. Les tests unitaires sont dans 99% des cas des tautologiques super ennuyeuses.</li>
+<li>On teste le même code plusieurs fois, avec plusieurs cas de figure, pour être certain que ça se comporte comme prévu.</li>
+</ul>
+<p><code>assert</code> est un mot clé qui lève l&#8217;exception <code>AssertionError</code> quand l&#8217;expression évaluée ne retourne pas <code>True</code>. L&#8217;utilisation d&#8217;<code>assert</code> n&#8217;est pas le sujet de l&#8217;article, ici on s&#8217;en sert pour faire un test unitaire tout simplement parce que la première ligne qui ne renverra pas <code>True</code> fera  planter le programme. C&#8217;est le test unitaire du pauvre.</p>
+<p>Un test unitaire, ce n&#8217;est que ça. Un répétition bête et emmerdante de vérifications généralement très connes.</p>
+<h2>C&#8217;est minable ! A quoi ça sert ?</h2>
+<p>Là normalement vous vous dites &#8220;je sais ce que fait mon code, surtout une unité minimaliste, je n&#8217;ai pas besoin d&#8217;écrire des évidences pour le tester&#8221;. Et c&#8217;est pour cela que je ne suis pas dogmatique sur les tests unitaires, car c&#8217;est en partie vrai. Beaucoup de codes sont suffisamment simples ou peu critiques pour ne pas avoir besoin d&#8217;être renforcés par des tests unitaires. Et même si il faut des tests, tout le code n&#8217;a pas nécessairement besoin d&#8217;être testé.</p>
+<p>Lancer un blog pour sa cousine n&#8217;est pas la même chose qu&#8217;une site de rencontre pour un grand compte.</p>
+<p>Mais le test unitaire a plusieurs bénéfices. Le premier c&#8217;est qu&#8217;il vous oblige à réfléchir aux entrées et sorties de vos fonctions, et à l&#8217;API de votre code en général. Vous vous apercevrez à l&#8217;usage qu&#8217;un code est plus ou moins facile à tester selon la manière dont vous l&#8217;avez organisé, et ce faisant, vous serez forcé d&#8217;écrire un code plus souple, propre, extensible.</p>
+<p>Écrire des tests fait de vous un meilleur développeur.</p>
+<p>Cependant ce n&#8217;est pas le principal intérêt. Le véritable gain tient dans ce que vous gagnez dans le futur : quand vous allez modifier votre code, vous pourrez rapidement voir si il n&#8217;est pas cassé. En effet, votre code va grossir, et vous ne vous souviendrez pas de toutes les dépendances, de tous les effets de bords, de toutes les interactions. Certains dev sont meilleurs que d&#8217;autres à tout garder dans la tête, mais même Cortex a ses limites. Au bout d&#8217;un moment, le code est plus fort que vous.</p>
+<p>À partir de là, vous allez tout de même avoir besoin de factoriser le code, bouger des choses, en ajouter d&#8217;autres, corriger un bug, faire un petit ajustement. À chaque fois que vous le faites, vous prenez le risque de casser un truc. Au début du projet, le risque est faible, et même si ça arrive, ça se répare vite. Après 2 mois de dev, les tests seront votre filet de sécurité. Vous pouvez les lancer après chaque modif, et voir que vous n&#8217;avez rien pété. Vous pouvez les lancer après une contribution d&#8217;un autre dev, et voir que ça tourne toujours. Vous pouvez les lancer après un changement d’environnement (OS, base de données, système de fichier, format, etc) et vous assurer que ça n&#8217;a pas d’impacts.</p>
+<p>Particulièrement, des tests unitaires ont beaucoup de valeur sur un projet avec beaucoup de participants, tels que des logiciels libres populaires ou des systèmes de grandes sociétés.</p>
+<p>Par exemple, sur notre dernière fonction bidon, on décide de faire une petite modification :</p>
+<pre lang="python"># Fichier de code
+def fonction_a_tester(param1, param2):
+    return int(param1) + int(param2)</pre>
+<p>On peut maintenant passer une string, et elle sera convertie en entier.</p>
+<p>On lance notre batterie de tests, et là, au milieu de centaines d&#8217;autres tests, celui là foire :</p>
+<pre lang="python">assert fonction_a_tester(4.5, 2) == 6.5 # test avec des floats</pre>
+<p>On voit très vite que notre idée était pourrie, car on a un use case qui ne sera plus compatible. Si quelqu&#8217;un a utilisé des floats avec notre fonction, on va casser son code.</p>
+<p>En l&#8217;essence, c&#8217;est ça l’intérêt des tests unitaires : vous faire sauter au yeux quand quelque chose casse. On appelle ça des &#8220;tests de régression&#8221;, et c&#8217;est l&#8217;usage le plus courant.</p>
+<p>Plus tard vous verrez qu&#8217;on utilise aussi les tests pour développer son code (TDD), pour définir un comportement du produit avec le client (BDD) ou tout simplement pour servir de documentation.</p>
+<p>Mais l&#8217;usage de base, c&#8217;est ça. S&#8217;assurer qu&#8217;on est pas en train de merder.</p>
+<h2>Résumé</h2>
+<ol>
+<li>N&#8217;écoutez pas les Papes du test vous disant que si vous n&#8217;avez pas des tests unitaires à 50 ans, vous avez raté votre vie. Les tests, c&#8217;est bien. Un projet livré, c&#8217;est mieux. Une documentation est plus importante que des tests. Les 3, évidement, c&#8217;est l&#8217;idéal.</li>
+<li>Un test, c&#8217;est une suite parfaitement chiante d&#8217;énonciations d&#8217;évidences. Il n&#8217;y a généralement rien de compliqué dans les tests. Vous vous sentirez parfois insulté en les écrivant tellement c&#8217;est con.</li>
+<li>L’intérêt majeur des tests est d&#8217;avoir une alerte rouge qui se lance quand vous avez pété un truc. Ça arrive bien plus souvent que vous ne le croyez sans que vous ne vous en aperceviez car vous n&#8217;avez pas de tests.</li>
+</ol>
+<p>Ces bases posées, la prochaine partie fera la démonstration du module <a href="http://docs.python.org/2/library/unittest.html">unittest</a> afin de créer vos premiers tests unitaires en Python, puis on enchaînera, partie par partie, sur les applications pratiques, les variantes, les girafes lesbiennes et tout ce qui fait un bon article de s&#038;m.</p>
+<p>Dans la <a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-2/">partie 2,</a> on va voir comment faire des tests en utilisant la lib standard Python.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-1/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8764</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/01/sm4y87Q.jpg" length="31863" type="image/jpg" />	</item>
+	</channel>
+</rss>

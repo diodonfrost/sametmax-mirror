@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>filename &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/filename/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Petit snippet pour obtenir un nom de fichier unique en Python</title>
+		<link>http://sametmax.com/petit-snippet-pour-obtenir-un-nom-de-fichier-unique-en-python/</link>
+		<comments>http://sametmax.com/petit-snippet-pour-obtenir-un-nom-de-fichier-unique-en-python/#comments</comments>
+		<pubDate>Mon, 24 Feb 2014 12:03:11 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[filename]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9228</guid>
+		<description><![CDATA[Bidouillerie du jour, bonjour.
+]]></description>
+				<content:encoded><![CDATA[<p>Bidouillerie du jour, bonjour.</p>
+<pre lang="python">import re
+import os
+
+def get_unique_path(path):
+
+    # si le nom de fichier existe, on en cherche un autre
+    while os.path.exists(path):
+        # on vire l'extension
+        base, ext = os.path.splitext(path)
+        try:
+            # on extrait le compteur si il existe
+            base, counter, _ = re.split(r" \((\d+)\)$", base)
+        except ValueError:
+            counter = 0
+
+        # on reconstruit le path
+        path = "%s (%s)%s" % (base, int(counter) + 1, ext)
+
+    return path</pre>
+<p>Le plus gros de l&#8217;astuce est dans :</p>
+<pre lang="python">
+base, counter, _ = re.split(r" \((\d+)\)$", base)
+</pre>
+<p><code> \((\d+)\)$</code> va matcher &#8216;espace(un nombre)&#8217; à la fin d&#8217;une chaîne et <code>r.split</code> va retourner soit <code>['le chemin complet']</code> si il n&#8217;y a pas de compteur, soit <code>['base', 'compteur', '']</code> si il y en a un.</p>
+<p>Du coup on <a href="http://sametmax.com/tag/unpacking/">unpack</a> tout ça, <code>_</code> étant utilisé pour signaler une variable inutilisée par convention et on a notre compteur, prêt à être incrémenté.</p>
+<p>A l&#8217;usage, ça donne ça dans ipython :</p>
+<pre lang="python">>>> !rm /tmp/test*
+>>> get_unique_path('/tmp/test.txt')
+u'/tmp/test.txt'
+>>> get_unique_path('/tmp/test.txt')
+u'/tmp/test.txt'
+>>> !touch /tmp/test.txt
+>>> get_unique_path('/tmp/test.txt')
+u'/tmp/test (1).txt'
+>>> !touch "/tmp/test (1).txt"
+>>> get_unique_path('/tmp/test.txt')
+u'/tmp/test (2).txt'
+>>> get_unique_path('/tmp/test (101).txt')
+u'/tmp/test (101).txt'
+>>> !touch '/tmp/test (101).txt'
+>>> get_unique_path('/tmp/test (101).txt')
+u'/tmp/test (102).txt'
+>>> get_unique_path('/tmp/test')
+u'/tmp/test'
+>>> !touch /tmp/test
+>>> get_unique_path('/tmp/test')
+u'/tmp/test (1)'
+>>> get_unique_path('/tmp/.test')
+u'/tmp/.test'
+>>> !touch "/tmp/.test"
+>>> get_unique_path('/tmp/.test')
+u'/tmp/.test (1)'
+>>> get_unique_path('/tmp/test.path.text')
+u'/tmp/test.path.text'
+>>> !touch '/tmp/test.path.text'
+>>> get_unique_path('/tmp/test.path.text')
+u'/tmp/test.path (1).text'
+>>> get_unique_path('/tmp/test.path (1)(1) (1).text')
+u'/tmp/test.path (1)(1) (1).text'
+>>> !touch '/tmp/test.path (1)(1) (1).text'
+>>> get_unique_path('/tmp/test.path (1)(1) (1).text')
+u'/tmp/test.path (1)(1) (2).text'
+</pre>
+<p>Bien entendu, si vos fichiers ne seront jamais visibles par l&#8217;utilisateur, il vaut mieux se simplifier la vie et utiliser <a href="http://sametmax.com/quest-ce-quun-uuid-et-a-quoi-ca-sert/">uuid.uuid4()</a>.</p>
+<p>Je pense qu&#8217;après le dossier sur les tests unitaires, je ferai un dossier regex. Aux alentours de 2018.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/petit-snippet-pour-obtenir-un-nom-de-fichier-unique-en-python/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">9228</post-id>	</item>
+	</channel>
+</rss>

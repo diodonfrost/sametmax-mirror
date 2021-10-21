@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>operator &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/operator/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Ordonner en Python</title>
+		<link>http://sametmax.com/ordonner-en-python/</link>
+		<comments>http://sametmax.com/ordonner-en-python/#comments</comments>
+		<pubDate>Mon, 21 Jan 2013 13:37:37 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[lambda]]></category>
+		<category><![CDATA[operator]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sort]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4107</guid>
+		<description><![CDATA[Python possède une manière de mettre les choses dans l'ordre qui est à la fois simple et puissante.]]></description>
+				<content:encoded><![CDATA[<p>Python possède une manière de mettre les choses dans l&#8217;ordre qui est à la fois simple et puissante.</p>
+<h2>Tout est ordonnable</h2>
+<p>Pour comprendre comment marche le tri en Python, il faut comprendre que presque tout en Python est ordonnable car comparable :</p>
+<pre lang="python">>>> 1 > 0 # les nombres sont comparables
+True
+>>> 1 < 0
+False
+>>> "a" < "b" # les lettres, par ordre alphabetique
+True
+>>> True > False # les booléan (!)
+True
+>>> (1, 2) > (2, 1) # les iterables comparés, élément par élément dans l'ordre
+False
+>>> (1, 2) > [2, 1] # mais ils doivent être du même type
+True
+>>> {1:1} < {1:1, 0:0} # les dictionnaires, par nombre d'éléments
+True
+>>> "a" > 2 # si on mélange des types ça peut vide devenir bizarre
+True
+>>> 1j > 1 # j'ai dis PRESQUE tout est ordonnable
+Traceback (most recent call last):
+  File "<ipython-input-11-ed3c013d3df8>", line 1, in <module>
+    1j > 1
+TypeError: no ordering relation is defined for complex numbers</pre>
+<p>C&#8217;est ce qu&#8217;on appelle l&#8217;ordre naturel des éléments. Quand il n&#8217;y a pas d&#8217;ordre naturel évident (et que ce n&#8217;est pas une opération explicitement interdite comme avec les complexes), Python va comparer l&#8217;id (imaginez l&#8217;adresse en mémoire):</p>
+<pre lang="python">>>> class PersonnageDeLost(object):
+...     pass
+... 
+>>> mort1 = PersonnageDeLost()
+>>> mort2 = PersonnageDeLost()
+>>> mort1 < mort2
+True
+>>> id(mort1) # son id est plus petit, donc il est inférieur
+39611408
+>>> id(mort2)
+41720976</pre>
+<p>Mais on peut définir un ordre naturel pour un élément personnalisé en implémentant les méthodes suivantes:</p>
+<ul>
+<li><code>object.__lt__(self, other)</code></li>
+<li><code>object.__le__(self, other)</code></li>
+<li><code>object.__eq__(self, other)</code></li>
+<li><code>object.__ne__(self, other)</code></li>
+<li><code>object.__gt__(self, other)</code></li>
+<li><code>object.__ge__(self, other)</code></li>
+</ul>
+<p>N&#8217;implémentez plus <code>__cmp__</code>, elle est dépréciée.</p>
+<p>Par exemple:</p>
+<pre lang="python">class PersonnageDeCityHunter(object):
+
+    def __init__(self, nom, erectopouvoir):
+        self.nom = nom
+        self.erectopouvoir = erectopouvoir
+
+
+    def __lt__(self, other):
+        # on doit retourner un booléan qui confirme ou infirme 
+        # l'opération "lt" ("lower than", c'est à dire "plus petit que")
+        return self.erectopouvoir < other.erectopouvoir
+
+    def __gt__(self, other):
+        # on doit retourner un booléan qui confirme ou infirme 
+        # l'opération "gt" ("greater than", c'est à dire "plus grand que")
+        return self.erectopouvoir > other.erectopouvoir
+
+    # on peut faire la même chose pour les autres méthodes qui 
+    # concernent les opérateurs <=, >=, == et !=
+
+>>> PersonnageDeCityHunter('Ryo Saeba', 99999) > PersonnageDeCityHunter('Mamouth', 1)
+True
+>>> PersonnageDeCityHunter('Ryo Saeba', 99999) < PersonnageDeCityHunter('Mamouth', 1)
+False</pre>
+<h2>Ordonner une liste</h2>
+<p>Une liste est ce qu'on ordonne le plus souvent. Elle possède pour cela une méthode <code>sort()</code> qui est la méthode de tri la plus rapide qui existe avec la lib standard.</p>
+<p><code>sort()</code> trie une liste sur place (elle modifie donc la liste), et <strong>retourne None</strong>.</p>
+<pre lang="python">>>> l = [1, 7, 3, 8]
+>>> res = l.sort()
+>>> print res # n'assignez jamais le résultat de sort(), ça ne sert à rien !
+None
+>>> l
+[1, 3, 7, 8]</pre>
+<p>Les éléments sont triés dans leur ordre naturel automatiquement, <strong>du plus petit au plus grand</strong>:</p>
+<pre lang="python">>>> l = ['b', 'a', 'c']
+>>> l.sort()
+>>> l
+['a', 'b', 'c']
+>>> l = [(2, 1), (1, 2), (7, 8), (2, 2), (2, 0), (2, 3)]
+>>> l.sort()
+>>> l # ordonne sur le premier élément, puis le second si il y a égalité
+[(1, 2), (2, 0), (2, 1), (2, 2), (2, 3), (7, 8)]
+>>> persos = [PersonnageDeCityHunter('Ryo Saeba', 99999), PersonnageDeCityHunter('Mamouth', 1), PersonnageDeCityHunter('Kaori', 0)]
+>>> persos.sort()
+>>> for perso in persos:
+...     print perso.nom
+...     
+Kaori
+Mamouth
+Ryo Saeba</pre>
+<p>On peut demander à inverser l'odre de tri en passant l'argument <code>reverse</code>:</p>
+<pre lang="python">>>> l = [1, 7, 3, 8]
+>>> l.sort(reverse=True)
+>>> l
+[8, 7, 3, 1]</pre>
+<h2>Il n'y a pas que les listes dans la vie</h2>
+<p>Tout itérable est ordonnable, et la fonction <code>sorted()</code> permet justement d'ordonner n'importe quel itérable de taille finie. </p>
+<pre lang="python">>>> sorted([1, 7, 3, 8]) # une liste
+[1, 3, 7, 8]
+>>> sorted(set([1, 7, 3, 8])) # un set
+[1, 3, 7, 8]
+>>> sorted((1, 7, 3, 8)) # un tuple
+[1, 3, 7, 8]
+>>> sorted('Un clavier azerty en vaut deux') # une chaîne
+[' ', ' ', ' ', ' ', ' ', 'U', 'a', 'a', 'a', 'c', 'd', 'e', 'e', 'e', 'e', 'i', 'l', 'n', 'n', 'r', 'r', 't', 't, 'u', 'u', 'v', 'v', 'x', 'y', 'z']
+>>> sorted(open('/etc/fstab'))[:3] # un fichier
+['#\n', '#\n', '# / was on /dev/sda5 during installation\n']
+>>> import random # plus ou moins n'importe quoi
+>>> sorted([random.randint(0, 100) for x in range(random.randint(0, 20)) if x * 2 not in (42, 69)])
+[2, 4, 21, 35, 37, 41, 48, 48, 54, 58, 58, 59, 62, 76, 82, 94]</pre>
+<p><code>sort()</code> et <code>sorted()</code> <strong>acceptent toutes les deux les mêmes arguments</strong>. Ce que vous apprenez pour l'un vaut pour l'autre. La seul différence est que <code>sort()</code> retourne <code>None</code> et modifie sur place, tandis que <code>sorted()</code> retourne une nouvelle liste. <code>sorted()</code> est un peu moins performant.</p>
+<pre lang="python">>>> sorted((1, 7, 3, 8), reverse=True)
+[8, 7, 3, 1]</pre>
+<h2>Tri personnalisé avec <code>key</code></h2>
+<p>Parfois on a besoin de trier sur quelque chose de plus complexe qu'une lettre ou un chiffre. Par exemple, vous avez des scores dans un dictionnaires. Un dictionnaire n'est pas ordonné. Si vous imprimez un classement, il faut en faire une liste de tuples :</p>
+<pre lang="python">>>> scores = {'Robert': 2, 'Roger': 1, 'Gertrude': 4, 'Cunegonde': 3}
+>>> scores.items()
+[('Gertrude', 4), ('Cunegonde', 3), ('Robert', 2), ('Roger', 1)]</pre>
+<p>Et il faut maintenant ordonner ça sur le deuxième élément de chaque tuple : le score. Seulement si on appelle <code>sorted()</code>, il va trier sur l'ordre naturel, donc il va commencer par le premier élément, ça ne marchera pas :</p>
+<pre lang="python">>>> sorted(scores.items())
+[('Cunegonde', 3), ('Gertrude', 4), ('Robert', 2), ('Roger', 1)]</pre>
+<p>C'est là qu'intervient le paramètre <code>key</code>. <code>key</code> est très particulier, c'est un paramètre qui attend qu'on lui passe un <a href="http://sametmax.com/quest-ce-quun-callback/">callback</a>, donc <code>key</code> attend qu'on lui passe <strong>une fonction</strong>. </p>
+<p>Pas le résultat d'une fonction. La fonction elle même.</p>
+<p>Cette fonction doit attendre en paramètre un élément, et en <strong>extraire la partie sur laquelle on veut trier</strong>.</p>
+<p>Par exemple dans le cas des scores, on doit passer à <code>key</code> une fonction qui attend un tuple en paramètre, et retourne le score :</p>
+<pre lang="python">>>> def get_score(nom_et_score):
+...     return nom_et_score[1] # retourne le 2nd element du tuple
+... 
+>>> sorted(scores.items(), key=get_score) # on passe la fonction a key
+[('Roger', 1), ('Robert', 2), ('Cunegonde', 3), ('Gertrude', 4)]</pre>
+<p>Et voilà, c'est trié dans le bon ordre car <code>sorted()</code> va utiliser <code>get_score()</code> pour récupérer la valeur de chaque élément un par un,  sur laquelle on va trier la liste (selon l'ordre naturel de cette valeur).</p>
+<p>On peut utiliser <code>key</code> pour faire des choses beaucoup plus complexes, comme comparer sur des valeurs qui n'existent pas, mais que l'on calcule :</p>
+<pre lang="python">>>> def carre(val): # on va ordonner par valeur de carré
+...     return val * val 
+... 
+>>> sorted([-1, -2, 0, 3], key=carre)
+[0, -1, -2, 3]</pre>
+<p>Ici, un carré est toujours positif, du coup on retrouve -1 et -2 devant 0, car leurs carrés 1 et 4 sont plus grands que le carré 0 de 0.</p>
+<p>Ne vous embrouillez pas : la valeur retournée par <code>carre()</code> n'est pas MISE dans la liste, elle est juste utilisée pour choisir l'ordre d'un élément dans la liste.</p>
+<p>On peut même faire des comparaisons très avancées, comme par exemple comparer sur plusieurs attributs d'un objet. Imaginez, je veux ordonner des objets voitures selon leur coût d'entretien d'abord, et ensuite par coût d'achat.</p>
+<pre lang="python">class Voiture(object):
+    
+    def __init__(self, cout_entretien, cout_achat):
+        self.cout_entretien = cout_entretien
+        self.cout_achat = cout_achat
+
+    def __repr__(self):
+        return "<Voiture E-{} / A-{}>".format(self.cout_entretien, self.cout_achat)
+
+>>> voitures = [Voiture(10000, 10000), Voiture(50000, 10000), Voiture(10000, 60000)]
+>>> voitures
+[<Voiture E-10000 / A-10000>, <Voiture E-50000 / A-10000>, <Voiture E-10000 / A-60000>]
+>>> def get_entretien_achat(voiture): 
+...         return (voiture.cout_entretien, voiture.cout_achat)
+... 
+>>> sorted(voitures, key=get_entretien_achat)
+[<Voiture E-10000 / A-10000>, <Voiture E-10000 / A-60000>, <Voiture E-50000 / A-10000>]</pre>
+<p><code>get_entretien_achat()</code> retourne un tuple de deux valeurs. Python va donc ordonner sur ce tuple, dans l'odre naturel du tuple en prenant la première valeur comme point de comparaison (coût d'entretien), puis la seconde (coût d'achat) si les valeurs sont égales. </p>
+<p>On peut donc comparer des objets arbitraires sur des critères arbitraires.</p>
+<p>La plupart du temps, vous voudrez juste comparer sur un élément ou un attribut, donc dans ce cas le module <a href="http://sametmax.com/le-module-operator-en-python/">operator</a> (ou une <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">lambda</a>) est votre ami :</p>
+<pre lang="python">>>> from operator import attrgetter, itemgetter
+>>> sorted(voitures, key=attrgetter('cout_achat')) # ordonner par cout d'achat
+[<Voiture E-10000 / A-10000>, <Voiture E-50000 / A-10000>, <Voiture E-10000 / A-60000>]
+>>> sorted(scores.items(), key=itemgetter(1)) # ordonner par score
+[('Roger', 1), ('Robert', 2), ('Cunegonde', 3), ('Gertrude', 4)]
+>>> sorted(scores.items(), key=itemgetter(1), reverse=True) 
+[('Gertrude', 4), ('Cunegonde', 3), ('Robert', 2), ('Roger', 1)]</pre>
+<p>Pour finir, je vous invite à lire l'<a href="http://sametmax.com/heapq-le-module-python-incompris/">article sur le module heapq</a> qui lui permet de faire des tris sur des flux de données sans taille définie.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ordonner-en-python/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">4107</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/01/XY7FXMW76PIX1300732739015.jpg" length="476380" type="image/jpg" />	</item>
+		<item>
+		<title>Le module operator en Python</title>
+		<link>http://sametmax.com/le-module-operator-en-python/</link>
+		<comments>http://sametmax.com/le-module-operator-en-python/#comments</comments>
+		<pubDate>Sat, 12 Jan 2013 10:17:33 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[fonction]]></category>
+		<category><![CDATA[operator]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4102</guid>
+		<description><![CDATA[Le module <code>operator</code> contient des fonctions qui font ce que font les opérateurs. ]]></description>
+				<content:encoded><![CDATA[<p>Le module <code>operator</code> contient des fonctions qui font ce que font les opérateurs. Exemple :</p>
+<pre lang="python">>>> from operator import add, gt
+>>> add(1, 1) # fait en fonction ce que ferait 1 + 1
+>>> gt(1, 2) # fait en fonction ce que ferait 1 > 2</pre>
+<p>On a donc dans le module <code>operator</code> de quoi remplacer les opérateurs <code>+</code>, <code><</code>, <code>not</code>, etc. par des fonctions.</p>
+<p>Les opérateurs <code>or</code> et <code>and</code> n'ont pas de fonctions équivalentes car ils short circuitent, ce que ne peut pas faire une fonction. <code>operator.and_</code> et <code>operator.or_</code> sont des fonctions pour <code>&</code> et <code>|</code>, par pour <code>or</code> et <code>and</code>.</p>
+<p>Il y a des opérateurs qu'on oublie souvent, comme l'opérateur <code>[]</code>. Le module <code>operator</code> contient des fonctions pour lui également.</p>
+<pre lang="python">>>> from operator import getitem, getslice
+>>> lst = [1, 2, 3]
+>>> lst[0]
+1
+>>> getitem(lst, 0)
+1
+>>> lst[:2]
+[1, 2]
+>>> getslice(lst, 0, 2)
+[1, 2]</pre>
+<p>On oublie parfois l'opérateur ".". Il y a une fonction builtin pour ça:</p>
+<pre lang="python">>>> class Classe(object):
+...     def __init__(self, type):
+...         self.type = type
+...         
+>>> c = Classe('cm2')
+>>> c.type
+'cm2'
+>>> getattr(c, 'type')
+'cm2'</pre>
+<p>Mais le plus étonnant dans le module <code>operator</code>, c'est qu'il a des fonctions qui retournent... des fonctions.</p>
+<pre lang="python">>>> from operator import itemgetter
+>>> getfirst = itemgetter(0)
+>>> getfirst([1, 2, 3])
+1
+>>> getfirst('abc')
+'a'
+>>> getsecond = itemgetter(1)
+>>> getsecond([1, 2, 3])
+2
+>>> getsecond("abc")
+'b'
+>>> getlast = itemgetter(-1)
+>>> getlast(range(100))
+99
+</pre>
+<p>Ici on créer des fonctions qui ont pour seul triste but dans la vie de retourner l'élément à l'index donné. <code>getfirst</code> retournera l'élément <code>0</code>. <code>getsecond</code> retournera l'élément à l'index <code>1</code>. <code>getlast</code> retournera l'élément à l'index <code>-1</code>. <code>itemgetter(</code>) est un créateur de fonction qui ne font que ça: retourner un seul élément.</p>
+<p>On pourrait aussi le faire avec une <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">lambda</a>:</p>
+<pre lang="python">>>> getfirst = lambda x: x[0]
+>>> getfirst([1, 2, 3])
+1</pre>
+<p>On a le même chose de chose pour les attributs. <code>attrgetter</code> est une fonction qui crée une fonction. La fonction créée retourne toujour la valeur du même attribut.</p>
+<pre lang="python">>>> from operator import attrgetter
+>>> gettype = attrgetter('type') # crée une fonction qui ...
+>>> gettype(Classe('cm2')) # ... retourne la valeur de l'attribut 'type'
+'cm2'
+>>> gettype(Classe('6eme'))
+'6eme'</pre>
+<p>On pourrait aussi le faire avec une <code>lambda</code>:</p>
+<pre lang="python">>>> gettype = lambda x: x.type
+>>> gettype(Classe('6eme'))
+'6eme'</pre>
+<p>Ces fonctions n'ont pas l'air utile comme ça, mais en Python les fonctions peuvent être passées en paramètres. Cela permet donc de faire des choses intéressante comme de <a href="http://sametmax.com/quest-ce-quun-callback/">l'injection de dépendance</a>. C'est notamment ainsi que fonctionne <code>key</code> dans <a href="http://docs.python.org/2/library/functions.html?highlight=sorted#sorted">sorted()</a>.</p>
+<p>Bref, jetez un coup d'oeil à operator, il est plein comme un oeuf:</p>
+<pre lang="python">>>> from operator import <tab>
+abs               delitem           getslice          ilshift           ior               isSequenceType    le                neg               sequenceIncludes
+add               delslice          gt                imod              ipow              is_               lshift            not_              setitem
+and_              div               iadd              imul              irepeat           is_not            lt                or_               setslice
+attrgetter        eq                iand              index             irshift           isub              methodcaller      pos               sub
+concat            floordiv          iconcat           indexOf           isCallable        itemgetter        mod               pow               truediv
+contains          ge                idiv              inv               isMappingType     itruediv          mul               repeat            truth
+countOf           getitem           ifloordiv         invert            isNumberType      ixor              ne                rshift            xor
+</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-module-operator-en-python/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">4102</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/01/02486902-photo-logo-orange.jpg" length="44293" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,716 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>sql &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/sql/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Les critiques des ORM sont à côté de la plaque</title>
+		<link>http://sametmax.com/les-critiques-des-orm-sont-a-cote-de-la-plaque/</link>
+		<comments>http://sametmax.com/les-critiques-des-orm-sont-a-cote-de-la-plaque/#comments</comments>
+		<pubDate>Fri, 29 Dec 2017 10:31:05 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[orm]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sql]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=23967</guid>
+		<description><![CDATA[En ce moment, y a deux modes. Dire que les cryptomonnaies c'est génial, et dire que les ORM c'est de la merde.
+
+Durant les derniers articles, je pense qu'on vous a assez parlé de crypto, donc on va parler des ORM.]]></description>
+				<content:encoded><![CDATA[<p>En ce moment, y a deux modes. Dire que les cryptomonnaies c&#8217;est génial, et dire que les ORM c&#8217;est de la merde.</p>
+<p>Durant les derniers articles, je pense qu&#8217;on vous a assez parlé de crypto, donc on va parler des ORM.</p>
+<p>Ou ORMs. Je sais jamais si les acronymes s&#8217;accordent.</p>
+<h2>Rappel: qu&#8217;est-ce qu&#8217;un ORM ?</h2>
+<p>Si vous avez lu le titre de l&#8217;article et que votre sang n&#8217;a fait qu&#8217;un tour, vous pouvez passer tout de suite à la partie suivante, puisqu&#8217;on va commencer par les révisions.</p>
+<p>Un ORM, pour <a href="https://en.wikipedia.org/wiki/Object-relational_mapping">Object-relational Mapping</a>, est une bibliothèque qui permet de décrire son modèle de données, et d&#8217;utiliser cette description pour faire le lien entre votre application et une base de données relationnelle. Dans sa forme la plus courante, l&#8217;ORM fournit les outils pour générer des requêtes SQL &#8211; sans écrire du SQL &#8211; et les exécuter, mais présente également les résultats sous forme d&#8217;objets du langage dans lequel il est écrit.</p>
+<p>Par exemple, en Python, je peux faire de la base de données à la mano (sans ORM):</p>
+<pre lang="python">import sqlite3
+
+# Création de la base
+with sqlite3.connect('db.sqlite') as conn:
+
+    # On se positionne sur la base
+    c = conn.cursor()
+
+    # Créer la table
+    c.execute('''
+        CREATE TABLE product (
+            name text,
+            price real
+        )
+    ''')
+
+    # Insertion de données en base
+    c.execute("INSERT INTO product VALUES ('Pizza', 5000)")
+    c.execute("INSERT INTO product VALUES ('Love', 150)")
+    c.execute("INSERT INTO product VALUES ('Nessie', 3.5)")
+
+    # Sauvegarde des changements
+    conn.commit()
+
+    # Lecture de toute la base:
+    for row in c.execute('SELECT * FROM product'):
+        print(type(row), ':', *row)</pre>
+<p>Ce qui va me sortir:</p>
+<pre>python3 db.py
+&lt; class 'tuple' &gt; : Pizza 5000.0
+&lt; class 'tuple' &gt; : Love 150.0
+&lt; class 'tuple' &gt; : Nessie 3.5</pre>
+<p>Et voici la même chose avec l&#8217;ORM <a href="http://docs.peewee-orm.com/en/latest/">peewee</a> (apres <code>pip install peewee</code> :)):</p>
+<pre lang="python">import peewee as pw
+
+# On créé la base
+db = pw.SqliteDatabase('product2.db')
+
+# Description de la table.
+class Product(pw.Model):
+
+    name = pw.CharField()
+    price = pw.FloatField()
+
+    class Meta:
+        database = db
+
+# Connection et création de la table
+db.connect()
+db.create_tables([Product])
+
+# Insertion de données en base
+Product.create(name='Pizza', price=5000)
+Product.create(name='Love', price=150)
+Product.create(name='Nessie', price=3.5)
+
+for p in Product.select():
+    print(type(p), ':', p.name, p.price)
+
+db.close()</pre>
+<p>Ce qui sort:</p>
+<pre>python3 db.py
+&lt; class '__main__.Product' &gt; : Pizza 5000.0
+&lt; class '__main__.Product' &gt; : Love 150.0
+&lt; class '__main__.Product' &gt; : Nessie 3.5
+</pre>
+<p>A priori, c&#8217;est la même chose, mais avec un style différent. Le premier exemple favorise l&#8217;écriture du SQL à la main, fait les requêtes explicitement et récupère les résultats sous forme de tuples. Le second a une surcouche, l&#8217;ORM, qui implique que tout est décrit en Python. Le SQL est généré sous le capot, et on récupère les résultats sous forme d&#8217;objets <code>Product</code>.</p>
+<p>Il existe de <a href="https://www.pythoncentral.io/sqlalchemy-vs-orms/">nombreux ORM</a> en Python, les plus populaires étant Peewee (pour les petits besoins), <a href="http://docs.sqlalchemy.org/en/latest/orm/tutorial.html">SQLAlchemy</a> (pour les gros projets) et l&#8217;<a href="https://docs.djangoproject.com/en/2.0/topics/db/models/">ORM de Django</a> (ben, si vous utilisez Django ^^). Évidemment le concept des ORM n&#8217;est pas particulièrement lié à Python, et on en retrouve dans tous les langages, avec des variations de styles et de fonctionnalités.</p>
+<h2>Que reproche-t-on aux ORM ?</h2>
+<p>Avant de répondre aux détracteurs, listons d&#8217;abord leurs arguments.</p>
+<ul>
+<li>C&#8217;est un niveau d&#8217;indirection de plus, avec de l&#8217;implicite et de la magie.</li>
+<li>L&#8217;ORM va générer des requêtes non optimisées, voire lentes.</li>
+<li>SQL est un excellent DSL spécialisé dans les requêtes. Au lieu d&#8217;apprendre une API de plus, autant aller à la source.</li>
+<li>SQL marche pareil d&#8217;un client à l&#8217;autre, donc la connaissance est réutilisable, contrairement à celle de son ORM.</li>
+<li>C&#8217;est une béquille pour ne pas apprendre le SQL, et par ailleurs va amener tot ou tard les ignorants à se tirer une balle dans le pied.</li>
+<li>Les ORMs ne peuvent pas permettre l&#8217;usage de toutes les fonctionnalités de sa base de données, et donc limitent la puissance qu&#8217;on en tire.</li>
+<li>Ça ne scale pas. Les gros sites, comme Instagram qui est écrit en Django, on tous finit par virer leurs ORM.</li>
+</ul>
+<p>Et vous savez quoi ?</p>
+<p>Ils ont raison.</p>
+<h2>Heu ?</h2>
+<p>Toutes ces critiques sont parfaitement justifiées.</p>
+<p>Sauf qu&#8217;elles passent complètement à côté de la problématique.</p>
+<p><em>Les ORM ne servent pas à éviter d&#8217;écrire du SQL.</em></p>
+<p>Ça, c&#8217;est vaguement un effet de bord.</p>
+<p>Ils servent à créer une API unifiée inspectable, une expérience homogène, un point d&#8217;entrée unique, un socle de référence explicite et central, pour le modèle de données.</p>
+<p>Une fois qu&#8217;on a passé pas mal de temps à faire des projets, on note toujours la même chose: <a href="http://sametmax.com/les-plus-grosses-roues-du-monde/">certaines parties du logiciel sont réécrites encore et encore</a>. Si un projet commence à parler à une source de données à la main (API, base de données, crawling, fichiers, etc), tôt ou tard, quelqu&#8217;un dans l&#8217;équipe va commencer à écrire une abstraction. Celle-ci va grossir, et finir par implémenter au bout de nombreux mois, pour l&#8217;accès à la base de données, un semi ORM dégueulasse, mal testé / documenté.</p>
+<p>Mais, si les requêtes SQL à la main c&#8217;est si bien, alors pourquoi ça arrive ?</p>
+<p>Simplement parce que tout projet qui grandit a besoin d&#8217;une forme de gestion de la complexité. Ca passe par avoir un point, et un seul où sont décrites à quoi ressemblent les données, leurs accès, leurs garanties, leurs contraintes, et leurs validations. Ca passe aussi par permettre aux autres parties du projet d&#8217;utiliser automatiquement ces informations pour leur code métier, ainsi que la logique associée.</p>
+<h2>L&#8217;exemple de Django</h2>
+<p>L&#8217;ORM Django n&#8217;est pas vraiment le projet Python le plus propre. Il a plein de limitations et bizarreries, et son principal concurrent, SQLAlchemy est probablement une des meilleures libs au monde dans cette spécialité.</p>
+<p>Mais !</p>
+<p>Il est au coeur de ce qui a fait autant le succès colossal de Django.</p>
+<p>Parce que Django est organisé autour de son ORM, il peut proposer:</p>
+<ul>
+<li>Des <a href="https://docs.djangoproject.com/en/2.0/topics/forms/">validateurs</a> générés automatiquement qui permettent de valider toute saisie de données, et sauvegarder les changements en base de données. Si besoin, il peuvent générer des formulaires HTML afin de proposer une saisie utilisateur automatiquement contrôlée et nettoyée, avec messages d&#8217;erreurs pre-traduits.</li>
+<li><a href="https://docs.djangoproject.com/en/2.0/ref/class-based-views/generic-display/">Des vues</a> pour lire, lister, mettre à jour et supprimer les données, générées automatiquement. Y a plus qu&#8217;à mettre du HTML autour.</li>
+<li><a href="https://docs.djangoproject.com/en/2.0/ref/contrib/admin/">Une admin</a> de base de données autogénérée. Un backend gratos et customisable pour votre projet.</li>
+<li>Une <a href="https://docs.djangoproject.com/en/2.0/topics/http/shortcuts/">pléthore d&#8217;outils</a> pour gérer les données: <a href="https://docs.djangoproject.com/en/1.11/ref/signals/#module-django.db.models.signals">signals</a>, getters, auto-castage en objet natifs, validation avancées, etc.</li>
+<li>Des points d&#8217;entrées pour étendre la manipulation de ces données de manière générique (<a href="https://docs.djangoproject.com/en/2.0/ref/models/fields/">fields</a>, <a href="https://docs.djangoproject.com/en/2.0/topics/db/managers/">managers</a>, etc).</li>
+<li>De l&#8217;<a href="https://docs.djangoproject.com/en/2.0/topics/migrations/">outillage pour les migrations</a>.</li>
+<li>Un worflow d&#8217;<a href="https://docs.djangoproject.com/en/2.0/topics/auth/">authentification</a>, d&#8217;identification, de session, de cache et de permissions.</li>
+<li>La normalisation automatique des valeurs: <a href="https://docs.djangoproject.com/en/2.0/ref/unicode/">encoding</a>, <a href="https://docs.djangoproject.com/en/2.0/topics/i18n/">fuseaux horaires</a>, devises, format de textes et nombres. Et les points d&#8217;entrées pour écrire les siens pour plugger ceux de quelqu&#8217;un d&#8217;autre.</li>
+</ul>
+<p>A cela se rajoute le fait que tous les projets Django se ressemblent. Il est très facile de passer d&#8217;une équipe à une autre, d&#8217;un projet à une autre. La formalisation du schéma devient une documentation, et la seule source de la vérité à propos des données, et pas juste celle de la base. Et qui est commité dans Git. Pour savoir ce que fait un projet Django, il suffit de regarder urls.py, settings.py et models.py, et c&#8217;est parti.</p>
+<p>Mais ce n&#8217;est pas tout. L&#8217;ORM ne fait pas que définir un point central inspectable et des outils réutilisables. Il donne aussi une base commune sur laquelle tout le monde peut compter.</p>
+<p>Et pour cette raison, l&#8217;écosystème Django est très, très riche en modules tierces partis qui se pluggent en 3 coups de cuillère à pot:</p>
+<ul>
+<li>De quoi <a href="http://www.django-rest-framework.org/">générer une API REST complète</a> à partir du modèle.</li>
+<li><a href="https://djangopackages.org/grids/g/authentication/">Des dizaines de backend d&#8217;authentification.</a></li>
+<li>Moult outils de manipulations de données (<a href="http://viewflow.io/">workflow</a>, <a href="https://github.com/carltongibson/django-filter">filtrage</a>, <a href="https://github.com/talpor/django-dashing">dashboard</a>, <a href="https://github.com/jcassee/django-analytical">analytics</a>, etc) qui marchent out of the box.</li>
+<li>Et ces fameux bidules dont on a tous besoin: <a href="https://github.com/alex/django-taggit/">tags</a>, <a href="https://django-haystack.readthedocs.io/en/master/">recherche</a>, <a href="https://github.com/HonzaKral/django-threadedcomments">commentaires</a>, <a href="http://django-allauth.readthedocs.io/en/latest/">registrations</a>, <a href="https://github.com/ASKBOT/askbot-devel">posts de forum</a>, <a href="https://wagtail.io/">pages de cms</a>, <a href="https://github.com/montylounge/django-mingus">articles de blog</a>, <a href="http://django-oscar.readthedocs.io/en/latest/">fiches produits d&#8217;e-commerce</a>, <a href="https://github.com/applecat/django-simple-poll">résultats de sondages</a>&#8230;</li>
+</ul>
+<p>La cerise sur le gâteau ? Parce que tout ça utilise l&#8217;ORM, tout ça est compatible ensemble. Votre authentification social auth va produire un objet user qui pourra se logger, consulter un dashboard qui contiendra le résultat d&#8217;un sondage sur un produit de la boutique.</p>
+<p>Et ça marche avec MySQL, Oracle, SQLite ou PosgreSQL, comme l&#8217;intégralité du framework, gratos.</p>
+<p>Ce n&#8217;est pas l&#8217;apanage de Django hein, RoR fait pareil.</p>
+<p>Maintenant prenez un projet NodeJS. Pour le coup, pas parce que &#8220;JS ça pue&#8221; mais parce que la culture de l&#8217;ORM n&#8217;est pas très présente dans cette communauté. Non pas que ça n&#8217;existe pas, mais il n&#8217;y a pas de Django du monde du Javascript. Même les gros framework type Meteor n&#8217;ont rien d&#8217;aussi intégré.</p>
+<p>Vous allez devoir réapprendre toute la mécanique de gestion de données si vous changez de projet, car ça sera fait différemment à chaque fois. Vous allez devoir former des gens.</p>
+<p>Et surtout vous allez devoir réécrire tout ça.</p>
+<p>Oh bien sûr, vous aurez une bibliothèque pour chaque chose, mais elle sera écrite différemment. Vous n&#8217;aurez pas d&#8217;objet User sur qui compter. Votre moyen de traduire le texte ? Pas le même. Vous utilisez Oracle mais l&#8217;auteur PostgreSQL ? Pas de bol. Vous voulez générer quelque chose à partir de votre modèle de données ? Ah, pourquoi vous croyez que facebook a créé GraphQL ! Une petite migration ? Vous avez le choix de l&#8217;embarras. Bon, maintenant vous allez gérer les dates, et 4 de vos bibliothèques les sérialisent différemment et une utilise l&#8217;heure locale au lieu d&#8217;UTC.</p>
+<p>Évidemment, on sait que votre équipe ne testera pas tout ça, et ne documentera pas tout ça. La suivante non plus.</p>
+<p>Donc non, l&#8217;ORM, ce n&#8217;est pas parce que &#8220;mais heu SQL c&#8217;est dur&#8221;.</p>
+<p>C&#8217;est parce que ça permet de créer un monde autour.</p>
+<h2>Objection !</h2>
+<p><strong>On a des abstractions qui ne sont pas des ORM&#8230;</strong></p>
+<p>L&#8217;important est d&#8217;avoir un modèle central, pas un ORM. Mais les ORM font ça particulièrement bien.</p>
+<p>Il existe des abstractions (ex: <a href="https://msdn.microsoft.com/en-us/library/bb308959.aspx">LINQ</a>) qui font un excellent travail pour masquer la source de données. Mais elles ne sont pas un remplacement pour un modèle introspectable central listant nature et contraintes.</p>
+<p>Une bonne lib propose les deux.</p>
+<p>Par exemple SQLALchemy propose un ORM, mais en vérité <a href="http://docs.sqlalchemy.org/en/latest/core/tutorial.html">l&#8217;API de base est fonctionnelle</a> et composable. Pour cette raison, on peut utiliser toutes fonctionnalités avancées de sa base de données avec SQLAlchemy car on a cette alternative à l&#8217;ORM à tout moment, et qui est compatible avec l&#8217;ORM.</p>
+<p><strong>Mais les perfs !</strong></p>
+<p>D&#8217;abord, on optimise pour les humains. En chemin, on optimise pour la machine. Quand ton ORM arrête de scaler, c&#8217;est un BON problème à avoir. Ca veut dire que le projet a atteint un certain succès, et qu&#8217;on peut investir dans la séparation avec l&#8217;ORM.</p>
+<p>De plus, aucune technologie n&#8217;est faite pour être utilisée partout, tout le temps, pour tout le projet.</p>
+<p>Google a connu ses débuts de succès en Python, et avec sa taille, a réécrit une partie en Java, C puis Go. C&#8217;est logique, on ne commence pas avec un langage bas niveau directement, c&#8217;est trop lent à écrire. Mais on ne garde pas un langage haut niveau pour tout quand ça monte dans les tours. Enfin les tours&#8230; Là on parle de centrifugeuse cosmique hein.</p>
+<p>Car gardez en tête que vous n&#8217;êtes PAS Google. L&#8217;immense majorité des projets deviennent viables, rentables, puis pleins de succès, sans jamais atteindre l&#8217;échelle qui amène aux limites de l&#8217;ORM.</p>
+<p>Quant à l&#8217;idée que votre stagiaire peut écrire une boucle avec une requête à chaque step&#8230; Il peut tout aussi bien écrire une requête SQL sans se protéger correctement l&#8217;injection de code. C&#8217;est con un stagiaire, faut le surveiller. C&#8217;est le principe, sinon il aurait un CDI.</p>
+<p><strong>Mais les fonctionnalités !</strong></p>
+<p>Les ORM bien faits n&#8217;empêchent pas d&#8217;utiliser toutes les fonctionnalités de son système. Et tous permettent d&#8217;écrire du SQL à la main si besoin. C&#8217;est comme les blocks <code>unsafe</code> de rust: on empêche pas, on isole.</p>
+<p>L&#8217;idée c&#8217;est de garder ça pour le moment où on en a vraiment besoin. SQL est à la base de données ce que l&#8217;assembleur est à la machine. On n’écrit pas tout en assembleur de nos jours, ça n&#8217;est pas utile.</p>
+<p>Root of all evil, tout ça.</p>
+<p><strong>Mais on ne change pas de base de données souvent !</strong></p>
+<p>L&#8217;argument &#8220;l&#8217;orm supporte plusieurs bases&#8221; n&#8217;est pas destiné à la migration de données d&#8217;un projet existant d&#8217;une base de données à une autre.</p>
+<p>Pas. Du. Tout.</p>
+<p>C&#8217;est pas que ça arrive jamais. Ça m&#8217;est déjà arrivé 2, 3 de fois.</p>
+<p>Mais ce n&#8217;est pas le cas courant. Le cas courant c&#8217;est la réutilisation <em>du code</em> d&#8217;un projet précédent dans un nouveau projet utilisant une base de données différente. C&#8217;est la création d&#8217;un écosystème de modules qui ne sont pas dépendants de la base de données.</p>
+<p>Si vous faites une &#8220;app&#8221; Django, vous pouvez la publier et elle sera utile pour toutes les bases de données supportées. Et c&#8217;est pour ça qu&#8217;il y autant d&#8217;outils.</p>
+<p><strong>Mais on pourrait avoir un modèle central sans ORM !</strong></p>
+<p>Oui, mais toutes les formes ne se valent pas.</p>
+<p>Par exemple, <a href="http://www.doctrine-project.org/projects/orm.html">Doctrine</a> permet d&#8217;écrire son modèle dans un fichier YAML, et <a href="http://hibernate.org/">Hibernate</a> dans un fichier XML.</p>
+<p>Au final on écrit son modèle dans un langage moins complet, moins expressif, moins facile à débugger et avec moins de tooling. On perd encore plus en faisant ça qu&#8217;en passant de SQL à un ORM, sans autant de gains.</p>
+<p>En prime, on peut vouloir de la logique de validation très complexe ou des choses à faire hors validation (signals, génération dynamique de modèle, etc), et là, pouet.</p>
+<p>Une alternative, ça serait de se servir d&#8217;une lib de pur modèle (ex: l&#8217;excellent <a href="https://marshmallow.readthedocs.io/en/latest/">marshmallow</a>) et de tout dériver de là. Une approche intéressante qui pourrait satisfaire tous les camps, mais que je n&#8217;ai jamais vu poussée jusqu&#8217;au bout dans aucun framework. Si vous cherchez un projet pour vos week-end :)</p>
+<h2>Lib VS framework</h2>
+<p>C&#8217;est un peu le vieux débat du découplage VS intégration qu&#8217;on retrouve dans la critique des ORM (ou dans vi VS vscode, POO vs fonctionnel, ta femme vs ta mère&#8230;).</p>
+<p>Et comme d&#8217;habitude on retrouve toujours les meilleurs programmeurs du côté de ceux qui veulent le plus de liberté (vive SQL!) parce qu&#8217;ils ignorent complètement les problématiques qui vont plus loin que leur fichier de code. Faire fleurir un écosystème, gérer une communauté, favoriser la productivité, facilité l&#8217;intégration des membres de ses équipes&#8230; Tout ça sont des problématiques moins funs que de faire la requête parfaite avec le tout nouveau champ hyperloglog de PostGres.</p>
+<p>Difficile de convaincre des gens qui sont non seulement excellents, mais qui sauront, seuls, être très productifs sans ORM. Surtout quand les gros projets qui atteignent des centaines de millions d&#8217;utilisateurs par jour finissent toujours par se séparer de leurs abstractions initiales.</p>
+<p>Mais voilà, il ne faut pas perdre de vue que 2 projets sur 3 en informatique, échouent. Quasiment jamais pour des raisons techniques. Généralement la cause est humaine. Et l&#8217;ORM est là pour soutenir l&#8217;humain en créant un pivot sur lequel il peut compter, quitte à investir plus tard pour s&#8217;en passer.</p>
+<p>C&#8217;est un excellent outil et une très belle réussite de l&#8217;informatique moderne. Si on sait l&#8217;aborder sans dogmatisme.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-critiques-des-orm-sont-a-cote-de-la-plaque/feed/</wfw:commentRss>
+		<slash:comments>41</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">23967</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/12/one-cock-ring-to-rule-them-all.jpg" length="99429" type="image/jpg" />	</item>
+		<item>
+		<title>Automatiser un peu plus SQLAlchemy declarative</title>
+		<link>http://sametmax.com/automatiser-un-peu-plus-sqlalchemy-declarative/</link>
+		<comments>http://sametmax.com/automatiser-un-peu-plus-sqlalchemy-declarative/#comments</comments>
+		<pubDate>Wed, 29 Oct 2014 12:34:00 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[declarative]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sql]]></category>
+		<category><![CDATA[sqlalchemy]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12584</guid>
+		<description><![CDATA[Avec l'intégration de l'interface déclarative d'SQLAlchemy, le projet Elexir est mort, et bien mort. Mais avec lui, la syntaxe la plus simple de déclaration pour cet ORM.]]></description>
+				<content:encoded><![CDATA[<p>Avec l&#8217;intégration de l&#8217;interface déclarative d&#8217;SQLAlchemy, le projet Elexir est mort, et bien mort. Mais avec lui, la syntaxe la plus simple de déclaration pour cet ORM. En effet, par défaut, SQLA vous oblige à spécifier le nom de la table et l&#8217;attribut ID pour chaque classe :</p>
+<pre lang="python">from sqlalchemy import Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine
+ 
+Base = declarative_base()
+ 
+class Person(Base):
+    # explicit is better than... fuck it !
+    __tablename__ = 'person' 
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+
+class Animal(Base):
+    __tablename__ = 'animal'
+    id = Column(Integer, primary_key=True) # Paie ton DRY
+    name = Column(String(250), nullable=False)
+
+engine = create_engine('sqlite:///db.db.db...db')
+Base.metadata.create_all(engine)</pre>
+<p>SQLA est très flexible, et il existe des tas de raisons pour vouloir un PK ou un nom de table custo. Mais dans beaucoup de projets, le nom de la table peut être le nom de la classe, et la PK peut être un ID auto incrémenté.</p>
+<p>Heureusement, la lib vous permet de customiser absolument tout, même la manière dont on doit la customiser. Si c&#8217;est pas méta, tout ça&#8230;</p>
+<p>Bref, on peut créer sa propre base déclarative qui va faire tout ça pour nous :</p>
+<pre lang="python">from sqlalchemy.ext.declarative import as_declarative, declared_attr
+
+# Ceci sera le parent de tout nos objets
+@as_declarative()
+class Base(object):
+ 
+    # Vu qu'on a pas vraiment envie de se réécrire la
+    # métaclasse, SQLA nous file ce gentil décorateur 
+    # pour déclarer des attributs qui ne sont pas des 
+    # champs
+    @declared_attr
+    def __tablename__(cls):
+        # le nom de la table est le nom de la classe
+        return cls.__name__.lower()
+    # L'id c'est la vie
+    id = Column(Integer, primary_key=True)
+ 
+class Person(Base):
+    name = Column(String(250), nullable=False)
+
+class Animal(Base):
+    name = Column(String(250), nullable=False)</pre>
+<p>Evidemment il faut que vous soyez certains d&#8217;éviter les conflits liés à cette décision, mais c&#8217;est quand même vachement pratique.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/automatiser-un-peu-plus-sqlalchemy-declarative/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">12584</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/10/Bruce-Lee-Simplicity-is-the-key-2-brilliance.jpg" length="72605" type="image/jpg" />	</item>
+		<item>
+		<title>Le pandas c&#8217;est bon, mangez en</title>
+		<link>http://sametmax.com/le-pandas-cest-bon-mangez-en/</link>
+		<comments>http://sametmax.com/le-pandas-cest-bon-mangez-en/#comments</comments>
+		<pubDate>Sat, 10 May 2014 06:30:35 +0000</pubDate>
+		<dc:creator><![CDATA[joshuafr]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[data]]></category>
+		<category><![CDATA[numpy]]></category>
+		<category><![CDATA[pandas]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[r]]></category>
+		<category><![CDATA[sql]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10113</guid>
+		<description><![CDATA[Bonjour à tous, jeunes tailleurs de bambou, suite à un article d'introduction à numpy par le grand maître Sam <a href="http://sametmax.com/les-bases-de-numpy/" title="Les bases de Numpy" target="_blank">Les bases de Numpy</a>, je m'en vais vous présenter une lib qui roxx du poney dans le calcul numérique : <a href="http://pandas.pydata.org/" title="Pandas" target="_blank">Pandas</a>.]]></description>
+				<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/joshuafr/">joshuafr</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<p>Bonjour à tous, jeunes tailleurs de bambou, suite à un article d&#8217;introduction à numpy par le grand maître Sam <a href="http://sametmax.com/les-bases-de-numpy/" title="Les bases de Numpy" target="_blank">Les bases de Numpy</a>, je m&#8217;en vais vous présenter une lib qui roxx du poney dans le calcul numérique : <a href="http://pandas.pydata.org/" title="Pandas" target="_blank">Pandas</a>.</p>
+<p>Pour faire simple, Pandas apporte à Python la possibilité de manipuler de grands volumes de données structurées de manière simple et intuitive, chose qui faisait défaut jusqu&#8217;ici. Il y a bien eu quelques tentatives comme <a href="https://pypi.python.org/pypi/la">larry</a>, mais rien n&#8217;avait jamais pu égaler les fonctionnalités du langage R. Aujourd&#8217;hui Pandas y arrive en fournissant notamment le célèbre type <strong>dataframe</strong> de R, avec en prime tout un tas d&#8217;outils pour agréger, combiner, transformer des données, et tout ça sans se casser le cul. Que du bonheur!</p>
+<p>Donc pour commencer, on installe le bousin par un simple : <code>pip install pandas</code> qui va si vous ne l&#8217;avez pas déjà fait, aussi télécharger/compiler/installer tout un tas de librairies dont numpy. Je vous conseille aussi d&#8217;utiliser <a href="http://ipython.org/">ipython</a> afin d&#8217;avoir une meilleure interaction avec les libs, notamment avec <a href="http://matplotlib.org/">matplotlib</a> en utilisant le switch <code>ipython --pylab</code> afin d&#8217;avoir directement les graphiques en mode interactif, ainsi que toute la bibliothèque numpy directement importée (en interne, ipython fera un <code>import numpy as np</code>).<br />
+On appelle la bête d&#8217;un simple:</p>
+<pre lang="python">In [1]: import pandas as pd</pre>
+<p>Oui je sais, la grande classe&#8230;</p>
+<h2>Tout est Series</h2>
+<p>Le type de base en Pandas est la Series. On peut le voir comme un tableau de données à une dimension:</p>
+<pre lang="python">In [2]: pd.Series(np.arange(1,5))
+Out[2]: 
+0    1
+1    2
+2    3
+3    4
+dtype: int64
+</pre>
+<p>La colonne de gauche représente l&#8217;index de la Series, normalement unique pour chaque entrée. La colonne de droite correspond à nos valeurs sur lesquelles nous voulons travailler.<br />
+L&#8217;index n&#8217;est pas forcément une suite d&#8217;entiers, et la Series peut être nommée:</p>
+<pre lang="python">In [3]: s=pd.Series([1,2,3.14,1e6], index=list('abcd'), name='ma_series')
+In [4]: s
+Out[4]: 
+a          1.00
+b          2.00
+c          3.14
+d    1000000.00
+Name: ma_series, dtype: float64
+</pre>
+<p>A noter qu&#8217;un type-casting est systématiquement appliqué afin d&#8217;avoir un tableau de type uniforme (ici le data-type est du float64) qui peut être modifié (dans une certaine mesure) via <code>Series.astype</code>.</p>
+<p>Le slicing c&#8217;est comme du fisting avec une bonne dose de vaseline, ça glisse tout seul:</p>
+<pre lang="python">In [5]: s['b':'d']
+Out[5]: 
+b          2.00
+c          3.14
+d    1000000.00
+Name: ma_series, dtype: float64</pre>
+<p>Et oui, la sélection par indexation se fait sur&#8230; l&#8217;index de la Series. Ainsi s[&#8216;a&#8217;] renverra la ligne dont l&#8217;index est &#8216;a&#8217;, mais Pandas est assez intelligent pour reconnaître si on lui demande de nous renvoyer des valeurs suivant l&#8217;ordonnancement du tableau de valeurs (comme numpy). Ainsi s[0] renverra la première valeur du tableau, qui ici est égale à s[&#8216;a&#8217;].<br />
+Là où ça peut poser problème c&#8217;est quand notre index est une suite d&#8217;entiers, comme par exemple avec <code>x=pd.Series(np.arange(1,5), index=np.arange(1,5))</code>. Si vous demandez <code>x[1]</code>, Pandas ne retrouve pas ses petits et vous retournera une zolie <code>KeyError</code>. Pour ces cas ambigus, il existe l&#8217;indexation stricte sur le nom de index de la Series via <code>x.loc[nom_d'index]</code>, et l&#8217;indexation stricte sur le numéro d&#8217;ordre dans le tableau via <code>x.iloc[numéro_d'ordre]</code>. Essayez <code>x.loc[0]</code> et <code>x.iloc[0]</code> pour vous rendre compte de la différence.<br />
+Comme pour les préliminaires où il est bon de tâter un peu de tout avec de pénétrer dans le vif du sujet, laissons pour le moment l&#8217;indexation sur laquelle nous reviendrons plus tard, pour regarder d&#8217;un peu plus près comment faire joujou avec nos valeurs.</p>
+<p>Un peu à la manière des arrays de numpy, on peut appliquer des fonctions mathématiques directement sur la Serie, ou passer par des fonctions raccourcis:</p>
+<pre lang="python">In [6]: s.sum()
+Out[6]: 1000006.14</pre>
+<p>Ce qui revient au même que de faire <code>np.sum(s)</code> (rappelez vous, ipython avec &#8211;pylab a importé numpy dans la variable np).</p>
+<p>La fonction <code>describe</code> est bien utile pour avoir un aperçu rapide de ce à quoi on a affaire:</p>
+<pre lang="python">In [7]: s.describe()
+Out[7]: 
+count          4.000000
+mean      250001.535000
+std       499998.976667
+min            1.000000
+25%            1.750000
+50%            2.570000
+75%       250002.355000
+max      1000000.000000
+Name: ma_series, dtype: float64</pre>
+<p>ce qui donne le nombre de données, la moyenne globale, la déviation standard, le minimum, les quartiles et le maximum de la Serie. </p>
+<p>Le truc à retenir est que c&#8217;est l&#8217;index qui est primordial dans un grand nombre d&#8217;opérations. Ainsi si l&#8217;on veut additionner 2 Series ensemble, il faut que leurs index soient alignés :</p>
+<pre lang="python">In [8]: s2=pd.Series(np.random.rand(4), index=list('cdef'), name='autre_serie')
+
+In [9]: s+s2
+Out[9]: 
+a               NaN
+b               NaN
+c          4.021591
+d    1000000.401511
+e               NaN
+f               NaN
+dtype: float64</pre>
+<p>Ici, seuls les index &#8216;c&#8217; et &#8216;d&#8217; étaient présents dans les 2 Series, Pandas effectuant avant l&#8217;opération d&#8217;addition une union basée sur l&#8217;index. Les autres entrées sont marquées en <code>NaN</code>, soit Not a Number. Une possibilité pour contrer ce phénomène et de dire à Pandas de remplacer les résultats manquants lors de l&#8217;union par 0:</p>
+<pre lang="python">In [10]: s.add(s2, fill_value=0)
+Out[10]: 
+a          1.000000
+b          2.000000
+c          4.021591
+d    1000000.401511
+e          0.563508
+f          0.655915
+Name: ma_series, dtype: float64</pre>
+<p>Mais si ce sont uniquement les valeurs qui nous intéressent, et non les indexations, il est possible de les supprimer:</p>
+<pre lang="python">In [11]: s.reset_index(drop=True)+s2.reset_index(drop=True)
+Out[11]: 
+0          1.881591
+1          2.401511
+2          3.703508
+3    1000000.655915
+dtype: float64</pre>
+<p>Oh joie, oh bonheur, je peux faire ce que je veux avec mes cheveux, enfin mes données&#8230;</p>
+<h2>Et PAN! dans ta frame</h2>
+<p>La DataFrame est l&#8217;extension en 2 dimensions des Series. Elle peut être vue comme un empilement de Series dont les index sont partagés (et donc intrinsèquement alignés), ou comme dans un tableur où les index sont les numéros de lignes et les noms des Series les noms des colonnes. Je ne vais pas décrire toutes les manières de créer une DataFrame, sachez juste qu&#8217;on peut les obtenir à partir de dictionnaires, de liste de liste ou de liste de Series, d&#8217;arrays ou de records numpy, de fichier excel ou csv et même depuis des bases de données, de fichier JSON ou HTML, et depuis le presse-papiers.</p>
+<pre lang="python">
+In [14]: genre=[['femme','homme'][x] for x in np.random.random_integers(0,1,100)]
+
+In [15]: lateral=[['droite','gauche'][x] for x in np.random.random_integers(0,1,100)]
+
+In [16]: age=np.random.random_integers(1,100,100)
+
+In [17]: df=pd.DataFrame({'Genre':genre, 'Lateral':lateral, 'Age':age})
+
+In [18]: df
+Out[18]: 
+    Age  Genre Lateral
+0    69  femme  droite
+1    46  homme  droite
+2    89  homme  droite
+3    14  homme  droite
+4    74  homme  droite
+5     5  femme  gauche
+6    66  femme  droite
+7    73  homme  gauche
+8    99  homme  gauche
+9    17  homme  gauche
+    ...    ...     ...
+
+[100 rows x 3 columns]
+
+</pre>
+<p>L&#8217;affichage par défaut depuis la version 0.13 est en mode &#8216;truncate&#8217; où la fin de la DataFrame est tronquée suivant la hauteur de votre terminal, mais ça peut se changer via les divers paramètres à regarder sous <code>pd.options.display</code>.</p>
+<p>Là donc nous avons une DataFrame de 3 colonnes (plus un index), chaque colonne étant en réalité une Serie :</p>
+<pre lang="python">In [20]: type(df['Age'])
+Out[20]: pandas.core.series.Series</pre>
+<p>La sélection peut se faire de plusieurs manières, à chacun de choisir sa préférée (moi c&#8217;est Dafnée avec ses gros nénés). Ainsi pour avoir les 3 premières lignes des âges</p>
+<pre lang="python">In [21]: df['Age'][0:3]
+Out[21]: 
+0    69
+1    46
+2    89
+Name: Age, dtype: int64
+
+In [22]: df[0:3]['Age']
+Out[22]: 
+0    69
+1    46
+2    89
+Name: Age, dtype: int64
+
+In [23]: df.Age[0:3]
+Out[23]: 
+0    69
+1    46
+2    89
+Name: Age, dtype: int64
+
+In [24]: df.loc[0:3, 'Age']
+Out[24]: 
+0    69
+1    46
+2    89
+3    14
+Name: Age, dtype: int64</pre>
+<p>et oui, les noms de colonnes peuvent aussi être utilisés comme des attributs de la DataFrame. Pratique (qu&#8217;on n&#8217;attend pas).</p>
+<p>L&#8217;une des forces de Pandas est de nous proposer tout un tas de solutions pour répondre à des questions existentielles tel que &#8220;quel est l&#8217;âge moyen par genre et par latéralité?&#8221;. Comme en SQL où la réponse sortirait du fondement d&#8217;une clause GROUP BY et d&#8217;une fonction d’agrégation, il en va de même ici :</p>
+<pre lang="python">In [25]: df.groupby(['Genre','Lateral']).aggregate(np.mean)
+Out[25]: 
+                     Age
+Genre Lateral           
+femme droite   45.476190
+      gauche   49.208333
+homme droite   41.571429
+      gauche   55.823529
+
+[4 rows x 1 columns]</pre>
+<p>OMG! c&#8217;est quoi c&#8217;t&#8217;index de malade? Un <strong>MultiIndex</strong> jeune padawan, qui te permettra d&#8217;organiser tes données par catégorie/niveau, et d&#8217;y accèder par le paramètre <code>level</code> dans pas mal de fonctions, mais ça je te laisse le découvrir par toi-même. Je ne vais pas non plus m&#8217;étendre plus sur toutes les possibilités offertes par les DataFrame, il y a tellement à dire qu&#8217;il faudrait plusieurs articles pour en faire le tour. Juste conclusionner sur la facilité d&#8217;intégration Pandas/matplotlib en vous disant que les Series et DataFrame ont une fonction <code>plot</code> permettant directement de visualiser les données, et ça, c&#8217;est juste jouissif.</p>
+<h2>Datetime dans les index</h2>
+<p>Je vous avez dit qu&#8217;on reviendrait sur les indexes, et là c&#8217;est pour rentrer dans le lourd (mais non pas toi Carlos). Pandas donc supporte l&#8217;indexation sur les dates, en reprenant et en élargissant les possibilités offertes par feu le module <a href="http://pytseries.sourceforge.net/">scikits.timeseries</a>.<br />
+Prenons l&#8217;exemple de données (complètement bidons) fournies par un capteur à intervalle régulier sur un pas de temps horaire:</p>
+<pre lang="python">In [26]: dtindex=pd.date_range(start='2014-04-28 00:00', periods=96, freq='H')
+
+In [27]: data=np.random.random_sample(96)*50
+
+In [28]: df=pd.DataFrame(data, index=dtindex, columns=['mesure'])
+
+In [29]: df.head()
+Out[29]: 
+                        mesure
+2014-04-28 00:00:00  49.253929
+2014-04-28 01:00:00   1.910280
+2014-04-28 02:00:00   7.534761
+2014-04-28 03:00:00  39.416415
+2014-04-28 04:00:00  44.213409
+
+[5 rows x 1 columns]
+
+In [30]: df.tail()
+Out[30]: 
+                        mesure
+2014-05-01 19:00:00  25.291453
+2014-05-01 20:00:00  26.520291
+2014-05-01 21:00:00  33.459766
+2014-05-01 22:00:00  44.521813
+2014-05-01 23:00:00  28.486003
+
+[5 rows x 1 columns]</pre>
+<p><code>dtindex</code> est un <strong>DatetimeIndex</strong> initialisé au 28 avril 2014 à 0 heure comportant 96 périodes de fréquence horaire, soit 4 jours. La fonction <code>date_range</code> peut aussi prendre en arguments des objets datetime purs au lieu de chaine de caractère (manquerait plus que ça&#8230;), et le nombre de périodes peut être remplacé par une date de fin.<br />
+Si l&#8217;on veut calculer, disons le maximum (horaire) par jour, rien de plus simple, il suffit de &#8220;resampler&#8221; en données journalières (&#8216;D&#8217; pour Day) et de dire comment aggréger le tout:</p>
+<pre lang="python">In [31]: df.resample('D', how=np.max)
+Out[31]: 
+               mesure
+2014-04-28  26.298282
+2014-04-29  28.385418
+2014-04-30  26.723353
+2014-05-01  24.106092
+
+[4 rows x 1 columns]
+</pre>
+<p>Mais on peut aussi convertir en données quart-horaire (upsampling) en remplissant les données manquantes par celles de l&#8217;heure fixe:</p>
+<pre lang="python">In [32]:  df[:3].resample('15min', fill_method='ffill')
+Out[32]: 
+                        mesure
+2014-04-28 00:00:00  49.253929
+2014-04-28 00:15:00  49.253929
+2014-04-28 00:30:00  49.253929
+2014-04-28 00:45:00  49.253929
+2014-04-28 01:00:00   1.910280
+2014-04-28 01:15:00   1.910280
+2014-04-28 01:30:00   1.910280
+2014-04-28 01:45:00   1.910280
+2014-04-28 02:00:00   7.534761
+
+[9 rows x 1 columns]</pre>
+<p>Cependant, Pandas propose aussi d&#8217;autres possibilités non dépendantes des DatetimeIndex mais qu&#8217;il est bon de connaître, notamment celle pour remplacer les données manquantes avec <code>fillna</code> ou celle pour interpoler entre les données valides avec <code>interpolate</code></p>
+<pre lang="python">In [52]:  df[:3].resample('15min')
+Out[52]: 
+                        mesure
+2014-04-28 00:00:00  49.253929
+2014-04-28 00:15:00        NaN
+2014-04-28 00:30:00        NaN
+2014-04-28 00:45:00        NaN
+2014-04-28 01:00:00   1.910280
+2014-04-28 01:15:00        NaN
+2014-04-28 01:30:00        NaN
+2014-04-28 01:45:00        NaN
+2014-04-28 02:00:00   7.534761
+
+[9 rows x 1 columns]
+
+In [53]:  df[:3].resample('15min').fillna(df.mean())
+Out[53]: 
+                        mesure
+2014-04-28 00:00:00  49.253929
+2014-04-28 00:15:00  26.378286
+2014-04-28 00:30:00  26.378286
+2014-04-28 00:45:00  26.378286
+2014-04-28 01:00:00   1.910280
+2014-04-28 01:15:00  26.378286
+2014-04-28 01:30:00  26.378286
+2014-04-28 01:45:00  26.378286
+2014-04-28 02:00:00   7.534761
+
+[9 rows x 1 columns]
+
+In [54]:  df[:3].resample('15min').interpolate()
+Out[54]: 
+                        mesure
+2014-04-28 00:00:00  49.253929
+2014-04-28 00:15:00  37.418016
+2014-04-28 00:30:00  25.582104
+2014-04-28 00:45:00  13.746192
+2014-04-28 01:00:00   1.910280
+2014-04-28 01:15:00   3.316400
+2014-04-28 01:30:00   4.722520
+2014-04-28 01:45:00   6.128641
+2014-04-28 02:00:00   7.534761
+
+[9 rows x 1 columns]</pre>
+<p>Voilà, j&#8217;espère que vous aurez plaisir à travailler avec cette librairie, il manquait vraiment un outil de cette trempe en Python pour l&#8217;analyse de données et je pense qu&#8217;on n&#8217;a plus trop grand chose à envier maintenant par rapport à des langages spécilisés. Je n&#8217;ai pas parlé de <code>Panel</code> qui est le passage à la troisième dimension, ni des possibilités d&#8217;export, notamment la <code>df.to_html</code> que je vous laisse le soin de découvrir.</p>
+<p>A plus, et amusez vous bien avec votre bambou.</p>
+<p>\o/</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-pandas-cest-bon-mangez-en/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">10113</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/05/post-16916-Panda-Deal-With-It-b3do.gif" length="277789" type="image/jpg" />	</item>
+		<item>
+		<title>NoSQL : arrêtons de dire n&#8217;importe quoi</title>
+		<link>http://sametmax.com/nosql-arretons-de-dire-nimporte-quoi/</link>
+		<comments>http://sametmax.com/nosql-arretons-de-dire-nimporte-quoi/#comments</comments>
+		<pubDate>Sat, 22 Mar 2014 10:26:06 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[cassandra]]></category>
+		<category><![CDATA[couchdb]]></category>
+		<category><![CDATA[elastic search]]></category>
+		<category><![CDATA[memecache]]></category>
+		<category><![CDATA[mongodb]]></category>
+		<category><![CDATA[mysql]]></category>
+		<category><![CDATA[nosql]]></category>
+		<category><![CDATA[postgre]]></category>
+		<category><![CDATA[redis]]></category>
+		<category><![CDATA[riak]]></category>
+		<category><![CDATA[solr]]></category>
+		<category><![CDATA[sql]]></category>
+		<category><![CDATA[sqlite]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9844</guid>
+		<description><![CDATA[J'ai regardé le mouvement NoSQL évoluer au fil des années. On y retrouve à peu prêt tout ce qui fait l'informatique depuis que le monde IT est monde : brillance et troll, hype et génie, utile et gadget, buzz et fact, sam et max, etc.]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;ai regardé le mouvement NoSQL évoluer au fil des années. On y retrouve à peu près tout ce qui fait l&#8217;informatique depuis que le monde IT est monde : brillance et troll, hype et génie, utile et gadget, buzz et fact, sam et max, etc.</p>
+<p>De plus on peut mettre n&#8217;importe quoi sous le label NoSQL, et du coup ça a été fait. En fait un fichier est déjà une base de données NoSQL :)</p>
+<p>Mais rant mise à part, des projets comme redis, riak, elastic search ou mongodb changent vraiment la donne.</p>
+<p>Malheureusement, tout comme d&#8217;autres technos du moment (prog asychrone, tout-http, pre-processeurs, generateurs&#8230;), les gens ont tendance à l&#8217;utiliser comme la barre de fer, la silver bullet, le passe-partout, le tournevis sonique, bref, le truc à tout faire.</p>
+<p>L&#8217;adage populaire dit &#8220;quand on a un bon marteau, tous les problèmes ressemblent à des clous&#8221;. Or, je constate qu&#8217;au dessus de ça, les dev appliquent aussi souvent le dicton préféré d&#8217;un de mes colocs : &#8220;arrête de taper si fort, prend un plus gros marteau&#8221;. </p>
+<p>Ca donne du NoSQL utilisé partout, pour tout, brandi comme LA solution, vendu à des débutants comme une panacée de traitement d&#8217;informations. Zob, vous vous doutez bien que ça pose problème, non ?</p>
+<h2>Anti-fact 1 : NoSql, c&#8217;est plus facile pour démarrer</h2>
+<p>Il n&#8217;existe pas à l&#8217;heure actuelle de base NoSQL embarquée qui arrive à la cheville de SQLite : ça marche partout, dans tous les langages, sans rien à avoir installer ou configurer pour la plupart des langages.</p>
+<p>Dès que vous demandez à un débutant d&#8217;installer un truc, vous rajoutez une barrière d&#8217;entrée énorme.</p>
+<p>De plus, il y a beaucoup, beaucoup, beaucoup plus d&#8217;hébergeurs qui fournissent du SQL que du NoSQL en solution par défaut. Et comme toute les technos legacy, il y a 100 fois plus de doc.</p>
+<p>Enfin, il y a la fameuse question du &#8220;quoi&#8221; ? Quel système allez-vous installer ? Couch ? Casssandra ? Mongo ? On parle de NoSQL, ou de schemaless ? C&#8217;est pas la même chose ? Memcache et Redis, c&#8217;est que pour le cache ? Elastic Search, c&#8217;est que pour la recherche de texte ? Les données géographiques, je les mets dans quoi, mongo ou un GIS spécialisé ? Attends, j&#8217;ai entendu parler d&#8217;une super bdd de graph&#8230;</p>
+<p>L&#8217;abondance de solutions, le manque de recul et les informations contradictoires disponibles rendent non seulement le choix difficile, mais en plus hasardeux. Car contrairement au monde du SQL, se gourrer en NoSQL peut vous pourir toute votre archi.</p>
+<p>Souvenez-vous qu&#8217;il est beaucoup plus difficile de migrer son système de base de données NoSQL d&#8217;une solution à une autre car il n&#8217;y a pas ce petit détail en commun entre les produits : le SQL justement.</p>
+<h2>Anti-fact 2 : Avec NoSql, pas besoin de réfléchir à son modèle de données</h2>
+<p>Je crois que c&#8217;est ce qui me fait le plus grincer des dents. Les gens qui disent qu&#8217;on peut tout mettre dedans, hop, et on verra plus tard. J&#8217;ai vu les pires modèles de données possibles stockés en MongoDb ou Redis, parceque les gars qui avaient travaillé dessus avait juste dumpé leurs données sans réfléchir.</p>
+<p>Une base NoSQL ne vous oblige pas à formaliser votre schéma, mais ça ne veut CERTAINEMENT PAS dire qu&#8217;il ne faut pas le faire. L&#8217;auteur de Redis a très bien <a rhef="http://oldblog.antirez.com/post/reply-open-minded-reader.html">expliqué le problème</a> (je graisse pour donner une effet dramatique et puissant au message) :</p>
+<blockquote><p>Redis is not the kind of system where you can insert data and then argue about how to fetch those data in creative ways. Not at all, the whole idea of its data model, and part of the fact that it will be so fast to retrieve your data, is that <strong>you need to think in terms of organising your data for fetching</strong>. You need to design with the query patterns in mind.</p></blockquote>
+<p>C&#8217;est vrai pour tout système dans lequel on met ses données, SQL, NoSQL, fichier, mémoire, le tiroir de votre bureau&#8230;</p>
+<p>Il faut penser au type des données, leurs formats, les relations entre les éléments, comment et à quelle fréquence vous allez les écrire, les lire, garantir la consistence de leurs relations et leur fraicheur (ou pas d&#8217;ailleurs, mais il faut en faire le choix). Les bases SQL sont contraignantes parce qu&#8217;elles vous obligent à penser, dès le début, en ces termes.</p>
+<p>C&#8217;est vrai, vous êtes de grandes personnes, a priori vous savez ce que vous faites, vous n&#8217;avez pas besoin qu&#8217;on vous FORCE à le faire. C&#8217;est pour ça que j&#8217;aime le typage dynamique. Je ne veux pas que tu me demandes mes papiers pour déclarer une variable, je sais ce que je fais.</p>
+<p>Seulement <strong>il faut le faire</strong>, et ce n&#8217;est souvent pas fait. Pire, le modèle n&#8217;est généralement jamais formalisé NULLE PART. Un schéma, c&#8217;est une doc. Sans doc, le coût d&#8217;entrée dans votre projet est élevé, sa maintenance est galère, le potentiel de bug lors de l&#8217;évolution est plus grand. Mais une doc c&#8217;est chiant à écrire et à tenir à jour.</p>
+<p>C&#8217;est un des intéressants effets secondaires des ORMs : les classes de définition sont le modèle documenté dans sa structure, ses relations, ses limites, ses contraintes, ses tests et vérifications, etc. La doc par le code, j&#8217;adore.</p>
+<h2>Anti-fact 3 : NoSql, c&#8217;est plus performant</h2>
+<p>A chaque fois qu&#8217;on lit &#8220;x est plus performant que z&#8221;, il faut faire une pause et réfléchir deux minutes. Généralement il y a un piège.</p>
+<p>Les performances, ça dépend toujours du contexte. Par exemple, Redis est plus performant à la lecture et l&#8217;écriture, mais les données doivent tenir en RAM, sinon ça bouffe sur la mémoire virtuelle. Autre chose, Redis est très lent à démarrer sur des gros jeux de données (ça peut aller à plusieurs minutes si vous avez des Go). MongoDB doit normalement pouvoir tenir une augmentation de charge de manière prédictive en rajoutant des noeuds. Mais sur un seul noeud, c&#8217;est toujours moins performant qu&#8217;un PostGres. Et 0.01 % des sites ont besoin de plus d&#8217;un serveur.</p>
+<p>Par ailleurs, les performances sont très dépendantes de l&#8217;anti-fact 2. Il faut créer les bons index, avoir un cache correctement ajusté, faire des requêtes intelligentes. Pour tous les systèmes.</p>
+<p>Bref, encore une fois, NoSQL n&#8217;est pas une techno magique. Il est contre-productif, et j&#8217;ai envie de dire même irrespectueux envers ses collègues, de la vendre comme telle.</p>
+<h2>Anti-fact 4 : NoSQL remplace le SQL</h2>
+<p>Twitter tourne sur MySQL ET Memcache.</p>
+<p>Stackoverflow utiliser SQL Server 2008 ET Redis.</p>
+<p>Il y a carrément des sites qui <a href="http://www.plotprojects.com/why-we-use-postgresql-and-slick/">utilisent PostGres et MongoDb en parallèle</a>. En fait, il y a <a href="http://www.infoq.com/news/2013/02/MoSQL">des outils</a> pour les faire collaborer. </p>
+<p>Nous sur notre plus gros site on utilise Redis pour les sessions, les compteurs, les crawlers, les queues et passer des données entre process. <strong>Pas juste pour le cache.</strong> On utilise PostGres pour les données complexes avec des queries lourdes. Et on utilise Solr pour le moteur de recherche. </p>
+<p>Les bases NoSQL sont des nouveaux outils, qui sont mieux adaptés à CERTAINS usages ou à CERTAINS contextes. Pas tout, tout le temps, partout. C&#8217;est un outil en plus, pas un obligatoire remplaçant.</p>
+<p>Par ailleurs, on peut utiliser PostGres comme une base de données <a href="http://thebuild.com/presentations/pg-as-nosql-pgday-fosdem-2013.pdf">clé-valeur</a> ou <a href="http://www.reddit.com/comments/1q3skb">JSON</a>, on peut mettre SQLite complètement en mémoire vive, on peut utiliser MySQL comme un moteur de recherche de texte&#8230; Multiplier les points of failures dans une archi n&#8217;est pas toujours une bonne idée. Ces outils qu&#8217;on considère comme de l&#8217;histoire ancienne ont beaucoup plus de ressource que vous ne l&#8217;imaginez. Ils sont ultra performants. Des années et des années d&#8217;optimisation.</p>
+<p><a href="https://news.ycombinator.com/item?id=12529310">Le monde de la tech n&#8217;est jamais lisse</a>. Jamais.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/nosql-arretons-de-dire-nimporte-quoi/feed/</wfw:commentRss>
+		<slash:comments>39</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">9844</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/03/tumblr_n2sg6nrtxX1r539hzo1_500.jpg" length="80694" type="image/jpg" />	</item>
+		<item>
+		<title>MySQL: créer un utilisateur avec une base de données à son nom sur laquelle il a tous les droits</title>
+		<link>http://sametmax.com/mysql-creer-un-utilisateur-avec-une-table-a-son-nom-sur-laquelle-il-a-tous-les-droits/</link>
+		<comments>http://sametmax.com/mysql-creer-un-utilisateur-avec-une-table-a-son-nom-sur-laquelle-il-a-tous-les-droits/#comments</comments>
+		<pubDate>Mon, 15 Oct 2012 15:07:09 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[mysql]]></category>
+		<category><![CDATA[sql]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2575</guid>
+		<description><![CDATA[Le truc classique, qu'on fait tout le temps, et qu'on oublie toujours comment on a fait la dernière fois.]]></description>
+				<content:encoded><![CDATA[<p>Le truc classique, qu&#8217;on fait tout le temps, et qu&#8217;on oublie toujours comment on a fait la dernière fois.</p>
+<p>Vu qu&#8217;on a pas toujours PhpMyAdmin installé&#8230;</p>
+<pre lang="sql">CREATE DATABASE nom_db;
+GRANT ALL PRIVILEGES ON nom_db.* TO "nom_utilisateur"@"localhost" IDENTIFIED BY 'mot_de_passe';
+FLUSH PRIVILEGES;</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/mysql-creer-un-utilisateur-avec-une-table-a-son-nom-sur-laquelle-il-a-tous-les-droits/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">2575</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/10/xkcd.png" length="9340" type="image/jpg" />	</item>
+		<item>
+		<title>Log des requêtes SQL faites par l&#8217;ORM Django en temps réel</title>
+		<link>http://sametmax.com/log-des-requetes-sql-faites-par-lorm-django-en-temps-reel/</link>
+		<pubDate>Fri, 16 Mar 2012 17:30:01 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[log]]></category>
+		<category><![CDATA[orm]]></category>
+		<category><![CDATA[sql]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=262</guid>
+		<description><![CDATA[Il existe une solution plus simple que  la <code>django-debug-toolbar</code> ou <code>connection.queries</code> pour suivre les requêtes SQL de l'ORM Django.]]></description>
+				<content:encoded><![CDATA[<p>Même en recherchant sur les sites spécialisés en anglais, je tombe toujours sur des solutions basées sur la <a href="https://github.com/django-debug-toolbar/django-debug-toolbar">django-debug-toolbar</a>, l&#8217;affichage de <a href="https://docs.djangoproject.com/en/dev/faq/models/#how-can-i-see-the-raw-sql-queries-django-is-running">connection.queries</a> ou l&#8217;usage de <a href="https://github.com/dcramer/django-devserver">devserver</a>. Ça a son utilité (surtout la fabuleuse <code>django-debug-toolbar</code>), mais c&#8217;est compliqué, long à mettre en oeuvre, et pas très pratique. </p>
+<p>Il y a beaucoup plus simple, et le plus beau, c&#8217;est que Django le propose en natif.</p>
+<p>Par default, Django loggue toutes les requêtes SQL dans <em>django.db.backends</em> si <code>DEBUG = True</code>. Il suffit donc de configurer le logger, dans votre <em>settings.py</em>:</p>
+<pre lang='python'>
+import os
+import tempfile
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'tempfile': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'verbose',
+            'filename': os.path.join(tempfile.gettempdir(), 'django-debug.log'),
+        },
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console', 'tempfile'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+</pre>
+<p>Lancez <code>./manage.py shell</code>:</p>
+<pre lang='python'>
+In [1]: m = Table.objects.filter(title__isnull=False)
+
+In [2]: m
+DEBUG (0.018) SELECT "table"."id", "table"."title", "table"."original_title" FROM "table" WHERE "table"."title" IS NOT NULL LIMIT 21; args=()
+Out[2]: [< Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, < Table object >, '...(remaining elements truncated)...']
+</pre>
+<p>Une version plus verbeuse sera aussi logguée dans un fichier temporaire. Par exemple, sous Linux il sera dans <code>/tmp/django-debug.log</code>.</p>
+<p>Toutes les requêtes faites par le site Web seront également affichées dans le terminal sur lequel tourne le serveur, et dans le fichier temporaire. </p>
+<p>Une fois que vous maitrisez le concept, je vous recommande plutot de mettre le logger <em>django.db.backends</em> dans votre <em>local_settings.py</em>, histoire d&#8217;éviter de l&#8217;avoir en prod :</p>
+<pre lang='python'>
+LOGGING['loggers'].update({
+        'django.db.backends': {
+            'handlers': ['console', 'tempfile'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    }
+)
+</pre>
+<p>Autre bénéfice, il suffit de commenter cette partie quand on ne souhaite plus afficher autant d&#8217;informations.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">262</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/03/lumber_from_log_lg.jpg" length="460459" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>open &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/open/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Ouvrir un fichier avec le bon programme en Python</title>
+		<link>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/</link>
+		<comments>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/#comments</comments>
+		<pubDate>Thu, 17 Oct 2013 10:09:59 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[fichier]]></category>
+		<category><![CDATA[linux]]></category>
+		<category><![CDATA[mac]]></category>
+		<category><![CDATA[open]]></category>
+		<category><![CDATA[os]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[windows]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7469</guid>
+		<description><![CDATA[Les OS ont des réglages par défaut pour chaque type de fichier, et on peut demander "ouvrir le type de fichier par défaut". Par exemple, moi, si on je demande d'ouvrir un fichier vidéo, je m'attend à ce que VLC soit lancé.
+
+Voilà comment faire ça en Python.]]></description>
+				<content:encoded><![CDATA[<p>Votre logiciel doit permettre d&#8217;ouvrir un fichier avec un programme externe. Oui mais lequel ?</p>
+<p>Les OS ont des réglages par défaut pour chaque type de fichier, et on peut demander &#8220;ouvrir le prog pour ce type de fichier par défaut&#8221;. Par exemple, moi, si je demande d&#8217;ouvrir un fichier vidéo, je m&#8217;attend à ce que VLC soit lancé.</p>
+<p>Voilà comment faire ça en Python :</p>
+<pre lang="python">import subprocess
+import sys
+import os
+
+def run_file(path):
+
+    # Pas de EAFP cette fois puisqu'on est dans un process externe,
+    # on ne peut pas gérer l'exception aussi facilement, donc on fait
+    # des checks essentiels avant.
+
+    # Vérifier que le fichier existe
+    if not os.path.exists(path):
+        raise IOError('No such file: %s' % path)
+
+    # On a accès en lecture ?
+    if hasattr(os, 'access') and not os.access(path, os.R_OK):
+        raise IOError('Cannot access file: %s' % path)
+
+    # Lancer le bon programme pour le bon OS :
+
+    if hasattr(os, 'startfile'): # Windows
+        # Startfile est très limité sous Windows, on ne pourra pas savoir
+        # si il y a eu une erreu
+        proc = os.startfile(path)
+
+    elif sys.platform.startswith('linux'): # Linux:
+        proc = subprocess.Popen(['xdg-open', path], 
+                                 # on capture stdin et out pour rendre le 
+                                 # tout non bloquant
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    elif sys.platform == 'darwin': # Mac:
+        proc = subprocess.Popen(['open', '--', path], 
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    else:
+        raise NotImplementedError(
+            "Your `%s` isn't a supported operatin system`." % sys.platform)
+
+    # Proc sera toujours None sous Windows. Sous les autres OS, il permet de
+    # récupérer le status code du programme, and lire / ecrire sur stdin et out
+    return proc</pre>
+<p>C&#8217;était le petit snippet sympas du jour !</p>
+<p>P.S : si quelqu&#8217;un utilise <del>BDSM</del> BSD ou Solaris, je veux bien qu&#8217;il complète le snippet.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/feed/</wfw:commentRss>
+		<slash:comments>18</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">7469</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/10/qzb7emC.jpg" length="54438" type="image/jpg" />	</item>
+	</channel>
+</rss>

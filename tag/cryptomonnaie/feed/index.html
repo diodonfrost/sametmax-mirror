@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>cryptomonnaie &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/cryptomonnaie/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Monter son master node Interzone (ITZ)</title>
+		<link>http://sametmax.com/monter-son-master-node-interzone-itz/</link>
+		<comments>http://sametmax.com/monter-son-master-node-interzone-itz/#comments</comments>
+		<pubDate>Thu, 21 Dec 2017 12:52:47 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Crypto]]></category>
+		<category><![CDATA[cryptocurrency]]></category>
+		<category><![CDATA[cryptomonnaie]]></category>
+		<category><![CDATA[interzone]]></category>
+		<category><![CDATA[masternode]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=23944</guid>
+		<description><![CDATA[Acheter et vendre des cryptomonnaies, tout le monde comprend le principe. J&#8217;achète un truc, j&#8217;attends, je le revends. Si le prix a monté, je gagne du pognon, s’il est descendu, j&#8217;en perds. Mais il existe d&#8217;autres formes d&#8217;investissement. L&#8217;une d&#8217;elles est le master node, et on va apprendre à en monter un. Attention, ça demande [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Acheter et vendre <a href="http://sametmax.com/le-point-sur-les-cryptos/">des cryptomonnaies</a>, tout le monde comprend le principe. J&#8217;achète un truc, j&#8217;attends, je le revends. Si le prix a monté, je gagne du pognon, s’il est descendu, j&#8217;en perds.</p>
+<p>Mais il existe d&#8217;autres formes d&#8217;investissement. L&#8217;une d&#8217;elles est le master node, et on va apprendre à en monter un.</p>
+<p>Attention, ça demande de savoir administrer un serveur linux. Le tutoriel n&#8217;explique pas <code>bash</code>, <code>apt</code>, <code>ssh</code> ou <code>make</code> et suppose que vous êtes à l&#8217;aise avec ces outils. Si ce n&#8217;est pas la cas&#8230; pas de bol.</p>
+<h2>C&#8217;est quoi déjà ?</h2>
+<p>Bitcoin n&#8217;est plus la seule crypto, il y en a maintenant des centaines, et certaines essayent de se distinguer technologiquement.</p>
+<p>Quelques-unes ont le concept de master node, des machines dont les propriétaires ont acheté un certains nombre de coins, et les bloquent. En échange de quoi, le réseau donne à la machine le droit de faire certaines opérations en plus, opérations qui rendent service au réseau (rendre les exchanges anonymes, accélérer les transactions, etc).</p>
+<p>Le but des master nodes est double:</p>
+<ul>
+<li>Avoir toujours plein de wallets répartis dans le monde et avec plein de propriétaires différents. Ça renforce le réseau.</li>
+<li>Forcer les gens a acheter plein de coins et donc faire monter le cours, faisant gagner du pognon aux créateurs de la monnaie qui en ont généralement préminé une partie.</li>
+</ul>
+<p>Mais pour le propriétaire du master node, qu&#8217;est-ce qu&#8217;on y gagne ? </p>
+<p>Et bien tous les jours, une cagnotte est répartie équitablement entre tous les masternodes en récompense de leur service. </p>
+<p>Par exemple, j&#8217;ai monté la semaine dernière un master node <a href="https://www.cryptopia.co.nz/Exchange/?market=VIVO_BTC">Vivo</a>. Il a couté a l&#8217;achat 3200 euros. Tous les jours, il génère 5 vivos, soit actuellement 20 euros. En plus de cela, le vivo a augmenté de prix depuis l&#8217;achat, et le master node vaut maintenant 5000 euros si je décide de revendre les coins qui sont bloquées. Mais ça voudrait dire fermer mon master node.</p>
+<h2>Choisir un master node</h2>
+<p>Tous les master nodes ont des coûts et une rentabilité différents. Il existe <a href="https://masternodes.online/">des listing</a> qui permettent de se faire une idée de la question.</p>
+<p>Aujourd&#8217;hui je vais vous faire un tuto sur le master node <a href="https://masternodes.online/currencies/ITZ/">Interzone</a>, car il est très peu cher à l&#8217;achat: moins de 300 euros. Évidemment, il ne rapporte que 2 euros par jour.</p>
+<p>Mais si vous voulez apprendre à faire des master nodes, c&#8217;est plus simple que de débloquer 5000 balles pour du vivo.  Ou pire, un million pour un node dash :)</p>
+<p>Interzone est aussi un wallet très basique, et donc simple à monter.</p>
+<h2>Acheter les coins</h2>
+<p>D&#8217;abord, il faut acheter les coins. Le nombre de coins à acheter est différent pour chaque type de node. Pour Interzone, c&#8217;est 5000 à bloquer, et donc on va en acheter 5001 pour les frais de transaction.</p>
+<p>Pour se faire, il faut d&#8217;abord acheter une monnaie plus populaire sur une plateforme d&#8217;achat. Par exemple, vous pouvez acheter du Bitcoin sur <a href="http://bitstamp.net/">Bitstamp</a>. </p>
+<p>Ensuite, faite un virement (withdrawal) vers une plateforme d&#8217;échange.</p>
+<p>Tout ça se fait en plusieurs étapes.</p>
+<p>D&#8217;abord, ouvrir des comptes sur ces sites, et faire les putains de vérifications de sécurité. Ouai, si vous vouliez trader anonymement c&#8217;est raté. Et parfois c&#8217;est long. Très long. Par exemple pour les achats par carte bancaire, Bitstamp m&#8217;avait demandé une photo de moi tenant mon passeport. Je sais pas si ils le font toujours, mais c&#8217;est over chiant.</p>
+<p>&#8230;</p>
+<p>Je vous laisse vous occupez de tous ça, on se revoit dans quelques jours.</p>
+<p>&#8230;</p>
+<p>Ça y est, de retour ?</p>
+<p>Ok.</p>
+<p>D&#8217;une part on va aller sur un exchange voir <a href="https://coinsmarkets.com/trade-BTC-ITZ.htm">le cours de l&#8217;Interzone</a> pour savoir combien de BTC acheter.</p>
+<p>Par exemple à cet instant je vois que je peux acheter un ITZ pour entre 0.000002699 et 0.000007300 BTC. En regardant les cours, je vois que j&#8217;ai suffisamment de vendeurs pour avoir 5001 ITZ à 0.000002990 BTC, donc 0.0149529900 BTC. On rajoute les fees de l&#8217;exchange (0.0000373824750 BTC) et on prend en compte les <a href="https://estimatefee.com/">fees de transactions</a> de la block chain bitcoin (0.00265914 BTC).</p>
+<p>Total: 0.017649512 BTC, soit 281.57 euros sur Bitstamp. </p>
+<p>Parfois c&#8217;est plus, parfois c&#8217;est moins. Ça fluctue beaucoup.</p>
+<p>On achète ça. Ça prend encore du temps&#8230;</p>
+<p>Quand on a tout, on fait le virement sur son autre wallet, celui sur l&#8217;exchange.</p>
+<p>Depuis l&#8217;exchange, on achète enfin son Interzone.</p>
+<h2>Monter son master node</h2>
+<p>En théorie on peut faire ça avec <a href="https://interzone.space/#service">un client</a>, mais en pratique ils ne marchent jamais. En plus il faut que ça reste allumé tout le temps et il faut avoir une IP statique. </p>
+<p>Donc on va le faire sur son propre serveur linux.</p>
+<p>Le plus pratique est d&#8217;avoir un serveur à soi qui tourne quelque part, ou de louer un <a href="http://online.net/">VPS</a> au prix minimal. En effet un master node, ça consomme que dalle en ressource et vous pouvez le mettre sur un raspberry pi si ça vous chante.</p>
+<p>Parce que je suis pas maso, je vais expliquer que pour une distro, car il va falloir compiler. On va donc faire ça pour une Ubuntu 16.04.</p>
+<p>D&#8217;abord on s&#8217;assure d&#8217;être toujours à l&#8217;heure:</p>
+<pre lang="bash">sudo apt-get install ntp ntpdate
+sudo update-rc.d ntp enable</pre>
+<p>On installe la tetrachiée de dépendances:</p>
+<pre lang="bash">sudo apt-get install build-essential software-properties-common nano libboost-all-dev libzmq3-dev libminiupnpc-dev libssl-dev libevent-dev   libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils libboost-all-dev  </pre>
+<p>Ensuite, on a besoin de downgrader une lib, donc, ppa:</p>
+<pre lang="bash">sudo add-apt-repository ppa:bitcoin/bitcoin
+sudo apt-get update
+sudo apt-get install libdb4.8-dev libdb4.8++-dev
+</pre>
+<p>On download les sources:</p>
+<pre lang="bash">wget https://github.com/projectinterzone/ITZ/archive/master.zip
+unzip master.zip</pre>
+<p>Et on compile:</p>
+<pre lang="bash">cd ITZ-master 
+./autogen.sh
+./configure
+make</pre>
+<p>Vous pouvez aller boire un coup, pisser, faire la sieste. Ça prend pas mal de RAM, donc si vous serveur en a pas assez, faites les sur un ordi local avec la même version de linux.</p>
+<p>Une fois tout ça terminé, le résultat est que dans le dossier ITZ-master/src vous avez deux executable:</p>
+<ul>
+<li>interzoned (le daemon qui va servir de master node)</li>
+<li>interzone-cli (le client qui va vous permettre d&#8217;envoyer des ordres au master node)</li>
+</ul>
+<p>C&#8217;est ce qu&#8217;on va utiliser. Si vous avez compilé en local, uploadez les n&#8217;importe où sur votre serveur.</p>
+<p>Maintenant, on se place sur le serveur, dans le dossier qui contient interzoned et interzone-cli, et on va créer un fichier de config.</p>
+<p>Pour le fichier de config, il vous faut l&#8217;adresse IP du serveur. On peut la choper avec:</p>
+<pre lang="bash">$ dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}'
+xxx.xxx.xxx.xxx</pre>
+<p>Le port, lui, est toujours 55675 (soyez sur de pas le bloquer).</p>
+<p>Puis on choisit un mot de passe pour le client:</p>
+<pre lang="bash">$ tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1
+BjHQ2T95Og2VNxsVDQ5qcFBU1eVNHP</pre>
+<p>On ouvre le fichier:</p>
+<pre lang="bash">mkdir .interzone
+vi .interzone/interzone.conf</pre>
+<p>Et on écrit dedans:</p>
+<pre>
+bind=<L'ip du serveur>:55675
+rpcuser=interzone
+rpcpassword=BjHQ2T95Og2VNxsVDQ5qcFBU1eVNHP</pre>
+<p>Puis on lance le daemon:</p>
+<pre lang="bash">./interzoned -daemon -reindex</pre>
+<p>Si vous êtes consciencieux, ajoutez un service qui le démarre quand votre machine boot.</p>
+<p>Au premier lancement, il va télécharger toute la block chain, mais ici c'est seulement 140Mo car interzone est tout jeune encore. Donnez-lui 30 minutes pour être tranquille.</p>
+<p>Au bout de quelques minutes, votre client pourra déjà se connecter au master node et voir le progrès avec:</p>
+<pre lang="bash">$ ./interzone-cli getinfo 
+{
+...
+    "blocks" : 92477,
+...
+}</pre>
+<p>Il est temps de loader votre master node avec du pognon ! On se fait une adresse:</p>
+<pre lang="bash">./interzoned getnewaddress MN1
+1MKDs1yNze7VEr4zWHTKbiV3T3fBTwtxZ4</pre>
+<p>Et là vous allez sur votre exchange où vous avez acheté vos coins, et vous faite un transfert d'EXACTEMENT 5000 coins sur cette adresse (la votre, pas 1MKDs1yNze7VEr4zWHTKbiV3T3fBTwtxZ4, bande de moules). Pas un sou de moins. Pas un sou de plus.</p>
+<p>Vous attendez que les coins arrivent. Ça peut prendre quelques minutes. Vérifiez avec:</p>
+<pre lang="bash">./interzone-cli getbalance
+5000.00</pre>
+<p>Si ça dit 5000, c'est bon.</p>
+<p>Il est temps de démarrer notre master node.</p>
+<p>D'abord, on arrête le daemon:</p>
+<pre lang="bash">./interzone-cli stop</pre>
+<p>Ensuite, on se génère une clé privée pour notre master node:</p>
+<pre lang="bash">./interzone-cli masternode genkey
+EHLKJHoYfNaeziVMAtLs5678G9Em861r3456xtYh1TEotpY1</pre>
+<p>Ensuite on rouvre notre fichier de config, et on le met à jour pour contenir ça:</p>
+<pre>bind=<L'ip du serveur>:55675
+rpcuser=interzone
+rpcpassword=BjHQ2T95Og2VNxsVDQ5qcFBU1eVNHP
+masternode=1
+masternodeprivkey=EHLKJHoYfNaeziVMAtLs5678G9Em861r3456xtYh1TEotpY1</pre>
+<p>Ne soyez pas con, n'utilisez pas la clé que je poste dans ce tuto.</p>
+<p>On va aussi chiffrer son waller, maintenant qu'on a des sous dessus, pour éviter de se le faire tirer. On génère un nouveau mot de passe, et on encrypt:</p>
+<pre lang="bash">$ tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1
+efFMgBGFpVhlQ0j8o8N4TaC5XdASyG
+$ ./interzone-cli encryptwallet "efFMgBGFpVhlQ0j8o8N4TaC5XdASyG"
+</pre>
+<p><strong>Faites un backup de votre wallet avant et du mot de passe. Si vous perdez ça, vous êtes niqué de chez niqué.</strong></p>
+<p>Vous pouvez déverrouiller le wallet avec:</p>
+<pre lang="bash">./interzone-cli walletpassphrase efFMgBGFpVhlQ0j8o8N4TaC5XdASyG 120</pre>
+<p>efFMgBGFpVhlQ0j8o8N4TaC5XdASyG étant à remplacer avec votre mot de passe fraichement généré et 120 est le nombre de secondes pour le garder débloqué.</p>
+<p>Il est temps de relancer le daemon:</p>
+<pre lang="bash">./interzoned -daemon</pre>
+<p>Et finalement, le passer en master node:</p>
+<pre lang="bash">./interzone-cli masternode start</pre>
+<p>C'est good.</p>
+<p>Vous pouvez vérifier que ça a été accepté par le réseau avec:</p>
+<pre lang="bash">./interzone-cli masternodelist | grep PUBLIC_IP </pre>
+<p>Toutes les 24h, vous pourrez joyeusement contempler le chiffre fourni par <code>./interzone-cli getbalance</code> qui augmente. Et vous pouvez envoyer vos coins où vous le souhaitez (par exemple pour les revendre) avec un joli:</p>
+<pre lang="bash">./interzone-cli walletpassphrase <votre password> 120
+./interzone-cli sendtoaddress </pre>
+<h2>Sécurité</h2>
+<p>Votre master node est ici configuré en mode "hot wallet", c'est-à-dire que vos coins sont sur le serveur. Il existe une méthode, plus complexe, plus longue, mais plus sure, qui permet de le configurer en "cold wallet". Vos coins sont alors sur votre machine, et un lien est fait enter votre machine et votre master node.</p>
+<p>Si la sécurité vous importe, je vous invite donc à étudier la question.</p>
+<p>Renforcer la configuration du firewall aussi est une bonne idée, puisque maintenant vous êtes une cible d'attaque potentielle.</p>
+<p>Enfin, n'oubliez pas de vider tout l'historique bash en partant, histoire de pas avoir tous les trucs en clair dedans:</p>
+<pre lang="bash">cat /dev/null > ~/.bash_history && history -c && exit</pre>
+<p>Et backupez comme des porcs aussi.</p>
+<h2>Profit ?</h2>
+<p>J'espère pour vous que tout ça va fructifier (et pour moi aussi). Si c'est le cas, vous savez ce qu'il vous reste à faire: envoyez-nous une carte postale de votre ile deserte. Ou des ITZ à 1AChuSLWAHQgmkGa84AHqBRCs1Z1cxHjnU. Ça marche aussi.</p>
+<p>Si vous avez tout perdu, sachez que c'est la faute de Max. Je peux vous donner son adresse. </p>
+<p>Et pour tous ceux qui n'ont pas la foi de faire tout ça, je pense que je vais monter un service qui permet de cliquer et acheter des masternodes automatiquement. </p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/monter-son-master-node-interzone-itz/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">23944</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/12/step-1-cut-a-hole-in-a-box.jpg" length="47308" type="image/jpg" />	</item>
+		<item>
+		<title>Le point sur les crypto-monnaies</title>
+		<link>http://sametmax.com/le-point-sur-les-cryptos/</link>
+		<comments>http://sametmax.com/le-point-sur-les-cryptos/#comments</comments>
+		<pubDate>Tue, 19 Dec 2017 10:32:50 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[bitcoin]]></category>
+		<category><![CDATA[cryptocurrency]]></category>
+		<category><![CDATA[cryptomonnaie]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=23913</guid>
+		<description><![CDATA[Max est arrivé, il a posté posté, puis il est reparti.
+
+Miner du Bitcoin Gold n'a pas été rentable du tout, ni pour vous, ni pour la team de GoldenShower, mais au moins c'était fun.
+
+Cela dit ce n'était que la partie émergée de l'iceberg, et  avec tout le bordel actuel, vous avez peut-être envie d'un petit topo pour remettre tout en contexte.
+]]></description>
+				<content:encoded><![CDATA[<p>Max est arrivé, il a posté, puis il est reparti.</p>
+<p>Miner du Bitcoin Gold n&#8217;a pas été rentable du tout, ni pour vous, ni pour la team de GoldenShower. Et NiceHash s&#8217;est fait hacké. Mais au moins c&#8217;était fun.</p>
+<p>Cela dit ce n&#8217;était que la partie émergée de l&#8217;iceberg, et  avec tout le bordel actuel, vous avez peut-être envie d&#8217;un petit topo pour remettre tout en contexte.</p>
+<p>Il y a 5 ans, <a href="http://sametmax.com/quest-ce-que-bitcoin/">je vous parlais du Bitcoin</a>, un projet qui expérimentait avec l&#8217;idée de créer une monnaie <strong>décentralisée</strong>, non dirigée par les banques ou les états.</p>
+<p>Le système Bitcoin a introduit les bases d&#8217;un système novateur:</p>
+<ul>
+<li>Tout le monde est égal, et peut créer un compte Bitcoin sans aucun prérequis. C&#8217;est ce qu&#8217;on appelle le wallet. Les techniques modernes de chiffrement permettent à chaque wallet de s&#8217;identifier, et de déclarer des transactions. </li>
+<li>Personne ne possède ses propres bitcoins, mais chaque personne dans le réseau peut télécharger tout l&#8217;historique des transactions depuis la création du Bitcoin. Cette base de données est ce qu&#8217;on appelle la blockchain. Ainsi le système sait exactement qui peut dépenser quoi.
+<li>Chaque personne peut participer à la création de la monnaie. C&#8217;est ce qu&#8217;on appelle le minage, et en gros on demande à son ordinateur de résoudre un problème mathématique complexe. On obtient la monnaie quand on peut donner la preuve qu&#8217;on a résolu le problème. C&#8217;est ce qu&#8217;on appelle le &#8220;proof of work&#8221;.</li>
+</ul>
+<p>Bitcoin est un peu le prototype de la roue, taillé dans la pierre: révolutionnaire, mais vraiment super lourd.</p>
+<ul>
+<li>Tout est public. Les wallets sont anonymes, mais toutes les transactions sont en clair. Les premiers marchés noirs (remember the silk road ?) se sont fait tej assez vite.</li>
+<li>Les transactions irréversibles et la complexité technique pour sécuriser son portefeuille ont amené de nombreuses attaques.</li>
+<li>La nature de la production du BTC a amené des gens à se regrouper en grosse communauté afin de miner plus facilement, empêchant les individus seuls de participer de manière significative. C&#8217;est ce qu&#8217;on appelle les pools. De plus, les gros capitaux ont investi dans de grosses fermes d&#8217;ordinateurs pour miner en masse. Une grosse partie est en Chine, et ils ont une énorme influence sur le Bitcoin qui n&#8217;est donc plus autant décentralisé.</li>
+<li>La blochain est devenue énorme. <a href="https://bitinfocharts.com/">Plus de 150Go</a> et ça va continuer à grossir. Héberger un noeud complet sur son téléphone n&#8217;est plus faisable. Du coup les gens utilisent des wallets légers, qui font confiance à un service externe. Bitcoin perd encore plus son bénéfice de décentralisation.</li>
+<li>Les transactions sont lentes. On plafonne à quelques échanges par seconde. Pour le monde entier !</li>
+<li>Bitcoin a déjà vu deux forks, le Bitcoin Cash et le Bitcoin Gold, à cause de toutes ses limitations.</li>
+</ul>
+<p>Malgré ça, de par le nom célèbre et la robustesse technique du système, Bitcoin reste la référence de la cryptomonnaie. En quelque sort &#8220;l&#8217;or&#8221;, la valeur refuge. Amusant quand on connait sa volatilité. Le cours a explosé (plus de 15000 euros), <a href="https://www.letemps.ch/economie/2017/12/11/bourse-chicago-bitcoin-demarre-trombe">la bourse de Chicago ouvre les vannes de la spéculation officielle</a> et on peut même en acheter avec sa CB de nos jours (ce qui n&#8217;était pas le cas au début).</p>
+<p>En gros, Bitcoin est légitimé.</p>
+<p><a href="http://sametmax.com/wp-content/uploads/2017/12/LEPQ6E0.jpg" class="grouped_elements" rel="tc-fancybox-group23913"><img src="http://sametmax.com/wp-content/uploads/2017/12/LEPQ6E0.jpg" alt=" " width="750" height="647" class="aligncenter size-full wp-image-23916" /></a></p>
+<p>Et c&#8217;est ironique, car cette légitimation passe par la négation du projet original. Bitcoin n&#8217;est plus du tout une monnaie alternative aux mains du peuple, mais un instrument spéculatif de plus.</p>
+<p>Les cryptomonnaies actuelles ont une valeur aberrante, sans rien derrière. C&#8217;est du vent total.</p>
+<h2>Alors qu&#8217;est-ce qui se passe maintenant ?</h2>
+<p>Et bien d&#8217;abord les cryptomonnaies alternatives ont fleuri. Il y en a des centaines. La plupart sans aucun projet, avec des teams branlantes et l&#8217;espoir de &#8220;mooner&#8221; (que le cours monte jusqu&#8217;à la lune).</p>
+<p>Certaines cryptos sont très intéressantes néanmoins:</p>
+<ul>
+<li>Ethereum a montré la voie des smart contrats, et permet de glisser des programmes dans la blockchain que chacun peut exécuter en dépensant des ETH. </li>
+<li>Dash a popularisé le concept du master node: certains wallets immobilisent du capital (par exemple 1000 dash), et en échange obtiennent la confiance du réseau pour effectuer des tâches (accélérer les transactions, anonymiser les échanges, etc) contre des prélèvements (fee) qui s&#8217;ajoutent à leur pécule.</li>
+<li>Monero est devenu célèbre parmi les créateurs de virus (et de mineurs JavaScript) car il permet de miner sur le CPU et est anonyme.</li>
+<li>VTC a promu l&#8217;idée d&#8217;être ASIC resistant, c&#8217;est-à-dire de rendre difficile d&#8217;acheter du matériel spécialisé pour le minage pour créer une grosse ferme.</li>
+<li>Ripple est préminé (toutes les pieces existent déjà) et soutenu par les banques et les GAFAS.</li>
+<li>Electroneum (Max l&#8217;appelle &#8220;electroscam&#8221;) veut créer du &#8216;fake mining&#8217; et permettent aux gosses de la cour de récré de générer du cash depuis leur téléphone.</li>
+<li>duniter mise sur l&#8217;aspect social: mineur est un status qu&#8217;il faut obtenir et maintenir en convainquant 5 humains de voter pour soi, tous les 2 ans.</li>
+</ul>
+<p>Du coup il y a une vraie exploration technique, et ça va donner des choses intéressantes. M<a href="https://medium.com/e-residency-blog/were-planning-to-launch-estcoin-and-that-s-only-the-start-310aba7f3790">ême les états s&#8217;y mettent</a>.</p>
+<p>Néanmoins soyons honnête, l&#8217;utilisateur moyen s&#8217;en bat les couilles (oui les couilles, l&#8217;utilisateur moyen n&#8217;est clairement pas une utilisatrice pour le moment) et veut juste avoir de l&#8217;argent qui rentre en espérant que plus d&#8217;argent sort.</p>
+<p><a href="http://sametmax.com/wp-content/uploads/2017/12/szEys0O.jpg" class="grouped_elements" rel="tc-fancybox-group23913"><img src="http://sametmax.com/wp-content/uploads/2017/12/szEys0O.jpg" alt="" width="460" height="612" class="aligncenter size-full wp-image-23915" /></a></p>
+<p>Pour répondre à cette demande, de <a href="http://cryptopia.co.nz/">nombreuses</a> <a href="http://coinsmarkets.com/">places de marché</a> <a href="http://yobit.net/">ont vu le jour</a>. On peut échanger des trucs obscurs tels que le Wyvern, l&#8217;ObamaCare, le Satancoin, le CheeseCoin, le Marijuanacoin, le GirlsToken ou le CharlieChaplinCoin.</p>
+<p>J&#8217;aimerais vraiment vous dire que je plaisante. Mais non.</p>
+<p>Et puis tout ça va finir en bulle. Et ça va péter. Et des tas de gens vont tout perdre. Dans 6 mois ? Dans 2 ans ? Dans 10 ans. Aucune idée. Personne ne sait. On sait juste que ça va arriver. On est pas dupe, ces monnaies de singe ne valent rien: pas d&#8217;atout technique, pas de projet social, pas de team de ouf, pas de gros backers&#8230; Rien pour compenser l&#8217;absence de garantie par l&#8217;Etat qu&#8217;une vraie monnaie a. </p>
+<p>Le petit secret, c&#8217;est que la plupart des ces cryptos sont des forks des projets principaux (Btc, eth, dash, etc) avec juste un logo différent. Ou pire, juste un smart contract sur ETH et même pas de blockchain, quand on est vraiment paresseux et doué en com, pourquoi se faire chier.</p>
+<p>Une minorité, mais bien réelle, deviendront ancrées dans la société après la crise. Après tout la possibilité de stocker une valeur et de l&#8217;échanger sans contrôle et rapidement est trop intéressante. Le jeu du chat et de la souris avec les institutions va continuer. Il va y avoir législation. Et au bout d&#8217;un temps, acceptation sous certaines conditions.</p>
+<p>De plus, les innovations techniques autour de la blockchain vont produire des choses vraiment utiles, et on les utilisera.</p>
+<p>Mais la plupart des monnaies actuelles vont disparaitre au son des pleurs. Tout le monde le sait, mais tout le monde s&#8217;en fout. On espère tous que ce sera le voisin, et que nous nous on sera riche. Les gens s&#8217;identifient beaucoup plus souvent au début du &#8220;loup de wall street&#8221; qu&#8217;à la fin de &#8220;the big short&#8221;.</p>
+<p>Déjà que je regrette la centaine de BTC que j&#8217;ai vendu avant que ça monte, alors j&#8217;imagine le sentiment quand tout s&#8217;écroule après l&#8217;achat&#8230;</p>
+<h2>Et comment je fais du pognon moi alors ?</h2>
+<p>Ben si je savais comment faire de la thune a coup sûr, je le ferais et je ne le vous le dirais pas, bande de guignols.</p>
+<p>Mais avec Max, on essaye de profiter de la situation.</p>
+<p>Déjà, pour le moment, acheter les cryptos les plus célèbres (Bitcoin, Ethereum, Monero, Dash, Litecoin&#8230;), a été une stratégie gagnante puisque ça monte énormément. </p>
+<p>Ensuite il y les investissements alternatifs. Par exemple notre bande de potes investis dans <a href="https://masternodes.pro/">des master nodes</a> (particulièrement le Vivo, le CRC, l&#8217;interzone, etc). Comme le dit Max &#8220;20k en assurance vie m&#8217;a rapporté 200 euros en 5 ans. Sur un masternode, 7k me rapporte 40euros par jour&#8221;. Évidement&#8230;</p>
+<p>Enfin il y a la stratégie &#8220;pendant la ruée vers l&#8217;or, vends des pelles&#8221;. </p>
+<p>Max essaye de mettre en place un système de bot facile à scripter pour spéculer sur toutes les plateformes de manière uniformisée, et les louer. </p>
+<p>Moi je monte un système pour gérer les master nodes des gens en échange d&#8217;une part des gains. C&#8217;est que c&#8217;est chiant à monter et maintenir ces petites bestioles.</p>
+<p><a href="http://sametmax.com/wp-content/uploads/2017/12/i0uRTzf.jpg" class="grouped_elements" rel="tc-fancybox-group23913"><img src="http://sametmax.com/wp-content/uploads/2017/12/i0uRTzf.jpg" alt=" " width="540" height="396" class="aligncenter size-full wp-image-23917" /></a></p>
+<p>Si vous comptez mettre du pognon là dedans, n&#8217;oubliez pas de ne jouer dans ce grand casino bordélique et immoral que ce que vous pouvez perdre. </p>
+<p>Mais la vérité ?</p>
+<p>En tant que dev, on s&#8217;était pas autant marré depuis les débuts du Web, quand on bricolait des services pourris en PHP pour se faire une place.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-point-sur-les-cryptos/feed/</wfw:commentRss>
+		<slash:comments>36</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">23913</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/12/NkP8oep.jpg" length="26677" type="image/jpg" />	</item>
+		<item>
+		<title>De la thune avec un « Mining Pool » de BTG</title>
+		<link>http://sametmax.com/de-la-thune-avec-un-mining-pool-de-btg/</link>
+		<comments>http://sametmax.com/de-la-thune-avec-un-mining-pool-de-btg/#comments</comments>
+		<pubDate>Sun, 12 Nov 2017 07:29:47 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[bitcoin]]></category>
+		<category><![CDATA[crypto]]></category>
+		<category><![CDATA[cryptocurrency]]></category>
+		<category><![CDATA[cryptomonnaie]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=23805</guid>
+		<description><![CDATA[C'est pas parce que vous entendez plus trop parler de Max qu'il est mort. En ce moment, il est à fond sur les cryptomonnaies. Mais si, rappelez-vous,  <a href="http://sametmax.com/tag/bitcoin/">ça fait quand même 5 ans qu'on vous parle du Bitcoin sur le blog</a>... Aujourd'hui le Bitcoin est à quelques milliers d'euros, et des centaines de monnaies concurrentes sont arrivées sur le marché. 
+
+Les opportunités pour faire de l'argent (et en perdre of course) sont décuplées, et Max, ainsi que deux potes à nous, se sont lancés dans un petit montage sympa. Potentiellement, si vous avez une bonne carte graphique, y a moyen de se faire du pognon sans trop d'effort. Plus on a de lecteurs qui participent, plus la thune arrive.
+
+ Je leur laisse la parole dans un article invité de Tic, où ils vous expliqueront ça mieux que moi ]]></description>
+				<content:encoded><![CDATA[<p><em>C&#8217;est pas parce que vous entendez plus trop parler de Max qu&#8217;il est mort. En ce moment, il est à fond sur les cryptomonnaies. Mais si, rappelez-vous,  <a href="http://sametmax.com/tag/bitcoin/">ça fait quand même 5 ans qu&#8217;on vous parle du Bitcoin sur le blog</a>&#8230; Aujourd&#8217;hui le Bitcoin est à quelques milliers d&#8217;euros, et des centaines de monnaies concurrentes sont arrivées sur le marché. </p>
+<p>Les opportunités pour faire de l&#8217;argent (et en perdre of course) sont décuplées, et Max, ainsi que deux potes à nous, se sont lancés dans un petit montage sympa. Potentiellement, si vous avez une bonne carte graphique, y a moyen de se faire du pognon sans trop d&#8217;effort. Plus on a de lecteurs qui participent, plus la thune arrive.</p>
+<p> Je leur laisse la parole dans un article invité de Tic, où ils vous expliqueront ça mieux que moi </em></p>
+<hr>
+<p>Avec une bande de zozos, on est en train de monter un mining pool sur le Bitcoin Gold. Rien que cette phrase je me demande comment j’ai pu l’écrire.</p>
+<p>Je ne suis pas du genre à me baigner dans du charbon, donc je vais préciser les choses :</p>
+<p>Certaines cryptomonnaies (Bitcoin, Ether, Monero, mon préféré Electroneum …) reposent sur une blockchain dont la sécurisation (ie gravure des transactions et informations dans le marbre de la blockchain, vérification qu’il n’y a pas de fraude) est réalisée par une armée de machines capable de réaliser des tonnes d’opérations mathématiques : les mineurs.</p>
+<p>Pour valider un block de la chaine chaque mineur essaye des foultitudes de combinaisons mathématiques liées à ce block, jusqu’à ce qu’un trouve la bonne combinaison et Bingo il touche la cagnotte, le salaire (versé dans la cryptomonnaie associée) lié à la validation de ce block et ainsi de suite, jusqu’à presque l’infini.</p>
+<p>Du coup, soit les mineurs travaillent tout seuls dans leur coin pour choper le gros lot, soit ils s’associent dans un « pool » et mettent leur puissance (et leur chance, car il s’agit bien de chance) en commun pour gagner plus souvent une plus petite partie de la mise.</p>
+<p>Un peu comme jouer au loto, soit on fait sa grille tout seul dans son coin pour gagner en moyenne 2 millions avec une probabilité de 1/19 Millions, soit on a 1 000 « amis » avec qui on s’associe pour gagner en moyenne 2000 euros avec une probabilité de 1/19000. On gagne beaucoup moins, mais on a beaucoup plus de chance (au sens probabiliste) que ça arrive au moins dans une vie.</p>
+<p>Sauf que pour miner, pas besoin d&#8217;acheter un ticket. Il suffit d&#8217;avoir une carte graphique sur son ordi.</p>
+<p>Et avec un pool, on a un serveur sur lequel chaque mineur se connecte pour lui demander du travail, sa feuille de route au niveau calcul pour les secondes à venir. Chacun fait ses calculs aussi vite qu’il peut et renvoie ses résultats, et si un des mineurs du pool trouve la combinaison gagnante, le pool redistribue les gains selon la quantité de travail (pour la plupart dans le vent, mais c’est le jeu qui veut ça) fournie par chacun. Par chacun, on parle d’un PC (presque) de base à une ferme de minage comprenant plusieurs dizaines (ou centaines) de cartes graphiques.</p>
+<p>Sinon j’ai parlé de BTG en titre, c’est le Bitcoin Gold (il y a le silver et surement un jour le copper à venir, mais on va rester sur le Gold). Le BTG c’est une nouvelle cryptomonnaie qui sort officiellement le 12 Novembre à 19h UTC. <strong>Donc ce soir.</strong> Pour faire court et simple (et pas trop m’embrouiller), le BTG est basé sur la blockchain du BTC (The Bitcoin), c’est un « fork » qui veut redonner le pouvoir au peuple dans la mesure où la sécurisation de la chaine Bitcoin originale est devenue tellement difficile que seule une poignée de gros acteurs basés dans l’Empire du milieu (bref des chinois) détient la quasi-totalité de la puissance. Pour la sécurisation décentralisée de la chose, on repassera. Le bitcoin gold tend à redonner la voix au peuple en proposant une chaine sécurisable par des cartes graphiques et seulement des cartes graphiques, du coup la démocratisation est plus plausible, car il suffit de 1000 PC de gamers disséminés n’importe où pour égaler (et contrebalancer) la puissance d’une ferme entière cachée au fin fond de l’Oural ou de la Mongolie.</p>
+<p>Du coup voilà, on est en train de monter un mining pool de BTG.</p>
+<hr>
+<p><em>Maintenant la partie fun. </p>
+<p>Quand une nouvelle cryptomonnaie arrive, le début du minage est plus facile. Ce soir, Max et Tic &#038; Tac vont donc ouvrir leur mining pool, et on va poster un tuto sur le blog pour que vous puissiez vous connecter dessus.</p>
+<p>Afin qu&#8217;on fasse de la thune tous ensemble, dans la joie et la bonne humeur.</em></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/de-la-thune-avec-un-mining-pool-de-btg/feed/</wfw:commentRss>
+		<slash:comments>25</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">23805</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/11/d81LyrV.jpg" length="64489" type="image/jpg" />	</item>
+	</channel>
+</rss>

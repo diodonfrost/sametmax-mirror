@@ -1,0 +1,1078 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>twisted &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/twisted/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Le piège d&#8217;écrire du code couplé à une implémentation</title>
+		<link>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/</link>
+		<comments>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/#comments</comments>
+		<pubDate>Wed, 03 Feb 2016 09:17:15 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[gevent]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[twisted]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=18044</guid>
+		<description><![CDATA[On a reproché à la communauté de Twisted que c’était un silo fermé. Une lib écrite pour Twisted ne marchait que pour Twisted.
+
+Puis on a reproché à la communauté de gevent la même chose.
+
+Et maintenant la communauté d’asyncio recommence à faire la même erreur.]]></description>
+				<content:encoded><![CDATA[<p>On a reproché à la communauté de Twisted que c’était un silo fermé. Une lib écrite pour Twisted ne marchait que pour Twisted.</p>
+<p>Puis on a reproché à la communauté de gevent la même chose.</p>
+<p>Et maintenant la communauté d’asyncio recommence à faire la même erreur.</p>
+<p>Regardez, <a href="https://github.com/aio-libs">pleins de libs compatibles asyncio</a>, c’est génial non ?</p>
+<p>Je ne vais pas dire non. Ça boost l’utilisabilité, l’adoption, etc.</p>
+<p>Mais c’est aussi un énorme travail qui passe à côté de toute l’expérience (bugs, cas extrêmes, best practices, perfs&#8230;) des communautés précédentes. Et qui a une date de péremption, qui sera foutu à la poubelle à la prochaine vague.</p>
+<p>Pourquoi ?</p>
+<p>Parce que toutes ces libs se concentrent sur l’implémentation.</p>
+<p>Vous ne pouvez pas réutiliser le code d’une lib SMTP Twisted, car elle est liée au reactor. Pourtant cette lib contient des milliers d’infos utiles, la gestion de ce serveur bizarre, la correction de cette erreur de calcul de date, qui n’ont rien à voir avec Twisted.</p>
+<p>C’est la même chose avec ces libs pour asyncio.</p>
+<p>Que faire alors ?</p>
+<p>Et bien d’abord écrire une lib neutre. Qui contient des choses comme :</p>
+<ul>
+<li>Le parsing des packets.</li>
+<li>Le workflow.</li>
+<li>Les constantes.</li>
+<li>Les convertisseurs de données.</li>
+<li>Les vérificateurs de données.</li>
+<li>Les bases de connaissances sur le monde extérieur.</li>
+</ul>
+<p>Il faut écrire cette lib de manière à ce qu’elle puisse être réutilisée dans tout contexte. À base de callbacks simples, de hooks, de points d’entrées.</p>
+<p>Puis, vous rajoutez dans un sous-module, le support pour votre plateforme favorite. Un adaptateur qui utilise ces hooks pour Twisted, ou asyncio, ou gevent.</p>
+<p>Cela a de multiples bénéfices:</p>
+<ul>
+<li>Quand vous changez de plateforme ou que le nouveau joujou à la mode sort, une grande partie du travail peut être réutilisé.</li>
+<li>Toute la partie neutre de la lib peut être réutilisée par toute la communauté Python, pas juste celle qui utilise la même plateforme.</li>
+<li>Cela encourage les contributions à votre lib, puisque n’importe qui peut rajouter un module pour une plateforme et l’enrichir, et corriger des bugs sur la partie neutre.</li>
+<li>Votre lib est beaucoup plus facile à tester.</li>
+<li>Votre lib va cumuler du savoir sur la problématique qu’elle résout pendant bien plus de temps, puisqu’elle traverse les modes des implémentations. Au long terme, ce sera la lib la plus stable et complète.</li>
+</ul>
+<p>Toutes les plateformes ont une manière ou un autre pour attaquer ce problème. Twisted par exemple a une classe protocole qui est indépendante du reactor. Oui, mais elle est dépendante de la manière de penser en Twisted. Personne ne documente ces protocoles de manière neutre. Personne n’utilise ces protocoles de manière neutre.</p>
+<p>gevent utilise carrément le monkey patching pour essayer de se rendre transparent. Évidemment ça veut dire que c’est très dépendant de l’implémentation. Si CPython change, ça casse. Si on utilise une implémentation différente de Python, ça ne marche pas. Si on fait des expérimentations comme actuellement sur le JIT, les résultats sont imprévisibles.</p>
+<p><code>async</code>/<code>await</code> a l’énorme bénéfice de proposer une interface commune à tout travail asynchrone. Fut-ce de l’IO, du thread, du multi-processing, du sous-processing, du multi-interpretteur ou des callbacks ordinaires&#8230; Cela va donc énormément gommer ces problèmes de compatibilité, même si la séparation des responsabilités que je recommande n’est pas suivie. Mais pour le moment tout le monde n’implémente pas <code>__await__</code>. Et si <code>__await__</code> lance le code sur l’autre plateforme, ça fait un truc en plus à gérer. Ce n’est pas tout à faire neutre.</p>
+<p>Attention, je comprends très bien que cette séparation que je recommande ne soit pas suivie.</p>
+<p>C’est très difficile de faire une API agnostique par rapport à la plateforme. Ça demande beaucoup plus de taf, de connaissance, etc. Je suis le premier à ne pas le faire pas fainéantise ou ignorance. </p>
+<p>Mais il faut bien comprendre qu’à chaque fois, on réinvente la roue, une roue jetable par ailleurs.</p>
+<p>Bien entendu, je dis ça pour l’async, mais c’est vrai pour tout.</p>
+<p>Par exemple, des centaines de code ont leur propre moyen de définir un schéma et valider les données en entrée. Les ORM sont particulièrement coupable de cela, les libs de form aussi, mais on a tous codé ce genre de truc. C’est idiot, c’est un code qui n’a pas à être lié à une plateforme.</p>
+<p>Des centaines de libs ont leur code de persistance lié à une plateforme. Même celles qui utilisent un ORM, au final, se lient à certaines bases de données (raison pour laquelle je suis <a href="https://facebook.github.io/react/blog/2015/05/01/graphql-introduction.html">GraphQL</a> de très près).</p>
+<p>La généricité a ses limites, et c’est toujours un compromis entre le coût immédiat, et le bénéfice futur. Si on fait tout générique, on se retrouve avec un truc qui évolue à 2 à l’heure et qui a 15 surcouches pour faire un print. On se retrouve avec Zope. Dont personne, et c’est ironique, ne réutilise les composants parce que c’est devenu trop compliqué de les comprendre.</p>
+<p>Car évidemment, qui dit découplage, dit doc bien faite, qui explique clairement comment bénéficier de ce découplage. Mais dit aussi que le code utilisant les adapteurs doit être aussi simple que si on avait un fort couplage, ce qui est dur à faire.</p>
+<p>Et on tombe ici sur un autre problème : la compétence pour faire ce genre de code. Si il faut 10 ans d’expérience pour faire une lib propre, alors on va réduire considérablement le nombre de personnes qui vont oser coder des libs.</p>
+<p>Aussi cet article n’est en aucun cas un savon que je souhaite passer aux auteurs. Merci de coder ces libs. Merci de donner de votre temps. </p>
+<p>Non, cet article est juste là pour dire : <em>dans la mesure du possible, il est très bénéfique sur le long terme de se découpler de la plateforme</em>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">18044</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/02/XYdAlhh.jpg" length="35788" type="image/jpg" />	</item>
+		<item>
+		<title>Today is a glorious day</title>
+		<link>http://sametmax.com/today-is-a-glorious-day/</link>
+		<comments>http://sametmax.com/today-is-a-glorious-day/#comments</comments>
+		<pubDate>Sun, 12 Jul 2015 21:29:59 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[crossbar]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[python 3]]></category>
+		<category><![CDATA[twisted]]></category>
+		<category><![CDATA[wamp]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16600</guid>
+		<description><![CDATA[pip install crossbar]]></description>
+				<content:encoded><![CDATA[<pre lang="python">>>> import crossbar
+>>> crossbar.__version__
+'0.10.4'
+>>> import twisted
+>>> twisted.__version__
+'15.2.1'
+>>> import sys
+>>> print('Wait for it...')
+Wait for it...
+>>> sys.version
+'3.4.0 (default, Apr 11 2014, 13:05:11) \n[GCC 4.8.2]'
+</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/today-is-a-glorious-day/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">16600</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/07/T5C15Zm.gif" length="996010" type="image/jpg" />	</item>
+		<item>
+		<title>Twisted et requests</title>
+		<link>http://sametmax.com/twisted-et-requests/</link>
+		<comments>http://sametmax.com/twisted-et-requests/#comments</comments>
+		<pubDate>Thu, 22 Jan 2015 11:13:24 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[requests]]></category>
+		<category><![CDATA[twisted]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=15806</guid>
+		<description><![CDATA[Après <a href="http://sametmax.com/utiliser-requests-de-maniere-non-bloquante-facilement/">l'article d'hier,</a> j'ai regardé le code source de requests-futures pour voir si je pouvais pas faire la même chose pour Twisted.]]></description>
+				<content:encoded><![CDATA[<p>Utiliser les outils de Twisted de base pour faire les requêtes est assez chiant, et quand on est habitué à <a href="http://docs.python-requests.org/en/latest/">requests</a>, c&#8217;est le retour au moyen age.</p>
+<p>La lib <a href="https://github.com/dreid/treq">treq</a> tente de corriger ça mais n&#8217;utilise pas l&#8217;API de requests et ne propose pas certaine de ses fonctionnalités.</p>
+<p>Du coup, après <a href="http://sametmax.com/utiliser-requests-de-maniere-non-bloquante-facilement/">l&#8217;article d&#8217;hier,</a> j&#8217;ai regardé le code source de requests-futures pour voir si je pouvais pas faire la même chose pour Twisted.</p>
+<p>Et on peut. J&#8217;ai fais un petit (bon, ok minuscule)  wrapper qui permet de faire ça :</p>
+<pre lang="python">
+    from requests_twisted import TwistedRequestsSession
+    session = TwistedRequestsSession()
+    defer = session.get('http://github.com/sametmax/')
+    def print_status(response):
+        print(response.url, response.status_code)
+    defer.addCallback(print_status)
+</pre>
+<p>Ça utilise l&#8217;objet <a href="http://docs.python-requests.org/en/latest/user/advanced/">Session</a> de requests et donc on peut faire <code>session.get|post|touslestrucsderequests</code> et toute l&#8217;API est disponible.</p>
+<p>Donc si vous en avez besoin :</p>
+<pre lang="bash">
+pip install requests-twisted
+</pre>
+<p>Le truc fait 3 lignes et 2 tests unittaires, en fait c&#8217;est juste un <code>deferToThreads</code> derrière. C&#8217;est certain que c&#8217;est moins performant que l&#8217;approche de treq qui utilise directement l&#8217;Agent non bloquant de Twisted, mais pour la plupart des cas c&#8217;est juste plus pratique, plus familier, et surtout, plus facile à maintenir :)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/twisted-et-requests/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">15806</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/01/images1.jpeg" length="116542" type="image/jpg" />	</item>
+		<item>
+		<title>Les managers le détestent : faites tourner WAMP dans Django avec cette astuce insolite</title>
+		<link>http://sametmax.com/les-managers-le-detestent-faites-tourner-wamp-dans-django-avec-cette-astuce-insolite/</link>
+		<comments>http://sametmax.com/les-managers-le-detestent-faites-tourner-wamp-dans-django-avec-cette-astuce-insolite/#comments</comments>
+		<pubDate>Sun, 04 Jan 2015 19:45:07 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[autobahn]]></category>
+		<category><![CDATA[crochet]]></category>
+		<category><![CDATA[crossbar]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[flask]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[twisted]]></category>
+		<category><![CDATA[wamp]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=15665</guid>
+		<description><![CDATA[On peut utiliser WAMP, <code>directement</code> dans Django.]]></description>
+				<content:encoded><![CDATA[<p>Il existe une lib appelée <a href="https://pypi.python.org/pypi/crochet">crochet</a> qui permet de faire marcher des API de twisted entre deux bouts de code bloquants. Certes, ça ne marche qu&#8217;en 2.7 et c&#8217;est pas hyper performant, mais on peut faire des trucs mignons du genre cette démo qui <a href="https://github.com/tavendo/AutobahnPython/tree/master/examples/twisted/wamp/app/crochet/example1">mélange flask et WAMP</a>.</p>
+<p>C&#8217;est du pur Python, pas de process externe à gérer, c&#8217;est presque simple.</p>
+<p>Bref, si on veut utiliser WAMP avec une app synchrone comme flask, c&#8217;est un bon moyen de s&#8217;y mettre. On aura jamais des perfs fantastiques, mais on peut pusher vers le browser.</p>
+<p>Du coup je me suis demandé si on pouvait faire ça avec Django.</p>
+<p>Évidement, ça a été un peu plus compliqué car par défaut <code>runserver</code> lance plusieurs workers et fait un peu de magie avec les threads. Mais après un peu de bidouillage, ça marche !</p>
+<p>On peut utiliser WAMP, <code>directement</code> dans Django.</p>
+<h2>Suivez le guide</h2>
+<p>D&#8217;abord, on installe tout le bouzin (python 2.7, souvenez-vous) :</p>
+<pre lang="bash">pip install crossbar crochet django</pre>
+<p>Il vous faudra un Django 1.7, le tout dernier, car il possède <a href="https://docs.djangoproject.com/en/dev/ref/applications/#django.apps.AppConfig.ready">une fonctionnalité</a> qui nous permet de lancer du code quand tout le framework est chargé.</p>
+<p>Vous vous faites votre projet comme d&#8217;hab, et vous ouvrez le fichier de settings et au lieu de mettre votre app dans <code>INSTALLED_APPS</code>, vous rajoutez ça :</p>
+<pre lang="python">INSTALLED_APPS = (
+    '...',
+    'votreapp.app.VotreAppConfig'
+)</pre>
+<p>Puis dans le module de votre app, vous créez un fichier app.py, qui va contenir ça:</p>
+<pre lang="python"># -*- coding: utf-8 -*-
+
+import crochet
+
+from django.apps import AppConfig
+
+# On charge l'objet contenant la session WAMP définie dans la vue
+from votreapp.views import wapp
+
+class VotreAppConfig(AppConfig):
+    name = 'votreapp'
+    def ready(self):
+        # On dit a crochet de faire tourner notre app wamp dans sa popote qui
+        # isole le reactor de Twisted
+        @crochet.run_in_reactor
+        def start_wamp():
+           # On démarre la session WAMP en se connectant au serveur
+           # publique de test
+           wapp.run("wws://demo.crossbar.io/ws", "realm1", start_reactor=False)
+        start_wamp()</pre>
+<p>On passe à urls.py dans lequel on se rajoute des vues de démo :</p>
+<pre lang="python">
+    url(r'^ping/', 'votreapp.views.ping'),
+    url(r'^$', 'votreapp.views.index')
+</pre>
+<p>Puis dans notre fichier views.py, on met :</p>
+<pre lang="python">
+# -*- coding: utf-8 -*-
+
+import uuid
+
+from django.shortcuts import render
+
+import crochet
+
+# Crochet se démerde pour faire tourner le reactor twisted de
+# manière invisible. A lancer avant d'importer autobahn
+crochet.setup()
+
+from autobahn.twisted.wamp import Application
+
+# un objet qui contient une session WAMP
+wapp = Application()
+
+# On enrobe les primitives de WAMP pour les rendre synchrones
+@crochet.wait_for(timeout=1)
+def publish(topic, *args, **kwargs):
+   return wapp.session.publish(topic, *args, **kwargs)
+
+@crochet.wait_for(timeout=1)
+def call(name, *args, **kwargs):
+   return wapp.session.call(name, *args, **kwargs)
+
+def register(name, *args, **kwargs):
+    @crochet.run_in_reactor
+    def decorator(func):
+        wapp.register(name, *args, **kwargs)(func)
+    return decorator
+
+def subscribe(name, *args, **kwargs):
+    @crochet.run_in_reactor
+    def decorator(func):
+        wapp.subscribe(name, *args, **kwargs)(func)
+    return decorator
+
+# Et hop, on peut utiliser nos outils WAMP !
+
+@register('uuid')
+def get_uuid():
+    return uuid.uuid4().hex
+
+@subscribe('ping')
+def onping():
+    with open('test', 'w') as f:
+        f.write('ping')
+
+# Et à côté, quelques vues django normales
+
+def index(request):
+    # pub et RPC en action côté Python
+    publish('ping')
+    print call('uuid')
+
+    with open('test') as f:
+        print(f.read())
+    return render(request, 'index.html')
+
+def ping(request):
+    return render(request, 'ping.html')
+</pre>
+<p>Après, un peu de templating pour que ça marche&#8230;</p>
+<p>Index.html :</p>
+<pre lang="html">
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>
+       UUID
+    </title>
+
+    <script src="{% static 'autobahn.min.js' %}"></script>
+    <script type="text/javascript">
+      var connection = new autobahn.Connection({
+         url: "ws://localhost:8080/ws",
+         realm: "realm1"
+      });
+
+     connection.onopen = function (session) {
+
+        session.call("uuid").then(function (uuid) {
+          var p = document.getElementById('uuid');
+          p.innerHTML = uuid;
+        });
+     };
+
+     connection.open();
+    </script>
+</head>
+<body>
+<h2>UUID</h2>
+<p id="uuid"></p>
+</body>
+</html></pre>
+<p>ping.html :</p>
+<pre lang="python">{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>
+       Ping
+    </title>
+
+    <script src="{% static 'autobahn.min.js' %}"></script>
+    <script type="text/javascript">
+      var connection = new autobahn.Connection({
+         url: "ws://localhost:8080/ws",
+         realm: "realm1"
+      });
+
+     connection.onopen = function (session) {
+
+        session.subscribe("ping", function () {
+          var ul = document.getElementById('ping');
+          var li = document.createElement('li');
+          li.innerHTML = 'Ping !'
+          ul.appendChild(li);
+        });
+     };
+
+     connection.open();
+    </script>
+</head>
+<body>
+<h2>Ping me !</h2>
+
+<ul id="ping">
+</ul>
+</body>
+</html></pre>
+<p>On ouvre la console, on lance son routeur :</p>
+<pre lang="bash">
+    crossbar init
+    crossbar start</pre>
+<p>On lance dans une autre console son serveur Django :</p>
+<pre lang="bash">./manage.py runserver</pre>
+<p>Et si on navigue sur <code>http://127.0.0.1:8000</code>, on récupère un UUID tout frais via RCP.</p>
+<p>On peut aussi voir dans le shell que ça marche côté Python :</p>
+<pre>94cfccf0899d4c42950788fa655b65ed
+ping</pre>
+<p>D’ailleurs un fichier nommé &#8220;test&#8221; est créé à la racine du projet.</p>
+<p>Et si on navigue sur <code>http://127.0.0.1:8000/ping/</code> et qu&#8217;on refresh <code>http://127.0.0.1:8000</code> plusieurs fois, on voit la page se mettre à jour.</p>
+<p>Achievement unlock : use WAMP and Django code in the same file.</p>
+<h2>A partir de là</h2>
+<p>Il y a plein de choses à faire.</p>
+<p>On pourrait faire une lib qui wrap tout ça pour pas à avoir à le mettre dans son fichier de vue et qui utilise settings.py pour la configuration.</p>
+<p>Il faut tester ça avec des setups plus gros pour voir comment ça se comporte avec gunicorn, plusieurs workers, le logging de Django, etc. Je suis à peu près sûr que les callbacks vont être registrés plusieurs fois et ça devrait faire des erreurs dans les logs (rien de grave ceci dit).</p>
+<p>On pourrait aussi adapter le RPC pour qu&#8217;il utilise les cookies d&#8217;authentification Django, et pouvoir les protéger avec @login_required.</p>
+<p>Mais un monde d&#8217;opportunités s&#8217;offrent à vous à partir de là.</p>
+<p>Moi, ça fait 6 h que je taffe dessus, je vais me pieuter.</p>
+<hr>
+<p><a href="https://github.com/sametmax/codes-des-articles/tree/master/2015/janvier/wamp_et_django">Télécharger le code de l&#8217;article</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-managers-le-detestent-faites-tourner-wamp-dans-django-avec-cette-astuce-insolite/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">15665</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/01/index.jpeg" length="10867" type="image/jpg" />	</item>
+		<item>
+		<title>Quelle est la différence entre &#8220;bloquer&#8221; et &#8220;en cours d&#8217;exécution&#8221; ?</title>
+		<link>http://sametmax.com/quelle-est-la-difference-entre-bloquer-et-en-cours-dexecution/</link>
+		<comments>http://sametmax.com/quelle-est-la-difference-entre-bloquer-et-en-cours-dexecution/#comments</comments>
+		<pubDate>Tue, 09 Dec 2014 16:57:06 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asynchrone]]></category>
+		<category><![CDATA[nodejs]]></category>
+		<category><![CDATA[non-blocking]]></category>
+		<category><![CDATA[tornado]]></category>
+		<category><![CDATA[twisted]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12766</guid>
+		<description><![CDATA[On vous dis qu'il faut faire attention en utilisant des technologies non bloquantes, car si on bloque dans la boucle d'événement, on bloque tout le programme, et on perd l’intérêt de l'outil.
+
+C'est vrai, mais que veut dire "bloquer" ?]]></description>
+				<content:encoded><![CDATA[<p>On vous dit qu&#8217;il faut faire attention en utilisant des technologies non bloquantes, car si on bloque dans la boucle d&#8217;événement, on bloque tout le programme, et on perd l’intérêt de l&#8217;outil.</p>
+<p>C&#8217;est vrai, mais que veut dire &#8220;bloquer&#8221; ?</p>
+<p>Car si je fais :</p>
+<pre lang="python">for x in range(1000000):
+    print(x)</pre>
+<p>Mon programme va tourner longtemps, et la boucle d’événement va bloquer, n&#8217;est-ce pas ?</p>
+<p>En fait, &#8220;bloquer&#8221; est un abus de langage car il y a plusieurs raisons pour bloquer. Dans notre contexte, il faudrait dire &#8220;bloquer en attente d&#8217;une entrée ou d&#8217;une sortie&#8221;. D&#8217;où l&#8217;appellation &#8220;Aynschronous non blocking I/O&#8221; des technos types NodeJS, Twisted, Tornado, Gevent, etc.</p>
+<p>En effet, il faut distinguer deux causes d&#8217;attente à votre programme :</p>
+<ul>
+<li>Attendre que vos instructions se terminent. C&#8217;est être &#8220;en cours d&#8217;exécution&#8221;.</li>
+<li>Attendre qu&#8217;un événement extérieur (écrire sur le disque, lire une socket, un clic de souris) arrive à sa conclusion. C&#8217;est bloquer sur de l&#8217;I/O.</li>
+</ul>
+<p>Le premier cas est impossible à éviter. Tout au mieux pouvons-nous répartir la charge du programme sur plusieurs cœurs, processeurs voire machines. Le code devra toujours attendre qu&#8217;il se termine, mais ça ira plus vite.</p>
+<p>Dans le contexte de la programmation non bloquante telle qu&#8217;on vous en a parlé, on est donc dans le deuxième cas.</p>
+<p>Il ne s&#8217;agit alors pas de s&#8217;interdire de faire des boucles ou autre opération longue (ou plutôt, c&#8217;est un problème d&#8217;optimisation ordinaire qui n&#8217;a rien à voir avec le fait de bloquer), il s&#8217;agit de ne pas &#8220;attendre à ne rien faire&#8221; quand une opération extérieure est en cours.</p>
+<p>C&#8217;est ce que font naturellement NodeJS, Twisted, Tornado, Gevent &amp; Co. Quand on fait un échange HTTP, le bout de données part, puis le reste du code continue de tourner, passant à la tâche suivante, en attendant que le paquet traverse le réseau, atteigne l&#8217;autre machine, qui vous répond finalement. C&#8217;est ce temps, incompressible, sans contrôle de votre côté, durant lequel il ne faut pas bloquer. Le gain de perf est que votre programme ne se la touche pas pendant les temps d&#8217;attente, mais bien entendu que VOTRE, lui, code va prendre du temps et &#8220;bloquer&#8221; le processeur. Il faut bien qu&#8217;il s&#8217;exécute.</p>
+<p>Ce qu&#8217;on entend donc par &#8220;il ne faut pas faire d&#8217;opération bloquante dans un code qui est déjà non bloquant&#8221; c&#8217;est &#8220;il ne faut pas utiliser un outil à l&#8217;API bloquante au milieu d&#8217;autres outils non bloquants&#8221;.</p>
+<p>Par exemple, n&#8217;utilisez pas <a href="http://docs.python-requests.org/en/latest/">requests</a> avec Twisted, car requests est codé pour attendre sans rien faire jusqu’à obtenir une réponse à chaque requête, bloquant Twisted. Utilisez plutôt <a href="http://treq.readthedocs.org/en/latest/">treq</a>. C&#8217;est pareil pour la lecture d&#8217;un fichier, une requête de base de données, etc. Et il existe des boucles d&#8217;événements ailleurs que sur le serveur : une page Web possède sa propre boucle (c&#8217;est pour cela que tout JS est asynchrone), un toolkit GUI comme QT ou GTK aussi (c&#8217;est pour ça qu&#8217;ils utilisent la programmation événementielle), etc.</p>
+<p>Maintenant vous allez me dire : mais pourquoi bloquer alors ? Pourquoi ne pas toujours éviter de bloquer ?</p>
+<p>Et bien parce que si on ne bloque pas, on ne peut pas écrire un programme ligne à ligne. On est obligé d&#8217;adopter un style de programmation asynchrone puisqu&#8217;on ne sait pas quand le résultat de certaines lignes va arriver. Ça veut dire des callbacks, ou des futures, ou des coroutines, ou du message passing&#8230; Bref, un truc plus compliqué. Or, on n&#8217;a pas forcément besoin de ce niveau de performance. En fait, la grande majorité des programmes n&#8217;ont pas besoin de ce niveau de performance. Donc, on bloque en attendant, non pas Godot, mais l&#8217;I/O, parce que c&#8217;est plus simple à écrire. Pour pas se faire chier.</p>
+<p>Il y a bien des moyens de contourner ce problème : les threads, le multiprocessing, les coroutines, etc. Parfois même, on ignore le problème : bloquer quelques ms au milieu d&#8217;une boucle d’événements une fois par seconde n&#8217;est pas un drame. Une fois que j&#8217;ai fini le dossier sur les tests unitaires, je vous ferai un dossier sur la programmation non bloquante, avec aussi une esquisse de la parallélisation.</p>
+<p>En attendant, ne stressez pas parce que votre code &#8220;bloque&#8221; parce qu&#8217;il travaille longtemps, assurez-vous juste que les APIs que vous utilisez ne bloquent pas pendant l&#8217;I/O, et vous êtes ok.</p>
+<p>Et comment savoir ? Et bien si une donnée rentre ou sort de votre programme (ça ne fait pas partie du code source), c&#8217;est de l&#8217;I/O. Si votre code ressemble à ça :</p>
+<pre lang="python">res = faire_operation_sur_IO()
+faire_un_truc_avec_le_res(res)</pre>
+<p>Alors votre outil est bloquant, puisque qu&#8217;il compte sur le fait que la deuxième ligne sera exécutée à coup sûr quand la première sera terminée. Un outil non bloquant exigera quelque chose pour gérer le retour du résultat plus tard: un callback, une promesse, un <code>yield</code>&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quelle-est-la-difference-entre-bloquer-et-en-cours-dexecution/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">12766</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/12/nNFWiX7.jpg" length="24792" type="image/jpg" />	</item>
+		<item>
+		<title>Un peu de fun avec les décorateurs</title>
+		<link>http://sametmax.com/un-peu-de-fun-avec-les-decorateurs/</link>
+		<pubDate>Mon, 17 Nov 2014 01:06:51 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[callback]]></category>
+		<category><![CDATA[decorateur]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[twisted]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12648</guid>
+		<description><![CDATA[Comme souvent, c'est le genre de feature qui peut être abusée, mais c'est parfois sympas de rapprocher une action juste au dessus de la fonction qui va être dans ce contexte. 
+]]></description>
+				<content:encoded><![CDATA[<p>Puisque la programmation asynchrone est au goût du jour, on se mange des callbacks un peu partout. Et ça alourdit toujours le code. Chaque langage, lib ou framework a essayé de trouver des astuces pour rendre tout ça plus digeste, et on a vu la naissance des Futures, Deferred, Promises, coroutines, yield from et autres joyeusetés.</p>
+<p>Prenons par exemple un script Twisted. Déjà, Twisted, c&#8217;est pas vraiment l&#8217;exemple de la syntaxe Weight Watcher, ou alors si, mais avant le début du régime.</p>
+<pre lang="python">
+# -*- coding: utf-8 -*-
+
+""" Télécharge des pages et affiche leur, de manière asynchrone """
+
+import re
+
+# Ceci doit être pip installé
+import treq
+from twisted.internet.task import react
+from twisted.internet.defer import inlineCallbacks, returnValue
+
+# Soit on utilise la syntaxe 'inlineCallbacks', c'est à dire avec des yields
+# qui marquent les appels asynchrones.
+@inlineCallbacks
+def get_title(url):
+    res = yield treq.get(url) # Ceci est asynchrone et non bloquant
+    html = yield res.content() # Ça aussi
+    try:
+        val = re.search(r'', html.decode('utf8')).groups()[0]
+    except:
+        val = ''
+
+    returnValue(val)
+
+# Soit on récupère un objet defer et on ajoute un callback manuellement
+def main(reactor):
+
+    # Ceci est asynchrone et non bloquant
+    defer = get_title('http://sametmax.com/quest-ce-quun-callback/')
+
+    # Ceci arrive une fois que get_title est terminé
+    def cb(title):
+        print(title.upper() + '!')
+
+    defer.addCallback(cb)
+
+    # Pareil
+    autre_defer = get_title('https://github.com/sametmax/django-quicky')
+
+    def cb(title):
+        print(title.upper() + '!!!')
+
+    autre_defer.addCallback(cb)
+
+    return defer
+
+react(main)</pre>
+<p>D&#8217;une manière générale, je préfère la syntaxe à base de yields, même si elle oblige à se trimbaler le décorateur <code>inlineCallbacks</code> partout, à parsemer sa fonction de yields et à utiliser <code>returnValue</code> à la place de <code>return</code> puisque le mot clé est interdit dans les générateurs en Python 2.7.</p>
+<p>Mais bon, ça reste facile à lire. On sait que les lignes avec <code>yield</code>, sont les appels bloquant qu&#8217;on demande à la boucle d’événements de traiter de manière asynchrone.</p>
+<p>La syntaxe à base de callbacks est plus lourde, en revanche elle donne le contrôle sur la concurrence des callbacks puisqu&#8217;ils sont explicites au lieu d&#8217;être automatiquement ajoutés par magie. Elle parlera aussi plus aux dev Javascript qui ont l&#8217;habitude d&#8217;ajouter des callbacks manuellement.</p>
+<p>Néanmoins, en JS, on a des fonctions anonymes plus flexibles, et on ferait donc plutôt une truc du genre :</p>
+<pre lang="python">get_title(url).then(function(title){
+    # faire un truc avec le résultat
+})</pre>
+<p>Et bien il se trouve qu&#8217;avec Python, bien qu&#8217;on ne le voit pas souvent, on peut avoir cette idée de la déclaration de son appel asynchrone juste au dessus de son callback, en utilisant des <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">décorateurs</a>.</p>
+<p>En effet, les décorateurs ne sont que du sucre syntaxique :</p>
+<pre lang="python">@truc
+def bidule():
+    chose</pre>
+<p>N&#8217;est en fait qu&#8217;un raccourci pour écrire :</p>
+<pre lang="python">def bidule():
+    chose
+
+bidule = truc(bidule)</pre>
+<p>Du coup, on peut prendre n&#8217;importe quelle fonction, ou méthode, et l&#8217;utiliser comme décorateur :</p>
+<pre lang="python">@react
+def main(reactor):
+
+    then = get_title('http://sametmax.com/quest-ce-quun-callback/').addCallback
+    @then
+    def cb(title):
+        print(title.upper() + '!')
+
+    then = get_title('https://github.com/sametmax/django-quicky').addCallback
+    @then
+    def cb(title):
+        print(title.upper() + '!!!')
+
+    return cb</pre>
+<p>Et en jouant avec <code>functools.partial</code>, on peut faire aussi des trucs rigolos.</p>
+<p>Non pas que cette syntaxe soit le truc indispensable à connaître et à utiliser. Mais les gens n&#8217;y pensent jamais. On utilise pas assez les décorateurs.</p>
+<p>Par exemple, combien de fois vous avez vu :</p>
+<pre lang="python">def main():
+    print('Doh')
+
+if __name__ == '__main__':
+    main()</pre>
+<p>Certaines libs, comme begin, font des décorateurs pour ça :</p>
+<pre lang="python">def main(func):
+    if __name__ == '__main__':
+        func()</pre>
+<p>Et du coup, dans son prog:</p>
+<pre lang="python">@main
+def _():
+    print('Doh')</pre>
+<p>Comme souvent, c&#8217;est le genre de feature qui peut être abusée, mais c&#8217;est parfois sympa de rapprocher une action juste au dessus de la fonction qui va être dans ce contexte.</p>
+<p>J&#8217;espère ainsi vous avoir inspiré pour mettre un hack ou deux en production détournant complètement l&#8217;usage des décorateurs et ajoutant quelques gouttes de plus dans le vase de la sécurité de votre emploi, ou votre licenciement.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">12648</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/11/BXbQyP3.jpg" length="74676" type="image/jpg" />	</item>
+		<item>
+		<title>Deferred, Future et Promise : le pourquoi, le comment, et quand est-ce qu&#8217;on mange</title>
+		<link>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/</link>
+		<comments>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/#comments</comments>
+		<pubDate>Wed, 04 Jun 2014 13:19:22 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asynchrone]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[deferred]]></category>
+		<category><![CDATA[future]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[jquery]]></category>
+		<category><![CDATA[promise]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[twisted]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10418</guid>
+		<description><![CDATA[Les promesses sont une des manières de rendre un code asynchrone plus facile à gérer. On dit : ce groupe de fonctions doit s'exécuter dans un ordre. Elles sont dépendantes les unes des autres.]]></description>
+				<content:encoded><![CDATA[<p>Si vous avez plongé dans le monde de la programmation asynchrone non bloquante, vous avez du vous heurter aux <a href="http://sametmax.com/quest-ce-quun-callback/">callbacks</a>. Si ce n&#8217;est pas le cas, aller lire l&#8217;article, et faites vos armes sur jQuery, je vais m&#8217;en servir en exemple.</p>
+<p>Signalement de rigueur que l&#8217;article est long :</p>
+
+<!-- iframe plugin v.4.3 wordpress.org/plugins/iframe/ -->
+<iframe width="560" height="315" src="//www.youtube.com/embed/E8b4xYbEugo" frameborder="0" 0="allowfullscreen" scrolling="yes" class="iframe-class"></iframe>
+
+<p>Un callback, ça va.</p>
+<p>Deux callbacks, pour un seul appel, ça commence à être chiant, mais c&#8217;est compréhensible.</p>
+<p>Quand les callbacks appellent eux aussi des callbacks, ça donne des codes imbitables :</p>
+<pre lang="javascript">$(function(){
+  $.post('/auth/token', function(token){
+    saveToken(token);
+    $.get('/sessions/last', function(session){
+      if (session.device != currentDevice){
+        $.get('/session/ ' + session.id + '/context', function(context){
+          loadContext(function(){
+            startApp(function(){
+              initUi()
+            })
+          })}
+        )}
+      else {
+        startApp(function(){
+          initUi()
+        })
+      }}
+    )
+  })
+});</pre>
+<p>Il y a pire que de lire ce code : le modifier ! Retirez un bloc, pour voir. Oh, et histoire de vous faire partager l&#8217;expérience complète, j&#8217;ai volontairement déplacé l&#8217;indentation d&#8217;une parenthèse et de deux brackets.</p>
+<p>Or les codes asynchrones ont besoin de callback afin d’enchainer certaines opérations dans le bon ordre, sinon on ne peut pas récupérer le résultat d&#8217;une fonction et l&#8217;utiliser dans une autre, puisqu&#8217;on ne sait pas quand l&#8217;opération se termine.</p>
+<p>Dans notre exemple, <code>$.post</code> et <code>$.get</code> font des requêtes POST et GET, et comme on ne sait pas quand le serveur va répondre, il faut mettre un callback pour gérer la réponse quand elle arrive. C&#8217;est plus performant que de bloquer jusqu&#8217;à ce que la première requête soit terminée car pendant ce temps, notre programme peut faire autre chose. Mais c&#8217;est aussi super relou à écrire et comprendre.</p>
+<p>Entrent en jeu les promesses (promises). Ou les deferred. Ou les futures.</p>
+<p>Typiquement, on retrouve des deferreds dans <a href="https://twistedmatrix.com/trac/">Twisted</a>, des promises pour <a href="http://api.jquery.com/jquery.ajax/">l&#8217;AJAX avec jQuery,</a> des futures pour <a href="http://docs.python.org/3.4/library/asyncio-protocol.html">asyncio</a>&#8230; Mais il y en a un peu partout de nos jours, et une lib peut utiliser plusieurs de ces concepts.</p>
+<p>En fait c&#8217;est la même chose, un nom différent donné au même concept, par des gens qui l&#8217;ont réinventé dans leur coin. Les puristes vous diront qu&#8217;il y a des différences dans l&#8217;implémentation, ou alors que la promesse est l&#8217;interface tandis que le deferred est l&#8217;objet retourné, bla, bla, bla.</p>
+<p>Fuck it, on va considérer que c&#8217;est tout pareil.</p>
+<p>Les promesses sont une des manières de rendre un code asynchrone plus facile à gérer. On dit : ce groupe de fonctions doit s&#8217;exécuter dans un ordre car elles sont dépendantes les unes des autres.</p>
+<p>Il y a d&#8217;autres moyens de gérer le problème de l&#8217;asynchrone: des événements, des queues, etc. L&#8217;avantage des promesses c&#8217;est que c&#8217;est assez simple, et ça marche là où on utilisait des callbacks avant, donc on a pu les rajouter aux libs qui étaient blindées de callbacks.</p>
+<h2>Le principe</h2>
+<p>La promesse est un moyen de dire que certaines fonctions, bien que non bloquantes et asynchrones, sont liées entre elles, et doivent s&#8217;exécuter les unes à la suite des autres. Cela permet de donner un ordre d&#8217;exécution à un groupe de fonctions, et surtout, que chaque fonction puisse accéder au résultat de la fonction précédente. Tout ceci sans bloquer le reste du système asynchrone.</p>
+<p>En résumé, <strong>cela donne un gout de programmation synchrone, à quelque chose qui ne l&#8217;est pas.</strong></p>
+<p>Cela se passe ainsi :</p>
+<ul>
+<li>La fonction asynchrone retourne un objet immédiatement : la promesse.</li>
+<li>On ne passe pas de callback à la fonction. On rajoute un callback à la promesse.</li>
+<li>Le callback prend en paramètre le résultat de la fonction asynchrone.</li>
+<li>Le callback retourne le résultat de son traitement.</li>
+<li>On peut rajouter autant de callbacks qu&#8217;on veut à la promesse, chacun devant accepter le résultat du callback précédent et retourner son propre résultat.</li>
+<li>Si un des callbacks retourne une promesse, elle est fusionnée avec la promesse initiale, et c&#8217;est son résultat que le prochain callback va récupérer</li>
+</ul>
+<p>Voilà un exemple :</p>
+<pre lang="javascript">// $.get est asynchrone. On a pas le résultat tout de suite, mais en attendant
+// on a une promesse tout de suite.
+var $promesse = $.get('/truc/machin');
+
+// premier callback. Il sera appelé quand $.get aura récupéré son
+// résultat
+$promesse.then(function(resultat){
+  // faire un truc avec le résultat
+  // puis on retourne le nouveau résultat
+  return nouveau_resultat;
+});
+
+// deuxième callback. Il sera appelé quand le premier callback
+// aura retourné son résultat.
+$promesse.then(function(nouveau_resultat){
+  // faire un truc
+});</pre>
+<p>Notez bien que c&#8217;est TRES différent de ça (en Python):</p>
+<pre lang="python">resultat = request.get('/truc/marchin')
+
+def function(resultat):
+  # faire un truc
+  return nouveau_resultat
+nouveau_resultat = function(resultat)
+
+def autre_function(nouveau_resultat):
+  # faire un truc
+autre_function(nouveau_resultat)</pre>
+<p>En Python, le code est bloquant par défaut. Ça va marcher, mais pendant que le code attend la réponse du serveur, votre ordinateur est en pause et ne travaille pas.</p>
+<h2>Un plus beau code</h2>
+<p>On se retrouve avec un code asynchrone, mais qui s&#8217;exécute dans l&#8217;ordre de lecture. Et comme on peut chainer les <code>then()</code> et donc ne pas réécrire <code>$promesse</code> à chaque fois, on obtient quelque chose de beaucoup plus lisible :</p>
+<pre lang="javascript">$.get('/truc/machin')
+.then(function(resultat){
+  // faire un truc
+  return nouveau_resultat;
+})
+.then(function(nouveau_resultat){
+  // faire un truc
+});</pre>
+<p>Si on reprend notre premier exemple, ça donne ça :</p>
+<pre lang="javascript">
+$(function(){
+
+// create new token
+$.post('/auth/token')
+
+// then save token and get last session
+.then(function(token){
+  saveToken(token);
+  return $.get('/sessions/last');
+})
+
+// then init session
+.then(function(session){
+  if (session.device != currentDevice){
+    
+    $.get('/session/ ' + session.id + '/context')
+    .then(function(context){
+      loadContext(function(){
+        startApp(function(){
+          initUi()
+        })
+      })
+    })
+
+  }
+  else {
+    startApp(function(){
+      initUi()
+    })
+  }}
+})
+
+});
+</pre>
+<p>Tout ça s’exécute de manière non bloquante (d&#8217;autres fonctions ailleurs dans le programme peuvent s&#8217;exécuter pendant qu&#8217;on attend la réponse du serveur), mais dans l&#8217;ordre de lecture, donc on comprend bien ce qui se passe. Si on veut retirer un bloc, c&#8217;est beaucoup plus facile.</p>
+<h2>Comment ça marche à l&#8217;intérieur ?</h2>
+<p>Histoire d&#8217;avoir une idée de comment une promise marche, on va faire une implémentation, simpliste et naïve, mais compréhensible, d&#8217;une promesse en Python. Pour rendre l&#8217;API un peu sympa,je vais utiliser <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">les décorateurs.</a></p>
+<pre lang="python">class Promise:
+
+    # La promesse contient une liste de callbacks, donc une liste de fonctions.
+    # Pas le résultat des fonctions, mais bien les fonctions elles mêmes,
+    # puisque les fonctions sont manipulables en Python.
+    def __init__(self):
+        self.callbacks = []
+
+    # Point d'entrée pour ajouter un callback à la promesse
+    def then(self, callback):
+        self.callbacks.append(callback)
+
+    # Cette méthode est celle qui sera appelée par le code asynchrone
+    # quand il reçoit son résultat.
+    def resolve(self, resultat):
+
+        # Ici, on obtient le résultat du code asycnhrone, donc on boucle
+        # sur les callbacks pour les appeler
+        while self.callbacks:
+            # On retire le premier callback de la liste, et on l'appelle
+            # avec le résultat
+            resultat = self.callbacks.pop(0)(resultat)
+
+            # Si le resultat est une promesse, on dit à cette nouvelle promesse
+            # de nous rappeler quand elle a reçu ses résultats à elle avant
+            # d'aller le reste de nos callbacks à nous : on fusionne les deux
+            # promesses :
+            # Promesse 1
+            #  - callback1
+            #  - callback2
+            #  - Promesse 2
+            #      * callback 1
+            #      * callback 2
+            #  - callback 3
+            if isinstance(resultat, Promise):
+                resultat.then(self.resolve)
+                break</pre>
+<p>Maintenant, créons un code asynchrone:</p>
+<pre lang="python">from threading import Timer
+
+def func1(v1):
+    # On dit complètement artificiellement d'afficher le résultat
+    # de la fonction dans 3 secondes, sans bloquer histoire d'avoir
+    # un peu de nonbloquitude dans notre code et justifier l'asynchrone.
+    def callback1():
+        print(v1)
+    t = Timer(3, callback1)
+    t.start()
+
+def func2(v2):
+    # Le même, mais pour 2 secondes
+    def callback2():
+        print(v2)
+    t = Timer(2, callback2)
+    t.start()
+
+# Deux fonctions normales
+def func3(v3):
+    print(v3)
+
+def func4(v4):
+    print(v4)
+
+# Et si on les enchaines...
+print('Je commence')
+func1(1)
+print('Juste après')
+func2(2)
+func3(3)
+func4(4)
+
+# ... le résultat est bien désordonné :
+
+## Je commence
+## Juste après
+## 3
+## 4
+## 2
+## 1</pre>
+<p>Parfois c&#8217;est ce que l&#8217;on veut, que les choses s’exécutent dans le désordre, sans bloquer.</p>
+<p>Mais quand on a des fonctions qui dépendent les unes des autres, au milieu d&#8217;un code asynchrone, on veut qu&#8217;elles se transmettent le résultat les unes aux autres au bon moment. Pour cela, utilisons notre promesse :</p>
+<pre lang="python">
+from threading import Timer
+
+
+# La mise en place de promesses suppose que le code 
+# écrit en fasse explicitement usage. Notre code est
+# définitivement lié à cette manière de faire.
+
+def func1(v1):
+    # Notre fonction doit créer la promesse et la retourner
+    p = Promise()
+    def callback1():
+        print(v1)
+        # Dans le callback, elle doit dire quand la promesse est tenue
+        p.resolve(v1)
+    t = Timer(3, callback1)
+    t.start()
+    return p
+
+# On lance la première fonction.
+print('Je commence')
+promise = func1(1)
+print('Juste après')
+
+# On ajoute des callbacks à notre promesse.
+
+@promise.then
+def func2(v2):
+    p = Promise()
+    def callback2():
+        # Pour justifier l’enchainement des fonctions, on fait en sorte que
+        # chaque fonction attend le résultat de la précédente, et
+        # l'incrémente de 1.
+        print(v2 + 1)
+        p.resolve(v2 + 1)
+    t = Timer(2, callback2)
+    t.start()
+    # Ce callback retourne lui-même une promesse, qui sera fusionnée
+    return p
+
+# Ces callbacks ne retournent pas de promesses, et seront chainés
+# normalement
+@promise.then
+def func3(v3):
+    print(v3 + 1)
+    return v3 + 1
+
+@promise.then
+def func4(v4):
+    print(v4 + 1)
+
+# Nos fonctions s'exécutent dans le bon ordre, mais bien de manière
+# asynchrone par rapport au reste du programme.
+
+## Je commence
+## Juste après
+## 1
+## 2
+## 3
+## 4
+</pre>
+<p>Notez bien :</p>
+<ul>
+<li>Le résultat &#8220;1&#8221; n&#8217;apparait que trois secondes après &#8220;Juste après&#8221;. Les fonctions sont donc bien non bloquantes.</li>
+<li>Le resultat &#8220;2&#8221; apparait deux secondes après &#8220;1&#8221;: c&#8217;est aussi asynchrone, MAIS, n&#8217;est lancé que quand la première fonction a terminé son travail.</li>
+<li>La deuxième fonction retourne une promesse, qui est fusionnée: tous ses callbacks vont s&#8217;exécuter en file avant que <code>func3</code> soit lancé. </li>
+</ul>
+<p>Évidement, n&#8217;utilisez pas cette implémentation de promise à la maison, c&#8217;est pédagogique. Ça ne gère pas les erreurs, ni le cas où le callback est enregistré après l&#8217;arrivée du résultat, et tout un tas d&#8217;autres cas tordus.</p>
+<h2>Syntaxe alternative</h2>
+<p>En Python, beaucoup de frameworks ont une approche plus agréable pour gérer les promesses à grand coup de <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">yield</a>. Twisted fait ça avec son <code>@inlineCallback</code>, <code>asyncio</code> avec <code>@coroutine</code>. C&#8217;est juste du sucre syntaxique pour vous rendre la vie plus facile.</p>
+<p>Il s&#8217;agit de transformer une fonction en générateur, et à chaque fois qu&#8217;on appelle <code>yield</code> sur une promesse, elle est fusionnée avec la précédente. Ça donne presque l&#8217;impression d&#8217;écrire un code bloquant normal :</p>
+<pre lang="python"># un appel de fonction asyncrone typique de twisted
+@inlineCallback
+def une_fonction(data):
+  data = yield func1(data)
+  data = yield func2(data)
+  data = yield func3(data)
+
+une_fonction(truc)</pre>
+<p>Les fonctions 1, 2 et 3 vont ainsi être appelées de manière asynchrone par rapport au reste du programme, mais bien s’enchainer les unes à la suite des autres.</p>
+<p>Ouai, tout ce bordel parce que l&#8217;asynchrone, c&#8217;est dur, donc on essaye de le faire ressembler à du code synchrone, qui lui est facile.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/feed/</wfw:commentRss>
+		<slash:comments>19</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">10418</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/06/D8GwE.png" length="222229" type="image/jpg" />	</item>
+		<item>
+		<title>Crossbar, le futur des applications Web Python ?</title>
+		<link>http://sametmax.com/crossbar-le-futur-des-applications-web-python/</link>
+		<comments>http://sametmax.com/crossbar-le-futur-des-applications-web-python/#comments</comments>
+		<pubDate>Sun, 25 May 2014 10:24:36 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[autobahn]]></category>
+		<category><![CDATA[crossbar.io]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[nodejs]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[twisted]]></category>
+		<category><![CDATA[wamp]]></category>
+		<category><![CDATA[websocket]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10329</guid>
+		<description><![CDATA[Je suis <a href="http://crossbar.io/">crossbar.io</a> depuis quelques temps maintenant, et je suis très, très étonné de ne pas plus en entendre parler dans la communauté Python.]]></description>
+				<content:encoded><![CDATA[<p>Je suis <a href="http://crossbar.io/">crossbar.io</a> depuis quelques temps maintenant, et je suis très, très étonné de ne pas plus en entendre parler dans la communauté Python.</p>
+<p>Bon, en fait, à moitié étonné.</p>
+<p>D&#8217;un côté, c&#8217;est une techno qui, à mon sens, représente ce vers quoi Python doit se diriger pour faire copain-copain avec Go/NodeJs et proposer une &#8220;killer feature&#8221; dans le monde des applications serveurs complexes.</p>
+<p>De l&#8217;autre, hum, leur page d&#8217;accueil explique à quoi ça sert de cette manière :</p>
+<blockquote><p>Crossbar.io is an application router which implements the Web Application Messaging Protocol (WAMP). WAMP provides asynchronous Remote Procedure Calls and Publish &amp; Subscribe (with <a title="WebSocket" href="http://fr.wikipedia.org/wiki/WebSocket" target="_blank">WebSocket</a> being one transport option) and allows to connect application components in distributed systems</p></blockquote>
+<p>Moui, moui, moui monseigneur, mais concrètement, là, hein, je peux faire quoi avec ?</p>
+<p>C&#8217;est toujours le problème avec les gens intelligents (hein Cortex ?) : ils font des trucs super cool, et personne ne comprend à quoi ça sert parce qu&#8217;il ne sont pas foutus de l&#8217;expliquer.</p>
+<p>Moi je suis un peu con, alors je vais profiter qu&#8217;on soit tous au même niveau pour vous faire passer le message.</p>
+<p>J&#8217;étais persuadé d&#8217;avoir mis la musique habituelle&#8230; Je la remets :</p>
+<p><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/v3ckHzJgw4k?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<h2>Web Application Message Protocol</h2>
+<p>Je vous avais parlé d&#8217;<a href="http://sametmax.com/un-petit-gout-de-meteor-js-en-python/">autobahn</a> dernièrement, un client WAMP qui embarque aussi un routeur basique. Crossbar est la partie serveur, un routeur WAMP plus sérieux.</p>
+<p>Crossbar permet à tous les clients d&#8217;échanger des messages WAMP à travers lui. Bien entendu, un client WAMP peut parler au serveur Crossbar et inversement comme un client HTTP peut parler à un serveur Apache/Nginx et inversement. Mais plus que ça, <strong>les clients peuvent parler entre eux, de manière transparente et simple.</strong> Comme un client <a title="Advanced Message Queuing Protocol" href="http://fr.wikipedia.org/wiki/Advanced_Message_Queuing_Protocol" target="_blank">AMQP</a> peut parler aux autres à travers un serveur <a title="RabbitMQ" href="http://en.wikipedia.org/wiki/RabbitMQ" target="_blank">RabbitMQ</a>.</p>
+<p>Cependant ça ne vous avance pas si vous ne savez pas ce qu&#8217;est WAMP ou à quoi ça sert. La charrue avec la peau de l&#8217;ours, tout ça.</p>
+<p>WAMP est un <a href="http://wamp.ws/spec/">protocole standardisé</a> pour échanger des messages entre deux systèmes. Ce n&#8217;est pas particulièrement lié à Python, on peut parler <strong>WAMP dans n&#8217;importe quel langage.</strong></p>
+<p>Il fonctionne en effet, principalement, au dessus de Websocket, donc <strong>on peut l&#8217;utiliser directement dans le navigateur</strong>, dans Firefox, Chrome, Opera, Safari et même IE10, via une lib Javascript. Qui est en fait juste un gros wrapper autour de l&#8217;API websocket standardisant la manière d&#8217;envoyer des données. Il n&#8217;y a rien de magique derrière, pas de formats compliqués, pas de binaire, c&#8217;est vraiment juste des appels websocket contenant des données formatées en JSON avec une certaine convention. <strong>En ce sens il fait penser à <a title="sockjs" href="http://fr.slideshare.net/ngocdaothanh/sockjs-intro" target="_blank">SockJS</a></strong> et (feu) socket.io.</p>
+<p>Seulement contrairement aux solutions type SocketJS, <strong>il n&#8217;est pas limité au navigateur</strong>. Il y a <a href="http://wamp.ws/implementations/">des libs</a> pour l&#8217;utiliser dans un code serveur Python, C++ ou NodeJS, dans une app Android et même directement depuis les entrailles de Nginx ou d&#8217;une base de données Oracle (en SQL) avec certains routeurs.</p>
+<div id="attachment_10340" style="width: 567px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2014/05/general1.png" class="grouped_elements" rel="tc-fancybox-group10329"><img class="size-full wp-image-10340" title="Comme HTTP, WAMP est juste un moyen de faire parvenir des données d'un point A à un point B. Mais contrairement à HTTP, WAMP permet aux clients de parler entre eux, et pas juste au serveur." src="http://sametmax.com/wp-content/uploads/2014/05/general.png" alt="Schéma général du fonctionnement de WAMP" width="557" height="538" /></a><p class="wp-caption-text">Comme HTTP, WAMP est juste un moyen de faire parvenir des données d&#8217;un point A à un point B. Mais contrairement à HTTP, WAMP permet aux clients de parler entre eux, et pas juste au serveur.</p></div>
+<p><strong>Comprenez bien, ça veut dire qu&#8217;on peut envoyer et recevoir des données arbitraires, en temps réel, entre tous ces systèmes, sans se prendre la tête, et de manière transparente.</strong></p>
+<p>WAMP c&#8217;est donc comme, mais mieux que :</p>
+<ul>
+<li>des requêtes HTTP, car c&#8217;est du push, asynchrone et temps réel;</li>
+<li>des requêtes websocket via SocketJS car c&#8217;est un standard, qui fonctionne SUR et ENTRE plusieurs services côté serveurs malgré les différents langages;</li>
+<li>des messages AMQP car ça marche dans le navigateur et ça se configure facilement.</li>
+</ul>
+<p>Bien utilisé, Crossbar permet d&#8217;amener Python dans la cour de frameworks &#8220;temps réel&#8221; novateurs comme <a title="Meteor" href="http://fr.wikipedia.org/wiki/Meteor_(framework)" target="_blank">MeteorJS</a>, et potentiellement les dépasser.</p>
+<p>Car WAMP permet de faire deux choses. Simplement. Et bien.</p>
+<h3>1 &#8211; Du PUB/SUB</h3>
+<p>Donc de dire dans son code &#8220;appelle cette fonction quand cet événement arrive&#8221;. <strong>C&#8217;est comme les signaux de Django ou QT, mais ça marche à travers le réseau.</strong> On le fait souvent avec Redis ces temps-ci. Avec WAMP et Javascript, ça donne :</p>
+<pre lang="javascript">// connection au routeur WAMP (par exemple, crossbar.io)
+ab.connect("ws://localhost:9000", function(session) {
+    // je m'inscris à un événement
+    session.subscribe('un_evenement_qui_vous_plait', function(topic, evt){
+        // faire un truc avec les données reçues
+        // à chaque fois que l'événement est envoyé
+        // par exemple mettre la page à jour
+    });
+});
+</pre>
+<div id="attachment_10343" style="width: 571px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2014/05/sub.png" class="grouped_elements" rel="tc-fancybox-group10329"><img class="size-full wp-image-10343" title="Des client SUBscribe à un événément. Un événément est un nom arbitrairement choisit par le programmeur, et qu'il va déclencher lui-même quand il pense qu'il se passe quelque chose d'important auquel il faut que le reste du signal réagisse. " src="http://sametmax.com/wp-content/uploads/2014/05/sub.png" alt="Schéma de fonctionnement du subscribe de WAMP" width="561" height="572" /></a><p class="wp-caption-text">Des client SUBscribe à un événément. Un événément est un nom arbitrairement choisit par le programmeur, et qu&#8217;il va déclencher lui-même quand il pense qu&#8217;il se passe quelque chose d&#8217;important auquel il faut que le reste du signal réagisse.</p></div>
+<p>Et ailleurs, dans une autre partie du fichier, ou même sur un autre navigateur Web :</p>
+<pre lang="javascript">ab.connect("ws://localhost:9000", function(session) {
+    // création d'un événement auquel on attache des données
+    session.publish('un_evenement_qui_vous_plait', ['des données']);
+</pre>
+<div id="attachment_10344" style="width: 565px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2014/05/pub.png" class="grouped_elements" rel="tc-fancybox-group10329"><img class="size-full wp-image-10344" title="Le programmeur décide que quelque chose d'important arrive (création d'un contenu, login d'un utilisateur, notification), et PUBlish l'événement" src="http://sametmax.com/wp-content/uploads/2014/05/pub.png" alt="Schéma de fonctionnement de PUB avec WAMP" width="555" height="452" /></a><p class="wp-caption-text">Le programmeur décide que quelque chose d&#8217;important arrive (création d&#8217;un contenu, login d&#8217;un utilisateur, notification), et PUBlish l&#8217;événement</p></div>
+<p>Et oui, c&#8217;est tout. On se connecte à crossbar, et on discute. La fonction du <code>subscribe</code> sera alors appelée avec les données du <code>publish</code>. Même si il y a 3000 km entre les deux codes. Même si le code A est sur un navigateur et le B sur un autre, ou sur un serveur NodeJS, ou une app Android.</p>
+<p>Ce qui fait peur au début, c&#8217;est qu&#8217;il y a TROP de flexibilité :</p>
+<ul>
+<li>Je dois attendre quoi comme événements ?</li>
+<li>Qu&#8217;est-ce que je passe comme données ?</li>
+<li>Est-ce que c&#8217;est rapide ? Léger ?</li>
+</ul>
+<p>Mais en fait c&#8217;est super simple : un événement c&#8217;est juste une action de votre application comme un élément (un post, un commentaire, un utilisateur&#8230;) ajouté, supprimé ou modifié. Finalement c&#8217;est le bon vieux <a title="CRUD" href="http://fr.wikipedia.org/wiki/CRUD" target="_blank">CRUD</a>, mais en temps réel, et en push, au lieu du pull. Vous choisissez un nom qui représente cette action, vous attachez des données à ce nom, voilà, c&#8217;est un événement que tous les abonnés peuvent recevoir.</p>
+<p>Avec un bonus : ça marche sur le serveur aussi ! Votre code Python reçoit &#8220;ajouter un commentaire&#8221; comme événement ? Il peut ajouter le commentaire en base de données, envoyer un message à un service de cache ou à un autre site en NodeJS pour le mettre à jour, renvoyer un événement pour mettre à jour les pages Web et l&#8217;app Android, etc.</p>
+<p>On peut passer n&#8217;importe quelles données qui peut se JSONiser. En gros n&#8217;importe quoi qu&#8217;on enverrait via HTTP. Donc des données très structurées, imbriquées et complexes comme des données géographiques, ou très simples comme des notifications</p>
+<p><strong>Avec PUB / SUB, WAMP remplace tout ce qu&#8217;on ferait normalement avec des appels AJAX dans le browser, et tout ce qu&#8217;on ferait avec des files de message côté serveur. </strong>Plus puissant encore, il permet de relier ces deux mondes.</p>
+<p>Et même si on atteint pas les perfs de <a title="ZeroMQ" href="http://en.wikipedia.org/wiki/%C3%98MQ" target="_blank">ZeroMQ</a> (qui n&#8217;a pas de serveur central), c&#8217;est très <a href="https://into.aalto.fi/download/attachments/12324178/Huang_Fuguo_thesis_2.pdf?version=1&amp;modificationDate=1383290628000">performant et léger</a>.</p>
+<h3>2 &#8211; Du RPC</h3>
+<p>Appeler une fonction située ailleurs que dans son code. C&#8217;est vieux comme le monde (si vous avez des souvenirs douloureux de CORBA et SOAP, levez la main), et c&#8217;est extrêmement pratique. Pour faire simple, continuons avec un exemple en Javascript, mais rappelez-vous que ça marche pareil en C++ ou Python :</p>
+<pre lang="javascript">ab.connect("ws://localhost:9000", function(session) {
+   function une_fonction(a, b) {
+      return a + b;
+   }
+   // on déclare que cette fonction est appelable à distance
+   session.register('une_fonction', une_fonction);
+});
+</pre>
+<div id="attachment_10347" style="width: 575px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2014/05/register1.png" class="grouped_elements" rel="tc-fancybox-group10329"><img class=" wp-image-10347" title="RPC marche à l'envers de PUB/SUB. Un client expose du code, et un autre demande explicitement qu'il soit exécuté." src="http://sametmax.com/wp-content/uploads/2014/05/register.png" alt="Schéma expliquant register avec WAMP" width="565" height="470" /></a><p class="wp-caption-text">RPC marche à l&#8217;envers de PUB/SUB. Un client expose du code, et un autre demande explicitement qu&#8217;il soit exécuté.</p></div>
+<p>Côté appelant :</p>
+<pre lang="javascript">ab.connect("ws://localhost:9000", function(session) {
+    // on appelle la fonction à distance, on récupère une
+    // promise qui nous permet de travailler sur le résultat
+   session.call('une_fonction', 2, 3).then(
+      function (res) {
+         console.log(res);
+      }
+   );
+</pre>
+<div id="attachment_10348" style="width: 552px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2014/05/call.png" class="grouped_elements" rel="tc-fancybox-group10329"><img class="size-full wp-image-10348" title="Contrairement à PUB/SUB, RPC ne concerne que deux clients à la fois. Mais ça reste asynchrone. Le client demandeur n'attend pas le résultat de l'appel de la fonction. Il est signalé par le serveur quand il est prêt." src="http://sametmax.com/wp-content/uploads/2014/05/call.png" alt="Schéma expliquant CALL en WAMP" width="542" height="548" /></a><p class="wp-caption-text">Contrairement à PUB/SUB, RPC ne concerne que deux clients à la fois. Mais ça reste asynchrone. Le client demandeur n&#8217;attend pas le résultat de l&#8217;appel de la fonction. Il est signalé par le serveur quand il est prêt.</p></div>
+<p>Pareil que pour le PUB/SUB, les gens ont du mal à voir l&#8217;utilité à cause du trop de flexibilité que ça apporte. Imaginez que votre projet soit maintenant éclaté en de nombreux petits services qui tournent et qui sont indépendants :</p>
+<ul>
+<li>Un service pour le site Web.</li>
+<li>Un service d&#8217;authentification.</li>
+<li>Un service pour l&#8217;API.</li>
+<li>Un service pour les tâches longues.</li>
+<li>Un service de monitoring et administration technique.</li>
+</ul>
+<p>Tous ces services peuvent ainsi communiquer entre eux via RPC, mais n&#8217;ont pas besoin d&#8217;être dans le même processus. On peut profiter pleinement de tous les cœurs de sa machine, on peut même les mettre sur des serveurs séparés.</p>
+<p>Mieux, avoir un service bloquant ne pénalise pas tout le système. En effet, un problème avec les systèmes asynchrones en Python est que beaucoup de libs sont encore bloquantes (typiquement les ORMs). <strong>Avec ce genre d&#8217;architecture, on peut créer un service qui ne fait que les appels bloquant et laisser les autres services non bloquant l&#8217;appeler de manière asynchrone.</strong> Pendant qu&#8217;il bloque, le reste du système peut traiter d&#8217;autres requêtes.</p>
+<h2>Crossbar, plus qu&#8217;un routeur WAMP</h2>
+<p>L&#8217;idée des concepteurs de crossbar est de permettre de créer des systèmes avec des services composables qui communiquent entre eux plutôt que tout dans un gros processus central. Ils ne se sont donc pas arrêtés au routing.</p>
+<p>Crossar est également un gestionnaire de processus, comme <a href="https://pypi.python.org/pypi/supervisor/3.0">supervisor</a> ou, plus légitimement, <a href="https://pypi.python.org/pypi/circus/0.11.1">circus</a> (Tarek, fait une pause, vient ici !) et sa communication ZeroMQ.</p>
+<p>Il se configure avec un simple fichier JSON, et on peut y définir des classes Python qui seront lancées dans un processus séparé et pourront discuter avec les autres clients via WAMP :</p>
+<pre lang="javascript">{
+   "processes": [
+      { // premier processus
+         "type": "worker",
+         "modules": [
+            {
+               un_worker.Classe
+            },
+            {
+               un_autre_worker.Classe
+            }
+         ]
+      },
+      {  // second processus
+         "type": "worker",
+         "modules": [
+            {
+               un_autre_worker_dans_un_autre_process.Classe
+            }
+         ]
+      }
+   ]
+}</pre>
+<p>Mais si ça ne suffit pas, on peut également lancer des programmes extérieurs non Python dont crossbar va gérer le cycle de vie :</p>
+<pre lang="javascript">{
+   "processes": [
+      {
+         "type": "guest",
+         "executable": "/usr/bin/node",
+         "arguments": ["votre_script.js"],
+         "stdout": "log"
+      }
+   ]
+}</pre>
+<p>Vous avez donc ainsi les deux atouts pour avoir <strong>une architecture découplée, scalable, exploitant plusieurs cœurs, et compensant en partie les bibliothèques bloquantes</strong> :</p>
+<ul>
+<li>Un protocole flexible, simple, qui permet à tout le monde se parler entre eux (WAMP).</li>
+<li>Une API qui permet soit de réagir à un changement (PUB/SUB), soit de demander une action (RPC).</li>
+<li>Un programme qui gère cette communication, et le cycle de vie des composants qui parlent entre eux.</li>
+</ul>
+<h2>Cas concret</h2>
+<p>WAMP est typiquement le genre de techno qui ne permet PAS de faire quelque chose qu&#8217;on ne faisait pas avant. Ce n&#8217;est pas nouveau.</p>
+<p>En revanche, WAMP permet de le faire mieux et plus facilement.</p>
+<p>Prenez le cas d&#8217;un utilisateur qui se connecte sur un forum. Il va sur un formulaire, il poste ses identifiants, ça recharge la page, il est connecté. Si les autres utilisateurs rechargent leurs pages, ils verront un utilisateur de plus connecté.</p>
+<p>Si on veut rendre ça plus dynamique, il faut utiliser de l&#8217;AJAX, et si on veut avoir une mise à jour presque en temps réel, il faut faire des requêtes Ajax régulières. Ce qui est assez bancal et demande beaucoup de travail manuel.</p>
+<p>Certains sites modernes utilisent Websocket, et des serveurs asynchrones comme NodeJS, et un routeur PUB/SUB comme Redis, pour faire cela de manière rapide et plus facile. L&#8217;application est très réactive. Mais le système est hétéroclite. Et si on veut envoyer des messages entre des composants serveurs, ça demande encore quelque chose de différent.</p>
+<p>WAMP unifie tout ça. Un coup de RPC pour le login pour effectuer l&#8217;action:</p>
+<div id="attachment_10351" style="width: 552px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2014/05/rpc_concret.png" class="grouped_elements" rel="tc-fancybox-group10329"><img class="size-full wp-image-10351" title="Notez que le RPC marche de n'importe quel client à n'importe quel client. Il n'y a pas de sens obligatoire. Le login est un exemple simple mais on peut faire des choses bien plus complexes." src="http://sametmax.com/wp-content/uploads/2014/05/rpc_concret.png" alt="Schéma d'un exemple concret de RPC WAMP" width="542" height="592" /></a><p class="wp-caption-text">Notez que le RPC marche de n&#8217;importe quel client à n&#8217;importe quel client. Il n&#8217;y a pas de sens obligatoire. Le login est un exemple simple mais on peut faire des choses bien plus complexes.</p></div>
+<p>Et un coup de PUB/SUB pour prévenir tout le monde que quelque chose s&#8217;est passé :</p>
+<div id="attachment_10352" style="width: 549px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2014/05/pub_sub_concret.png" class="grouped_elements" rel="tc-fancybox-group10329"><img class="size-full wp-image-10352" title="Je n'ai mis que des clients légers ici, mais je vous rappelle qu'un client peut être un serveur NodeJS, une base de données, un code C++..." src="http://sametmax.com/wp-content/uploads/2014/05/pub_sub_concret.png" alt="Schéma d'exemple concret de PUB/SUB avec WAMP" width="539" height="626" /></a><p class="wp-caption-text">Je n&#8217;ai mis que des clients légers ici, mais je vous rappelle qu&#8217;un client peut être un serveur NodeJS, une base de données, un code C++&#8230;</p></div>
+<p>Bien entendu, on pourrait faire ça avec les technos existantes. C&#8217;est juste moins pratique.</p>
+<p>Notez également que Crossbar encourage à avoir un service qui ne se charge que du login, sans avoir à faire une usine à gaz pour cela. Si demain votre service de login a besoin d&#8217;être sur un coeur/serveur/une VM séparé pour des raisons de perfs ou de sécurité, c&#8217;est possible. Crossbar encourage ce genre de design.</p>
+<h2>Voici où est le piège</h2>
+<p>Car évidement, il y en a toujours un, putain de métier à la con.</p>
+<p><strong>Et c&#8217;est la jeunesse du projet.</strong></p>
+<p>Le projet est stable, le code marche, et les sources sont propres.</p>
+<p>Mais la doc, mon dieu la doc&#8230; Les exemples sont pas à jour, il y a deux versions qui se battent en duel, on sait pas trop quelle partie sert à quoi.</p>
+<p>Et comme tout projet jeune, l&#8217;API n&#8217;a pas été assez étudiée. Or la partie Python est basée sur Twisted, sans polish. Twisted, c&#8217;est puissant, c&#8217;est solide, et c&#8217;est aussi une API dégueulasse.</p>
+<p>Un exemple ? Comment écouter un événement :</p>
+<pre lang="python"># Des imports légers
+from twisted.python import log
+from twisted.internet.defer import inlineCallbacks
+
+from autobahn.twisted.wamp import ApplicationSession
+from autobahn.twisted.wamp import ApplicationRunner
+
+# Une bonne classe bien subtile pour copier Java
+class ListenForEvent(ApplicationSession):
+
+    # Deux méthodes de boiler plate obligatoires
+    # et parfaitement soulantes pour l'utilisateur
+    # final. Cachez moi ça bordel !
+    def __init__(self, config):
+        ApplicationSession.__init__(self)
+        self.config = config
+
+    def onConnect(self):
+        self.join(self.config.realm)
+
+    # Bon, on se décide, soit on fait une classe avec des noms
+    # de méthode conventionnés, soit on met des décorateurs, 
+    # mais pas les deux, pitié !
+    @inlineCallbacks
+    def onJoin(self, details):
+        callback = lambda x: log.msg("Received event %s" % x)
+        yield self.subscribe(callback, 'un_evenement')
+
+# Python doit lancer explicitement un event loop.
+# Ca pourrait (devrait) aussi être embeded dans une
+# sousclasse de ApplicationSession.
+# /me prend un colt. BANG !
+if __name__ == '__main__':
+   runner = ApplicationRunner(endpoint="tcp:127.0.0.1:8080",
+                              url="ws://localhost:8080/ws",
+                              realm="realm1")
+   runner.run(ListenForEvent)
+</pre>
+<p>C&#8217;est la raison pour laquelle je vous ai montré le code JS et pas Python pour vous vendre le truc. Sur sametmax.com, on aura tout vu :(</p>
+<p>Voilà à quoi devrait ressembler le code Python si l&#8217;API était mature :</p>
+<pre lang="python">from autobahn.app import App
+
+app = App(url="ws://localhost:8080/ws")
+
+@event("un_evenement")
+def handle(details):
+    app.log("Received event %s" % x)
+
+if __name__ == '__main__':
+   app.run()</pre>
+<p>Chose que je vais proposer sur <a href="https://groups.google.com/forum/#!forum/autobahnws">la mailing list</a> (ils sont réactifs et sympas, vive les allemands !) dans pas longtemps. Et si ils n&#8217;ont pas le temps de le faire, il est possible que je m&#8217;y colle. Ca me fait mal aux yeux.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/crossbar-le-futur-des-applications-web-python/feed/</wfw:commentRss>
+		<slash:comments>32</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">10329</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/05/GVHFg8t.jpg" length="39594" type="image/jpg" />	</item>
+	</channel>
+</rss>

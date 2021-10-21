@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Quelques erreurs tordues et leurs solutions en Python</title>
+	<atom:link href="http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: TheDelta</title>
+		<link>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/#comment-184363</link>
+		<dc:creator><![CDATA[TheDelta]]></dc:creator>
+		<pubDate>Thu, 12 Jan 2017 22:30:32 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=995#comment-184363</guid>
+		<description><![CDATA[Juste, une erreur qui provoquer &lt;code&gt;ImportError: No module named truc&lt;/code&gt; et qui est débile, mais débile c&#039;est d&#039;oublier d&#039;enlever le .py du fichier...
+
+&lt;pre&gt;import truc.py # pas bon
+import truc # bien&lt;/pre&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Juste, une erreur qui provoquer <code>ImportError: No module named truc</code> et qui est débile, mais débile c&#8217;est d&#8217;oublier d&#8217;enlever le .py du fichier&#8230;</p>
+<pre>import truc.py # pas bon
+import truc # bien</pre>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Landry</title>
+		<link>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/#comment-182439</link>
+		<dc:creator><![CDATA[Landry]]></dc:creator>
+		<pubDate>Sat, 05 Nov 2016 07:31:48 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=995#comment-182439</guid>
+		<description><![CDATA[Pour ma part, je fais régulièrement face au problème des méthodes de la librairie standard qui renvoient d&#039;autres objets.
+
+Genre (dernière connerie en date) :
+
+&lt;code&gt;
+
+&lt;blockquote&gt;
+  &lt;blockquote&gt;
+    &lt;blockquote&gt;
+      import datetime as dt
+      
+      datetemps = dt.datetime.now()
+      
+      datetemps.year
+      
+      2016
+      
+      datetemps.replace(year=2018)
+      
+      datetemps.year
+      
+      2016
+      
+      &lt;/code&gt;
+    &lt;/blockquote&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
+
+Hé ben ça a beau être bien documenté toussa-toussa, je me fais avoir à chaque fois. Je ne sais pas, ça ne me parait pas naturel... Mais ça me semble une erreur plutôt spécifique à Python et à son besoin (maladif ?) de ne pas modifier un objet mais plutôt en créer un nouveau lorsqu&#039;on veut faire une modification.
+
+J&#039;en profite : putain, merci pour ce blog !!!
+]]></description>
+		<content:encoded><![CDATA[<p>Pour ma part, je fais régulièrement face au problème des méthodes de la librairie standard qui renvoient d&#8217;autres objets.</p>
+<p>Genre (dernière connerie en date) :</p>
+<p><code></p>
+<blockquote>
+<blockquote>
+<blockquote><p>
+      import datetime as dt</p>
+<p>      datetemps = dt.datetime.now()</p>
+<p>      datetemps.year</p>
+<p>      2016</p>
+<p>      datetemps.replace(year=2018)</p>
+<p>      datetemps.year</p>
+<p>      2016</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p></code></p>
+<p>Hé ben ça a beau être bien documenté toussa-toussa, je me fais avoir à chaque fois. Je ne sais pas, ça ne me parait pas naturel&#8230; Mais ça me semble une erreur plutôt spécifique à Python et à son besoin (maladif ?) de ne pas modifier un objet mais plutôt en créer un nouveau lorsqu&#8217;on veut faire une modification.</p>
+<p>J&#8217;en profite : putain, merci pour ce blog !!!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Ced</title>
+		<link>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/#comment-182246</link>
+		<dc:creator><![CDATA[Ced]]></dc:creator>
+		<pubDate>Fri, 28 Oct 2016 11:18:56 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=995#comment-182246</guid>
+		<description><![CDATA[Comme toujours excellent. Dommage qu&#039;il n&#039;y ait pas d&#039;id dans le code pour faire des liens directement aux bons § !
+]]></description>
+		<content:encoded><![CDATA[<p>Comme toujours excellent. Dommage qu&#8217;il n&#8217;y ait pas d&#8217;id dans le code pour faire des liens directement aux bons § !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: ast2</title>
+		<link>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/#comment-176480</link>
+		<dc:creator><![CDATA[ast2]]></dc:creator>
+		<pubDate>Fri, 26 Feb 2016 13:56:51 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=995#comment-176480</guid>
+		<description><![CDATA[je ne vois pas de soucis avec le code:
+
+&lt;strong&gt;
+
+chose = &#039;truc&#039;
+
+def fonction():
+
+....chose = &#039;machin&#039;
+
+....# ou chose += machin ou une variante
+
+&lt;/strong&gt;
+
+la variable &quot;chose&quot; dans fonction est une variable locale distincte de &quot;chose&quot; du niveau supérieur. Exécuter &quot;fonction&quot; ne change pas cette variable.
+
+Quant à ce code:
+
+&lt;strong&gt;
+
+chose = &#039;truc&#039;
+
+def fonction():
+
+....nonlocal chose
+
+....chose += &#039;machin&#039;
+
+&lt;/strong&gt;
+
+il plante avant même qu&#039;on exécute la fonction. Une variable nolocal n&#039;est ni locale ni globale or ci elle est globale. (Je suis en python 3.4)
+]]></description>
+		<content:encoded><![CDATA[<p>je ne vois pas de soucis avec le code:</p>
+<p><strong></p>
+<p>chose = &#8216;truc&#8217;</p>
+<p>def fonction():</p>
+<p>&#8230;.chose = &#8216;machin&#8217;</p>
+<p>&#8230;.# ou chose += machin ou une variante</p>
+<p></strong></p>
+<p>la variable &#8220;chose&#8221; dans fonction est une variable locale distincte de &#8220;chose&#8221; du niveau supérieur. Exécuter &#8220;fonction&#8221; ne change pas cette variable.</p>
+<p>Quant à ce code:</p>
+<p><strong></p>
+<p>chose = &#8216;truc&#8217;</p>
+<p>def fonction():</p>
+<p>&#8230;.nonlocal chose</p>
+<p>&#8230;.chose += &#8216;machin&#8217;</p>
+<p></strong></p>
+<p>il plante avant même qu&#8217;on exécute la fonction. Une variable nolocal n&#8217;est ni locale ni globale or ci elle est globale. (Je suis en python 3.4)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/#comment-174422</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 18 Jan 2016 19:58:42 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=995#comment-174422</guid>
+		<description><![CDATA[&lt;p&gt;http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p><a href="http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/" rel="nofollow">http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: francis</title>
+		<link>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/#comment-174421</link>
+		<dc:creator><![CDATA[francis]]></dc:creator>
+		<pubDate>Mon, 18 Jan 2016 19:57:18 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=995#comment-174421</guid>
+		<description><![CDATA[ok je découvre cet aspect toute juste.
+
+En fait je ne sais pas encore fabriquer un paquet sous window ou sous linux d&#039;ailleurs pour l&#039;exporter et ensuite l&#039;installer sous ubuntu. Du coup j&#039;ai cela à la mano.
+
+fait un setup.py et installe le avec python setup.py develop ⇒ peux-tu développer ?
+
+Ou donner un lien vers un tuto stp?
+]]></description>
+		<content:encoded><![CDATA[<p>ok je découvre cet aspect toute juste.</p>
+<p>En fait je ne sais pas encore fabriquer un paquet sous window ou sous linux d&#8217;ailleurs pour l&#8217;exporter et ensuite l&#8217;installer sous ubuntu. Du coup j&#8217;ai cela à la mano.</p>
+<p>fait un setup.py et installe le avec python setup.py develop ⇒ peux-tu développer ?</p>
+<p>Ou donner un lien vers un tuto stp?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/#comment-174420</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 18 Jan 2016 19:47:05 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=995#comment-174420</guid>
+		<description><![CDATA[&lt;p&gt;Il ne faut pas choisir où stocker son module soit-même. Si tu as besoin de mettre un module dans site/dist package, fait un setup.py et installe le avec python setup.py develop. Ca te permet de l&#039;avoir à la fois installé, et à la fois modifiable en local.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Il ne faut pas choisir où stocker son module soit-même. Si tu as besoin de mettre un module dans site/dist package, fait un setup.py et installe le avec python setup.py develop. Ca te permet de l&#8217;avoir à la fois installé, et à la fois modifiable en local.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: francis</title>
+		<link>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/#comment-174417</link>
+		<dc:creator><![CDATA[francis]]></dc:creator>
+		<pubDate>Mon, 18 Jan 2016 19:14:36 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=995#comment-174417</guid>
+		<description><![CDATA[petites gourmandises exquises
+
+Je viens de me remettre à Ubuntu après avoir installer la version 14
+
+j&#039;ai commencé un portage d&#039;une bidouille sous python 2.7 avant de faire le grand saut sous gtk3 pardon Gobject.
+
+Mon affaire plante et après investigation quelle n&#039;est pas ma surprise après cette découverte
+
+l&#039;histoire part d&#039;un module non reconnu que je stocke dans site-packages
+
+je creuse et je décortique ma variable sys.path…………...surprise
+
+for element in sys.path :
+
+print element
+
+me donne
+
+/home/francis/Documents/Python-linux/appligenerique
+
+/usr/lib/python2.7
+
+/usr/lib/python2.7/plat-x86_64-linux-gnu
+
+/usr/lib/python2.7/lib-tk
+
+/usr/lib/python2.7/lib-old
+
+/usr/lib/python2.7/lib-dynload
+
+/usr/local/lib/python2.7/dist-packages
+
+/usr/lib/python2.7/dist-packages
+
+/usr/lib/python2.7/dist-packages/PILcompat
+
+/usr/lib/python2.7/dist-packages/gtk-2.0
+
+/usr/lib/pymodules/python2.7
+
+/usr/lib/python2.7/dist-packages/ubuntu-sso-client
+
+/usr/lib/python2.7/dist-packages/wx-2.8-gtk2-unicode
+
+sous python 2.7.6  c&#039;est plus  site-packages qui est scruté mais dist-packages
+
+alors que sous vista (oui je sais je suis du côté nul de la force :-) et sous ubuntu 12 ou 13 et python 2.6  c&#039;est sous  site-packages
+
+du coup je vais déménager mes bibliothèques sous  dist-packages sous python 2.7.6  sous ubuntu 14( je suis en train de passer du coté light ou dark  no say de la force :-))
+
+Et vous le saviez-vous ?
+
+Site ultra intéressant il y a pas à dire
+]]></description>
+		<content:encoded><![CDATA[<p>petites gourmandises exquises</p>
+<p>Je viens de me remettre à Ubuntu après avoir installer la version 14</p>
+<p>j&#8217;ai commencé un portage d&#8217;une bidouille sous python 2.7 avant de faire le grand saut sous gtk3 pardon Gobject.</p>
+<p>Mon affaire plante et après investigation quelle n&#8217;est pas ma surprise après cette découverte</p>
+<p>l&#8217;histoire part d&#8217;un module non reconnu que je stocke dans site-packages</p>
+<p>je creuse et je décortique ma variable sys.path…………&#8230;surprise</p>
+<p>for element in sys.path :</p>
+<p>print element</p>
+<p>me donne</p>
+<p>/home/francis/Documents/Python-linux/appligenerique</p>
+<p>/usr/lib/python2.7</p>
+<p>/usr/lib/python2.7/plat-x86_64-linux-gnu</p>
+<p>/usr/lib/python2.7/lib-tk</p>
+<p>/usr/lib/python2.7/lib-old</p>
+<p>/usr/lib/python2.7/lib-dynload</p>
+<p>/usr/local/lib/python2.7/dist-packages</p>
+<p>/usr/lib/python2.7/dist-packages</p>
+<p>/usr/lib/python2.7/dist-packages/PILcompat</p>
+<p>/usr/lib/python2.7/dist-packages/gtk-2.0</p>
+<p>/usr/lib/pymodules/python2.7</p>
+<p>/usr/lib/python2.7/dist-packages/ubuntu-sso-client</p>
+<p>/usr/lib/python2.7/dist-packages/wx-2.8-gtk2-unicode</p>
+<p>sous python 2.7.6  c&#8217;est plus  site-packages qui est scruté mais dist-packages</p>
+<p>alors que sous vista (oui je sais je suis du côté nul de la force :-) et sous ubuntu 12 ou 13 et python 2.6  c&#8217;est sous  site-packages</p>
+<p>du coup je vais déménager mes bibliothèques sous  dist-packages sous python 2.7.6  sous ubuntu 14( je suis en train de passer du coté light ou dark  no say de la force :-))</p>
+<p>Et vous le saviez-vous ?</p>
+<p>Site ultra intéressant il y a pas à dire</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Jérôme Plumecoq</title>
+		<link>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/#comment-40703</link>
+		<dc:creator><![CDATA[Jérôme Plumecoq]]></dc:creator>
+		<pubDate>Mon, 02 Jun 2014 14:43:11 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=995#comment-40703</guid>
+		<description><![CDATA[&lt;span class=&quot;merci&quot;&gt;&lt;/span&gt;Bonjour,
+
+il me semble que juste avant la ligne : 
+&lt;blockquote&gt;Si ça ne marche toujours pas, embauchez un mec comme moi qui est payé cher (...)&lt;/blockquote&gt;
+il faut lire &lt;strong&gt;encode&lt;/strong&gt; et pas &lt;strong&gt;decode&lt;/strong&gt; dans la phrase :
+&lt;blockquote&gt;decode(‘UTF-8′) avant send(), write() ou print&lt;/blockquote&gt;
+
+Si j&#039;ai bien compris la partie sur les encodages :-)]]></description>
+		<content:encoded><![CDATA[<p><span class="merci"></span>Bonjour,</p>
+<p>il me semble que juste avant la ligne : </p>
+<blockquote><p>Si ça ne marche toujours pas, embauchez un mec comme moi qui est payé cher (&#8230;)</p></blockquote>
+<p>il faut lire <strong>encode</strong> et pas <strong>decode</strong> dans la phrase :</p>
+<blockquote><p>decode(‘UTF-8′) avant send(), write() ou print</p></blockquote>
+<p>Si j&#8217;ai bien compris la partie sur les encodages :-)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/#comment-8282</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 22 Apr 2013 06:17:20 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=995#comment-8282</guid>
+		<description><![CDATA[On a aussi une tag line avec cette référence, mais elle apparait aléatoirement :-)]]></description>
+		<content:encoded><![CDATA[<p>On a aussi une tag line avec cette référence, mais elle apparait aléatoirement :-)</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

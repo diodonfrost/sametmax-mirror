@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>iteration &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/iteration/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Un tools d&#8217;itertour, ou l&#8217;inverse</title>
+		<link>http://sametmax.com/un-tools-ditertour-ou-linverse/</link>
+		<comments>http://sametmax.com/un-tools-ditertour-ou-linverse/#comments</comments>
+		<pubDate>Sat, 29 Oct 2016 20:26:22 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[iteration]]></category>
+		<category><![CDATA[itertools]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=20922</guid>
+		<description><![CDATA[Python est un langage avec un "for" penchant pour l'itération l'itération si je puis dire. Et ce n'est que justice qu'il ait donc un module dédié pour les opérations d'itération : <a href="https://docs.python.org/3.5/library/itertools.html">itertools</a>.
+]]></description>
+				<content:encoded><![CDATA[<p>Ah, ça faisait longtemps que je ne vous avais pas fait un petit article bien long. Ca manquait d&#8217;opportunité de partager de la musique. Allez hop !</p>
+<p><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/HTN6Du3MCgI?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<p>Python est un langage avec un &#8220;for&#8221; penchant pour l&#8217;itération si je puis dire. Et ce n&#8217;est que justice qu&#8217;il ait donc un module dédié pour les opérations d&#8217;itération : <a href="https://docs.python.org/3.5/library/itertools.html">itertools</a>.</p>
+<p><code>itertools</code> est un peu impénétrable pour quelqu&#8217;un qui n&#8217;a pas l&#8217;habitude, alors je vais vous faire un petit tour du propriétaire.</p>
+<h2>Principes de base</h2>
+<p>Itertools a pour but de manipuler les itérables, et si vous voulez en savoir plus sur le concept d&#8217;itérabilité, je vous renvoie à l&#8217;article sur les <a href="http://sametmax.com/les-trucmuchables-en-python/">trucmuchables</a>. Pour faire court, les itérables sont tout ce sur quoi on peut appliquer une boucle <code>for</code>.</p>
+<p>Le problème, c&#8217;est que tous les itérables ne se comportent pas de la même façon. En effet, certains ont une taille définie:</p>
+<pre lang="python">
+>>> len("abcd")
+4
+>>> len(range(3))
+3</pre>
+<p>D&#8217;autres non:</p>
+<pre lang="python">
+>>> len(open('/etc/fstab'))
+Traceback (most recent call last):
+  File "<ipython-input-7-baed595d06b3>", line 1, in <module>
+    len(open('/etc/fstab'))
+TypeError: object of type '_io.TextIOWrapper' has no len()</pre>
+<p>Certains, se terminent:</p>
+<pre lang="python">
+>>> a = list(open('/etc/fstab'))
+>>></pre>
+<p>D&#8217;autres sont infinis:</p>
+<pre lang="python">
+>>> def infinite_generator():
+...     while True:
+...         yield 1
+...
+>>> list(infinite_generator) # bloque la VM jusqu'à crasher sur un MemoryError</pre>
+<p>Du coup, si vous voulez faire des opérations qui marchent sur tous les itérables, il faut écrire des algos spéciaux dit &#8220;paresseux&#8221; (en anglais, &#8220;lazy&#8221;), c&#8217;est à dire qui font le travail minimum. Ils se lancent à la dernière minute et ne lisent rien de plus que nécessaire.</p>
+<p>Et c&#8217;est ce que contient <code>itertools</code>. Les fonctions de ce module marchent sur les fichiers, les générateurs, les sockets réseaux comme les listes, les tuples et les chaînes de caractères.</p>
+<h2>chain</h2>
+<p>Combine plusieurs itérables en un seul:</p>
+<pre lang="python">
+>>> from itertools import chain
+>>> generator = chain("abc", range(3), [True, False, None])
+>>> generator
+<itertools.chain object at 0x7f2ea903d550>
+>>> list(generator)
+['a', 'b', 'c', 0, 1, 2, True, False, None]</pre>
+<p>Très utile pour boucler sur des itérables hétérogènes comme si c&#8217;était une seule et même structure. Chaîner des fichiers, des générateurs, etc.</p>
+<h2>islice</h2>
+<p>Comme la syntaxe de slicing <code>[::]</code>:</p>
+<pre lang="python">
+>>> carres_de_nombres_pairs = [x * x  for x in range(100) if x % 2 == 0]
+>>> carres_de_nombres_pairs[3:11]
+[36, 64, 100, 144, 196, 256, 324, 400]</pre>
+<p>Mais marche sur tous les itérables, même sur les générateurs:</p>
+<pre lang="python">
+>>> carres_de_nombres_pairs = (x * x  for x in range(100) if x % 2 == 0)
+>>> carres_de_nombres_pairs
+<generator object <genexpr> at 0x7f2eab171a98>
+>>> from itertools import islice
+>>> generator = islice(carres_de_nombres_pairs, 3, 11)
+>>> generator
+<itertools.islice object at 0x7f2eab1a26d8>
+>>> list(generator)
+[36, 64, 100, 144, 196, 256, 324, 400]</pre>
+<h2>cycle</h2>
+<p>Boucler de manière infinie sur un itérable. Quand on arrive à la fin, on revient au début.</p>
+<pre lang="python">
+>>> generator = cycle('abc')
+>>> generator
+<itertools.cycle object at 0x7f2eab59a588>
+>>> next(generator)
+'a'
+>>> next(generator)
+'b'
+>>> next(generator)
+'c'
+>>> next(generator)
+'a'</pre>
+<p>C&#8217;est très pratique, mais assez dangereux donc faites des tests avant de l&#8217;utiliser. En effet si l&#8217;itérable génère les données à la volée, elles sont stockées dans un buffer, donc ça charge tout en mémoire. De plus, c&#8217;est une boucle infinie. Ne castez pas ça avec un tuple ou une liste :)</p>
+<h2>repeat</h2>
+<p>Prend n&#8217;importe quel élément, et le retourne encore et encore.</p>
+<pre lang="python">
+>>> generator = repeat("plop") # répète infiniment
+>>> next(generator)
+'plop'
+>>> next(generator)
+'plop'
+>>> next(generator)
+'plop'
+>>> generator = repeat("plop", 2) # répète 2 fois
+>>> for x in generator:
+...     print(x)
+...
+plop
+plop</pre>
+<p>On ne peut pas passer un <a href="http://sametmax.com/quest-ce-quun-callable-en-python/">callable</a>, mais <code>iter()</code> le fait déjà. La signature normale de cette dernière prend un iterable, mais si on lui passe deux paramètres, un callable et un sentinel, on obtient un générateur qui va appeler le callable jusqu&#8217;à ce qu&#8217;il retourne une valeur égale au sentinel.</p>
+<p>Exemple, vous voulez lire un fichier 50 caractères à la fois. On passe une fonction qui retourne les 50 caractères suivants (le callable) et une chaîne de caractères vide (le sentinel):</p>
+<pre lang="python">
+>>> f = open('/etc/fstab')
+>>>
+>>> def read_50_chars():
+...     return f.read(50)
+...
+>>> generator = iter(read_50_chars, '') # lit 50 caractères à la fois jusqu'à tomber sur ''
+>>> generator
+<callable_iterator object at 0x7f2eab5abef0>
+>>> next(generator)
+'# /etc/fstab: static file system information.\n#\n# '
+>>> next(generator)
+"Use 'blkid' to print the universally unique identi"
+>>> next(generator)
+'fier for a\n# device; this may be used with UUID= a'</pre>
+<p><code>iter()</code> est un built-in, pas dans <code>itertools</code>, mais ça aurait été con de pas en parler.</p>
+<h2>zip_longest</h2>
+<p>Comme <code>zip()</code>, mais au lieu de s&#8217;arrêter quand le premier itérable est fini:</p>
+<pre lang="python">
+>>> list(zip('abc', range(5)))
+[('a', 0), ('b', 1), ('c', 2)]</pre>
+<p>On remplit les valeurs manquantes:</p>
+<pre lang="python">
+>>> list(zip_longest('abc', range(5)))
+[('a', 0), ('b', 1), ('c', 2), (None, 3), (None, 4)]
+>>> list(zip_longest('abc', range(5), fillvalue="Tada !"))
+[('a', 0), ('b', 1), ('c', 2), ('Tada !', 3), ('Tada !', 4)]</pre>
+<h2>starmap</h2>
+<p>Comme <code>map()</code>, mais applique <a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">l&#8217;opérateur splat</a> sur les arguments avant.</p>
+<p>Si <code>map()</code> ressemble (en mieux) à:</p>
+<pre lang="python">def map_en_moins_bien(callable, iterable):
+    for x in iterable:
+       yield callable(x)</pre>
+<p><code>starmap()</code> fait:</p>
+<pre lang="python">def map_en_moins_bien(callable, iterable):
+    for x in iterable:
+       yield callable(*x)</pre>
+<p>Exemple:</p>
+<pre lang="python">
+>>> nombres = [(1, 2), (3, 4), (5, 6)]
+>>> def ajouter(a, b):
+...     return a + b
+...
+>>> from itertools import starmap
+>>> list(starmap(ajouter, nombres))
+[3, 7, 11]</pre>
+<p>Ces fonctions sont moins utilisées à cause des <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">listes en intension</a>. Mais il y a des trucs rigolos comme:</p>
+<pre lang="python">
+>>> list(starmap(print, zip(range(3), map(int, "123"))))
+0 1
+1 2
+2 3
+[None, None, None]</pre>
+<p>Ouais, vous allez pas utiliser ça tous les jours :)</p>
+<h2>filterfalse</h2>
+<p>Le contraire de <code>filter()</code>, garde les résultats négatifs au lieu des résultats positifs:</p>
+<pre lang="python">
+>>> list(filter(est_pair, range(10)))
+[0, 2, 4, 6, 8]
+>>> from itertools import filterfalse
+>>> list(filterfalse(est_pair, range(10)))
+[1, 3, 5, 7, 9]
+</pre>
+<p>Comme précédemment, aujourd&#8217;hui on utilise peu ces fonctions car on a les listes en intension. Mais certaines astuces sont sympas comme:</p>
+<pre lang="python">
+>>> list(filter(bool, [True, False, 1, 0, 'foo', '']))
+[True, 1, 'foo']
+>>> list(filterfalse(bool, [True, False, 1, 0, 'foo', '']))
+[False, 0, '']</pre>
+<h2>groupby</h2>
+<p>Ah, <code>groupby()</code>, la fonction la moins facile à comprendre. D&#8217;abord, personne ne lit la doc, et la doc dit clairement qu&#8217;il faut trier les éléments de l&#8217;itérable AVANT d&#8217;appliquer groupby, sinon les résultats sont incohérents.</p>
+<p>Ensuite, <code>groupby()</code> peut prendre un callback pour un usage avancé, et toutes les fonctions qui prennent un callback sont plus dures à comprendre. Mais pour que ça ait du sens, il faut que le tri préalable s&#8217;applique sur le même callback. Personne ne pige jamais ça.</p>
+<p>Enfin, <code>groupby()</code> ne renvoie pas les éléments directement, mais des objets &#8220;groupers&#8221;, qui sont eux mêmes des générateurs. Tout est bien fait pour embrouiller le chaland, surtout pour une fonction qu&#8217;on utilise pas souvent.</p>
+<p>Pour comprendre <code>groupby()</code>, le mieux est de commencer par l&#8217;entrée et la sortie. Vous avez un truc comme ça:</p>
+<pre lang="python">
+>>> noms = ['Zebulon', 'Léo', 'Alice', 'Bob', 'Anaïs', 'Adam', 'Bernardo', 'Io']</pre>
+<p>Et vous voulez les grouper par un critère, un peu comme un <code>GROUP BY</code> en SQL. Ca peut être n&#8217;importe quoi:</p>
+<ul>
+<li>La valeur de la première lettre.</li>
+<li>La position de la première voyelle.</li>
+<li>Deux catégories: ceux qui contiennent des caractères non ASCII et les autres.</li>
+</ul>
+<p>Prenons un exemple simple, et groupons les par le nombre de lettres qu&#8217;ils contiennent. Ca donnerait quelque chose comme ça:</p>
+<pre lang="python">[(2, ('Io',)),
+ (3, ('Léo', 'Bob')),
+ (4, ('Adam',)),
+ (5, ('Alice', 'Anaïs')),
+ (7, ('Zebulon',)),
+ (8, ('Bernardo',))]</pre>
+<p>Pour obtenir ce résultat avec <code>groupby()</code>, il faut d&#8217;abord trier l&#8217;itérable (ici notre liste) par nombre de lettres:</p>
+<pre lang="python">
+>>> noms.sort(key=len)
+>>> noms
+['Io', 'Léo', 'Bob', 'Adam', 'Alice', 'Anaïs', 'Zebulon', 'Bernardo']</pre>
+<p>Si vous ne vous souvenez plus comment fonctionne <a href="http://sametmax.com/ordonner-en-python/">le tri en Python,</a> particulièrement le paramètre <code>key</code>, allez vite lire l&#8217;article dédié du lien précédent. En effet le mécanisme est le même pour <code>groupby()</code> donc il faut comprendre ce fonctionnement de toute manière.</p>
+<p>Ensuite on applique <code>groupby()</code>, <strong>avec la même fonction <code>key</code></strong>:</p>
+<pre lang="python">
+>>> noms = groupby(noms, key=len)
+>>> noms
+<itertools.groupby object at 0x7f19c4461778></pre>
+<p>A ce stade, on a un générateur qu&#8217;on peut parcourir, mais il ne contient pas le résultat tel que je vous l&#8217;ai montré. A la place, il yield des paires <code>(group, grouper)</code>:</p>
+<pre lang="python">
+>>> next(noms)
+(2, <itertools._grouper object at 0x7f19c48c0080>)</pre>
+<p>Le premier élément, le groupe, est ce que votre fonction <code>key</code> retourne, c&#8217;est à dire ce sur quoi vous vouliez grouper. Ici la taille du mot.</p>
+<p>En second, un objet <code>grouper</code>, qui est un générateur yieldant les mots qui correspondent à ce groupe.</p>
+<p>Donc pour vraiment voir le contenu de tout ça, il faut se taper une double boucle imbriquée:</p>
+<pre lang="python">
+>>> from itertools import groupby
+>>> for groupe, groupeur in groupby(noms, key=len):
+...     print(groupe, ":")
+...     for mot in groupeur:
+...         print('-', mot)
+2 :
+- Io
+3 :
+- Léo
+- Bob
+4 :
+- Adam
+5 :
+- Alice
+- Anaïs
+7 :
+- Zebulon
+8 :
+- Bernardo</pre>
+<p>La raison de ce manque d&#8217;intuitivité, c&#8217;est que théoriquement <code>groupby()</code> peut travailler de manière paresseuse et donc les groupeurs sont des générateurs qui traitent l&#8217;arrivée des données au fur et à mesure. Mais c&#8217;est rare d&#8217;avoir des données lazy qui arrivent déjà pré-ordonnées. Ensuite ça suppose que vous voulez lire ces données au fur et à mesure, mais généralement le jeu de données groupées n&#8217;est pas suffisamment grand pour que ça soit un vrai problème et on caste directement le groupe en tuple ou en liste.</p>
+<p>Dans la pratique donc, <code>groupby()</code> fait parti de ces fonctions un peu overkill, car un usage typique ne bénéficiera pas du côté paresseux. En tout cas ça ne m&#8217;est jamais arrivé.</p>
+<h2>dropwhile</h2>
+<p><code>dropwhile()</code> prend un callable et un itérable. Le callable est appelé sur chaque élément, et tant qu&#8217;il retourne quelque chose de vrai, l&#8217;élément est ignoré. C&#8217;est un peu tordu car ça demande d&#8217;écrire sa fonction de filtre à l&#8217;inverse de ce qu&#8217;on veut.</p>
+<p>Par exemple, si vous voulez commencer à lire un fichier à partir de la première ligne qui commence par un commentaire, il faut que votre fonction retourne <code>True</code>&#8230; si la ligne ligne ne commence PAS par un commentaire.</p>
+<pre lang="python">
+>>> def ne_commence_pas_par_un_commentaire(element):
+...     return not element.startswith('#')
+...
+>>> generator = dropwhile(ne_commence_pas_par_un_commentaire, open('/etc/fstab'))
+>>> generator
+<itertools.dropwhile object at 0x7f19c450d688>
+>>> next(generator)
+'# /etc/fstab: static file system information.\n'</pre>
+<p><code>dropwhile</code> veut dire &#8220;ignorer tant que&#8221;. Donc ici on ignore tant que la ligne ne commence pas par un commentaire.</p>
+<h2>takewhile</h2>
+<p><code>takewhile()</code> est le contraire de <code>dropwhile()</code>, on prend les éléments tant qu&#8217;une condition est vraie, et on s&#8217;arrête dès que la condition n&#8217;est plus vraie. On les utilise souvent en combinaison d&#8217;ailleurs, pour slicer les itérables en utilisant des conditions plutôt que des indexes.</p>
+<p>Comme pour <code>dropwhile</code>, il faut penser à l&#8217;envers. Vous voulez vous arrêter quand un nombre dépasse 10000 ? Alors il faut faire une fonction qui retourne <code>True</code> tant que le nombre ne dépasse PAS 10000. Jusqu&#8217;ici j&#8217;ai utilisé des fonctions traditionnelles, mais bien entendu, une lambda marche aussi:</p>
+<pre lang="python">
+>>> nombres = (x * x for x in range(1000000000000))
+>>> from itertools import takewhile
+>>> generator = takewhile(lambda x: x < 10000, nombres)
+>>> next(generator)
+0
+>>> next(generator)
+1
+>>> next(generator)
+4
+>>> list(generator)[-1]
+9801</pre>
+<h2>count</h2>
+<p><code>count()</code> est une relique du passé, qui fait ce que fait <code>range()</code> maintenant, mais en moins bien. Vous pouvez l&#8217;ignorer.</p>
+<h2>tee</h2>
+<p><code>tee()</code> est une fonction très intéressante qui duplique votre itérable en autant de clones que vous le souhaitez. Pour ce faire, <code>tee()</code> garde en mémoire les derniers éléments générés, ce qui fait que si vous lisez les clones les uns après les autres, ça n&#8217;a aucun intérêt. Autant caster en liste et lire la liste plusieurs fois.</p>
+<p>Non, l&#8217;interêt de <code>tee()</code> est si vous lisez les clones en parallèle. Car là, <code>tee()</code> ne garde en mémoire que les éléments qui n&#8217;ont pas été lus par le dernier clone utilisé.</p>
+<p>Par exemple, ceci est inutile:</p>
+<pre lang="python">
+>>> from itertools import tee
+>>> clone1, clone2, clone3 = tee((x for x in range(100)), 3)
+>>> list(clone1)[:3]
+[0, 1, 2]
+>>> list(clone2)[:3]
+[0, 1, 2]</pre>
+<p>Par contre ceci économise pas mal de mémoire:</p>
+<pre lang="python">
+>>> clone1, clone2, clone3 = tee((x for x in range(100)), 3)
+>>> next(clone1)
+0
+>>> next(clone2)
+0
+>>> next(clone3)
+0
+>>> next(clone1)
+1
+>>> next(clone2)
+1
+>>> next(clone3) # la valeur 0 n'est plus en mémoire après ça
+1
+</pre>
+<h2>compress</h2>
+<p><code>compress()</code> est une curiosité qui va surtout parler aux data-scientists et matheux, et d&#8217;une manière générale aux adeptes de <code>numpy</code>.</p>
+<p>Cette fonction prend deux itérables, un avec des valeurs à filtrer, et un avec des valeurs qui indiquent s&#8217;il faut filtrer l&#8217;élément ou non:</p>
+<pre lang="python">
+>>> list(compress(['toto', 'tata', 'titi'], [True, False, True]))
+['toto', 'titi']</pre>
+<p>Je n&#8217;ai pas trouvé de use case pour cette fonction dans ma vie de tous les jours. Si quelqu&#8217;un est inspiré en commentaire, je mettrai l&#8217;article à jour.</p>
+<h2>accumulate</h2>
+<p><code>accumulate()</code> est un pur produit de la programmation fonctionnelle. C&#8217;est un peu comme un <code>map()</code>, mais au lieu de passer chaque élément au callable, on lui passe l&#8217;élément, et le résultat du dernier appel.</p>
+<p>Par exemple, vous voulez multiplier tout une liste : <code>[1, 2, 3, 4]</code></p>
+<p>Vous allez faire:</p>
+<p><code>(((1 * 2) * 3) * 4)</code></p>
+<p>C&#8217;est typiquement pour ce genre de chose qu&#8217;on utiliserait la fonction <code>reduce()</code>:</p>
+<pre lang="python">
+>>> reduce(lambda x, y: x * y, [1, 2, 3, 4])
+24</pre>
+<p><code>accumulate()</code> fait cela, mais en plus vous yield tous les résultats intermédiaires:</p>
+<pre lang="python">
+>>> list(accumulate([1, 2, 3, 4], lambda x, y: x * y))
+[1, 2, 6, 24]</pre>
+<p>La signature est inversée par rapport à <code>reduce()</code>, c&#8217;est ballot. Dans d&#8217;autres langages vous trouverez ce genre de fonction sous le nom <code>fold()</code> ou <code>scan()</code>, mais c&#8217;est le même principe.</p>
+<h2>product</h2>
+<p><code>product()</code> prend des itérables, et vous balance toutes les combinaisons des éléments de ces itérables. On s&#8217;en sert surtout pour éviter les boucles <code>for</code> imbriquées. Par exemple au lieu de faire:</p>
+<pre lang="python">
+>>> lettres = "abcd"
+>>> chiffres = range(3)
+>>> for lettre in lettres:
+...     for chiffre in chiffres:
+...         print(lettre, chiffre)
+...
+a 0
+a 1
+a 2
+b 0
+b 1
+b 2
+c 0
+c 1
+c 2
+d 0
+d 1
+d 2</pre>
+<p>On va faire:</p>
+<pre lang="python">
+>>> from itertools import product
+>>> for lettre, chiffre in product(lettres, chiffres):
+...     print(lettre, chiffre)
+...
+a 0
+a 1
+a 2
+b 0
+b 1
+b 2
+c 0
+c 1
+c 2
+d 0
+d 1
+d 2</pre>
+<h2>combinations</h2>
+<p>Génère tous les combinaisons possibles des éléments d&#8217;un itérable:</p>
+<pre lang="python">
+>>> from itertools import combinations
+>>> list(combinations('abcd', 2))
+[('a', 'b'), ('a', 'c'), ('a', 'd'), ('b', 'c'), ('b', 'd'), ('c', 'd')]
+>>> list(combinations('abcd', 3))
+[('a', 'b', 'c'), ('a', 'b', 'd'), ('a', 'c', 'd'), ('b', 'c', 'd')]</pre>
+<h2>combinations_with_replacement</h2>
+<p>Pareil, mais autorise les doublons:</p>
+<pre lang="python">
+>>> from itertools import combinations_with_replacement
+>>> list(combinations_with_replacement('abcd', 3))
+[('a', 'a', 'a'), ('a', 'a', 'b'), ('a', 'a', 'c'), ('a', 'a', 'd'), ('a', 'b', 'b'), ('a', 'b', 'c'), ('a', 'b', 'd'), ('a', 'c', 'c'), ('a', 'c', 'd'), ('a', 'd', 'd'), ('b', 'b', 'b'), ('b', 'b', 'c'), ('b', 'b', 'd'), ('b', 'c', 'c'), ('b', 'c', 'd'), ('b', 'd', 'd'), ('c', 'c', 'c'), ('c', 'c', 'd'), ('c', 'd', 'd'), ('d', 'd', 'd')]</pre>
+<h2>permutations</h2>
+<p>Comme <code>combinations</code>, mais en générant aussi les mêmes combinaisons dans un ordre différent:</p>
+<pre lang="python">
+>>> list(permutations('abc', 3))
+[('a', 'b', 'c'), ('a', 'c', 'b'), ('b', 'a', 'c'), ('b', 'c', 'a'), ('c', 'a', 'b'), ('c', 'b', 'a')]</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/un-tools-ditertour-ou-linverse/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">20922</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/10/cqEQvgw.jpg" length="48771" type="image/jpg" />	</item>
+		<item>
+		<title>itertools.product fait sauter des boucles imbriquées</title>
+		<link>http://sametmax.com/itertools-product-fait-sauter-des-boucles-imbriquees/</link>
+		<comments>http://sametmax.com/itertools-product-fait-sauter-des-boucles-imbriquees/#comments</comments>
+		<pubDate>Tue, 03 Nov 2015 06:52:45 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[iteration]]></category>
+		<category><![CDATA[itertools]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16986</guid>
+		<description><![CDATA[Je connais <code>product()</code> depuis bel lurette, et je n'avais jamais réalisé son utilité. Des fois on a le truc sous les yeux, comme ça, et on voit rien.
+]]></description>
+				<content:encoded><![CDATA[<p>Je connais <code>product()</code> depuis bel lurette, et je n&#8217;avais jamais réalisé son utilité. Des fois on a le truc sous les yeux, comme ça, et on voit rien.</p>
+<p>Vous savez, on veut parfois parcourir tous les trucs, et leur appliquer tous les machins. Ca donne une boucle imbriquée :</p>
+<pre lang="python">
+res = []
+for truc in trucs:
+    for machin in machins:
+        res.append(bidule(machin, truc))</pre>
+<p>Un code parfaitement légitime, clair, lisible. Mais l&#8217;envie de faire une liste en intension est si forte !</p>
+<p>C&#8217;est là que <code>product()</code> intervient, avec ses petits bras musclés :</p>
+<pre lang="python">
+from itertools import product
+res  = [ bidule(machin, truc) for truc, machin in product(trucs, machins)]
+</pre>
+<p>Python va magiquement créer autant de tuples <code>(machin, truc)</code> qu&#8217;il y en a besoin.</p>
+<p>Et parce que ça fait un mois que j&#8217;ai pas mis d&#8217;article, faut prendre tout de suite les bonnes habitudes : </p>
+<div id="attachment_16988" style="width: 510px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2015/11/tumblr_nx598dMRu71r539hzo1_500.jpg" class="grouped_elements" rel="tc-fancybox-group16986"><img src="http://sametmax.com/wp-content/uploads/2015/11/tumblr_nx598dMRu71r539hzo1_500.jpg" alt="Hommes nus assis sur un homme nus" width="500" height="397" class="size-full wp-image-16988" /></a><p class="wp-caption-text">for but in buts</p></div>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/itertools-product-fait-sauter-des-boucles-imbriquees/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">16986</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/11/tumblr_nwwba5teaD1r539hzo1_500.jpg" length="46188" type="image/jpg" />	</item>
+		<item>
+		<title>Une boucle while de moins</title>
+		<link>http://sametmax.com/une-boucle-while-de-moins/</link>
+		<comments>http://sametmax.com/une-boucle-while-de-moins/#comments</comments>
+		<pubDate>Tue, 23 Jun 2015 10:04:55 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[for]]></category>
+		<category><![CDATA[iter]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[iteration]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[while]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16427</guid>
+		<description><![CDATA[Si vous devez retenir un truc de la partie Python de ce blog, c'est qu'en Python, l'itération est tout.]]></description>
+				<content:encoded><![CDATA[<p>Si vous devez retenir un truc de la partie Python de ce blog, c&#8217;est qu&#8217;en Python, l&#8217;itération est tout.</p>
+<p>Du coup, on utilise pas beaucoup <code>while</code>, à part dans quelques cas particuliers.</p>
+<p>Le cas d&#8217;école, c&#8217;est la lecture d&#8217;un fichier octet par octet.</p>
+<p>Imaginez, vous créez un petit array de float écrits en 64 bits :</p>
+<pre lang="python">>>> import numpy as np
+>>> a = np.sin(np.linspace(2.0, 3.0, num=100))
+>>> a.dtype
+dtype('float64')</pre>
+<p>Vous sauvegardez tout ça dans un fichier :</p>
+<pre lang="python">>>> a.tofile('/tmp/data')</pre>
+<p>Si vous voulez lire le fichier <strong>hors de numpy</strong>, il faut le charger float par float, donc le lire 64 bits par 64 bits soit par groupes de 8 octets.</p>
+<p>La méthode canonique :</p>
+<pre lang="python">with open('/tmp/data', 'rb') as f:
+    while True:
+        nombre = f.read(8)
+        if not nombre:
+            break
+        # faire un truc avec le nombre</pre>
+<p>Mais il existe une autre manière de faire cela, moins connue : utiliser <code>iter()</code>.</p>
+<pre lang="python">with open('/tmp/data', 'rb') as f:
+    for nombre in iter(lambda: f.read(8), b''):
+        # faire un truc avec nombre</pre>
+<p>Cela marche car <code>iter()</code>, parmi ses nombreuses fonctionnalités, accepte un <a href="http://sametmax.com/les-trucmuchables-en-python/">callable</a> en paramètre (ici notre <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">lambda</a>), et va l&#8217;appeler jusqu&#8217;à ce que celui-ci retourne une valeur dite &#8220;sentinelle&#8221; (ici notre second paramètre).</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/une-boucle-while-de-moins/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">16427</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/06/GgghUeo.jpg" length="232071" type="image/jpg" />	</item>
+		<item>
+		<title>Les exceptions sont itérables</title>
+		<link>http://sametmax.com/les-exceptions-sont-iterables/</link>
+		<comments>http://sametmax.com/les-exceptions-sont-iterables/#comments</comments>
+		<pubDate>Sun, 02 Mar 2014 23:49:55 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[exception]]></category>
+		<category><![CDATA[iteration]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9656</guid>
+		<description><![CDATA[Ok, c'est une bizarrerie, mais je tenais à la partager car ça m'a bien niqué : une exception est itérable en Python]]></description>
+				<content:encoded><![CDATA[<p>Ok, c&#8217;est une bizarrerie, mais je tenais à la partager car ça m&#8217;a bien niqué : une exception est itérable en Python</p>
+<pre lang="python">>>> for x in Exception('Doh !'):
+...     print x
+...
+Doh !</pre>
+<p>Pourquoi ? J&#8217;en ai aucune idée. Mais j&#8217;ai voulu faire un algo récursif sur des structures imbriquées contenant des exceptions. Et ça buggait. Parce que ça parcourait aussi les exceptions.</p>
+<p>Le piège vicieux dans lequel peu de gens risquent de tomber vu qu&#8217;on programme pas ça tous les jours. Mais tout de même, une étrangetée de Python. Peut être un héritage de l&#8217;époque où on pouvait faire un <code>raise</code> sur une string.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-exceptions-sont-iterables/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">9656</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/03/tumblr_n1t6dwlUwv1r539hzo1_500.jpg" length="42536" type="image/jpg" />	</item>
+		<item>
+		<title>Parcourir un itérable par morceaux en Python</title>
+		<link>http://sametmax.com/parcourir-un-iterable-par-morceaux-en-python/</link>
+		<comments>http://sametmax.com/parcourir-un-iterable-par-morceaux-en-python/#comments</comments>
+		<pubDate>Wed, 30 May 2012 17:09:24 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[iteration]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=809</guid>
+		<description><![CDATA[Voici une solution d'une rare élégance, car elle tient en quelques lignes, et assure une gigantesque flexibilité, sans manger beaucoup de mémoire vive.]]></description>
+				<content:encoded><![CDATA[<aside style="text-align:center; font-size:60%"><em>Cet article a été mis à jour et contient maintenant du code Python en version 3</em></aside>
+<p>Parcourir un itérable par morceaux signifie qu’on le traite petit bout par petit bout. On parle aussi de fenêtre glissante.</p>
+<p>Par exemple, on a une liste, et on veut traiter les éléments par lot de 3 :</p>
+<pre lang="python">>>> ["a", "b", "c", "d", "e", "f", "g"]
+["a", "b", "c", "d", "e", "f", "g"]
+>>> ("a", "b", "c")
+("a", "b", "c")
+>>> ("d", "e", "f")
+("d", "e", "f")
+>>> ("g",)
+("g",)
+>>> </pre>
+<h2>Pour les gens pressés</h2>
+<p>Il n’y a pas de fonction dans la bibliothèque standard de Python qui permette de le faire, mais on peut créer une très jolie solution à base de générateurs :</p>
+<pre lang="python">from itertools import chain, islice
+
+def morceaux(iterable, taille, format=tuple):
+    it = iter(iterable)
+    while True:
+        yield format(chain((next(it),), islice(it, taille - 1)))</pre>
+<p>Et on l’utilise ainsi :</p>
+<pre lang="python">>>> l = ["a", "b", "c", "d", "e", "f", "g"]
+>>> for morceau in morceaux(l, 3):
+...         print(morceau)
+...
+("a", "b", "c")
+("d", "e", "f")
+("g",)</pre>
+<h2>Usage avancé</h2>
+<p>Grâce au troisième paramètre, on peut récupérer une sortie sous un format différent, par exemple une chaine de caractères :</p>
+<pre lang="python">>>> for morceau in morceaux(l, 3, ''.join):
+        print(morceau)
+...
+abc
+def
+g</pre>
+<p>Le résultat retourné par <code> morceaux()</code> est un générateur :</p>
+<pre lang="python">>>> morceaux(l, 3)
+<generator object morceaux at 0x9e31414>
+>>> list(morceaux(l, 3))
+[('a', 'b', 'c'), ('d', 'e', 'f'), ('g',)]</pre>
+<p>Et la fonction accepte n’importe quel itérable en paramètre, pas uniquement des listes. Par exemple une chaine de caractères :</p>
+<pre lang="python">>>> list(morceaux('123456789', 3, tuple))
+[('1', '2', '3'), ('4', '5', '6'), ('7', '8', '9')]</pre>
+<p>Ou un fichier :</p>
+<pre lang="python">>>> f = open('/tmp/test', 'w', encoding='ascii')
+>>> f.write('1\n2\n3\n4\n5\n6\n7\n8\n9\n10')
+>>> f.close()
+>>> list(morceaux(open('/tmp/test'), 3))
+[('1\n', '2\n', '3\n'), ('4\n', '5\n', '6\n'), ('7\n', '8\n', '9\n'), ('10',)]</pre>
+<h2>Comment ça marche ?</h2>
+<p>Cette fonction est un concentré d’astuces propres à Python : module <code>itertools</code>, mot-clé <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">yield</a>, iterable, passage de fonction en paramètre&#8230;</p>
+<p>D’abord, on utilise la fonction built-in <code>iter()</code> :</p>
+<pre lang="python">it = iter(iterable)</pre>
+<p>Sur l’itérable passé en paramètre. Elle retourne un itérateur, c’est à dire un objet qui peut être passé à la fonction <code>next()</code>. <code>next()</code> permet d’accéder à la prochaine valeur de l’itérable jusqu’à épuisement de ce dernier :</p>
+<pre lang="python">
+>>> l = (1, 2, 3, 4, 5)
+>>> iterateur = iter(l)
+>>> next(iterateur)
+1
+>>> next(iterateur)
+2
+>>> next(iterateur)
+3
+>>> next(iterateur)
+4
+>>> next(iterateur)
+5
+>>> next(iterateur)
+Traceback (most recent call last):
+  File "<ipython-input-64-56409f08fc48>", line 1, in <module>
+    next(iterateur)
+StopIteration
+</pre>
+<p>On crée ensuite une boucle infinie :</p>
+<pre lang="python">while True:</pre>
+<p>Cela permet de ne pas se soucier de la taille de l’itérable. Quand un itérateur arrive au bout d’un itérable, il lève l’exception <code>StopIteration</code> (c’est le mécanisme standard par lequel les boucles <code>for</code> itèrent, ce qui prouve une fois de plus que les exceptions s’utilisent partout en Python, et non juste dans la gestion des erreurs). Cette exception cassera la boucle infinie au moment opportun.</p>
+<p>Ensuite on utilise deux fonctions du module <code>itertools</code> (un module spécialisé dans la manipulation des itérables) :</p>
+<pre lang="python">chain((next(it),), islice(it, taille - 1))</pre>
+<p><code>chain()</code> prend deux itérables et retourne un générateur qui permet d’itérer sur l’un puis l’autre. Par exemple :</p>
+<pre lang="python">>>> l1 = (1, 2, 3)
+>>> l2 = (4, 5, 6)
+>>> chain(l1, l2)
+<itertools.chain object at 0x9e7c72c>
+>>> list(chain(l1, l2))
+[1, 2, 3, 4, 5, 6]
+</pre>
+<p><code>islice()</code> est comme la syntaxe <code>[:]</code>, mais applicable à un itérable dont on ne connait pas la taille :</p>
+<pre lang="python">>>> l3 = (1, 2, 3, 4, 5, 6)
+>>> islice(l3, 2)
+<itertools.islice object at 0x9e822ac>
+>>> list(islice(l3, 2))
+[1, 2]
+>>> list(islice(l3, 2, 4))
+[3, 4]</pre>
+<p><code>chain((next(it),), islice(it, taille - 1))</code> signifie donc &#8220;<q>chainer un tuple qui contient la valeur suivante de l’itérable avec un autre itérable qui lui récupèrera la slice du reste du morceau extrait de l’itérable</q>&#8220;.</p>
+<p>Ouf.</p>
+<p>Puis on applique :</p>
+<pre lang="python">format(...)</pre>
+<p>Sur le résultat. Ce qui permet de choisir dans quel format on souhaite avoir les morceaux (chaine, tuple, etc). Le comportement par défaut est de retourner des tuples.</p>
+<p>Et enfin on utilise <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">yield</a> :</p>
+<pre lang="python">yield format(...)</pre>
+<p>Cela assure que <code>morceaux()</code> retourne un générateur qui créera chaque morceau à la volée, et non tout d’un coup en mémoire. Très utile si vous avez une grande liste :</p>
+<pre lang="python">>>> une_grande_liste = range(100000000)
+>>> par_morceaux = morceaux(une_grande_liste, 3)
+>>> next(par_morceaux)
+(0, 1, 2)
+>>> next(par_morceaux)
+(3, 4, 5)
+>>> next(par_morceaux)
+(6, 7, 8)
+>>> next(par_morceaux)
+(9, 10, 11)</pre>
+<p>Malgré la taille de la liste, le résultat est presque instantané. Ce n’est pas parce que votre ordinateur est une bête de course. C’est parce que <code>(3, 4, 5)</code> n’est pas généré juste après <code>(0, 1, 2)</code>. Il est généré au second appel de <code>next()</code>, à la volée.</p>
+<h2>Mais pourquoi faire si compliqué ?</h2>
+<p>Les bénéfices de cette approche sont :</p>
+<ul>
+<li>La possibilité de parcourir par morceaux n’importe quel itérable : des chaines, des tuples, des listes, des dictionnaires, des querysets Django, des fichiers, etc.</li>
+<li>La fonction accepte un itérable de n’importe quelle taille. En fait, elle accepte même un itérable de taille inconnu, par exemple un flux de données issu d’internet.</li>
+<li>Cela consomme très peu de mémoire : on utilise des générateurs partout (merci à <code>yield</code> et au module <code>itertools</code>), donc toutes les valeurs sont générées uniquement quand on les demande, et jamais stockées pour rien.</li>
+<li>Et d’ailleurs, comme on retourne un générateur, on peut passer le résultat à un processus utilisant des générateurs sans casser son empreinte mémoire. Faire des pipes d’un générateur à un autre est en effet un point fort de Python.</li>
+<li>Mais comme le générateur est itérable, toute fonction qui accepte un itérable pourra utiliser le résultat : les fonctions de tri, les fonctions max, etc. La boucle <code>for</code> et les <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">listes en intension</a> l’acceptent aussi.</li>
+<li>Le troisième paramètre garantit que chaque morceau est dans le format que l’on souhaite, pas quelque chose de figé qu’on devra caster : c’est un bonheur pour les one-liners.</li>
+</ul>
+<p>C’est une solution d’une rare élégance car elle tient en quelques lignes et assure une gigantesque flexibilité, sans manger beaucoup de mémoire vive. Le seul défaut étant que la lecture enclenche le mécanisme de génération, qui est plus lent que de lire une structure de données, donc la lecture complète de toute la séquence est globalement plus lente que dans la plupart des autres approches.</p>
+<p>Dans 90 % des cas, vous pouvez utiliser <code>morceaux()</code> sans souffrir de sa vitesse. Ceux qui bossent sur les 10 % restant ont un niveau tel qu’ils savent avec certitude s’ils peuvent utiliser cette approche ou non, donc si vous vous posez la question, c’est que vous n’en faites pas partie.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/parcourir-un-iterable-par-morceaux-en-python/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">809</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/05/bucheron_marne.jpg" length="58193" type="image/jpg" />	</item>
+	</channel>
+</rss>

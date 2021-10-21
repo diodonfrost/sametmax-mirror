@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: La plus belle manière de parser les arguments de script en python</title>
+	<atom:link href="http://sametmax.com/la-plus-belle-maniere-de-parser-les-arguments-de-script-en-python/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/la-plus-belle-maniere-de-parser-les-arguments-de-script-en-python/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/la-plus-belle-maniere-de-parser-les-arguments-de-script-en-python/#comment-185650</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sun, 19 Feb 2017 16:58:44 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9662#comment-185650</guid>
+		<description><![CDATA[&lt;p&gt;Y a un bon article a faire en effet. J&#039;avais eu la même question quand j&#039;ai débuté en informatique, et j&#039;ai juste oublié que j&#039;avais galéré là dessus.&lt;/p&gt;
+
+&lt;p&gt;Pour le standard, je n&#039;en connais pas. Ce sont des infos que j&#039;ai glané à l&#039;usage.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Y a un bon article a faire en effet. J&#8217;avais eu la même question quand j&#8217;ai débuté en informatique, et j&#8217;ai juste oublié que j&#8217;avais galéré là dessus.</p>
+<p>Pour le standard, je n&#8217;en connais pas. Ce sont des infos que j&#8217;ai glané à l&#8217;usage.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: maxime</title>
+		<link>http://sametmax.com/la-plus-belle-maniere-de-parser-les-arguments-de-script-en-python/#comment-185640</link>
+		<dc:creator><![CDATA[maxime]]></dc:creator>
+		<pubDate>Sun, 19 Feb 2017 10:03:55 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9662#comment-185640</guid>
+		<description><![CDATA[&lt;p&gt;Bonjour,&lt;/p&gt;
+
+&lt;p&gt;Tout d&#039;abord merci beaucoup pour tous ces articles. Ils sont d&#039;une grande qualité et c&#039;est mon go-to en informatique.&lt;/p&gt;
+
+&lt;p&gt;J&#039;ai effectué pas mal de recherche à propos de deux sujets en lien avec cet article et j&#039;avoue ne pas avoir trouvé mon bonheur sur le net. Je profite de ce post pour demander de l&#039;aide à une âme charitable.&lt;/p&gt;
+
+&lt;p&gt;Le premier serait la notation utilisée pour décrire l&#039;usage de scripts/commandes/fonctions dans les documents techniques&lt;/p&gt;
+
+&lt;p&gt;et également dans les docstrings. Dans l&#039;exemple de Sam, &quot;Naval Fate&quot; contient&lt;/p&gt;
+
+&lt;pre lang=&quot;python&quot;&gt;
+
+&quot;&quot;&quot;Naval Fate.
+
+Usage:
+
+naval_fate.py ship new ...
+
+naval_fate.py ship  move   [--speed=]
+
+naval_fate.py ship shoot  
+
+naval_fate.py mine (set&#124;remove)   [--moored &#124; --drifting]
+
+naval_fate.py (-h &#124; --help)
+
+naval_fate.py --version
+
+Options:
+
+-h --help     Show this screen.
+
+--version     Show version.
+
+--speed=  Speed in knots [default: 10].
+
+--moored      Moored (anchored) mine.
+
+--drifting    Drifting mine.
+
+&quot;&quot;&quot;
+
+&lt;/pre&gt;
+
+&lt;p&gt;Comment se décortique l&#039;usage des &quot;[, (, {, &#124; &quot;  par exemple? Est ce qu&#039;il y a une convention standard décrite quelque part qui concernerait toute l&#039;informatique en général?&lt;/p&gt;
+
+&lt;p&gt;Le deuxième sujet concerne le parsing des arguments en ligne de commande. Le module argparse de python semble dire qu&#039;il suit la norme/le standard GNU/POSIX. les recherches sur le net dirigent sans cesse vers des librairies de parsing d&#039;arguments de la ligne de commande pour des langages particuliers. Existe t il un standard langage agnostic qui décrit le parsing des arguments de la ligne de commande avec un document assez clair qui l&#039;expliquerait? Le document (http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html) semble aller dans ce sens, mais ne comprenant pas le sujet 1, j&#039;ai du mal à décrypter ce document assez technique.&lt;/p&gt;
+
+&lt;p&gt;Merci d&#039;avance pour toute aide dans ma quête de connaissances&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Bonjour,</p>
+<p>Tout d&#8217;abord merci beaucoup pour tous ces articles. Ils sont d&#8217;une grande qualité et c&#8217;est mon go-to en informatique.</p>
+<p>J&#8217;ai effectué pas mal de recherche à propos de deux sujets en lien avec cet article et j&#8217;avoue ne pas avoir trouvé mon bonheur sur le net. Je profite de ce post pour demander de l&#8217;aide à une âme charitable.</p>
+<p>Le premier serait la notation utilisée pour décrire l&#8217;usage de scripts/commandes/fonctions dans les documents techniques</p>
+<p>et également dans les docstrings. Dans l&#8217;exemple de Sam, &#8220;Naval Fate&#8221; contient</p>
+<pre lang="python">
+
+"""Naval Fate.
+
+Usage:
+
+naval_fate.py ship new ...
+
+naval_fate.py ship  move   [--speed=]
+
+naval_fate.py ship shoot  
+
+naval_fate.py mine (set|remove)   [--moored | --drifting]
+
+naval_fate.py (-h | --help)
+
+naval_fate.py --version
+
+Options:
+
+-h --help     Show this screen.
+
+--version     Show version.
+
+--speed=  Speed in knots [default: 10].
+
+--moored      Moored (anchored) mine.
+
+--drifting    Drifting mine.
+
+"""
+
+</pre>
+<p>Comment se décortique l&#8217;usage des &#8220;[, (, {, | &#8221;  par exemple? Est ce qu&#8217;il y a une convention standard décrite quelque part qui concernerait toute l&#8217;informatique en général?</p>
+<p>Le deuxième sujet concerne le parsing des arguments en ligne de commande. Le module argparse de python semble dire qu&#8217;il suit la norme/le standard GNU/POSIX. les recherches sur le net dirigent sans cesse vers des librairies de parsing d&#8217;arguments de la ligne de commande pour des langages particuliers. Existe t il un standard langage agnostic qui décrit le parsing des arguments de la ligne de commande avec un document assez clair qui l&#8217;expliquerait? Le document (<a href="http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html" rel="nofollow">http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html</a>) semble aller dans ce sens, mais ne comprenant pas le sujet 1, j&#8217;ai du mal à décrypter ce document assez technique.</p>
+<p>Merci d&#8217;avance pour toute aide dans ma quête de connaissances</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Ninit</title>
+		<link>http://sametmax.com/la-plus-belle-maniere-de-parser-les-arguments-de-script-en-python/#comment-158377</link>
+		<dc:creator><![CDATA[Ninit]]></dc:creator>
+		<pubDate>Sun, 29 Mar 2015 18:01:34 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9662#comment-158377</guid>
+		<description><![CDATA[Je me suis mélangé dans le lien du comment précédent : le lien pointe vers configargparse.
+]]></description>
+		<content:encoded><![CDATA[<p>Je me suis mélangé dans le lien du comment précédent : le lien pointe vers configargparse.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Ninit</title>
+		<link>http://sametmax.com/la-plus-belle-maniere-de-parser-les-arguments-de-script-en-python/#comment-158374</link>
+		<dc:creator><![CDATA[Ninit]]></dc:creator>
+		<pubDate>Sun, 29 Mar 2015 17:00:32 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9662#comment-158374</guid>
+		<description><![CDATA[&lt;p&gt;Merci pour cet article qui m&#039;a permis de découvrir et apprécier docopt. Encore une lecture intéressante chez Sam&#038;Max !&lt;/p&gt;
+
+&lt;p&gt;Ce petit mot pour vous signaler &lt;a href=&quot;https://github.com/bw2/ConfigArgParse&quot; title=&quot;ConfigArgParse&quot; rel=&quot;nofollow&quot;&gt;ConfigArgParse&gt;&lt;/a&gt; qui est moins élégant et facile à utiliser mais qui vient avec la gestion automatique des arguments dans un fichier de configuration et dans l&#039;environnement.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Merci pour cet article qui m&#8217;a permis de découvrir et apprécier docopt. Encore une lecture intéressante chez Sam&amp;Max !</p>
+<p>Ce petit mot pour vous signaler <a href="https://github.com/bw2/ConfigArgParse" title="ConfigArgParse" rel="nofollow">ConfigArgParse></a> qui est moins élégant et facile à utiliser mais qui vient avec la gestion automatique des arguments dans un fichier de configuration et dans l&#8217;environnement.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/la-plus-belle-maniere-de-parser-les-arguments-de-script-en-python/#comment-157622</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 12 Mar 2015 15:50:41 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9662#comment-157622</guid>
+		<description><![CDATA[&lt;p&gt;Clize a toujours sa place IMO.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Clize a toujours sa place IMO.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Rififi</title>
+		<link>http://sametmax.com/la-plus-belle-maniere-de-parser-les-arguments-de-script-en-python/#comment-156542</link>
+		<dc:creator><![CDATA[Rififi]]></dc:creator>
+		<pubDate>Sat, 21 Feb 2015 21:56:01 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9662#comment-156542</guid>
+		<description><![CDATA[Vraiment très cool, comme toujours, c&#039;est ce que je cherchais. Par contre (je sais que c&#039;est relou), ce serait cool du coup que vous mettiez à jour les articles comme &quot;Sept petites libs qui changent la vie d’un dev Python&quot;. Les gens peuvent tomber dessus, commencer avec clize, avant de tomber sur ce nouvel article qui parle de docopt. Enfin c&#039;est juste une suggestion...
+]]></description>
+		<content:encoded><![CDATA[<p>Vraiment très cool, comme toujours, c&#8217;est ce que je cherchais. Par contre (je sais que c&#8217;est relou), ce serait cool du coup que vous mettiez à jour les articles comme &#8220;Sept petites libs qui changent la vie d’un dev Python&#8221;. Les gens peuvent tomber dessus, commencer avec clize, avant de tomber sur ce nouvel article qui parle de docopt. Enfin c&#8217;est juste une suggestion&#8230;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Natim</title>
+		<link>http://sametmax.com/la-plus-belle-maniere-de-parser-les-arguments-de-script-en-python/#comment-113912</link>
+		<dc:creator><![CDATA[Natim]]></dc:creator>
+		<pubDate>Wed, 13 Aug 2014 08:17:01 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9662#comment-113912</guid>
+		<description><![CDATA[This post save my day. Thanks.]]></description>
+		<content:encoded><![CDATA[<p>This post save my day. Thanks.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/la-plus-belle-maniere-de-parser-les-arguments-de-script-en-python/#comment-40731</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 02 Jun 2014 16:18:40 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9662#comment-40731</guid>
+		<description><![CDATA[Soyons honnête, je préfère me tater la tentacule à bien des choses. Pardonnée, mais le tampon reste, parce que j&#039;aime les tampons.]]></description>
+		<content:encoded><![CDATA[<p>Soyons honnête, je préfère me tater la tentacule à bien des choses. Pardonnée, mais le tampon reste, parce que j&#8217;aime les tampons.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: tampon</title>
+		<link>http://sametmax.com/la-plus-belle-maniere-de-parser-les-arguments-de-script-en-python/#comment-40724</link>
+		<dc:creator><![CDATA[tampon]]></dc:creator>
+		<pubDate>Mon, 02 Jun 2014 15:29:35 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9662#comment-40724</guid>
+		<description><![CDATA[Merci! Cool mon premier tampon! Je ne voulais pas être insultante je m&#039;excuse si c&#039;était mal perçu, ca n&#039;était pas mon intention...je voulais juste rire un peu en faisant un clin d&#039;oeil sur votre &lt;del&gt;dernier&lt;/del&gt; avant-dernier article]]></description>
+		<content:encoded><![CDATA[<p>Merci! Cool mon premier tampon! Je ne voulais pas être insultante je m&#8217;excuse si c&#8217;était mal perçu, ca n&#8217;était pas mon intention&#8230;je voulais juste rire un peu en faisant un clin d&#8217;oeil sur votre <del>dernier</del> avant-dernier article</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/la-plus-belle-maniere-de-parser-les-arguments-de-script-en-python/#comment-40709</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 02 Jun 2014 14:54:56 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9662#comment-40709</guid>
+		<description><![CDATA[Alors dans l&#039;ordre :
+
+- Tu expliques la moitié de ton problème visiblement puisque avec ce script:
+
+&lt;pre lang=&quot;python&quot;&gt;
+&quot;&quot;&quot;Naval Fate.
+
+Usage:
+  naval_fate.py ship new &lt;name&gt;...
+  naval_fate.py ship &lt;name&gt; move &lt;x&gt; &lt;y&gt; [--speed=&lt;kn&gt;]
+  naval_fate.py ship shoot &lt;x&gt; &lt;y&gt;
+  naval_fate.py mine (set&#124;remove) &lt;x&gt; &lt;y&gt; [--moored &#124; --drifting]
+  naval_fate.py (-h &#124; --help)
+  naval_fate.py --version
+
+Options:
+  -h --help     Show this screen.
+  --version     Show version.
+  --speed=&lt;kn&gt;  Speed in knots [default: 10].
+  --moored      Moored (anchored) mine.
+  --drifting    Drifting mine.
+
+&quot;&quot;&quot;
+from docopt import docopt
+
+import time
+
+if __name__ == &#039;__main__&#039;:
+    arguments = docopt(__doc__, version=&#039;Naval Fate 2.0&#039;)
+    print(arguments)
+    for x in range(2):
+      time.sleep(1)
+      print(x)
+&lt;/pre&gt;
+
+Et en lançant :
+
+&lt;code&gt;python essai.py ship new test &amp;&lt;/code&gt;
+
+Ca se met bien en arrière plan, je viens de le tester. 
+
+ &lt;a href=&quot;http://sametmax.com/template-de-demande-daide-en-informatique/&quot; rel=&quot;nofollow&quot;&gt;Pour t&#039;aider il faudrait donc que tu suives ceci&lt;/a&gt;.
+
+- Il s&#039;agit d&#039;un problème lié à bash, pas particulièrement à cette lib. Tu viens donc raler au mauvais endroit. Qui plus est en comment plutôt que sur un forum d&#039;aide.
+
+- En prime, tu demandes de l&#039;aide en insultant les gens.
+
+Bref, tu mérite un tampon.]]></description>
+		<content:encoded><![CDATA[<p>Alors dans l&#8217;ordre :</p>
+<p>&#8211; Tu expliques la moitié de ton problème visiblement puisque avec ce script:</p>
+<pre lang="python">
+"""Naval Fate.
+
+Usage:
+  naval_fate.py ship new <name>...
+  naval_fate.py ship </name><name> move <x> <y> [--speed=<kn>]
+  naval_fate.py ship shoot <x> <y>
+  naval_fate.py mine (set|remove) <x> <y> [--moored | --drifting]
+  naval_fate.py (-h | --help)
+  naval_fate.py --version
+
+Options:
+  -h --help     Show this screen.
+  --version     Show version.
+  --speed=<kn>  Speed in knots [default: 10].
+  --moored      Moored (anchored) mine.
+  --drifting    Drifting mine.
+
+"""
+from docopt import docopt
+
+import time
+
+if __name__ == '__main__':
+    arguments = docopt(__doc__, version='Naval Fate 2.0')
+    print(arguments)
+    for x in range(2):
+      time.sleep(1)
+      print(x)
+</kn></y></x></y></x></kn></y></x></name></pre>
+<p>Et en lançant :</p>
+<p><code>python essai.py ship new test &#038;</code></p>
+<p>Ca se met bien en arrière plan, je viens de le tester. </p>
+<p> <a href="http://sametmax.com/template-de-demande-daide-en-informatique/" rel="nofollow">Pour t&#8217;aider il faudrait donc que tu suives ceci</a>.</p>
+<p>&#8211; Il s&#8217;agit d&#8217;un problème lié à bash, pas particulièrement à cette lib. Tu viens donc raler au mauvais endroit. Qui plus est en comment plutôt que sur un forum d&#8217;aide.</p>
+<p>&#8211; En prime, tu demandes de l&#8217;aide en insultant les gens.</p>
+<p>Bref, tu mérite un tampon.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

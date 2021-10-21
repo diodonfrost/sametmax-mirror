@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>dublon &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/dublon/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>S&#8217;affranchir des doublons d&#8217;un itérable en Python</title>
+		<link>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/</link>
+		<comments>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/#comments</comments>
+		<pubDate>Tue, 20 Aug 2013 10:10:32 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dublon]]></category>
+		<category><![CDATA[generator]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[lambda]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[yield]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7143</guid>
+		<description><![CDATA[Supprimer ou ignorer les doublons d'un itérable tel qu'une liste ou un array est un challenge dans tous les langages.]]></description>
+				<content:encoded><![CDATA[<p>Supprimer ou ignorer les doublons d&#8217;un itérable tel qu&#8217;une liste ou un array est un challenge dans tous les langages. Il faut se poser les questions suivantes :</p>
+<ul>
+<li>Qu&#8217;est-ce qu&#8217;un doublon ?</li>
+<li>Quels types d&#8217;itérables traite-t-on ?</li>
+<li>Quel est la taille de l&#8217;itérable ?</li>
+<li>Et niveau perfs ?</li>
+</ul>
+<p>En Python, on a des structures de données qui suppriment automatiquement les doublons : les sets et les dictionnaires. Mais elles ne conservent pas l&#8217;ordre des élements.</p>
+<p>Il y a aussi le fait qu&#8217;un itérable en Python peut avoir une taille inconnue, ou infinie.</p>
+<p>Le post est long, donc&#8230;</p>
+
+<!-- iframe plugin v.4.3 wordpress.org/plugins/iframe/ -->
+<iframe width="420" height="315" src="//www.youtube.com/embed/HsX4M-by5OY" frameborder="0" 0="allowfullscreen" scrolling="yes" class="iframe-class"></iframe>
+
+<h2>Solution 1 : générateur et hashing</h2>
+<p>En utilisant conjointement les générateurs, les sets et une petite injection de dépendance, on peut trouver un compromis entre flexibilité et performances :</p>
+<pre lang="python">def skip_duplicates(iterable, key=lambda x: x):
+
+    # on va mettre l’empreinte unique de chaque élément dans ce set
+    fingerprints = set()
+
+    for x in iterable:
+        # chaque élement voit son emprunte calculée. Par défaut l’empreinte
+        # est l'élément lui même, ce qui fait qu'il n'y a pas besoin de
+        # spécifier 'key' pour des primitives comme les ints ou les strings.
+        fingerprint = key(x)
+
+        # On vérifie que l'empreinte est dans la liste des empreintes  des
+        # éléments précédents. Si ce n'est pas le cas, on yield l'élément, et on
+        # rajoute sont empreinte ans la liste de ceux trouvés, donc il ne sera
+        # pas yieldé si on ne le yieldera pas une seconde fois si on le
+        # rencontre à nouveau
+        if fingerprint not in fingerprints:
+            yield x
+            fingerprints.add(fingerprint)</pre>
+<p>La fonction s&#8217;appelle <code>skip_duplicates</code> car c&#8217;est ce qu&#8217;elle fait. Elle ne retire pas vraiment les doublons, elle produit un flux de d&#8217;éléments qui ne comporte pas de doublons en ignorant tout doublons présent dans l&#8217;itérable initial.</p>
+<p>Cette approche a plusieurs avantages :</p>
+<ul>
+<li>Les doublons sont bien retirés, et l&#8217;ordre est conservé.</li>
+<li>La complexité est de 0(n).</li>
+<li>L&#8217;utilisateur peut choisir ce qui fait qu&#8217;un élément est unique : un attribut, un sous-élément, l&#8217;affichage sous forme de string&#8230;</li>
+<li>C&#8217;est un générateur, est cela fonctionne donc avec des itérables de toute taille, même inconnue ou infinie.</li>
+</ul>
+<p>Il faut néanmoins que l&#8217;ensemble des éléments uniques tiennent au moins une fois en mémoire en plus de l&#8217;itérable initial, et potentiellement d&#8217;un stockage à la sortie du générateur. On fait donc un trade-off sur la mémoire.</p>
+<p>Comme la valeur de <code>key</code> par défaut est une valeur saine, ça fonctionne comme on s&#8217;y attend pour les cas simples :</p>
+<pre lang="python">>>> list(skip_duplicates([1, 2, 3, 4, 4, 2, 1, 3 , 4]))
+[1, 2, 3, 4]
+>>> list(skip_duplicates('fjsqlkdmfjsklqmdfjdmsl'))
+[u'f', u'j', u's', u'q', u'l', u'k', u'd', u'm']
+>>> list(skip_duplicates(((1, 2), (2, 1), (1, 2), (1, 1))))
+[(1, 2), (2, 1), (1, 1)]</pre>
+<p>Pourvoir spécifier &#8216;key&#8217; permet de faire des choix dans ce qu&#8217;est un doublon :</p>
+<pre lang="python">>>> list(skip_duplicates((1, 2, '1', '1', 2, 3, '3')))
+[1, 2, u'1', 3, u'3']
+>>> list(skip_duplicates((1, 2, '1', '1', 2, 3, '3'), key=lambda x: str(x)))
+[1, 2, 3]</pre>
+<p>Et si on s&#8217;attaque à des cas plus complexes, le fonction vous force à préciser votre pensée :</p>
+<pre lang="python">>>> list(skip_duplicates(([], [], (), [1, 2], (1, 2)))
+... )
+Traceback (most recent call last):
+  File "<ipython-input-20-ed44f170c634>", line 1, in <module>
+    list(skip_duplicates(([], [], (), [1, 2], (1, 2)))
+  File "<ipython-input-18-42dbb94f03f8>", line 7, in skip_duplicates
+    if fingerprint not in fingerprints:
+TypeError: unhashable type: 'list'</pre>
+<p>En effet les listes ne sont pas des types hashables en Python, on ne peut donc pas les stocker dans un <code>set</code>.</p>
+<p>Mais on peut caster la liste, et faire ainsi le choix de savoir sur quel critère on base notre égalité. Par exemle, considère-t-on que deux itérables ayant le même contenu sont égaux, où alors doivent-ils avoir le même type ?</p>
+<pre lang="python">>>> list(skip_duplicates(([], [], (), [1, 2], (1, 2)), lambda x: tuple(x)))
+[[], [1, 2]]
+>>> list(skip_duplicates(([], [], (), [1, 2], (1, 2)), lambda x: (type(x), tuple(x))))
+[[], (), [1, 2], (1, 2)]</pre>
+<p>Nous utilisons le fait que :</p>
+<pre lang="python">>>> tuple([1, 2]) == (1, 2)
+True
+>>> (type([1, 2]), tuple([1, 2])) == (type((1, 2)), (1, 2))
+False
+</pre>
+<p>Puisque :</p>
+<pre lang="python">>>> (type([1, 2]), tuple([1, 2]))
+(<type 'list'>, (1, 2))
+>>> (type((1, 2)), (1, 2))
+(<type 'tuple'>, (1, 2))</pre>
+<p>Dans le cas où nous ne sommes pas capables de déterminer ce qu&#8217;est un doublon, la fonction ne retire simplement rien :</p>
+<pre lang="python">class Test(object):
+    def __init__(self, foo='bar'):
+        self.foo = foo
+    def __repr__(self):
+        return "Test('%s')" % self.foo
+
+>>> list(skip_duplicates([Test(), Test(), Test('other')]))
+[Test('bar'), Test('bar'), Test('other')]</pre>
+<p>Mais permet encore une fois de faire le choix de quoi retirer :</p>
+<pre lang="python">>>> list(skip_duplicates([Test(), Test(), Test('other')], key=lambda x: x.foo))
+[Test('bar'), Test('other')]</pre>
+<p>Ce principe de la fonction <code>key</code>, on le retrouve dans <code>sorted()</code>, donc les habitués seront déjà à l&#8217;aise. Et j&#8217;aime beaucoup ce pattern, car il est très puissant. On peut avoir la fonction <code>key</code> qui renvoit des choses très simples :</p>
+<ul>
+<li>Un attribut.</li>
+<li>Un element (<code>x[2]</code>, <code>x['cle']</code>&#8230;)</li>
+<li>Une version castée avec <code>int()</code>, <code>str()</code>, <code>tuple()</code>, etc</li>
+</ul>
+<p>Mais on peut aussi faire des choses très complexes. En effet, rien ne nous oblige à utiliser une lambda, on peut mettre une fonction complète et lui faire retourner :</p>
+<ul>
+<li>Un hash md5.</li>
+<li>Une entrée en base de données.</li>
+<li>Un nouvel objet customisé.</li>
+<li>Un tuple de tuples d&#8217;objets custos avec des dictionnaires en attributs&#8230;</li>
+<li>Le contenu d&#8217;un fichier.</li>
+</ul>
+<p>Python sait naturellement comparer tout ça.</p>
+<p>Notez que nous trichons un peu, puisque nous retirons les doublons en nous basant sur un <code>set</code> qui va calculer un hash de l&#8217;objet, et pas véritablement vérifier l&#8217;égalité. La fonction en fonctionnera donc pas si l&#8217;utilisateur définie <code>__eq__</code> et s&#8217;attend à ce que les doublons soient retirés. Ce qui nous amène à &#8230;</p>
+<h2>Solution 2 : iterateur et comparaison</h2>
+<p>Pour ce genre de chose, un autre algo, qui ne fontionerait que sur les itérables de taille finie, et qui serait bien plus lent (complexité n log(n)), peut être utilisé :</p>
+<pre lang="python">def strip_duplicates(iterable, equals=lambda x, y: x == y):
+
+    # On transforme l'itérable en iterateur sur lui même, cela va nous
+    # permettre d'appeler next() dessus et récupérer le premier élément,
+    # même sur un objet non indexable (sur lequel on ne peut utiliser [0])
+    iterable = iter(iterable)
+
+    res = []
+    # Une petite boucle infinie est nécessaire car la boucle 'for' ne nous
+    # permet pas de récupérer le premier élément indépendamment des autres,
+    # et la boucle 'while' attend une condition de sortie, ce que nous n'avons
+    # pas forcément (il n'est pas possible de vérifier le nombre d'éléments
+    # restant dans un générateur).
+    while True:
+
+        # on récupère le premier élément de l'iterable restant, si il n'y en
+        # a plus, on sort de la boucle.
+        try:
+            elem = next(iterable)
+        except StopIteration:
+            break
+
+        # Le premier élément est ajouté au résultat sans doublons. Maintenant
+        # on va recréer l'itérable, mais en retirant tout ce qui était égal
+        # au premier élément. Notez que 'être égal' est une condition modifiable
+        # en passant une fonction en paramètre, comme l'était 'key' précédemment.
+        res.append(elem)
+
+        iterable = iter([x for x in iterable if not equals(elem, x)])
+
+    return res</pre>
+<p>La fonction s&#8217;appelle <code>strip_duplicates</code> car elle produit une nouvelle liste, mais sans les éléments indésirables, comme le fait <code>strip()</code> sur une chaîne (produit une nouvelle chaîne, sans les éléments indésirables).</p>
+<p>Ce type de fonction peut être utile dans plusieurs cas :</p>
+<ul>
+<li>On a pas envie de se poser la question de savoir si nos types à comparer sont hashable ou pas, et on est prêt à payer un peu de CPU pour cela.</li>
+<li>On a besoin de retirer les doublons sur la base d&#8217;une égalité, par exemple sur l&#8217;existence de la méthode <code>__eq__</code>.</li>
+<li>On a besoin de retirer les doublons sur la base d&#8217;une logique complexe qui dépend du contexte.</li>
+</ul>
+<p>A première vu cela fonctionne presque de la même manière que <code>skip_duplicates</code>, mais en retournant une liste plutôt qu&#8217;un générateur :</p>
+<pre lang="python">>>> strip_duplicates('fdjqkslfjdmkfdsqjkfmjqsdmlkfjqslkmfjsdklfl')
+['f', 'd', 'j', 'q', 'k', 's', 'l', 'm']</pre>
+<p>Mais déjà il n&#8217;y a pas à se soucier de savoir si une structure de données est hashable :</p>
+<pre lang="python">>>> strip_duplicates(([], [], (), [1, 2], (1, 2)))
+[[], (), [1, 2], (1, 2)]</pre>
+<p>Même si on garde la même flexibilité, bien que la fonction à passer ait une signature légèrement différente :</p>
+<pre lang="python">>>> strip_duplicates(([], [], (), [1, 2], (1, 2)), lambda x, y: tuple(x) == tuple(y))
+[[], [1, 2]]</pre>
+<p>Le plus interessant reste que cela fonctionne sur l&#8217;égalité, et donc cela marche d&#8217;office avec les objets qui déclarent <code>__eq__</code> ce qui est le cas dans de nombreuses libs, comme les ORM :</p>
+<pre lang="python">class Test(object):
+    def __init__(self, foo='bar'):
+        self.foo = foo
+    def __repr__(self):
+        return "Test('%s')" % self.foo
+    def __eq__(self, other):
+        return self.foo == other.foo
+
+>>> strip_duplicates([Test(), Test(), Test('other')])
+[Test('bar'), Test('other')]
+</pre>
+<p>Dans certains cas, notamment dans le cas où le point de comparaison est un object non hashable de très grosse taille (par exemple un dico très long), on peut espérer aussi pas mal économiser en mémoire. Mais on est qu&#8217;en est-il des besoins en mémoire et en CPU ?</p>
+<h2>Solution 3 : retirer les doublons, in place</h2>
+<p>Enfin, pour ceux qui ont de grosses contraintes de mémoire et qui veulent un algo rapide au prix de la flexibilité du code, voici une solution qui oblige à travailler sur des listes et à modifier la liste sur place :</p>
+<pre lang="python">def remove_duplicates(lst, equals=lambda x, y: x == y):
+
+    # Normalement en Python on adore le duck typing, mais là cet algo suppose
+    # l'usage d'une liste, donc on met un gardefou.
+    if not isinstance(lst, list):
+        raise TypeError('This function works only with lists.')
+
+    # là on est sur quelque chose qui ressemble vachement plus à du code C ^^
+    i1 = 0
+    l = (len(lst) - 1)
+
+    # on itère mécaniquement sur la liste, à l'ancienne, avec nos petites
+    # mains potelées.
+    while i1 < l:
+
+        # on récupère chaque élément de la liste, sauf le dernier
+        elem = lst[i1]
+
+        # on le compare à l'élément suivant, et chaque élément après
+        # l'élément suivant
+        i2 = i1 + 1
+        while i2 <= l:
+            # en cas d'égalité, on retire l'élément de la liste, et on
+            # décrément la longueur de la liste ainsi amputée
+            if equals(elem, lst[i2]):
+                del lst[i2]
+                l -= 1
+            i2 += 1
+
+        i1 += 1
+
+    return lst
+
+</pre>
+<p>Et là on est bien dans de la modification sur place :</p>
+<pre lang="python">>>> lst = list('fjdsklmqfjskdfjmld')
+>>> lst
+[u'f', u'j', u'd', u's', u'k', u'l', u'm', u'q', u'f', u'j', u's', u'k', u'd', u'f', u'j', u'm', u'l', u'd']
+>>> remove_duplicates(lst)
+[u'f', u'j', u'd', u's', u'k', u'l', u'm', u'q']
+>>> lst
+[u'f', u'j', u'd', u's', u'k', u'l', u'm', u'q']</pre>
+<p>La fonction s'appelle cette fois bien <code>remove_duplicates</code> puisque c'est ce qu'elle fait : retirer les doublons de la liste originale.</p>
+<h2>Et maintenant, c'est l'heure du benchmark à deux balles !</h2>
+<p>skip_duplicates :</p>
+<pre lang="python">setup = """
+def skip_duplicates(iterable, key=lambda x: x):
+        fingerprints = set()
+        for x in iterable:
+                fingerprint = key(x)
+                if fingerprint not in fingerprints:
+                        yield x
+                        fingerprints.add(fingerprint)
+import string
+lst = list(string.ascii_letters * 100)"""
+>>> timeit.timeit('list(skip_duplicates(lst))', setup=setup, number=1000)
+0.9810519218444824</pre>
+<p>strip_duplicates :</p>
+<pre lang="python">>>> setup = """
+def strip_duplicates(iterable, equals=lambda x, y: x == y):
+    iterable = iter(iterable)
+    res = []
+    while True:
+        try:
+            elem = next(iterable)
+        except StopIteration:
+            break
+        res.append(elem)
+
+        iterable = iter([x for x in iterable if not equals(elem, x)])
+
+    return res
+
+import string
+lst = list(string.ascii_letters * 100)"""
+>>> timeit.timeit('list(strip_duplicates(lst))', setup=setup, number=1000)
+41.462974071502686</pre>
+<p>remove_duplicates :</p>
+<pre lang="python">setup = """
+def remove_duplicates(lst, equals=lambda x, y: x == y):
+    if not isinstance(lst, list):
+        raise TypeError('This function works only with lists.')
+    i1 = 0
+    l = (len(lst) - 1)
+    while i1 < l:
+        elem = lst[i1]
+        i2 = i1 + 1
+        while i2 <= l:
+            if equals(elem, lst[i2]):
+                del lst[i2]
+                l -= 1
+            i2 += 1
+        i1 += 1
+    return lst
+
+import string
+lst = list(string.ascii_letters * 100)"""
+>>> timeit.timeit('list(remove_duplicates(lst))', setup=setup, number=1000)
+0.37493896484375</pre>
+<p>Sans surprise, la version inplace est la plus rapide puisque la plus restrictive. En second vient notre strip_duplicates, beaucoup fois plus lente. Et en dernier, 50 fois plus lente, le compromis entre les deux : souple, consomme moins de mémoire que skip, mais plus que remove.</p>
+<p>Mais ce n'est pas très juste pour strip, puisque que skip n'a pas à faire un gros travail de conversion. Essayons avec des clés plus grosses :</p>
+<p>skip_duplicates :</p>
+<pre lang="python">setup = """
+def skip_duplicates(iterable, key=lambda x: x):
+        fingerprints = set()
+        for x in iterable:
+                fingerprint = key(x)
+                if fingerprint not in fingerprints:
+                        yield x
+                        fingerprints.add(fingerprint)
+import string, random
+lst = [list(string.ascii_letters * 100) for x in xrange(100)]
+for x in lst:
+    x.pop(random.randint(0, len(x) - 1))"""
+>>> timeit.timeit('list(skip_duplicates(lst, lambda x: tuple(x)))', setup=setup, number=1000)
+15.516181945800781</pre>
+<p>strip_duplicates :</p>
+<pre lang="python">>>> setup = """
+def strip_duplicates(iterable, equals=lambda x, y: x == y):
+    iterable = iter(iterable)
+    res = []
+    while True:
+        try:
+            elem = next(iterable)
+        except StopIteration:
+            break
+        res.append(elem)
+
+        iterable = iter([x for x in iterable if not equals(elem, x)])
+
+    return res
+
+import string, random
+lst = [list(string.ascii_letters * 100) for x in xrange(100)]
+for x in lst:
+    x.pop(random.randint(0, len(x) - 1))"""
+>>> timeit.timeit('list(strip_duplicates(lst))', setup=setup, number=1000)
+22.047110080718994</pre>
+<p>remove_duplicates :</p>
+<pre lang="python">setup = """
+def remove_duplicates(lst, equals=lambda x, y: x == y):
+    if not isinstance(lst, list):
+        raise TypeError('This function works only with lists.')
+    i1 = 0
+    l = (len(lst) - 1)
+    while i1 < l:
+        elem = lst[i1]
+        i2 = i1 + 1
+        while i2 <= l:
+            if equals(elem, lst[i2]):
+                del lst[i2]
+                l -= 1
+            i2 += 1
+        i1 += 1
+    return lst
+
+import string, random
+lst = [list(string.ascii_letters * 100) for x in xrange(100)]
+for x in lst:
+    x.pop(random.randint(0, len(x) - 1))"""
+>>> timeit.timeit('list(remove_duplicates(lst))', setup=setup, number=1000)
+14.763166904449463
+</pre>
+<p>Comme souvent les résultats sont contre untuitifs, car bien que remove garde son avance, elle s'est largement réduite. A l'inverse, skip n'est pas tant à la ramasse que ça, et strip reste le plus lent.</p>
+<p>Il faudrait aussi mesurer la consommation mémoire, je suis certain que ce serait interessant.</p>
+<p>Bon, il est temps de mettre tout ça dans <a href="http://sametmax.com/batbelt-la-lib-des-petits-outils-python-qui-vont-bien/">batbelt</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">7143</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/08/NFDSpXq.gif" length="464024" type="image/jpg" />	</item>
+	</channel>
+</rss>

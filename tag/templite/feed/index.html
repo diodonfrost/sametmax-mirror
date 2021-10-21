@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>templite &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/templite/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Templite, le moteur de template Python qui tient dans un fichier</title>
+		<link>http://sametmax.com/templite-le-moteur-de-template-python-qui-tient-dans-un-fichier/</link>
+		<comments>http://sametmax.com/templite-le-moteur-de-template-python-qui-tient-dans-un-fichier/#comments</comments>
+		<pubDate>Tue, 25 Feb 2014 10:34:27 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[github]]></category>
+		<category><![CDATA[pypi]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[template]]></category>
+		<category><![CDATA[templite]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9235</guid>
+		<description><![CDATA[Je n'ai <a href="http://www.joonis.de/en/code/templite">pas écris templite</a>, je l'ai juste mis sur <a href="https://pypi.python.org/pypi/templite/0.1.3">pypi</a> et <a href="https://github.com/sametmax/templite">github</a> en respectant sa paternité car il restait sous forme de snippet perdu depuis trop longtemps.
+]]></description>
+				<content:encoded><![CDATA[<p><code><a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> install templite</code></p>
+<pre lang="python">from templite import Templite
+
+template = """
+This is the place where all the ${variable}$ go...
+The time goes fast but everything is slow...
+${for woho in whohos:}$
+    ${woho}$
+${:end-for}$
+"""
+
+t = Templite(template)
+print t.render(variable="junkies", whohos=["woo hoo", "woo hoo", "woo hoo hoo hoo"])</pre>
+<p>Ce qui donne :</p>
+<pre>This is the place where all the junkies go...
+The time goes fast but everything is slow...
+
+    woo hoo
+
+    woo hoo
+
+    woo hoo hoo hoo</pre>
+<p>Je n&#8217;ai <a href="http://www.joonis.de/en/code/templite">pas écrit templite</a>, je l&#8217;ai juste mis sur <a href="https://pypi.python.org/pypi/templite/0.1.3">pypi</a> et <a href="https://github.com/sametmax/templite">github</a> en respectant sa paternité car il restait sous forme de snippet perdu depuis trop longtemps.</p>
+<p>Vous pouvez le piper mais vraiment, ce n&#8217;est pas obligatoire, comme <a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">peewee</a> et <a href="http://sametmax.com/creer-un-site-avec-bottle-en-5-minutes-parceque-7-cest-impossible-voyons/">bottle</a>, il tient dans un fichier, donc on peut juste dumper le module dans son code source.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/templite-le-moteur-de-template-python-qui-tient-dans-un-fichier/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">9235</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/02/tKvCM.jpg" length="48252" type="image/jpg" />	</item>
+	</channel>
+</rss>

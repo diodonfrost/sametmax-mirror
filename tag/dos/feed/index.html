@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>dos &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/dos/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Créer une raw string avec un antislash à la fin</title>
+		<link>http://sametmax.com/creer-une-raw-string-avec-un-antislash-a-la-fin/</link>
+		<comments>http://sametmax.com/creer-une-raw-string-avec-un-antislash-a-la-fin/#comments</comments>
+		<pubDate>Wed, 21 Aug 2013 09:40:05 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dos]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[raw string]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7150</guid>
+		<description><![CDATA[Supposons que vous vouliez créer un path pour disons, pauvre de vous, une commande DOS...]]></description>
+				<content:encoded><![CDATA[<p>Si vous vous souvenez, on ne peut pas mettre un antislash à la fin d&#8217;une raw string :</p>
+<pre lang="python">>>> print(r'Moi pouvoir\\')
+Moi pouvoir\\
+>>> r'Moi pouvoir\\'
+'Moi pouvoir\\\\'
+>>> r'Moi pouvoir\'
+  File "<stdin>", line 1
+    r'Moi pouvoir\'
+                  ^
+SyntaxError: EOL while scanning string literal
+</pre>
+<p>La plupart du temps on s&#8217;en branle.</p>
+<p>Mais supposons que vous vouliez créer un path pour disons, pauvre de vous, une commande DOS&#8230;</p>
+<pre lang="python">>>> print("\chemin\vers\dossier\dos\\")
+\chemin
+        ers\dossier\dos\
+>>> print(r"\chemin\vers\dossier\dos\\")
+\chemin\vers\dossier\dos\\
+</pre>
+<p>Ah, ah, te voilà bien baisé, cher programmeur !</p>
+<p>Sauf que non, car une raw string n&#8217;est pas un type de string particulier, comme on l&#8217;a vu ici, donc on peut faire ça :</p>
+<pre lang="python">>>> print(r"\chemin\vers\dossier\dos" + "\\")
+\chemin\vers\dossier\dos\</pre>
+<p>Zooooo !</p>
+<p>Et même si on se sent chaud, on peut utiliser la concaténation implicite pour se la jouer mega chaud du slip :</p>
+<pre lang="python">>>> print(r"\chemin\vers\dossier\dos" "\\")
+\chemin\vers\dossier\dos\</pre>
+<p>Qu&#8217;il en faut peu pour qu&#8217;un dev se sente le roi du monde&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/creer-une-raw-string-avec-un-antislash-a-la-fin/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">7150</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/08/LuvAcgU.jpg" length="75304" type="image/jpg" />	</item>
+	</channel>
+</rss>

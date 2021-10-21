@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>try_files &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/try_files/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Nginx &#8211; Redirection url si le fichier n&#8217;existe pas avec try_files</title>
+		<link>http://sametmax.com/nginx-redirection-url-si-le-fichier-nexiste-pas-avec-try_files/</link>
+		<comments>http://sametmax.com/nginx-redirection-url-si-le-fichier-nexiste-pas-avec-try_files/#comments</comments>
+		<pubDate>Thu, 28 Jun 2012 20:18:55 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[nginx]]></category>
+		<category><![CDATA[redirection]]></category>
+		<category><![CDATA[try_files]]></category>
+		<category><![CDATA[url]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1060</guid>
+		<description><![CDATA[Rediriger une url lorsque le fichier n'existe pas sur le serveur peut être très utile si vous décider de changer touts vos formats de fichier de jpeg à png ou formats videos de flv à mp4 etc. ]]></description>
+				<content:encoded><![CDATA[<p>Rediriger une url lorsque le fichier n&#8217;existe pas sur le serveur peut être très utile si vous décider de changer touts vos formats de fichier de jpeg à png ou formats videos de flv à mp4 etc.</p>
+<p>Par exemple vous décidé de convertir toutes les videos de votre serveur de flv à mp4, vous lancez un script de conversion à la volée et vous vous retrouver avec du flv et du mp4, vous pouvez modifier votre script php, python, etc pour tester si la video est en flv ou mp4 ou le faire directement au niveau de nginx qui a une fonction pour: <a href="http://wiki.nginx.org/HttpCoreModule#try_files" title="try_files nginx">try_files</a>.</p>
+<p><strong>Dans votre config nginx server:<br />
+</strong></p>
+<pre lang="bash">
+server {
+     # Serve videos for web
+        location ~ (.*)\.flv$ { 
+                try_files $uri $uri/ $1.mp4?$args;
+                flv; # http flv module
+        }
+
+        location ~ (.*)\.mp4$ {  
+                mp4; # http mp4 module
+        }
+}
+</pre>
+<p>nginx va tester l&#8217;url de la video flv, si il ne la trouve pas il redirige l&#8217;url appelée mais avec l&#8217;extension mp4 cette fois-ci, $args est pour rajouter les éventuels arguments venant après la requête de l&#8217;url (ex: ?start=213424)</p>
+<p>Cette astuce m&#8217;a permis entre autre de convertir à chaud 50 000 videos sur un serveur pendant que celui-ci était en prod tout en gardant les vidéos disponibles aux public et ce sans changer le script de mon site, juste en 3 lignes de conf nginx.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/nginx-redirection-url-si-le-fichier-nexiste-pas-avec-try_files/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1060</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/06/redirection.jpg" length="142906" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>slice &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/slice/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Astuces Python en vrac</title>
+		<link>http://sametmax.com/astuces-python-en-vrac/</link>
+		<comments>http://sametmax.com/astuces-python-en-vrac/#comments</comments>
+		<pubDate>Fri, 03 Aug 2012 13:15:35 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[import]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[slice]]></category>
+		<category><![CDATA[yield]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1463</guid>
+		<description><![CDATA[Je n'arrive pas à trouver un lien entre tous ces trucs, alors un bon vrac fera l'affaire.]]></description>
+				<content:encoded><![CDATA[<p>Je n&#8217;arrive pas à trouver un lien entre tous ces trucs, alors un bon vrac fera l&#8217;affaire.</p>
+<h2>Float accepte de parser l&#8217;infini<br />
+</h2>
+<pre lang="python">
+>>> infini = float('inf')
+>>> infini
+inf
+>>> infini + 1
+inf
+>>> infini - 1
+inf
+>>> float('-inf')
+-inf
+>>> float('-inf') + 1
+-inf
+>>> float('inf') + float('-inf')
+nan
+</pre>
+<p>Attention, il est très probable que ce soit dépendant de l&#8217;implémentation CPython.</p>
+<h2><code>Iter()</code> peut prendre un callable en argument</h2>
+<p><code>iter()</code>, c&#8217;est la fonction qui créé un générateur à partir d&#8217;un itérable:</p>
+<pre lang="python">>>> generateur = iter([1, 2, 3])
+>>> generateur.next()
+1
+>>> generateur.next()
+2
+>>> generateur.next()
+3
+</pre>
+<p>Il se trouve qu&#8217;il a aussi une autre forme: <code>iter(callable, sentinel)</code>.</p>
+<p>Sous cette forme, il va créer une générateur qui appelle <code>callable</code> jusqu&#8217;à ce que la valeur <code>sentinel</code> apparaisse.</p>
+<pre lang="python">
+>>> import datetime
+>>> datetime.datetime.now().strftime("%S")
+'45'
+>>> generateur = iter(lambda: datetime.datetime.now().strftime("%S"), "59")
+>>> generateur.next()
+'56'
+>>> generateur.next()
+'57'
+>>> generateur.next()
+'58'
+>>> generateur.next()
+Traceback (most recent call last):
+  File "<ipython-input-45-6c9f9efdd35c>", line 1, in <module>
+    generateur.next()
+StopIteration</pre>
+<h2>Chainer les comparateurs</h2>
+<p>Histoire de diminuer le nombre de <code>if</code>:</p>
+<pre lang="python">>>> a, b, c, d = 1, 2, 3, 4
+>>> a < b < c < d
+True
+>>> a == 1 > b -2
+True</pre>
+<h2>Le mot clé <code>else</code>, en dehors de <code>if</code></h2>
+<p><code>Else</code> ne s&#8217;applique pas qu&#8217;aux conditions, mais aussi aux exceptions et aux boucles.</p>
+<p>Dans une boucle for, la clause <code>else</code> est exécutée à la fin de l&#8217;itération si il n&#8217;y a pas eu de <code>break</code>.</p>
+<pre lang="python">>>> import random
+>>> lst = [random.randint(1, 5) for x in xrange(5)]
+... for x in lst:
+...     if x == 5:
+...         break
+... else:
+...     print "5 n'a jamais été trouvé"</pre>
+<p>Dans la gestion des exceptions, <code>else</code> est éxécuté si <code>catch</code> n&#8217;est jamais appelé:</p>
+<pre lang="python">try:
+    open('fichier')
+except IOError:
+    print "Une IO Error est arrivée"
+else:
+    print "Tout s'est bien passé"
+finally:
+    print "Toujours éxécuté"
+
+print "Exécuté si on est rentré dans except ou else"</pre>
+<h2>Continuation de lignes avec les parenthèses</h2>
+<p><code>\</code> sur les longues lignes, ça va 5 minutes.</p>
+<pre lang="python">
+from force import (rouge, bleu, jaune, vert, noir, blanc, rose, fushia,
+                   vermeille, vers_a_pois_jaune, call)
+
+# ici le multi line édit de sublime text m'a vachement aidé
+if (rouge.transformation and bleu.transformation and jaune.transformation
+        and vert.transformation and noir.transformation and blanc.transformation
+        and rose.transformation and fushia.transformation
+        and  vermeille.transformation and vers_a_pois_jaune.transformation):
+    print ("C'est bon là je crois qu'on a tout le monde sauf erreur de ma part"
+           " dans le comptage... Ah non merde il manque jaune devant marron "
+           "derrière")
+    call(force='jaune_devant_marron_derriere', message="Ramène ton cul tout"
+                                                       "de suite !")</pre>
+<h2>Les extensions <code>.pyw</code>, <code>.pyo</code> et <code>.pth</code></h2>
+<p>Vous croyiez qu&#8217;il n&#8217;y avait que <code>.py</code> et <code>.pyc</code> dans la vie ? Ah, jeunes padawans&#8230;</p>
+<p><code>.pyw</code> est juste un renommage, il permet, sous Windows, de ne pas ouvrir de terminal quand on lance le script (ce qui est préférable quand on a déjà une UI)</p>
+<p><code>.pyo</code> est l&#8217;extension générée quand on lance la commande <code>python</code> avec l&#8217;option <code>-o</code> (optimize). Pour le moment il retire juste les <code>assert</code>.</p>
+<p><code>.pth</code> est l&#8217;extension qu&#8217;on donne à un simple fichier texte qui contient une liste de chemins de dossiers. Posé à la racine d&#8217;un site directory, il dit à Python de rajouter automatiquement ces dossiers au Python Path, ce qui évite de manipuler <code>sys.path</code>.</p>
+<h2>Lever une exception à nouveau</h2>
+<p>Il suffit d&#8217;utiliser <code>raise</code> sans paramètre. Pratique quand on ne veut pas interrompre la remontée d&#8217;exception, et insérer un traitement juste avant que l&#8217;exception se déclenche (en opposition à <code>finally</code> qui garanti le traitement, pas le moment de celui-ci.)</p>
+<pre lang="python">try:
+    open('fichier')
+except IOError:
+    print "pouet"
+    raise</pre>
+<h2>Passer une valeur à un générateur</h2>
+<p>Vous aimez <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">yield</a> ? Vous en abusez ? Sachez qu&#8217;on peut faire plus vicieux encore:</p>
+<pre lang="python">def je_te_yield_tu_me_yield(lst):
+    for x in lst:
+        nouvelle_liste = yield x
+        if nouvelle_liste is not None:
+            for z in nouvelle_liste:
+                print z</pre>
+<p>Le truc tordu est qu&#8217;ici <code>yield</code> est dans un assignement. Non seulement il retourne une valeur, mais en plus il en récupère une. <code>send()</code> permet de passer une valeur à <code>yield</code> à son prochain retour (sinon la valeur reçue est toujours <code>None</code>):</p>
+<pre lang="python">>>> generateur = je_te_yield_tu_me_yield([1, 2, 3])
+>>> generateur.next()
+1
+>>> generateur.next()
+2    
+>>> generateur.send(('a', 'b', 'c'))
+a
+b
+c
+3</pre>
+<h2>On peut inverser les booléens avec 1/0 et vice-versa</h2>
+<p>Les booléens ne sont qu&#8217;une surcouche des entiers, et même si:</p>
+<pre lang="python">>>> type(1) 
+<type 'int'>
+>>> type(bool)
+<type 'type'></pre>
+<p>Dans la pratique:</p>
+<pre lang="python">>>> 1 == True
+True
+>>> 0 == False
+True
+>>> 2 == True
+False</pre>
+<p>On peut donc les interchanger:</p>
+<pre lang="python">>>> True + 1 # pas sur que ce soit utile
+2
+>>> lst = ['a', 'b'] # par contre ça c'est cool pour les binary trees
+>>> lst[False]
+'a'
+>>> lst[True]
+'b'
+>>> fin_de_phrase = True # et ça c'est TRES pratique pour le formating
+>>> print "... d'une longue histoire" + ("." * fin_de_phrase)
+... d'une longue histoire.
+>>> fin_de_phrase = False
+>>> print "... d'une longue histoire" + ("." * fin_de_phrase)
+... d'une longue histoire</pre>
+<h2><code>_</code> contient la dernière sortie sur le shell</h2>
+<pre lang="python">>>> _
+'b'
+>>> 1 + 1
+2
+>>> _
+2
+>>> _ + 1
+3
+>>> a = [1, 2, 3]
+[1, 2, 3]
+>>> _.append(4)
+>>> a
+[1, 2, 3, 4]</pre>
+<p>Ca ne marche que dans le shell, et uniquement sur ce qui est affiché à l&#8217;écran. Si vous n&#8217;affichez pas la valeur, <code>_</code> ne change pas. Attention à ne pas trop compter sur <code>_</code> car il est très volatile.</p>
+<h2><code>Enumerate()</code> accepte un index de départ</h2>
+<pre lang="python">>>> for i, elem in enumerate('azerty'):
+...     print i, elem
+...     
+0 a
+1 z
+2 e
+3 r
+4 t
+5 y
+>>> for i, elem in enumerate('azerty', 10):
+    print i, elem
+...     
+10 a
+11 z
+12 e
+13 r
+14 t
+15 y</pre>
+<h2>On peut assigner et supprimer des slices</h2>
+<pre lang="python">>>> a = range(10)
+>>> a
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+>>> a[:5] = [42]
+>>> a
+[42, 5, 6, 7, 8, 9]
+>>> a[:1] = range(5)
+>>> a
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+>>> del a[::2]
+>>> a
+[1, 3, 5, 7, 9]
+>>> a[::2] = a[::-2]
+>>> a
+[9, 3, 5, 7, 1]</pre>
+<h2><code>import braces</code></h2>
+<p>Si vous n&#8217;aimez pas les espaces pour l&#8217;indentation, vous pouvez faire:</p>
+<pre lang="python">from __future__ import braces</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/astuces-python-en-vrac/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1463</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/08/48672-bureau-dependance-bordel-foutoir-desordre-rangemen.jpg" length="36541" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>excel &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/excel/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Lire et écrire dans un fichier XLS avec Python</title>
+		<link>http://sametmax.com/lire-et-ecrire-dans-un-fichier-xls/</link>
+		<comments>http://sametmax.com/lire-et-ecrire-dans-un-fichier-xls/#comments</comments>
+		<pubDate>Thu, 18 Apr 2013 18:49:28 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[excel]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[xls]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5793</guid>
+		<description><![CDATA[< Insérer ici vous-même troll sur Microsoft et LibreOffice et les formats >]]></description>
+				<content:encoded><![CDATA[<p>< Insérer ici vous-même troll sur Microsoft et LibreOffice et les formats ></p>
+<p>Puis, une fois cette corvée administrative remplie, faites un <a href="http://sametmax.com/votre-python-aime-les-pip/">pip install</a>:</p>
+<pre lang="bash">pip install xlutils</pre>
+<p>Ceci va installer deux lib dont on va avoir besoin : <a href="https://pypi.python.org/pypi/xlrd">xlrd</a> pour la lecture, et <a href="https://pypi.python.org/pypi/xlwt">xlwt</a> pour l&#8217;écriture.</p>
+<p>Ensuite c&#8217;est très simple&#8230;</p>
+<p>Pour écrire dans un fichier Excel :</p>
+<pre lang="python">
+import xlrd
+
+from xlwt import Workbook, Formula
+
+path = r"C:\chemin\vers\fichier.xls"
+
+# On créer un "classeur"
+classeur = Workbook()
+# On ajoute une feuille au classeur
+feuille = classeur.add_sheet("OCB")
+
+# Ecrire "1" dans la cellule à la ligne 0 et la colonne 0
+feuille.write(0, 0, 1)
+# Ecrire "2" dans la cellule à la ligne 0 et la colonne 1
+feuille.write(0, 1, 2)
+# Ecrire une formule dans la cellule à la ligne 0 et la colonne 2
+# qui va additioner les deux autres cellules
+feuille.write(0, 2, Formula('A1+B1'))
+
+# Ecriture du classeur sur le disque
+classeur.save(path)
+
+print u"Fichier créé: {}".format(path)
+## Fichier créé: C:\chemin\vers\fichier.xls
+
+
+</pre>
+<p>Ce qui nous pond un truc comme <a href="https://github.com/sametmax/codes-des-articles/raw/master/2013/avril/fichier.xls">ça</a>.</p>
+<p>Et pour lire ce même fichier :</p>
+<pre lang="python">
+import xlrd
+
+# Réouverture du classeur
+classeur = xlrd.open_workbook(path)
+
+# Récupération du nom de toutes les feuilles sous forme de liste
+nom_des_feuilles = classeur.sheet_names()
+
+# Récupération de la première feuille
+feuille = classeur.sheet_by_name(nom_des_feuilles[0])
+
+print u"Lecture des cellules:"
+print "A1: {}".format(feuille.cell_value(0, 0))
+print "B1: {}".format(feuille.cell_value(0, 1))
+# On ne peut pas lire les les valeurs des cellules avec formules
+print "C1: {}".format(feuille.cell_value(0, 2))
+## Lecture des cellules:
+## A1: 1.0
+## B1: 2.0
+## C1:
+
+</pre>
+<p>Comme vous pouvez le voir à la dernière ligne, lire une cellule avec une formule ne revoit rien. L&#8217;auteur de la lib <a href="http://stackoverflow.com/a/4695498/9951">explique</a> en effet que les formules sont stockées sous forme de bytecode et qu&#8217;il faudrait les décompiler pour obtenir le texte original.</p>
+<p>Il existe d&#8217;autres manières d&#8217;accéder à des fichiers XLS, puis puissantes mais aussi beaucoup plus contraignantes : </p>
+<ul>
+<li><a href="http://www.blog.pythonlibrary.org/2010/07/16/python-and-microsoft-office-using-pywin32/">Manipuler Office directement via l&#8217;API COM</a>: Windows uniquement, et nécessite d&#8217;avoir le logiciel installé.</li>
+<li><a href="http://wiki.openoffice.org/wiki/Using_Python_on_Windows">Manipuler Open Office via l&#8217;API UNO</a>, qui demande aussi d&#8217;avoir la suite bureautique installée.</li>
+</ul>
+<hr />
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2013/avril/excel.py">Télécharger le code de l&#8217;article</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/lire-et-ecrire-dans-un-fichier-xls/feed/</wfw:commentRss>
+		<slash:comments>12</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">5793</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/04/2nQYHCb.jpg" length="198966" type="image/jpg" />	</item>
+	</channel>
+</rss>

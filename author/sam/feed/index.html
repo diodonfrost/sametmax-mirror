@@ -1,0 +1,864 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>Sam &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/author/sam/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Le blog ferme 64 &#160; Recently updated !</title>
+		<link>http://sametmax.com/la-blog-ferme/</link>
+		<comments>http://sametmax.com/la-blog-ferme/#comments</comments>
+		<pubDate>Thu, 05 Sep 2019 08:05:31 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=25357</guid>
+		<description><![CDATA[J'ai envie de passer à autre chose. Max ne s'en occupe plus depuis longtemps. Du coup je mets sametmax.com en berne.]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;ai envie de passer à autre chose. Max ne s&#8217;en occupe plus depuis longtemps. Du coup je mets sametmax.com en berne. Vu le rythme de publication de 2019, ça ne fera pas une grosse différence de toute façon.</p>
+<p>Évidemment, il restera en ligne, avec tout son contenu. <a href="https://0bin.net/">0bin.net</a> aussi. Rappelez-vous que vous pouvez télécharger tout le blog pour le consulter hors ligne avec un petit:</p>
+<pre lang="bash">wget -m -k -p -c -E http://sametmax.com</pre>
+<p>Max, pour le moment, veut bien maintenir à flot le <a href="http://multiboards.net/">multiboards</a> et a même fait un peu de modération sur <a href="http://indexerror.net/">indexerror.net</a> donc pour le moment, les services restent up.</p>
+<p>J&#8217;avais déjà laissé tomber le reddit et le mastodont, mais le compte Twitter restait très actif. J&#8217;ai fait une demande de twitter pour télécharger tous les tweets pour avoir un historique. Je pense le mettre en lecture seule.</p>
+<p>Ca a été un plaisir d&#8217;écrire les plus de 1000 articles de ce blog, avec la participation d&#8217;auteurs invités en prime, et les commentaires super sympas. Il y en a presque autant de pas publié, dont certains articles invités que je fais trainé depuis super longtemps. Désolé !</p>
+<p>Même si Max n&#8217;a pas beaucoup écrit ces dernières années, c&#8217;est un pote en or et j&#8217;ai de la chance de l&#8217;avoir à mes côtés au quotidien. C&#8217;est vraiment hilarant d&#8217;aller à une conférence ou chez un client et d&#8217;entendre parler de nous: &#8220;tu connais sametmax ? &#8211; oui, très bon blog :) :) :)&#8221;.</p>
+<p>Bonne pythonade à tous, et mettez un préservatif.</p>
+<p>P.S: je rouvre les comments pour quelques jours. </p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-blog-ferme/feed/</wfw:commentRss>
+		<slash:comments>64</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">25357</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2019/09/rqL3T5t.jpg" length="94916" type="image/jpg" />	</item>
+		<item>
+		<title>Lancer correctement python et ses commandes cousines</title>
+		<link>http://sametmax.com/lancer-correctement-python-et-ses-commandes-cousines/</link>
+		<pubDate>Sat, 08 Jun 2019 18:00:02 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[pip]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[venv]]></category>
+		<category><![CDATA[virtualenv]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=25303</guid>
+		<description><![CDATA[Dans cet article, on va voir comment lancer <code>python</code> depuis la ligne de commande, ainsi que les commandes qui lui sont liées: pip, venv, etc.]]></description>
+				<content:encoded><![CDATA[<p>Si j&#8217;avais su, j&#8217;aurais écrit cet article il y a 5 ans. Je pense que tellement de monde aurait évité des heures de frustration. Mais ça prend du temps de réaliser que des choses qui vous paraissent simples sont des obstacles pour d&#8217;autres.</p>
+<p>Mieux vaut tard que jamais j&#8217;imagine.</p>
+<p>Dans cet article, on va voir comment lancer <code>python</code> depuis la ligne de commande, ainsi que les commandes qui lui sont liées: pip, venv, etc.</p>
+<h2>Sous Windows</h2>
+<p>Vous avez installé Python, c&#8217;est certain. Vous lisez votre premier tuto, qui vous dit de lancer <code>cmd.exe</code>, et de taper <code>python</code>, mais impossible de le faire marcher. Des messages du genre <code>‘python’ is not recognized as an internal or external command</code> apparaissent. Ou alors le mauvais Python se lance.</p>
+<p>Déjà, premièrement, désinstallez Python, et réinstallez-le (en utilisant l&#8217;installeur officiel si possible), mais sur la toute première fenêtre de l&#8217;installeur, vérifiez bien que la case &#8220;Add Python to PATH&#8221; (ou son équivalent français) qui est tout en bas est cochée. Sans cela, le dossier d&#8217;installation de Python ne sera pas trouvable par le shell au moment de taper la commande. Je sais, ça devrait être coché par défaut. J&#8217;ai signalé ça plusieurs fois sur la mailing-list, et ils n&#8217;en ont rien à foutre.</p>
+<div id="attachment_25314" style="width: 723px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2019/06/python37_win_installer.png" class="grouped_elements" rel="tc-fancybox-group25303"><img src="http://sametmax.com/wp-content/uploads/2019/06/python37_win_installer.png" alt="Le clitoris de l&#039;installation de Python" width="713" height="455" class="size-full wp-image-25314" /></a><p class="wp-caption-text">Le clitoris de l&#8217;installation de Python</p></div>
+<p>Alternativement, si vous ne voulez pas désinstaller Python, ou si vous n&#8217;utilisez pas l&#8217;installeur de Python standard, cherchez le dossier où vous avez installé python. C&#8217;est un dossier qui doit contenir <code>python.exe</code> et un dossier appelé <code>Scripts</code>. Très souvent on le trouve à <code>C:\users\[votre nom d'utilisateur]\Local Settings\Application Data\Programs\Python\Python36</code>. <a href="http://sametmax.com/ajouter-un-chemin-a-la-variable-denvironnement-path-sous-windows/">Ajoutez ce chemin dans le sys PATH</a>, ainsi le chemin vers le sous-dossier <code>Scripts</code>.</p>
+<p><strong>Redémarrer votre console</strong>. Vous devriez au moins pouvoir taper <code>python -v</code>.</p>
+<p>Maintenant, sachez que vous ne devriez pas taper la commande <code>python</code>.</p>
+<p>Whaaaaaaaaaaaaat ?</p>
+<p>Vous entends-je me hurler suavement à l&#8217;oreille.</p>
+<p>Non. Sous Windows, vous devriez utiliser la commande <code>py -X.Y</code>. La commande <code>py</code> permet en effet de spécifier la version de Python à lancer. Par exemple <code>py -2.7</code> pour lancer Python 2.7, ou <code>py -3.6</code> pour lancer Python 3.6, s’ils sont installés sur la machine, bien entendu.</p>
+<p>Pourquoi utiliser la commande <code>py</code> ? Et bien parce que sinon, <code>python</code> lancera le premier <code>python.exe</code> qu&#8217;il trouve. Si vous avez plusieurs versions de Python installées sur votre machine, ce qui est souvent le cas sur les machines de dev, des fois à son insu, vous allez avoir des problèmes.</p>
+<p>En fait, quand vous lisez un tutoriel sur Python, si vous lisez quelque part &#8220;tapez python&#8221;, remplacez-le mentalement par &#8220;tapez py -X.Y&#8221;. La commande marche strictement pareil que la commande <code>python</code> traditionnelle. Elle prend les mêmes arguments, et lance le shell de la même façon.</p>
+<p>Aussi, rien à voir, mais n&#8217;utilisez pas les terminaux de <code>cmd.exe</code> ou <code>powershell.exe</code>. Ils sont à chier. Prenez le temps de télécharger <a href="https://cmder.net/">cmder</a>, et si vous le pouvez, faites le <a href="https://github.com/cmderdev/cmder">cmder.exe /REGISTER ALL</a> en admin tant que vous y êtes.</p>
+<p>Aussi petite astuce bien pratique: si vous maintenez <kbd>shift</kbd> et que vous faites un clic droit dans l&#8217;explorateur de fichier ou sur le bureau, un menu contextuel différent de celui habituel s&#8217;ouvre. Il contient des actions fort utiles:</p>
+<ul>
+<li>&#8220;Ouvrir fenêtre de commande ici&#8221;, qui vous ouvrira la console, immédiatement dans le bon dossier.</li>
+<li>&#8220;Copier en tant que chemin d&#8217;accès&#8221;, qui vous permettra de mettre le chemin de n&#8217;importe quel fichier dans le presse-papier.</li>
+</ul>
+<h2>Sous Unix (Max, Linux, etc)</h2>
+<p>N&#8217;utilisez pas la commande <code>python</code>, mais utilisez une commande suffixée <code>pythonX.Y</code>. Par exemple, pour lancer Python 2.7, tapez <code>python2.7</code>, ou pour lancer Python 3.6, tapez <code>python3.6</code>. </p>
+<p>En fait, quand vous lisez un tutoriel sur Python, si vous lisez quelque part &#8220;tapez python&#8221;, remplacez-le mentalement par &#8220;tapez pythonX.Y&#8221;. La commande marche strictement pareil que la commande <code>python</code> traditionnelle. Elle prend les mêmes arguments, et lance le shell de la même façon, mais comme on a souvent plusieurs versions de Python installées sur une machine (sans parfois même sans rendre compte), c&#8217;est important de le faire.</p>
+<h2>Pour les linuxiens seulement</h2>
+<p>Pip et virtualenv sont fournis quand on installe Python sous Mac et Windows, mais souvent pas sous Linux ! Assurez-vous de toujours les installer avec votre gestionnaire de paquet, et ce <strong>pour chaque version de Python que vous avez</strong>.</p>
+<p>Exemple: <code>yum install python3.6-pip</code> ou <code>apt install python3.6-venv</code>.</p>
+<h2>Tous OS confondus</h2>
+<p>Quand vous utilisez une commande écrite en Python, mettez <code>python -m</code> devant. C&#8217;est un cheat code.</p>
+<p>N&#8217;appelez-pas <code>pip</code>, mais <code>python -m pip</code>.</p>
+<p>N&#8217;appelez-pas <code>venv</code>, mais <code>python -m venv</code>.</p>
+<p>N&#8217;appelez-pas <code>black</code>, mais <code>python -m black</code>.</p>
+<p>Si vous lisez dans un tutoriel &#8220;tapez pip install&#8221;, remplacez-le mentalement par &#8220;tapez python -m pip install&#8221;.</p>
+<p><code>-m</code> ne marche pas avec toutes les commandes (<code>python -m jupyter console</code> a un bug, snif) car cela suppose que le développeur de la commande y a pensé, mais c&#8217;est le cas de la plupart des outils modernes. </p>
+<p>Or <code>-m</code> va vous éviter tout un tas de problème de PATH, de droits et de version de Python.</p>
+<p>Donc, si on combine tous les conseils, n&#8217;utilisez pas <code>pip</code>, mais <code>py -3.6 -m pip</code> ou <code>python3.6 -m pip</code>.</p>
+<p>Je sais, c&#8217;est plus long a taper, mais ça va bien vous aider. </p>
+<h2>pip install</h2>
+<p>Certains outils doivent s&#8217;installer en global. On voit souvent des conseils comme faire un <code>sudo pip install</code> ou un <code>sudo easy_install</code>. C&#8217;est mal. Ceci va pourrir les paquets système de Python, et peut avoir des conséquences indésirables. Notez que parfois, rien ne marche, et je le fais quand même du coup.</p>
+<p>Mais la plupart du temps, ce qu&#8217;il vous faut, c&#8217;est <code>--user</code>, suivi de <code>-m</code>. Par exemple, ne faites pas:</p>
+<pre lang="bash"> 
+sudo pip install black 
+black mon_fichier.py </pre>
+<p>Mais faites:</p>
+<pre lang="bash"> 
+python3.6 -m pip install black --user 
+python3.6 -m black mon_fichier.py </pre>
+<p>Notez le <code>--user</code>, ainsi que les deux usages de <code>-m</code>.</p>
+<p>Ceci va installer black localement, pas au niveau du système. On s&#8217;assure qu&#8217;on n&#8217;utilise bien Python3.6, à l&#8217;installation et à l&#8217;usage de black. Et comme on n&#8217;utilise <code>-m</code>, on a pas à se demander si la commande <code>black</code> est bien sur le <code>PATH</code> (pas besoin de trifouiller son <code>.bashrc</code> ou le sys <code>PATH</code> de Windows.)</p>
+<h2>Mais c&#8217;est trop chiant !</h2>
+<p>Absolulement, c&#8217;est aussi pour cela qu&#8217;<a href="http://sametmax.com/les-environnement-virtuels-python-virtualenv-et-virtualenvwrapper/">on utilise des environnements virtuels</a>.</p>
+<p>Utilisez des virtualenvs. Abusez-en. Un virtualenv par projet. Un autre pour les tests rapidos. Un pour maman, un pour papa, et un pour le fun. Ils ne coûtent rien que quelques Mo sur votre disque dur, donc lâchez-vous.</p>
+<p>Car dans un virtualenv, non seulement vous êtes isolés des autres installations de Python, mais en plus&#8230; tous les conseils ci-dessus ne sont plus nécessaires !</p>
+<p>Vous pouvez taper juste <code>python</code> et juste <code>pip</code>, plus de <code>py</code>, plus de suffixes, plus de <code>-m</code> et <code>--user</code>. Joie !</p>
+<p>Moralité: les rares fois où vous êtes hors virtualenv, suivez les conseils des autres parties de l&#8217;article (<code>py -3.6 -m pip install --user</code> ou <code>python3.6 -m pip install --user</code>). Et des que vous le pouvez, pouf, virtualenv, et tout va pour le mieux.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">25303</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2019/06/BN4tobh.jpg" length="72544" type="image/jpg" />	</item>
+		<item>
+		<title>Stack Python en 2019</title>
+		<link>http://sametmax.com/stack-python-en-2019/</link>
+		<comments>http://sametmax.com/stack-python-en-2019/#comments</comments>
+		<pubDate>Sun, 03 Feb 2019 15:10:21 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=25193</guid>
+		<description><![CDATA[Suite au très bon billet <a href="https://bersace.cae.li/conseils-python-2019.html">Débuter avec Python en 2019</a>, je me suis dis qu'il serait bon d'en rajouter une couche.
+
+Après toutes ces années, qu'est-ce que j'utilise pour mes projets Python ?]]></description>
+				<content:encoded><![CDATA[<p>Suite au très bon billet <a href="https://bersace.cae.li/conseils-python-2019.html">Débuter avec Python en 2019</a>, je me suis dit qu&#8217;il serait bon d&#8217;en rajouter une couche.</p>
+<p>Après toutes ces années, qu&#8217;est-ce que j&#8217;utilise pour mes projets Python ?</p>
+<h2>
+    D&#8217;abord, Python 3.6, partout<br />
+</h2>
+<p>Pas la 3.5. Pas la 3.7.</p>
+<p>La raison est que la 3.6 est un millésime exceptionnel, dans laquelle culminent des années de fixes et goodies. Malgré celà, sortie fin 2016, elle est facile à installer: ça prend quelques minutes <a href="https://cjsawer.whitewillow.co.uk/2018/08/29/epel-python-3-6-with-pip-on-centos-7/">sur même une centos 7 via les EPEL</a>, ou <a href="https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa
+">sur une ubuntu 16.04 en utilisant le ppa deadsnake</a>.</p>
+<p>La 3.7 n&#8217;est non seulement pas aussi aisée à déployer, mais elle ne contient pas encore autant de correctifs, et surtout <a href="http://sametmax.com/la-debacle-de-async-en-3-7/#comment-197554">fige les mots clés async / await</a>, créant des surprises. J&#8217;admets volontiers que <code>breakpoint()</code>, les dataclasses et <code>asyncio.run()</code> sont très tentants, mais je peux vivre sans.</p>
+<p>Donc Python 3.6.</p>
+<p><em>(P.S: django et numpy droppent le support de la 3.4)</em></p>
+<h2>
+    Pour déployer, pex et nuikta<br />
+</h2>
+<p>Quand j&#8217;ai scripts rapides mais pleins de dépendances , fini les virtualenvs et pip install en prod. Je package tout avec <a href="https://github.com/pantsbuild/pex">pex</a>. Un fichier <code>.pex</code> est un format conçu par twitter l&#8217;équivalent d&#8217;un <code>.war</code>, que <a href="https://www.youtube.com/watch?v=NmpnGhRwsu0">la présentation de Brian Wickman</a> expliquera mieux que moi.</p>
+<p>Mais en gros, en très gros, c&#8217;est un zip qui contient tout le virtualenv. On fait <code>python mon_projet.pex</code> et ça lance tout. Pas besoin de déploiement compliqué. <code>scp</code>, et c&#8217;est prêt. Je ne le recommande pas pour un gros projet web par contre. Mais pex rend le scripting Python merveilleux, et presque trop facile: plus besoin de s&#8217;interdire une dépendance par peur que le serveur ne l&#8217;a pas, ou par flemme. Du coup, même le script le plus simple à la puissance de feu de tout pypi, et ça m&#8217;a permis de faire des one-shots très complexes en deux coups de cuillères à pot.</p>
+<p>Quand je dois livrer un programme chez un client qui ne soit pas Web, je compile tout avec <a href="http://nuitka.net/">nuitka</a>. Je me fends même parfois d&#8217;un installeur <a href="https://nsis.sourceforge.io/">nsis</a> au besoin. Demander à autrui d&#8217;installer la VM est source de beaucoup de problèmes, et Python est un détail d&#8217;implémentation pour beaucoup d&#8217;utilisateurs de toute façon.</p>
+<h2>
+    Gestion de projet: pew et setup.cfg<br />
+</h2>
+<p>J&#8217;aime <a href="https://github.com/sdispater/poetry">poetry</a>, mais la compatibilité avec setuptools est importante à mes yeux. Tout l&#8217;écosystème supporte setuptools, tout est bien testé, c&#8217;est robuste et sans surprise. J&#8217;attendrais que poetry soit stable, testé, bien intégré et surporté. Évidemment, il faudra que <code>pyproject.toml</code> soit suffisamment mature également, et vu l&#8217;usage de sections custo pour tous les outils qui l&#8217;utilisent, on en est encore loin.</p>
+<p><a href="http://sametmax.com/mieux-que-python-virtualenvwrapper-pew/">pew</a> est très basique, mais il ne s&#8217;occupe que du virtualenv, laissant la gestion de mon projet à mes soins. Il est rapide, et sans chichi, de plus personne dans mon équipe n&#8217;a besoin de savoir que je l&#8217;utilise.</p>
+<p>Après quelques essais, j&#8217;ai laissé tomber pipenv, qui a trop de problèmes, et dont l&#8217;auteur met des années avant d&#8217;entendre raison sur des choses essentielles, sur lesquelles il revient par ailleurs sans mine de repenti. Ça n&#8217;en retire rien à Kenneth Reth le mérite des ses travaux, mais j&#8217;ai des deadlines.</p>
+<h2>
+    Outillage<br />
+</h2>
+<p>À moins d&#8217;avoir été sourd et aveugle, vous avez du noter un certain engouement de la communauté pour <a href="http://sametmax.com/once-you-go-black-you-never-go-back/">black</a>, que je vous ai déjà dis avoir adopté.</p>
+<p>Les conséquences sont multiples sur la stack: j&#8217;ai viré <a href="https://pypi.org/project/flake8/">flake8</a>, et j&#8217;ai allégé de nombreuses règles ma configuration <a href="http://pylint.pycqa.org/en/latest/">pylint</a>, qui est du coup mon seul linter. Faudrait que je fasse un article dessus d&#8217;ailleurs.</p>
+<p><a href="http://mypy-lang.org/">Mypy</a> étant maintenant stable et utilisable, je l&#8217;active par défaut. Ça ne veut pas dire que j&#8217;annote tout mon code. Parfois je n&#8217;annote rien. Parfois juste quelques fonctions. L&#8217;énorme avantage de mypy réside dans le fait que son utilisation est parfaitement progressive, et s&#8217;adapte à l&#8217;engagement et l&#8217;effort que vous voulez y mettre.date mypy est une des rares choses que j&#8217;upgrade à tout bout de champ, car chaque update amène une vraie qualité de vie en plus.</p>
+<p>J&#8217;intègre tout ça dans mon éditeur, et en l&#8217;occurence <a href="http://sametmax.com/je-fais-mon-coming-out/">VSCode</a> rend l&#8217;opération très facile.</p>
+<p>Pour le lanceur de tests, je reste sur pytest, pour des raisons <a href="http://sametmax.com/se-simplifier-les-tests-python-avec-pytest/">déjà exposées</a>. Honnêtement je ne connais pas de bonnes raisons de ne pas utiliser pytest. J&#8217;utilise <a href="http://sametmax.com/generer-des-donnees-factices-avec-faker/">faker</a> pour générer des fausses données de test. Je n&#8217;arrive toujours pas à utiliser <a href="https://hypothesis.readthedocs.io/en/latest/">hypothesis</a>. J&#8217;essaye, mais je n&#8217;arrive jamais à l&#8217;appliquer sur autre chose qu&#8217;un exemple joujou. J&#8217;espère y arriver un jour, car je suis certain que c&#8217;est excellent.</p>
+<p>Pour lancer tout ce bordel, j&#8217;utilise <a href="https://tox.readthedocs.io/en/latest/">tox</a>, mais je ne l&#8217;utilise pas sur tous mes projets: seulement les gros avec certaines exigences.</p>
+<p>Je n&#8217;ai pas de template de projet type. J&#8217;ai beaucoup lorgné depuis des années du côté de <a href="http://sametmax.com/templates-de-projet-avec-cookiecutter/">cookiecutter</a>, je n&#8217;arrive pas à me motiver à l&#8217;utiliser sérieusement.</p>
+<p>Enfin, j&#8217;installe toujours <a href="https://jupyter.org/">jupyter</a> pour tester vite fait mon code, bien que j&#8217;utilise plus la console que le notebook. Et <a href="http://www.sphinx-doc.org/en/master/">sphinx</a> pour la doc.</p>
+<h2>
+    Frameworks Web<br />
+</h2>
+<p><a href="https://www.djangoproject.com">Django</a> (souvent avec <a href="https://www.django-rest-framework.org/">django-rest-framework</a>).</p>
+<p>J&#8217;ai parfois des clients qui exigent <a href="http://flask.pocoo.org/">flask</a>, et donc je fais du flask. C&#8217;est toujours à regret.</p>
+<p>Il n&#8217;a rien que flask me permette que je ne puisse faire avec Django, mais il y a une tonne de trucs à réimplementer à la main à chaque fois. À documenter. À tester. Tout ça pour changer de projet flask, et tomber sur un nouveau loustic qui a fait les trucs à sa sauce et tout recommencer.</p>
+<p>Les projets flask ne sont bien faits que par ceux qui savent déjà très bien mener un projet Web, ce qui n&#8217;est pas la majorité des gens qui l&#8217;utilisent: en effet, il attire les utilisateurs par la simplificité de son API, et leur donne l&#8217;illusion d&#8217;être à la hauteur.</p>
+<p>flask reste un excellent produit pour l&#8217;éducation, ou pour un petit projet vite fait, ce pour  quoi je le choisis avec plaisir. Mais la majorité des projets flasks sur lesquels j&#8217;ai travaillé n&#8217;ont guère le niveau de qualité qu&#8217;on rencontre en moyenne dans les projets Python. C&#8217;est qu&#8217;on s&#8217;habitue, à force.</p>
+<p>J&#8217;essaye aussi d&#8217;aimer <a href="https://www.sqlalchemy.org/">SQLALchemy</a>, dont je reconnais la flexibilité et la puissance. Mais son ergonomie est pénible, et la gestion des sessions suffisamment tortueuse pour se tirer une balle dans le pied si on cligne trop des yeux. Si j&#8217;ai des problèmes de perfs, je fais du SQL à la main de toute façon et j&#8217;utilise du cache en masse. Je reste donc sur SQLA seulement si flask, ou hors Web. Et encore, des fois je <a href="http://docs.peewee-orm.com/en/latest/peewee/quickstart.html#quickstart">peeweese</a>.</p>
+<p>L&#8217;ORM de Django est une aberration en bien des points, sauf un seul. Il est éminemment pratique. Et je sais jusqu&#8217;où je peux le pousser: loin, très loin. Max va se gausser en lisant ces lignes, mais je me lasse de la beauté du code et de la pureté (ta gueule mec, arrête sourire, je te vois).</p>
+<p>Bref, Django pour les seniors. Django pour les juniors, même si ça prendra plus de temps que flask, mais au moins le framework leur évitera de faire de la merde comme au temps de PHP à la main.</p>
+<p>Question async, j&#8217;utilise <a href="https://aiohttp.readthedocs.io">aiohttp</a> mais aussi fais du <a href="https://docs.python.org/3/library/asyncio.html">asyncio</a> à là main, <a href="http://sametmax.com/go-to-in-asyncio-considered-harmful/">en faisant bien attention aux goto</a>.</p>
+<p>Non, je n&#8217;utilise pas les trucs du genre sanic, growler, vibora, quart, etc. Si ils sont toujours activement développés dans 3 ans, on en reparle.</p>
+<p>Bonne nouvelle ceci dit, la doc d&#8217;asyncio est enfin potable, si vous voulez vous y mettre. Mais ça mérite quand même un article.</p>
+<p>Ceci dit, les occasions de faire de l&#8217;asyncio sont rares. REST reste (hu hu) quand même l&#8217;option reine, HTTP2 peut se déployer via proxy et les threads assurent le plus souvent des perfs suffisantes. Pour être parfaitement honnête, j&#8217;utilise plus asyncio pour des scripts, daemon, et autres tâches de fond :)</p>
+<p>En parlant de tâche de fond, je reste sur du <a href="http://sametmax.com/files-de-taches-et-taches-recurrentes-avec-celery/">celery</a>, surtout depuis que je sais qu&#8217;on <a href="https://www.distributedpython.com/2018/07/03/simple-celery-setup/">peut l&#8217;utiliser avec presque zero config</a>. C&#8217;est le moins pire des systèmes. De toute façon j&#8217;ai presque toujours un redis sous la main, c&#8217;est bien trop facile et pratique pour s&#8217;en passer.</p>
+<p>J&#8217;ai pas encore mis en prod django <a href="https://channels.readthedocs.io/en/latest/">channels</a>, ou <a href="https://github.com/slank/awsgi">aWSGI</a>, mais je ne suis pas du tout convaincu par ces solutions, donc j&#8217;attends de voir.</p>
+<p>J&#8217;ai eu l&#8217;occasion d&#8217;utiliser <a href="http://sametmax.com/crossbar-le-futur-des-applications-web-python/">crossbar</a> un peu plus. L&#8217;outils est toujours excellent, mais l&#8217;API a changé sans pour autant s&#8217;améliorer. Ils se recroquevillent dans l&#8217;illusion qu&#8217;un produit spécialisé dans l&#8217;IoT est une bonne stratégie, mais c&#8217;est une voie de garage à mes yeux. Le vrai potentiel est dans le Web. Je me fais à l&#8217;idée que le projet n&#8217;attendra jamais son potentiel tant que personne n&#8217;écrit une surcouche, et que ce ne sera pas tavendo qui le fera.</p>
+<h2>
+    Libs<br />
+</h2>
+<p>Les libs changent constamment, partant et venant selon la nécessité des projets. Au mieux puis-je vous dire ce que j&#8217;irais chercher si j&#8217;avais cette problématique.</p>
+<p>Dates: <a href="https://pendulum.eustace.io/">pendulum</a>.</p>
+<p>Validation de données: <a href="https://marshmallow.readthedocs.io/en/3.0/">marshmallow</a>.</p>
+<p>cli: <a href="https://click.palletsprojects.com/en/7.x/">click</a>. Ça me fait mal de le dire, car je suis pas fan du style des APIs d&#8217;Armin (l&#8217;objet <code>request</code> global de flask, sérieux&#8230;), mais quand il fait un truc, on est sûr que ça marche. J&#8217;ai eu trop de limitations avec les alternatives.</p>
+<p>Gestion du pognon: <a href="https://pypi.org/project/money/">money</a>.</p>
+<p>Lib graphique: <a href="https://wxpython.org/">wxPython</a>. Je fais du QT sur demande client, mais c&#8217;est trop gros pour des projets de moyenne taille.</p>
+<p>Encoding: toujours <a href="https://pypi.org/project/chardet/">chardet</a> et <a href="https://pypi.org/project/Unidecode/">unidecode</a>.</p>
+<p>Manipulation d&#8217;images: <a href="https://pillow.readthedocs.io">pillow</a>.</p>
+<p>Calculs numériques: <a href="http://www.numpy.org/">numpy</a>. À mon niveau je n&#8217;ai jamais besoin de scipy ou pandas.</p>
+<p>Pour le parsing de conf je fais de plus en plus de toml, mais j&#8217;ai pytoml est pas terrible. Je vous ferai un retour sur <a href="https://github.com/jumpscale7/python-consistent-toml">contoml</a> qui, si tout se passe bien, devrait être mon futur default.</p>
+<p>Pour convertir du code Python 2 vers Python 3, <a href="https://pypi.org/project/future/">python future</a> et <a href="https://pypi.org/project/backports/">backport</a>.</p>
+<p>Pour faire du templating, <a href="http://jinja.pocoo.org/">jinja2</a>.</p>
+<p>Pour l&#8217;internationalisation, <a href="http://babel.pocoo.org/en/latest/">babel</a>.</p>
+<h2>
+    Hors de Python<br />
+</h2>
+<p>Git. <a href="http://sametmax.com/vue-jlavais-pas-vu/">Vue</a>. Webpack. Ubuntu.</p>
+<p>J&#8217;évite docker comma la peste, même si certains clients le veulent à tout prix. Je fais du react, généralement sous la torture.</p>
+<p>Pas grand-chose à dire de plus.</p>
+<p>Ah si, j&#8217;ai laissé tombé zsh et fish pour revenir à bash. Le ROI me convient pas.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/stack-python-en-2019/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">25193</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2019/02/ls-vanrossum.jpg" length="319359" type="image/jpg" />	</item>
+		<item>
+		<title>Le type bytes n&#8217;est pas du texte</title>
+		<link>http://sametmax.com/le-type-bytes-nest-pas-du-texte/</link>
+		<pubDate>Fri, 11 Jan 2019 11:30:10 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[binaire]]></category>
+		<category><![CDATA[bits]]></category>
+		<category><![CDATA[bytes]]></category>
+		<category><![CDATA[encodage]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[octets]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sharset]]></category>
+		<category><![CDATA[str]]></category>
+		<category><![CDATA[string]]></category>
+		<category><![CDATA[texte]]></category>
+		<category><![CDATA[unicode]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=25125</guid>
+		<description><![CDATA[J'ai beau essayer très fort de ne pas répondre en ligne, des fois <a href="https://news.ycombinator.com/item?id=18874232">je craque</a>. Mais je me soigne, globalement j'ai récupéré plein de temps, et ça se voit sur mon quotidien.
+
+Et ce craquage, et bien il est cette fois dû à une totale mécompréhension des types de texte en Python 3.]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;ai beau essayer très fort de ne pas répondre en ligne, des fois <a href="https://news.ycombinator.com/item?id=18874232">je craque</a>. Mais je me soigne, globalement j&#8217;ai récupéré plein de temps, et ça se voit sur mon quotidien.</p>
+<p>Et ce craquage, et bien il est cette fois dû à une totale mécompréhension des types de texte en Python 3.</p>
+<p>Mais c&#8217;est bien normal: Python 3 ne gère pas le texte de la même manière que la grande majorité des langages de programmation, justement à cause de la débâcle qu&#8217;on a eue en Python 2. Du coup, de nombreux programmeurs arrivent avec leur expérience d&#8217;ailleurs, et tentent de l&#8217;appliquer tel un utilisateur de SVN migrant sur git. En surface ça semble coller, malheuseuement à l&#8217;usage, ça fait faire des erreurs.</p>
+<p>Donc un peu d&#8217;explications.</p>
+<p>En informatique, tout est une histoire de convention. On dit que tel mot clé a tel effet. Que tel nom suppose telle chose. Que tel code de retour implique telle erreur. Que tel schéma XML représente tel type de document.</p>
+<p>Essentiellement, tout cela est arbitraire: des gens ont décidé qu&#8217;il en serait ainsi. Impossible de deviner que ce que fait <code>yield</code> ou <code>with</code> si vous n&#8217;avez pas d&#8217;expérience similaire avant. Impossible de savoir que le code <code>0</code> en bash ou <code>200</code> en HTTP signifie tout va bien sans qu&#8217;on vous transmette l&#8217;information, ou faire de nombreux tests.</p>
+<p>Quand je dis arbitrairement, évidemment je ne veux pas dire complètement sans raison. Il y a des raisons techniques, politiques, économiques, et parfois esthétiques à ces conventions. Cela n&#8217;en retire en rien l&#8217;aspect parfaitement artificiel de ces choix.</p>
+<p>La convention la plus omniprésente, et pourtant aujourd&#8217;hui la plus masquée dans un monde où on utilise massivement des langages de haut niveau comme Javascript, Ruby, PHP et Python, est celle de l&#8217;organisation des octets.</p>
+<p>Musique !</p>
+<p><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/SBjQ9tuuTJQ?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<h2>   &#8230;je vois même plus le code : tout ce que je vois, c&#8217;est des blondes, des brunes, des rousses.<br />
+</h2>
+<p>Tout ce qui passe par nos ordinateurs n&#8217;est qu&#8217;une suite de zéros et de uns, que nous avons groupés par paquets de 8:</p>
+<p>Seulement la grande révélation, le &#8220;aaaaaaahhhhh okayyyyyyy&#8221; qui arrive un jour dans toute vie de dev, c&#8217;est que <strong>ces paquets de 8 ne veulent rien dire.</strong> Rien. C&#8217;est nous qui avons décidé, arbitrairement encore une fois, de leur signification.</p>
+<p>Vous voyez ce moment dans les films et séries où un personnage arrive à &#8220;lire du binaire&#8221; ?</p>
+<div id="attachment_25161" style="width: 560px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2019/01/IS1.png" class="grouped_elements" rel="tc-fancybox-group25125"><img src="http://sametmax.com/wp-content/uploads/2019/01/IS1.png" alt="Evidement, &quot;c&#039;est une representation binaire ASCII de coordonnées WGS 84 Web Mercator&quot; est plus dur à caser dans un dialogue" width="550" height="281" class="size-full wp-image-25161" /></a><p class="wp-caption-text">Evidement, &#8220;c&#8217;est une representation binaire ASCII de coordonnées WGS 84 Web Mercator&#8221; est plus dur à caser dans un dialogue</p></div>
+<p>C&#8217;est de <a href="https://youtu.be/FvHHlKp923A?t=1132">l&#8217;enculage de dauphin</a>.</p>
+<p>Le binaire n&#8217;est pas un langage, pas plus que les lettres &#8220;abcdefghijklmnopqrstuvwxyz&#8221;. Vous pouvez utiliser ces lettres pour représenter certains mots italiens, français, anglais, un nom propre (sans langue), le label d&#8217;un immeuble (sans langue encore) ou un chiffre latin. </p>
+<p>Que veut dire &#8220;les gosses&#8221; ? Pour la même combinaisons de lettres, cela signifie &#8220;les enfants&#8221; avec la convention française européenne, et &#8220;les couilles&#8221; avec la convention québéquoise.</p>
+<p>Pour le binaire c&#8217;est pareil, ce que veut dire un octet dépend de la convention que vous avez choisie.</p>
+<p>Par exemple, que signifie cette suite d&#8217;octets ?</p>
+<p><code>1100001 1100010 1100011 1100100</code></p>
+<p>Bah rien. Mais <a href="https://www.youtube.com/watch?v=3c-irSUdij4">on peut lui donner un sens</a> en lui appliquant une convention.</p>
+<p>Je peux lui appliquer la convention ASCII, et donc supposer que c&#8217;est un texte dans un certain format. Voici ce que ça donne en Python:</p>
+<pre lang="python">     
+>>> data = bytearray([0b1100001, 0b1100010, 0b1100011, 0b1100100])     
+>>> print(data.decode('ascii'))     
+abcd </pre>
+<div id="attachment_25162" style="width: 310px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2019/01/binary_mock.jpg" class="grouped_elements" rel="tc-fancybox-group25125"><img src="http://sametmax.com/wp-content/uploads/2019/01/binary_mock.jpg" alt="Les processeurs modernes ne comprenent pas nativement l&#039;american apparel" width="300" height="448" class="size-full wp-image-25162" /></a><p class="wp-caption-text">Les processeurs modernes ne comprenent pas nativement l&#8217;american apparel</p></div>
+<p>Ou je peux lui appliquer une autre convention, et decider de lire ces octets comme si ils étaient le dump d&#8217;une structure C. Interprettons en Python ces octets comme un entier non signé en big-endian:</p>
+<pre lang="python">     
+>>> data = bytearray([0b1100001, 0b1100010, 0b1100011, 0b1100100])     
+>>> import struct     
+>>> struct.unpack('>I', data)     
+(1633837924,)
+</pre>
+<p>Même suite de bits, mais selon la convention choisie, elle veut dire les lettres &#8220;abcd&#8221; ou le nombre &#8220;1633837924&#8221;. Et oui, comme il n&#8217;y a pas une infinité de combinaisons de 0 et de 1 qui tiennent dans un espace mémoire limité, différentes conventions vont utiliser les mêmes octets mais décider que ça veut dire quelque chose de différent.</p>
+<p>En fait, même des conventions pour le même type usage ne veulent pas forcément dire la même chose. Par exemple, prenez l&#8217;octet:</p>
+<p><code>11101001</code></p>
+<p>Un octet somme toute sympathique, de bonne famille. Il ne paie pas de mine, mais c&#8217;est un membre utile de la société.</p>
+<p>Et maintenant, quelqu&#8217;un vous donne un indice, il vous dit que cet octet représente&#8230; du texte.</p>
+<p>Super !</p>
+<p>Oui, mais du texte avec quelle convention ? Car les pays du monde entier ont créé leur propre convention pour représenter du texte.</p>
+<p>Avec la convention &#8220;latin-1&#8221;, <a href="https://en.wikipedia.org/wiki/Windows-1252">utilisé par 0.7% de tous les sites Web du monde</a> ?</p>
+<pre lang="python"> 
+>>> bytearray([0b11101001]).decode('latin-1') 
+'é' </pre>
+<p>Avec la convention &#8220;cp850&#8221;, utilisé par la console DOS ?</p>
+<pre lang="python"> 
+>>> bytearray([0b11101001]).decode('cp850')
+'Ú'
+</pre>
+<p>Vous voulez rire ? Le premier à remplacé presque partout le second parce qu&#8217;<a href="https://en.wikipedia.org/wiki/Code_page_850">ils contiennent les mêmes lettres</a>. Elles ne sont juste pas représentées par la même combinaison d&#8217;octets.</p>
+<p>Et cet octet, que veut-il dire avec la convention &#8220;utf8&#8221;, qui est aujourd&#8217;hui le standard international recommandé pour représenter du texte ?</p>
+<pre lang="python"> 
+>>> bytearray([0b11101001]).decode('utf8')
+Traceback (most recent call last):
+File "<stdin>", line 1, in <module>
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe9 in position 0: unexpected end of data </pre>
+<p>Il n&#8217;a pas de correspondance. Cet octet n&#8217;est pas de l&#8217;utf8 valide.</p>
+<p>Si vous voulez représenter ces lettres en utf8, il faut utiliser une convention différente, en utilisant non pas un seul octet, mais une séquence d&#8217;octets:</p>
+<pre lang="python"> 
+>>> list(map(bin, 'é'.encode('utf8')))
+['0b11000011', '0b10101001']
+>>> list(map(bin, 'Ú'.encode('utf8')))
+['0b11000011', '0b10011010']
+</pre>
+<p>Vous pourriez croire que puisque le texte est particulièrement compliqué, c&#8217;est normal d&#8217;avoir des conventions qui divergent. Mais non, c&#8217;est juste la nature des conventions. Puisqu&#8217;elles sont arbitraires, l&#8217;une n&#8217;est pas plus &#8220;la vérité&#8221; qu&#8217;une autre. On retrouve la même chose avec les nombres:</p>
+<pre lang="python">
+>>> struct.unpack("h", bytearray([0b11101001, 0b11101001]))
+(-5655,)
+>>> struct.unpack("H", bytearray([0b11101001, 0b11101001])) 
+(59881,)
+</pre>
+<p>La même suite d&#8217;octets peut représenter deux nombres totalement différents, selon que je décide de les lire comme des &#8220;short&#8221;, ou des &#8220;unsigned short&#8221;.</p>
+<p>Et l&#8217;inverse est aussi vrai.</p>
+<p>Ben oui, si quelque chose peut être interprété de plusieurs façons, on a aussi le fait que deux représentations <em>différentes</em> peuvent être interprétées &#8230; pour aboutir au même résultat.</p>
+<p>Par exemple, le nombre des doigts de ma main peut être représenté de plein de façons différentes:</p>
+<ul>
+<li>         <strong>décimal</strong>: 5     </li>
+<li>         <strong>français écrit</strong>: cinq     </li>
+<li>         <strong>chiffre latin</strong>: V     </li>
+<li>         <strong>anglais écrit</strong>: five     </li>
+<li>         <strong>espagnol écrit</strong>: cinco     </li>
+<li>         <strong>base deux</strong>: 101     </li>
+<li>         <strong>structure C d&#8217;un signed short en little-endian avec Python</strong>: bytearray([0b101, 0b0])     </li>
+</ul>
+<p>Que de manières différentes, pour le même concept ! En plus, il y a confusion possible: V est une lettre également. cinq, five et cinco utilisent le même alphabet, mais pas les mêmes symboles spécifiques, pour représenter la même chose. Et le plus confusionant, 101 est une représentation binaire, mais <code>bytearray([0b101, 0b0])</code> aussi.</p>
+<p>Bref, voilà toute la complexité de la différence entre la donnée, un concept abstrait qui n&#8217;existe pas, et sa représentation, une convention humaine concrète qui nous permet de communiquer entre nous.</p>
+<p>Donc, pour lire &#8220;du binaire&#8221;, ou faire n&#8217;importe quoi en informatique, il faut connaitre la convention utilisée. Mais pas juste en informatique: pour lire le journal, il faut connaitre la convention des symboles imprimés sur les pages, pour conduire sans se faire tuer, il faut connaitre la convention des panneaux, et pour parler, il faut connaitre la convention de la compression des molécules d&#8217;air émise par l&#8217;appareil buccal et respiratoire d&#8217;un individu qui vient rencontrer votre système auditif.</p>
+<p>Vous êtes un être très conventionnel au fond.</p>
+<p>Évidemment on trouve la même chose en Python. Par exemple vous pouvez utiliser plusieurs conventions pour demander à Python de créer le même nombre en mémoire:</p>
+<pre lang="python">
+>>> 245 # base 10
+245
+>>> 0xF5 # hexadecimal
+245
+>>> 0b11110101 # binaire
+245
+>>> 245 == 0xF5 == 0b11110101
+True     
+>>> type(245)     
+<class 'int'>     
+>>> type(0xF5)     
+<class 'int'>     
+>>> type(0b11110101)     
+<class 'int'> </pre>
+<p>Inversement, <code>"1"</code> et <code>1</code> paraissent similaire, mais ils ont différents buts. Le premier est un outil destiné à l&#8217;affichage, qui matérialise le caractère représentant le chiffre arabe après le zéro. Il est stocké en interne avec une séquence d&#8217;octets similaire à:</p>
+<pre lang="python">
+>>> bin(ord("1"))
+'0b110001'
+</pre>
+<p>Tandis que que le second est un outil fait pour faire des calculs avec la plus petite valeur positive entière non nulle. Il est stocké en interne avec une séquence d&#8217;octets similaire à:</p>
+<pre lang="python">
+>>> list(map(bin, struct.pack('l', 1)))
+['0b1', '0b0', '0b0', '0b0', '0b0', '0b0', '0b0', '0b0']
+</pre>
+<p>Je simplifie bien entendu, en vérité la representation interne des nombres et du texte en Python est plus complexe que cela, et dépend de l&#8217;implémentation choisie, du type de processeur, de la taille de la donnée et de votre configuration.</p>
+<h2>
+Retour sur le type bytes </h2>
+<p>J&#8217;ai soigneusement évité d&#8217;utiliser le type <code>bytes</code> durant cette démonstration, le remplaçant techniquement inutilement (mais pédagogiquement brillamment, car je suis génial) par <code>bytearray</code>.</p>
+<p>En effet, toute cette leçon est là pour arriver à la conclusion que <code>bytes</code> ne représente pas du texte, mais si je vous avais montré tout ça avec lui, voilà qui vous aurait interloqué:</p>
+<pre lang="python">     
+>>> bytes([0b1100001, 0b1100010, 0b1100011, 0b1100100])     
+b'abcd' </pre>
+<p>&#8220;Heu, mais c&#8217;est du texte !&#8221; me dirait alors un lecteur ayant diagonalisé l&#8217;article.</p>
+<p>Mais bien entendu que non.</p>
+<p><code>bytes</code> ne présente pas du texte, c&#8217;est une structure de données dont le but est de permettre de manipuler une séquence d&#8217;octets ordonnée, et ce manuellement. N&#8217;importe laquelle.</p>
+<p>Or, il se trouve que beaucoup de langages de programmation représentent le texte comme un array d&#8217;octets, et y attachent quelques opérations de manipulation. C&#8217;est le cas du C, ou de Python 2 par exemple. Les gens ayant eu cette expérience pensent donc que <code>b'abcd'</code> représente du texte, allant parfois jusqu&#8217;à aller lui donner l&#8217;appellation de &#8220;byte string&#8221;.</p>
+<p>Il n&#8217;existe rien de tel en Python 3.</p>
+<p>En Python 3, vous avez deux types pour manipuler des séquences d&#8217;octets: <code>bytes</code> et <code>bytearray</code>. Ils sont équivalents, à ceci près que <code>bytes</code> est non mutable (non modifiable) alors que <code>bytearray</code> est mutable (modifiable).</p>
+<p>Ces types peuvent contenir n&#8217;importe quels octets, et nous avons vu ensemble qu&#8217;une même séquence d&#8217;octets pouvait être interprétée différemment selon la convention choisie pour la lire. Évidemment il est préférable de la lire avec la même convention qui a été utilisée pour la produire, sans quoi on ne comprendra pas ce que le producteur de la donnée à voulu dire.</p>
+<p>Sauf que&#8230;</p>
+<p>Beaucoup d&#8217;outils en informatique utilisent les conventions ASCII et hexadécimale pour symboliser les valeurs des octets. Si vous lancez <a href="https://www.wireshark.org/docs/wsug_html_chunked/ChapterIntroduction.html#ChIntroFeatures">Wireshark</a> pour regarder les paquets d&#8217;un protocole réseau ou si vous ouvrez un PNG avec <code>xxd</code>, on va vous représenter le contenu avec un mélange de ces conventions. </p>
+<p>Pour des raisons pratiques, Python fait donc la même chose, et permet ainsi de visualiser (ou produire) le type <code>bytes</code> à l&#8217;aide d&#8217;une notation ASCII:</p>
+<pre lang="python">    
+>>> print(b'abcd'.decode('ascii'))     
+abcd     
+>>> struct.unpack('>I', b'abcd')     
+(1633837924,)
+</pre>
+<p>Ou d&#8217;une notation héxa (ironiquement, l&#8217;héxa est representé par une combinaison de caractères ASCII \o/) si les valeurs ne tiennent pas dans la table ASCII:</p>
+<pre lang="python">     
+>>> "é".encode('utf8')  # hexa C3 A9   
+b'\xc3\xa9'     
+>>> struct.unpack('h', b'\xc3\xa9')    
+(-22077,)
+</pre>
+<p>Donc <code>bytes</code>, bien qu&#8217;il puisse contenir des octets interprétables comme du texte, n&#8217;est pas particulièrement fait pour manipuler du texte. Il peut contenir n&#8217;importe quoi. Mais pour des raisons pratiques, sa représentation dans le terminal est faite avec une convention familière. Après tout, il faut bien l&#8217;écrire en quelque chose pour l&#8217;affiquer à l&#8217;écran.</p>
+<p>Si on veut manipuler du texte en Python 3, il faut utiliser le type <code>str</code>, qui est l&#8217;outil spécialisé dans la representation et la manipulation textuelle. Si vous savez qu&#8217;un type <code>bytes</code> contient des octets qui representent du texte, alors utilisez la méthode <code>décode()</code> avec la bonne convention (appelée &#8220;charset&#8221;), pour récupérer un <code>str</code>:</p>
+<pre lang="python">     
+>>> print(b'P\xc3\xa8re No\xc3\xabl'.decode('utf8'))
+Père Noël </pre>
+<p>On a <a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/ ">un très bon article sur l&#8217;encoding en Python</a> sur le blog, d&#8217;ailleurs.</p>
+<p>Toute cela n&#8217;était bien entendu pas vrai en Python 2. En Python 2, le type <code>str</code> était un array d&#8217;octets, rendant tout cela bien confus, et amenant à plein d&#8217;erreurs. L&#8217;introduction lors de la version 2.0 de l&#8217;objet <code>unicode</code> pour pallier le problème, bien que très utile, n&#8217;a fait que rajouter à l&#8217;incomprehension des nouveaux venus.</p>
+<p>Or le monde extérieur, lui, n&#8217;a pas d&#8217;abstraction pour le texte. Faire des abstractions, c&#8217;est le rôle du langage de programmation. Si vous écrivez dans un terminal, ou lisez depuis un terminal, un nom de fichier, le contenu d&#8217;une base de données, une requête AJAX, etc., ce sont évidemment des octets qui sont échangés, et il vous faut la bonne convention pour faire partie de la discussion.</p>
+<p>Le type bas niveau <code>bytes</code> est un outil qui sert donc à communiquer avec le monde extérieur, tandis que les types haut niveau (<code>str</code>, <code>int</code>, <code>list</code>, etc.) sont des outils qui font l&#8217;abstraction de ces conventions, pour vous permettre de manipuler confortablement un concept général (du texte, un nombre, une collection ordonnée) à l&#8217;interieur des murs de votre programme.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">25125</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2019/01/definitionwrong.jpg" length="60849" type="image/jpg" />	</item>
+		<item>
+		<title>Ecouteurs bluetooth</title>
+		<link>http://sametmax.com/ecouteurs-bluetooth/</link>
+		<pubDate>Thu, 10 Jan 2019 10:31:17 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[bluetooth]]></category>
+		<category><![CDATA[écouteurs]]></category>
+		<category><![CDATA[jabra]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=25112</guid>
+		<description><![CDATA[Je met une fortune dans mes casques, que j'abime et perds en plus très souvent. Or, j'ai toujours eu une relation mitigée avec les écouteurs bluetooth, et je suis assez froissé par la tendance à supprimer les jacks. Mais Jabra a de bons arguments.]]></description>
+				<content:encoded><![CDATA[<p>Je mets une fortune dans mes casques, que j&#8217;abime et perds en plus très souvent. Or, j&#8217;ai toujours eu une relation mitigée avec les écouteurs Bluetooth (et le BT en général d&#8217;ailleurs&#8230;), et je suis assez froissé par la tendance à supprimer les jacks.</p>
+<p>Le fil d&#8217;un ami m&#8217;a fait pourtant tester les airpods, et j&#8217;ai été surpris par la qualité du son et la facilité d&#8217;usage. J&#8217;ai cherché un concurrent.</p>
+<p>Après enquête, j&#8217;ai tenté les <a href="https://www.jabra.com/bluetooth-headsets/jabra-elite-65t">Jabra Elite 65T</a>. Après des mois d&#8217;usage, voici ce que je peux en dire&#8230;</p>
+<p>Les plus:</p>
+<ul>
+<li>
+        Le son est excellent, particulièrement pour la taille sur du sans-fil, y compris sur du<br />
+    classique, et les basses ne sont pas sur amplifiées comme c&#8217;est souvent le cas pour plaire à la masse;</li>
+<li>
+        C&#8217;est confortable. Je les porte des heures;
+    </li>
+<li>
+        5h d&#8217;autonomie + 5 de secours avec le boitier. Je suis arrivé au bout seulement 2 fois<br />
+    malgré des mois d&#8217;usage, donc pas un problème. Mais c&#8217;est vrai que les airpods font le double.</li>
+<li>
+        La synchro Bluetooth est parfaite avec portable récent (donc le messie bt5): rapide,<br />
+    sans galère. Quand on ressort les écouteurs du boitier, le pairing est automatique et transparent.</li>
+<li>
+        Le boitier de transport / chargeur / batterie de secours fonctionne à merveille.
+    </li>
+<li>
+        L&#8217;attache dans l&#8217;oreille est excellente. On peut se faire secouer, courir, faire du<br />
+    yoga&#8230; Ça bouge pas.</li>
+<li>
+        On peut écouter avec une seule oreille, mais seulement la droite.
+    </li>
+<li>
+        Les appels sont limpides, on a du mal à croire que ce petit micro marche si bien.
+    </li>
+<li>
+        Après la perte inéluctable des deux écouteurs, j&#8217;ai fait une demande au SAV. 40 Euros,<br />
+    et reçu en 2 jours. Beau. Resyncro instantanée une fois placée dans le boitier.</li>
+<li>
+        De vrais boutons qui permettent de contrôler pleinement la lecture, et pas juste 3<br />
+    tapotements limités et difficiles en mouvement.</li>
+<li>
+        3 tailles embout. Et choisir les bons a un gros impact sur le confort. Les<br />
+    intra-auriculaires à taille unique, ça m&#8217;a toujours laissé perplexe.</li>
+<li>
+       Bonne isolation du son extérieur.
+    </li>
+<li>
+        Retirer un écouteur coupe la musique.
+    </li>
+<li>
+        Zéro latence. J&#8217;ai eu des écouteurs BT moins cher, et regarder des films avec était un<br />
+    enfer. Là c&#8217;est fantastique, avec VLC ou Netflix dans le train, on se fait plaisir.</li>
+</ul>
+<p>Les moins:</p>
+<ul>
+<li>
+        180 euros à l&#8217;achat. Bam.
+    </li>
+<li>
+        Le boitier est trop gros. Contrairement à celui des airpords, le mettre dans la poche n&#8217;est<br />
+    pas aussi discret qu&#8217;une boite d&#8217;allumettes.</li>
+<li>
+        Il y a un mode pass-through si vous êtes en vélo et que l&#8217;isolation sonore est dangereuse,<br />
+    mais il est pas ouf. Mieux vaut reste sur une écoute d&#8217;une oreille.</li>
+<li>
+        Certains comportements sont contre-intuitifs: retirer l&#8217;écouteur gauche coupe la musique,<br />
+    mais en fait on peut la relancer sur un seul écouteur en pressant le bouton principal. On peut aussi désactiver ce comportement via une app pour partager le son avec son voisin. Parfois l&#8217;écouteur gauche se met en veille quand il reste trop longtemps éloigné du droit, alors alors il faut une pression longue dessus pour le réveiller: le web est plein de gens qui croient que leur écouteur ne marche plus. Rien n&#8217;indique ces manipes sans un bon vieux RTFM.</li>
+</ul>
+<p>Finalement, ces petits joujoux m&#8217;ont réconcilié avec le sans-fil, et je n&#8217;ai presque plus touché à mes écouteurs ou mes baffles Bose. Certes, je n&#8217;écoute pas du flac, donc même si la qualité est bonne pour du mp3, j&#8217;imagine qu&#8217;un audiophile confirmé y trouvera à redire. </p>
+<p>Ok, ok. Dans ces conditions, virez le jack&#8230; quand l&#8217;USB-C sera supporté partout.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">25112</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2019/01/6OwLbVU.jpg" length="55065" type="image/jpg" />	</item>
+		<item>
+		<title>Le don du mois: Libre Office</title>
+		<link>http://sametmax.com/le-don-du-mois-libre-office/</link>
+		<pubDate>Tue, 08 Jan 2019 08:54:56 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[don]]></category>
+		<category><![CDATA[libre office]]></category>
+		<category><![CDATA[microsoft office]]></category>
+		<category><![CDATA[open office]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=25104</guid>
+		<description><![CDATA[Microsoft Office est un bon produit. Seulement voilà, je n'ai nullement l'intention de soutenir des formats propriétaires, l'obsolescence programmée, et l'abus de position dominante.]]></description>
+				<content:encoded><![CDATA[<p>Microsoft Office est un bon produit. Voilà, je l&#8217;ai dit. Je peux ne pas apprécier Microsoft en tant qu&#8217;entreprise, reprocher de nombreux défauts à ses bébés, mais être objectif sur certains points: Excel, malgré ses bugs, reste la meilleure expérience de tableur au monde, .Net est une technologie très propre, et VSCode est un superbe éditeur que j&#8217;ai par ailleurs adopté.</p>
+<p>Seulement voilà, je n&#8217;ai nullement l&#8217;intention de soutenir des formats propriétaires, l&#8217;obsolescence programmée, et l&#8217;abus de position dominante. Au contraire, je préfère soutenir le logiciel libre, les standards ouverts et le partage.</p>
+<p>Et c&#8217;est là que Libre Office entre en jeu.</p>
+<p>Je l&#8217;utilise donc au quotidien, pour faire des rapports, des lettres, des calculs, etc. Bien que je sois très à l&#8217;aise avec ma machine, j&#8217;utilise des fonctions relativement peu avancées, et ce logiciel comble donc tous mes besoins.</p>
+<p>Malheureusement, Libre Office souffre de gros problèmes d&#8217;ergonomie, et pire encore, de fiabilité. Sa stabilité est douteuse, et en plus de la frustration liée au plantage, il m&#8217;arrive de perdre du travail, chose qui me rend furieux.</p>
+<p>Je comprendrais donc parfaitement que quelqu&#8217;un choisisse de ne PAS utiliser Libre Office, pour toutes ces raisons.</p>
+<p>Personnellement, j&#8217;ai la politique inverse, et j&#8217;utilise Libre Office pour les soutenir, et je vais donc reporter les bugs et autres problèmes quand j&#8217;en ai le temps. J&#8217;ai peu de temps en ce moment, donc je choisis de contribuer par don, ce qui j&#8217;espère aidera les auteurs à dépasser ces hics. Un jour peut-être.</p>
+<p>Un peu comme Firefox que j&#8217;ai gardé pendant des années alors qu&#8217;il était inférieur à Chrome, jusqu&#8217;à ce que, soudain, il redevienne non seulement aussi rapide, mais rajoute des fonctionalités inédites comme les tab containers que n&#8217;a pas la concurrence.</p>
+<p>Et voici donc un don de 50 euros pour cet excellent projet, qui derrière ces soucis, permet quand même à peu de frais de faire des choses absolument incroyables, le tout dans le respect de la communauté humaine.</p>
+<p>Bien entendu, je vous invite à <a href="https://fr.libreoffice.org/donate/">faire de même</a>.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">25104</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2019/01/IuINVFu.jpg" length="56745" type="image/jpg" />	</item>
+		<item>
+		<title>Vive setup.cfg (et mort à pyproject.toml) !</title>
+		<link>http://sametmax.com/vive-setup-cfg-et-mort-a-pyproject-toml/</link>
+		<pubDate>Thu, 06 Dec 2018 10:07:48 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[packaging]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=25060</guid>
+		<description><![CDATA[Saviez-vous qu'il existe un format simple, compatible avec tous vos outils et bien documenté qui permet de remplacer setup.py ? Qui existe depuis 2016 ? Et que pour nous aider, des gens veulent le mettre à la poubelle ?]]></description>
+				<content:encoded><![CDATA[<p>Après un long débat sur <a href="https://news.ycombinator.com/item?id=18612905">hackernews</a>, qui n&#8217;est que le reflet de toutes les conversations que j&#8217;ai déjà eues à ce sujet sur twitter, github, et divers mailling lists, il est grand temps de faire un article. Urgent même.</p>
+<p>Est-ce que vous savez quel chemin de croix on a vécu avec le packaging Python durant ces 15 dernières années ?</p>
+<p>D&#8217;abord on a <code>distutils</code>, <code>setuptools</code>, <code>distribute</code>, and <code>distribute2</code> qui ont tous été à un moment les &#8220;standards&#8221; recommandés pour packager une lib. Ensuite on a eu l&#8217;époque des <code>eggs</code>, <code>exe</code>, et autres trucs que <code>easy_install</code> allait chercher n&#8217;importe où dans la nature en suivant aveuglément des liens sur PyPi. Sans compter les machins qu&#8217;il fallait compiler à tout bout de champ. Et puis rien n&#8217;était chiffré au download, <code>pip</code> n&#8217;était pas packagé avec Python, il crevait sur des erreurs stupides type encodage mal géré&#8230;</p>
+<p>À ça se rajoute que virtualenv était un truc à part, avec plein de concurrents, et linkait les packages système par défaut. Sans oublier qu&#8217;on avait pas <code>Python -m</code>. </p>
+<p>Bref, le packaging Python, ça a été vraiment la merde. Avec en plus une doc de merde.</p>
+<p>Aujourd&#8217;hui, le standard <code>wheel</code> a énormément amélioré la donne. On a des tutos corrects (ex: <a href="http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/">notre tuto sur comment créer son package avec setup.py</a>). <code>ensurepip</code> fait qu&#8217;on a une version récente du truc presque partout. </p>
+<p>En gros, notre situation est stable, saine. Améliorable de bien des façons, certes, mais un bon socle sur lequel s&#8217;appuyer.</p>
+<h2>
+    Arrive setup.cfg<br />
+</h2>
+<p>En 2016, l&#8217;équipe de <a href="https://pypi.org/project/setuptools/">setuptools</a>, la lib utilisée par à peu près tout le monde pour créer des packages en Python aujourd&#8217;hui, a créé le format <code>setup.cfg</code>, un fichier INI dont le but est de remplacer <code>setup.py</code>. </p>
+<p>Le problème de <code>setup.py</code> c&#8217;est que c&#8217;est du code Python exécutable, et en plus dépendant de la lib setuptools. Cela empêche non seulement l&#8217;interfaçage avec des outils externes, mais aussi freine l&#8217;émergence de nouveaux outils.</p>
+<p>En effet, il y a un désir de continuer à améliorer la situation du packaging en Python, comme on peut le voir avec des projets comme <a href="https://github.com/pypa/pipenv">pipenv</a> ou <a href="https://github.com/sdispater/poetry">poetry</a> (je recommande d&#8217;ailleurs fortement ce dernier, et je vous invite à voter sur <a href="https://github.com/sdispater/poetry/issues/704">cette issue</a> pour enfoncer le clou).</p>
+<p><code>setup.cfg</code> est la suite logique de tout ça, un format en texte brut, facile à manipuler pour le reste du monde. </p>
+<p>Et ça a été bien fait:</p>
+<ul>
+<li>
+        <code>setup.cfg</code> marche out of the box. Il n&#8217;y a rien à faire de particulier : si vous aviez un <code>setup.py</code>, vous pouvez juste le convertir en <code>setup.cfg</code>. Si vous avez un nouveau projet, vous pouvez juste écrire le <code>setup.cfg</code>. Il n&#8217;y a pas de piège. Ça marche depuis&#8230; 2016. Ouais.
+    </li>
+<li>
+        <code>setup.cfg</code> a <a href="https://setuptools.readthedocs.io/en/latest/setuptools.html#configuring-setup-using-setup-cfg-files">une documentation décente</a>. Si, si. C&#8217;est très améliorable, mais mieux que tout ce qu&#8217;on a jamais eu pour les premières années de <code>setup.py</code>
+    </li>
+<li>
+        <code>setup.cfg</code> couvre la plupart des cas de figure que <code>setup.py</code> faisait et se permet de rajouter des goodies très cools. <code>version = attr: src.__version__</code> inclue la version depuis __init__.py,  <code>"options.data_files"</code> remplace le MANIFEST et <code>"license =  file: LICENCE.txt"</code> injecte le corps de la licence depuis un fichier texte. Tous les hacks à la noix de <code>setup.py</code> ? Fini.
+    </li>
+<li>
+        C&#8217;est simple à utiliser. Voici quelques projets pour démontrer le bouzin: <a href="https://github.com/jleclanche/python-bna/blob/master/setup.cfg">exemple 1</a>, <a href="https://github.com/dj-stripe/dj-stripe/blob/master/setup.cfg">exemple 2</a>, <a href="https://github.com/jazzband/django-oauth-toolkit/blob/master/setup.cfg">exemple 3</a>, <a href="https://github.com/jazzband/django-push-notifications/blob/master/setup.cfg">exemple 4</a>. Ça se comprend même sans lire la doc !
+    </li>
+<li>
+        C&#8217;est compatible avec tous les outils legacy. En fait, il suffit de créer un fichier <code>setup.py</code> avec une seule ligne dedans (<code>import setuptools; setuptools.setup()</code>) et pouf, tout le worflow d&#8217;avant marche: <code>python setup.py develop</code>, <code>python setup.py sdist upload</code>, etc. Du coup, tout ce qui comprenanait <code>setup.py</code> (c&#8217;est à dire le putain de monde entier en Python) marche avec <code>setup.cfg</code>.
+    </li>
+</ul>
+<p>Donc setup.cfg, malgré des lacunes, c&#8217;est sympa.</p>
+<h2>
+    Setup.cfg, ou es-tu ?<br />
+</h2>
+<p>&#8220;Attend une minute, si c&#8217;est si bien que ça, pourquoi j&#8217;en ai jamais entendu parler ? Moi on m&#8217;a dit que <code>setup.cfg</code> il servait à rien&#8230;&#8221;</p>
+<p>Je ne vous le fais pas dire ! </p>
+<p>Je n&#8217;ai aucune idée de la raison pour laquelle cette information ne circule pas plus. La seule raison pour laquelle je l&#8217;ai trouvée c&#8217;est parce que je passe des heures à faire de la veille informationnelle en Python, et que je suis tombé dessus au détour d&#8217;un carrefour, dans une ruelle sombre du Web. Et que j&#8217;ai pris le temps et le risque de le tester sur un de mes projets pour vérifier que oui, ça marche comme prévu.</p>
+<p>Même la doc Python <a href="https://docs.python.org/3.7/distutils/configfile.html">vous fait croire</a> que <code>setup.cfg</code> c&#8217;est un artéfact vaguement utile pour une pauvre option monoligne.</p>
+<p>Et merde, j&#8217;ai déjà écrit 900 articles sur ce blog, je ne peux pas mettre à ma charge d&#8217;avertir tout le monde pour chaque truc à savoir sur Python.</p>
+<p>C&#8217;est comme pour le <code># -*- coding: utf-8 -*-</code>. Un jour un mec utilisant Emacs a écrit un tuto avec ça, et tout le monde a copié-collé les hiéroglyphes alors qu&#8217;en fait <code># coding: utf8</code> est parfaitement valide. Ou comme <a href="http://nuitka.net/">nuikta</a>, qui permet de compiler de Python de manière fiable, et que personne ne connait. Combien de temps doit-on gâcher avec des trucs comme ça ?</p>
+<h2>
+   pyproject.toml vient foutre le bordel<br />
+</h2>
+<p>Maintenant, figurez-vous que nous avons un groupe de personnes chargées de faire évoluer la situation du packaging, la Python Packaging Authority, ou <a href="https://www.pypa.io/en/latest/
+">PyPA</a>.</p>
+<p>Une très bonne initiative, vu que le free-for-all du passé ne nous avait pas trop réussi. Et un succès puisque la situation actuelle en packaging Python est maintenant beaucoup plus propre.</p>
+<p>Et on en a besoin. En effet, <code>setup.cfg</code> doit être amélioré car il a certains défauts. Le format n&#8217;est pas parfaitement standardisé. Seule la doc fait figure de description, et pour l&#8217;instant <code>setup.cfg</code>, c&#8217;est whatever <a href="https://docs.python.org/3/library/configparser.html">configparser</a> comprends, sachant que <code>configparser</code> parse les trucs au motoculteur, et selon la version de Python. C&#8217;est pas gravissime, et ça n&#8217;a pas vraiment été un problème jusque là, mais pour la pérennité de la chose, une consolidation est nécessaire. On doit avoir une spec solide, un parseur robuste et stable, etc.</p>
+<p>Sachant la purge qu&#8217;a été l&#8217;historique du packaging en Python, on s&#8217;attend donc a ce que la PyPA fasse le choix de standardiser <code>setup.cfg</code>, qui marche depuis 2 ans, fait le job, est compatible avec l&#8217;existant et résout déjà le problème de permettre au reste du monde de manipuler les données du package en texte brut. Puis, comme un bon groupe de décision sage, elle va proposer des solutions incrémentales aux défauts de <code>setup.cfg</code> et son écosystème. </p>
+<p>Un exemple possible serait de s&#8217;allier avec l&#8217;équipe de <code>setuptools</code> pour figer le format <code>setup.cfg</code>, clarifier les edge cases de ce INI en particulier, et si besoin, créer une alternative a <code>configparser</code> (ou figer <code>configparser</code>) afin d&#8217;obtenir une implémentation de référence irréprochable pour parser le format. Puis désigner ce format comme le nouveau standard, en version 1 implicite, et le documenter puis en faire la promotion afin que tous les nouveaux outils puissent l&#8217;utiliser. Ensuite, ayant identifié des limitations, on crée le successeur de ce format, qui aura le même nom, mais un header de version qui lui sera explicite afin de permettre aux parseurs de s&#8217;adapter. Et on fait en sorte que cette nouvelle version soit plus propre, plus belle, super green. Et on l&#8217;introduit aussi progressivement et en douceur qu&#8217;un sex toy anal.</p>
+<p>Bref, on s&#8217;attend à ce que la PyPA nous amène vers une totale liberté de pensée cosmique vers un nouvel âge réminiscence.</p>
+<p>Sauf que non.</p>
+<p>Ces ânes ont décidé&#8230;  de créer <a href="https://www.python.org/dev/peps/pep-0518/">un nouveau format</a> et ignorer tout l&#8217;existant. </p>
+<p>Fuck. That. Je hais que ce dessin de XKCD puisse être d&#8217;actualité encore et encore, chaque mois que l&#8217;humanité passe:<br />
+<img src=" https://imgs.xkcd.com/comics/standards.png" alt="Le packaging en Python, c'est une forme de solidarité masochiste avec la communauté JS" /></p>
+<p>Je ne comprends pas cette décision, et leurs justifications sont d&#8217;une grande faiblesse, pour ne pas dire insultante pour une communauté qui en a marre de payer le prix de l&#8217;égo des gens qui ont envie d&#8217;avoir leur nom sur la nouvelle barre de fer officielle.</p>
+<p>C&#8217;est d&#8217;autant plus étrange que la PyPA n&#8217;est pas composée de cons. Non. On a Brett Cannon (core dev, qui fait un travail exceptionnel avec Python VSCode), Nathaniel Smith (qui nous a révolutionné l&#8217;async avec trio) et Kenneth Reitz (l&#8217;auteur de Python requests).</p>
+<p>Comment ce pet de cerveau a-t-il pu émané de ces brillantes personnes, je ne le sais.</p>
+<p>Mais je vous invite tous à non seulement utiliser <code>setup.cfg</code> en masse, mais aussi à activement contester cette décision sur tous les mediums à votre disposition. </p>
+<p>Parce qu&#8217;évidemment je l&#8217;ai faits, et comme d&#8217;hab, ils font la sourde oreille. Et on va en payer le prix. Mais bon, depuis le temps, vous avez l&#8217;habitude. C&#8217;est pas comme si j&#8217;avais pas déjà annoncé que redux et dockers étaient overkill pour la plupart des projets, que le NoSQL allait avoir un retour de baton, que vue était génial, flask PAS pour les débutants, bitcoin intéressant, pipenv &#8211;three stupide, python parfait pour l&#8217;enseignement&#8230; des années avant. Pour les consultations de boule de cristal, c&#8217;est uniquement le mardi à 15h.</p>
+<h2>
+    N&#8217;est-ce pas trop tard ?<br />
+</h2>
+<p>Au contraire, c&#8217;est exactement le bon moment. Le format le plus utilisé actuellement n&#8217;est ni le setup.cfg, ni le pyproject.toml, mais toujours le bon vieux setup.py. En fait, n&#8217;en déplaise aux defenseurs de pyproject.toml qui veulent nous faire croire que le projet est bien plus populaire et avancé qu&#8217;il ne l&#8217;est vraiment, il vaut l&#8217;équivalent d&#8217;un draft de proposal en beta testing. Une simple recherche github retourne:</p>
+<ul>
+<li>
+        <a href="https://github.com/search?q=filename%3Asetup.py">setup.py: 1,259,007 results</a>
+    </li>
+<li>
+        <a href="https://github.com/search?q=filename%3Asetup.cfg">setup.cfg: 165,716 results</a>
+    </li>
+<li>
+        <a href="https://github.com/search?q=filename%3Apyproject.toml">pyproject.toml: 2,137 results </a>
+    </li>
+</ul>
+<p>De toute façon la transition sera longue, et les outils commencent à peine à supporter le nouveau format. En fait, ils ne sont même pas d&#8217;accord sur comment l&#8217;utiliser. On n&#8217;a pas de standard pour le lock file (pipfile semble se dégager, mais n&#8217;est pas enterriné) et les outils utilisent pyproject.toml en créant une section custo dedans au lieu des champs standardisés (poetry), voire pas du tout comme pipenv. De plus, setup.cfg est déjà utilisé dans la nature (voir les exemples plus haut).</p>
+<p>Par ailleurs, extraire les données de setup.cfg plutôt que de pyproject.toml n&#8217;est pas très compliqué, les outils de packaging n&#8217;ont qu&#8217;une toute petite partie de leur code dédié à la gestion du fichier, le reste c&#8217;est la logique de management des dépendances, le téléchargement, la command line, le virtualenv, etc. Ils peuvent par ailleurs tout à fait supporter les deux pendant la transition.</p>
+<p>Vu que c&#8217;est nous qui allons nous coltiner les conséquences du choix pour les 10 prochaines années à venir, autant élever la voie. D&#8217;autant que, surprise, ça ne coûte quasiment rien à la majorité des projets de migrer ou commencer avec setup.cfg. Tout marche déjà, et on peut produire de jolies wheels. On ne peut pas dire autant de pyproject qui demande d&#8217;adopter des outils tout neufs et qui doivent encore faire leur preuve. Aussi, bonne chance pour faire marcher votre toolchain de CI avec, j&#8217;ai essayé, et croyez moi c&#8217;est relou.</p>
+<p>Maintenant, j&#8217;aime que le packaging avance. J&#8217;aime même les nouveaux outils comme poetry. Mais la suite n&#8217;est pas inéluctable, et on peut concilier modernité avec sanité.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">25060</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/12/giphy.gif" length="435438" type="image/jpg" />	</item>
+		<item>
+		<title>Programmation par contrat avec assert</title>
+		<link>http://sametmax.com/programmation-par-contrat-avec-assert/</link>
+		<pubDate>Sat, 08 Sep 2018 19:40:11 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[assert]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=24956</guid>
+		<description><![CDATA[Le mot clé assert est populaire en Python essentiellement grâce à la lib pytest, dont on vous a parlé dans le dossier sur les tests unitaires. En dehors de ce cas d&#8217;usage, personne ne comprend bien son utilité. Déjà, dans les tutoriaux, on vous signale de ne pas l&#8217;utiliser pour faire des vérifications importantes, à [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Le mot clé <code>assert</code> est populaire en Python essentiellement grâce à la lib pytest, dont on vous a parlé dans <a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-3/">le dossier sur les tests unitaires</a>.</p>
+<p>En dehors de ce cas d&#8217;usage, personne ne comprend bien son utilité. </p>
+<p>Déjà, dans les tutoriaux, on vous signale de ne pas l&#8217;utiliser pour faire des vérifications importantes, à cause d&#8217;une particularité d&#8217;<code>assert</code>: il peut disparaitre à tout moment ! </p>
+<p>En effet, si vous lancez Python toutes voiles dehors avec l&#8217;option <code>-o</code> (pour &#8220;optimize&#8221;), les lignes contenant ce mot clé sont ignorées.</p>
+<p>Alors, mille millions de mille sabords, pourquoi se faire chier à avoir ajouté ce truc ?</p>
+<p>A quoi un machin qui peut disparaitre à tout instant peut-il bien servir ?</p>
+<p>Well, it&#8217;s not a bug, it&#8217;s a feature, my dear.</p>
+<p>Voyez-vous, on connait souvent le premier effet kisskool d&#8217;<code>assert</code>:</p>
+<pre lang="python">
+    assert condition
+</pre>
+<p>Et si la condition est fausse, on se tape une exception <code>AssertionError</code>.</p>
+<p>En revanche, ce que les gens savent moins, c&#8217;est qu&#8217;il existe une seconde forme, beaucoup plus utile:</p>
+<pre lang="python">
+    assert condition, "Message en cas d'erreur"
+</pre>
+<p>Qui fait tout pareil, mais permet de donner un feedback a qui tombe sur l&#8217;erreur susnommée.</p>
+<p>Et c&#8217;est là que c&#8217;est intéressant: parce que ça vous permet de mettre des vérifications complexes dans le code, qui vont permettre aux devs d&#8217;éviter les âneries. C&#8217;est ce qu&#8217;on appelle un contrat.</p>
+<p>Imaginez une fonction qui prend en paramètre une valeur, qui est la clé d&#8217;un dictionnaire:</p>
+<pre lang="python">
+    ARTIBUSES = {
+        'truc': 1,
+        'bidule': 1,
+        'machin': '2',
+        'chose': '3',
+        'chouette': '3',
+        'foo': '4',
+        # ...
+    }
+    
+    def souquer_les_artibuses(artibuse):
+    
+        target = ARTIBUSES[artibuse]
+        # un code de souquage professionnel s'ensuit
+</pre>
+<p>Si quelqu&#8217;un utilise votre code, et insère la mauvaise artibuse (le vil flibustier !), notre fonction va (s&#8217;)échouer sur une <code>KeyError</code>. Ceci va obliger le contrevenant (le perfide faquin !) à regarder dans le code source et comprendre le code pour trouver la source de son désarroi. Quelle perte de temps pour notre dev (le fils de pute !).</p>
+<p>Une solution est alors de mettre:</p>
+<pre lang="python">
+    def souquer_les_artibuses(artibuse):
+        if artibuse not in ARTIBUSES:
+            raise ValueError(
+                f"'{artibuse}'' n'est pas une artibuse valide. "
+                f"Utilisez une valeur parmi: {', '.join(ARTIBUSES)}"
+            )
+        target = ARTIBUSES[artibuse]
+</pre>
+<p>Et c&#8217;est certes une bonne solution, claire et explicite. </p>
+<p>Mais elle a un défaut majeur: à chaque appel, on rajoute le poids d&#8217;un test qui n&#8217;a aucun intérêt pour le fonctionnement normal du programme. En fait, la majorité des appels de cette fonction se feront avec les bonnes valeurs (logique sinon le code planterait), et donc notre test est un poids superflu.</p>
+<p>Ce problème se cumule quand les tests deviennent plus nombreux, plus complexes, et plus lourds, tandis que la fonction est appelée de plus en plus de fois.</p>
+<p>Comment concilier donc son besoin impérieux d&#8217;aider son prochain, qui est probablement soi-même un vendredi à 3h du mat après un push qu&#8217;on n’aurait pas du faire en fin de semaine, et éviter ce gâchis de ressource ?</p>
+<p>Ventre-saint-gris de sa race ! Avec <code>assert</code> bien entendu !</p>
+<pre lang="python">
+
+    def souquer_les_artibuses(artibuse):
+
+        assert artibuse in ARTIBUSES, (
+            f"'{artibuse}'' n'est pas une artibuse valide. "
+            f"Utilisez une valeur parmi: {', '.join(ARTIBUSES)}}"
+        )
+
+        target = ARTIBUSES[artibuse]
+</pre>
+<p>En dev, ou quand on debug en production, on obtient toutes les vérifications et infos nécessaires. Le contrat à remplir avec notre fonction est vérifié. On peut mettre autant de clauses à notre contrat qu&#8217;on le souhaite, aussi lourdes qu&#8217;on veut ! </p>
+<p>Quand on est prêt à relancer la prod en mode propre, on exécute tout avec <code>-o</code></p>
+<p>Les vérifications faites en amont d&#8217;une fonction sont ce qu&#8217;on appelle des pré-conditions dans le jargon de la programmation par contrat. Ce sont les plus faciles à comprendre et les plus courantes. On peut néanmoins faire également des vérifications à la fin de la fonction, qui permette de vérifier qu&#8217;on est bien dans un état cohérent à la sortie de celle-ci. </p>
+<p>C&#8217;est ce qu&#8217;on appelle des post-conditions: c&#8217;est moins courant, et moins facile à écrire, mais très puissant car on se souci d&#8217;un état final (est-ce que mon résultat est > 3 ?), et non de comment on y arrive. Un moyen bien plus souple d&#8217;attraper des erreurs plutôt que de chercher toutes les combinaisons de ce qu&#8217;on peut mal faire.</p>
+<h2>Effets secondaires de -o</h2>
+<p>Le saviez-vous ? Python vient aussi avec une variable magique, <code>__debug__</code>, qui est à <code>True</code> par défaut. Utiliser <code>-o</code> met cette variable a <code>False</code>. Plus fort encore, toute condition sur <code>__debug__</code> sera retirée du code !</p>
+<pre lang="python">
+if __debug__:
+    un_dump_log_de_porc()
+</pre>
+<p>Pouf, avec <code>-o</code>, plus de dump.</p>
+<p>Il existe même <code>-oo</code> pour retirer en plus les docstrings, et économiser un peu de mémoire.</p>
+<h2>Le problème avec assert</h2>
+<p>Le problème avec <code>assert</code>, c&#8217;est vous. Enfin je dis vous, le vous du passé, celui qui ne savait pas. En effet, plein de devs vont utiliser des <code>assert</code> dans leur code sans penser à mal. Et vous arrivez avec votre <code>-o</code>, et boom, le code est tout cassé. C&#8217;est bien con de ne pas pouvoir stripper ses <code>assert</code> à soi sous prétexte qu&#8217;une dépendance est codée par un <del>connard</del> Bachi-bouzouk.</p>
+<p>Or <code>assert</code> est très souple, et permet de tester littéralement n&#8217;importe quoi. Du coup, cela demande un peu d&#8217;expérience pour savoir quand l&#8217;utiliser, et quand ne pas le faire.</p>
+<p>Le concept général est: si votre erreur concerne la fonctionnalité fondamentale de votre fonction, levez toujours une exception. Si en revanche vous testez si les valeurs des paramètres correspondent à quelque chose de sain, <strong>et qu&#8217;une erreur n&#8217;aurait pas d&#8217;effet de bord</strong>, vous pouvez (ce n&#8217;est pas du tout obligatoire, une exception normale reste un usage correct) utiliser <code>assert</code>.</p>
+<p>Donc, n&#8217;utilisez pas assert pour tester la logique de votre programme, ni pour protéger l&#8217;intégrité de vos données face à une erreur.</p>
+<p>Une dernière chose: n&#8217;utilisez pas <code>assert</code> pour fournir un contrat basé sur les types (comme par exemple, appeler <code>isinstance()</code>), puisque mypy et les <a href="http://sametmax.com/point-rapide-sur-les-types-hints/">types hints</a> le font déjà et qu&#8217;ils sont maintenant très agréables à utiliser.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">24956</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/09/egUwx5Q.gif" length="782969" type="image/jpg" />	</item>
+		<item>
+		<title>Sam ne répondra plus</title>
+		<link>http://sametmax.com/sam-ne-repondra-plus/</link>
+		<comments>http://sametmax.com/sam-ne-repondra-plus/#comments</comments>
+		<pubDate>Tue, 04 Sep 2018 01:18:35 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[meta]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=24942</guid>
+		<description><![CDATA[Gérer toute cette communauté, ça a un coût]]></description>
+				<content:encoded><![CDATA[<p>Si vous nous avez écrit un email, vous savez qu&#8217;on a tendance a être lents pour répondre. En fait, parfois plus d&#8217;un an :)</p>
+<p>Mais que ce soit sur <a href="https://twitter.com/sam_et_max">twitter</a>, <a href="https://www.reddit.com/r/sametmax/">reddit</a>, <a href="http://indexerror.net/">indexerror</a>, <a href="https://framapiaf.org/web/accounts/28154">mastodon</a>, les commentaires du blog ou par email, on finit par répondre à tout le monde. Les ratés existent, mais ils sont rares. La seule catastrophe étant notre bug tracker, parce que j&#8217;en fais suffisamment au boulot pour ne pas avoir le courage de le faire sur mon temps libre.</p>
+<p>Gérer toute cette communauté, ça a un coût. J&#8217;y ai joyeusement participé pendant toutes ces années, parce que j&#8217;aime profondément aider les gens.</p>
+<p>Notez que je ne me prends pas pour mère Thérésa, à moins qu&#8217;elle ai déjà fait du SM et vendu du viagra illégalement. Mais donner un coup de main a toujours été quelque chose d&#8217;important pour moi.</p>
+<p>C&#8217;est la raison pour laquelle j&#8217;aime donner des formations. Parfois gratuitement. Parfois dans le cadre associatif.</p>
+<p>C&#8217;est la raison pour laquelle je me déplace à des confs bien loin pour donner des talks même si personne ne sait que c&#8217;est moi. Parfois je discute avec un groupe de gens enthousiastes de ce super site NSFW. C&#8217;est vrai qu&#8217;il est bien. Vous l&#8217;avez connu comment ?</p>
+<p>C&#8217;est la raison de la qualité des articles du blog également. Je passe un temps déraisonnable à me demander comment je vais pouvoir aider au mieux le lecteur avec une explication. Il m&#8217;est arrivé plusieurs fois de passer une journée entière sur un seul article compliqué, aux dépens d&#8217;un client que j&#8217;aurais pu facturer. Si on devait chiffrer le coût de ce site, je pense que ça me paierait un joli tour du monde.</p>
+<p>Alors oui, ça a un prix, et je l&#8217;ai payé avec plaisir. Mes amis, qui m&#8217;ont entendu cracher sur les réseaux sociaux, ont même été étonnés de voir mon investissement sur Hacker news ou Twitter, au fil des années.</p>
+<p>En cette fin 2018, je vais changer mon implication. J&#8217;ai envie de récupérer du temps libre, diminuer la tentation des interruptions et renforcer ma capacité d&#8217;attention, ce qui veut dire trancher dans le gras des distractions. Moins de surf sans but, moins de streaming, et moins de présence en ligne.</p>
+<p>J&#8217;ai pensé à arrêter complètement le blog, mais soyons honnête, je n&#8217;écris plus au dixième du rythme de ses débuts, donc ça ne me prend pas si longtemps. Et un article de  temps en temps, c&#8217;est thérapeutique. Je pense que j&#8217;ai besoin de mon troll JavaScript annuel pour des raisons de santé.</p>
+<p>Ce qui me prend du temps par contre, c&#8217;est tout ce qui est autour des articles.</p>
+<p>Donc, à partir de cette semaine, je vais arrêter de répondre sur Twitter, le subreddit (qui n&#8217;a de toute façon jamais pris) et indexerror. Twitter en particulier sera donc de nouveau en sens unique, comme à nos touts débuts: je poste, et je ne réponds pas.</p>
+<p>Pour les commentaires du blog, j&#8217;ai fermé la création de compte, et j&#8217;ai autorisé les commentaires uniquement à ceux qui avaient déjà un compte. Je ne répondrai pas pour autant, et je sais que la communauté existante ne foutra pas le bordel, tout en leur permettant de glisser les corrections des mes coquilles débiles.</p>
+<p>Pour mastodon, je vais fermer le compte complètement. Enfin le passer en privé et l&#8217;oublier car framapiaf ne permet pas la supression. L&#8217;expérience est réussie, je pense que c&#8217;est une bonne plateforme, mais le ratio taff/retour est trop bas pour mes nouveaux objectifs.</p>
+<p>Quant aux mails, pour le moment je garde le canal ouvert. Ce qui devrait me permettre du coup de répondre beaucoup, beaucoup plus rapidement.</p>
+<p>Je vous aime quand même, hein.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/sam-ne-repondra-plus/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">24942</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/09/XEr35eD.gif" length="262627" type="image/jpg" />	</item>
+		<item>
+		<title>La débâcle de async en 3.7</title>
+		<link>http://sametmax.com/la-debacle-de-async-en-3-7/</link>
+		<comments>http://sametmax.com/la-debacle-de-async-en-3-7/#comments</comments>
+		<pubDate>Tue, 07 Aug 2018 13:14:40 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[3.7]]></category>
+		<category><![CDATA[async]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=24891</guid>
+		<description><![CDATA[Quand les nouveaux mots clés <code>async</code> et <code>await</code> ont été introduits en Python 3.5, tout le monde a trouvé l'idée formidable. D'ailleurs, ça a été intégré à JavaScript.
+
+Malheureusement, introduire des mots clés dans un langage est une opération très délicate.]]></description>
+				<content:encoded><![CDATA[<p>Quand les nouveaux mots clés <code>async</code> et <code>await</code> ont été introduits en Python 3.5, tout le monde a trouvé l&#8217;idée formidable. D&#8217;ailleurs, ça a été intégré à JavaScript.</p>
+<p>Malheureusement, introduire des mots clés dans un langage est une opération très délicate.</p>
+<h2>Limites et contournements des mots clés</h2>
+<p>En Python les mots clés ont une caractéristique importante : on ne peut pas les utiliser pour quoi que ce soit d&#8217;autre.</p>
+<p>Par exemple, <code>class</code> est un mot clé, donc je ne peux pas créer une variable, un attribut, ou une fonction appelé <code>class</code>. Ceci lève une  erreur:</p>
+<pre lang="python">>>> class = 1
+  File "<stdin>", line 1
+    class = 1
+          ^
+SyntaxError: invalid syntax
+>>> class Foo: pass
+... 
+>>> Foo.class = 1
+  File "<stdin>", line 1
+    Foo.class = 1
+            ^
+SyntaxError: invalid syntax
+>>> </pre>
+<p>Pour cette raison, quand on veut qu&#8217;une variable contienne une classe en Python, on la nomme <code>cls</code>:</p>
+<pre lang="python">>>> class Bar:
+...     @classmethod
+...     def wololo(cls):
+...         print(cls, 'wololo')
+... 
+>>> 
+>>> Bar.wololo()
+<class '__main__.Bar'> wololo
+>>> </pre>
+<p>C&#8217;est aussi pour cela que vous voyez parfois des variables nommées <code>truc_</code>. Souvent <code>from_</code> par exemple, parce que <code>from</code> est un mot clé.</p>
+<p>(pro tip: plutôt que <code>from</code> et <code>to</code>, utilisez <code>src</code> et <code>dest</code>)</p>
+<p>Quand en Python 2 on a introduit <code>True</code> et <code>False</code>, un gros problème s&#8217;ensuivit: soit on en faisait des mots clés, et on pétait tout le code précédent qui utilisait ces mots, soit on en faisait des variables globales.</p>
+<p>Le choix a été de garder la stabilité jusqu&#8217;à la prochaine version majeure, et c&#8217;est pour cela que:</p>
+<ul>
+<li>On peut faire <code>True = False</code> en Python 2. Ouch.</li>
+<li>Python 3 casse ce comportement, et donc ça fait une chose de plus à laquelle il faut penser quand on migre.</li>
+</ul>
+<p>Pour la 3.5, on avait donc ce même problème, avec une cerise sur le gâteau: la lib standard utilisait elle-même la fonction <code>asyncio.async</code>.</p>
+<p>Le choix a donc de faire de <code>async</code> / <code>await</code> des variables globales, et de les transformer en mot clé en 3.7.</p>
+<p>En 3.6, un warning a été ajouté pour rappeler aux gens de migrer leur code.</p>
+<p>C&#8217;est un sacré taf, et ça comporte des risques comme nous allons le voir plus loin. C&#8217;est pour cette raison que l&#8217;ajout d&#8217;un mot clé dans Python est une des choses les plus difficiles à faire passer sur la mailling list python-idea.</p>
+<h2>Arrive la 3.7</h2>
+<p>La 3.7 est sortie avec <a href="http://sametmax.com/python-3-7-sort-de-sa-coquille/">tout un tas de goodies</a>. Youpi. Mais aussi avec le passage de <code>async/await</code> de variables globales à mots clés, cassant la compatibilité ascendante. Quelque chose de rare en Python, et que personnellement j&#8217;aurais réservé pour Python 4, ne serait-ce que pour respecter semver.</p>
+<p>Le résultat, tout un tas de systèmes ont pété: des linux en rolling release, des gens qui ont fait l&#8217;update de Python à la main, des gens qui maintiennent des libs compatibles 3.5 a 3.7&#8230;</p>
+<p>D&#8217;autant que la 3.5 a <code>asyncio.async</code>, mais 3.7 considère ça une erreur.</p>
+<p>Petit exemple avec <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=902788">l&#8217;impact sur debian</a>.</p>
+<h2>Comment on aurait pu éviter ce merdier ?</h2>
+<p>D&#8217;abord, il aurait fallu ne pas introduire asyncio à l&#8217;arrache. Dans mon <a href="http://sametmax.com/guido-van-rossum-soffre-des-vacances-permanentes/">&#8220;au revoir&#8221; à Guido</a>, je disais que je trouvais que les dernières fonctionnalités majeures de Python avaient été mises en oeuvre de manière précipitée.</p>
+<p>Cela se vérifie encore et encore avec asyncio, dont il faudra que je fasse un article pour dire tout ce qui a mal tourné.</p>
+<p>Casser la compatibilité ascendante dans une version mineure n&#8217;est pas acceptable, même si les dégâts sont limités et qu&#8217;on y survivra très bien. </p>
+<p>Le fait qu&#8217;asyncio soit une API marquée comme &#8220;provisional&#8221; n&#8217;a jamais empêché quelqu&#8217;un d&#8217;appeler ses variables <code>async</code>. Après tout on utilise les threads depuis bien longtemps.</p>
+<p>L&#8217;autre problème vient de l&#8217;amateurisme qui se glisse de plus en plus dans le dev. </p>
+<p>C&#8217;est une bonne chose, parce que ça veut dire que la programmation est de plus en plus accessible et accueille de plus en plus de monde. </p>
+<p>Mais cela veut dire aussi qu&#8217;une grosse part la population de programmeurs est aujourd&#8217;hui constituée de personnes qui n&#8217;ont ni les connaissances, compétences ou ressources pour faire les choses correctement.</p>
+<p>On le voit particulièrement dans le monde JavaScript, ou c&#8217;est l&#8217;explosion (là encore, ça mérite un nouvel article). Mais l&#8217;exemple de la 3.7 nous montre que la communauté Python n&#8217;est pas immunisée, et je pense que le problème va s&#8217;amplifier.</p>
+<p>Que veux-je dire par là ?</p>
+<p>Et bien il y a 30 ans, cela ne serait pas venu à l&#8217;esprit de la plupart des devs de compiler quelques choses sans mettre les flags en mode parano pour voir ce qui allait péter. Après tout, quand on code en C, on sait que tout peut imploser à tout moment, alors la prudence est une question de culture.</p>
+<p>Aujourd&#8217;hui par contre, la majorité des devs des langages haut niveau écrivent du code, font quelques tests à la main, et publient ça. D&#8217;autres les utilisent. Font des mises à jour en masse. Aucun ne prennent le temps ne serait-ce que d&#8217;activer les warnings les plus basiques.</p>
+<p>Comme tout est facile à première vue, et c&#8217;est quelque chose dont on fait la promotion pédagogiquement parlant, car ça incite les gens à se lancer, on oublie la complexité inhérente à la programmation.</p>
+<p>Mais il y a une différence colossale entre avoir un code qui marche une fois sur sa machine, et un code prêt pour la production.</p>
+<p>Par exemple en Python, vous pouvez demander l&#8217;activation des <a href="http://sametmax.com/warning-technique-a-un-autre-developpeur-en-python/">warning</a> pour chaque appel avec:</p>
+<pre lang="bash">python -Wd</pre>
+<p>En 3.6, ça implique ceci:</p>
+<pre lang="python">>>> def async():
+...     pass
+... 
+<stdin>:1: DeprecationWarning: 'async' and 'await' will become reserved keywords in Python 3.7</pre>
+<p>L&#8217;info a toujours été là. Prête à être utilisée.</p>
+<p>Mais alors pourquoi ne pas afficher tous les warnings, tout le temps ?</p>
+<p>Et bien si je le fais:</p>
+<pre lang="bash">python -Wa</pre>
+<p>Voilà ce que ça donne quand je lance juste le shell de python 3.6:</p>
+<p><a href="https://0bin.net/paste/ArazA4+bjJ4V06Ql#8A0m+PI7EJcVhN6rwp76HwDbOQ2MWLRayO8IeArGr2N">Voir le code sur 0bin.</a></p>
+<p>Vous comprenez donc bien que ce n&#8217;est PAS activé par défaut. En fait, originalement le message était dans le corps de l&#8217;article, mais j&#8217;ai du le mettre sur 0bin parce que ça faisait planter WordPress. Si.</p>
+<p>A chaque upgrade, il est important de vérifier les warnings pour préparer ses migrations futures.</p>
+<p>Oui, c&#8217;est du boulot.</p>
+<p>En fait&#8230;</p>
+<h2>La programmation, c&#8217;est BEAUCOUP de boulot</h2>
+<p>Même si on arrive maintenant à extraire une frame vidéo en gif en une ligne de commande. </p>
+<p>Surtout maintenant qu&#8217;on y arrive en fait, car on multiplie les agencements hétérogènes de boites noires pour créer nos merveilleux programmes qui font le café.</p>
+<p>Alors on prend des raccourcis. </p>
+<p>Et puis aussi, parce qu&#8217;on ne sait pas. Qui parmi les lecteurs du blog, pourtant du coup appartenant à la toute petite bulle des gens très intéressés par la technique, connaissaient le rôle des warnings et comment les activer ?</p>
+<p>Mais ce n&#8217;est pas le seul problème. Il y a clairement une question d&#8217;attentes et de moyen. </p>
+<p>L&#8217;utilisateur (ou le client) final veut toujours plus, pour moins cher, et plus vite !</p>
+<p>Et le programmeur veut se faire chier le moins possible.</p>
+<p>Comme la complexité des empilements d&#8217;abstractions augmente, cela conduit à ignorer ce sur quoi on se base pour créer ce qui doit combler notre satisfaction immédiate.</p>
+<p>J&#8217;ai parlé d&#8217;amateurs plus haut.</p>
+<p>Mais je ne parle pas simplement de mes élèves. De mes lecteurs.</p>
+<p>Je parle aussi de moi.</p>
+<p>Prenez <a href="https://github.com/sametmax/0bin">0bin</a> par exemple.</p>
+<p>Il n&#8217;est plus à jour. Il n&#8217;a pas de tests unitaires. Il a des bugs ouverts depuis <stong>des années</stong>.</p>
+<p>Ce n&#8217;est pas pro du tout.</p>
+<p>Sauf que je ne suis pas payé pour m&#8217;en occuper, et c&#8217;est bien une partie du problème: nous sommes de nombreux bénévoles à faire tourner la machine a produire du logiciel aujourd&#8217;hui. Donc si je n&#8217;ai pas envie, fuck it !</p>
+<p>Vous imaginez si l&#8217;industrie du bâtiment ou celle de l&#8217;automobile tournaient sur les mêmes principes ?</p>
+<p>La moitié des dessins industriels faits par des bloggers, des étudiants, des retraités, des profs de lycées, des géographes, de biologistes et des postes administratifs ?</p>
+<p>Des immeubles et des voitures dont des pièces sont fabriquées par des potes qui chattent sur IRC et s&#8217;en occupent quand ils ont le temps ? Gratuitement. Y compris le service après-vente.</p>
+<p>Alors que les usagers veulent toujours plus: des normes sismiques et de la conduite autonome. Tout le monde le fait, alors la maison de campagne et la fiat punto, c&#8217;est mort, personne ne l&#8217;utilisera. </p>
+<p>Difficile de maintenir la qualité à cette échelle. </p>
+<p>Il y a tellement de demandes de dev, jamais assez d&#8217;offres, de ressources toujours limitées. </p>
+<p>Et ça grossit. Ça grossit !</p>
+<h2>Aides techniques</h2>
+<p>Ceci dit, à l&#8217;échelle de la PSF, ça aurait dû être évité.</p>
+<p>Avant d&#8217;aborder les aides techniques, il serait bon d&#8217;arrêter les conneries. Je me répète, mais c&#8217;était une vaste dauberie de faire passer <code>async/await</code> en mot clé avant Python 4.</p>
+<p>J&#8217;ai parfaitement conscience du besoin de faire progresser un langage pour ne pas rester coincé dans le passé. Je suis pour <code>async/await</code>, très bonne idée, superbe ajout. Mettre un warning ? Parfait ! Mais on respecte semver s&#8217;il vous plait. Si vous avez envie de faciliter la transition, mettre un import <code>__future__</code>, et inciter les linters à faire leur taff.</p>
+<p>En attendant, pour la suite, Python va faciliter le debuggage.</p>
+<p>Par exemple, depuis la 3.7, les <code>DeprecationWarning</code> sont activés par défaut au moins dans le module <code>__main__</code>. Donc un développeur verra ses conneries bien plus rapidement.</p>
+<p>E.G:</p>
+<p>Imp est déprécié en 3.6, mais sans -Wd, on ne le voit pas:</p>
+<pre lang="bash">$ python3.6
+Python 3.6.5 (default, May  3 2018, 10:08:28) 
+[GCC 5.4.0 20160609] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import imp</pre>
+<p>En 3.7, plein de modules importent <code>imp</code>, mais les <code>DeprecationWarning</code> ne sont pas montrés, car ça arrive dans des codes importés. En revanche, si dans le module principal, vous importez <code>imp</code>:</p>
+<pre lang="bash">$ python3.7 
+Python 3.7.0+ (default, Jun 28 2018, 14:08:14) 
+[GCC 5.4.0 20160609] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import imp
+__main__:1: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses
+</pre>
+<p>Ça donne une info importante, sans foutre un mur de warnings à chaque lancement.</p>
+<p>Une autre aide est l&#8217;apparition, toujours en 3.7, du mode développement de Python avec <code>-X dev</code> qui active tout un tas de comportements aidant au développement:</p>
+<ul>
+<li>active <code>-Wd</code></li>
+<li>appelle <code>PyMem_SetupDebugHooks</code></li>
+<li>active <code>faulthandler</code></li>
+<li>active le mode debug de asyncio</li>
+<li>met <code>sys.flags.dev_mode</code> sur <code>True</code></li>
+</ul>
+<p>Évidemment, tout ça ne sert pas à grand-chose si on ne sait pas ce qu&#8217;il faut en faire. Et ça demande du temps et du travail, ce que l&#8217;amateurisme ne permet pas forcément.</p>
+<p>Enfin je dis ça. La plupart des employeurs s&#8217;attendent à tout, tout de suite également. Donc au final, n&#8217;est-ce pas la culture générale de notre industrie qui est en train de virer dangereusement vers le vite fait mal fait ?</p>
+<p>Même si il y a clairement une question de compétence (un prof de maths est généralement compétent en maths, alors que j&#8217;attends toujours de rencontrer un prof d&#8217;info qui est capable de mettre quelque chose en prod), la pression du marché a créé des attentes impossibles&#8230;</p>
+<p>L&#8217;informatique n&#8217;existe comme secteur économique que depuis quelques décennies, contre des siècles pour la plupart des autres disciplines scientifiques. Pourtant on exige d&#8217;elle le même niveau de productivité. Il a bien fallut rogner quelque part, et c&#8217;est la fiabilité qu&#8217;on a choisit.</p>
+<p>Quand il y 20 ans, on rigolait en comparant le debuggage de Windows a la réparation d&#8217;une voiture, et la punchline sur le redémarrage, ce n&#8217;était pas grave: un peu de virtuel dans un monde plein d&#8217;encyclopédies papier, de cabines ou bottins téléphoniques et autres cartes routières.</p>
+<p>Aujourd&#8217;hui que notre monde entier dépend du fonctionnement de nos conneries codées à l&#8217;arrache, c&#8217;est plus emmerdant. Et ça explique aussi pourquoi le téléphone de ma grand mère fonctionne toujours mieux pour faire des appels que mon putain de smartphone a 600 euros. Mais je peux draguer une meuf par texto en faisant caca à l&#8217;aéroport. Tout a un prix.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-debacle-de-async-en-3-7/feed/</wfw:commentRss>
+		<slash:comments>27</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">24891</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/08/WSwts2q.jpg" length="25573" type="image/jpg" />	</item>
+	</channel>
+</rss>

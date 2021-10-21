@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>sqlalchemy &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/sqlalchemy/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Automatiser un peu plus SQLAlchemy declarative</title>
+		<link>http://sametmax.com/automatiser-un-peu-plus-sqlalchemy-declarative/</link>
+		<comments>http://sametmax.com/automatiser-un-peu-plus-sqlalchemy-declarative/#comments</comments>
+		<pubDate>Wed, 29 Oct 2014 12:34:00 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[declarative]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sql]]></category>
+		<category><![CDATA[sqlalchemy]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12584</guid>
+		<description><![CDATA[Avec l'intégration de l'interface déclarative d'SQLAlchemy, le projet Elexir est mort, et bien mort. Mais avec lui, la syntaxe la plus simple de déclaration pour cet ORM.]]></description>
+				<content:encoded><![CDATA[<p>Avec l&#8217;intégration de l&#8217;interface déclarative d&#8217;SQLAlchemy, le projet Elexir est mort, et bien mort. Mais avec lui, la syntaxe la plus simple de déclaration pour cet ORM. En effet, par défaut, SQLA vous oblige à spécifier le nom de la table et l&#8217;attribut ID pour chaque classe :</p>
+<pre lang="python">from sqlalchemy import Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine
+ 
+Base = declarative_base()
+ 
+class Person(Base):
+    # explicit is better than... fuck it !
+    __tablename__ = 'person' 
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+
+class Animal(Base):
+    __tablename__ = 'animal'
+    id = Column(Integer, primary_key=True) # Paie ton DRY
+    name = Column(String(250), nullable=False)
+
+engine = create_engine('sqlite:///db.db.db...db')
+Base.metadata.create_all(engine)</pre>
+<p>SQLA est très flexible, et il existe des tas de raisons pour vouloir un PK ou un nom de table custo. Mais dans beaucoup de projets, le nom de la table peut être le nom de la classe, et la PK peut être un ID auto incrémenté.</p>
+<p>Heureusement, la lib vous permet de customiser absolument tout, même la manière dont on doit la customiser. Si c&#8217;est pas méta, tout ça&#8230;</p>
+<p>Bref, on peut créer sa propre base déclarative qui va faire tout ça pour nous :</p>
+<pre lang="python">from sqlalchemy.ext.declarative import as_declarative, declared_attr
+
+# Ceci sera le parent de tout nos objets
+@as_declarative()
+class Base(object):
+ 
+    # Vu qu'on a pas vraiment envie de se réécrire la
+    # métaclasse, SQLA nous file ce gentil décorateur 
+    # pour déclarer des attributs qui ne sont pas des 
+    # champs
+    @declared_attr
+    def __tablename__(cls):
+        # le nom de la table est le nom de la classe
+        return cls.__name__.lower()
+    # L'id c'est la vie
+    id = Column(Integer, primary_key=True)
+ 
+class Person(Base):
+    name = Column(String(250), nullable=False)
+
+class Animal(Base):
+    name = Column(String(250), nullable=False)</pre>
+<p>Evidemment il faut que vous soyez certains d&#8217;éviter les conflits liés à cette décision, mais c&#8217;est quand même vachement pratique.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/automatiser-un-peu-plus-sqlalchemy-declarative/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">12584</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/10/Bruce-Lee-Simplicity-is-the-key-2-brilliance.jpg" length="72605" type="image/jpg" />	</item>
+	</channel>
+</rss>

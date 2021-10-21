@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>real ip &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/real-ip/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Afficher l&#8217;IP d&#8217;un visiteur &#8211; Django vs Nginx</title>
+		<link>http://sametmax.com/afficher-la-vrai-ip-dun-visiteur-django-vs-nginx/</link>
+		<comments>http://sametmax.com/afficher-la-vrai-ip-dun-visiteur-django-vs-nginx/#comments</comments>
+		<pubDate>Fri, 25 Oct 2013 03:53:30 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[nginx]]></category>
+		<category><![CDATA[real ip]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7525</guid>
+		<description><![CDATA[dis moi quelle est ton IP et je te dirais rien.]]></description>
+				<content:encoded><![CDATA[<p>Lorsque l&#8217;on veut connaitre son ip on fait souvent appel à des sites du genre: <a href="http://www.whatismyip.com/">whatismyip.com</a>, <a href="http://www.mon-ip.com/">mon-ip.com</a> ou on utilise un ifconfig en ssh.<br />
+Des fois on a aussi besoin de connaître l&#8217;ip d&#8217;un visiteur sur son site, 2 petites méthodes pour le faire sous Django et Nginx.</p>
+<p><strong>Sous Django:</strong> </p>
+<p>Dans l&#8217;<a href="https://docs.djangoproject.com/en/dev/topics/http/urls/">Urlconf</a></p>
+<pre lang="python" >
+urlpatterns = patterns('',
+    # return client IP
+    url(r'^my_ip$', get_ip),
+)
+</pre>
+<p>Créez une <a href="https://docs.djangoproject.com/en/dev/topics/http/views/">vue</a> du nom de get_ip qui sera utilisée par l&#8217;urlconf</p>
+<pre lang="python" >
+from django import http
+ 
+def get_ip(request):
+    """
+        Vue qui retourne l'IP du client
+    """
+    try:
+
+    	# récupère l'ip du client
+        return http.HttpResponse(request.META["REMOTE_ADDR"] )
+
+    except Exception, e:
+        return http.HttpResponse('error %s' % e)
+</pre>
+<p>Le code ci-dessus peut retourner l&#8217;adresse locale (127.0.0.1) dans ce cas il faut tester l&#8217;existence de la variable <strong>HTTP_X_REAL_IP</strong>, certains serveurs web ont besoin d&#8217;être <a href="http://rtcamp.com/tutorials/nginx/forwarding-visitors-real-ip/">configuré</a>. </p>
+<p><strong>Sous Nginx:</strong></p>
+<p>Dans le fichier de configuration de nginx on écrit une nouvelle <a href="http://wiki.nginx.org/HttpCoreModule#location">location</a></p>
+<pre lang="python" >
+# return client ip
+location /my_ip {
+    default_type 'text/plain';
+    content_by_lua 'ngx.print(ngx.var.remote_addr)';
+}
+</pre>
+<p>il suffit de se rendre à l&#8217;url http://monsite.com/my_ip pour voir s&#8217;afficher son ip. Cependant il faut avoir nginx compilé avec le module <a href="http://wiki.nginx.org/HttpLuaModule">Lua</a> ce qui peut être délicat si l&#8217;on a jamais compilé d&#8217;application.</p>
+<p><strong><br />
+Conclusion:</strong></p>
+<p>Si l&#8217;on s&#8217;en réfère aux deux exemples ci dessus on serait tenté d&#8217;utiliser Nginx car en une seule ligne tout le bazar est réglé.<br />
+Le hic c&#8217;est qu&#8217;il faut que Nginx soit compilé avec le module Lua pour afficher l&#8217;ip (sauf si quelqu&#8217;un connaît une autre façon d&#8217;afficher un message de sortie).<br />
+La version Django n&#8217;est pas fiable à 100% car suivant comment est configuré votre serveur web il se peut que vous vous retrouviez avec une ip du genre 127.0.0.1.<br />
+Il y a aussi la possibilité de parser le résultat des sites web cités en tout début d&#8217;article, certains proposent des Api je crois mais vous dépendez d&#8217;un autre service (on faisait ça au début) qui peuvent vous lâcher à tout moment (ce qui nous est arrivé).<br />
+Personnellement je compile toujours nginx avec Lua et quelques autres modules, ça permet de s&#8217;affranchir de plus en plus du backend.</p>
+<p>PS: j&#8217;ai mis à jour le titre car il laissait sous-entendre autre chose (merci à Sébastien)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/afficher-la-vrai-ip-dun-visiteur-django-vs-nginx/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">7525</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/10/identity.jpg" length="31647" type="image/jpg" />	</item>
+	</channel>
+</rss>

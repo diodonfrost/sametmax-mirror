@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>prompt &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/prompt/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Mon prompt bash est tout cassé !</title>
+		<link>http://sametmax.com/mon-prompt-bash-est-tout-casse/</link>
+		<comments>http://sametmax.com/mon-prompt-bash-est-tout-casse/#comments</comments>
+		<pubDate>Thu, 14 Jan 2016 09:43:33 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[prompt]]></category>
+		<category><![CDATA[virtualenv]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=17806</guid>
+		<description><![CDATA[Ça m'était déjà arrivé plusieurs fois après avoir ajouté mon env virtuel et ma branch git dans mon prompt : soudainement il se met à faire n'importe quoi. Des mixes de caratères, des sauts de ligne qui se font pas, la fusion de la ligne de commande sur elle-même.]]></description>
+				<content:encoded><![CDATA[<p>Ça m’était déjà arrivé plusieurs fois après avoir ajouté mon env virtuel et ma branch git dans mon prompt : soudainement il se met à faire n’importe quoi. Des mixes de caractères, des sauts de ligne qui se font pas, la fusion de la ligne de commande sur elle-même.</p>
+<p>Inutilisable.</p>
+<p>Aujourd’hui plutôt que de subir le problème, j’ai cherché une solution, <a href="http://superuser.com/questions/367275/linux-coloring-bash-prompt-will-break-carriage-return">et pouf</a> : quand on utilise des couleurs dans son prompt, il faut entourer tout le balisage de <code>[]</code>.</p>
+<p>Mais le balisage qui colore le prompt est composé de séquences d’échappements, qui contiennent aussi <code>[]</code>, donc il faut mettre des anti-slash.</p>
+<p>Du coup on passe de ça :</p>
+<p><code>export PS1="\[\033[01;34m\]\$(basename '$VIRTUAL_ENV')\e[0m $PS1"</code></p>
+<p>à :</p>
+<p><code>export PS1="\[\033[01;34m\]\$(basename '$VIRTUAL_ENV')[\e[0m] $PS1"<br />
+</code></p>
+<p>à la solution qui marche :</p>
+<p><code>export PS1="\[\033[01;34m\]\$(basename '$VIRTUAL_ENV')\[\e[0m\] $PS1"</code></p>
+<p>Évidemment à appliquer à tous les codes d’échappement chelou qu’on a réparti un peu partout.</p>
+<p>J’ai un tampon prêt à tirer pour le premier qui me parle de zsh.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/mon-prompt-bash-est-tout-casse/feed/</wfw:commentRss>
+		<slash:comments>24</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">17806</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/01/mJT7sDs.jpg" length="657543" type="image/jpg" />	</item>
+	</channel>
+</rss>

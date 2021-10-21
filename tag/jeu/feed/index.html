@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>jeu &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/jeu/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>La course du bus de l&#8217;innovation sur le chemin de la croissance</title>
+		<link>http://sametmax.com/la-course-du-bus-de-linnovation-sur-le-chemin-de-la-croissance/</link>
+		<comments>http://sametmax.com/la-course-du-bus-de-linnovation-sur-le-chemin-de-la-croissance/#comments</comments>
+		<pubDate>Sat, 22 Jul 2017 20:10:46 +0000</pubDate>
+		<dc:creator><![CDATA[01ivier]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[FrenchTech]]></category>
+		<category><![CDATA[innovation]]></category>
+		<category><![CDATA[jeu]]></category>
+		<category><![CDATA[poulet]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[raspberrypi]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=18765</guid>
+		<description><![CDATA[Dans un sursaut de patriotisme, je me suis dit qu'il me fallait, moi aussi, participer à l'effort national et promouvoir le savoir-faire technologique français. Partant du constat que, de nos jours, proposer quelque chose de nouveau est suffisant pour être innovant, je ne me suis pas embarrassé à concevoir quelque chose d'utile. À vrai dire, ce n'est même pas nouveau. Mais je suis français et j'ai un compte Twitter, je crois que c'est amplement suffisant pour prétendre au label #FrenchTech. ]]></description>
+				<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://yamatierea.org">01ivier</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<p>Bonsjours à toutes et à tous,</p>
+<p>Dans un sursaut de patriotisme, je me suis dit qu&#8217;il me fallait, moi aussi, participer à l&#8217;effort national et <strong>promouvoir le savoir-faire technologique français</strong>. Partant du constat que, de nos jours, proposer quelque chose de <strong>nouveau</strong> semble suffisant pour être <strong>innovant</strong>, j&#8217;ai fait comme tout bon <strong>startupeur</strong>, je ne me suis pas embarrassé à concevoir quelque chose d&#8217;utile. À vrai dire, ce n&#8217;est même pas nouveau. Mais je suis français et j&#8217;ai un compte Twitter, je crois que c&#8217;est amplement suffisant pour prétendre au label <strong>#CitizenOfTheFrenchTechNation</strong>. </p>
+<p>&nbsp;<br />
+<a href="http://sametmax.com/wp-content/uploads/2016/04/frenchtech.jpg" class="grouped_elements" rel="tc-fancybox-group18765"><img src="http://sametmax.com/wp-content/uploads/2016/04/frenchtech.jpg" alt="frenchtech" width="363" height="373" class="aligncenter size-full wp-image-19213" /></a></p>
+<p>&nbsp;</p>
+<h2>Où le bus l&#8217;innovation va tout droit.</h2>
+<p>Parce que je suis bien conscient de l&#8217;influence que cet article va avoir dans le monde du jeu vidéo, je vais détailler les différentes étapes de la réalisation de ce projet bouleversant.</p>
+<p>Tout d&#8217;abord, j&#8217;ai fait en sorte que le <strong>bus de l&#8217;innovation</strong> aille tout droit sur un <strong>chemin de la croissance</strong> qui est tout droit.</p>
+<pre lang="python">
+#-*- coding: utf-8 -*-
+
+# On importe de quoi dormir
+from time import sleep
+
+# On définit le graphisme en accord avec l'équipe de designers
+chemin = " " 
+arbre = "A"
+bus = "B"
+
+# On définit la qualité de l'image après avoir consulté les experts en GPU du Digital-Agile-Open-Tech-Lab-Responsive.IO
+largeur_ecran = 70
+
+# On définit l'état initial conjointement avec la team level design.
+# (elle-même ayant sollicité au préalable le narrative designer, bien entendu)
+largeur_chemin = 15
+position_chemin = 28
+position_bus = 35
+ 
+while 1:
+ 
+    # On place la première portion d'arbres dans le paysage
+    paysage = arbre * position_chemin
+    # On place le chemin
+    paysage += chemin * largeur_chemin
+    # On remplit le reste du paysage par la deuxième portion d'arbres
+    paysage += arbre * (largeur_ecran - len(paysage))
+    # On place le bus sur notre paysage
+    paysage = paysage[:position_bus] + bus + paysage[position_bus:]
+
+    # On affiche le tout
+    print(paysage)
+
+    # On dort un peu
+    sleep(0.2)
+</pre>
+<p><a href="http://sametmax.com/wp-content/uploads/2016/03/bus_innovation_droit.gif" class="grouped_elements" rel="tc-fancybox-group18765"><img src="http://sametmax.com/wp-content/uploads/2016/03/bus_innovation_droit.gif" alt="bus_innovation_droit" width="644" height="348" class="aligncenter size-full wp-image-18768" /></a></p>
+<p>Oui. Il est effectivement possible d&#8217;arriver plus simplement au même résultat, mais, mes qualifications ne m&#8217;offrent pas le loisir d&#8217;être incompétent. J&#8217;anticipe donc les futurs mouvements du <strong>bus de l&#8217;innovation</strong> ainsi que les inéluctables virages du <strong>chemin de la croissance</strong>.</p>
+<p>Ce doit être un peu déroutant pour vous, j&#8217;en conviens, mais c&#8217;est l’expérience qui parle.</p>
+<p>Faites-moi confiance.</p>
+<p>&nbsp;</p>
+<h2>Où le bus l&#8217;innovation va tout droit mais en bien plus beau.</h2>
+<p>Parce que l&#8217;on n&#8217;est jamais assez exigent sur l&#8217;apparence d&#8217;un produit de luxe, j&#8217;ai voulu changer le rendu des arbres en remplaçant le &#8220;A&#8221; par un &#8220;█&#8221; bien plus raffiné. Voici le résultat que j&#8217;ai obtenu :</p>
+<p><a href="http://sametmax.com/wp-content/uploads/2016/03/bus_innovation_droit_arbre.png" class="grouped_elements" rel="tc-fancybox-group18765"><img src="http://sametmax.com/wp-content/uploads/2016/03/bus_innovation_droit_arbre.png" alt="bus_innovation_droit_arbre" width="644" height="348" class="aligncenter size-full wp-image-18774" /></a></p>
+<p>Diable comme le succès est semé d’embûches !</p>
+<p>En effet, un petit&#8230;</p>
+<pre lang="python">
+>>> len("█")
+3
+</pre>
+<p>&#8230; m&#8217;a appris que le &#8220;█&#8221; comptait pour trois caractères, faussant mon ingénieuse gestion des positions.</p>
+<p>Mon talent m&#8217;avait permis d&#8217;anticiper les mouvements et autres virages mais pas ça. Damned. Qu&#8217;allais-je faire ?</p>
+<p>Un petit <code>replace()</code> bien placé et le tour était joué. Sans compter que je pouvais désormais me permettre de mettre de la couleur.</p>
+<p>La classe internationale.</p>
+<pre lang="python">
+#-*- coding: utf-8 -*-
+
+from time import sleep
+
+chemin = " " 
+arbre = "A"
+#On définit un arbre classe et vert en utilisant les codes ANSI
+arbre_classe_et_vert = "\33[32m█\033[0m"
+bus = "B"
+
+largeur_ecran = 70
+largeur_chemin = 15
+position_chemin = 28
+position_bus = 35
+ 
+while 1:
+ 
+    paysage = arbre * position_chemin
+    paysage += chemin* largeur_chemin
+    paysage += arbre * (largeur_ecran - len(paysage))
+    paysage = paysage[:position_bus] + bus + paysage[position_bus:]
+    # PAF ! On remplace l'arbre ridicule par un arbre classe et vert après avoir géré la position des différents éléments.
+    paysage = paysage.replace(arbre, arbre_classe_et_vert)
+
+    print(paysage)
+
+    sleep(0.5)
+</pre>
+<p>BIM !</p>
+<p><a href="http://sametmax.com/wp-content/uploads/2016/03/bus_innovation_droit_arbre_vert.gif" class="grouped_elements" rel="tc-fancybox-group18765"><img src="http://sametmax.com/wp-content/uploads/2016/03/bus_innovation_droit_arbre_vert.gif" alt="bus_innovation_droit_arbre_vert" width="644" height="348" class="aligncenter size-full wp-image-18781" /></a></p>
+<p>&nbsp;</p>
+<h2>Où le bus de l&#8217;innovation va tout droit mais sur un chemin de la croissance qui tourne.</h2>
+<p>Pour faire tourner <strong>le chemin de la croissance</strong> je fais un petit +2/-2 sur sa position avec un <code>randint()</code>, et zou.</p>
+<p>Par contre, pour forcer <strong>le chemin de la croissance</strong> à rester dans l&#8217;écran, j&#8217;ai été surpris de ne pas trouver de fonction prête à l&#8217;emploi pour contraindre un nombre dans un intervalle donné. Je suis donc passé par une &#8220;astuce&#8221; pécho sur <strong>Stack Overflow</strong> que j&#8217;ai trouvée élégante. On classe par ordre croissant le nombre donné avec les bornes de l&#8217;interval et on récupère le deuxième élément.</p>
+<pre lang="python">
+position = sorted(position_min, position, position_max)[1]
+</pre>
+<p>Si vous avez mieux, ça m&#8217;intéresse.</p>
+<pre lang="python">
+#-*- coding: utf-8 -*-
+
+# On importe de quoi choisir des nombres au hasard
+from random import randint
+
+from time import sleep
+
+chemin = " " 
+arbre = "A"
+arbre_classe_et_vert = "\33[32m█\033[0m"
+bus = "B"
+
+largeur_ecran = 70
+largeur_chemin = 15
+position_chemin = 28
+position_bus = 35
+
+# On définit une position maximale pour le chemin de la croissance
+position_max_chemin = largeur_ecran - largeur_chemin
+ 
+while 1:
+
+    # On calcule la nouvelle position du chemin de la croissance
+    # Un peu plus à droite, un peu plus à gauche ou un peu plus tout droit...
+    position_chemin += randint(-2, 2)
+
+    # En s'assurant qu'il ne déborde pas de la largeur de l'écran
+    position_chemin = sorted([1, position_chemin, position_max_chemin])[1]
+ 
+    paysage = arbre * position_chemin
+    paysage += chemin * largeur_chemin
+    paysage += arbre * (largeur_ecran - len(paysage))
+    paysage = paysage[:position_bus] + bus + paysage[position_bus:]
+    paysage = paysage.replace(arbre, arbre_classe_et_vert)
+
+    print(paysage)
+
+    sleep(0.5)
+</pre>
+<p><a href="http://sametmax.com/wp-content/uploads/2016/03/bus_innovation_chemin_virage.gif" class="grouped_elements" rel="tc-fancybox-group18765"><img src="http://sametmax.com/wp-content/uploads/2016/03/bus_innovation_chemin_virage.gif" alt="bus_innovation_chemin_virage" width="642" height="341" class="aligncenter size-full wp-image-18797" /></a></p>
+<p>&nbsp;</p>
+<h2>Où le bus de l&#8217;innovation crache des flammes.</h2>
+<p>Avant de me pencher sur les mouvements du <strong>bus de l&#8217;innovation</strong>, j&#8217;ai pris le temps de le tuner un peu.</p>
+<p>Déjà, direct, je l&#8217;ai peint en rouge, rapport au fait que le <strong>bus de l&#8217;innovation</strong>, c&#8217;est un peu la <strong>Ferrari de l&#8217;entrepreneuriat</strong>.</p>
+<p>Et puis, je me suis dit qu&#8217;il fallait qu&#8217;il n&#8217;y ai vraiment absolument aucun doute sur le fait que c&#8217;était bel et bien <strong>le bus de l&#8217;innovation</strong>. Je lui ai donc fait écrire &#8220;<strong>LE BUS DE L&#8217;INNOVATION</strong>&#8221; sur la route. Je m&#8217;en remets à vous pour me dire s&#8217;il reste une ambiguïté.</p>
+<p>Accessoirement, le &#8220;<strong>A</strong>&#8221; utilisé pour placer les arbres est devenu un &#8220;<strong>a</strong>&#8220;, pour ne pas être confondus avec le &#8220;<strong>A</strong>&#8221; présent dans &#8220;INNOV<strong>A</strong>TION&#8221;. C&#8217;est un détail, mais les générations d&#8217;ingénieurs qui liront ça dans deux cent ans seront bien contents de trouver cette explication.</p>
+<pre lang="python">
+#-*- coding: utf-8 -*-
+
+from random import randint
+from time import sleep
+
+chemin = " " 
+arbre = "a"
+arbre_classe_et_vert = "\33[32m█\033[0m"
+
+largeur_ecran = 70
+largeur_chemin = 15
+position_chemin = 28
+position_bus = 35
+
+# On définit le texte écrit par le bus de l'innovation
+texte_du_bus = "LE BUS DE L'INNOVATION "
+# On récupère le nombre de caractères dans le texte écrit par le bus de l'innovation
+nb_caractere = len(texte_du_bus)
+# On initialise un compteur pour gérer la succession des caractères
+compteur = 0
+
+position_max_chemin = largeur_ecran - largeur_chemin
+ 
+while 1:
+
+    position_chemin += randint(-2, 2)
+    position_chemin = sorted([1, position_chemin, position_max_chemin])[1]
+ 
+    paysage = arbre * position_chemin
+    paysage += chemin * largeur_chemin
+    paysage += arbre * (largeur_ecran - len(paysage))
+
+    # Dans le texte écrit par le bus de l'innovation, on prend le caractère 
+    # indiqué par le compteur modulo le nombre de caractères possibles
+    caractere = texte_du_bus[compteur%nb_caractere]
+    # On peint le caractère en rouge Ferrari
+    bus = "\33[31m{0}\033[0m".format(caractere)
+    # On incrémente le compteur pour avoir le caractère suivant au prochain tour
+    compteur += 1
+
+    paysage = paysage[:position_bus] + bus + paysage[position_bus:]
+    paysage = paysage.replace(arbre, arbre_classe_et_vert)
+
+    print(paysage)
+
+    sleep(0.5)
+</pre>
+<p>Magnifique.</p>
+<p><a href="http://sametmax.com/wp-content/uploads/2016/03/bus_innovation_flamme.gif" class="grouped_elements" rel="tc-fancybox-group18765"><img src="http://sametmax.com/wp-content/uploads/2016/03/bus_innovation_flamme.gif" alt="bus_innovation_flamme" width="642" height="450" class="aligncenter size-full wp-image-18805" /></a></p>
+<p>&nbsp;</p>
+<h2>Où l&#8217;on cherche à faire tourner le bus de l&#8217;innovation.</h2>
+<p>Je ne vais pas vous mentir, <strong>la course du bus de l&#8217;innovation sur le chemin de la croissance</strong> n&#8217;est pas vraiment une nouveauté vidéoludique. Nous, c&#8217;est à dire <strong>La Labomedia</strong>, l&#8217;avons <a href="http://labomedia.org/du-29-mai-au-1er-juin-2014-participation-au-toulouse-hacker-space-factory-thsf/#CourseInnovation">déjà présentée</a> à Toulouse lors du <a href="http://thsf.tetalab.org/2014/">THSF 2014</a> ainsi qu&#8217;au <a href="https://www.pseshsf.org/fr/accueil">PSESHSF 2016</a> de Choisy-le-Roi dont il existe même une <a href="https://www.youtube.com/watch?v=I_T0FFTJN3A">vidéo de la Master Class</a>. </p>
+<p>Sur cette photo spectaculaire, vous pouvez découvrir la pertinence de notre ingénieuse interface biologique imputrescible nourrie aux anti-biotiques NF.</p>
+<p><a href="http://sametmax.com/wp-content/uploads/2016/03/busdelinnovationsurlechemindelacroissance.jpg" class="grouped_elements" rel="tc-fancybox-group18765"><img src="http://sametmax.com/wp-content/uploads/2016/03/busdelinnovationsurlechemindelacroissance.jpg" alt="busdelinnovationsurlechemindelacroissance" width="291" height="388" class="aligncenter size-full wp-image-18816" /></a></p>
+<p>Mais, non seulement j&#8217;avais perdu totalement le code initial mais en plus l&#8217;installation s’appuyait sur l’excessivement chère <a href="http://www.makeymakey.com/">MakeyMakey</a> qui, par ailleurs, telle qu&#8217;elle est vendue, impose à l&#8217;utilisateur d&#8217;être relié à une masse.</p>
+<p>Pour sa résurrection, je lui ai donc préférée la <a href="https://www.adafruit.com/products/2340">Capacitive Touch HAT</a> pour <strong>RaspberryPi</strong> conçue par <strong>Adafruit</strong> et qui fonctionne direct au simple touché.</p>
+<p>(Il va de soit que les <em>natural chicken flavor interfaces</em> n&#8217;ont, elles, pas été remises en question.)</p>
+<p>Voici le code minimal pour utiliser le <em>Capacitive Touch HAT</em> une fois la librairie d&#8217;Adafruit installée :</p>
+<pre lang="python">
+import Adafruit_MPR121.MPR121
+from time import sleep
+
+interface = Adafruit_MPR121.MPR121.MPR121()
+interface.begin()
+
+while 1:
+ 
+  # Si la patine numéro 0 est touchée
+  if interface.is_touched(0):
+      print("GAUCHE !")
+
+  # Si la patine numéro 10 est touchée
+  if interface.is_touched(10):
+      print("DROITE !")
+
+  sleep(0.1)
+</pre>
+<p>Qui devient ceci quand on instaure un seuil de détection pour tenir compte de la conductivité des pattes de poulet.</p>
+<pre lang="python">
+import Adafruit_MPR121.MPR121
+from time import sleep
+
+interface = Adafruit_MPR121.MPR121.MPR121()
+interface.begin()
+
+seuil = 100
+
+while 1:
+ 
+  # Si la patte de poulet reliée à la patine numéro 0 est touchée
+  if interface.filtered_data(0) < seuil:
+      print("GAUCHE !")
+
+  # Si la patte de poulet reliée à la patine numéro 0 est touchée
+  if interface.filtered_data(10) < seuil:
+      print("DROITE !")
+
+  sleep(0.1)
+</pre>
+<p>On ne peut pas dire que ce soit très compliqué. À noter tout de même la nécessité d'activer l'<strong>I2C</strong> et de lancer le script en <strong>root</strong>. Une formalité pour celles et ceux qui ont de l'ambition dans la Vie.</p>
+<p>Une fois intégré dans notre formidable simulation de sport mécanique extrême, le script ressemble alors à ça :</p>
+<pre lang="python">
+#-*- coding: utf-8 -*-
+ 
+# On importe la librairie d'Adafruit
+import Adafruit_MPR121.MPR121 as MPR121
+
+from random import randint
+from time import sleep
+
+# On instancie l'interface...
+interface = MPR121.MPR121()
+# ... et on la démarre.
+interface.begin()
+
+chemin = " " 
+arbre = "a"
+arbre_classe_et_vert = "\33[32m█\033[0m"
+ 
+largeur_ecran = 70
+largeur_chemin = 15
+position_chemin = 28
+position_bus = 35
+ 
+texte_du_bus = "LE BUS DE L'INNOVATION "
+nb_caractere = len(texte_du_bus)
+compteur = 0
+ 
+position_max_chemin = largeur_ecran - largeur_chemin
+
+seuil = 100
+ 
+while 1:
+
+    # En fonction des patines touchées,
+    # on déplace le bus de l'innovation vers la droite...
+    if interface.filtered_data(0) < seuil:
+        position_bus += 1
+
+    # ... ou vers la gauche.
+    if interface.filtered_data(10) < seuil:
+        position_bus -= 1
+ 
+    position_chemin += randint(-2, 2)
+    position_chemin = sorted([1, position_chemin, position_max_chemin])[1]
+
+    paysage = arbre * position_chemin
+    paysage += chemin * largeur_chemin
+    paysage += arbre * (largeur_ecran - len(paysage))
+
+    caractere = texte_du_bus[compteur%nb_caractere]
+    bus = "\33[31m{0}\033[0m".format(caractere)
+    compteur += 1
+ 
+    paysage = paysage[:position_bus] + bus + paysage[position_bus:]
+    paysage = paysage.replace(arbre, arbre_classe_et_vert)
+ 
+    print(paysage)
+ 
+    sleep(0.5)
+</pre>
+<p><a href="http://sametmax.com/wp-content/uploads/2016/03/bus_innovation_tourne.gif" class="grouped_elements" rel="tc-fancybox-group18765"><img src="http://sametmax.com/wp-content/uploads/2016/03/bus_innovation_tourne.gif" alt="bus_innovation_tourne" width="641" height="432" class="aligncenter size-full wp-image-18849" /></a></p>
+<p>&nbsp;</p>
+<h2>Où le bus de l'innovation est tenu de rester sur le chemin de la croissance.</h2>
+<p>Écoutez, que les choses soient bien claires, moi aussi je trouve cet article beaucoup trop long, mais c'est du rayonnement de la <strong>France</strong> dont il est question. Dois-je vous le rappeler ? </p>
+<p>Voici donc comment j'ai tenu compte des sorties du <strong>chemin de la croissance</strong> par notre <strong>bus de l'innovation</strong> :</p>
+<pre lang="python">
+#-*- coding: utf-8 -*-
+ 
+import Adafruit_MPR121.MPR121 as MPR121
+ 
+from random import randint
+from time import sleep
+
+interface = MPR121.MPR121()
+interface.begin()
+ 
+chemin = " " 
+arbre = "a"
+arbre_classe_et_vert = "\33[32m█\033[0m"
+ 
+largeur_ecran = 70
+largeur_chemin = 15
+position_chemin = 28
+position_bus = 35
+ 
+texte_du_bus = "LE BUS DE L'INNOVATION "
+nb_caractere = len(texte_du_bus)
+compteur = 0
+ 
+position_max_chemin = largeur_ecran - largeur_chemin
+
+# On définit un booléen qui rendra compte de l'état du bus de l'innovation
+le_bus_roule = True
+
+seuil = 100
+ 
+while 1:
+
+    if interface.filtered_data(0) < seuil:
+        position_bus += 1
+ 
+    if interface.filtered_data(10) < seuil:
+        position_bus -= 1
+
+    # Si le bus roule...
+    if le_bus_roule:
+ 
+        position_chemin += randint(-2, 2)
+        position_chemin = sorted([1, position_chemin, position_max_chemin])[1]
+     
+        paysage = arbre * position_chemin
+        paysage += chemin * largeur_chemin
+        paysage += arbre * (largeur_ecran - len(paysage))     
+
+        # Si le bus sort de la route, à gauche ou à droite...
+        if position_bus <= position_chemin or position_bus >= position_chemin + largeur_chemin:
+
+            # On change l'apparence du bus (qui devient une croix verte)
+            bus = "\33[32mX\033[0m"
+            # On change l'état du bus de l'innovation
+            le_bus_roule = False
+
+        # Sinon, on affiche le bus comme précédement défini
+        else:
+            caractere = texte_du_bus[compteur%nb_caractere]
+            bus = "\33[31m{0}\033[0m".format(caractere)
+            compteur += 1
+     
+        paysage = paysage[:position_bus] + bus + paysage[position_bus:]
+        paysage = paysage.replace(arbre, arbre_classe_et_vert)
+     
+        print(paysage)
+
+        # Si, entre temps, le bus de l'innovation s'est arrêté de rouler
+        if not le_bus_roule:
+ 
+            # On affiche un message sympathique après avoir sauté une ligne
+            print("\nIl n'est pas exclu que le bus de l'innovation se soit pris un arbre...")
+     
+        sleep(0.5)
+</pre>
+<p><a href="http://sametmax.com/wp-content/uploads/2016/03/bus_innovation_crash.gif" class="grouped_elements" rel="tc-fancybox-group18765"><img src="http://sametmax.com/wp-content/uploads/2016/03/bus_innovation_crash.gif" alt="bus_innovation_crash" width="641" height="307" class="aligncenter size-full wp-image-18850" /></a></p>
+<p>&nbsp;</p>
+<h2>Où la course du bus de l'innovation sur le chemin de la croissance va pouvoir enfin commencer.</h2>
+<p>Afin que le public intègre bien le défi collectif que représente la relance de l'économie par le financement et le développement d'innovants nouveaux projets novateurs avec de la technologie à la pointe de la technologie, j'ai fait en sorte d'afficher la croissance totale que l'ensemble des joueurs auront fait parcourir au <strong>bus de l'innovation</strong>.</p>
+<p>Ainsi, n'y a-t-il jamais un individu qui perd, mais toujours un <strong>collectif qui gagne</strong>.</p>
+<p>Quelque chose entre la <strong>victoire éternelle</strong> et le <strong>succès permanent</strong>.</p>
+<p>Une véritable leçon de Vie.</p>
+<pre lang="python">
+#-*- coding: utf-8 -*-
+ 
+import Adafruit_MPR121.MPR121 as MPR121
+ 
+from random import randint
+from time import sleep
+
+interface = MPR121.MPR121()
+interface.begin()
+ 
+chemin = " " 
+arbre = "a"
+arbre_classe_et_vert = "\33[32m█\033[0m"
+ 
+largeur_ecran = 70
+largeur_chemin = 15
+
+# On met en place un système d'initialisation des positions
+# du chemin de l'innovation et du bus de la croissance
+init_position_chemin = 28
+init_position_bus = 35
+position_chemin = init_position_chemin
+position_bus = init_position_bus
+ 
+texte_du_bus = "LE BUS DE L'INNOVATION "
+nb_caractere = len(texte_du_bus)
+compteur = 0
+ 
+position_max_chemin = largeur_ecran - largeur_chemin
+
+seuil = 100
+
+le_bus_roule = True
+
+# On déclare des variables qui vont nous permettre de rendre compte
+# des quantités de croissance parcourue par le bus de l'innovation
+croissance_parcourue_totale = 0
+croissance_parcourue = 0
+
+# On définit un petit texte à formater pour présenter les quantités en question
+texte_crash ='''
+Bravo !
+Tu t'es pris un arbre mais tu as parcouru {0} mètres de croissance !
+ 
+Pour ton information, le Bus de l'Innovation a parcouru {1} mètres
+de croissance depuis son départ.
+ 
+Pour le faire redémarrer, appuie sur la cuisse de poulet du milieu.
+La France compte sur toi !
+'''
+ 
+while 1:
+
+    if interface.filtered_data(0) < seuil:
+        position_bus += 1
+ 
+    if interface.filtered_data(10) < seuil:
+        position_bus -= 1
+
+    # On met en place un moyen de reprendre le chemin de la croissance
+    # si le bus de l'innovation s'est pris un arbre
+    if if interface.filtered_data(5) < seuil and not le_bus_roule:
+        le_bus_roule = True
+        croissance_parcourue = 0
+        position_chemin = init_position_chemin
+        position_bus = init_position_bus
+        compteur = 0
+
+    if le_bus_roule:
+ 
+        position_chemin += randint(-2, 2)
+        position_chemin = sorted([1, position_chemin, position_max_chemin])[1]
+     
+        paysage = arbre * position_chemin
+        paysage += chemin * largeur_chemin
+        paysage += arbre * (largeur_ecran - len(paysage))     
+
+        if position_bus <= position_chemin or position_bus >= position_chemin + largeur_chemin:
+
+            bus = "\33[32mX\033[0m"
+            le_bus_roule = False
+
+        else:
+            caractere = texte_du_bus[compteur%nb_caractere]
+            bus = "\33[31m{0}\033[0m".format(caractere)
+            compteur += 1
+            # On incrémente la croissance parcourue à chaque tour
+            croissance_parcourue += 5
+     
+        paysage = paysage[:position_bus] + bus + paysage[position_bus:]
+        paysage = paysage.replace(arbre, arbre_classe_et_vert)
+     
+        print(paysage)
+
+        if not le_bus_roule:
+ 
+            # On calcule la croissance totale parcourue
+            croissance_parcourue_totale += croissance_parcourue
+            # On formate notre petit texte pour informer le joueur de sa 
+            # performance individuelle et collective.
+            print(texte_crash.format(croissance_parcourue, croissance_parcourue_totale))
+     
+        sleep(0.5)
+</pre>
+<p><a href="http://sametmax.com/wp-content/uploads/2016/03/bus_innovation_arcade.gif" class="grouped_elements" rel="tc-fancybox-group18765"><img src="http://sametmax.com/wp-content/uploads/2016/03/bus_innovation_arcade.gif" alt="bus_innovation_arcade" width="641" height="433" class="aligncenter size-full wp-image-18921" /></a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-course-du-bus-de-linnovation-sur-le-chemin-de-la-croissance/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">18765</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/04/frenchtech.jpg" length="29206" type="image/jpg" />	</item>
+		<item>
+		<title>Not invented here</title>
+		<link>http://sametmax.com/not-invented-here/</link>
+		<comments>http://sametmax.com/not-invented-here/#comments</comments>
+		<pubDate>Thu, 24 Apr 2014 07:18:30 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[angularjs]]></category>
+		<category><![CDATA[bootstrap]]></category>
+		<category><![CDATA[countdown]]></category>
+		<category><![CDATA[html5]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[jeu]]></category>
+		<category><![CDATA[timer]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10065</guid>
+		<description><![CDATA[Que fait un programmeur quand il n'est pas satisfait ? <del>Il va sur redtube</del> Il réinvente la roue, bien sûr !
+]]></description>
+				<content:encoded><![CDATA[<p>À la maison on joue beaucoup. Aux jeux vidéo, bien entendu, mais aussi à tout un tas d&#8217;autres trucs, incluant des jeux de rôles, de société, de carte&#8230; Ça joue même de la musique. Il y a un carton qui déborde de cartes magic, l&#8217;indispensable pot plein de dés 6/10/20, et des dizaines de boîtes en tout genre, parfois des titres dont moi-même je n&#8217;ai jamais entendu parlé, un piano à queue, divers lots de baffles et même des contentions psychiatriques. Pour d&#8217;autres jeux.</p>
+<p>Je me tâte à faire une rubrique &#8220;jeu&#8221; d&#8217;ailleurs, pour introduire un jeu de plateau de temps en temps.</p>
+<p>Évidement, à force de parties, on commence à en avoir plein le cul d&#8217;attendre le tour de l&#8217;autre, donc on joue au chrono. On a tenté le sablier, la montre, le portable, l&#8217;app, et rien n&#8217;est vraiment satisfaisant.</p>
+<p>Que fait un programmeur dans ce cas ? Il réinvente la roue, bien sûr !</p>
+<p>Voici donc <a href="http://allthatcounts.net/">All That Counts</a>, une Web app qui contient :</p>
+<ul>
+<li>Des timers.</li>
+<li>Des chronos.</li>
+<li>Des compteurs de points.</li>
+</ul>
+<p>C&#8217;est du HTML5 + Javascript, il n&#8217;y a pas de backend. Est inclus un mode offline, donc il suffit de visiter l&#8217;app une fois pour pouvoir toujours l&#8217;utiliser sauf vidange du cache. Magie de Bootstrap, ça marche sur mobile, tablette et destop. Comprendre : design responsive générique.</p>
+<p>Sur les navs supportant l&#8217;élément audio, ça gong à la fin des timers.</p>
+<p>La page &#8220;Count Down&#8221; est pratique pour faire sa gym, cuire ses œufs et organiser une partie avec des tours limités dans le temps pour 3 joueurs ou plus. Les widgets incluent le temps de dépassement si on a besoin de mettre des pénalités aux escargots et aux stallers.</p>
+<p>La partie &#8220;Chrono&#8221;, c&#8217;est gadget pour moi, mais ça pourra peut être servir à certains. J&#8217;y ai collé la possibilité de cumuler des temps de tours, pour les sportifs. Je ne sais pas si c&#8217;est utile, les coureurs me diront. A la limite pour les concours d&#8217;apnée&#8230;</p>
+<p>L&#8217;onglet &#8220;Counter&#8221; c&#8217;est pour compter les points quand on a pas de papier ou de jeton, c&#8217;est du dépannage. Ça peut servir aussi pour les gens dont le métier implique de compter des têtes de pipe comme les videurs, les hôtesses de l&#8217;air, etc.</p>
+<p>Ce qu&#8217;on utilise le plus est le mode &#8220;Versus&#8221;, qui sert aux duels. C&#8217;est une sorte de <a href="http://fr.wikipedia.org/wiki/Pendule_d%27%C3%A9checs">pendule d&#8217;échecs</a>, avec plusieurs comportements réglables. Par défaut, le passage d&#8217;un décompte à l&#8217;autre se fait automatiquement et manuellement, chaque changement de joueur impliquant une remise à zéro.</p>
+<p><del datetime="2014-04-24T08:11:17+00:00">Comme il n&#8217;y a pas de backend, vous pouvez avoir le code source en faisant Ctrl + S, donc je vais pas vraiment me faire chier à le mettre sur github. Déjà, j&#8217;ai du codé en pur JS. Moi. Heureusement qu&#8217;il y a AngularJS, sinon je changeais de métier. Le déploiement, pareil, c&#8217;est Ctrl + C, Ctrl + V, donc je vais pas écrire de doc. L&#8217;utilisation, bon, c&#8217;est des clics sur des boutons labellisés&#8230;</del></p>
+<p><a href="https://github.com/sametmax/allthatcounts">Le code source est dispo sur github</a>.</p>
+<p>La seule astuce, c&#8217;est qu&#8217;en mode versus, CTRL permet de faire un switch, et SPACE permet de faire pause et resume. Je pense que vous vous en sortirez. C&#8217;est un compteur, pas une navette spatiale.</p>
+<p>Si l&#8217;envie incroyable de rajouter des features vous prend, mettez un comment, et je me bougerais le cul pour githuber tout ça.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/not-invented-here/feed/</wfw:commentRss>
+		<slash:comments>19</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">10065</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/04/Shut-Up-And-Take-My-Rupees.jpg" length="40075" type="image/jpg" />	</item>
+		<item>
+		<title>Game of thrones, le jeu de plateau</title>
+		<link>http://sametmax.com/game-of-thrones-le-jeu-de-plateau/</link>
+		<comments>http://sametmax.com/game-of-thrones-le-jeu-de-plateau/#comments</comments>
+		<pubDate>Sun, 02 Jun 2013 22:02:09 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[jeu]]></category>
+		<category><![CDATA[meta]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6321</guid>
+		<description><![CDATA[J'avais le choix entre écrire un article et rejoindre une bande de geeks pour tester GOT en jeu de plateau. J'adore les jeux de société (labyrinthe, muchkin, risk, loup garou, times up, boggle, etc), et je connaissais pas celui là.]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;avais le choix entre écrire un article et rejoindre une bande de geeks pour tester GOT en jeu de plateau. J&#8217;adore les jeux de société (labyrinthe, muchkin, risk, loup garou, times up, boggle, etc), et je connaissais pas celui là.</p>
+<p>Mon hôte possède un nombre impressionant de boîtes, j&#8217;ai rencontré un mec qui avait dans sa collec magic un lotus noir, les pizzas sont sorties, Tenacious D est en fond. Bref, une bonne soirée d&#8217;ados.</p>
+<p>Conclusion : pas de gros article aujourd&#8217;hui, mais GOT en jeu est super cool (mais tellement compliqué qu&#8217;il faut pas imaginer apprendre le truc en lisant les règles par soi-même).</p>
+<p>C&#8217;est dimanche, bon dimanche, sous vos applaudissements.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/game-of-thrones-le-jeu-de-plateau/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">6321</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/06/EuYlN.jpg" length="612796" type="image/jpg" />	</item>
+	</channel>
+</rss>

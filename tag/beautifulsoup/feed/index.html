@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>BeautifulSoup &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/beautifulsoup/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Traduire du texte avec UrlLib, BeautifulSoup et Google Translation</title>
+		<link>http://sametmax.com/traduire-du-texte-avec-urllib-beautifulsoup-et-google-translation/</link>
+		<comments>http://sametmax.com/traduire-du-texte-avec-urllib-beautifulsoup-et-google-translation/#comments</comments>
+		<pubDate>Wed, 15 Feb 2012 20:03:57 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[BeautifulSoup]]></category>
+		<category><![CDATA[traduction]]></category>
+		<category><![CDATA[UrlLib]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=152</guid>
+		<description><![CDATA[Qui n'a  jamais voulu traduire un peu de texte automatiquement ? Des mots ou des phrase entières. 
+On peut faire ça asser facilement avec UrlLib et BeautifulSoup en parsant les résultats de Google Translator.]]></description>
+				<content:encoded><![CDATA[<p>Salut les hommes,</p>
+<p>Qui n&#8217;a jamais voulu traduire un peu de texte automatiquement ? Des mots ou des phrase entières. On peut faire ça assez facilement avec <a href="http://docs.python.org/library/urllib.html" target="_blank">UrlLib</a> et <a href="http://www.crummy.com/software/BeautifulSoup/bs3/documentation.html" target="_blank">BeautifulSoup</a>.</p>
+<p>Ouvrez un fichier <em>test.py</em> et collez-y le code suivant. Il faut avoir installé BeautifulSoup auparavant (<code>easy_install BeautifulSoup</code> ou <code>pip install BeautifulSoup</code>)</p>
+<pre lang="python">import urllib
+import urllib2
+from BeautifulSoup import BeautifulSoup
+
+# texte à traduire
+text = 'Respect my authority!'
+
+# on créé les headers
+headers = { 'User-Agent' : 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1',
+'Referer': 'http://translate.google.com/'
+}
+
+# la langue originale du texte à traduire
+lg_from = 'en'
+
+# la langue dans laquelle on veut traduire l'article
+lg_to = 'fr'
+
+# paramètres à passer en POST
+params = urllib.urlencode( {'hl': 'fr',
+'ie': 'UTF8',
+'text': text.encode('utf-8'),
+'sl': lg_from,
+'tl': lg_to}
+)
+
+# on formule la requête
+request = urllib2.Request("http://translate.google.com/translate_t?" + urllib.urlencode({'sl': lg_from, 'tl': lg_to}), None, headers)
+html = urllib2.urlopen(request, params).read()
+
+# on récupère la traduction avec BeautifulSoup
+translated_soup = BeautifulSoup(html)
+print translated_soup('span', id='result_box')[0].text</pre>
+<p>Exécutons le code&#8230;</p>
+<pre lang="bash">$python test.py
+Respectez mon autorité!</pre>
+<p>Attention toutefois, Google n&#8217;autorise pas l&#8217;automatisation de ce genre de tâches sans passer par son API (payante).</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/traduire-du-texte-avec-urllib-beautifulsoup-et-google-translation/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">152</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/02/google-translate.jpg" length="29803" type="image/jpg" />	</item>
+	</channel>
+</rss>

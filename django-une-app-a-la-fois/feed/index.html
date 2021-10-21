@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Django, une app à la fois</title>
+	<atom:link href="http://sametmax.com/django-une-app-a-la-fois/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/django-une-app-a-la-fois/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: chrs</title>
+		<link>http://sametmax.com/django-une-app-a-la-fois/#comment-196439</link>
+		<dc:creator><![CDATA[chrs]]></dc:creator>
+		<pubDate>Sat, 07 Jul 2018 13:18:19 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6395#comment-196439</guid>
+		<description><![CDATA[Salut Sam,
+Merci pour ta réponse, j&#039;avais compris juste après t&#039;avoir envoyer la question... pourtant c&#039;est bon la choucroute...
+Merci encore, et continue tu nous donner de bons conseils
+Christophe]]></description>
+		<content:encoded><![CDATA[<p>Salut Sam,<br />
+Merci pour ta réponse, j&#8217;avais compris juste après t&#8217;avoir envoyer la question&#8230; pourtant c&#8217;est bon la choucroute&#8230;<br />
+Merci encore, et continue tu nous donner de bons conseils<br />
+Christophe</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/django-une-app-a-la-fois/#comment-196438</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sat, 07 Jul 2018 12:54:38 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6395#comment-196438</guid>
+		<description><![CDATA[redirect() prend en premier paramètre soit:
+
+- un objet qui a une méthode &quot;get_absolute_url()&quot; qui retourn un url sous forme de string
+- une string qui représente une url absolue. Ex: &#039;/toto&#039;
+- une string qui représente le nom d&#039;une url dans ton url.py. Ex: si tu as mis name=&quot;foo&quot;, tu peux mettre &quot;foo&quot;.
+
+Toi tu passe ici un objet request, ce qui n&#039;a rien à voir avec la choucroute.]]></description>
+		<content:encoded><![CDATA[<p>redirect() prend en premier paramètre soit:</p>
+<p>&#8211; un objet qui a une méthode &#8220;get_absolute_url()&#8221; qui retourn un url sous forme de string<br />
+&#8211; une string qui représente une url absolue. Ex: &#8216;/toto&#8217;<br />
+&#8211; une string qui représente le nom d&#8217;une url dans ton url.py. Ex: si tu as mis name=&#8221;foo&#8221;, tu peux mettre &#8220;foo&#8221;.</p>
+<p>Toi tu passe ici un objet request, ce qui n&#8217;a rien à voir avec la choucroute.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: chrs</title>
+		<link>http://sametmax.com/django-une-app-a-la-fois/#comment-196390</link>
+		<dc:creator><![CDATA[chrs]]></dc:creator>
+		<pubDate>Fri, 06 Jul 2018 07:03:22 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6395#comment-196390</guid>
+		<description><![CDATA[Salut,
+
+Super merci ton ton travail, cela aide beaucoup... Mais, car comme tu le sais il y a toujours un mais ;)
+
+Grace à l&#039;app3_basic_routing, je comprend mieux comment cela fonctionne. dans tes exemple, tu utilises des liens du type :
+
+&lt;code&gt;a href=&quot;./hello_from_app1/&quot;&#062;&lt;strong&gt;./hello_from_app1/&lt;/strong&gt;&#060;/&#062;:  &lt;/code&gt; et ça je sais faire. là ou je ne sais plus c&#039;est quand je fait :
+
+&lt;code&gt;
+
+def logon(request):
+
+username = request.POST[&#039;user&#039;]
+
+password = request.POST[&#039;pword&#039;]
+
+&lt;pre&gt;&lt;code&gt;user = authenticate(request, username=username, password=password)
+if user is not None:
+  login(request, user)
+  return redirect(request, &#039;accueil/index.html&#039;, {})
+else :
+   print(&quot;que dale&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;/code&gt;
+
+impossible de faire la redirection, soit il ne fait rien, soit il me fait ça :
+
+NoReverseMatch at /logon/
+
+Reverse for &#039;&#039; not found. &#039;&#039; is not a valid view function or pattern name.
+
+si tu as un idée je suis preneur
+
+le url.py au passage :
+
+&lt;code&gt;
+
+from django.urls import path, re_path
+
+from . import views
+
+from accueil.views import index as accueil_index
+
+from django.views.generic.base import RedirectView
+
+urlpatterns = [
+
+path(&#039;&#039;, views.index, name=&#039;index&#039;),
+
+path(&#039;logon&#039;, views.logon, name=&#039;logon&#039;),
+
+path(&#039;index&#039;,accueil_index, name=&#039;index&#039;),
+
+]
+&lt;/code&gt;
+
+merci
+
+christophe
+]]></description>
+		<content:encoded><![CDATA[<p>Salut,</p>
+<p>Super merci ton ton travail, cela aide beaucoup&#8230; Mais, car comme tu le sais il y a toujours un mais ;)</p>
+<p>Grace à l&#8217;app3_basic_routing, je comprend mieux comment cela fonctionne. dans tes exemple, tu utilises des liens du type :</p>
+<p><code>a href="./hello_from_app1/"&gt;<strong>./hello_from_app1/</strong>&lt;/&gt;:  </code> et ça je sais faire. là ou je ne sais plus c&#8217;est quand je fait :</p>
+<p><code></p>
+<p>def logon(request):</p>
+<p>username = request.POST['user']</p>
+<p>password = request.POST['pword']</p>
+<pre><code>user = authenticate(request, username=username, password=password)
+if user is not None:
+  login(request, user)
+  return redirect(request, 'accueil/index.html', {})
+else :
+   print("que dale")
+</code></pre>
+<p></code></p>
+<p>impossible de faire la redirection, soit il ne fait rien, soit il me fait ça :</p>
+<p>NoReverseMatch at /logon/</p>
+<p>Reverse for &#8221; not found. &#8221; is not a valid view function or pattern name.</p>
+<p>si tu as un idée je suis preneur</p>
+<p>le url.py au passage :</p>
+<p><code></p>
+<p>from django.urls import path, re_path</p>
+<p>from . import views</p>
+<p>from accueil.views import index as accueil_index</p>
+<p>from django.views.generic.base import RedirectView</p>
+<p>urlpatterns = [</p>
+<p>path('', views.index, name='index'),</p>
+<p>path('logon', views.logon, name='logon'),</p>
+<p>path('index',accueil_index, name='index'),</p>
+<p>]<br />
+</code></p>
+<p>merci</p>
+<p>christophe</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Morkav</title>
+		<link>http://sametmax.com/django-une-app-a-la-fois/#comment-152899</link>
+		<dc:creator><![CDATA[Morkav]]></dc:creator>
+		<pubDate>Thu, 18 Dec 2014 11:11:18 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6395#comment-152899</guid>
+		<description><![CDATA[Merci ! Ces exemples m&#039;ont été bien utiles pour commencer !]]></description>
+		<content:encoded><![CDATA[<p>Merci ! Ces exemples m&#8217;ont été bien utiles pour commencer !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/django-une-app-a-la-fois/#comment-12932</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Fri, 09 Aug 2013 19:40:44 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6395#comment-12932</guid>
+		<description><![CDATA[Ouai j&#039;ai hésité à le faire mais je me suis dis, tant pis, il va y avoir 40 apps à la fin, j&#039;ai pas envi de tout mettre à la racine.]]></description>
+		<content:encoded><![CDATA[<p>Ouai j&#8217;ai hésité à le faire mais je me suis dis, tant pis, il va y avoir 40 apps à la fin, j&#8217;ai pas envi de tout mettre à la racine.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: 01ivier</title>
+		<link>http://sametmax.com/django-une-app-a-la-fois/#comment-12864</link>
+		<dc:creator><![CDATA[01ivier]]></dc:creator>
+		<pubDate>Fri, 09 Aug 2013 10:56:30 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6395#comment-12864</guid>
+		<description><![CDATA[Chouette...
+
+Je suis en train de suivre le tuto du site du zéro (en quasi ligne droite, je le recommande)  et la seule chose qui me manquait, c&#039;était le code de Django commenté en français... :-p
+Voilà qui est fait...
+
+Très gros bouleau... merci...
+
+J&#039;ai un peu cherché pour découvrir le coup du path.py et avoir ainsi toutes ses applis dans un dossier...
+Compte-tenu de l&#039;objectif de l&#039;exercice, il est possible que cela rajoute un niveau de complexité dans la compréhension des chemins pas forcément salutaire...
+En, même temps, je suis bien content d&#039;avoir eu l&#039;occasion de comprendre le truc... :-)
+
+Enfin, simple remarque, &quot;Une appli après l&#039;autre&quot; collerai peut-être plus à l&#039;esprit du projet...
+
+Merci encore pour le taff...]]></description>
+		<content:encoded><![CDATA[<p>Chouette&#8230;</p>
+<p>Je suis en train de suivre le tuto du site du zéro (en quasi ligne droite, je le recommande)  et la seule chose qui me manquait, c&#8217;était le code de Django commenté en français&#8230; :-p<br />
+Voilà qui est fait&#8230;</p>
+<p>Très gros bouleau&#8230; merci&#8230;</p>
+<p>J&#8217;ai un peu cherché pour découvrir le coup du path.py et avoir ainsi toutes ses applis dans un dossier&#8230;<br />
+Compte-tenu de l&#8217;objectif de l&#8217;exercice, il est possible que cela rajoute un niveau de complexité dans la compréhension des chemins pas forcément salutaire&#8230;<br />
+En, même temps, je suis bien content d&#8217;avoir eu l&#8217;occasion de comprendre le truc&#8230; :-)</p>
+<p>Enfin, simple remarque, &#8220;Une appli après l&#8217;autre&#8221; collerai peut-être plus à l&#8217;esprit du projet&#8230;</p>
+<p>Merci encore pour le taff&#8230;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Tontof</title>
+		<link>http://sametmax.com/django-une-app-a-la-fois/#comment-10196</link>
+		<dc:creator><![CDATA[Tontof]]></dc:creator>
+		<pubDate>Thu, 20 Jun 2013 04:50:08 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6395#comment-10196</guid>
+		<description><![CDATA[Je confirme :-)]]></description>
+		<content:encoded><![CDATA[<p>Je confirme :-)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Djiko</title>
+		<link>http://sametmax.com/django-une-app-a-la-fois/#comment-10169</link>
+		<dc:creator><![CDATA[Djiko]]></dc:creator>
+		<pubDate>Wed, 19 Jun 2013 13:46:53 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6395#comment-10169</guid>
+		<description><![CDATA[@Sam : non, je suis tombé dans une faille spacio-temporelle quand j&#039;ai écris mon commentaire (vive les onglets ouverts trois jours avant d&#039;en lire le contenu :D )]]></description>
+		<content:encoded><![CDATA[<p>@Sam : non, je suis tombé dans une faille spacio-temporelle quand j&#8217;ai écris mon commentaire (vive les onglets ouverts trois jours avant d&#8217;en lire le contenu :D )</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/django-une-app-a-la-fois/#comment-10124</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Tue, 18 Jun 2013 12:02:24 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6395#comment-10124</guid>
+		<description><![CDATA[@Djiko: j&#039;ai réparé plusieurs liens cassés, il en reste ?
+
+@Tontof: bien vu, ma config ne prenait pas en compte les accents dans le chemin du dossier et c&#039;est une bonne chose de le voir maintenant car quasiment aucune ressource sur le net n&#039;explique comment le faire. J&#039;ai modif le code et normalement ça devrait le faire. Tu confirmes ?]]></description>
+		<content:encoded><![CDATA[<p>@Djiko: j&#8217;ai réparé plusieurs liens cassés, il en reste ?</p>
+<p>@Tontof: bien vu, ma config ne prenait pas en compte les accents dans le chemin du dossier et c&#8217;est une bonne chose de le voir maintenant car quasiment aucune ressource sur le net n&#8217;explique comment le faire. J&#8217;ai modif le code et normalement ça devrait le faire. Tu confirmes ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Tontof</title>
+		<link>http://sametmax.com/django-une-app-a-la-fois/#comment-10122</link>
+		<dc:creator><![CDATA[Tontof]]></dc:creator>
+		<pubDate>Tue, 18 Jun 2013 09:37:21 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6395#comment-10122</guid>
+		<description><![CDATA[Arf, j&#039;avoue ne pas avoir regardé le code pour dire si c&#039;était du python 2 ou du python 3 mais chez moi j&#039;obtiens avec python 2.7 :
+&lt;code&gt;
+Traceback (most recent call last):
+  File &quot;manage.py&quot;, line 7, in 
+    import project.settings
+  File &quot;.../project/settings.py&quot;, line 47, in 
+    APPS_DIR = os.path.join(ROOT_DIR, &#039;apps&#039;)
+  File &quot;/usr/lib/python2.7/posixpath.py&quot;, line 71, in join
+    path += &#039;/&#039; + b
+UnicodeDecodeError: &#039;ascii&#039; codec can&#039;t decode byte 0xc3 in position 11: ordinal not in range(128)
+&lt;/code&gt;]]></description>
+		<content:encoded><![CDATA[<p>Arf, j&#8217;avoue ne pas avoir regardé le code pour dire si c&#8217;était du python 2 ou du python 3 mais chez moi j&#8217;obtiens avec python 2.7 :<br />
+<code><br />
+Traceback (most recent call last):<br />
+  File "manage.py", line 7, in<br />
+    import project.settings<br />
+  File ".../project/settings.py", line 47, in<br />
+    APPS_DIR = os.path.join(ROOT_DIR, 'apps')<br />
+  File "/usr/lib/python2.7/posixpath.py", line 71, in join<br />
+    path += '/' + b<br />
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xc3 in position 11: ordinal not in range(128)<br />
+</code></p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

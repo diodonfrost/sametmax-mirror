@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>splat &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/splat/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Enrichissement du tuto sur l’opérateur splat</title>
+		<link>http://sametmax.com/enrichissement-du-tuto-sur-loperateur-splat/</link>
+		<comments>http://sametmax.com/enrichissement-du-tuto-sur-loperateur-splat/#comments</comments>
+		<pubDate>Tue, 01 Sep 2015 14:13:37 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[splat]]></category>
+		<category><![CDATA[unpacking]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16864</guid>
+		<description><![CDATA[Si vous ne l'avez pas lu, sautez dessus, il est formidable !]]></description>
+				<content:encoded><![CDATA[<p>Ça, c’est un <a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">super tuto</a> que vous ne trouverez pas ailleurs. Et maintenant il est encore plus super, car je lui ai ajouté l’unpacking étendu de Python 3, et l’unpacking généralisé de Python 3.5. Et en prime les modifications cosmétiques et pratiques habituelles.</p>
+<p>Si vous ne l&#8217;avez pas lu, sautez dessus, il est formidable !</p>
+<p>En parlant de sauter, ne sautons pas un repas :</p>
+<p><iframe src="http://flashservice.xvideos.com/embedframe/654951" frameborder=0 width=510 height=400 scrolling=no></iframe></p>
+<p>Et oui ! Le foot fetish est une niche très porteuse.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/enrichissement-du-tuto-sur-loperateur-splat/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">16864</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/09/yp6vkSa.gif" length="508620" type="image/jpg" />	</item>
+		<item>
+		<title>Qu&#8217;est-ce que l&#8217;unpacking en Python et à quoi ça sert ?</title>
+		<link>http://sametmax.com/quest-ce-que-lunpacking-en-python-et-a-quoi-ca-sert/</link>
+		<comments>http://sametmax.com/quest-ce-que-lunpacking-en-python-et-a-quoi-ca-sert/#comments</comments>
+		<pubDate>Fri, 26 Dec 2014 09:03:15 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[splat]]></category>
+		<category><![CDATA[unpacking]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=13019</guid>
+		<description><![CDATA[Ce terme apparaît dans de nombreux articles du blog, et je prends parfois le temps de l'expliquer superficiellement. Évidement, à de nombreux moments j'ai fais des tutos en ayant la connaissance de l'unpacking comme prérequis, et rien vers quoi faire un lien. Corrigeons ça, en attendant que je traduise les slides sur WAMP.]]></description>
+				<content:encoded><![CDATA[<p>Ce terme apparaît dans de nombreux articles du blog, et je prends parfois le temps de l&#8217;expliquer superficiellement. Évidemment, à de nombreux moments j&#8217;ai fait des tutos en ayant la connaissance de l&#8217;unpacking comme prérequis, et rien vers quoi faire un lien. Corrigeons ça, en attendant que je traduise les slides sur WAMP.</p>
+<h2>Le principe de base</h2>
+<p>Normalement, si vous voulez mettre le contenu d&#8217;un tuple dans des variables, vous devez procéder ainsi :</p>
+<pre lang="python">>>> ducks = ('riri', 'fifi', 'loulou')
+>>> duck1 = ducks[0]
+>>> duck2 = ducks[1]
+>>> duck3 = ducks[2]
+>>> print(duck1)
+'riri'
+>>> print(duck2)
+'fifi'
+>>> print(duck3)
+'loulou'</pre>
+<p>L’unpacking, qu&#8217;on pourrait traduire par le terme fort moche de &#8220;déballage&#8221;, dans le sens &#8220;ouvrir un colis&#8221;, permet de faire la même chose, bien plus facilement :</p>
+<pre lang="python">>>> duck1, duck2, duck3 =  ducks
+>>> print(duck1)
+'riri'
+>>> print(duck2)
+'fifi'
+>>> print(duck3)
+'loulou'</pre>
+<p>Il n&#8217;y a rien à faire, c&#8217;est automatique. La seule condition est que le nombre de variables à gauche du signe égal soit le même que le nombre d&#8217;éléments dans la collection de droite.</p>
+<p>D&#8217;ailleurs, ça marche même avec un seul élément :</p>
+<pre lang="python">>>> ducks = ('riri',)
+>>> duck1, = ducks # notez la virgule
+>>> duck1
+'riri'</pre>
+<p>Et ça marche avec n&#8217;importe quel <a href="http://sametmax.com/les-trucmuchables-en-python/">itérable</a>, pas uniquement les tuples. Avec une liste, une string, un générateur&#8230;</p>
+<pre lang="python">>>> a, b, c, d = [1, 2, 3, 4]
+>>> c
+3
+>>> a, b = "12"
+>>> b
+'2'
+>>> def yolo():
+    yield "leroy"
+    yield "jenkins"
+...
+>>> nom, prenom = yolo()
+>>> nom
+'leroy'
+>>> prenom
+'jenkins'</pre>
+<p>Ça marche bien entendu avec un dico ou un set, mais comme ils ne sont pas ordonnés, c&#8217;est pas très utile.</p>
+<h2>Astuces autour de l&#8217;unpacking</h2>
+<p>On peut utiliser l&#8217;unpacking dans des endroits inattendus. Par exemple, pour échanger la valeur de deux variables :</p>
+<pre lang="python">>>> a = 1
+>>> b = 2
+>>> a, b = (b, a)
+>>> a
+2
+>>> a, b = b, a # les parenthèses sont facultatives dans les tuples
+>>> b
+2</pre>
+<p>Puisqu&#8217;on est dans les tuples sans parenthèses, on peut retourner un tuple et donner l&#8217;illusion de retourner plusieurs variables :</p>
+<pre lang="python">>>> def duckmebaby():
+...     return "rifi", 'filou', 'louri'
+...
+>>> et, hop, la = duckmebaby()
+>>> et
+'rifi'
+>>> hop
+'filou'
+>>> la
+'louri'</pre>
+<p>Allons plus loin.</p>
+<p>On peut utiliser l&#8217;unpacking à l&#8217;intérieur d&#8217;une boucle <code>for</code>. Souvenez vous que les itérables peuvent contenir d&#8217;autres itérables. Par exemple, j&#8217;ai une liste qui contient 3 tuples, chaque tuple contient deux éléments :</p>
+<pre lang="python">>>> scores = [('Monique', '3'), ('David', 10), ('Dick', 1)]
+>>> for score in scores:
+...     print(score)
+...
+('Monique', '3')
+('David', 10)
+('Dick', 1)</pre>
+<p>Si je veux afficher le nom et le score l&#8217;un en dessous de l&#8217;autre :</p>
+<pre lang="python">>>> for nom_et_score in scores:
+...     print(nom_et_score[0])
+...     print(nom_et_score[1])
+...
+Monique
+3
+David
+10
+Dick
+1</pre>
+<p>Je peux appliquer l&#8217;unpacking dans la boucle pour rendre cette opération plus élégante :</p>
+<pre lang="python">>>> for nom, score in scores:
+...     print(nom)
+...     print(score)
+...
+Monique
+3
+David
+10
+Dick
+1</pre>
+<p>Cela marche avec des itérables plus gros, bien entendu. C&#8217;est aussi particulièrement utile avec des dictionnaires car on peut les transformer en itérable de tuples :</p>
+<pre lang="python">>>> scores = {'Monique': '3', 'David': 10, 'Dick': 1}
+>>> scores['Monique']
+'3'
+>>> scores.items() # transformation !
+dict_items([('Monique', '3'), ('David', 10), ('Dick', 1)])
+>>> for nom, score in scores.items():
+...     print(nom)
+...     print(score)
+...
+Monique
+3
+David
+10
+Dick
+1</pre>
+<p>Tout aussi utile, mais plus compliqué, est l&#8217;usage de l&#8217;unpacking dans l&#8217;appel de fonction. Pour cela, on utilise <a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">l&#8217;opérateur splat</a>, l&#8217;étoile en Python.</p>
+<p>Soit une fonction qui additionne des nombres :</p>
+<pre lang="python">>> def add(a, b, c):
+...     return a + b + c
+...
+>>> add(1, 2, 3)
+6</pre>
+<p>Oui, imaginons que je suis complètement débile, et que j&#8217;ai cette fonction pérave dans mon code. Vous noterez dans les articles que je l&#8217;utilise souvent sur le blog. C&#8217;est la fonction fourre tout pour expliquer un truc quand j&#8217;ai pas d&#8217;idée.</p>
+<p>Maintenant, imaginez que je veuille additionner des canards. Si, ça marche en Python :</p>
+<pre lang="python">>>> 'riri' + 'fifi' + 'loulou' # what the duck ?
+'rirififiloulou'</pre>
+<p>Maintenant je me refais mon tuples de canards :</p>
+<pre lang="python">>>> # nous entrerons dans la bande à picsou, youhou
+>>> duckyou = ('riri', 'fifi', 'loulou')</pre>
+<p>Si je veux utiliser ma fonction pourrie pour mon use case stupide, je ferai ceci :</p>
+<pre lang="python">>>> add(duckyou[0], duckyou[1], duckyou[2])
+'rirififiloulou'</pre>
+<p>Voilà une perte de productivité intolérable, c&#8217;est pas comme ça qu&#8217;on va faire fructifier son sou fétiche.</p>
+<p>On peut forcer l&#8217;unpacking avec l&#8217;étoile :</p>
+<pre lang="python">>>> add(*duckyou)
+'rirififiloulou'</pre>
+<p>Si on oublie l&#8217;étoile, le premier paramètre reçoit tout le tuple, et les autres paramètres rien :</p>
+<pre lang="python">>>> add(duckyou)
+Traceback (most recent call last):
+  File "", line 1, in 
+    add(1)
+TypeError: add() missing 2 required positional arguments: 'b' and 'c'</pre>
+<p>Les fonctions ont même le droit à un bonus car on peut unpacker des dictionnaires en utilisant la <strong>double</strong> étoile. Ca ne marche qu&#8217;avec les fonctions, et ça va déballer le dico pour que chaque paire clé/valeur soit passée comme nom et valeur de l&#8217;argument :</p>
+<pre lang="python">>>> def pas_add(arg1, arg2):
+    print(arg1)
+    print(arg2)
+...
+>>> pas_add(arg1="Je suis la valeur 1", arg2="Je m'en branle de qui tu es")
+Je suis la valeur 1
+Je m'en branle de qui tu es
+>>> dicocorico = {'arg1': 'cotcot', 'arg2': 'ouai je pête un cable, l\'avion me soule'}
+>>> pas_add(**dicocorico)
+cotcot
+ouai je pête un cable, l'avion me soule</pre>
+<p>Quand on unpacke des paramètres, il faut s&#8217;assurer que le nombre d&#8217;arguments passé n&#8217;est pas supérieur à ceux existant, sinon ça plante :</p>
+<pre lang="python">>>> dicocorico = {'arg1': 'cocot', 'arg2': 'ouai je pête un cable, l\'avion me soule', 'dang': 'je suis en trop et ça fait chier tout le monde'}
+>>> pas_add(**dicocorico)
+Traceback (most recent call last):
+  File "", line 1, in 
+    pas_add(**dicocorico)
+TypeError: pas_add() got an unexpected keyword argument 'dang'
+>>> stuplet = (1, 2, 3)
+>>> pas_add(*stuplet)
+Traceback (most recent call last):
+  File "", line 1, in 
+    pas_add(*stuplet)
+TypeError: pas_add() takes 2 positional arguments but 3 were given</pre>
+<p>Par contre, rien ne vous empêche de fournir moins d&#8217;arguments et de remplir les autres à la main :</p>
+<pre lang="python">>>> def encore_add(a, b, c, d):
+    return a + b + 0 + c + d # je feinte
+...
+>>> encore_add(10, *stuplet)
+16</pre>
+<p>Et on peut bien entendu faire le mega mix. Par exemple, prenons la fonction <code>print</code>, dont la signature accepte une infinité d&#8217;arguments positionnels et quelques arguments nommés :</p>
+<p><code>print(value, ..., sep=' ', end='\n', file=sys.stdout, flush=False)</code></p>
+<p>Aller, on va lui unpacker sa mère :</p>
+<pre lang="python">>>> ducks = ['riri', 'fifi', 'loulou'] # is this duck typing ?
+>>> keywords = {'sep': ' / ', "end": " : vous êtes du coin ? \n"}
+>>> print('picsou', *ducks, **keywords)
+picsou / riri / fifi / loulou : vous êtes du coin ?</pre>
+<p>Ça c&#8217;est fait.</p>
+<h2>Python 3, c&#8217;est du chocolat</h2>
+<p>En Python 3, l&#8217;unpacking a été amélioré, et on peut maintenant faire de l&#8217;unpacking partiel :</p>
+<pre lang="python">>>> # exemple 100% repompé d'un autre article du blog. Duck it.
+>>> l = list(range(5))
+>>> l
+[0, 1, 2, 3, 4]
+>>> a, *b = l
+>>> a
+0
+>>> b
+[1, 2, 3, 4]
+>>> a, *b, c = l
+>>> a
+0
+>>> b
+[1, 2, 3]
+>>> c
+4</pre>
+<p>Ce qui peut être très pratique sur les longs itérables. Comment obtenir la dernière ligne d&#8217;un fichier ?</p>
+<pre lang="python">>>> *contenu, dernire_ligne = open('/etc/fstab')
+>>> dernire_ligne
+'UUID=0e8c3132-8fa2-46d5-a541-2890db9b371f none            swap    sw              0       0\n'
+</pre>
+<p>Ou alors, dans une boucle :</p>
+<pre lang="python">>>> for initiale, *reste in ducks:
+    print(initiale)
+...
+r
+f
+l</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quest-ce-que-lunpacking-en-python-et-a-quoi-ca-sert/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">13019</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/12/BKqSshR.jpg" length="87017" type="image/jpg" />	</item>
+		<item>
+		<title>Changement dans l&#8217;unpacking des iterables en Python 3</title>
+		<link>http://sametmax.com/changement-dans-lunpacking-des-iterables-en-python-3/</link>
+		<comments>http://sametmax.com/changement-dans-lunpacking-des-iterables-en-python-3/#comments</comments>
+		<pubDate>Fri, 20 Dec 2013 07:49:59 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[python 3]]></category>
+		<category><![CDATA[splat]]></category>
+		<category><![CDATA[unpacking]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7656</guid>
+		<description><![CDATA[Ahhh, l'unpacking... On croit qu'on a complètement <a href="http://sametmax.com/tag/unpacking/">fait le tour</a> de cette fonctionalité merveilleuse, et PAF, on découvre encore autre chose.
+
+Par exemple, la syntaxe a été améliorée avec Python 3, et accepte maintenant un <a href="http://www.python.org/dev/peps/pep-3132/">unpacking partiel</a> !]]></description>
+				<content:encoded><![CDATA[<p>Ahhh, l&#8217;unpacking&#8230; On croit qu&#8217;on a complètement <a href="http://sametmax.com/tag/unpacking/">fait le tour</a> de cette fonctionalité merveilleuse, et PAF, on découvre encore autre chose.</p>
+<p>Par exemple, la syntaxe a été améliorée avec Python 3, et accepte maintenant un <a href="http://www.python.org/dev/peps/pep-3132/">unpacking partiel</a> !</p>
+<p>Ca se fait en l&#8217;utilisant l&#8217;opérateur splat, c&#8217;est à dire l&#8217;étoile :</p>
+<pre lang="python">>>> l = list(range(5))
+>>> l
+[0, 1, 2, 3, 4]
+>>> a, *b = l
+>>> a
+0
+>>> b
+[1, 2, 3, 4]
+>>> a, *b, c = l
+>>> a
+0
+>>> b
+[1, 2, 3]
+>>> c
+4</pre>
+<p>Ca marche bien entendu également dans les boucles <code>for</code>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/changement-dans-lunpacking-des-iterables-en-python-3/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">7656</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/12/lHLWwNE.jpg" length="119468" type="image/jpg" />	</item>
+		<item>
+		<title>Pourquoi il faut éviter import * en Python</title>
+		<link>http://sametmax.com/pourquoi-il-faut-eviter-import-en-python/</link>
+		<comments>http://sametmax.com/pourquoi-il-faut-eviter-import-en-python/#comments</comments>
+		<pubDate>Mon, 25 Nov 2013 07:00:41 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[import]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[splat]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8082</guid>
+		<description><![CDATA[Vous l'avez sans doute lu 100 fois, mais savez-vous pourquoi ?]]></description>
+				<content:encoded><![CDATA[<p>Ne pas utiliser l&#8217;<a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">opérateur splat</a> dans un import, vous l&#8217;avez sans doute lu 100 fois, mais savez-vous pourquoi ?</p>
+<p>Regardez la fonction <code>open</code> :</p>
+<pre lang="python">>>> help(open)
+    open(name[, mode[, buffering]]) -> file object
+    
+    Open a file using the file() type, returns a file object.  This is the
+    preferred way to open a file.  See file.__doc__ for further information.
+(END)</pre>
+<p>Maintenant, si j&#8217;importe le module <code>os</code>, ça ne change rien :</p>
+<pre lang="python">>>> import os
+>>> help(open)
+    open(name[, mode[, buffering]]) -> file object
+    
+    Open a file using the file() type, returns a file object.  This is the
+    preferred way to open a file.  See file.__doc__ for further information.
+(END)</pre>
+<p>Si par contre j&#8217;importe tout le contenu du module <code>os</code>, sans namespace :</p>
+<pre lang="python">>>> from os import *
+>>> help(open)
+    open(filename, flag [, mode=0777]) -> fd
+    
+    Open a file (for low level IO).
+(END)</pre>
+<p>La différence ?</p>
+<p>Dans le premier cas, on a la fonction <code>open()</code> built-in de Python. Dans le second cas, la fonction <code>os.open()</code> a été importée et a remplacé la fonction <code>open()</code>.</p>
+<p>Ici le bug sera très difficile à trouver, car les deux fonctions ont presque la même signature :</p>
+<p><code>open(name[, mode[, buffering]]) -> file object</code></p>
+<p>VS </p>
+<p><code>open(filename, flag [, mode=0777]) -> fd</code></p>
+<p>Et en plus un usage très similaire.</p>
+<p>Bottom line, <code>import *</code>, c&#8217;est pour les sessions shell. Dans vos fichiers de code, ne l&#8217;utilisez pas, vous ne savez pas ce que vous importez.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/pourquoi-il-faut-eviter-import-en-python/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8082</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/11/pyclusion.jpg" length="72541" type="image/jpg" />	</item>
+		<item>
+		<title>L&#8217;opérateur splat (l&#8217;étoile: *) en Python</title>
+		<link>http://sametmax.com/operateur-splat-ou-etoile-en-python/</link>
+		<comments>http://sametmax.com/operateur-splat-ou-etoile-en-python/#comments</comments>
+		<pubDate>Fri, 01 Jun 2012 18:34:59 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[etoile]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[splat]]></category>
+		<category><![CDATA[unpacking]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=173</guid>
+		<description><![CDATA[L'utilisation du signe étoile (<code>*</code>, dit opérateur "splat") en Python est très simple, mais certains cas sont peu intuitifs. Les nouveaux venus ont souvent besoin d'un peu plus d'explications que ce que donne la doc. Les utilisateurs d'autres langages sont généralement déroutés car ils sont habitués certaines fonctionnalités qu'on ne retrouvent pas en Python. ]]></description>
+				<content:encoded><![CDATA[<aside style="text-align:center; font-size:60%"><em>Cet article a été mis à jour et contient maintenant du code Python en version 3</em></aside>
+<p>L’utilisation du signe étoile (<code>*</code>, dit opérateur « splat ») en Python est très simple, mais certains cas sont peu intuitifs. Les nouveaux venus ont souvent besoin d’un peu plus d’explications que ce que donne la doc. Les utilisateurs d’autres langages sont généralement déroutés, car ils sont habitués à certaines fonctionnalités qu’on ne retrouve pas en Python.</p>
+<h2>Ce que <code>*</code> ne permet pas de faire</h2>
+<p>Il n’y a pas de pointeur en Python, et les passages par référence sont automatiques. Du coup&nbsp;:</p>
+<pre lang="python">mon_objet = MaClasse()
+mon_pointeur = *mon_objet
+ma_valeur = **mon_pointeur</pre>
+<p>N’existe pas en Python. On ne peut pas récupérer un pointeur. On ne peut pas choisir si l’on passe une variable par valeur ou par référence. Tout est automatique et transparent.</p>
+<h2>Les usages basiques de <code>*</code></h2>
+<p>La multiplication et la puissance fonctionnent comme on l’attend&nbsp;:</p>
+<pre lang="python">>>> print(2*3) # multiplier 2 par 3
+6
+>>> print(2**3) # élever 2 à la puissance 3
+8</pre>
+<p>Mais déjà, Python se démarque du lot, car l’opérateur <code>*</code> est surchargé par défaut, et peut s’appliquer aux chaines de caractères et aux listes. Pour les chaines, c’est simple&nbsp;:</p>
+<pre lang="python">>>> print("a" * 3) # on peut multiplier une chaîne par un nombre, et cela donne une chaîne
+aaa
+>>> print("a" ** 3) # ça ne marche pas avec les puissances
+TypeError: unsupported operand type(s) for ** or pow(): 'str' and 'int'</pre>
+<p>Pour les listes, c’est plus subtil. Une liste de nombres se multiplie sans y penser&nbsp;:</p>
+<pre lang="python">>>> l = [0, 1, 3]
+>>> print(l * 2)
+ # on peut multiplier une liste par un nombre, cela donne une liste
+[0, 1, 3, 0, 1, 3]
+>>> print(l ** 2)
+ # ça ne marche pas avec les puissances
+TypeError: unsupported operand type(s) for ** or pow(): 'list' and 'int'</pre>
+<p>En revanche, <strong>multiplier une liste d’objets modifiables ne fait que répéter la référence vers cet objet</strong>&nbsp;:</p>
+<pre lang="python">>>> l = [{}]
+ # on fait une liste contenant un dictionnaire
+>>> dicos = l * 3
+ # on peut multiplier une liste par un nombre, cela donne une liste
+>>> print(dicos)
+[{}, {}, {}]</pre>
+<p>On a l’impression que le comportement est le même que précédemment, en fait pas du tout. Ici <strong>on a pas une liste de 3 dictionnaires, mais une liste de 3 références vers le même dictionnaire</strong>. Si on modifie le premier élément de la liste, la modification se voit partout&nbsp;:</p>
+<pre lang="python">>>> d = dicos[0] # on récupère ce qu'on croit être le premier dictionnaire
+>>> d["Nouvelle cle"] = "Nouvelle valeur" # on le modifie
+>>> print(dicos) # afficher la liste montre que les 3 dictionnaires sont en fait un seul et même objet
+[{'Nouvelle cle': 'Nouvelle valeur'},
+ {'Nouvelle cle': 'Nouvelle valeur'},
+ {'Nouvelle cle': 'Nouvelle valeur'}]</pre>
+<p> Plus pragmatiquement, on peut juste vérifier que c’est la même référence en utilisant la fonction <code>id() </code>:</p>
+<pre lang="python"> >>> id(d[0])
+    139656035401544
+>>> id(d[1]) # même dico !
+    139656035401544
+>>> id({}) # dico différent
+    139655914013832</pre>
+<p>Moralité, <code>*</code> sur une liste fait rarement ce qu’on veut.</p>
+<h2>Unpacking</h2>
+<p>Python intègre une fonctionnalité, l’unpacking, qui permet de prendre chaque élément d’un <a href="http://sametmax.com/les-trucmuchables-en-python/">itérable</a> et de les attribuer à des variables distinctes, d’un seul coup. C’est un raccourci très pratique&nbsp;:</p>
+<pre lang="python">>>> drapeau = ("bleu", "blanc", "rouge") # ici on utilise un tuple, mais ça marche avec tout itérable
+>>> premiere_couleur = drapeau[0]
+>>> deuxieme_couleur = drapeau[1]
+>>> troisieme_couleur = drapeau[2]
+>>> print(premiere_couleur)
+'bleu'
+>>> print(deuxieme_couleur)
+'blanc'
+>>> print(troisieme_couleur)
+'rouge'
+>>> couleur1, couleur2, couleur3 =  drapeau # la même opération, en une ligne grâce à l'unpacking
+>>> print(couleur1)
+'bleu'
+>>> print(couleur2)
+'blanc'
+>>> print(couleur3)
+'rouge'</pre>
+<p><strong>Vous n’avez rien à faire, l’unpacking est automatique</strong>&nbsp;: il suffit de mettre à gauche du signe <code>=</code> le même nombre de variables qu’il y a d’éléments dans la séquence à droite du signe <code>=</code>. Dans le cas contraire, Python râle&nbsp;:</p>
+<pre lang="python">>>> un, deux = drapeau
+ValueError: too many values to unpack
+>>> un, deux, trois, quatre = drapeau
+ValueError: need more than 3 values to unpack</pre>
+<p>Quel rapport avec <code>*</code> ?</p>
+<p>Et bien d’abord, il permet de gérer ce cas où il y a plus d’éléments que de variables en disant « je veux que cette variable contienne le reste »:</p>
+<pre lang="python">couleur1, *autres_couleurs = drapeau
+>>> couleur1
+    'bleu'
+>>> autres_couleurs
+    ['blanc', 'rouge']
+>>> *autres_couleurs, derniere_couleur = drapeau
+>>> autres_couleurs
+    ['bleu', 'blanc']
+>>> derniere_couleur
+    'rouge'
+</pre>
+<p>Ensuite, il permet de <strong>forcer l’unpacking </strong>dans le cas où c’est ambigu.</p>
+<p>Faisons une petite fonction de test qui ne fait qu’afficher chacun de ses paramètres&nbsp;:</p>
+<pre lang="python">>>> def afficher_trois_elements(elem1, elem2=None, elem3=None):
+...     print(elem1)
+...     print(elem2)
+...     print(elem3)
+...
+...
+>>> afficher_trois_elements(drapeau)
+('bleu', 'blanc', 'rouge')
+None
+None</pre>
+<p>Passer drapeau affiche logiquement le tuple comme premier paramètre, et ensuite les valeurs par défaut du premier et du second paramètre.</p>
+<p>En utilisant <code>*</code>, nous pouvons forcer l’unpacking de telle sorte que les valeurs du tuple soient passées individuellement comme autant de paramètres&nbsp;:</p>
+<pre lang="python">>>> afficher_trois_elements(*drapeau)
+bleu
+blanc
+rouge</pre>
+<p>Très pratique quand vous utilisez une collection tout au long du programme pour vous éviter de sans cesse trainer des variables intermédiaires. D’autant que ça marche combiné aux slices&nbsp;:</p>
+<pre lang="python">>>> l = [1, 2, 3, "element que l'on ne veut pas"]
+>>> afficher_trois_elements(*l[:-1])
+1
+2
+3</pre>
+<p>Encore mieux, on peut utiliser <code>**</code> pour forcer l’unpacking des dictionnaires. Les valeurs du dictionnaire deviennent les valeurs des paramètres, mais cette association se fait par nom&nbsp;: <strong>chaque clé du dictionnaire doit correspondre à un nom de paramètre</strong>. Ainsi&nbsp;:</p>
+<pre lang="python">>>> elements = {"elem1": "eau", "elem2": "feu", "elem3": "air"}
+ # les clés ont le bon nom
+>>> afficher_trois_elements(**elements)
+eau
+feu
+air</pre>
+<p>Si une clé ne possède pas le nom adéquat, tout plante&nbsp;:</p>
+<pre lang="python">>>> elements = {"elem1": "eau", "elem2": "feu", "rien_a_voir": "air"}
+>>> afficher_trois_elements(**elements)
+TypeError: afficher_trois_elements() got an unexpected keyword argument 'rien_a_voir'</pre>
+<p>Une autre erreur courante est d’utiliser <code>*</code> avec un dictionnaire. Dans ce cas l’unpacking fonctionne, mais comme itérer sur un dictionnaire donne une liste de clés, c’est comme si vous passiez une liste en paramètres contenant les clés&nbsp;:</p>
+<pre lang="python">>>> elements = {"elem1": "eau", "elem2": "feu", "elem3";: "air"}
+>>> afficher_trois_elements(*elements)
+elem2
+elem3
+elem1</pre>
+<p>Si vous donnez moins de valeurs qu’il n’y a de paramètres, Python remplit tout ce qu’il peut&nbsp;:</p>
+<pre lang="python">>>> afficher_trois_elements(*drapeau[:-1])
+bleu
+blanc
+None
+>>> elements = {"elem1": "eau"}
+>>> afficher_trois_elements(**elements)
+eau
+None
+None</pre>
+<p>Dans le cas inverse – si il y a plus d’éléments que de paramètres – Python vous envoie vous brosser&nbsp;:</p>
+<pre lang="python">>>> forces = ("rouge", "bleu", "jaune", "rose", "vert")
+>>> afficher_trois_elements(*forces)
+TypeError: afficher_trois_elements() takes at most 3 arguments (5 given)
+</pre>
+<h2>Paramétrage dynamique</h2>
+<p><em>Attention, cet usage est souvent confondu avec celui qu’on vient de voir dans la partie précédente. Ils ne font pas du tout la même chose !</em></p>
+<p>Il est parfois pratique de définir une fonction qui accepte un nombre infini de paramètres. Exemple bidon, une fonction qui multiplie ses arguments entre eux&nbsp;:</p>
+<pre lang="python">>>> def multiply(a, b):
+...     return a * b # attention, là on utilise <code>*</code> pour multiplier, ne cherchez rien de compliqué ;-)
+...
+>>> print(multiply(2, 3))
+6</pre>
+<p>Bien sûr, si on veut rajouter un troisième paramètre, il faut la réécrire. Pareil pour un quatrième. Finalement, on finit par demander de passer une liste pour permettre un nombre arbitraire&nbsp;:</p>
+<pre lang="python">>>> def multiply(elements_a_multiplier):
+...     res = 1
+...     for i in elements_a_multiplier:
+...         res = res * i
+...     return res
+...
+>>> multiply((1, 2, 3, 4))
+24</pre>
+<p>Et bien sachez qu’il existe une autre possibilité, autoriser le passage d’une infinité de paramètres ! Cela se fait bien sûr avec <code>*</code>.</p>
+<pre lang="python">>>> def multiply(*tous_les_elements): # on ne change pas grand chose, on rajoute juste <code>*</code>
+...     res = 1
+...     for i in tous_les_elements:
+...         res = res * i
+...     return res
+...
+>>> multiply(1, 2, 3)
+ # mais plus besoin d'une séquence !
+26
+>>> multiply(1, 2, 3, 4, 5)
+120</pre>
+<p>Comment ça marche ? C’est simple, <strong>tous les arguments sont automatiquement stockés dans une liste</strong>, et cette liste est le paramètre que l’on a désigné par <code>*</code>.</p>
+<p>Ce système très puissant peut être utilisé conjointement avec des paramètres normaux&nbsp;:</p>
+<pre lang="python">>>>def afficher(elem1, elem2, *elemx):
+...    print(elem1)
+...    print(elem2)
+...    for e in elemx:
+...        print("(*) %s" % e)
+…
+>>> afficher("Toi", "Moi", "Luke", "Anakin", "Obi Wan", "Robert")
+Toi
+Moi
+(*) Luke
+(*) Anakin
+(*) Obi Wan
+(*) Robert</pre>
+<p>La seule condition est de mettre <code>*</code> sur un paramètre situé après tous les autres. <code>*</code> est toujours en dernier, et il n’apparait qu’une seule fois. Enfin, il existe une convention pour le nom de cet argument&nbsp;: <code>*args</code>.</p>
+<p>Bonne nouvelle, on peut utiliser aussi <code>**</code>. Comme on peut s’y attendre, il permet de récupérer aussi une infinité de paramètres, mais <strong>sous forme de dictionnaire</strong>. Cela signifie qu’il ne récupère que les paramètres nommés&nbsp;:</p>
+<pre lang="python">>>> def afficher_recette(recette, **ingredients): # ingrédients sera un dictionnaire
+...     print(recette)
+...     for ingredient in ingredients.items():
+...         print(" - %s: %s" % ingredient)
+...
+>>> afficher_recette("moukraines à la glaviouse",
+...                  creme="trop", # on doit donner le nom de ce paramètre
+...                  moukraines= "suffisamment",
+...                  glaviouse="si disponible") # mais l'ordre des paramètres importe peu
+moukraines à la glaviouse
+ - glaviouse : si disponible
+ - creme : trop
+ - moukraines : suffisamment</pre>
+<p>Il faut également mettre <code>**</code> après tous les autres arguments. La convention pour nommer ce paramètre est <code>**kwargs</code>, pour « keyword arguments ». Enfin, on peut mélanger tout ça d’un coup&nbsp;:</p>
+<pre lang="python">
+>>> def affichage_hybride(parametre_normal,
+...                       parametre_avec_default="valeur par défaut",
+...                       *args,
+...                       **kwargs):
+...     print(parametre_normal)
+...     print(parametre_avec_default)
+...     print(args)
+...     print(kwargs)
+...
+>>> affichage_hybride("param1", "param2", "infini1", "infini2", kwinfini1=1, kwinfini2=2)
+param1
+param2
+('infini1', 'infini2')
+{'kwinfini1': 1, 'kwinfini2': 2}</pre>
+<p><strong>On doit absolument mettre les paramètres dans cet ordre</strong>&nbsp;:</p>
+<ol>
+<li>paramètres normaux et obligatoires;</li>
+<li>paramètres normaux facultatifs (valeur par défaut);</li>
+<li>paramètres dynamiques;</li>
+<li>paramètres dynamiques nommés.
+</li>
+</ol>
+<p>En plus, cela permet en effet de faire jouer les valeurs par défaut de manière très souple&nbsp;:</p>
+<pre lang="c">>>> affichage_hybride("param tout seul")
+param tout seul
+valeur par défaut
+()
+{}</pre>
+<p>Enfin, on peut définir des paramètres qui ne peuvent être passés qu’en spécifiant leur nom. On les appelle les « keyword only parameters ». Pour ce faire, il faut mettre au moins un <code>*</code>, et tout ce qu’il y a après sans étoile ne peut plus être passé comme argument positionnel :</p>
+<pre lang="python">>>> def coooool(normal, *args, keyword_only):
+...    print(normal, args, keyword_only)
+>>> coooool("yeah", "cool", "man")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: coooool() missing 1 required keyword-only argument: 'keyword_only'
+>>> coooool("yeah", "cool", keyword_only="man")
+yeah ('cool',) man
+</pre>
+<p>Si vous n’avez pas un <code>*args</code> à placer, on peut mettre l’étoile toute seule :</p>
+<pre lang="python">>>> def coooool(normal, *, keyword_only):
+...    print(normal, keyword_only)
+>>> coooool("yeah", "man")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: coooool() takes 1 positional argument but 2 were given
+>>> coooool("yeah", keyword_only="man")
+yeah man</pre>
+<h2>Python 3.5</h2>
+<p>Je mets à jour cet article un mois avant la sortie annoncée de Python 3.5, qui parmi ses nouvelles fonctionnalités, rajoute encore des super pouvoirs à l’opérateur splat.</p>
+<p>On peut faire de l’unpacking directement dans les littéraux :</p>
+<pre lang="python">>>> [1, 2, *range(3), *range(2)]
+[1, 2, 0, 1, 2, 0, 1]
+>>> (*range(1), 4)
+(0, 4)
+>>> d = {1: 2}
+>>> d2 = {3: 4}
+>>> {**d, **d2}
+{1: 2, 3: 4}
+</pre>
+<p>On peut utiliser plusieurs fois l’unpacking des arguments dans un même appel :</p>
+<pre lang="python">>>> def pouet(a, b, c, d):
+...    print(a, b, c, d)
+>>> couleurs = ('ocre', 'moutarde')
+>>> pouet(*couleurs, *range(2)) # double étoile !
+ocre moutarde 0 1</pre>
+<h2>Jouons un peu</h2>
+<p>Si vous vous sentez à l’aise avec tout ça, vous pouvez mélanger plusieurs usages de <code>*</code> d’un coup. Je vous laisse donc en guise de conclusion un petit combo qui utilise un code précédent&nbsp;:</p>
+<pre lang="python">>>> def multiply(*args):
+...     res = 1
+...     for i in args:
+...         res = res * i
+...     return res
+...
+>>> print(multiply(*([2]*6)) == 2**6)
+True</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/operateur-splat-ou-etoile-en-python/feed/</wfw:commentRss>
+		<slash:comments>42</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">173</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/06/images.jpeg" length="7655" type="image/jpg" />	</item>
+	</channel>
+</rss>

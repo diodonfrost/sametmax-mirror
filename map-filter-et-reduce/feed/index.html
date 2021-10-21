@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: map(), filter() et reduce () ?</title>
+	<atom:link href="http://sametmax.com/map-filter-et-reduce/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/map-filter-et-reduce/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/map-filter-et-reduce/#comment-193984</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Tue, 01 May 2018 14:01:14 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7791#comment-193984</guid>
+		<description><![CDATA[&lt;p&gt;Reduce est toujours dur à comprendre et à débugger. Et les intensions sous toujours plus rapides à exécuter car on évide un appel de fonction. Après si tu as déjà la fonction déclarée, un map est plus direct.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Reduce est toujours dur à comprendre et à débugger. Et les intensions sous toujours plus rapides à exécuter car on évide un appel de fonction. Après si tu as déjà la fonction déclarée, un map est plus direct.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Cyrile</title>
+		<link>http://sametmax.com/map-filter-et-reduce/#comment-193966</link>
+		<dc:creator><![CDATA[Cyrile]]></dc:creator>
+		<pubDate>Mon, 30 Apr 2018 10:08:25 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7791#comment-193966</guid>
+		<description><![CDATA[Oui il est vrai qu&#039;on pourrait faire un truc du genre :
+
+&lt;code&gt;a = (ii**2 for ii in range(1000))
+
+b = (ii for ii in a if ii%2==0)
+
+c = (ii/3 for ii in b)
+
+...
+
+y = ...
+
+z = reduce(lambda a, b: a/b, y, 12)&lt;/code&gt;
+
+Alors là c&#039;est peut-être personnel... mais je trouve que l&#039;écriture avec les map dans ce cas est plus facilement lisible... nope ?
+
+Surtout que je pense que derrière le code doit être sensiblement identique, car au final le map dans python 3 est un simple mapage sur un yield, nope ?
+
+Enfin, dernier argument que je trouve en faveur des mot clef map, filter et reduce, c&#039;est d&#039;être raccord avec un certain nombre d&#039;autres langages (Java 8/9 avec l&#039;API Stream, Scala, Spark, etc.) et ainsi peut-être de faciliter la transition avec ces langages et Python (et vice-versa) ;-)
+]]></description>
+		<content:encoded><![CDATA[<p>Oui il est vrai qu&#8217;on pourrait faire un truc du genre :</p>
+<p><code>a = (ii**2 for ii in range(1000))</p>
+<p>b = (ii for ii in a if ii%2==0)</p>
+<p>c = (ii/3 for ii in b)</p>
+<p>...</p>
+<p>y = ...</p>
+<p>z = reduce(lambda a, b: a/b, y, 12)</code></p>
+<p>Alors là c&#8217;est peut-être personnel&#8230; mais je trouve que l&#8217;écriture avec les map dans ce cas est plus facilement lisible&#8230; nope ?</p>
+<p>Surtout que je pense que derrière le code doit être sensiblement identique, car au final le map dans python 3 est un simple mapage sur un yield, nope ?</p>
+<p>Enfin, dernier argument que je trouve en faveur des mot clef map, filter et reduce, c&#8217;est d&#8217;être raccord avec un certain nombre d&#8217;autres langages (Java 8/9 avec l&#8217;API Stream, Scala, Spark, etc.) et ainsi peut-être de faciliter la transition avec ces langages et Python (et vice-versa) ;-)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/map-filter-et-reduce/#comment-193944</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sat, 28 Apr 2018 21:50:55 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7791#comment-193944</guid>
+		<description><![CDATA[&lt;p&gt;Les expressions génératrices font pareille.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Les expressions génératrices font pareille.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Cyrile</title>
+		<link>http://sametmax.com/map-filter-et-reduce/#comment-193929</link>
+		<dc:creator><![CDATA[Cyrile]]></dc:creator>
+		<pubDate>Fri, 27 Apr 2018 19:37:38 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7791#comment-193929</guid>
+		<description><![CDATA[Salut,
+
+Je vois également un autre intérêt aux map, filter et deduce et de celui de chainer des opérations sur des itérables sans consommer un mémoire. Par exemple je peux faire :
+
+a = map(lambda x: x**2, range(10000))
+
+b = filter(lambda x: x%2 == 0, a)
+
+c = map(lambda x: x/3, b)
+
+...
+
+z = reduce(lambda a, b: a/b, y, 12)
+
+print(z)
+
+Finalement la fonction terminale fera qu&#039;une seule passe sur l&#039;itérable du début ne coûtant ainsi rien en espace RAM et avec d&#039;excellentes performances... Çà peut être très utile si on manipule d&#039;énormes variables par rapport à l&#039;espace RAM, ce qui est aujourd&#039;hui souvent le cas.
+
+Mais je me trompe peut-être, j&#039;aimerais l&#039;avis de SAM...
+]]></description>
+		<content:encoded><![CDATA[<p>Salut,</p>
+<p>Je vois également un autre intérêt aux map, filter et deduce et de celui de chainer des opérations sur des itérables sans consommer un mémoire. Par exemple je peux faire :</p>
+<p>a = map(lambda x: x**2, range(10000))</p>
+<p>b = filter(lambda x: x%2 == 0, a)</p>
+<p>c = map(lambda x: x/3, b)</p>
+<p>&#8230;</p>
+<p>z = reduce(lambda a, b: a/b, y, 12)</p>
+<p>print(z)</p>
+<p>Finalement la fonction terminale fera qu&#8217;une seule passe sur l&#8217;itérable du début ne coûtant ainsi rien en espace RAM et avec d&#8217;excellentes performances&#8230; Çà peut être très utile si on manipule d&#8217;énormes variables par rapport à l&#8217;espace RAM, ce qui est aujourd&#8217;hui souvent le cas.</p>
+<p>Mais je me trompe peut-être, j&#8217;aimerais l&#8217;avis de SAM&#8230;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sébastien</title>
+		<link>http://sametmax.com/map-filter-et-reduce/#comment-191073</link>
+		<dc:creator><![CDATA[Sébastien]]></dc:creator>
+		<pubDate>Tue, 28 Nov 2017 08:41:15 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7791#comment-191073</guid>
+		<description><![CDATA[juste un petit message pour ceux qui s&#039;interrogent sur l&#039;intérêt de map et filter...
+
+Ces fonctions typiques de la programmation fonctionnelle sont par exemple très fortement utilisées dans des bibliothèques comme py-linq https://github.com/viralogic/py-enumerable ou asq https://github.com/sixty-north/asq qui permettent d&#039;avoir une syntaxe à la LINQ (Language-Integrated Query) pour faire des requêtes (avec une API assez sympa... mais c&#039;est une question de goût) sur des itérables.
+]]></description>
+		<content:encoded><![CDATA[<p>juste un petit message pour ceux qui s&#8217;interrogent sur l&#8217;intérêt de map et filter&#8230;</p>
+<p>Ces fonctions typiques de la programmation fonctionnelle sont par exemple très fortement utilisées dans des bibliothèques comme py-linq <a href="https://github.com/viralogic/py-enumerable" rel="nofollow">https://github.com/viralogic/py-enumerable</a> ou asq <a href="https://github.com/sixty-north/asq" rel="nofollow">https://github.com/sixty-north/asq</a> qui permettent d&#8217;avoir une syntaxe à la LINQ (Language-Integrated Query) pour faire des requêtes (avec une API assez sympa&#8230; mais c&#8217;est une question de goût) sur des itérables.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/map-filter-et-reduce/#comment-190301</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 23 Oct 2017 12:25:24 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7791#comment-190301</guid>
+		<description><![CDATA[&lt;p&gt;Google &quot;python thread pool&quot; ou &quot;python multiprocessing pool&quot;. Les pools ont des méthodes map() qui distribuent le travail à des workers.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Google &#8220;python thread pool&#8221; ou &#8220;python multiprocessing pool&#8221;. Les pools ont des méthodes map() qui distribuent le travail à des workers.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Xuan</title>
+		<link>http://sametmax.com/map-filter-et-reduce/#comment-190228</link>
+		<dc:creator><![CDATA[Xuan]]></dc:creator>
+		<pubDate>Fri, 20 Oct 2017 08:50:35 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7791#comment-190228</guid>
+		<description><![CDATA[Salut !
+
+Est-il possible d&#039;utiliser map en mode &quot;thread&quot; vu que &lt;em&gt;généralement&lt;/em&gt;, il ne fait pas d&#039;effet de bord (ne modifie pas de valeurs) ?
+
+Exemple:
+
+&lt;code&gt;
+
+from time import sleep
+
+import super_map_thread
+
+def long_calcul(x):
+
+sleep(5)
+
+return x + 1
+
+liste = [i for i in range(20)]
+
+map(long_calcul, liste)  # très rapide, mais retourne un object map
+
+list(map(long_calcul, liste))  # -&#062; 5 sec * 20 = 100 sec
+
+list(super_map_thread(long_calcul, liste))  # -&#062; 5 sec (et quelques) en tout
+
+&lt;/code&gt;
+
+Je sais qu&#039;on peut le faire avec des threads. Je me demande si il y a pas un module qui fait ça ? Ou alors l&#039;utilisation n&#039;est pas assez important (ou tout simplement que ce n&#039;est pas fait pour ?) pour que quelqu&#039;un ait crée un module ?
+]]></description>
+		<content:encoded><![CDATA[<p>Salut !</p>
+<p>Est-il possible d&#8217;utiliser map en mode &#8220;thread&#8221; vu que <em>généralement</em>, il ne fait pas d&#8217;effet de bord (ne modifie pas de valeurs) ?</p>
+<p>Exemple:</p>
+<p><code></p>
+<p>from time import sleep</p>
+<p>import super_map_thread</p>
+<p>def long_calcul(x):</p>
+<p>sleep(5)</p>
+<p>return x + 1</p>
+<p>liste = [i for i in range(20)]</p>
+<p>map(long_calcul, liste)  # très rapide, mais retourne un object map</p>
+<p>list(map(long_calcul, liste))  # -&gt; 5 sec * 20 = 100 sec</p>
+<p>list(super_map_thread(long_calcul, liste))  # -&gt; 5 sec (et quelques) en tout</p>
+<p></code></p>
+<p>Je sais qu&#8217;on peut le faire avec des threads. Je me demande si il y a pas un module qui fait ça ? Ou alors l&#8217;utilisation n&#8217;est pas assez important (ou tout simplement que ce n&#8217;est pas fait pour ?) pour que quelqu&#8217;un ait crée un module ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/map-filter-et-reduce/#comment-188321</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 19 Jul 2017 19:17:15 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7791#comment-188321</guid>
+		<description><![CDATA[&lt;p&gt;C&#039;est ce que font les listes en intension, mais avec une syntaxe native;&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>C&#8217;est ce que font les listes en intension, mais avec une syntaxe native;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Kirire</title>
+		<link>http://sametmax.com/map-filter-et-reduce/#comment-188297</link>
+		<dc:creator><![CDATA[Kirire]]></dc:creator>
+		<pubDate>Tue, 18 Jul 2017 21:27:19 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7791#comment-188297</guid>
+		<description><![CDATA[Alors je me trompe peut-être... mais un intérêt (et non des moindres) de map n&#039;est-il pas de limiter les effets de bord ? Et ainsi d&#039;avoir un code plus performant ?
+
+Cela permet de faire des pipelines d&#039;opération et d&#039;affecter une seule fois une variable non ? Un exemple bête :
+
+toto = un dataframe
+
+titi = toto[&#039;une colonne&#039;].map(fonction1)&#092;
+
+.map(fonction2)&#092;
+
+.map(fonction3)&#092;
+
+.map(fonction4), etc.
+
+C&#039;est beaucoup moins poussé que l&#039;API Stream de Java8 (don je suis jaloux et qui manque sous Python ^^). Mais je trouve ça claire comme écriture... non ?
+
+Ce ne serait pas le map, filter et reduce du builtin qui sont un peu vieillotte ? Python n&#039;aurait-il pas à y gagner de s&#039;inspirer de l&#039;API Stream de Java8 ? (je suis pas un pro programmeur, ce sont de vrais questions)
+]]></description>
+		<content:encoded><![CDATA[<p>Alors je me trompe peut-être&#8230; mais un intérêt (et non des moindres) de map n&#8217;est-il pas de limiter les effets de bord ? Et ainsi d&#8217;avoir un code plus performant ?</p>
+<p>Cela permet de faire des pipelines d&#8217;opération et d&#8217;affecter une seule fois une variable non ? Un exemple bête :</p>
+<p>toto = un dataframe</p>
+<p>titi = toto[&#8216;une colonne&#8217;].map(fonction1)&#092;</p>
+<p>.map(fonction2)&#092;</p>
+<p>.map(fonction3)&#092;</p>
+<p>.map(fonction4), etc.</p>
+<p>C&#8217;est beaucoup moins poussé que l&#8217;API Stream de Java8 (don je suis jaloux et qui manque sous Python ^^). Mais je trouve ça claire comme écriture&#8230; non ?</p>
+<p>Ce ne serait pas le map, filter et reduce du builtin qui sont un peu vieillotte ? Python n&#8217;aurait-il pas à y gagner de s&#8217;inspirer de l&#8217;API Stream de Java8 ? (je suis pas un pro programmeur, ce sont de vrais questions)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/map-filter-et-reduce/#comment-182611</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 10 Nov 2016 12:28:32 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7791#comment-182611</guid>
+		<description><![CDATA[&lt;p&gt;Les comprehensions sont de la syntaxe, donc le code derrière map directement sur des structures C. map et filter sont des fonctions, elles prennent en paramètres une autre fonction, qui à chaque appel prend un paramètre à nouveau. Cela fait pas mal de référence python à résoudre à chaque tour de boucle, et c&#039;est ce qui ralenti le process.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Les comprehensions sont de la syntaxe, donc le code derrière map directement sur des structures C. map et filter sont des fonctions, elles prennent en paramètres une autre fonction, qui à chaque appel prend un paramètre à nouveau. Cela fait pas mal de référence python à résoudre à chaque tour de boucle, et c&#8217;est ce qui ralenti le process.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

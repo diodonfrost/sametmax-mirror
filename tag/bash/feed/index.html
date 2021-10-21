@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>bash &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/bash/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Nouvel alias pour Python et .bashrc</title>
+		<link>http://sametmax.com/nouvel-alias-pour-python-et-bashrc/</link>
+		<comments>http://sametmax.com/nouvel-alias-pour-python-et-bashrc/#comments</comments>
+		<pubDate>Thu, 17 Mar 2016 15:27:41 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=18674</guid>
+		<description><![CDATA[J'en avais marre de taper Python en entier. Et surtout, je voulais lancer Python3.5 si il est dispo, et si possible ptpython, ou ipython. Sauf si je passe des arguments. Et que ça pete pas tout dans un virtualenv. ]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;en avais marre de taper Python en entier. Et surtout, je voulais lancer Python3.5 si il est dispo, et si possible ptpython, ou ipython. Sauf si je passe des arguments. Et que ça pete pas tout dans un virtualenv. </p>
+<p>Bref:</p>
+<pre lang="python">function p {
+    local SUFFIX="$@"
+    if [[ "$VIRTUAL_ENV" != "" ]]
+    then
+      local PREFIX="$VIRTUAL_ENV"/bin
+      COMMANDS=("python")
+    else
+      local PREFIX=/usr/bin
+      COMMANDS=("python3.5" "python")
+    fi
+
+    if [[ "$#" -eq 0 ]]; then
+        SUFFIX=""
+        local COMMANDS=("python3.5 -m ptpython"
+                        "python3.5 -m ipython"
+                        "python -m ptpython"
+                        "python -m ipython"
+                        "python")
+    fi
+
+    for i in "${COMMANDS[@]}"
+    do
+       $PREFIX'/'$i $SUFFIX;
+       [ "$?" -eq 0 ] && return 0
+    done
+
+}
+</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/nouvel-alias-pour-python-et-bashrc/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">18674</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/03/tumblr_o30vgx2Ip21r539hzo1_500.jpg" length="67959" type="image/jpg" />	</item>
+		<item>
+		<title>Mon prompt bash est tout cassé !</title>
+		<link>http://sametmax.com/mon-prompt-bash-est-tout-casse/</link>
+		<comments>http://sametmax.com/mon-prompt-bash-est-tout-casse/#comments</comments>
+		<pubDate>Thu, 14 Jan 2016 09:43:33 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[prompt]]></category>
+		<category><![CDATA[virtualenv]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=17806</guid>
+		<description><![CDATA[Ça m'était déjà arrivé plusieurs fois après avoir ajouté mon env virtuel et ma branch git dans mon prompt : soudainement il se met à faire n'importe quoi. Des mixes de caratères, des sauts de ligne qui se font pas, la fusion de la ligne de commande sur elle-même.]]></description>
+				<content:encoded><![CDATA[<p>Ça m’était déjà arrivé plusieurs fois après avoir ajouté mon env virtuel et ma branch git dans mon prompt : soudainement il se met à faire n’importe quoi. Des mixes de caractères, des sauts de ligne qui se font pas, la fusion de la ligne de commande sur elle-même.</p>
+<p>Inutilisable.</p>
+<p>Aujourd’hui plutôt que de subir le problème, j’ai cherché une solution, <a href="http://superuser.com/questions/367275/linux-coloring-bash-prompt-will-break-carriage-return">et pouf</a> : quand on utilise des couleurs dans son prompt, il faut entourer tout le balisage de <code>[]</code>.</p>
+<p>Mais le balisage qui colore le prompt est composé de séquences d’échappements, qui contiennent aussi <code>[]</code>, donc il faut mettre des anti-slash.</p>
+<p>Du coup on passe de ça :</p>
+<p><code>export PS1="\[\033[01;34m\]\$(basename '$VIRTUAL_ENV')\e[0m $PS1"</code></p>
+<p>à :</p>
+<p><code>export PS1="\[\033[01;34m\]\$(basename '$VIRTUAL_ENV')[\e[0m] $PS1"<br />
+</code></p>
+<p>à la solution qui marche :</p>
+<p><code>export PS1="\[\033[01;34m\]\$(basename '$VIRTUAL_ENV')\[\e[0m\] $PS1"</code></p>
+<p>Évidemment à appliquer à tous les codes d’échappement chelou qu’on a réparti un peu partout.</p>
+<p>J’ai un tampon prêt à tirer pour le premier qui me parle de zsh.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/mon-prompt-bash-est-tout-casse/feed/</wfw:commentRss>
+		<slash:comments>24</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">17806</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/01/mJT7sDs.jpg" length="657543" type="image/jpg" />	</item>
+		<item>
+		<title>On a tenté de nous hacker 0bin</title>
+		<link>http://sametmax.com/on-a-tente-de-nous-hacker-0bin/</link>
+		<comments>http://sametmax.com/on-a-tente-de-nous-hacker-0bin/#comments</comments>
+		<pubDate>Sun, 20 Dec 2015 09:36:38 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[0bin]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[meta]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[security]]></category>
+		<category><![CDATA[zerobin]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=17160</guid>
+		<description><![CDATA[Je suis tombé sur un dossier bizarre en me balandant dans le dossier contenant tous les pastes de 0bin.net.]]></description>
+				<content:encoded><![CDATA[<p>En me baladant dans l’arbo de <a href="http://0bin.net">0bin.net</a> pour retirer un dox qu’on m’avait signalé je suis tombé sur un dossier au nom bizarre :</p>
+<pre lang="bash"># ls -l
+total 4
+4 drwxr-xr-x 7 root root 4096 sept. 24  2014 --</pre>
+<p>Hum, voilà qui n’est pas pratique à analyser depuis le bash. Et pourquoi j’ai ce dossier-là d’ailleurs ?</p>
+<p>Regardons ce qu’il y a dedans :</p>
+<pre lang="bash">
+# python -c "import os; os.rename('--', "strange_dir")"
+# ls strange_dir/
+3Q  Dk  k5  Oh  -u</pre>
+<p>Oh, y a un dossier nommé &#8220;-u&#8221;&#8230;</p>
+<p>A ce stade-là, j’ai juste supprimé le truc.</p>
+<p>Et j’ai réalisé : on crée les dossiers de l’arbo en fonction du nom du paste, qui est une clé générée côté client, et donc fournie par un code JavaScript non trusté.</p>
+<p>Du coup l’attaqueur nous a sans doute passé une commande bash comme nom de fichier. J’imagine, espérant qu’on fabriquait le fichier avec une exécution shell. Comme on utilise le module os pour le faire, je pense que ça n’a eu aucun impact.</p>
+<p>J’espère :)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/on-a-tente-de-nous-hacker-0bin/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">17160</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/12/9eFBCaD.jpg" length="670682" type="image/jpg" />	</item>
+		<item>
+		<title>Rejouer un session de terminal avec playitagainsam</title>
+		<link>http://sametmax.com/rejouer-un-session-de-terminal-avec-playitagainsam/</link>
+		<comments>http://sametmax.com/rejouer-un-session-de-terminal-avec-playitagainsam/#comments</comments>
+		<pubDate>Thu, 22 May 2014 08:29:36 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[ipython]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[shell]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10298</guid>
+		<description><![CDATA[<a href="https://github.com/rfk/playitagainsam">playitagainsam</a>, ou PIAS  a pour but de rejouer des sessions shell: il lance un shell, enregistre ce qu'on y a tapé, et quand on quitte le shell, sauvegarde le tout dans un fichier. Ensuite, on peut lire le contenu du fichier et revoir la session shell telle qu'elle a été tapée.]]></description>
+				<content:encoded><![CDATA[<p>Combien de fois, durant une formation, on m&#8217;a demandé si je pouvais donner un dump de la session shell.</p>
+<p><a href="https://github.com/rfk/playitagainsam">playitagainsam</a>, ou PIAS, a exactement pour but de faire cela: il lance un shell, enregistre ce qu&#8217;on y a tapé, et quand on quitte le shell, sauvegarde le tout dans un fichier. Ensuite, on peut lire le contenu du fichier et revoir la session shell telle qu&#8217;elle a été tapée.</p>
+<p>C&#8217;est un programme Python, on peut donc le <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> installer :</p>
+<pre lang="bash">pip install playitagainsam --user</pre>
+<p>Ensuite, on lance une session à enregistrer avec la sous commande record :</p>
+<pre lang="bash">pias record nom_du_fichier_ou_sauver_l_enregistrement </pre>
+<p>PIAS va lancer un nouveau shell, par défaut le même que votre shell actuel (souvent bash, pour moi fish), mais vous pouvez préciser un type de shell spécial avec <code>--shell</code>. Ex : </p>
+<pre lang="bash">pias record ex1 --shell ipython</pre>
+<p>A partir de là il n&#8217;y a rien à faire. On peut travailler normalement et oublier qu&#8217;on a utilisé PIAS. Une fois qu&#8217;on a terminé sa petite affaire, il suffit de sortir du shell (CTRL + D, exit, etc), et la session va être sauvegardée dans un format JSON facile à corriger à la main si vous souhaitez la rendre plus agréable :</p>
+<pre lang="bash">{
+  "events": [
+    {
+      "act": "OPEN",
+      "size": [
+        162,
+        33
+      ],
+      "term": "1c53f048e3a74984b2a93af175e24e87"
+    },
+    {
+      "act": "PAUSE",
+      "duration": 0.10042214393615723
+    },
+    {
+      "act": "WRITE",
+      "data": "\u001b]0;sam@sametmax.com: /tmp\u0007sam@sametmax.com:/tmp$ ",
+      "term": "1c53f048e3a74984b2a93af175e24e87"
+    },
+    {
+      "act": "ECHO",
+      "data": "touch essai",
+      "term": "1c53f048e3a74984b2a93af175e24e87"
+...
+}</pre>
+<p>Quand vous voulez rejouer la session :</p>
+<pre lang="bash">pias play fichier_d_enregistrement</pre>
+<p>Par défaut il faut appuyer sur une touche quelconque du clavier pour voir apparaitre chaque caractère, donnant l&#8217;impression que vous êtes un hacker de Hollywood. C&#8217;est rigolo, mais parfaitement chiant à la longue. On peut faire jouer la session automatiquement avec l&#8217;option <code>--auto-type</code> qui va taper chaque ligne automatiquement. Il suffira alors d&#8217;appuyer sur entrée à chaque ligne pour avoir le résultat suivant. C&#8217;est mon mode préféré. </p>
+<p>Si vous êtes un gros feignant, vous pouvez tout jouer en automatique en rajoutant l&#8217;option <code>--auto-waypoint</code> qui va vous dispenser de taper entrée à chaque fin de ligne. Ex :</p>
+<pre lang="bash">pias play ex1 --auto-type --auto-waypoint</pre>
+<p><strong>La session jouée est simulée.</strong> Elle n&#8217;a aucun impacte sur le système. Si vous faites un <code>mkdir</code> dans bash ou un <code>shutil.rmtree</code> dans python, ça ne fera rien.</p>
+<p>Néanmoins, parfois il est utile d&#8217;avoir le effets réels des commandes. Dans ce cas on peut utiliser <code>--live-replay</code>. Attention, faites bien gaffe à ce que vous allez jouer&#8230;</p>
+<p>playitagainsam est intéressant pour tout ce qui est formation et tutorial, d&#8217;autant plus qu&#8217;il existe un <a href="https://github.com/rfk/playitagainsam-js/">player javascript</a> pour faire la démonstration de vos sessions shell sur un blog ou un slideshow.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/rejouer-un-session-de-terminal-avec-playitagainsam/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">10298</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/05/G67guCh.jpg" length="36803" type="image/jpg" />	</item>
+		<item>
+		<title>Remplacer sed, awk, cut et Perl par Python (= orgasme pour sysadmin)</title>
+		<link>http://sametmax.com/remplacer-sed-awk-cut-et-perl-par-python-orgasme-pour-sysadmin/</link>
+		<comments>http://sametmax.com/remplacer-sed-awk-cut-et-perl-par-python-orgasme-pour-sysadmin/#comments</comments>
+		<pubDate>Sat, 14 Dec 2013 08:28:41 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[awk]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[perl]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sed]]></category>
+		<category><![CDATA[sysadmin]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8261</guid>
+		<description><![CDATA[La force de perl c'est qu'il permettait de piper des données directement via la ligne de commande pour faire des manipulations rapides.
+
+C'est pour cela que c'était devenu les choix des sysadmins. Parce que jusqu'ici, le choix c'était soit de faire un truc simple en connaissant par coeur la tool box GNU, soit ouvrir un fichier et faire un script.
+
+Python ne permet pas de piper des données directement dans la commande, mais des projets ont vu le jour pour le faire.]]></description>
+				<content:encoded><![CDATA[<p>La force de Perl c&#8217;est qu&#8217;il permettait de piper des données directement via la ligne de commande pour faire des manipulations rapides.</p>
+<p>C&#8217;est pour cela que c&#8217;était devenu les choix des sysadmins. Parce que jusqu&#8217;ici, le choix c&#8217;était soit de faire un truc simple en connaissant par coeur la tool box GNU, soit ouvrir un fichier et faire un script.</p>
+<p>Python ne permet pas de piper des données directement dans la commande, mais des projets ont vu le jour pour le faire.</p>
+<p>Il y a le projet <a href="http://code.google.com/p/pyp/">pyp</a>, que l&#8217;on doit à Sony Pictures Imageworks qui avait besoin de se simplifier l&#8217;automatisation des tâches de build pour ses films.</p>
+<p>Et il y a <a href="https://pypi.python.org/pypi/Pyped/1.0">pyped</a>, dont j&#8217;avais brièvement parlé <a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">ici</a> (article qui mérite d&#8217;être mis à jour vu que j&#8217;ai remplace dateutils par <a href="http://sametmax.com/les-time-zones-en-python/">arrow</a>).</p>
+<p>Les deux étaient sympas, mais avait des syntaxes alambiquées, n&#8217;étaient pas compatibles python 3 et manquaient d&#8217;imports auto. Cependant, pyped est récemment passé en v1.0, donc stable, et a une toute nouvelle approche de syntaxe qui rend la bestiole super agréable à utiliser.</p>
+<p>Présentation.</p>
+<h2>Stdin, ligne à ligne</h2>
+<p>L&#8217;installation est bateau, c&#8217;est du <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> :</p>
+<pre lang="bash">pip install --user pyped</pre>
+<p>Et derrière, on obtient la commande <code>pyp</code>. Elle s&#8217;utilise essentiellement à la suite d&#8217;une autre commande. Typiquement :</p>
+<pre lang="bash">cat /etc/fsta | pyp "un truc"</pre>
+<p>L&#8217;astuce, c&#8217;est que &#8220;un truc&#8221; peut être n&#8217;importe quelle expression Python. Généralement une expression qui <code>print()</code> quelque chose.</p>
+<p>Or, Pyped met automatiquement à disposition de cette expression deux variables :</p>
+<ul>
+<li>La ligne en cours, dans la variable <code>x</code>.</li>
+<li>Le numéro de la ligne en cours, dans la variable <code>i</code>.</li>
+</ul>
+<p>L&#8217;expression Python est appelée une fois pour chaque ligne.</p>
+<p>Par exemple, supposons que j&#8217;ai un fichier &#8220;fortune.txt&#8221; contenant :</p>
+<pre lang="bash">bitcoin (btc) : 5
+euros (€) : 100
+dollars ($) : 80</pre>
+<p>Si je veut tout mettre en majuscule, je fais :</p>
+<pre lang="bash">$ cat fortune.txt | pyp "print(x.upper())"
+BITCOIN (BTC) : 5
+EUROS (€) : 100
+DOLLARS ($) : 80</pre>
+<p>On peut mettre plusieurs expressions d&#8217;affilé. Ainsi, si je veux récupérer la somme et le symbole uniquement :</p>
+<pre lang="bash">$ cat fortune.txt | pyp "devise, sign, _, value = x.split()" "sign = sign.strip('()')" "print('%s%s' % (value, sign))"
+5btc
+100€
+80$</pre>
+<p>Ok, c&#8217;est plus long que perl, mais vachement plus facile à écrire et à relire. Et j&#8217;utilise un langage que je connais déjà. Et pas besoin de faire un mix incompréhensible de sed, awk et autre cut.</p>
+<p>Si j&#8217;ai vraiment besoin de lisibilité, je peux même le mettre sur plusieurs lignes :</p>
+<pre lang="bash">$ cat fortune.txt | pyp "                                                                                                 
+devise, sign, _, value = x.split() 
+sign = sign.strip('()') 
+print('%s%s' % (value, sign))  
+"
+5btc
+100€
+80$</pre>
+<p>Vous aurez noté que j&#8217;utilise <code>print()</code> et que je semble ne pas me soucier de l&#8217;unicode. C&#8217;est parceque pyped fait ça au début du script :</p>
+<pre lang="python">from __future__ import print_function, unicode_literals, division, absolute_imports</pre>
+<p>Du coup, on est bien en Python 2.7, mais on bénéficie de la division améliorée, de la fonction pour printer, des imports absolus et surtout, de l&#8217;unicode partout. D&#8217;ailleurs pyped vous transforme <code>x</code> pour que ce soit un objet unicode. </p>
+<p>Dans tous les cas, pyped est compatible Python 3.</p>
+<h2>Tout traiter d&#8217;un coup</h2>
+<p>Parfois, on a besoin d&#8217;avoir accès à toutes les lignes, pas juste les lignes une à une. pyped permet cela avec l&#8217;option <code>-i</code>. Les variables <code>x</code> et <code>i</code> disparaissent au profit de la variable <code>l</code>, qui contient un itérable sur toutes les lignes.</p>
+<p>Par exemple, envie de trier tout ça ?</p>
+<pre lang="python">cat fortune.txt | pyp -i "
+lignes = (x.split() for x in l)
+lignes = sorted((v, s.strip('()')) for d, s, _, v in lignes)
+for ligne in lignes: print('%s%s' % ligne)
+"
+100€
+5btc
+80$</pre>
+<h2>Moar options</h2>
+<p>Lisez la doc, car il y a d&#8217;autres options du genre éviter que pyped vous strip automatiquement le ligne break, forcer l&#8217;encoding, etc.</p>
+<p>Parmi les trucs les plus utiles, il y a l&#8217;option <code>-b</code> qui permet de lancer un code avant la boucle. Pratique pour importer des trucs genre le module <code>tarfile</code> pour extraire une archive avant d&#8217;utiliser son contenu.</p>
+<p>Néanmoins la plupart du temps on a rien besoin d&#8217;importer car pyped importe déjà automatiquement les modules les plus utiles : maths, datetime, re, json, hashlib, uuid, etc. </p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/remplacer-sed-awk-cut-et-perl-par-python-orgasme-pour-sysadmin/feed/</wfw:commentRss>
+		<slash:comments>27</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8261</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/12/hsmFx9T.jpg" length="182812" type="image/jpg" />	</item>
+		<item>
+		<title>Variables d&#8217;environnement utilisées par Python</title>
+		<link>http://sametmax.com/variables-denvironnement-utilisees-par-python/</link>
+		<comments>http://sametmax.com/variables-denvironnement-utilisees-par-python/#comments</comments>
+		<pubDate>Wed, 31 Jul 2013 15:07:36 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6987</guid>
+		<description><![CDATA[Si vous settez la variable avec le bon nom dans votre shell et que vous lancez l'interpréteur Python, vous pouvez démarrer ce dernier avec un comportement différent, comme le ferait une option ou un fichier de config.]]></description>
+				<content:encoded><![CDATA[<p>Avant même l&#8217;utilisation d&#8217;options, de fichiers de conf, et outils installés, les variables d&#8217;environnement sont un moyen pratique de configurer un programme. Il s&#8217;agit simplement d&#8217;une variable globale accessible dans le shell courant.</p>
+<p>Par exemple, sous bash, pour créer une variable, il suffit de faire :</p>
+<pre lang="bash">$ NOMDEVARIABLE='valeur' # mettre la variable à la bonne valeur
+$ export NOMDEVARIABLE # rendre la variable globale</pre>
+<p>La convention est de mettre leur nom en majuscule.</p>
+<p>Et pour afficher la variable, il suffit de faire :</p>
+<pre lang="bash">$ echo $NOMDEVARIABLE
+valeur</pre>
+<p>Pourquoi c&#8217;est pratique ? Et bien parce qu&#8217;un programme comme Python va aussi aller regarder dans ces variables d&#8217;environnement pour se configurer. Donc, si vous settez la variable avec le bon nom dans votre shell et que vous lancez l&#8217;interpréteur Python, vous pouvez démarrer ce dernier avec un comportement différent, comme le ferait une option ou un fichier de config. La différence ? La variable est valable pour toute la session de shell, donc même si vous ressortez de l&#8217;interpréteur Python, et que vous le relancez, tant que vous êtes dans la même session de shell, la configuration reste la même.</p>
+<h2>Variables attendues</h2>
+<p><code>PYTHONSTARTUP</code>: un module à exécuter au démarrage de Python.</p>
+<p>Pratique si vous savez que vous allez utiliser souvent le même code dans votre prochaine session de travail avec le shell. Par exemple, je crée un module <em>/tmp/imports.py</em> et je met dedans :</p>
+<pre lang="python">import json
+import pickle
+from datetime import datetime</pre>
+<p>Ensuite, je set ma variable :</p>
+<pre lang="bash">$ PYTHONSTARTUP='/tmp/imports.py' 
+$ export PYTHONSTARTUP </pre>
+<p>Et en lançant l&#8217;interpréteur, même en sortant et en le relançant 50 fois de suite, je n&#8217;ai pas à importer ces modules.</p>
+<p><code>PYTHONPATH</code> : une liste de dossiers séparés par &#8216;:&#8217; qui va être ajouté à sys.path</p>
+<p>Vous savez qu&#8217;il y a des packages qui ne sont pas dans le PYTHON PATH, donc non importables. Mais pour le moment, vous voulez les utiliser quand même pour faire des tests vite fait (vous corrigerez le problème plus tard ^^).</p>
+<p>Facile:</p>
+<pre lang="bash">PYTHONPATH='/home/sam/un_dossier_qui_contient_mes_libs:/home/sam/projects/autre_projet'
+export $PYTHONPATH</pre>
+<p>Et voilà, tout ce qui est dans ces deux dossiers est importable.</p>
+<p>Il y a encore :</p>
+<p><code>PYTHONHOME</code> : choisir un autre dossier dans lequel chercher l&#8217;interpréteur Python.<br />
+<code>PYTHONCASEOK</code> : ingorer la casse dans le nom des modules sous Windows<br />
+<code>PYTHONIOENCODING</code> : forcer un encoding par défaut pour stdin/stdout/stderr<br />
+<code>PYTHONHASHSEED</code> : changer la seed hash() (renforce la sécurité de la VM)</p>
+<h2>Variables d&#8217;environnement permanentes</h2>
+<p>Les programmes Python utilisent beaucoup les variables d&#8217;environnement : Django, Celery, nose, virtualenv, pip&#8230; Tous peuvent être <strong>aussi</strong> configurés avec ces variables.</p>
+<p>Parfois, on voudra que cette variable soit accessible depuis tous les shells, et même après le reboot. Bref, rendre la configuration permanente.</p>
+<p>Il y a plusieurs solutions. L&#8217;une est de mettre la déclaration de la variable dans le script de démarrage de votre shell, par exemple sous bash, de mettre la variable dans <em>.bashrc</em>.</p>
+<p>Ainsi, j&#8217;ai des entrées comme celle-ci dans <a href="sametmax.com/a-linterieur-de-mon-bashrc/">mon .bashrc</a> :</p>
+<pre lang="bash"># évite à pip de télécharger plusieurs fois la même lib à la réinstallation
+PIP_DOWNLOAD_CACHE='/opt/pip-cache';
+export PIP_DOWNLOAD_CACHE;</pre>
+<p>Une autre est de la mettre dans un hook, c&#8217;est à dire un script exécuté à un moment donné par un programme. De nombreux programmes ont des hooks, et il y a des exemples sur le blog pour <a href="http://sametmax.com/les-hooks-de-virtualenv-exemple-postactivate-pour-les-settings-de-django/">virtualenv</a> et <a href="http://sametmax.com/purger-les-fichiers-pyc-et-un-hook-git-en-bonus/">git</a>.</p>
+<h2>Variables d&#8217;environnement personnalisées</h2>
+<p>Vos propres programmes peuvent lire (pour se configurer) et écrire (pour configurer d&#8217;autres programme ou forcer leur propre configuration en cas de multiprocessing) des variables d&#8217;environnement. Il suffit de faire :</p>
+<pre lang="python">>>> import os
+>>> os.environ
+{'LC_NUMERIC': 'fr_FR.UTF-8', 'gs_max_changes': '99', 'scmbDir': '/home/sam/.scm_breeze', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'AUTOJUMP_DATA_DIR': '/home/sam/.local/share/autojump', 'LC_IDENTIFICATION': 'fr_FR.UTF-8', 'XDG_CURRENT_DESKTOP': 'Unity', 'GNOME_KEYRING_PID': '2787', 'LOGNAME': 'sam', 'USER': 'sam', 'PROMPT_COMMAND': 'set_bash_prompt;preexec_invoke_cmd', 'PATH': '/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games', 'LC_PAPER': 'fr_FR.UTF-8', 'GNOME_KEYRING_CONTROL': '/home/sam/.cache/keyring-1rkOf1', 'design_av_dirs': 'Animations Videos Flash Music Samples', 'DISPLAY': ':0', 'SSH_AGENT_PID': '2849', 'LANG': 'fr_FR.UTF-8', 'TERM': 'xterm', 'SHELL': '/bin/bash', 'XDG_SESSION_PATH': '/org/freedesktop/DisplayManager/Session0', 'XDG_SESSION_COOKIE': 'ccef8e8a757563a3c14c304f00000003-1375177738.724796-1812587231', 'LANGUAGE': 'fr_FR:fr_CA:en', 'SESSION_MANAGER': 'local/sam:@/tmp/.ICE-unix/2798,unix/sam:/tmp/.ICE-unix/2798', 'LC_MONETARY': 'fr_FR.UTF-8', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'MANDATORY_PATH': '/usr/share/gconf/ubuntu.mandatory.path', 'DBUS_SESSION_BUS_ADDRESS': 'unix:abstract=/tmp/dbus-4sjzHNl8JS,guid=6ea6a72c49faf1630800018', 'VIRTUALENVWRAPPER_LOG_DIR': '/home/sam/.virtualenvs', 'COMPIZ_CONFIG_PROFILE': 'ubuntu', 'EDITOR': '/usr/bin/textadept', 'DESKTOP_AUTOSTART_ID': '10b40d4ebf3d1cf3fd700000027980010', 'GPG_AGENT_INFO': '/home/sam/.cache/keyring-1rkOf1/gpg:0:1', 'HOME': '/home/sam', 'WORKON_HOME': '/home/sam/.virtualenvs', 'SHLVL': '1', 'SSH_AUTH_SOCK': '/home/sam/.cache/keyring-1rkOf1/ssh', 'VIRTUALENVWRAPPER_HOOK_DIR': '/home/sam/.virtualenvs', 'LC_ADDRESS': 'fr_FR.UTF-8', 'COMP_WORDBREAKS': ' \t\n"\'><;|&#038;(:', 'root_design_dir': '/home/sam/Dropbox/Design', 'GDMSESSION': 'ubuntu', 'project_design_dir': 'design_assets', 'git_status_command': 'git_status_shortcuts', 'XDG_SEAT_PATH': '/org/freedesktop/DisplayManager/Seat0', 'LC_ALL': 'fr_FR.UTF-8', 'LESSOPEN': '| /usr/bin/lesspipe %s', 'git_env_char': 'e', '_': '/usr/bin/python', 'DEFAULTS_PATH': '/usr/share/gconf/ubuntu.default.path', 'VIRTUALENVWRAPPER_PROJECT_FILENAME': '.project', 'DESKTOP_SESSION': 'ubuntu', 'GIT_REPO_DIR': '/home/sam/Work', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'GTK_MODULES': 'canberra-gtk-module:canberra-gtk-module', 'UBUNTU_MENUPROXY': 'libappmenu.so', 'AUTOJUMP_HOME': '/home/sam', 'LC_TELEPHONE': 'fr_FR.UTF-8', 'XAUTHORITY': '/home/sam/.Xauthority', 'LC_MEASUREMENT': 'fr_FR.UTF-8', 'PWD': '/home/sam', 'PIP_DOWNLOAD_CACHE': '/opt/pip-cache', 'design_ext_dirs': 'Fonts IconSets', 'ga_auto_remove': 'yes', 'LC_NAME': 'fr_FR.UTF-8', 'design_base_dirs': 'Images Backgrounds Logos Icons Mockups Screenshots', 'LC_TIME': 'fr_FR.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.axa=00;36:*.oga=00;36:*.spx=00;36:*.xspf=00;36:', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/', 'GIT_REPOS': ''}</pre>
+<p>C'est un simple dico dans lequel vous pouvez lire et écrire. Comme vous pouvez le voir, il ne s'agit pas juste des variables qui concernent Python mais de toutes celle de la session, donc attention, de grands pouvoirs impliquent de grandes possibilités de merder.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/variables-denvironnement-utilisees-par-python/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">6987</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/07/unziDZk.jpg" length="36550" type="image/jpg" />	</item>
+		<item>
+		<title>Historique bash récent</title>
+		<link>http://sametmax.com/historique-bash-recent/</link>
+		<comments>http://sametmax.com/historique-bash-recent/#comments</comments>
+		<pubDate>Thu, 11 Apr 2013 12:23:52 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[meta]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5683</guid>
+		<description><![CDATA[Je plagie <a href="http://pydanny.com/20130410-history-of-my-most-used-shell-commands.html">PyDanny</a> en affichant ici mon historique des commandes les plus utilisées.]]></description>
+				<content:encoded><![CDATA[<p>Je plagie <a href="http://pydanny.com/20130410-history-of-my-most-used-shell-commands.html">PyDanny</a> en affichant ici mon historique des commandes les plus utilisées récupéré grâce à :</p>
+<pre lang="bash">$ history | awk '{a[$2]++ } END{for(i in a){print a[i] " " i}}'|sort -rn |head -n 20</pre>
+<p>L&#8217;exercice consiste à commenter chaque entrée, donc acte :</p>
+<pre>100 ./manage.py # Jamie Foxx
+71 sudo         # Make me a sandwich (then apt-get upgrade)
+56 cd           # j'ai beaucoup de projets différents
+41 ipython      # Voilà ce que c'est d'être dev Python...
+40 ssh          # ... sur des projets Web
+37 py.test      # Ben oui, je fais des tests !
+37 ls           # Comment ça IOError ?
+34 gs           # Alias de Git status :-)
+26 ga           # Merveilleux SCMBreeze, installez le
+24 pip          # requests, ipdb, path.py, peewee...
+24 co           # git commit -m "`echo "$*" | sed -e 's/^./\U&\E/g'`"
+22 vi           # Presque que pour les config d'nginx
+21 python       # Quand je fais des tests pour le blog
+17 [censored]   # Le nom d'un projet de site de Cul
+15 workon       # Ca devrait être + élévé, mais j'ai ajouté l'autovirtualenv 
+15 grin         # J'aime pas "rechercher dans tous les fichiers" sur ST2
+11 tail         # Une longue session de debuggage via log d'erreurs
+10 ipython3     # Migration vers Python 3 en cours
+9 wget          # Pas envie de toucher ma souris</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/historique-bash-recent/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">5683</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/04/W7Wf4mr.jpg" length="131363" type="image/jpg" />	</item>
+		<item>
+		<title>Invalid cross-device link</title>
+		<link>http://sametmax.com/invalid-cross-device-link/</link>
+		<comments>http://sametmax.com/invalid-cross-device-link/#comments</comments>
+		<pubDate>Tue, 09 Apr 2013 10:19:57 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[file]]></category>
+		<category><![CDATA[os]]></category>
+		<category><![CDATA[oserror]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[rename]]></category>
+		<category><![CDATA[shutil]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5652</guid>
+		<description><![CDATA[Les erreurs d'upload de fichier, c'est 99% de problèmes de droit d'accès et d'espace disque. Mais de temps à autres, on tombe sur des petites saloperies bien vicelardes...]]></description>
+				<content:encoded><![CDATA[<p>Les erreurs d&#8217;upload de fichier, c&#8217;est 99% de problèmes de droit d&#8217;accès et d&#8217;espace disque. Mais de temps à autres, on tombe sur des petites saloperies bien vicelardes comme ce code anodin :</p>
+<pre lang="python">os.rename(uploaded_tmp_file, destination)</pre>
+<p>Ce snippet, comme vous l&#8217;aurez compris, prend simplement un fichier qui vient d&#8217;être uploadé et le déplace vers un autre dossier où il sera traité, chouchouté, encodé, et mis en ligne.</p>
+<p>Sauf que la ligne en question nous a valu un cryptique :</p>
+<p><code>IOError: Invalid cross-device link</code></p>
+<p><a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">PDB</a> nous confirme le merdier, même en le faisant à la main. Pourtant la commande bash <code>MV</code> fait le déplacement du fichier sans problème.</p>
+<p>User / group ? Checked.</p>
+<p>Permission en lecture écriture ? Checked.</p>
+<p>SEL linux ? Désactivé depuis longtemps.</p>
+<p>Quid alors ?</p>
+<p><a href="http://mail.python.org/pipermail/python-list/2005-February/323335.html">Les archives de la mailling list</a> de Python nous offre une réponse à la question, que je vous traduis :</p>
+<blockquote><p>mv est un programme étonnamment complexe, tandis que os.rename est un wrapper autour de rename(2) qui est probablement documenté sur ton système comme retournant EXDEV dans ces circonstances.</p>
+<p>os.xxx est généralement une surcouche assez fine autour de ce que ton OS fournit, et en hérite toutes les limites. Pour certains actions, os.shutil fournit quelque chose qui se situe entre os.xxx et os.system(&#8220;xxx&#8221;) en terme de complexité et de capacité.</p></blockquote>
+<p>Je l&#8217;ai traduis en français, maintenant je vous la refais en langage humain : <code>os.rename</code> ne fait vaguement qu&#8217;appeler la commande <code>rename</code>, qui n&#8217;est pas très puissante, et notamment qui est incapable de gérer un déplacement de fichier d&#8217;une partition à une autre. Or dans notre cas, notre dossier temporaire était sur une partition séparée pour des raisons de perfs.</p>
+<p>La solution est d&#8217;utiliser <code>shutil</code>, un module un peu plus lent, mais surtout de plus haut niveau qui se charge des détails comme la nature et l&#8217;origine du fichier et de sa destination. </p>
+<p>Bref, la solution est tout simplement de faire :</p>
+<pre lang="python">shutil.move(uploaded_tmp_file, destination)</pre>
+<p>Tout ça pour ça, oui, mais c&#8217;est ce qui arrive quand une abstraction ne fait plus son boulot dans un langage de haut niveau où on a l&#8217;habitude que tout soit automatisé.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/invalid-cross-device-link/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">5652</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/04/fUPKw.jpg" length="725486" type="image/jpg" />	</item>
+		<item>
+		<title>Set -e for the win</title>
+		<link>http://sametmax.com/set-e-for-the-win/</link>
+		<comments>http://sametmax.com/set-e-for-the-win/#comments</comments>
+		<pubDate>Thu, 14 Mar 2013 08:26:52 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[error]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5408</guid>
+		<description><![CDATA[10 ans plus tard, je découvre cette option pour les scripts bash.]]></description>
+				<content:encoded><![CDATA[<p>10 ans plus tard, je découvre cette option pour les scripts bash.</p>
+<p>Voyez vous, quand on écrit un script bash, il exécute les commandes ligne à ligne. Si il y en a une qui retourne une erreur, il continue vaillamment. </p>
+<p>Sur un script où chaque ligne dépend de la précédente (comme un script de déploiement), c&#8217;est moyen.</p>
+<p>Pour y pallier, il suffit de mettre tout en haut du script :</p>
+<pre lang="python">set -e </pre>
+<p>Et voilà. Si une commande retourne une erreur, le script s&#8217;arrête à ce niveau. 10 ans de Linux et je découvre ça maintenant. Moi content.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/set-e-for-the-win/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">5408</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/03/Msn39.jpg" length="297311" type="image/jpg" />	</item>
+		<item>
+		<title>A l&#8217;intérieur de mon .bashrc</title>
+		<link>http://sametmax.com/a-linterieur-de-mon-bashrc/</link>
+		<comments>http://sametmax.com/a-linterieur-de-mon-bashrc/#comments</comments>
+		<pubDate>Tue, 22 Jan 2013 10:26:44 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[shell]]></category>
+		<category><![CDATA[virtualenv]]></category>
+		<category><![CDATA[virtualenvwrapper]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4238</guid>
+		<description><![CDATA[Généralement montrer son <em>.bashrc</em> donne rapidement lieu dans les comments à un concours de celui qui a la plus longue (jusqu'à ce qu'arrive un utilisateur de zsh, et alors commence le concours de celui qui pisse le plus loin). Mais bon, aujourd'hui j'ai la flemme d'écrire un article complet.]]></description>
+				<content:encoded><![CDATA[<p>Généralement montrer son <em>.bashrc</em> donne rapidement lieu dans les comments à un concours de celui qui a la plus longue (jusqu&#8217;à ce qu&#8217;arrive un utilisateur de zsh, et alors commence le concours de celui qui pisse le plus loin). Mais bon, aujourd&#8217;hui j&#8217;ai la flemme d&#8217;écrire un article complet.</p>
+<p>Rappel : le <em>.bashrc</em> c&#8217;est le fichier qui est automatiquement chargé au démarrage du shell bash, le shell par défaut sur la plupart des Unix incluant Mac et Ubuntu.</p>
+<p>Donc si vous voulez avoir une expérience de travail personnalisée dans votre terminal, c&#8217;est dans ce fichier que ça se passe.</p>
+<p>Personnellement, j&#8217;ai tout le bordel que met Ubuntu par défaut (notamment les trucs avec les autocomplétions de partout). En en prime je rajoute :</p>
+<pre lang="bash">
+# un raccourcis pour lancer Redis car je le met sur off par défaut mais je le 
+# lance souvent
+
+function redis {
+    if [ ! -e "/var/run/redis/redis-server.pid" ] ; then
+        sudo service redis-server start
+    fi
+}
+
+# un tas de raccourcis type
+
+function projet_django {
+    workon projet_django;
+    cd /home/sam/Work/projet_django/repo/projet_django;
+
+    if [[ $# -ne 0 ]]; then
+        ./manage.py $@
+    fi
+}
+alias sb='projet_django'
+
+# CF: http://sametmax.com/un-alias-bash-pour-django-virtualenv-dont-je-ne-peux-plus-me-passer/
+
+
+# fonction fétiche de bourrin
+
+function killbill {
+    BAK=$IFS
+    IFS=$'\n'
+    for id in $(ps aux | grep -P -i $1 | grep -v "grep" | awk '{printf $2" "; for (i=11; i<NF; i++) printf $i" "; print $NF}'); do 
+        service=$(echo $id | cut -d " " -f 1)
+        if [[ $2 == "-t" ]]; then
+            echo $service \"$(echo $id | cut -d " " -f 2-)\" "would be killed"
+        else
+
+            echo $service \"$(echo $id | cut -d " " -f 2-)\" "killed"
+            kill -9 $service
+        fi
+    done
+    IFS=$BAK
+}
+
+# que j'ai un peu amélioré depuis http://sametmax.com/tu-vas-crever-oui/
+
+
+# une fonction pour commiter rapidement 
+function commit {
+    git commit -m "`echo "$*" | sed -e 's/^./\U&#038;\E/g'`"
+}
+alias co=commit;
+
+# en gros on tappe "co message de commit". Sans guillement, sans rien.
+
+# des completions pour manage.py et git
+
+source /home/sam/.django_bash_completion
+source /home/sam/.git-completion.bash
+
+# activation du cache de pip pour éviter de télécharger 20 fois la même lib
+
+PIP_DOWNLOAD_CACHE='/opt/pip-cache';
+export PIP_DOWNLOAD_CACHE;
+
+# un super outil pour un git plus user friendly
+
+[ -s "/home/sam/.scm_breeze/scm_breeze.sh" ] &#038;&#038; source "/home/sam/.scm_breeze/scm_breeze.sh"
+alias c="git_index"
+
+# j'en avais parlé ici : http://sametmax.com/scm-breeze-facilite-la-selection-de-vos-fichiers-a-commiter-sous-git-avec/
+
+
+# un prompt personalisé tout en couleur
+# formaté comme ça: [nom du virtualenv] sam ~/path (branche git) $
+
+source ~/.prompt.bash
+
+
+# la configuration de virtualenv wrapper 
+export WORKON_HOME=/home/sam/.virtualenvs
+mkdir -p $WORKON_HOME
+source /usr/local/bin/virtualenvwrapper.sh
+
+# plus de détails ici : http://sametmax.com/les-environnement-virtuels-python-virtualenv-et-virtualenvwrapper/
+
+
+# j'ai récément succombé aux sirène du virtualenv automatique
+# j'avais beaucoup d'a priori (particulirement écraser la commande CD)
+# mais à l'usage, c'est pratique
+has_virtualenv() {
+    if [ -e .venv ]; then
+        workon `cat .venv`
+    fi
+}
+venv_cd () {
+    builtin cd "$@" &#038;&#038; has_virtualenv
+}
+alias cd="venv_cd"
+has_virtualenv
+
+# en gros ça m'active un virtualenv si il y a un fichier .venv avec un nom
+# de virtualenv dedans dans le dossier courrant
+
+
+# je vous en parlais récement (http://sametmax.com/configurer-votre-terminal-pour-quil-vous-notifie-de-la-fin-dune-commande-longue/)
+# c'est pour avoir une notifi à la fin des commandes longues 
+notify_when_long_running_commands_finish_install
+
+
+# ca c'est un truc de feignasse car je me souviens jamais comment extraire 
+# en ligne de commande tel ou tel format
+
+extract () {
+    if [ -f $1 ]
+    then
+        case $1 in
+            (*.7z) 7z x $1 ;;
+            (*.lzma) unlzma $1 ;;
+            (*.rar) unrar x $1 ;;
+            (*.tar) tar xvf $1 ;;
+            (*.tar.bz2) tar xvjf $1 ;;
+            (*.bz2) bunzip2 $1 ;;
+            (*.tar.gz) tar xvzf $1 ;;
+            (*.gz) gunzip $1 ;;
+            (*.tar.xz) tar Jxvf $1 ;;
+            (*.xz) xz -d $1 ;;
+            (*.tbz2) tar xvjf $1 ;;
+            (*.tgz) tar xvzf $1 ;;
+            (*.zip) unzip $1 ;;
+            (*.Z) uncompress ;;
+            (*) echo "don't know how to extract '$1'..." ;;
+        esac
+    else
+        echo "Error: '$1' is not a valid file!"
+        exit 0
+    fi
+}
+
+# ça date de http://sametmax.com/decompresser-sous-linux-en-ligne-de-commande/
+
+# et quelques alias pour des tâches de tous les jours
+
+alias ..='cd ..'
+alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
+alias ......='cd ../../../../../'
+
+alias process='ps aux | grep'
+alias serve="python -c 'import SimpleHTTPServer; SimpleHTTPServer.test()'"</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/a-linterieur-de-mon-bashrc/feed/</wfw:commentRss>
+		<slash:comments>24</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">4238</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/01/23207079.jpg" length="22869" type="image/jpg" />	</item>
+	</channel>
+</rss>

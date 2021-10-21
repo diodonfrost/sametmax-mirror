@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>objet &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/objet/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Un objet proxy : ce que c&#8217;est et à quoi ça sert</title>
+		<link>http://sametmax.com/un-objet-proxy-ce-que-cest-et-a-quoi-ca-sert/</link>
+		<comments>http://sametmax.com/un-objet-proxy-ce-que-cest-et-a-quoi-ca-sert/#comments</comments>
+		<pubDate>Sat, 01 Feb 2014 17:18:13 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[class]]></category>
+		<category><![CDATA[objet]]></category>
+		<category><![CDATA[proxy]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8076</guid>
+		<description><![CDATA[Un objet proxy est un objet qui prend un <strong>autre</strong> objet en paramètre et le sauvegarde dans un de ses attributs. Quand on appelle les méthodes du proxy, le proxy appelle la même méthode de l'objet qu'il a en attribut, et retourne le résultat. Quand on set/get/delete un attribut du proxy, il fait la même chose sur l'autre objet.]]></description>
+				<content:encoded><![CDATA[<p>Un objet proxy est un objet qui prend un <strong>autre</strong> objet en paramètre et le sauvegarde dans un de ses attributs. Quand on appelle les méthodes du proxy, le proxy appelle la même méthode de l&#8217;objet qu&#8217;il a en attribut, et retourne le résultat. Quand on set/get/delete un attribut du proxy, il fait la même chose sur l&#8217;autre objet.</p>
+<p>Voilà une implémentation très basique d&#8217;un objet proxy en Python :</p>
+<pre lang="python">class Proxy(object):
+
+    def __init__(self, obj):
+        # L'objet passé en paramètre est
+        # sauvegardé dans un attribut.
+        # On le fait en utilisant 
+        # object.__setattr__, qui est le
+        # __setattr__ du parent, et non directement
+        # en faisant self._obj = obj
+        # afin d'éviter une boucle infinie car
+        # nous écrasons __setattr__ plus bas.
+        object.__setattr__(self, "_obj", obj)
+        
+    # On écrase les méthodes magiques __getattribute__
+    # (qui est appelée quand on faire self.nom_attribut), 
+    # __delattr__ (qui est appelée quand on fait 
+    # del self.nom_attribut) et __setattr__ (qui est 
+    # appelée quand on fait self.nom_attribut = truc)
+    def __getattribute__(self, name):
+        return getattr(object.__getattribute__(self, "_obj"), name)
+    def __delattr__(self, name):
+        delattr(object.__getattribute__(self, "_obj"), name)
+    def __setattr__(self, name, value):
+        setattr(object.__getattribute__(self, "_obj"), name, value)</pre>
+<p>Ca s&#8217;utilise comme ceci :</p>
+<pre lang="python">class UnObjetOrdinnaire(object):
+    
+    attribut = 'VALEUR !'
+    
+    def methode(self, param):
+        return param * 2
+    
+
+objet_ordinnaire = UnObjetOrdinnaire()
+# on passe l'objet ordinnaire au proxy
+objet_proxy = Proxy(objet_ordinnaire)
+
+# Accéder à des méthodes et attribut
+# du proxy accède à ceux de l'objet
+# derrière le proxy
+print(objet_proxy.attribut)
+## VALEUR !
+
+print(objet_proxy.methode(3))
+## 6
+
+# Modifier l'objet proxy modifie
+# l'objet derrière le proxy
+objet_proxy.attribut = 'une autre valeur'
+
+print(objet_ordinnaire.attribut)
+## une autre valeur
+</pre>
+<p>Pour un exemple vraiment à l&#8217;épreuve des balles, il faut prendre en compte tout un tas de <a href="http://code.activestate.com/recipes/496741-object-proxying/">cas particuliers</a>, ce qui fait qu&#8217;il est bien plus rentable d&#8217;utiliser une <a href="https://pypi.python.org/pypi/ProxyTypes">lib solide</a> pour ça.</p>
+<p><strong>Attention, un objet proxy peut très bien avoir des méthodes qui n&#8217;appellent pas celles de l&#8217;objet derrière. On même avoir des méthodes qui appellent des méthodes qui n&#8217;ont pas le même nom, ou plusieurs méthodes&#8230;</strong> Ce que vous voyez en exemple est un proxy très basique.</p>
+<h2>Pourquoi voudrait-on obtenir ce résultat ?</h2>
+<p>Plusieurs design patterns font appel à des objets proxy. Par exemple, le design pattern &#8220;adapter&#8221; consiste à créer un objet proxy qui accepte plusieurs types d&#8217;objets en paramètres afin de présenter toujours la même interface.</p>
+<p>Imaginez que vous ayez plusieurs objets qui servent à s&#8217;authentifier :</p>
+<pre lang="python">
+
+class Login(object):
+
+    _is_logged = False 
+
+    def is_logged(self):
+        return self._is_logged
+
+    def login(self, email, password):
+        self._is_logged = True
+
+
+class LoginWithUsername(object):
+
+    _is_logged = False 
+
+    def is_logged(self):
+        return self._is_logged
+
+    def login(self, username, password):
+        self._is_logged = True
+
+
+class SignIn(object):
+
+    _is_logged = False 
+
+    def is_logged(self):
+        return self._is_logged
+
+    def signin(self, email, password):
+        self._is_logged = True
+
+
+class LoginWithKey(object):
+
+    _is_logged = False 
+    
+    key = "jfjkdlmqfjdmqsjdk"
+
+    def is_logged(self):
+        return self._is_logged
+    
+    def login(self, username):
+        self._is_logged = True
+</pre>
+<p>Et vous avez un algo de parsing, qui attend un objet d&#8217;authentification. Si vous mettez le code qui permet de choisir la bonne API dans l&#8217;algo de parsing, vous liez l&#8217;algo (qui n&#8217;a rien à voir avec l&#8217;authentification) à toutes ces implémentations.</p>
+<p>Une des manières de faire, est d&#8217;utiliser un adaptateur, dont  voici une esquisse :</p>
+<pre lang="python">
+class AuthAdapter(object):
+
+
+    def __init__(self, obj):
+        object.__setattr__(self, "_obj", obj)
+
+    def __getattribute__(self, name):
+    
+        try:
+            # Si l'attribut existe sur le proxy, on l'utilise
+            return object.__getattribute__(self, name)
+        except AttributeError:
+            # Sinon on tente le coup sur l'objet derrière le proxy
+            return getattr(object.__getattribute__(self, "_obj"), name)
+    
+    
+    def login(self, id_=None, secret=None):
+        # Le login est différent pour chaque classe,
+        # donc on s'arrange avec.
+        try:
+            self._obj.login(id_, secret)
+        except AttributeError:
+            self._obj.signin(id_, secret)
+        except TypeError:
+            self._obj.login(id_)
+    
+</pre>
+<p>En gros, si on essaye d&#8217;appeler <code>login()</code>, il va lisser les contours et nous donner toujours la même interface, même si derrière l&#8217;objet peut marcher complètement différement. En revanche, si on appelle n&#8217;importe quel autre attribut ou méthode (par exemple <code>is_logged</code>, mais il pourrait y en avoir des dizaines d&#8217;autres dans la vrai vie vivante), ça tape directement dans l&#8217;objet derrière le proxy.</p>
+<p>Donc si j&#8217;applique l&#8217;adaptateur systématiquement, quelle que soit la classe derrière, le comportement est toujours le même : j&#8217;appelle <code>login(un id, un secret)</code>, et il se logge.</p>
+<pre lang="python">all_auth = (Login, LoginWithUsername, SignIn, LoginWithKey)
+
+for auth in all_auth:
+    # 'auth' est une des 4 classes de login. On l'instancie et
+    # on met l'instance derrière le proxy
+    auth = AuthAdapter(auth())
+    print("Testing '%s'" % auth.__class__.__name__)
+    print("Is logged : %s" % auth.is_logged())
+    # Le login se passe toujours de la même manière, quelle que soit la classe
+    auth.login('id', 'secret')
+    print("Is logged after logging : %s" % auth.is_logged())</pre>
+<p> Comme d&#8217;habitude, ceci est un exemple naval. Il est bateau quoi. Mais cela vous démontre le principe.</p>
+<p> Le design pattern façade ressemble à l&#8217;adapter, en fait c&#8217;est une spécialisation de l&#8217;adapter. Il s&#8217;agit juste d&#8217;exposer une interface plus simple, de l&#8217;objet derrière le proxy.</p>
+<p>Un proxy peut aussi servir à hacker une lib. Par exemple, la lib attend un objet d&#8217;une ancienne version d&#8217;une autre lib dont l&#8217;auteur a déprécié un attribut. Avec un proxy, vous pouvez toujours faire semblant que l&#8217;attribut est toujours là : enrobez l&#8217;objet dans un proxy qui possède cet attribut, tout le reste de l&#8217;API sera la même.</p>
+<p>Un proxy peut également être utile si vous voulez effectuer des actions quand l&#8217;objet est manipulé.</p>
+<pre lang="python">import logging
+
+class ProxyLogger(object):
+
+    def __init__(self, obj):
+        object.__setattr__(self, "_obj", obj)
+
+    def __getattribute__(self, name):
+        obj = object.__getattribute__(self, "_obj")
+        # On lance un warning à chaque accès à un attribut de l'objet
+        # derrière le proxy
+        logging.warning("%s.%s has been called" % (obj.__class__.__name__, name))
+        return getattr(obj, name)
+</pre>
+<p>Maintenant, supposons que vous avez un objet d&#8217;une lib externe (que vous ne pouvez donc pas modifier) sur lequel vous avez besoin d&#8217;infos :</p>
+<pre lang="python">
+class ObjetExterne(object):
+    def ahahah(self):
+        pass
+
+o = ProxyLogger(ObjetExterne())
+o.ahahah()
+## WARNING:root:ObjetExterne.ahahah has been called
+</pre>
+<p>Vous pouvez refiler le proxy à n&#8217;importe quel objet de sa lib d&#8217;origine, si le proxy est bien fait, elle ne vera pas la différence.</p>
+<p>On finit sur une note culture, puisque le pattern decorator utilise souvent aussi un proxy. Cette fois d&#8217;une fonction sur un autre objet (en générale une autre fonction). Mais le principe est le même. Donc quand vous voyez <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">@un_decorateur</a>, il est peut être en train d&#8217;appliquer un proxy à la fonction.</p>
+<p>D&#8217;ailleurs on dit souvent que le proxy <strong>décore</strong> l&#8217;objet qui est derrière. </p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/un-objet-proxy-ce-que-cest-et-a-quoi-ca-sert/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8076</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/02/v1sV4jN.jpg" length="128340" type="image/jpg" />	</item>
+		<item>
+		<title>La différence entre __new__ et __init__ en Python</title>
+		<link>http://sametmax.com/la-difference-entre-__new__-et-__init__-en-python/</link>
+		<comments>http://sametmax.com/la-difference-entre-__new__-et-__init__-en-python/#comments</comments>
+		<pubDate>Fri, 11 Jan 2013 10:06:36 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[objet]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[__init__]]></category>
+		<category><![CDATA[__new__]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3534</guid>
+		<description><![CDATA[Les méthodes <code>__new__</code> et <code>__init__</code> n'ont rien de spécial. Ce sont des méthodes ordinaires. Mais parce qu'elles sont nommées ainsi, Python les détecte et les appelle automatiquement a un moment précis.]]></description>
+				<content:encoded><![CDATA[<p>Les méthodes <code>__new__</code> et <code>__init__</code> n&#8217;ont rien de spécial. Ce sont des méthodes ordinaires. Mais parce qu&#8217;elles sont nommées ainsi, Python les détecte et les appelle automatiquement a un moment précis.</p>
+<p>Ce moment, c&#8217;est ce qui différencie <code>__init__</code> de <code>__new__</code>.</p>
+<h2><code>__init__</code> pour initialiser</h2>
+<p><code>__init__</code> est la méthode qui va être appelée automatiquement après qu&#8217;un objet ai été crée. <strong>Ce n&#8217;est pas un contructeur du tout</strong>, c&#8217;est un initialiseur.</p>
+<p>Si vous faîtes ça:</p>
+<pre lang="python">>>> class Premiere(object):
+...         
+...         def __init__(self, prix):
+...                 print "%s euros" % prix
+...         
+>>> c = Premiere(10000)
+10000 euros</pre>
+<p>A la ligne <code>c = Premiere(10000)</code>, Python va créer une instance de la classe <code>Première()</code>. Il va ensuite immédiatement et automatiquement appeler <code>__init__</code> en lui passant cette instance en premier argument et les paramètres passés par l&#8217;appel <code>Premiere(paramètres)</code>. Donc, quand <code>__init__</code> est appelé, l&#8217;objet instancié existe déjà.</p>
+<p>On va utiliser <code>__init__</code> pour initialiser l&#8217;objet, c&#8217;est à dire pour lui donner son état de départ: changer les attributs, configurer l&#8217;objet par rapports aux arguments, etc.</p>
+<p> Dans tous les autres langages, on utiliserait le constructeur pour faire ce boulot. Pas en Python. </p>
+<p> L&#8217;avantage de <code>__init__</code>, c&#8217;est qu&#8217;il est très facile à manipuler. Il n&#8217;y a pas de magie dangereuse dans <code>__init__</code>: on a l&#8217;objet tout neuf, et les arguments passés à l&#8217;instancitation, on peut donc manipuler l&#8217;objet sans se soucier du reste. Ici on attache deux attributs à l&#8217;instance <code>self</code>:</p>
+<pre lang="python"> >>> class Premiere(object):
+...         discount = False
+...         def __init__(self, prix):
+...                 self.prix = prix
+...                 if self.prix < 5000:
+...                     self.discount = True
+...         
+>>> c = Premiere(10000)
+>>> c.discount
+False</pre>
+<p>Comme en Python les attributs sont dynamiques, on peut attacher un argument même si l&#8217;instance ne le déclare pas, et il est créé automatiquement. </p>
+<p>En résumé: <code>__init__</code> est appelé automatiquement APRES la création de l&#8217;objet, et on met dedans le code d&#8217;initialisation de l&#8217;objet (généralement une modification des attributs pour leur donner leur état de départ).</p>
+<h2><code>__new__</code> pour créer</h2>
+<p><code>__new__</code> est le vrai constructeur. Pour cette raison, elle doit retourner un objet.</p>
+<pre lang="python">>>> class Premiere(object):
+...
+...     def __new__(cls, prix):
+...        print "%s euros" % prix
+...        return super(Premiere, cls).__new__(cls)
+...
+>>> c = Premiere(10000)
+10000 euros</pre>
+<p><code>__new__</code> est appelée AVANT la création de l&#8217;objet, car c&#8217;est son boulot de créer l&#8217;instance et de la retourner. Comme on ne sait pas retourner une instance nous même (enfin si, mais pas dans cet article :-)), on appelle <code>super()</code> pour utiliser la méthode <code>__new__</code> de <code>object</code> et créer une instance pour cette classe.</p>
+<p>L&#8217;objet créé sera ensuite passé à <code>__init__</code> automatiquement par Python.</p>
+<p>On utilise rarement <code>__new__</code>. Les deux cas principaux sont:</p>
+<ul>
+<li>si on hérite d&#8217;un type immutable (str, int, tuple, etc), <code>__new__</code> est le seul endroit où on puisse initialiser l&#8217;objet.</li>
+<li>dans le cas des métaclasses.</li>
+</ul>
+<p>En résumé: <code>__new__</code> est le vrai constructeur, il est appelé pour créer l&#8217;objet, et l&#8217;objet ainsi instancié est passé à <code>__init__</code>. Vous n&#8217;avez presque aucune raison de vous en servir, c&#8217;est vraiment pour les cas particuliers.</p>
+<p>Voici l&#8217;ordre d&#8217;éxécution:</p>
+<pre lang="python">>>> class Premiere(object):
+...         def __new__(cls, prix):
+...                 print "__new__"
+...                 return super(Premiere, cls).__new__(cls)
+...         def __init__(self, *args):
+...                 print "__init__"
+
+>>> c = Premiere(10000)
+__new__
+__init__</pre>
+<h2>Exemple d&#8217;utilisation de <code>__new__</code></h2>
+<p>Généralement on sait très bien utiliser <code>__init__</code>, mais <code>__new__</code> est moins évident.</p>
+<p>L&#8217;usage le plus fréquent de <code>__new__</code> quand on hérite d&#8217;objets immutables. Par exemple, si vous voulez faire un objet <code>Temperature</code> qui hérite de <code>float</code> et qui accepte une unité en plus, ceci ne va pas marcher:</p>
+<pre lang="python">class Temperature(float):
+
+    def __init__(self, value, unit):
+
+        super(Temperature, self).__init__(value)
+        self.unit = unit
+
+    def __str__(self):
+        return "%s%s" % (self.value, self.unit)
+
+print Temperature(10, '°C')
+
+Traceback (most recent call last):
+  File "<ipython-input-1-65b676255e09>", line 11, in <module>
+    Temperature(10, '°C')
+TypeError: float() takes at most 1 argument (2 given)</pre>
+<p>La raison est que du fait de la nature immutable de <code>float</code>, il est initialisé dans <code>__new__</code>, et il n&#8217;attend aucune valeur de plus dans <code>__new__</code>, mais on lui passe malgré tout (via <code>Temperature(10, '°C')</code>).</p>
+<p>En revanche, ceci va marcher:</p>
+<pre lang="python">class Temperature(float):
+
+    def __new__(cls, value, unit):
+
+        instance = super(Temperature, cls).__new__(cls, value)
+        instance.unit = unit
+        return instance
+
+    def __str__(self):
+        return "%s%s" % (super(Temperature, self).__str__(), self.unit)
+
+print Temperature(10, '°C')
+10.0°C</pre>
+<p>Comme on override <code>__new__</code>, on lui donne la possibilité d&#8217;accepter une argument de plus.</p>
+<p>Un autre exemple serait de vouloir créer une chaîne de caractères qui est toujours en majuscule (ce qui est bien moins utile que l&#8217;exemple précédent):</p>
+<pre lang="python">class CapsLockString(str):
+
+    def __init__(self, value):
+
+        print value # et maintenant je fais quoi ?
+
+print CapsLockString('test')
+test
+test</pre>
+<p>Ça ne plantera pas, mais il n&#8217;y a rien que nous puissions faire car <code>str</code> est immutable. On ne peut tout simplement pas faire quoique ce soit avec <code>value</code>. Avec <code>__new__</code>, on peut faire quelque chose sur la chaîne intermédiaire:</p>
+<pre lang="python">class CapsLockString(str):
+
+    def __new__(cls, value):
+
+        return super(CapsLockString, cls).__new__(cls, value.upper())
+
+print CapsLockString('test')
+TEST</pre>
+<p>Deux chaînes sont en fait créées, une normale, puis une en majuscule retournée par upper() qui va servir de valeur à notre objet (en fait il y en a même 3 dans l&#8217;implémentation CPython, c&#8217;est pour ça que les notations littérales sont plus rapides que l&#8217;usage des classes pour créer des built-in).</p>
+<p><code>__new__</code> permet donc essentiellement de créer de jolis API. On l&#8217;utilise par ailleurs dans les metaclasses, mais ce sera pour un autre article.</p>
+<p>Un troisième usage de<code> __new__</code>, assez rare (mais en même temps utiliser <code>__new__</code> est déjà rare), c&#8217;est le pattern factory. Les javaistes le connaissent bien, c&#8217;est un motif de conception qui permet de gérer la création d&#8217;objets qui peuvent eux même créer des objets, qui créer des objets qui&#8230; Bref.</p>
+<p>Car en fait <code>__new__</code> peut retourner n&#8217;importe quoi. Il peut <a href="http://sametmax.com/usages-et-dangers-du-null-object-pattern-en-python/">retourner toujours la même instance</a> pour faire un singleton par exemple. On peut même carrément renvoyer un truc qui n&#8217;a rien n&#8217;a voir, par exemple une fonction :</p>
+<pre lang="python">class FonctionFactory(object):
+
+    def __new__(self, value, repeat):
+
+        def repeater(string=value):
+
+            return string * repeat
+
+        return repeater
+
+
+>>> function = FonctionFactory('hello', 2) # création de la fonction
+>>> print function()
+hellohello
+>>> print function('bonjour')
+bonjourbonjour
+</pre>
+<p>Ici on retourne carrément une fonction, et pas du tout une instance de <code>FonctionFactory()</code> comme prévu. On pourrait faire ceci de manière plus simple avec de la programmation fonctionnelle, mais <code>__new__</code> permet de bénéficier de tout l&#8217;outillage de la POO.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-difference-entre-__new__-et-__init__-en-python/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">3534</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/01/trouver-les-7_differences.jpg" length="50393" type="image/jpg" />	</item>
+	</channel>
+</rss>

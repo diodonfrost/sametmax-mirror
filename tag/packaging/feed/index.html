@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>packaging &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/packaging/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Vive setup.cfg (et mort à pyproject.toml) !</title>
+		<link>http://sametmax.com/vive-setup-cfg-et-mort-a-pyproject-toml/</link>
+		<pubDate>Thu, 06 Dec 2018 10:07:48 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[packaging]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=25060</guid>
+		<description><![CDATA[Saviez-vous qu'il existe un format simple, compatible avec tous vos outils et bien documenté qui permet de remplacer setup.py ? Qui existe depuis 2016 ? Et que pour nous aider, des gens veulent le mettre à la poubelle ?]]></description>
+				<content:encoded><![CDATA[<p>Après un long débat sur <a href="https://news.ycombinator.com/item?id=18612905">hackernews</a>, qui n&#8217;est que le reflet de toutes les conversations que j&#8217;ai déjà eues à ce sujet sur twitter, github, et divers mailling lists, il est grand temps de faire un article. Urgent même.</p>
+<p>Est-ce que vous savez quel chemin de croix on a vécu avec le packaging Python durant ces 15 dernières années ?</p>
+<p>D&#8217;abord on a <code>distutils</code>, <code>setuptools</code>, <code>distribute</code>, and <code>distribute2</code> qui ont tous été à un moment les &#8220;standards&#8221; recommandés pour packager une lib. Ensuite on a eu l&#8217;époque des <code>eggs</code>, <code>exe</code>, et autres trucs que <code>easy_install</code> allait chercher n&#8217;importe où dans la nature en suivant aveuglément des liens sur PyPi. Sans compter les machins qu&#8217;il fallait compiler à tout bout de champ. Et puis rien n&#8217;était chiffré au download, <code>pip</code> n&#8217;était pas packagé avec Python, il crevait sur des erreurs stupides type encodage mal géré&#8230;</p>
+<p>À ça se rajoute que virtualenv était un truc à part, avec plein de concurrents, et linkait les packages système par défaut. Sans oublier qu&#8217;on avait pas <code>Python -m</code>. </p>
+<p>Bref, le packaging Python, ça a été vraiment la merde. Avec en plus une doc de merde.</p>
+<p>Aujourd&#8217;hui, le standard <code>wheel</code> a énormément amélioré la donne. On a des tutos corrects (ex: <a href="http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/">notre tuto sur comment créer son package avec setup.py</a>). <code>ensurepip</code> fait qu&#8217;on a une version récente du truc presque partout. </p>
+<p>En gros, notre situation est stable, saine. Améliorable de bien des façons, certes, mais un bon socle sur lequel s&#8217;appuyer.</p>
+<h2>
+    Arrive setup.cfg<br />
+</h2>
+<p>En 2016, l&#8217;équipe de <a href="https://pypi.org/project/setuptools/">setuptools</a>, la lib utilisée par à peu près tout le monde pour créer des packages en Python aujourd&#8217;hui, a créé le format <code>setup.cfg</code>, un fichier INI dont le but est de remplacer <code>setup.py</code>. </p>
+<p>Le problème de <code>setup.py</code> c&#8217;est que c&#8217;est du code Python exécutable, et en plus dépendant de la lib setuptools. Cela empêche non seulement l&#8217;interfaçage avec des outils externes, mais aussi freine l&#8217;émergence de nouveaux outils.</p>
+<p>En effet, il y a un désir de continuer à améliorer la situation du packaging en Python, comme on peut le voir avec des projets comme <a href="https://github.com/pypa/pipenv">pipenv</a> ou <a href="https://github.com/sdispater/poetry">poetry</a> (je recommande d&#8217;ailleurs fortement ce dernier, et je vous invite à voter sur <a href="https://github.com/sdispater/poetry/issues/704">cette issue</a> pour enfoncer le clou).</p>
+<p><code>setup.cfg</code> est la suite logique de tout ça, un format en texte brut, facile à manipuler pour le reste du monde. </p>
+<p>Et ça a été bien fait:</p>
+<ul>
+<li>
+        <code>setup.cfg</code> marche out of the box. Il n&#8217;y a rien à faire de particulier : si vous aviez un <code>setup.py</code>, vous pouvez juste le convertir en <code>setup.cfg</code>. Si vous avez un nouveau projet, vous pouvez juste écrire le <code>setup.cfg</code>. Il n&#8217;y a pas de piège. Ça marche depuis&#8230; 2016. Ouais.
+    </li>
+<li>
+        <code>setup.cfg</code> a <a href="https://setuptools.readthedocs.io/en/latest/setuptools.html#configuring-setup-using-setup-cfg-files">une documentation décente</a>. Si, si. C&#8217;est très améliorable, mais mieux que tout ce qu&#8217;on a jamais eu pour les premières années de <code>setup.py</code>
+    </li>
+<li>
+        <code>setup.cfg</code> couvre la plupart des cas de figure que <code>setup.py</code> faisait et se permet de rajouter des goodies très cools. <code>version = attr: src.__version__</code> inclue la version depuis __init__.py,  <code>"options.data_files"</code> remplace le MANIFEST et <code>"license =  file: LICENCE.txt"</code> injecte le corps de la licence depuis un fichier texte. Tous les hacks à la noix de <code>setup.py</code> ? Fini.
+    </li>
+<li>
+        C&#8217;est simple à utiliser. Voici quelques projets pour démontrer le bouzin: <a href="https://github.com/jleclanche/python-bna/blob/master/setup.cfg">exemple 1</a>, <a href="https://github.com/dj-stripe/dj-stripe/blob/master/setup.cfg">exemple 2</a>, <a href="https://github.com/jazzband/django-oauth-toolkit/blob/master/setup.cfg">exemple 3</a>, <a href="https://github.com/jazzband/django-push-notifications/blob/master/setup.cfg">exemple 4</a>. Ça se comprend même sans lire la doc !
+    </li>
+<li>
+        C&#8217;est compatible avec tous les outils legacy. En fait, il suffit de créer un fichier <code>setup.py</code> avec une seule ligne dedans (<code>import setuptools; setuptools.setup()</code>) et pouf, tout le worflow d&#8217;avant marche: <code>python setup.py develop</code>, <code>python setup.py sdist upload</code>, etc. Du coup, tout ce qui comprenanait <code>setup.py</code> (c&#8217;est à dire le putain de monde entier en Python) marche avec <code>setup.cfg</code>.
+    </li>
+</ul>
+<p>Donc setup.cfg, malgré des lacunes, c&#8217;est sympa.</p>
+<h2>
+    Setup.cfg, ou es-tu ?<br />
+</h2>
+<p>&#8220;Attend une minute, si c&#8217;est si bien que ça, pourquoi j&#8217;en ai jamais entendu parler ? Moi on m&#8217;a dit que <code>setup.cfg</code> il servait à rien&#8230;&#8221;</p>
+<p>Je ne vous le fais pas dire ! </p>
+<p>Je n&#8217;ai aucune idée de la raison pour laquelle cette information ne circule pas plus. La seule raison pour laquelle je l&#8217;ai trouvée c&#8217;est parce que je passe des heures à faire de la veille informationnelle en Python, et que je suis tombé dessus au détour d&#8217;un carrefour, dans une ruelle sombre du Web. Et que j&#8217;ai pris le temps et le risque de le tester sur un de mes projets pour vérifier que oui, ça marche comme prévu.</p>
+<p>Même la doc Python <a href="https://docs.python.org/3.7/distutils/configfile.html">vous fait croire</a> que <code>setup.cfg</code> c&#8217;est un artéfact vaguement utile pour une pauvre option monoligne.</p>
+<p>Et merde, j&#8217;ai déjà écrit 900 articles sur ce blog, je ne peux pas mettre à ma charge d&#8217;avertir tout le monde pour chaque truc à savoir sur Python.</p>
+<p>C&#8217;est comme pour le <code># -*- coding: utf-8 -*-</code>. Un jour un mec utilisant Emacs a écrit un tuto avec ça, et tout le monde a copié-collé les hiéroglyphes alors qu&#8217;en fait <code># coding: utf8</code> est parfaitement valide. Ou comme <a href="http://nuitka.net/">nuikta</a>, qui permet de compiler de Python de manière fiable, et que personne ne connait. Combien de temps doit-on gâcher avec des trucs comme ça ?</p>
+<h2>
+   pyproject.toml vient foutre le bordel<br />
+</h2>
+<p>Maintenant, figurez-vous que nous avons un groupe de personnes chargées de faire évoluer la situation du packaging, la Python Packaging Authority, ou <a href="https://www.pypa.io/en/latest/
+">PyPA</a>.</p>
+<p>Une très bonne initiative, vu que le free-for-all du passé ne nous avait pas trop réussi. Et un succès puisque la situation actuelle en packaging Python est maintenant beaucoup plus propre.</p>
+<p>Et on en a besoin. En effet, <code>setup.cfg</code> doit être amélioré car il a certains défauts. Le format n&#8217;est pas parfaitement standardisé. Seule la doc fait figure de description, et pour l&#8217;instant <code>setup.cfg</code>, c&#8217;est whatever <a href="https://docs.python.org/3/library/configparser.html">configparser</a> comprends, sachant que <code>configparser</code> parse les trucs au motoculteur, et selon la version de Python. C&#8217;est pas gravissime, et ça n&#8217;a pas vraiment été un problème jusque là, mais pour la pérennité de la chose, une consolidation est nécessaire. On doit avoir une spec solide, un parseur robuste et stable, etc.</p>
+<p>Sachant la purge qu&#8217;a été l&#8217;historique du packaging en Python, on s&#8217;attend donc a ce que la PyPA fasse le choix de standardiser <code>setup.cfg</code>, qui marche depuis 2 ans, fait le job, est compatible avec l&#8217;existant et résout déjà le problème de permettre au reste du monde de manipuler les données du package en texte brut. Puis, comme un bon groupe de décision sage, elle va proposer des solutions incrémentales aux défauts de <code>setup.cfg</code> et son écosystème. </p>
+<p>Un exemple possible serait de s&#8217;allier avec l&#8217;équipe de <code>setuptools</code> pour figer le format <code>setup.cfg</code>, clarifier les edge cases de ce INI en particulier, et si besoin, créer une alternative a <code>configparser</code> (ou figer <code>configparser</code>) afin d&#8217;obtenir une implémentation de référence irréprochable pour parser le format. Puis désigner ce format comme le nouveau standard, en version 1 implicite, et le documenter puis en faire la promotion afin que tous les nouveaux outils puissent l&#8217;utiliser. Ensuite, ayant identifié des limitations, on crée le successeur de ce format, qui aura le même nom, mais un header de version qui lui sera explicite afin de permettre aux parseurs de s&#8217;adapter. Et on fait en sorte que cette nouvelle version soit plus propre, plus belle, super green. Et on l&#8217;introduit aussi progressivement et en douceur qu&#8217;un sex toy anal.</p>
+<p>Bref, on s&#8217;attend à ce que la PyPA nous amène vers une totale liberté de pensée cosmique vers un nouvel âge réminiscence.</p>
+<p>Sauf que non.</p>
+<p>Ces ânes ont décidé&#8230;  de créer <a href="https://www.python.org/dev/peps/pep-0518/">un nouveau format</a> et ignorer tout l&#8217;existant. </p>
+<p>Fuck. That. Je hais que ce dessin de XKCD puisse être d&#8217;actualité encore et encore, chaque mois que l&#8217;humanité passe:<br />
+<img src=" https://imgs.xkcd.com/comics/standards.png" alt="Le packaging en Python, c'est une forme de solidarité masochiste avec la communauté JS" /></p>
+<p>Je ne comprends pas cette décision, et leurs justifications sont d&#8217;une grande faiblesse, pour ne pas dire insultante pour une communauté qui en a marre de payer le prix de l&#8217;égo des gens qui ont envie d&#8217;avoir leur nom sur la nouvelle barre de fer officielle.</p>
+<p>C&#8217;est d&#8217;autant plus étrange que la PyPA n&#8217;est pas composée de cons. Non. On a Brett Cannon (core dev, qui fait un travail exceptionnel avec Python VSCode), Nathaniel Smith (qui nous a révolutionné l&#8217;async avec trio) et Kenneth Reitz (l&#8217;auteur de Python requests).</p>
+<p>Comment ce pet de cerveau a-t-il pu émané de ces brillantes personnes, je ne le sais.</p>
+<p>Mais je vous invite tous à non seulement utiliser <code>setup.cfg</code> en masse, mais aussi à activement contester cette décision sur tous les mediums à votre disposition. </p>
+<p>Parce qu&#8217;évidemment je l&#8217;ai faits, et comme d&#8217;hab, ils font la sourde oreille. Et on va en payer le prix. Mais bon, depuis le temps, vous avez l&#8217;habitude. C&#8217;est pas comme si j&#8217;avais pas déjà annoncé que redux et dockers étaient overkill pour la plupart des projets, que le NoSQL allait avoir un retour de baton, que vue était génial, flask PAS pour les débutants, bitcoin intéressant, pipenv &#8211;three stupide, python parfait pour l&#8217;enseignement&#8230; des années avant. Pour les consultations de boule de cristal, c&#8217;est uniquement le mardi à 15h.</p>
+<h2>
+    N&#8217;est-ce pas trop tard ?<br />
+</h2>
+<p>Au contraire, c&#8217;est exactement le bon moment. Le format le plus utilisé actuellement n&#8217;est ni le setup.cfg, ni le pyproject.toml, mais toujours le bon vieux setup.py. En fait, n&#8217;en déplaise aux defenseurs de pyproject.toml qui veulent nous faire croire que le projet est bien plus populaire et avancé qu&#8217;il ne l&#8217;est vraiment, il vaut l&#8217;équivalent d&#8217;un draft de proposal en beta testing. Une simple recherche github retourne:</p>
+<ul>
+<li>
+        <a href="https://github.com/search?q=filename%3Asetup.py">setup.py: 1,259,007 results</a>
+    </li>
+<li>
+        <a href="https://github.com/search?q=filename%3Asetup.cfg">setup.cfg: 165,716 results</a>
+    </li>
+<li>
+        <a href="https://github.com/search?q=filename%3Apyproject.toml">pyproject.toml: 2,137 results </a>
+    </li>
+</ul>
+<p>De toute façon la transition sera longue, et les outils commencent à peine à supporter le nouveau format. En fait, ils ne sont même pas d&#8217;accord sur comment l&#8217;utiliser. On n&#8217;a pas de standard pour le lock file (pipfile semble se dégager, mais n&#8217;est pas enterriné) et les outils utilisent pyproject.toml en créant une section custo dedans au lieu des champs standardisés (poetry), voire pas du tout comme pipenv. De plus, setup.cfg est déjà utilisé dans la nature (voir les exemples plus haut).</p>
+<p>Par ailleurs, extraire les données de setup.cfg plutôt que de pyproject.toml n&#8217;est pas très compliqué, les outils de packaging n&#8217;ont qu&#8217;une toute petite partie de leur code dédié à la gestion du fichier, le reste c&#8217;est la logique de management des dépendances, le téléchargement, la command line, le virtualenv, etc. Ils peuvent par ailleurs tout à fait supporter les deux pendant la transition.</p>
+<p>Vu que c&#8217;est nous qui allons nous coltiner les conséquences du choix pour les 10 prochaines années à venir, autant élever la voie. D&#8217;autant que, surprise, ça ne coûte quasiment rien à la majorité des projets de migrer ou commencer avec setup.cfg. Tout marche déjà, et on peut produire de jolies wheels. On ne peut pas dire autant de pyproject qui demande d&#8217;adopter des outils tout neufs et qui doivent encore faire leur preuve. Aussi, bonne chance pour faire marcher votre toolchain de CI avec, j&#8217;ai essayé, et croyez moi c&#8217;est relou.</p>
+<p>Maintenant, j&#8217;aime que le packaging avance. J&#8217;aime même les nouveaux outils comme poetry. Mais la suite n&#8217;est pas inéluctable, et on peut concilier modernité avec sanité.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">25060</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/12/giphy.gif" length="435438" type="image/jpg" />	</item>
+		<item>
+		<title>Embarquer un fichier non Python proprement</title>
+		<link>http://sametmax.com/embarquer-un-fichier-non-python-proprement/</link>
+		<comments>http://sametmax.com/embarquer-un-fichier-non-python-proprement/#comments</comments>
+		<pubDate>Fri, 12 Feb 2016 12:38:51 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[packaging]]></category>
+		<category><![CDATA[pkg_resource]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[resource]]></category>
+		<category><![CDATA[setuptools]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=18160</guid>
+		<description><![CDATA[Ah, le packaging Python, c'est toujours pas fun.
+
+Parmi les nombres problèmes, la question suivante se pose souvent : comment je livre proprement un fichier de données fourni avec mon package Python ?]]></description>
+				<content:encoded><![CDATA[<p>Ah, le packaging Python, c&#8217;est toujours pas fun.</p>
+<p>Parmi les nombreux problèmes, la question suivante se pose souvent : comment je livre proprement un fichier de données fourni avec mon package Python ?</p>
+<p>Le problème est double:</p>
+<ul>
+<li>Comment s&#8217;assurer que setup.py l&#8217;inclut bien ?</li>
+<li>Comment trouver et lire le fichier proprement ?</li>
+</ul>
+<p>On pourrait croire qu&#8217;un truc aussi basique serait simple, mais non.</p>
+<p>Ca ne l&#8217;est pas car un package Python peut être livré sous forme de code source, ou d&#8217;un binaire, ou d&#8217;une archive eggs/whl/pyz&#8230; Et en prime il peut être transformé par les packageurs des repos debian, centos, homebrew, etc.</p>
+<p>Mais skippy a la solution à tous vos soucis !</p>
+<h2>Include les fichiers avec votre code</h2>
+<p>A la racine de votre projet, il faut un fichier <code>MANIFEST.IN</code> bien rempli et <code>include_package_data</code> sur <code>True</code> dans <code>setup.py</code>. <a href="http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/">On a un article là dessus, ça tombe bien</a>.</p>
+<p>N&#8217;utilisez pas <code>package_data</code>, <a href="http://blog.codekills.net/2011/07/15/lies,-more-lies-and-python-packaging-documentation-on--package_data-/">ça ne marche pas à tous les coups</a>.</p>
+<h2>Charger les fichiers dans votre code</h2>
+<p>Si vous êtes pressés, copiez ça dans un fichier utils.py:</p>
+<pre lang="python">
+import os
+import io
+
+from types import ModuleType
+
+
+class RessourceError(EnvironmentError):
+
+    def __init__(self, msg, errors):
+        super().__init__(msg)
+        self.errors = errors
+
+
+def binary_resource_stream(resource, locations):
+    """ Return a resource from this path or package """
+
+    # convert
+    errors = []
+
+    # If location is a string or a module, we wrap it in a tuple
+    if isinstance(locations, (str, ModuleType)):
+        locations = (locations,)
+
+    for location in locations:
+
+        # Assume location is a module and try to load it using pkg_resource
+        try:
+            import pkg_resources
+            module_name = getattr(location, '__name__', location)
+            return pkg_resources.resource_stream(module_name, resource)
+        except (ImportError, EnvironmentError) as e:
+            errors.append(e)
+
+            # Falling back to load it from path.
+            try:
+                # location is a module
+                module_path = __import__(location).__file__
+                parent_dir = os.path_dirname(module_path)
+            except (AttributeError, ImportError):
+                # location is a dir path
+                parent_dir = os.path.realpath(location)
+
+            # Now we got a resource full path. Just open it as a regular file.
+            canonical_path = os.path.join(parent_dir, resource)
+            try:
+                return open(os.path.join(canonical_path), mode="rb")
+            except EnvironmentError as e:
+                errors.append(e)
+
+    msg = ('Unable to find resource "%s" in "%s". '
+           'Inspect RessourceError.errors for list of encountered erros.')
+    raise RessourceError(msg % (resource, locations), errors)
+
+
+def text_resource_stream(path, locations, encoding="utf8", errors=None,
+                    newline=None, line_buffering=False):
+    """ Return a resource from this path or package. Transparently decode the stream. """
+    stream = binary_resource_stream(path, locations)
+    return io.TextIOWrapper(stream, encoding, errors, newline, line_buffering)
+
+
+</pre>
+<p>Et faites:</p>
+<pre lang="python">
+from utils import binary_resource_stream, text_resource_stream 
+data_stream = binary_resource_stream('./chemin/relatif', package) # pour du binaire 
+data = data_stream.read() 
+txt_stream = text_resource_stream('./chemin/relatif', package) # pour du texte text = txt_stream.read()</pre>
+<p>Par exemple:</p>
+<pre lang="python">
+image_data = binary_resource_stream('./static/img/logo.png', "super_package").read() 
+text = text_resource_stream('./config/default.ini', "super_package", encoding="cp850").read()</pre>
+<p>Si vous n&#8217;êtes pas pressés, voilà toute l&#8217;histoire&#8230;</p>
+<p>A la base, on fait généralement un truc du genre:</p>
+<pre lang="python">PROJECT_DIR = os.path.dirname(os.path.realpath(__file__)) # ou pathlib/path.py 
+data = open(os.path.join(PROJECT_DIR, chemin_relatif)).read())</pre>
+<p>Mais ça ne marche pas dans le cas d&#8217;une installation binaire, zippée, trafiquée, en plein questionnement existentiel après avoir regardé un film des frères Cohen, etc.</p>
+<p>La manière la plus sûre de le faire est:</p>
+<pre lang="python">import pkg_resources 
+data = pkg_resources.resource_stream('nom_de_votre_module', chemin_relatif).read()</pre>
+<p>Ça va marcher tant que votre package est importable. On se fout d’où il est, de sa forme, Python se démerde.</p>
+<p>Mais ça pose plusieurs autres problèmes:</p>
+<ul>
+<li><code>pkg_resources</code> fait parti de setuptools, qui n&#8217;est pas forcément installé sur votre système. En effet, malgré l&#8217;existence de <code>ensure_pip</code> depuis la 3.4, beaucoup de distributions n&#8217;installent ni pip, ni setuptools par défaut et en font des paquets séparés.</li>
+<li><code>data</code> sera forcément de type <code>bytes</code>. Il faut le décoder manuellement derrière.</li>
+<li>si votre code doit fonctionner aussi en dehors du cadre d&#8217;un package importable (genre on unzip et ça juste marche), <code>pkg_resources</code> ne fonctionnera pas puisque par essence il utilise le nom du package pour trouver la ressource.</li>
+<li>si vous voulez spécifier plusieurs endroits ou potentiellement trouver la ressource, ou passer l&#8217;objet module à la place du nom du module, ça ne marche pas.</li>
+<li>tous ces cas, bien entendu, lèvent des exceptions différentes histoire de faciliter votre <code>try</code>/<code>except</code>.</li>
+<li>Il existe <code>pkgutil</code> qui est bien installé partout, mais ça load tout en mémoire d&#8217;un coup. Si vous avez un XML de 10Mo à charger ça fait mal au cul.</li>
+<li>la doc de <code>pkg_resource</code> est aussi claire que l&#8217;anus de la mère du premier commentateur de cet article. On va voir qui lit l&#8217;article en entier là&#8230;</li>
+</ul>
+<p>Le snippet fourni corrige ces problèmes en gérant les cas tordus pour vous. Moi je l&#8217;utilise souvent en faisant:</p>
+<pre lang="python">with text_resource_stream('./chemin/relatif', ['package_name', 'chemin_vers_au_cas_ou_c_est_pas_un_package']) as f:
+     print('boom !', f.read())</pre>
+<p>Je devrais peut-être rajouter ça dans batbelt et minibelt&#8230;</p>
+<h2>Travailler avec des fichiers non Python</h2>
+<p>Ça, c&#8217;est pour lire les ressources fournies. Mais si vous devez écrire des trucs, il vous faut un dossier de travail.</p>
+<p>Si c&#8217;est pour un boulot jetable, faites-le dans un dossier temporaire. Le module <a href="https://docs.python.org/3/library/tempfile.html">tempfile</a> est votre ami.</p>
+<p>Si c&#8217;est pour un boulot persistant, trouvez le dossier approprié à votre (fichier de config, fichier de log, etc) et travaillez dedans. <a href="https://github.com/jaraco/path.py">path.py</a> a des méthodes dédiées à cela (un des nombreuses raisons qui rendent ce module meilleur que <code>pathlib</code>).</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/embarquer-un-fichier-non-python-proprement/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">18160</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/02/0BUT2by.jpg" length="54768" type="image/jpg" />	</item>
+		<item>
+		<title>Le don du mois : nuitka</title>
+		<link>http://sametmax.com/le-don-du-mois-nuitka/</link>
+		<comments>http://sametmax.com/le-don-du-mois-nuitka/#comments</comments>
+		<pubDate>Mon, 01 Feb 2016 16:37:56 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[compilation]]></category>
+		<category><![CDATA[nuitka]]></category>
+		<category><![CDATA[packaging]]></category>
+		<category><![CDATA[perf]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=18034</guid>
+		<description><![CDATA[Comme je vous l'ai dis <a href="http://sametmax.com/evolution-de-python/">dernièrement</a>, le packaging et les performances sont deux points qui méritent d'être améliorés en Python.
+
+<a href="http://nuitka.net/">Nuikta</a> est un projet qui vise à tacler ces deux problèmes d'un coup en compilant le code Python pour obtenir un exécutable autonome sous forme de code machine.]]></description>
+				<content:encoded><![CDATA[<p>Comme je vous l&#8217;ai dit <a href="http://sametmax.com/evolution-de-python/">dernièrement</a>, le packaging et les performances sont deux points qui méritent d&#8217;être améliorés en Python.</p>
+<p><a href="http://nuitka.net/">Nuitka</a> est un projet qui vise à tacler ces deux problèmes d&#8217;un coup en compilant le code Python pour obtenir un exécutable autonome sous forme de code machine.</p>
+<p>Plus besoin de s&#8217;inquiéter d&#8217;avoir la bonne version de Python installée. Plus besoin de se soucier d&#8217;avoir Python, ou une lib quelconque installée. Et en prime, le compilateur implémente le plus d&#8217;optimisations qu&#8217;il peut.</p>
+<p>Nuitka est un projet en cours et son équipe est petite. Les progrès sont sérieux, mais lents. Histoire d&#8217;encourager tout ça, je fais un don de 50€ à l&#8217;auteur.</p>
+<p>Pour donner à votre tour, <a href="http://nuitka.net/pages/donations.html">c&#8217;est par ici</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-don-du-mois-nuitka/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">18034</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/02/DfOdbwT.png" length="472879" type="image/jpg" />	</item>
+		<item>
+		<title>Travailler sur une lib externe à votre projet proprement en Python</title>
+		<link>http://sametmax.com/travailler-sur-une-lib-externe-a-votre-projet-proprement-en-python/</link>
+		<comments>http://sametmax.com/travailler-sur-une-lib-externe-a-votre-projet-proprement-en-python/#comments</comments>
+		<pubDate>Mon, 06 Oct 2014 12:53:23 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[packaging]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[setup.py]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12269</guid>
+		<description><![CDATA[Quand on a une lib externe en dépendance à son projet, on veut être capable l'importer MAIS pouvoir en modifier le code.]]></description>
+				<content:encoded><![CDATA[<p>Quand on a une lib externe en dépendance à son projet, on veut être capable de l&#8217;importer MAIS pouvoir en modifier le code.</p>
+<p>L&#8217;installer avec <code>pip</code> ou python <code>setup.py install</code> va copier le code dans le dossier <code>site-packages</code> et ce n&#8217;est pas ce que l&#8217;on veut car ça oblige à refaire l&#8217;installation à chaque modif.</p>
+<p>Le mettre dans un dossier &#8220;libs&#8221; qu&#8217;on ajoute au <code>PYTHON PATH</code> ou pire, ajouter chaque dépendance au <code>PYTHON PATH</code> n&#8217;est pas une solution qu&#8217;on est fier d&#8217;exhiber au hackerspace du coin.</p>
+<p>On s&#8217;en remet donc généralement à un symlink, sans savoir qu&#8217;il existe en fait un outil fait pour ça :</p>
+<pre lang="bash">python setup.py develop</pre>
+<p>Cette commande va ajouter des entrées spéciales dans des fichiers placés dans <code>site-packages</code> qui vont vous permettre d&#8217;utiliser votre lib comme si elle était installée. Mais en vérité il va chercher le code dans votre dossier de dev, donc si vous modifiez le code, vous avez toujours la version de votre lib la plus fraîche.</p>
+<p>Une fois qu&#8217;on a une lib stable, on peut retirer ce lien avec :</p>
+<pre lang="bash">python setup.py develop --uninstall</pre>
+<p>Et installer la lib normalement.</p>
+<p>Notez que tout ceci ne fonctionne que si le <code>setup.py</code> utilise <code>setuptools</code> et non <code>distutils</code> qui provoque l&#8217;erreur <em>error: invalid command &#8216;develop&#8217;</em>.</p>
+<p>Comme <code>setuptools</code> inclut maintenant le meilleur de <code>distutils</code>, on peut remplacer :</p>
+<pre lang="python">from distutils.core import setup</pre>
+<p>Par :</p>
+<pre lang="python">from setuptools import setup</pre>
+<p>Sans soucis.</p>
+<p><code>pip</code> vient lui aussi avec un outil pour ça en la forme du flag <code>-e</code> qui fait exactement la même chose. Exemple :</p>
+<pre lang="bash">pip install -e /chemin/local/vers/projet</pre>
+<p>Cela fonctionne comme pour <code>python setup.py develop --uninstall</code> mais on bénéficie de tous les goodies de <code>pip</code> en prime.</p>
+<p>Néanmoins, <code>pip</code> pousse plus loin l&#8217;automatisation. Si vous faites <code>pip install -e</code> sur un repo distant, il va également cloner pour vous le code.</p>
+<p>Ex :</p>
+<pre lang="bash">pip install -e git+https://git@github.com/sametmax/minibelt.git#egg=minibelt</pre>
+<p>Et on retrouvera un clone du projet dans <code>/chemin/vers/virtualenv/src/</code> qui sera importable, modifiable et pushable. Le résultat est automatisable, puisque <code>pip freeze</code> le prend en compte:</p>
+<pre lang="bash">$ pip freeze
+argparse==1.2.1
+-e git+https://git@github.com/sametmax/minibelt.git@b898155b40d7de73cc404db7d274128f2b2fc330#egg=minibelt-master
+wsgiref==0.1.2
+</pre>
+<p>L&#8217;URL est assez bâtarde à trouver par contre, car elle doit toujours finir par <code>#egg=nom-du-projet</code> et commencer par un double protocole, celui du VCS et celui du transport.</p>
+<p>P.S: j&#8217;ai remis la coloration syntaxique et les iframes (donc la musique). J&#8217;aime bien ce thème là, mais le header chie sa mère. Est-ce que vous l&#8217;aimez suffisamment pour que je me casse le cul à le réparer ?</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/travailler-sur-une-lib-externe-a-votre-projet-proprement-en-python/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">12269</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/10/Ot05Z77.gif" length="463277" type="image/jpg" />	</item>
+	</channel>
+</rss>

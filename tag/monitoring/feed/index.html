@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>monitoring &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/monitoring/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Checker ses process et les relancer en cas de plantage</title>
+		<link>http://sametmax.com/checker-ses-process-et-les-relancer-en-cas-de-plantage/</link>
+		<comments>http://sametmax.com/checker-ses-process-et-les-relancer-en-cas-de-plantage/#comments</comments>
+		<pubDate>Tue, 22 May 2012 16:55:40 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[check]]></category>
+		<category><![CDATA[monitoring]]></category>
+		<category><![CDATA[process]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=672</guid>
+		<description><![CDATA[Il arrive que l'on ait des scripts un peu bancales qui peuvent planter parfois, comment les monitorer facilement ? Comment les relancer sans avoir à se demander si ça tourne ou pas ?]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;ai quelques scripts qui se mettent à planter des fois, je sais que c&#8217;est parceque je les ai codé comme un gros porc mais ça m&#8217;emmerde de les refaires parceque après tout ils font ce que je leur dit de faire, c&#8217;est juste qu&#8217;ils plantent des fois.<br />
+Ceci dit j&#8217;ai aussi des applications qui ne sont pas mienne qui plantent (privoxy, tor, des fois même lighttpd) et là on est bien content que quelqu&#8217;un puisse le relancer pendant qu&#8217;on est en train de se cuiter au bar du coin.</p>
+<p>Voici un petit script tout simple en python que je lance avec un crontab à intervalles réguliers.</p>
+<p><strong>Exemple pour nginx, on va rechercher le process à partir du mot clef &#8220;nginx&#8221;:</strong></p>
+<pre lang="bash">
+ps aux | grep nginx
+root     29231  0.0  0.0  22144   948 ?        Ss   13:05   0:00 nginx: master process /usr/local/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+</pre>
+<p><strong>Dans le script ça donne:</strong></p>
+<pre lang="python">
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# vim: ai ts=4 sts=4 et sw=4
+
+"""
+    check if script is running else relaunch
+"""
+
+import sys
+import os
+from subprocess import Popen, call, PIPE
+
+ 
+SUCCESS_EXIT_CODE=0
+ERR_PS_SCRIPT_RUNNING=3
+ERR_PID_SCRIPT_RUNNING=4
+
+def check_ps_cmd(script_name):
+    try:
+        p1 = Popen(["ps", "aux"], stdout=PIPE)
+        p2 = Popen(["grep", script_name], stdin=p1.stdout, stdout=PIPE)
+        p3 = Popen(["grep", "-v", "grep"], stdin=p2.stdout, stdout=PIPE)
+        output = p3.communicate()[0]
+        return output
+    except Exception, e:
+        print >>sys.stderr, "Execution failed:", e
+        return None
+
+
+# process to check
+if not check_ps_cmd('nginx'):
+    print "Nginx dead, relaunch..."
+    retcode = call("service nginx restart", shell=True)
+
+# add here new processes to check...
+
+</pre>
+<p>On peut imaginer mettre un <a href="http://docs.python.org/library/email-examples.html">sendmail</a> pour se voir notifier lors de la mort d&#8217;un process et ainsi briller en soirées mondaines lorsque votre téléphone vous bippe sous le nom de Jarvis vous avertissant de la mort prématurée de lighttpd suite à votre toute dernière super config que vous avez pris soins de mettre en prod un vendredi soir sans vous soucier de la tester et ce juste avant de partir du bureau dont la clef est dans la poche du boss qui vient de se tirer en long weekend avec sa secrétaire&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/checker-ses-process-et-les-relancer-en-cas-de-plantage/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">672</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/05/fail-owned-windows-fail.jpeg" length="31383" type="image/jpg" />	</item>
+	</channel>
+</rss>

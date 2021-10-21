@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>api &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/api/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Accepter un ID mais retourner un objet pour les liens de Django Rest Framework</title>
+		<link>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/</link>
+		<comments>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/#comments</comments>
+		<pubDate>Thu, 08 Jun 2017 07:50:00 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[api]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[django-rest-framework]]></category>
+		<category><![CDATA[drf]]></category>
+		<category><![CDATA[json]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[rest]]></category>
+		<category><![CDATA[serializer]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=23385</guid>
+		<description><![CDATA[DRF est une des perles de Django. De Python même. Comme marshmallow, requests, jupyter, pandas, SQLAlchemy ou l'admin Django. Python a tellement de libs extraordinaires.
+
+Mais aucune n'est parfaite.]]></description>
+				<content:encoded><![CDATA[<p><a href="http://www.django-rest-framework.org/">DRF</a> est une des perles de Django. De Python même. Comme <a href="https://marshmallow.readthedocs.io/en/latest/">marshmallow</a>, <a href="http://docs.python-requests.org/en/master/">requests</a>, <a href="http://jupyter.org/">jupyter</a>, <a href="http://pandas.pydata.org/">pandas</a>, <a href="https://www.sqlalchemy.org/">SQLAlchemy</a> ou l&#8217;<a href="https://docs.djangoproject.com/fr/1.11/ref/contrib/admin/">admin Django</a>. Python a tellement d&#8217;outils extraordinaires.</p>
+<p>Mais aucune n&#8217;est parfaite, et une chose qui m&#8217;a toujours emmerdé avec celle-ci, c&#8217;est que si j&#8217;ai un modèle du genre:</p>
+<pre lang="python">class Foo(models.Model):
+    name = models.CharField(max_length=64)
+    bar = models.ForeignKey(Bar)</pre>
+<p>Et le serializer:</p>
+<pre lang="python">class FooSerialize(serilizers.ModelSerializer):
+
+    class Meta:
+        model = Foo</pre>
+<p>J&#8217;ai le choix entre soit avoir que des ID&#8230;</p>
+<p>En lecture (chiant) :</p>
+<pre>GET /api/foos/1/
+
+{
+    name: "toto",
+    bar: 2
+}</pre>
+<p>Et en écriture (pratique) :</p>
+<pre>POST /api/foos/
+{
+    name: "tata",
+    bar: 2
+}</pre>
+<p>Soit avoir que des objets.</p>
+<p>En lecture (pratique):</p>
+<pre>GET /api/foos/1/
+
+{
+    name: "toto",
+    bar: {
+       // tout l'objet bar disponible en lecture
+    }
+}
+</pre>
+<pre>
+Et en écriture (chiant) :
+
+POST /api/foos/
+{
+    name: "tata",
+    bar: {
+       // tout l'objet bar à se taper à écrire
+    }
+}</pre>
+<p>Il y a aussi la version hypermedia où l&#8217;id est remplacé par une URL. Mais vous voyez le genre : mon API REST est soit pratique en lecture mais relou à écrire, soit pratique en écriture (je fournis juste une référence), mais relou en lecture, puisque je dois ensuite fetcher chaque référence.</p>
+<p>GraphQL répond particulièrement bien à ce problème, mais bon, la techno est encore jeune, et il y a encore plein d&#8217;API REST à coder pour les années à venir.</p>
+<p>Comment donc résoudre ce casse-tête, Oh Sam! &#8211; sauveur de la pythonitude ?</p>
+<h2>Solution 1, utiliser un serializer à la place du field</h2>
+<pre lang="python">class FooSerializer(serilizers.ModelSerializer):
+
+    bar = BarSerializer()
+
+    class Meta:
+        model = Foo</pre>
+<p>Et là j&#8217;ai bien l&#8217;objet complet qui m&#8217;est retourné. Mais je suis en lecture seule, et il faut que je fasse l&#8217;écriture à la main. Youpi.</p>
+<p>Pas la bonne solution donc.</p>
+<h2>Solution 2, écrire deux serializers</h2>
+<p>Ben ça marche mais il faut 2 routings, ça duplique l&#8217;API, la doc, les tests. Moche. Next.</p>
+<h2>Solution 3, un petit hack</h2>
+<p>En lisant le code source de DRF (ouais j&#8217;ai conscience que tout le monde à pas la foi de faire ça), j&#8217;ai noté que <code>ModelSerializer</code> génère automatiquement pour les relations un <code>PrimaryKeyRelatedField</code>, qui lui même fait le lien via l&#8217;ID. On a des classes similaires pour la version full de l&#8217;objet et celle avec l&#8217;hyperlien.</p>
+<p>En héritant de cette classe, on peut créer une variante qui fait ce qu&#8217;on veut:</p>
+<pre lang="python">from collections import OrderedDict
+
+from rest_framework import serializers
+
+
+class AsymetricRelatedField(serializers.PrimaryKeyRelatedField):
+
+    # en lecture, je veux l'objet complet, pas juste l'id
+    def to_representation(self, value):
+        # le self.serializer_class.serializer_class est redondant
+        # mais obligatoire
+        return self.serializer_class.serializer_class(value).data
+
+    # petite astuce perso et pas obligatoire pour permettre de taper moins 
+    # de code: lui faire prendre le queryset du model du serializer 
+    # automatiquement. Je suis lazy
+    def get_queryset(self):
+        if self.queryset:
+            return self.queryset
+        return self.serializer_class.serializer_class.Meta.model.objects.all()
+
+    # Get choices est utilisé par l'autodoc DRF et s'attend à ce que 
+    # to_representation() retourne un ID ce qui fait tout planter. On 
+    # réécrit le truc pour utiliser item.pk au lieu de to_representation()
+    def get_choices(self, cutoff=None):
+        queryset = self.get_queryset()
+        if queryset is None:
+            return {}
+
+        if cutoff is not None:
+            queryset = queryset[:cutoff]
+
+        return OrderedDict([
+            (
+                item.pk,
+                self.display_value(item)
+            )
+            for item in queryset
+        ])
+
+    # DRF saute certaines validations quand il n'y a que l'id, et comme ce 
+    # n'est pas le cas ici, tout plante. On désactive ça.
+    def use_pk_only_optimization(self):
+        return False
+
+    # Un petit constructeur pour générer le field depuis un serializer. lazy,
+    # lazy, lazy...
+    @classmethod
+    def from_serializer(cls, serializer, name=None, args=(), kwargs={}):
+        if name is None:
+            name = f"{serializer.__class__.__name__}AsymetricAutoField"
+
+        return type(name, (cls,), {"serializer_class": serializer})(*args, **kwargs)
+</pre>
+<p>Et du coup:</p>
+<pre lang="python">class FooSerializer(serializers.ModelSerializer):
+
+    bar = AsymetricRelatedField.from_serializer(BarSerializer)
+
+    class Meta:
+        model = Foo</pre>
+<p>Et voilà, on peut maintenant faire:</p>
+<pre>
+GET /api/foos/1/
+
+{
+    name: "toto",
+    bar: {
+       // tout l'objet bar disponible en lecture
+    }
+}
+
+POST /api/foos/
+{
+    name: "tata",
+    bar: 2
+}</pre>
+<p>Elle est pas belle la vie ?</p>
+<p>Ca serait bien cool que ce soit rajouté officiellement dans DRF tout ça. Je crois que je vais <a href="https://github.com/encode/django-rest-framework/issues/5206">ouvrir un ticket</a>&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/accepter-un-id-mais-retourner-un-objet-pour-les-liens-de-django-rest-framework/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">23385</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/06/4A8GZ9k.gif" length="213204" type="image/jpg" />	</item>
+		<item>
+		<title>Puis-je copier/coller mon brave ?</title>
+		<link>http://sametmax.com/20808/</link>
+		<comments>http://sametmax.com/20808/#comments</comments>
+		<pubDate>Sun, 23 Oct 2016 07:41:48 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[api]]></category>
+		<category><![CDATA[clipboard]]></category>
+		<category><![CDATA[copier/coller]]></category>
+		<category><![CDATA[html5]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[js]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=20808</guid>
+		<description><![CDATA[Sebsauvage a partagé <a href="http://sebsauvage.net/links/?cKAfaQ">un snippet</a> pour utiliser l'API du clipboard en JS. Et j'ai donc voulu savoir comment détecter que cette functionalité est implémentée par le navivateur en cours. ]]></description>
+				<content:encoded><![CDATA[<p>Dans <a href="0bin.net">0bin</a> on utilise encore flash pour faire le copier/coller, et je pense qu&#8217;on va le virer. Plus de raison de supporter les navigateurs trop vieux et après tout c&#8217;est pas grave de se voir refuser un raccourci pour copier/coller : le reste est utilisable.</p>
+<p>Pourquoi je vous dis ça ?</p>
+<p>Et bien parce que sebsauvage a partagé <a href="http://sebsauvage.net/links/?cKAfaQ">un snippet</a> pour utiliser l&#8217;API du clipboard en JS. Et j&#8217;ai donc voulu savoir comment détecter que cette functionalité est implémentée par le navigateur en cours. </p>
+<p>Je suis ainsi allé voir <a href="https://github.com/Modernizr/Modernizr/pull/659/commits/7354ab3e0167ced43df9fae43c13c25a10f36fcf">les sources de modernizr</a>, et il implémente en fait une combinaisons de 2 techniques.</p>
+<p>D&#8217;abord, vérifier si l&#8217;objet <code>window</code> a un attribut <code>ClipboardEvent</code>. Si oui, c&#8217;est réglé. Si non, il crée un <code>div</code>, on check s&#8217;il a un attribut <code>paste</code>. Le reste sont <a href="http://perfectionkills.com/detecting-event-support-without-browser-sniffing/">les hacks de compatibilité</a> avec les très vieux navs que je ne vais pas retranscrire ici.</p>
+<p>Donc en gros, avant de faire un copier/coller en JS, vérifiez:</p>
+<pre lang="javascript">function implementClipboardAPI(){
+   try {
+     return (!!window.ClipboardEvent || 'onpaste' in document.createElement('div'));
+   } catch(e) {
+     return false;
+   }
+}
+</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/20808/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">20808</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/10/JUaJo1o.jpg" length="105114" type="image/jpg" />	</item>
+		<item>
+		<title>Qu&#8217;est-ce qu&#8217;une API ?</title>
+		<link>http://sametmax.com/quest-ce-quune-api/</link>
+		<comments>http://sametmax.com/quest-ce-quune-api/#comments</comments>
+		<pubDate>Sat, 06 Sep 2014 19:13:58 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[api]]></category>
+		<category><![CDATA[http]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[rest]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12184</guid>
+		<description><![CDATA[L'API, pour Application Programming Interface, est la partie du programme qu'on expose officiellement au monde extérieur pour manipuler celui-ci. L'API est au développeur ce que l'UI est à l'utilisateur : de quoi entrer des données et récupérer la sortie d'un traitement.]]></description>
+				<content:encoded><![CDATA[<p>L&#8217;API, pour Application Programming Interface, est la partie du programme qu&#8217;on expose officiellement au monde extérieur pour manipuler celui-ci. L&#8217;API est au développeur ce que l&#8217;UI est à l&#8217;utilisateur : de quoi entrer des données et récupérer la sortie d&#8217;un traitement.</p>
+<h2>L&#8217;API au sens original</h2>
+<p>Initialement, une API regroupe un ensemble de fonctions ou méthodes, leurs signatures et ordre d&#8217;usage pour obtenir un résultat.</p>
+<p>Par exemple, imaginons que je fasse une lib pour botter des culs en Python, <code>bottage.py</code> :</p>
+<pre lang="python">def senerver(moment):
+    # ...
+
+def botter(cul):
+    # ...
+
+def main():
+    # ...
+
+if __name__ == "__main__":
+    main()</pre>
+<p>Je vais l&#8217;utiliser ainsi :</p>
+<pre lang="python">from bottage import senerver, botter
+
+senerver(now)
+botter(le_cul_de_ce_con)</pre>
+<p>Les deux fonctions <code>senerver()</code> et <code>botter()</code> sont mes points d&#8217;entrée pour cette action. Je n&#8217;utilise pas <code>main()</code>, qui est un code interne à la lib et ne me regarde pas. Il n&#8217;y a rien qui distingue cette fonction des autres dans cet exemple, mais je n&#8217;en ai pas besoin pour faire le boulot, c&#8217;est ma lib qui l&#8217;utilise automatiquement quelque part, je n&#8217;ai pas à la connaitre.</p>
+<p>Donc leurs noms et leurs paramètres ainsi que leurs types sont l&#8217;API de ma lib, ce qui m&#8217;est exposé pour l&#8217;utiliser.</p>
+<p>Si on veut rentrer dans des subtilités, on dira en fait que <code>senerver()</code> et <code>botter()</code> font partie de l&#8217;API publique, c&#8217;est à dire de ce qui est manipulable par un utilisateur de la lib. A l&#8217;inverse, <code>main()</code> fait partie de l&#8217;API privée, c&#8217;est à dire ce qui est manipulable par les développeurs de la lib. Mais quand on parle d&#8217;API sans préciser, on parle de l&#8217;API publique.</p>
+<h2>Changement d&#8217;API</h2>
+<p>En informatique, on peut généralement exposer les choses de plusieurs manières différentes. Je peux changer mon API :</p>
+<pre lang="python">
+import datetime
+
+def senerver(moment=None):
+    if not moment:
+        moment = datetime.datetime.utcnow()
+    # ...
+
+def botter(cul):
+    # ...
+
+def init():
+    # ...
+
+if __name__ == "__main__":
+    init()</pre>
+<p>Ici, j&#8217;ai changé mon API pour rendre le paramètre <code>moment</code> facultatif afin de faciliter la vie des utilisateurs de la libs.</p>
+<p>Et là on aborde un point très important du concept : la stabilité d&#8217;une API.</p>
+<p>Puisque l&#8217;API est ce qu&#8217;on expose au monde extérieur, le monde extérieur va l&#8217;utiliser d&#8217;une certaine façon. Si on change cette manière de l&#8217;utiliser dans une version suivante, au moment de la mise à jour, on va casser leur code si on ne fait pas attention.</p>
+<p>Par exemple, ici je rends un paramètre facultatif : ça ne craint pas grand-chose. Mais si j&#8217;avais fait l&#8217;inverse ? J&#8217;avais un paramètre facultatif, et soudain je le rends obligatoire. Toutes les personnes qui n&#8217;ont pas passé le paramètre vont soudain avoir un plantage s&#8217;ils passent à la nouvelle version de la lib car l&#8217;API a changé.</p>
+<p>C&#8217;est donc une seconde définition de l&#8217;API : l&#8217;API est une promesse, un contrat entre l&#8217;auteur d&#8217;un code et ceux qui vont utiliser ce code. Cette promesse est &#8220;voici ce que vous pouvez utiliser sereinement dans votre programme, je ne vais pas tout péter demain&#8221;.</p>
+<p>Cette promesse est plus ou moins bien respectée selon les projets. Python, par exemple, a un historique exemplaire de stabilité d&#8217;API, et n&#8217;a cassé la compatibilité qu&#8217;une fois, avec Python 3, donnant 10 ans aux développeurs pour s&#8217;adapter.</p>
+<p>Dans tous les cas, si une lib est beaucoup utilisée et que son développeur a le sens des responsabilités, elle évolue plus doucement. Pour cette raison, il faut faire attention au choix qu&#8217;on fait dans le style de son API, sous peine de ne pas pouvoir le changer plus tard.</p>
+<p>En effet, on peut tout à faire écrire le même code dans des tas de styles différents. Ainsi, je pourrais botter des culs avec une API orientée objet :</p>
+<pre lang="python">
+
+class Colere:
+
+    @classmethod
+    def global_init():
+        # ...
+
+    def __init__(moment):
+        # ...
+        self._senerver(moment)
+
+    def _senerver():
+        # ...
+
+    def botter(cul):
+        # ...
+
+if __name__ == "__main__":
+    Colere.global_init()</pre>
+<p>Mon bottage de cul n&#8217;a plus du tout le même goût à l&#8217;usage :</p>
+<pre lang="python">
+from bottage import colere
+c = Colere(now)
+c.botter(un_aperi_cul)
+</pre>
+<p>Mon programme fait la même chose, mais mon API est différente. Notez le <code>_senerver()</code> qui est préfixé d&#8217;un underscore, une convention en Python pour dire que cette méthode doit être considérée comme ne faisant pas partie de l&#8217;API publique, donc à ne pas utiliser depuis l&#8217;extérieur. En effet, il n&#8217;y a pas de méthode privée en Python.</p>
+<h2>Qualités d&#8217;une API</h2>
+<p>On a vu que la stabilité était une qualité importante d&#8217;une API. Mais il y en a d&#8217;autres. Notamment la performance et l&#8217;ergonomie, généralement deux notions qui s&#8217;affrontent.</p>
+<p>Pour l&#8217;ergonomie, il s&#8217;agit de rendre facile les usages qu&#8217;on fait le plus couramment, et rendre possible les usages les plus ardus. Prenez l&#8217;exemple d&#8217;une requête HTTP avec paramètre POST sur un site qui a besoin de cookies d&#8217;une requête précédente. Pas un usage incroyablement complexe a priori&#8230;</p>
+<p>Avec la stdlib de Python, ça donne ça :</p>
+<pre lang="python">import urllib
+import urllib2
+import cookielib
+
+cookie_jar = cookielib.CookieJar()
+opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie_jar))
+urllib2.install_opener(opener)
+urllib2.urlopen('http://site.com')
+
+data = urllib.urlencode({"nom": "valeur"})
+rsp = urllib2.urlopen('http://site.com/autre/page', data)
+print(rsp.read())</pre>
+<p>La même chose avec la lib <a href="http://docs.python-requests.org/en/latest/">requests</a> :</p>
+<pre lang="python">
+import requests
+
+request.get('http://site.com')
+res = request.post('http://site.com/autre/page', data={"nom": "valeur"})
+print(res.content)</pre>
+<p>Il ne s&#8217;agit pas juste du fait qu&#8217;il y ait beaucoup moins de lignes pour le faire. La facilité à découvrir comment faire dans le deuxième cas est exemplaire : en lisant, on comprend le code. En bidouillant dans le shell, on peut sans doute trouver tout ça. On n&#8217;a pas besoin de se poser la question de ce qu&#8217;est une jar, l&#8217;url encoding, etc.</p>
+<p>Le premier exemple est non seulement verbeux, mais très, très difficile à trouver soi-même. En fait, même avec la doc sous les yeux, ce n&#8217;est pas évident d&#8217;arriver à ce résultat, et on y arrivera après des essais douloureux.</p>
+<p>Le deuxième exemple est plus ergonomique que le premier.</p>
+<p>Mais l&#8217;ergonomie a généralement un coût : celui de la performance.</p>
+<p>Imaginez que j&#8217;ai la lib de bottage de fion sous forme fonctionnelle :</p>
+<pre lang="python">
+import datetime
+
+def senerver(moment=None):
+    if not moment:
+        moment = datetime.datetime.utcnow()
+    # ...
+
+def botter(cul):
+    # ...
+
+def init():
+    # ...
+
+if __name__ == "__main__":
+    init()</pre>
+<p>Je veux la rendre plus ergonomique. Je sais qu&#8217;il faut obligatoirement s&#8217;énerver pour botter un cul, et je décide donc de cacher cette fonction et l&#8217;appeler automatiquement :</p>
+<pre lang="python">
+import moment
+
+def _senerver(moment=None):
+    if not moment:
+        moment = datetime.datetime.utcnow()
+    # ...
+
+def botter(cul, moment=None):
+    _senerver(moment)
+    # ...
+
+def init():
+    # ...
+
+if __name__ == "__main__":
+    init()</pre>
+<p>Dans la plupart des cas, ça va aider mon public :</p>
+<p>Au lieu de devoir savoir qu&#8217;il faut s&#8217;énerver avant de botter, ils ont juste à botter :</p>
+<pre lang="python">
+from bottage import botter
+botter(cul_de_jatte)
+</pre>
+<p>J&#8217;ai identifié que c&#8217;était l&#8217;usage le plus courant, donc c&#8217;est une amélioration. Mais ça a un prix pour une petite partie de mes utilisateurs : les très gros botteurs de cul. Ceux qui bottent des culs par centaine.</p>
+<p>Avant, ils pouvaient faire :</p>
+<pre lang="python">
+from bottage import senerver, botter
+senerver()
+for cul in rang_doigons:
+    botter(cul)
+</pre>
+<p>Mais maintenant, faisant :</p>
+<pre lang="python">
+from bottage import botter
+for cul in rang_doigons:
+    botter(cul)
+</pre>
+<p>Ils ont un appel à <code>_senerver()</code> à chaque tour de boucle, et donc un appel à <code>datetime.utcnow()</code> aussi !</p>
+<p>Bien entendu, il est possible de remédier à cette situation, mais cet article n&#8217;est pas là pour vous expliquer comment créer une belle API. Ce serait néanmoins un très bon article.</p>
+<p>Ici, je vous montre simplement qu&#8217;en facilitant, on suppose d&#8217;un usage, et ça peut se faire au détriment des autres. L&#8217;automatisme a tendance à retirer de la marge de manœuvre.</p>
+<p>Une bonne API va donc proposer un moyen automatique de faire les opérations de tous les jours, va lui donner une forme (nom, ordre des actions, organisation, etc) ET un moyen de faire des choses compliquées ou performantes. Ce qui va rendre l&#8217;API plus riche, donc plus lourde, avec une plus grosse doc, etc.</p>
+<p>Tout a un coût.</p>
+<h2>API Web</h2>
+<p>Jusqu&#8217;ici vous avez vu l&#8217;API d&#8217;une bibliothèque, mais il existe d&#8217;autres genres d&#8217;API. L&#8217;un est devenu particulièrement populaire depuis le milieu des années 2000 : l&#8217;API Web.</p>
+<p>L&#8217;API Web est comme l&#8217;API précédente ce qui est exposé à l&#8217;extérieur pour manipuler un programme. Entrées. Sorties. Mais il y a plusieurs différences :</p>
+<ul>
+<li>Ce n&#8217;est pas une lib qu&#8217;on manipule, c&#8217;est en général un service complet.</li>
+<li>On n&#8217;utilise pas le langage dudit code pour le manipuler, mais un protocole Web.</li>
+<li>Les appels passent par le réseau.</li>
+</ul>
+<p>Il existe de nombreux protocoles qui permettent de faire une API Web : SOAP, REST, XML RPC, WAMP etc.</p>
+<p>Aujourd&#8217;hui, les API Web les plus populaires utilisent majoritairement un protocole pseudo-REST (techniquement REST est plus une archi qu&#8217;un protocole, mais fuck) avec en encoding JSON.</p>
+<p>Hum, je vous vois sourciller.</p>
+<p>Oui, c&#8217;est clair que la phrase est un peu tordue du cul, comme si elle avait été bottée.</p>
+<p>Prenons donc un exemple : un service Web de bottage de cul !</p>
+<p>Vous êtes donc asskicker.io, leader mondial du bottage de cul en ligne. Et vous exposez votre processus de bottage de cul exclusif à tous les programmeurs.</p>
+<p>Pour ce faire, vous mettez à disposition une API WEB sous forme pseudo REST. Au lieu d&#8217;appeler des méthodes, les développeurs vont envoyer des requêtes HTTP Get et Post à des URLs représentant les culs à botter.</p>
+<p>Je ne vais pas rentrer dans les détails de ce qu&#8217;est du (pseudo) REST ou JSON exactement, mais un exemple de requêtes à faire pour botter des culs via notre API Web serait :</p>
+<pre lang="python">import json
+import requests
+
+# On fait une requête GET vers l'URL du service pour obtenir de quoi s’énerver
+colere = requests.get('http://asskicker.io/colere/')
+
+# Je créer un nouveau bottage de cul
+data = json.dumps({'cul': 'de bouteille', 'colere': colere['id']})
+headers = {'content-type': 'application/json'}
+res = requests.post('http://asskicker.io/bottage/', data=data, headers=headers)</pre>
+<p>Et supposons qu&#8217;on veuille connaître le dernier bottage de cul fait :</p>
+<pre lang="python">res = requests.get('http://asskicker.io/bottage/last')
+print(res.json()) # et la réponse JSON du service :
+# {
+#     "bottage": 89080,
+#     "cul": "de bouteille",
+#     "colere": 99943,
+#     "date": "2014-09-06 20:38:11"
+# }</pre>
+<p>Les URLs sont fictives, complètement inventées, et ne correspondent à rien.</p>
+<p>Ici, notre API est donc la collections d&#8217;URLs (<code>http://asskicker.io/bottage/</code>, <code>http://asskicker.io/bottage/last</code>, etc.) qui permet de manipuler notre service, ainsi que les noms et types des paramètres à envoyer via <code>data</code> et le contenu de la réponse.</p>
+<p>Le but de l&#8217;API Web est de permettre de manipuler du code sur une machine distante à travers le Web, depuis n&#8217;importe quel langage capable d&#8217;envoyer une requête HTTP. L&#8217;API Twitter permet de de lister des tweets et en envoyer. Par exemple, si on est authentifié, faire une requête GET sur <a href="http://api.twitter.com/1.1statuses/show/787998">http://api.twitter.com/1.1statuses/show/787998</a> permet d&#8217;obtenir en retour un JSON contenant les informations sur le tweet numéro 787998</p>
+<p> L&#8217;API Google permet de faire des recherches. L&#8217;API flicker permet d&#8217;uploader des photos. Toutes les APIS ont des formes différentes, certaines sont plus ou moins faciles, plus ou moins efficaces, utilisent tels ou tels formats, mais au final, c&#8217;est la même chose : un moyen de manipuler le service en faisant des requêtes.</p>
+<p>La manière classique de créer un site est de générer le HTML final sur le serveur. Or, comme il est possible d&#8217;envoyer des requêtes HTTP depuis une page Web en utilisant Ajax, on voit aujourd&#8217;hui des sites codés en Javascript qui vont chercher leurs données sur le serveur via l&#8217;API du site. Le navigateur reçoit ainsi un HTML incomplet, et le JS appelle l&#8217;API pour reconstruire la page.</p>
+<p>Ainsi, on code la logique une seule fois : récupérer les informations, effectuer des actions&#8230; Et on utilise l&#8217;API pour tout ça, que ce soit pour faire le site Web, ou pour laisser d&#8217;autres programmeurs utiliser le site.</p>
+<p>Évidemment, une vraie API Web est complexe, possède des problématiques de sécurité, d&#8217;authentification&#8230; Encore un bon article à écrire.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quest-ce-quune-api/feed/</wfw:commentRss>
+		<slash:comments>18</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">12184</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/09/v6bggki.gif" length="165254" type="image/jpg" />	</item>
+		<item>
+		<title>Importer des données, retour d&#8217;expérience</title>
+		<link>http://sametmax.com/importer-des-donnees-retour-dexperience/</link>
+		<comments>http://sametmax.com/importer-des-donnees-retour-dexperience/#comments</comments>
+		<pubDate>Thu, 16 Jan 2014 15:49:21 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[api]]></category>
+		<category><![CDATA[data]]></category>
+		<category><![CDATA[import]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[xml]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8772</guid>
+		<description><![CDATA[Python est simplement le meilleur langage au monde pour l'import de données. Sa capacité à lire énormément de formats facilement, sa force de manipulation de données numériques et texte, sa philosophie d'itération, ses nombreuses libs en font un outil incroyablement souple et puissant.
+
+Voici mes 2 centimes.]]></description>
+				<content:encoded><![CDATA[<p>Dédicaçons la chanson de notre article au plus barbu de mes amis poneys.</p>
+
+<!-- iframe plugin v.4.3 wordpress.org/plugins/iframe/ -->
+<iframe width="560" height="315" src="//www.youtube.com/embed/9wrVTYMGTao" frameborder="0" 0="allowfullscreen" scrolling="yes" class="iframe-class"></iframe>
+
+<p>J&#8217;ai importé des données un très grand nombre de fois dans ma vie. Depuis des APIs, des XML, des CSV, du filesystem, des formats binaires, des formats batards, etc</p>
+<p>Pour tous les jobs d&#8217;import, Python est probablement le meilleur langage au monde. Autant j&#8217;aime Python, autant je suis lucide sur le fait qu&#8217;en dev Web, Ruby et Javascript sont d&#8217;excellentes alternatives. En programmation concurrente, Go dépasse Python. En IA, Lisp est le top de la concurrence.</p>
+<p>Mais pour l&#8217;import de données, Python est simplement le meilleur langage au monde. Sa capacité à lire énormément de formats facilement, sa force de manipulation de données numériques et texte, sa philosophie d&#8217;itération, ses nombreuses libs en font un outil incroyablement souple et puissant.</p>
+<p>Malgré cela, on retrouve toujours des grosses difficultés dans l&#8217;import de données. Elles sont les mêmes pour tous les langages.</p>
+<p>Voici mes 2 centimes.</p>
+<h2>N&#8217;accordez aucune confiance à la donnée</h2>
+<p>Partez du principe que tout champ peut manquer. Que toute donnée peut être mal formée ou corrompue. Ou fausse.</p>
+<p>Même si le service en face est sérieux. J&#8217;ai bossé avec des données du service de santé américain, de France Télécom, de startups, d&#8217;outils Open Source, de scrapping de sites, de mon pote Maurice, et de mes propres scripts</p>
+<p>Vous savez ce qu&#8217;ils ont tous en commun ? Aucun ne sont fiables. Aucun.</p>
+<p>Ils ont tous des données merdiques à un moment où à un autre.</p>
+<p>Ayez donc une approche défensive. Pour CHAQUE champ, posez vous la question : que doit faire le script d&#8217;import si il manque ? Si la donnée contenue est foireuse ?</p>
+<h2>Les outils d&#8217;abstraction sont vos amis</h2>
+<p>Un import, c&#8217;est typiquement le genre de taff où les surcouches vont énormément vous aider. ORM, DSL, XML objectify et toute lib qui peut vous éviter de travailler trop proche du format va vous faire gagner un temps fou.</p>
+<p>Prenez un peu de temps pour les mettre en place. Même si ils vous font perdre un peu en perf, un gros script d&#8217;import devient TRÈS VITE un sac de nœud. Et vous voulez que les problèmes soient facilement identifiables.</p>
+<p>Pour cette même raison, virez toute la logique de l&#8217;insertion des données en dehors du script. Votre script doit avoir une logique découpée en 3 parties :</p>
+<ol>
+<li>Le script d’acquisition, qui charge les données et les passe sous forme brute à un importeur.</li>
+<li>Un importeur, qui est capable d&#8217;extraire des données raffinées à partir d&#8217;un format de données brutes et appeler le bon code d&#8217;insertion.</li>
+<li>Du code d&#8217;insertion, qui attend en paramètre une donnée toujours propre (sans aucun check), et qui se charge uniquement de prendre cette donnée et la mettre dans votre système de stockage (généralement la base de données).</li>
+</ol>
+<p>Le script d’acquisition doit rester très simple. Une suite d&#8217;instructions logiques pour récupérer la donnée, l&#8217;énumérer et la passer à l&#8217;importeur. C&#8217;est lui qui fait les appels API, qui se connecte au FTP, qui ouvre le CSV, qui parse le XML, etc. Ainsi vous pouvez facilement interchanger les importeurs ou voir si il y a une couille dans la récupération des données.</p>
+<p>L&#8217;importeur est généralement le code le plus crade. C&#8217;est une série de <code>try</code> / <code>except</code>, de logique métier, d&#8217;assainissement des données. Vous ne voulez pas de code d&#8217;insertion là dedans, car vous voulez que ce code, qui est difficile à débugger et va être celui qui va être modifié toutes les 5 minutes au fur et à mesure que vous découvrez toute les merdes, soit dédié à une seule logique : obtenir de la donnée saine. Ce code sera spaghetti, vous n&#8217;y pouvez rien. Mais vous pouvez l&#8217;isoler et le commenter à mort.</p>
+<p>Le code d&#8217;insertion est un code réutilisable. Il se fout de savoir d&#8217;où vient la donnée. Il attend un format, et un seul, et toujours de données correctes, et propres. C&#8217;est le but des importeurs de lui filer une entrée normalisée et pertinente. Ce code est propre, et doit être très bien testé via des tests unittaires. Il va vous servir plusieurs fois, car c&#8217;est le même code qui sera utilisé que vous importiez d&#8217;un service X ou un service Y. Il représente VOTRE logique métier. N&#8217;insérez pas ce code dans le code d&#8217;une autre abstraction (type ORM), ainsi, si vous changez d&#8217;outils, vous changez simplement ce code, et l&#8217;interface reste la même pour vos importeurs.</p>
+<h2>Debugging</h2>
+<p>Votre script va planter. Beaucoup. Souvent.</p>
+<p>Un champ absolument indispensable &#8211; que la spec papier notait comme toujours présent &#8211; va manquer. Un autre champ noté de type int dans le xld contient une lettre. L&#8217;encoding n&#8217;est pas le bon, alors qu&#8217;il l&#8217;a toujours été pendant 5 mois.</p>
+<p>Ce n&#8217;est pas une question de si, c&#8217;est une question de quand.</p>
+<p>Donc déjà, blindez votre script de <a href="http://sametmax.com/ecrire-des-logs-en-python/">log</a>. Quand je dis blindez, je veux dire que chaque <code>if</code>, chaque résultat de check, doit être accompagné d&#8217;une ligne affichant l&#8217;action en cours, et son contexte (la donnée traitée, de préférence avec un truc pour l&#8217;identifier, genre un ID). Quand il plantera à 3 heure du matin sur un truc hubuesque et que le relancer pour obtenir le même état prendra une demi-journée, le log sera votre seul chance de réparer la panne sans engager un psy.</p>
+<p>Mettez aussi un gros <code>try / except</code> générique qui loggue toute exception, pour pouvoir faire un debug post mortem. Idéalement, faites le dumper <code>locals()</code> et envoyez-vous un mail d&#8217;alerte. Vous ne voulez pas que le script ne tourne pas pendant une journée sans que vous le sachiez.</p>
+<p>Mettez des options dans votre scripts pour pouvoir débugger plus facilement. Par exemple, si vous avez de code d&#8217;insertion qui est sous forme de tâche asynchrone (type <a href="http://sametmax.com/files-de-taches-et-taches-recurrentes-avec-celery/">celery</a>), mettez une option <code>--synchronous</code> qui insère le code inline afin de pouvoir utiliser <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">pdb</a> sur tout le script en cas de besoin. Ou alors, si vous avez une grosse archive à décompresser, mettez une option <code>--nozip</code> pour pouvoir sauter cette étape.</p>
+<p>Et si vous insérez un break point, mettez le dans une condition du genre :</p>
+<pre lang="python">if id_du_champ_ou_autre_moyen_identifiant == "valeur":
+    send_mail('Alerte, on est peut être au bug. Bouge ton fion.')
+    import ipdb; ipdp.set_trace()</pre>
+<p>Comme ça vous pouvez retourner à vos moutons le temps que le breakpoint s&#8217;active, ce qui, sur des gros jeux de données, peut prendre énormément de temps.</p>
+<p>Enfin, je sais qu&#8217;on a tendance à être fainéant et vouloir toujours débugger en direct. Mais faites des mocks. Faites un faux XML, une API bidon, bref, un truc qui vous permet d&#8217;insérer des cas d&#8217;import avec une données dans le format attendu, et testez votre code avec ça. Pour les petits imports, c&#8217;est une perte de temps, mais pour les gros imports, ça va vous faire gagner des jours. Ainsi vous pouvez tester des cas isolé, rajouter des bugs rencontrés, etc. Et en plus ça sert de documentation.</p>
+<h2>Problèmes courants</h2>
+<p>Il y a mille et une manière d&#8217;avoir un import qui plante, mais il y a généralement 6 grosses foirades qu&#8217;on retrouve tout le temps.</p>
+<h3>Service défaillant</h3>
+<p>Le service (FTP, API, humain en face, NAS, etc) qui doit vous fournir les données est indisponible. Vous n&#8217;y pouvez rien. Envoyez-vous un SMS pour vous prévenir, aujourd&#8217;hui <a href="http://www.twilio.com/">c&#8217;est facile et ça coûte presque rien</a>. Ainsi vous pourrez dialoguer rapidement avec les personnes responsables de problème.</p>
+<h3>Champs manquants</h3>
+<p>Grand classique. Tout champ peut manquer. Tout. Même un ID unique sans lequel la donnée n&#8217;a aucune sens. Faites vous un wrapper du genre :</p>
+<pre lang="python">def get_data(champ):
+    try:
+        # extraire le champ
+    except ChampAbsent, ChampMalFormé:
+        return None</pre>
+<p>Et utilisez le partout. Et décidez ce que doit faire votre programme si il rencontre <code>None</code>. Pour TOUS les champs. Si <code>None</code> est une valeur possible, utilisez <code>Ellipsis</code>. Si <code>Ellipsis</code> est une valeur possible, faites vous une classe <code>InvalidData</code>.</p>
+<h3>Mauvais encoding</h3>
+<p>Super vicieux. Je vous renvoie à <a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/">l&#8217;article sur l&#8217;encoding</a> pour cela.</p>
+<h3>Donnée aberrante</h3>
+<p>Impossible à prévoir, très difficile à identifier. Donnée de mauvais type, date ou nombre hors limites, texte dans la mauvaise langue, etc. Vous ne pouvez pas tout prévoir. Pour ça, il faudra faire au fur et à mesure des plantages.</p>
+<h3>Données mal formatée et malicieuses</h3>
+<p>En plus de <code>get_data</code>, il vous faut un <code>clean_data</code>. Qui check si on peut processer la donnée sereinement. Pour tous les champs également. C&#8217;est con, mais si LEUR système n&#8217;escape pas les entrées utilisateurs, c&#8217;est VOTRE système dans lequel se retrouve les injections de code.</p>
+<h2>Performances</h2>
+<p>La vitesse de votre script sera généralement limitée par 3 facteurs :</p>
+<ul>
+<li>Vitesse de lecture.</li>
+<li>Vitesse d&#8217;écriture.</li>
+<li>Vos plantages.</li>
+</ul>
+<p>Ces 3 facteurs sont en général très liés.</p>
+<p>La meilleur stratégie, c&#8217;est d&#8217;extrapoler un max de données, et de cacher tout ce qui est cacheable. Par exemple, copiez les données brutes sur vos serveurs (genre si c&#8217;est un fichier sur le leur). Copiez les références externes, même si vous n&#8217;en avez pas besoin afin d&#8217;éviter une query de plus, vous les supprimerez plus tard. Pré-calculez les champs, par exemple age, si vous avez la date de naissance, etc.</p>
+<p>Si vous avez beaucoup de checks à faire pour l&#8217;assainissement des données, mettez vos données en cache (par exemple dans redis), pour que les looks up soient rapides, ou au moins, ajoutez les index qui vont bien dans la DB (on peut avoir des perfs X10 rien qu&#8217;avec ça).</p>
+<p>Ensuite, partez du principe que ça va planter souvent, donc :</p>
+<ul>
+<li>Faites des opérations <a href="https://fr.wikipedia.org/wiki/Idempotent">idempotentes</a>, c&#8217;est à dire qu&#8217;on peut les relancer autant de fois qu&#8217;on veut sans risque. Typiquement, vérifiez si une donnée existe avant l&#8217;insertion, et si oui, faites une mise à jour complète.</li>
+<li>Mettez un historique. Sauvegardez quelque part l&#8217;avancement de votre import, afin de ne pas tout recommencer depuis le début après le plantage.</li>
+</ul>
+<p>Ah oui, et faites des copies de sauvegarde des données brutes ET des données importées. Pour les premières, parce qu&#8217;on est pas à l&#8217;abri un &#8220;rm -fr&#8221; malencontreux. Ne rigolez pas, ça m&#8217;est arrivé la semaine dernière. Une semaine à tout DL à nouveau. Pour les secondes, parce que tant que le dernier import n&#8217;est pas terminé, on peut toujours corrompre toute sa base avec une couille de dernière minute. Comme un encoding qui change aléatoirement sur une donnée non datée.</p>
+<h2>Bon sens</h2>
+<p>Évidement, je parle ici d&#8217;un synthèse des problématiques rencontrées. Vous ne pouvez pas appliquer TOUT ça, ou en tout cas, pas au début, ou pas sur des petits scripts, etc. Selon le sérieux de votre source de données, il faudra plus ou moins être défensif. L&#8217;expérience et la douleur vous permettra de trouver la juste dose de morphine.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/importer-des-donnees-retour-dexperience/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8772</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/01/tumblr_mzej9jOaCN1r539hzo1_500.jpg" length="218579" type="image/jpg" />	</item>
+	</channel>
+</rss>

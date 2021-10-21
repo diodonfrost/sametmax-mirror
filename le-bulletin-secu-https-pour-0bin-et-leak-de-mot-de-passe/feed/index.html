@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Le bulletin sécu : https pour 0bin et leak de mots de passe</title>
+	<atom:link href="http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/#comment-174833</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 25 Jan 2016 14:28:02 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17638#comment-174833</guid>
+		<description><![CDATA[&lt;p&gt;Et quand cloudflare tombe, ton site tombe. Quand cloudflare decide de ban un user ou un pays pour des raisons politiques, il n&#039;y a plus accès. Si quelqu&#039;un demande à cloudflare un takedown ton site tombe et c&#039;est bien galère pour recupérer le droits dessus. Bref, tu mets tes couilles dans les mains d&#039;une société largement incluencée par des interêts commerciaux, politiques, et qui est une boîte noire.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Et quand cloudflare tombe, ton site tombe. Quand cloudflare decide de ban un user ou un pays pour des raisons politiques, il n&#8217;y a plus accès. Si quelqu&#8217;un demande à cloudflare un takedown ton site tombe et c&#8217;est bien galère pour recupérer le droits dessus. Bref, tu mets tes couilles dans les mains d&#8217;une société largement incluencée par des interêts commerciaux, politiques, et qui est une boîte noire.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Atala</title>
+		<link>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/#comment-174827</link>
+		<dc:creator><![CDATA[Atala]]></dc:creator>
+		<pubDate>Mon, 25 Jan 2016 13:20:32 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17638#comment-174827</guid>
+		<description><![CDATA[Pardon, cela ne fait pas trop argumenté. Avec les pages rules de cloudflare tu peux faire un cache complet de toutes tes pages (&#039;Cache everything&#039;). Et tu évites toutes les galères d&#039;install, upgrade, etc.
+
+On avait un wordpress sous l&#039;au qui a été sauvé grâce à ça ;)
+]]></description>
+		<content:encoded><![CDATA[<p>Pardon, cela ne fait pas trop argumenté. Avec les pages rules de cloudflare tu peux faire un cache complet de toutes tes pages (&#8216;Cache everything&#8217;). Et tu évites toutes les galères d&#8217;install, upgrade, etc.</p>
+<p>On avait un wordpress sous l&#8217;au qui a été sauvé grâce à ça ;)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Atala</title>
+		<link>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/#comment-174826</link>
+		<dc:creator><![CDATA[Atala]]></dc:creator>
+		<pubDate>Mon, 25 Jan 2016 13:14:35 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17638#comment-174826</guid>
+		<description><![CDATA[Peut-être essayer https://www.cloudflare.com/ ?
+]]></description>
+		<content:encoded><![CDATA[<p>Peut-être essayer <a href="https://www.cloudflare.com/" rel="nofollow">https://www.cloudflare.com/</a> ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: jack of all trades</title>
+		<link>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/#comment-174237</link>
+		<dc:creator><![CDATA[jack of all trades]]></dc:creator>
+		<pubDate>Fri, 15 Jan 2016 09:07:02 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17638#comment-174237</guid>
+		<description><![CDATA[@Sam : la plupart du temps le goulet d&#039;étranglement d&#039;un serveur web se situe lors de l&#039;exécution du code php via php-fpm. Même en activant opcache ce php-fpm comsomme pas mal de ressources. Lorsque l&#039;on utilise un plugin de cache il faut trouver le moyen pour que nginx serve directement ce qui a été mis en cache sans que le plugin utilise le core wordpress pour fournir à Nginx les fichiers du cache. Dans ce cas Nginx est utilisé pour sa veritable fonction c&#039;est à dire servir directement des pages statiques à une vitesse effrante sans surconsommation de ressources.
+
+Par exemple wprocket utilise cette stratégie par défaut avec Apache (ce qui déchire avec la version 2.4), il est également possible d&#039;appliquer cette stratégie avec nginx en utilisant une configuration décrite par &lt;a href=&quot;https://github.com/maximejobin/rocket-nginx&quot; title=&quot;Maxime Jobin sur github&quot; rel=&quot;nofollow&quot;&gt;Maxime Jobin sur github&lt;/a&gt;. Pour l&#039;avoir testé, je peux dire que cette configuration fonctionne bien.
+
+A mon sens, l&#039;avantage d&#039;un plugin de cache réside dans les options permettant de générer les fichiers de pages statiques: minification du css, js, lazyload, etc..
+]]></description>
+		<content:encoded><![CDATA[<p>@Sam : la plupart du temps le goulet d&#8217;étranglement d&#8217;un serveur web se situe lors de l&#8217;exécution du code php via php-fpm. Même en activant opcache ce php-fpm comsomme pas mal de ressources. Lorsque l&#8217;on utilise un plugin de cache il faut trouver le moyen pour que nginx serve directement ce qui a été mis en cache sans que le plugin utilise le core wordpress pour fournir à Nginx les fichiers du cache. Dans ce cas Nginx est utilisé pour sa veritable fonction c&#8217;est à dire servir directement des pages statiques à une vitesse effrante sans surconsommation de ressources.</p>
+<p>Par exemple wprocket utilise cette stratégie par défaut avec Apache (ce qui déchire avec la version 2.4), il est également possible d&#8217;appliquer cette stratégie avec nginx en utilisant une configuration décrite par <a href="https://github.com/maximejobin/rocket-nginx" title="Maxime Jobin sur github" rel="nofollow">Maxime Jobin sur github</a>. Pour l&#8217;avoir testé, je peux dire que cette configuration fonctionne bien.</p>
+<p>A mon sens, l&#8217;avantage d&#8217;un plugin de cache réside dans les options permettant de générer les fichiers de pages statiques: minification du css, js, lazyload, etc..</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/#comment-174148</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 14 Jan 2016 14:57:03 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17638#comment-174148</guid>
+		<description><![CDATA[&lt;p&gt;@jack of all trades : malheureusement ce n&#039;est pas si simple.&lt;/p&gt;
+
+&lt;p&gt;D&#039;abord, varnish a des performances largement supérieurs à tout plugin de cache WP (on en a essayé 4).&lt;/p&gt;
+
+&lt;p&gt;Ensuite il est en front de S&#038;M mais aussi de IE.&lt;/p&gt;
+
+&lt;p&gt;Enfin, le cache est là pour pallier le nombres aberrants de requêtes lentes que font ces outils pour chaque page et soulager le serveur, non pas pour que le blog se charge plus vite côté client. La taille des images n&#039;a aucun impact là dessus, d&#039;ailleurs notre config varnish les bypass il me semble.&lt;/p&gt;
+
+&lt;p&gt;Mais admettons que nous souhaitions réduire la taille de la page des articles (qui fait en tout un putain de 2Mo O_o), nous avons très peu de contrôle. Le CSS + JS + HTML pèse le 1,9 Mo. Sur cette page. Pour un simple article. WP et son écosystème (plugin, thêmes, etc) sont des gros balourds bordéliques et infléxibles.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>@jack of all trades : malheureusement ce n&#8217;est pas si simple.</p>
+<p>D&#8217;abord, varnish a des performances largement supérieurs à tout plugin de cache WP (on en a essayé 4).</p>
+<p>Ensuite il est en front de S&amp;M mais aussi de IE.</p>
+<p>Enfin, le cache est là pour pallier le nombres aberrants de requêtes lentes que font ces outils pour chaque page et soulager le serveur, non pas pour que le blog se charge plus vite côté client. La taille des images n&#8217;a aucun impact là dessus, d&#8217;ailleurs notre config varnish les bypass il me semble.</p>
+<p>Mais admettons que nous souhaitions réduire la taille de la page des articles (qui fait en tout un putain de 2Mo O_o), nous avons très peu de contrôle. Le CSS + JS + HTML pèse le 1,9 Mo. Sur cette page. Pour un simple article. WP et son écosystème (plugin, thêmes, etc) sont des gros balourds bordéliques et infléxibles.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: jobarjo</title>
+		<link>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/#comment-174120</link>
+		<dc:creator><![CDATA[jobarjo]]></dc:creator>
+		<pubDate>Thu, 14 Jan 2016 10:31:06 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17638#comment-174120</guid>
+		<description><![CDATA[Bonjour
+
+Pourquoi le cache de nginx n&#039;est pas suffisant?
+
+J&#039;ai lu que le purge de nginx n&#039;est pas top, mais il existe des modules pour ca.
+]]></description>
+		<content:encoded><![CDATA[<p>Bonjour</p>
+<p>Pourquoi le cache de nginx n&#8217;est pas suffisant?</p>
+<p>J&#8217;ai lu que le purge de nginx n&#8217;est pas top, mais il existe des modules pour ca.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: jack of all trades</title>
+		<link>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/#comment-174104</link>
+		<dc:creator><![CDATA[jack of all trades]]></dc:creator>
+		<pubDate>Thu, 14 Jan 2016 08:39:38 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17638#comment-174104</guid>
+		<description><![CDATA[Salut,
+
+Tu pourrais te passer de varnish, surtout avec nginx mais pour celà un système de cache inhérent à wordpress serait nécessaire (W3 total cache, wp rocket, etc...). Une légère optimisation de ton site serait bien aussi, en commençant par la taille des images. Je suis allé me pendre en voyant la taille de l&#039;image sur la page catégorie de ton article &lt;a href=&quot;http://sametmax.com/on-a-tente-de-nous-hacker-0bin/&quot; title=&quot;On a tenté de nous hacker 0bin&quot; rel=&quot;nofollow&quot;&gt;On a tenté de nous hacker 0bin&lt;/a&gt; ---&#062; 654,96 kb , c&#039;est vraiment énorme pour l&#039;affichage d&#039;une miniature, sans parler des gif mais si tu aimes les animations :)
+
+Sinon j&#039;adore ton style, ce blog est une pépite dans l&#039;univers de plus en plus standardisé du blogging :)
+
+@++
+]]></description>
+		<content:encoded><![CDATA[<p>Salut,</p>
+<p>Tu pourrais te passer de varnish, surtout avec nginx mais pour celà un système de cache inhérent à wordpress serait nécessaire (W3 total cache, wp rocket, etc&#8230;). Une légère optimisation de ton site serait bien aussi, en commençant par la taille des images. Je suis allé me pendre en voyant la taille de l&#8217;image sur la page catégorie de ton article <a href="http://sametmax.com/on-a-tente-de-nous-hacker-0bin/" title="On a tenté de nous hacker 0bin" rel="nofollow">On a tenté de nous hacker 0bin</a> &#8212;&gt; 654,96 kb , c&#8217;est vraiment énorme pour l&#8217;affichage d&#8217;une miniature, sans parler des gif mais si tu aimes les animations :)</p>
+<p>Sinon j&#8217;adore ton style, ce blog est une pépite dans l&#8217;univers de plus en plus standardisé du blogging :)</p>
+<p>@++</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/#comment-173888</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Tue, 12 Jan 2016 11:46:35 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17638#comment-173888</guid>
+		<description><![CDATA[&lt;p&gt;Sans varnish, le blog tombe. WP est très, très lent, et on a 6000 visiteurs / jour.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Sans varnish, le blog tombe. WP est très, très lent, et on a 6000 visiteurs / jour.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Nono</title>
+		<link>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/#comment-173873</link>
+		<dc:creator><![CDATA[Nono]]></dc:creator>
+		<pubDate>Tue, 12 Jan 2016 08:40:59 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17638#comment-173873</guid>
+		<description><![CDATA[Sinon le &#039;varnish&#039;, c&#039;est que pour faire du caching ? je serais tenté de dire qu&#039;on s&#039;en fout :) à mes risques et périls
+]]></description>
+		<content:encoded><![CDATA[<p>Sinon le &#8216;varnish&#8217;, c&#8217;est que pour faire du caching ? je serais tenté de dire qu&#8217;on s&#8217;en fout :) à mes risques et périls</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: François</title>
+		<link>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/#comment-173808</link>
+		<dc:creator><![CDATA[François]]></dc:creator>
+		<pubDate>Mon, 11 Jan 2016 21:27:57 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17638#comment-173808</guid>
+		<description><![CDATA[@Brice: Et qui plus est, on est chez des gens biens qui disent quand ça a fuité, mais nombres d&#039;admins/webmaster/conseiller en com&#039; ne le font pas. Et là, ça peut faire mal. Donc mot de passe unique sur tous les sites web pour moi.
+]]></description>
+		<content:encoded><![CDATA[<p>@Brice: Et qui plus est, on est chez des gens biens qui disent quand ça a fuité, mais nombres d&#8217;admins/webmaster/conseiller en com&#8217; ne le font pas. Et là, ça peut faire mal. Donc mot de passe unique sur tous les sites web pour moi.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

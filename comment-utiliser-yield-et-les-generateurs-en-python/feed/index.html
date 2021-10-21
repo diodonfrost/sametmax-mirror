@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Comment utiliser yield et les générateurs en Python ?</title>
+	<atom:link href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/#comment-190303</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 23 Oct 2017 12:32:25 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=2416#comment-190303</guid>
+		<description><![CDATA[&lt;p&gt;send() est comme next(), mais envoie une valeur. Tu checks les valeurs paires et utilisent send() une fois deux, dont il arrive pile poil sur le bon yield.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>send() est comme next(), mais envoie une valeur. Tu checks les valeurs paires et utilisent send() une fois deux, dont il arrive pile poil sur le bon yield.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: iuva</title>
+		<link>http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/#comment-190229</link>
+		<dc:creator><![CDATA[iuva]]></dc:creator>
+		<pubDate>Fri, 20 Oct 2017 14:37:56 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=2416#comment-190229</guid>
+		<description><![CDATA[&lt;p&gt;Yo ! superbe article et excellent exemple sur les capotes. ça nous parle à tous :D&lt;/p&gt;
+
+&lt;p&gt;J&#039;ai une autre question, si vous permettez :&lt;/p&gt;
+
+&lt;p&gt;Dans le code ci-dessous, pour quelle raison est ce que &lt;code&gt;if: ... print( &#039;yoloooooo2&#039;, a.send(1000) )&lt;/code&gt; est associé à &lt;code&gt;else: ... nvl_val = (yield j, &#039;yoloooooo1&#039;)&lt;/code&gt; tandis que &lt;code&gt;print(&#039;yoloooooooo3&#039;, i)&lt;/code&gt; est associé à &lt;code&gt;yield j&lt;/code&gt; ?&lt;/p&gt;
+
+&lt;pre lang=&quot;python&quot;&gt;
+
+def generateur(inf, sup):
+
+    liste = [x * x for x in range(inf,sup)]
+
+    print(liste)
+
+    liste2 = list()
+
+    for i,j in enumerate(liste):
+
+        if j%2==1 :
+
+            nvl_val = (yield j, &#039;yoloooooooooo1&#039;)
+
+            liste2.append(nvl_val)
+
+        else :
+
+            yield j
+
+            liste2.append(j)
+
+    print(liste2)
+
+
+a = generateur(5,9)
+
+for i in a:
+
+    print(&#039;yolooooooooooo2&#039;,a.send(1000))
+
+    print(&#039;yolooooooooooo3&#039;,i) 
+&lt;/pre lang=&quot;python&quot;&gt;
+
+&lt;p&gt;résultat :&lt;/p&gt;
+
+&lt;pre lang=&quot;python&quot;&gt;
+
+[25, 36, 49, 64]
+
+yolooooooooooo2 36
+
+yolooooooooooo3 (25, &#039;yoloooooooooo1&#039;)
+
+yolooooooooooo2 64
+
+yolooooooooooo3 (49, &#039;yoloooooooooo1&#039;)
+
+[1000, 36, 1000, 64]
+
+&lt;/pre &gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Yo ! superbe article et excellent exemple sur les capotes. ça nous parle à tous :D</p>
+<p>J&#8217;ai une autre question, si vous permettez :</p>
+<p>Dans le code ci-dessous, pour quelle raison est ce que <code>if: ... print( 'yoloooooo2', a.send(1000) )</code> est associé à <code>else: ... nvl_val = (yield j, 'yoloooooo1')</code> tandis que <code>print('yoloooooooo3', i)</code> est associé à <code>yield j</code> ?</p>
+<pre lang="python">
+
+def generateur(inf, sup):
+
+    liste = [x * x for x in range(inf,sup)]
+
+    print(liste)
+
+    liste2 = list()
+
+    for i,j in enumerate(liste):
+
+        if j%2==1 :
+
+            nvl_val = (yield j, 'yoloooooooooo1')
+
+            liste2.append(nvl_val)
+
+        else :
+
+            yield j
+
+            liste2.append(j)
+
+    print(liste2)
+
+
+a = generateur(5,9)
+
+for i in a:
+
+    print('yolooooooooooo2',a.send(1000))
+
+    print('yolooooooooooo3',i) 
+</pre>
+<p>résultat :</p>
+<pre lang="python">
+
+[25, 36, 49, 64]
+
+yolooooooooooo2 36
+
+yolooooooooooo3 (25, 'yoloooooooooo1')
+
+yolooooooooooo2 64
+
+yolooooooooooo3 (49, 'yoloooooooooo1')
+
+[1000, 36, 1000, 64]
+
+</pre>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/#comment-189018</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sun, 20 Aug 2017 14:19:27 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=2416#comment-189018</guid>
+		<description><![CDATA[&lt;p&gt;Ouai, vieil article qui n&#039;a pas encore été réécrit pour Python 3&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Ouai, vieil article qui n&#8217;a pas encore été réécrit pour Python 3</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Miebozor</title>
+		<link>http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/#comment-188990</link>
+		<dc:creator><![CDATA[Miebozor]]></dc:creator>
+		<pubDate>Sun, 20 Aug 2017 02:38:02 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=2416#comment-188990</guid>
+		<description><![CDATA[Merci ! Ce site est super addictif :P
+
+Pour les utilisateurs de python3, next() devient &lt;strong&gt;next&lt;/strong&gt;()
+
+C&#039;est tout... Bisous !
+]]></description>
+		<content:encoded><![CDATA[<p>Merci ! Ce site est super addictif :P</p>
+<p>Pour les utilisateurs de python3, next() devient <strong>next</strong>()</p>
+<p>C&#8217;est tout&#8230; Bisous !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Suniver</title>
+		<link>http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/#comment-187731</link>
+		<dc:creator><![CDATA[Suniver]]></dc:creator>
+		<pubDate>Thu, 15 Jun 2017 08:16:28 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=2416#comment-187731</guid>
+		<description><![CDATA[Merci beaucoup pour cette article très intéressant et bien expliqué!
+
+Avant je pensais connaitre un peu Python, mais je viens de comprendre que je ne le connaissais pas du tout en fait =D
+]]></description>
+		<content:encoded><![CDATA[<p>Merci beaucoup pour cette article très intéressant et bien expliqué!</p>
+<p>Avant je pensais connaitre un peu Python, mais je viens de comprendre que je ne le connaissais pas du tout en fait =D</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/#comment-180341</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Tue, 16 Aug 2016 13:19:20 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=2416#comment-180341</guid>
+		<description><![CDATA[&lt;p&gt;Absolument !&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Absolument !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Bloubi</title>
+		<link>http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/#comment-180298</link>
+		<dc:creator><![CDATA[Bloubi]]></dc:creator>
+		<pubDate>Sun, 14 Aug 2016 19:59:41 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=2416#comment-180298</guid>
+		<description><![CDATA[&quot;on utilise une liste en inten&lt;b&gt;s&lt;/b&gt;ion&lt;/b&gt; (&lt;a href=&quot;https://fr.wikipedia.org/wiki/Intension_et_extension&quot; rel=&quot;nofollow&quot;&gt;wp&lt;/a&gt;) non ?
+
+merci pour l&#039;article sinon, bien cool comme toujours !
+]]></description>
+		<content:encoded><![CDATA[<p>&#8220;on utilise une liste en inten<b>s</b>ion (<a href="https://fr.wikipedia.org/wiki/Intension_et_extension" rel="nofollow">wp</a>) non ?</p>
+<p>merci pour l&#8217;article sinon, bien cool comme toujours !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/#comment-177787</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 20 Apr 2016 07:01:13 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=2416#comment-177787</guid>
+		<description><![CDATA[&lt;p&gt;Le fait de stocker ou non les éléments en mémoires ne change rien à la nature d&#039;être itérable ou non. Si on peut faire iter() dessus, on peut faire une boucle for dessus, et donc c&#039;est itérable :)&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Le fait de stocker ou non les éléments en mémoires ne change rien à la nature d&#8217;être itérable ou non. Si on peut faire iter() dessus, on peut faire une boucle for dessus, et donc c&#8217;est itérable :)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Maritoun</title>
+		<link>http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/#comment-177769</link>
+		<dc:creator><![CDATA[Maritoun]]></dc:creator>
+		<pubDate>Mon, 18 Apr 2016 21:15:36 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=2416#comment-177769</guid>
+		<description><![CDATA[Bonjour,
+
+C&#039;est mon premier Comment sur ce site que je trouve exceptionnel. Il est d&#039;une grande intelligence dans sa pédagogie. Je voulais juste poser une question, pardon si elle est redondante.
+
+Dans l&#039;article il est dit que tout objet sur lequel on peut faire &quot;for .. in&quot; est par définition un itérable. Faut il cependant exclure les générateurs et disant qu&#039;ils sont l&#039;exception à la règle. Ou alors rajouter qu&#039;est itérable ce qui est stocké en mémoire en intégralité (pas généré à la volée) (ce qui est presque sous entendu juste après : &quot;Ces itérables sont pratiques car on peut les lire autant qu’on veut, mais ce n’est pas toujours idéal car on doit stocker tous les éléments en mémoire.&quot;).
+
+Si on inclus les générateurs dans l&#039;ensemble des itérables, on part en itéception (solvable though) avec le &quot;Sous le capot, tous les itérables utilisent un générateur appelé “itérateur”. On peut récupérer l’itérateur en utiliser la fonction iter() sur un itérable:&quot;
+
+Merci pour votre travail en tout cas. Best Python tutorials eva !
+]]></description>
+		<content:encoded><![CDATA[<p>Bonjour,</p>
+<p>C&#8217;est mon premier Comment sur ce site que je trouve exceptionnel. Il est d&#8217;une grande intelligence dans sa pédagogie. Je voulais juste poser une question, pardon si elle est redondante.</p>
+<p>Dans l&#8217;article il est dit que tout objet sur lequel on peut faire &#8220;for .. in&#8221; est par définition un itérable. Faut il cependant exclure les générateurs et disant qu&#8217;ils sont l&#8217;exception à la règle. Ou alors rajouter qu&#8217;est itérable ce qui est stocké en mémoire en intégralité (pas généré à la volée) (ce qui est presque sous entendu juste après : &#8220;Ces itérables sont pratiques car on peut les lire autant qu’on veut, mais ce n’est pas toujours idéal car on doit stocker tous les éléments en mémoire.&#8221;).</p>
+<p>Si on inclus les générateurs dans l&#8217;ensemble des itérables, on part en itéception (solvable though) avec le &#8220;Sous le capot, tous les itérables utilisent un générateur appelé “itérateur”. On peut récupérer l’itérateur en utiliser la fonction iter() sur un itérable:&#8221;</p>
+<p>Merci pour votre travail en tout cas. Best Python tutorials eva !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Darkapus</title>
+		<link>http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/#comment-175303</link>
+		<dc:creator><![CDATA[Darkapus]]></dc:creator>
+		<pubDate>Tue, 02 Feb 2016 13:28:10 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=2416#comment-175303</guid>
+		<description><![CDATA[Je suis en train d&#039;apprendre le python pour faire un crawler rapide (j&#039;essaye d&#039;utiliser scrapy)
+
+Avant j&#039;utilisais PHPCrawler .. et franchement trop lent, me fallait une solution pour pacourir le web plus rapidement.
+
+Bref je me demandais justement à quoi servait Yield ^^ maintenant c&#039;est concret dans ma tête :D
+
+Merci
+]]></description>
+		<content:encoded><![CDATA[<p>Je suis en train d&#8217;apprendre le python pour faire un crawler rapide (j&#8217;essaye d&#8217;utiliser scrapy)</p>
+<p>Avant j&#8217;utilisais PHPCrawler .. et franchement trop lent, me fallait une solution pour pacourir le web plus rapidement.</p>
+<p>Bref je me demandais justement à quoi servait Yield ^^ maintenant c&#8217;est concret dans ma tête :D</p>
+<p>Merci</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

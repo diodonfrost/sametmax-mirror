@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: L&#8217;expression d&#8217;assignation vient d&#8217;être acceptée</title>
+	<atom:link href="http://sametmax.com/lexpression-dassignation-vient-detre-acceptee/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/lexpression-dassignation-vient-detre-acceptee/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Miaou</title>
+		<link>http://sametmax.com/lexpression-dassignation-vient-detre-acceptee/#comment-197656</link>
+		<dc:creator><![CDATA[Miaou]]></dc:creator>
+		<pubDate>Fri, 31 Aug 2018 12:12:48 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=24766#comment-197656</guid>
+		<description><![CDATA[Dans les exemples d&#039;équivalence déclaration/expression, ce ne serait pas plutôt
+
+&lt;pre lang=&#039;python&#039;&gt;mean = lambda x: x * x / 2&lt;/pre&gt;
+pour
+
+&lt;pre lang=&#039;python&#039;&gt;def mean(x):
+    return x * x / 2&lt;/pre&gt;
+?]]></description>
+		<content:encoded><![CDATA[<p>Dans les exemples d&#8217;équivalence déclaration/expression, ce ne serait pas plutôt</p>
+<pre lang='python'>mean = lambda x: x * x / 2</pre>
+<p>pour</p>
+<pre lang='python'>def mean(x):
+    return x * x / 2</pre>
+<p>?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: panda.dragon</title>
+		<link>http://sametmax.com/lexpression-dassignation-vient-detre-acceptee/#comment-197440</link>
+		<dc:creator><![CDATA[panda.dragon]]></dc:creator>
+		<pubDate>Sat, 18 Aug 2018 11:28:55 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=24766#comment-197440</guid>
+		<description><![CDATA[&lt;pre lang=&#039;python&#039;&gt;while reponse = &quot;oui&quot;: # erreur subtile et difficile à voir&lt;/pre&gt; 
+Oui et c&#039;est pourquoi dans les consignes de dev C/C++ il est recommandé d&#039;&lt;strong&gt;inverser les tests d&#039;égalité&lt;/strong&gt;.
+Par exemple au lieu d&#039;écrire
+&lt;pre lang=&#039;c&#039;&gt;if(i == 0)&lt;/pre&gt; 
+plutôt écrire
+&lt;pre lang=&#039;c&#039;&gt;if(0 == i)&lt;/pre&gt; 
+dans le cas d&#039;un oubli de = on se retrouve alors avec une affectation à une constante et le compilateur prévient immédiatement du problème...
+
+Cela demande un peu de gymnastique les premiers jours (de passer de &quot;cette variable est égale à cette valeur&quot; à &quot;cette valeur est contenue dans cette variable&quot;) mais très vite on s&#039;y fait, motivé par le fait de se débarrasser une fois pour toute de ce problème.]]></description>
+		<content:encoded><![CDATA[<pre lang='python'>while reponse = "oui": # erreur subtile et difficile à voir</pre>
+<p>Oui et c&#8217;est pourquoi dans les consignes de dev C/C++ il est recommandé d&#8217;<strong>inverser les tests d&#8217;égalité</strong>.<br />
+Par exemple au lieu d&#8217;écrire</p>
+<pre lang='c'>if(i == 0)</pre>
+<p>plutôt écrire</p>
+<pre lang='c'>if(0 == i)</pre>
+<p>dans le cas d&#8217;un oubli de = on se retrouve alors avec une affectation à une constante et le compilateur prévient immédiatement du problème&#8230;</p>
+<p>Cela demande un peu de gymnastique les premiers jours (de passer de &#8220;cette variable est égale à cette valeur&#8221; à &#8220;cette valeur est contenue dans cette variable&#8221;) mais très vite on s&#8217;y fait, motivé par le fait de se débarrasser une fois pour toute de ce problème.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/lexpression-dassignation-vient-detre-acceptee/#comment-196525</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 11 Jul 2018 15:46:14 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=24766#comment-196525</guid>
+		<description><![CDATA[Tu veux dire:
+
+&lt;pre lang=&#039;python&#039;&gt;
+for bytes in iter(lambda: io.get(x), b&#039;&#039;):
+    pass
+&lt;/pre&gt;
+
+&lt;code&gt;iter()&lt;/code&gt; ne passe en effet pas de paramètres. 
+
+Du coup, comparé à:
+
+&lt;pre lang=&#039;python&#039;&gt;
+while (bytes := io.get(x)):
+    pass
+&lt;/pre&gt;
+
+Y a pas photo en terme de lisibilité.
+
+De plus, j&#039;ai utilisé &lt;code&gt;iter()&lt;/code&gt; et son sentinel plusieurs fois. A chaque fois, les gens qui lisent mon code me demandent ce que ça fait. C&#039;est pas du tout évident.
+
+C&#039;est aussi limité aux conditions d&#039;égalité très basiques.
+
+Bref, si j&#039;ai &lt;code&gt;:=&lt;/code&gt; qui fait plus court, plus simple, plus clair et plus flexible, autant l&#039;utiliser.
+
+Sinon, oui.]]></description>
+		<content:encoded><![CDATA[<p>Tu veux dire:</p>
+<pre lang='python'>
+for bytes in iter(lambda: io.get(x), b''):
+    pass
+</pre>
+<p><code>iter()</code> ne passe en effet pas de paramètres. </p>
+<p>Du coup, comparé à:</p>
+<pre lang='python'>
+while (bytes := io.get(x)):
+    pass
+</pre>
+<p>Y a pas photo en terme de lisibilité.</p>
+<p>De plus, j&#8217;ai utilisé <code>iter()</code> et son sentinel plusieurs fois. A chaque fois, les gens qui lisent mon code me demandent ce que ça fait. C&#8217;est pas du tout évident.</p>
+<p>C&#8217;est aussi limité aux conditions d&#8217;égalité très basiques.</p>
+<p>Bref, si j&#8217;ai <code>:=</code> qui fait plus court, plus simple, plus clair et plus flexible, autant l&#8217;utiliser.</p>
+<p>Sinon, oui.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: NicolasB</title>
+		<link>http://sametmax.com/lexpression-dassignation-vient-detre-acceptee/#comment-196524</link>
+		<dc:creator><![CDATA[NicolasB]]></dc:creator>
+		<pubDate>Wed, 11 Jul 2018 15:13:06 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=24766#comment-196524</guid>
+		<description><![CDATA[Simple question qui n&#039;a qu&#039;un demi lien avec l&#039;article, avec :
+&lt;pre lang=&#039;python&#039;&gt;while (bytes := io.get(x)):
+    pass&lt;/pre&gt;
+
+Pourquoi ne pas faire quelque chose dans le style :
+
+&lt;pre lang=&#039;python&#039;&gt;for bytes in iter(io.get, b&#039;&#039;):
+    pass&lt;/pre&gt;]]></description>
+		<content:encoded><![CDATA[<p>Simple question qui n&#8217;a qu&#8217;un demi lien avec l&#8217;article, avec :</p>
+<pre lang='python'>while (bytes := io.get(x)):
+    pass</pre>
+<p>Pourquoi ne pas faire quelque chose dans le style :</p>
+<pre lang='python'>for bytes in iter(io.get, b''):
+    pass</pre>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Linekio</title>
+		<link>http://sametmax.com/lexpression-dassignation-vient-detre-acceptee/#comment-196409</link>
+		<dc:creator><![CDATA[Linekio]]></dc:creator>
+		<pubDate>Fri, 06 Jul 2018 19:15:45 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=24766#comment-196409</guid>
+		<description><![CDATA[:= !!! Ça me rappelle mes premiers cours de fac en Pascal...
+]]></description>
+		<content:encoded><![CDATA[<p>:= !!! Ça me rappelle mes premiers cours de fac en Pascal&#8230;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Abject</title>
+		<link>http://sametmax.com/lexpression-dassignation-vient-detre-acceptee/#comment-196394</link>
+		<dc:creator><![CDATA[Abject]]></dc:creator>
+		<pubDate>Fri, 06 Jul 2018 09:18:52 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=24766#comment-196394</guid>
+		<description><![CDATA[&lt;p&gt;&lt;span class=&quot;merci&quot;&gt;&lt;/span&gt;Une typo : &lt;code&gt;ce code et clair&lt;/code&gt; devrait être &lt;code&gt;ce code e&lt;strong&gt;s&lt;/strong&gt;t clair &lt;/code&gt;&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p><span class="merci"></span>Une typo : <code>ce code et clair</code> devrait être <code>ce code e<strong>s</strong>t clair </code></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/lexpression-dassignation-vient-detre-acceptee/#comment-196326</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Tue, 03 Jul 2018 18:58:22 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=24766#comment-196326</guid>
+		<description><![CDATA[&lt;p&gt;@Julien Palard: les deux formes sont possibles et la PEP n&#039;en parle pas. La branche dédiée ne compile pas. Donc aucune idée.&lt;/p&gt;
+
+&lt;p&gt;EDIT: les annotations de types ne sont juste pas supportées par la PEP actuelle. Je retire ma connerie.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>@Julien Palard: les deux formes sont possibles et la PEP n&#8217;en parle pas. La branche dédiée ne compile pas. Donc aucune idée.</p>
+<p>EDIT: les annotations de types ne sont juste pas supportées par la PEP actuelle. Je retire ma connerie.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: BM</title>
+		<link>http://sametmax.com/lexpression-dassignation-vient-detre-acceptee/#comment-196321</link>
+		<dc:creator><![CDATA[BM]]></dc:creator>
+		<pubDate>Tue, 03 Jul 2018 16:30:17 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=24766#comment-196321</guid>
+		<description><![CDATA[Ailleurs sur internet on aurait appelé ca du fan service :D
+]]></description>
+		<content:encoded><![CDATA[<p>Ailleurs sur internet on aurait appelé ca du fan service :D</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Julien Palard</title>
+		<link>http://sametmax.com/lexpression-dassignation-vient-detre-acceptee/#comment-196320</link>
+		<dc:creator><![CDATA[Julien Palard]]></dc:creator>
+		<pubDate>Tue, 03 Jul 2018 16:25:23 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=24766#comment-196320</guid>
+		<description><![CDATA[Dans l&#039;exemple
+
+&lt;pre&gt;&lt;code&gt;(carottes : Union[Legume, SexToy] = buy())
+&lt;/code&gt;&lt;/pre&gt;
+
+Je pense que tu voulais dire :
+
+&lt;pre&gt;&lt;code&gt;(carottes : Union[Legume, SexToy] := buy())
+&lt;/code&gt;&lt;/pre&gt;
+
+?
+]]></description>
+		<content:encoded><![CDATA[<p>Dans l&#8217;exemple</p>
+<pre><code>(carottes : Union[Legume, SexToy] = buy())
+</code></pre>
+<p>Je pense que tu voulais dire :</p>
+<pre><code>(carottes : Union[Legume, SexToy] := buy())
+</code></pre>
+<p>?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/lexpression-dassignation-vient-detre-acceptee/#comment-196313</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Tue, 03 Jul 2018 13:24:42 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=24766#comment-196313</guid>
+		<description><![CDATA[&lt;p&gt;Je vais te citer sur ce coup&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Je vais te citer sur ce coup</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>configuration &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/configuration/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Regrouper ses fichiers de settings avec stow</title>
+		<link>http://sametmax.com/regrouper-ses-fichiers-de-settings-avec-stow/</link>
+		<comments>http://sametmax.com/regrouper-ses-fichiers-de-settings-avec-stow/#comments</comments>
+		<pubDate>Fri, 06 Oct 2017 08:24:03 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[configuration]]></category>
+		<category><![CDATA[settings]]></category>
+		<category><![CDATA[stow]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=23681</guid>
+		<description><![CDATA[Sous Linux, le dossier utilisateur est blindé de fichiers de configuration. Les fameux <code>.machins</code>. Par exemple le <code>.bashrc</code> pour la config du bash, le <code>.mozilla</code> qui contient toutes vos données Firefox, le <code>.ssh</code> avec toutes vos clés privées, le <code>.local/share/virtualenvs</code> avec les envs virtuels Python créés par pew ou <code>.config/sublime-text-3</code> pour la configuration de Sublime text, etc.]]></description>
+				<content:encoded><![CDATA[<p>Sous Linux, le dossier utilisateur est blindé de fichiers de configuration. Les fameux <code>.machins</code>. Par exemple le <code>.bashrc</code> pour la config du bash, le <code>.mozilla</code> qui contient toutes vos données Firefox, le <code>.ssh</code> avec toutes vos clés privées, le <code>.local/share/virtualenvs</code> avec les envs virtuels Python créés par pew ou <code>.config/sublime-text-3</code> pour la configuration de Sublime text, etc.</p>
+<p>Au final, voici tous les fichiers de conf qui sont importants pour moi de près ou de loin:</p>
+<pre>
+├── .autoenv
+├── .bashrc
+├── .config
+│   ├── autostart
+│   ├── Code
+│   ├── copyq
+│   ├── fish
+│   ├── gtg
+│   ├── liferea
+│   ├── pulse
+│   ├── stremio
+│   ├── sublime-text-3
+│   ├── transmission
+│   ├── user-dirs.dirs
+│   ├── user-dirs.locale
+│   ├── variety
+│   ├── VeraCrypt
+│   ├── Zeal
+│   └── zim
+├── .django-completion.bash
+├── .editorconfig
+├── .git-aware-prompt
+├── .git-completion.bash
+├── .gitconfig
+├── .gitignore
+├── .git-prompt.sh
+├── .git.scmbrc
+├── .jupyter
+├── .lastpass
+├── .liferea_1.8
+├── .local
+│   └── share
+        ├── gtg
+        ├── keyrings
+        ├── liferea
+        ├── omf
+        ├── TowerFall
+        ├── virtualenvs
+        └── Zeal
+├── .mozilla
+├── .netrc
+├── .oh-my-zsh
+├── .openambit
+├── .pypirc
+├── .scmbrc
+├── .scm_breeze
+├── .sshplus
+├── .vscode
+│   └── extensions
+└── .zshrc
+</pre>
+<p>Quand on bidouille, on les change souvent. On les backup aussi, pour pouvoir les porter d&#8217;un laptop à un autre, les synchroniser, les uploader sur un serveur ou les récup lors d&#8217;une réinstallation. Parce que quand on a tuné ses terminaux et éditeurs aux petits oignons, on a pas envie de recommencer à poil.</p>
+<p>Pour bien faciliter les choses, ils sont éparpillés un peu partout, dans des sous-dossiers différents. </p>
+<p>Et je sais pas quel vil individu a suggéré une fois que faire une partition séparée pour <code>/home</code> était la solution de Skippy à tous les soucis, mais perso, ça me cause plus de bugs qu&#8217;autre chose quand on change de versions d&#8217;OS.</p>
+<p>Bref, laissez tomber vos vieilles croyances issues de charlatans de sectes. Moi, j&#8217;ai vu la lumière (lien de don bitcoin en bas à droite de la page), et elle s&#8217;appelle <code>GNU stow</code>.</p>
+<p>Stow est un vieil utilitaire (donc sagesse millénaire des anciens, vous pouvez avoir confiance, prenez ce cristal aussi il est en promo), qui est grosso merdo un <code>ln -s</code> récursive. C&#8217;est-à-dire que ça fait des symlinks des fichiers et des dossiers que vous lui passez.</p>
+<p>On peut l&#8217;utiliser pour plein de choses, mais l&#8217;usage sacré implique le sacrifice d&#8217;une vierge à Max, puis de déplacer tous les fichiers de settings qu&#8217;on souhaite gérer dans un seul dossier.</p>
+<p>Par exemple, moi j&#8217;ai:</p>
+<pre>
+/home/user/church/settings/
+
+    ├── .autoenv
+    ├── .bashrc
+    ├── .config
+    │   ├── autostart
+    │   ├── Code
+    │   ├── copyq
+    │   ├── fish
+    │   ├── gtg
+    ...
+</pre>
+<p>Au lieu de les avoir éparpillées partout, toutes les brebis sont maintenant regroupées dans une seule église. </p>
+<p>Il est très important de garder l&#8217;organisation des dossiers et des sous-dossiers d&#8217;origine. Ici vous voyez que j&#8217;ai le dossier <code>Code</code>, qui est le dossier de settings de VSCode. Mais il est DANS un dossier <code>.config</code>, car avant mon regroupement il était dans <code>/home/user/.config/</code>.</p>
+<p>En revanche, il n&#8217;est pas du tout nécessaire que <code>.config</code> contienne tous les dossiers qu&#8217;il avait précédemment. Seuls ceux qui vous intéressent. Le reste peut rester à sa place initiale, dans le <code>/home/user/.config/</code>.</p>
+<p>Donc je résume:</p>
+<ul>
+<li>Listez les fichiers et dossiers de settings qui vous intéressent.</li>
+<li>Déplacez les tous dans un dossier commun en gardant une arborescence similaire.</li>
+<li>Laissez les fichiers qui ne vous intéressent pas là où ils sont.</li>
+<li>Priez (une bonne pratique avant toute opération informatique).</li>
+</ul>
+<p>Arrive le messie, Stow.</p>
+<p>D&#8217;abord, il faut l&#8217;installer, mais comme c&#8217;est un outil vénérable, il est dans les dépôts. Sous Ubuntu, le psaume &#8220;apt install stow&#8221; fera l&#8217;affaire.</p>
+<p>Ensuite, on prêche. Je me perds dans mes propres paraboles, mais les voies du seigneur sont impénétrables, contrairement à celles d&#8217;Abella Anderson. Bref on demande à <code>stow</code> de traiter récursivement tout le contenu du dossier <code>settings</code> qui est dans <code>/home/user/church</code> afin de le linker vers <code>/home/user/</code>:</p>
+<pre lang="bash">stow -d /home/user/church -t /home/user/ settings</pre>
+<p>Stow va prendre récursivement tous les dossiers qui sont dans <code>/home/user/church/settings</code>, et les comparer à ceux dans <code>/home/user</code>. Si ils existent, il va ne rien faire, mais si ils n&#8217;existent pas, il va créer un lien vers chacun de ceux manquants. Pour les fichiers, si ils n&#8217;existent pas, il va créer un lien, sinon il va vous afficher une erreur, afin de ne pas écraser quelque chose d&#8217;important et vous signalez qu&#8217;il y un souci.</p>
+<p>Le but de tout ça ?</p>
+<p>Pour votre système et tous vos logiciels, ça ne change rien. Ils vont tomber sur les liens et avoir l&#8217;impression que tous les fichiers de configs sont à leur place et vont continuer à fonctionner dans la joie et le gospel.</p>
+<p>Et pour vous, ben vous avez un seul endroit où tous les fichiers importants sont regroupés. Plus besoin de les chercher. Facile à backuper et à restaurer. On peut même tout foutre sous Git.</p>
+<p>Loué soit le sauveur.</p>
+<p>Vive moi.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/regrouper-ses-fichiers-de-settings-avec-stow/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">23681</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/10/s4UjYDb.jpg" length="232781" type="image/jpg" />	</item>
+		<item>
+		<title>Personnalisez le démarrage d&#8217;iPython</title>
+		<link>http://sametmax.com/personnalisez-le-demarrage-dipython/</link>
+		<comments>http://sametmax.com/personnalisez-le-demarrage-dipython/#comments</comments>
+		<pubDate>Sun, 16 Dec 2012 13:14:54 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[configuration]]></category>
+		<category><![CDATA[ipython]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[shell]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3643</guid>
+		<description><![CDATA[iPython, c'est bon. Et ça peut être encore meilleur.]]></description>
+				<content:encoded><![CDATA[<p><a href="http://ipython.org/">iPython</a>, c&#8217;est bon. Et ça peut être encore meilleur.</p>
+<p>Avant on ajoutait un peu de sel à notre super shell en éditant les fichiers <em>.ipython/ipythonrc</em> et <em>.ipython/ipy_user_conf.py</em>. Mais ça c&#8217;était avant.</p>
+<p>Maintenant on fait :</p>
+<pre lang="bash">$ ipython profile create</pre>
+<p>Ce qui va créer un fichier <code>~/.config/ipython/profile_default/ipython_config.py</code> (et <code>ipython_qtconsole_config.py</code> si vous avez installé la version qt).</p>
+<p>Il ne vous reste plus qu&#8217;à éditer ce fichier pour personnaliser le démarrage de iPython.</p>
+<h2>Executer du code au démarrage</h2>
+<p>N&#8217;importe quelle ligne de code Python ou de commande magique (les trucs qui commencent pas &#8216;%&#8217; qui ne fonctionnent que dans iPython) !</p>
+<p>Très utile pour les imports par exemple. Voici ce que je fais moi au démarrage :</p>
+<pre lang="python">c.TerminalIPythonApp.exec_lines = [
+'%doctest_mode',
+'import os, sys, re, json',
+'from datetime import datetime, timedelta',
+'''
+try:
+    from path import path
+except ImportError:
+    pass
+''',
+'''
+try:
+    import requests
+except ImportError:
+    pass
+''',
+'''
+try:
+    from batbelt.structs import *
+    from batbelt.objects import attr
+    from batbelt.strings import slugify, normalize, json_dumps, json_loads
+except ImportError:
+    pass
+'''
+]</pre>
+<p>Du coup j&#8217;ai quasiment jamais besoin d&#8217;importer un truc, car ce que j&#8217;utilise le plus est déjà là. <code>%doctest_mode</code> me permet de coller des docstrings sans me fouler.</p>
+<h2>Programmation graphique</h2>
+<p>iPython possède une boucle principale. Les toolkits graphiques aussi. Si vous faites vos essais du code du second dans le premier, ça va bloquer. Heureusement on peut demander à iPython d&#8217;intégrer la main loop d&#8217;un des toolkits graphiques les plus célèbres en choisissant parmi : &#8216;qt&#8217;, &#8216;wx&#8217;, &#8216;gtk&#8217;, &#8216;glut&#8217;, &#8216;pyglet&#8217; et &#8216;osx&#8217; et en settant :</p>
+<pre lang="python">c.TerminalIPythonApp.gui = 'qt'</pre>
+<h2>Virer le header</h2>
+<p>Quand on lance le shell, il vous raconte sa vie. Pour lui dire de fermer sa gueule :</p>
+<pre lang="python">c.TerminalIPythonApp.display_banner = False</pre>
+<h2>Lancer un script complet</h2>
+<p>Bon, ça c&#8217;est si vous avez de gros besoins&#8230;</p>
+<pre lang="python">c.TerminalIPythonApp.file_to_run = '/path/to/script.py'</pre>
+<h2>Sauter la confirmation à la fermeture</h2>
+<p>Oui, je suis sûr te vouloir te fermer connard ! Tu crois que j&#8217;ai appuyé sur Ctrl + d par erreur en éternuant ?</p>
+<pre lang="python">c.TerminalInteractiveShell.confirm_exit = False</pre>
+<h2>Choisir son éditeur externe</h2>
+<p>Si vous tapez <code>%edit</code> dans iPython, il ouvre un éditeur. Vous tapez votre code, vous sauvegardez, vous fermez. Et iPython récupère le code et l&#8217;éxécute. Par défault il utilise VI. On peut faire mieux.</p>
+<pre lang="python">c.TerminalInteractiveShell.editor = '/chemin/vers/sublime-text -w'</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/personnalisez-le-demarrage-dipython/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">3643</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/12/6089448781_03743e140c_z.jpg" length="196127" type="image/jpg" />	</item>
+		<item>
+		<title>Votre avis sur ce projet de lib de gestion de configuration Python ?</title>
+		<link>http://sametmax.com/votre-avis-sur-ce-projet-de-lib-de-gestion-de-configuration-python/</link>
+		<comments>http://sametmax.com/votre-avis-sur-ce-projet-de-lib-de-gestion-de-configuration-python/#comments</comments>
+		<pubDate>Wed, 01 Aug 2012 21:36:27 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[configuration]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1444</guid>
+		<description><![CDATA[Appel à critique]]></description>
+				<content:encoded><![CDATA[<p><em>Question: cette idée m&#8217;est venue durant un long trajet. Est-ce que ça vaut le coup d&#8217;être codé ? Qu&#8217;est-ce que vous en pensez ? Est-ce qu&#8217;il y a une grosse faille ? Est-ce que ça n&#8217;existe pas déjà ?</em></p>
+<p>Sauvegarder la configuration d&#8217;un programme Python tient du challenge. Pas parce que que c&#8217;est difficile ou qu&#8217;on manque d&#8217;outils, mais à cause du trop grand nombre de choix:</p>
+<ul>
+<li>Pur Python (Django) ?</li>
+<li>INI (défaut dans la lib standard) ?</li>
+<li>JSON (sublime-text) ?</li>
+<li>gconf (Gnome) ?</li>
+<li>base de registre (Windows) ?</li>
+</ul>
+<p>Toutes ces solutions ont des parsers différents, des outputs différents, et il faut se rajouter les checks, le casting et la gestion des erreurs à la main.</p>
+<p>Je me prends à rêver à un moyen de lire et écrire la configuration d&#8217;un programme en Python, indépendamment de la source:</p>
+<ul>
+<li>fichier de config JSON</li>
+<li>fichier de config ini</li>
+<li>fichier de config YML</li>
+<li>fichier de config Python</li>
+<li>fichier de config XML</li>
+<li>fichier de config CSV</li>
+<li>gconf</li>
+<li>base de registre</li>
+<li>base de données SQL</li>
+<li>base de données NoSQL (redis, mongo, etc)</li>
+</ul>
+<h2>Principe</h2>
+<p>On donne une définition de la configuration qu&#8217;on souhaite stocker, comme un modèle d&#8217;ORM:</p>
+<pre lang="python">class MaConfiguration(Configuration):
+
+    date = DateField(help_text="This is the date")
+    nom = TextField(required=True)
+    age = IntegerField(default=12) # default peut être un callable
+    temperature = FloatField()
+    tags = ListField(values_type=str) # values_type est optionnel
+    attrs = DictField(values_type=int)
+
+    def set_tags():
+        # appel quand tag est setté
+        # raise validation error
+        # ou fait une conversion
+
+    def get_tags():
+        # appel quand tags est getté
+
+    def load_tags():
+        # appel quand tags est récupé depuis la source de config
+
+    def save-tags():
+        # appel quand tags est sauvegardé dans la source de config
+
+    class nesting(Configuration):
+        # on peut nester les fields à l'infinie
+
+        force = IntegerField(checks=RangeCheck(gt=3))
+        description = TextField(checks=RegexCheck(r'yeah', error_message=u"I said yeah"))
+        pi = FloatField()</pre>
+<p>Et on l&#8217;utilise comme ça:</p>
+<pre lang="python">conf = MaConfiguration('file://path/to/config/file') # ou redis://db:port, etc
+print conf.date
+print conf.nesting.force
+print conf.get('bibi', 'doh') # fallback possible
+try:
+    print conf.void
+except ValueDoesNotExist:
+    pass
+conf.nom = "boo"
+conf.save()</pre>
+<p>Les données sont évidement castées automatiquement dans le bon type, à la sauvegarde, le type de valeur et la cohérence de la configuration est vérifiée.</p>
+<p>Bien sûr on peut sauvegarder dans une autre source/format.</p>
+<p>Ce n&#8217;est pas un parseur de fichiers, il faut avoir une définition de la structure de la source de configuration pour qu&#8217;on puisse la lire. Mais on peut générer une définition (approximative) à partir d&#8217;une source de config existante pour se faciliter la tâche.</p>
+<h2>Hierarchie<br />
+</h2>
+<p>Les frameworks tels que symfony utilisent plusieurs niveaux de configuration, le niveau le plus bas écrasant toujours la valeur du niveau le plus haut.</p>
+<pre lang="python">conf = MaConfiguration({'name': 'root',
+                        'path': '/path/to/config/file',
+                        'children': (
+                            {'name': 'child1',
+                             'path': '/path/to/subconfig/file',
+                             children: (... etc ...)
+                            },
+                            {'name': 'child2',
+                             'path': /path/to/subconfig/file
+                            }
+                        })
+
+with conf.from('/root/child1') as subconf:
+    print subconf.bibi</pre>
+<p>Ca va d&#8217;abord chercher dans le sous fichier de config, et si ça n&#8217;existe pas, la valeur du parent, en remontant la chaîne jusqu&#8217;en haut, si rien n&#8217;existe, retourne la valeur par défaut.</p>
+<h2>Signals</h2>
+<p>Même principe qu&#8217;en Django, mais appliquer à l&#8217;objet de configuration:</p>
+<ul>
+<li>on_load_source</li>
+<li>on_load_value</li>
+<li>on_save_value</li>
+<li>on_change_value</li>
+<li>on_get_value</li>
+<li>on_save_source</li>
+<li>on_save</li>
+</ul>
+<p>On peut enregistrer un callback dans le process Python courant pour qu&#8217;il soit appelé quand un de ces événements se déclenche.</p>
+<p>On peut aussi lancer un daemon qui check pour tout changement dans la source de config et qui appelle un callback (par exemple un web callback ou un message AMQP pour synchro des config de serveurs) au changement de la config.</p>
+<h2>Templating</h2>
+<p>Quand on fait des fichiers de settings à redistribuer (ex: fichier de settings par défaut de Django), on veut qu&#8217;il soit présenté d&#8217;une certaine façon: ordre des variables, texte qui n&#8217;a rien à voir avec la config et qui doit être inamovible, etc.</p>
+<p><code>conf.save()</code> doit donc <strong>optionnellement</strong> accepter un template qui ressemble à un truc comme ça:</p>
+<p><code>%(variable_name)s<br />
+%(variable_name)s<br />
+%(variable_name)s</p>
+<p># texte fixe</p>
+<p>%(variable_name)s</p>
+<p>%(section_name)s // pour une intégrer une section complète</p>
+<p>%(section_name)s // pour organiser le niveau de nesting<br />
+    %(variable_name)s<br />
+    %(variable_name)s</code></p>
+<p>Dans lequel <code>%(variable_name)s</code> sera replacé par l&#8217;intégralité de ce qui concerne la variable (nom, valeur, commentaires). On devrait pouvoir aussi demander a dumper une section entière.</p>
+<h2>Exemples et documentations</h2>
+<p><code>conf.save()</code> par défaut ajoute les <code>help_text</code> en tant que commentaires si possibles, afin que le fichier soit documenté.</p>
+<p>print <code>conf.exemple()</code> devrait dumper un faux fichier de configuration avec les valeurs par défaut, ou en l&#8217;absence de tel, un exemple arbitraire extrapolé du type. Ainsi il est facile de donner une fichier d&#8217;exemple dans sa doc.</p>
+<h2>Extensibilité</h2>
+<p>Evidément on peut faire ses propres sous classes de <code>Configuration</code> et <code>Field</code>, afin de distribuer des outils réutilisables.</p>
+<p>Il faut aussi permettre la gestion de backends pour les parseurs et les dialectes. Un parseur est quelque chose qui récupère les données depuis la source de configuration, et qui les transforme en un arbre de données en objects Python. Un dialecte est ce qui va prendre cet arbre et caster ses valeurs pour lui donner du sens.</p>
+<p>Par exemple, le parseur yml lit le fichier et le met sous forme d&#8217;arbre, tandis que le dialecte yml parse les types yml (int, string, date) et caste les valeurs.</p>
+<p>Ils sont séparés car on peut très bien avoir un parseur et un dialecte différent (ex: parseur XML, dialecte issue d&#8217;un DTD particulière)</p>
+<p>Cela permettra ainsi à la communauté de contribuer des parseurs et dialectes pour des fichiers de configs particuliers comme ceux d&#8217;Apache ou d&#8217;Nginx.</p>
+<p>On pourra imaginer avoir une banque de parseurs et dialectes, et pouvoir faire des trucs comme ça:</p>
+<p><code>conf = NginxCongiguration('/path/to/nginx/file')</code></p>
+<h2>Gestion des erreurs</h2>
+<p>Un grand soin doit être apporté à la gestion des erreurs, pour rapporter rapidement et clairement à l&#8217;utilisateur ce qui n&#8217;est pas configuré correcrtement: type, valeur obligatoire, problème de droits, etc. Car la plus grande source d&#8217;erreur dans la config, c&#8217;est la spécificité (syntax, format, etc) de la source de config elle-même.</p>
+<p>Les formats des sources de données ne sont pas compatibles entre eux, il faut donc créer une liste de capabilité pour chacun d&#8217;eux et crasher explicitement quand on essaye de faire quelque chose d&#8217;impossible (comme parser un yml avec des valeurs nested et sauver le résultat dans un CSV).</p>
+<h2>Loader ?</h2>
+<p>Trouver la source de configuration est un travail en soi. Entre le chemin absolu par défaut, le chemin relatif par défaut, ou l&#8217;url + port ou la socket par défaut, ou le chemin d&#8217;import d&#8217;un module Python, c&#8217;est tout un truc.</p>
+<p>Et que faire si le fichier n&#8217;existe pas ? Le créer ? Lever une erreur ? Et si il n&#8217;y a pas les droits ?</p>
+<p>Que faire si la ressource n&#8217;est pas accessible temporairement (un BDD, redis, un lecteur réseaux): attendre jusqu&#8217;au timeout, retry, erreur ?</p>
+<p>Et que faire si on passe un dossier: scanner récursivement ? Ignore-t-on les fichiers cachés ? Que faire avec les fichiers de mêmes noms ?</p>
+<p>Bref, charger le fichier de configuration c&#8217;est un gros algo à lui tout seul, et je me demande si c&#8217;est le boulot de la lib. Si oui, il faudra créer des loaders et les mettre par défaut selon le type de source. Mais il faut réussir à faire ça sans complexifier l&#8217;API. L&#8217;outil doit être puissant, mais rester simple.</p>
+<h2>Rester simple</h2>
+<p>Justement&#8230;</p>
+<p>Evidément tout ça peut rendre l&#8217;utilisation très lourde, et je suis assez fan des libs comme <a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">peewee</a>: simple et efficace, Pareto friendly.</p>
+<p>L&#8217;idée est qu&#8217;une personne doit pouvoir faire ça:</p>
+<pre lang="python">from configlib import Configuration
+class MaConfig(Configuration):
+    nom = TextField()
+    age = IntegerField()
+
+conf = Maconfig('/path/to/config/file')</pre>
+<p>Et que ce soit le premier truc dans la doc, facile à trouver, facile à comprendre. Que les personnes qui ne veulent pas s&#8217;embrouiller avec les détails s&#8217;y dessus puissent les ignorer. Sinon Max ne l&#8217;utilisera pas :-p</p>
+<h2>Ils se rendent pas compte</h2>
+<p>On se rend pas compte à quel point un truc aussi simple que la gestion d&#8217;une configuration puisse comporter autant de pièges et de possibilités. Ça me rappelle mon premier rapport de stage à l&#8217;université, où j&#8217;avais présenté mon grand projet: une classe de logging pour PHP.</p>
+<p>A la fin de la présentation, la prof me demande:</p>
+<blockquote><p>&#8211; Mais ça sert à quoi votre truc à part à écrire du texte ?<br />
+&#8211; Ben, c&#8217;est le but d&#8217;écrire du texte, c&#8217;est une classe de logging.<br />
+&#8211; Mais le minimum que vous pouvez faire avec c&#8217;est quoi ?<br />
+&#8211; Heu&#8230; $log->info(&#8216;Foo&#8217;)<br />
+&#8211; Ah, c&#8217;est tout ?</p></blockquote>
+<p>Oui connasse, c&#8217;est tout. J&#8217;ai passé 20 minutes à t&#8217;expliquer que je gérais plusieurs niveaux de verbosité, de type de messages, de formating d&#8217;output (incluant la stacktrace), qu&#8217;il y avait un fichier et une API de config, un système de locking sur le fichier de sortie, et une génération dynamique de la fonction de message pour éviter les blocs conditionnels et blocker le moins de temps possible lors de l&#8217;écriture. Ah oui, y a des tests unitaires, et les commentaires permettent aussi de générer la documentation avec Doxygen.</p>
+<p>Mais oui c&#8217;est tout, je suis juste en seconde année, et toi t&#8217;as pas programmé pour vivre depuis près de 10 ans.</p>
+<p>Aujourd&#8217;hui il y a des libs de logging en PHP bien meilleures que la mienne, mais mon travail est toujours massivement en prod. Je comprends que personne ne passe trop de temps sur ce genre de libs, c&#8217;est beaucoup de boulot, et c&#8217;est très ingrat.</p>
+<p>J&#8217;imagine même pas les programmeurs du noyaux linux. Un scheduler ? Ca fait quoi ? &#8211; Ben ça permet de déterminer quand un programme à le droit à du temps CPU. &#8211; Quoi, c&#8217;est tout ? Ca fait deux ans que tu bosses sur un patch d&#8217;a peine 2000 lignes juste pour ça ? Eh ben, ça valait le coup de faire un doctorat en théorie des graphes tient !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/votre-avis-sur-ce-projet-de-lib-de-gestion-de-configuration-python/feed/</wfw:commentRss>
+		<slash:comments>25</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1444</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/08/Enigma1.jpg" length="102626" type="image/jpg" />	</item>
+	</channel>
+</rss>

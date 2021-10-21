@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>socket &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/socket/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Socket en Python</title>
+		<link>http://sametmax.com/socket-en-python/</link>
+		<comments>http://sametmax.com/socket-en-python/#comments</comments>
+		<pubDate>Sat, 11 May 2013 17:54:30 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[socket]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5809</guid>
+		<description><![CDATA[Python est un langage de haut niveau, ce qui fait qu'on a rarement besoin de taper directement dans les interface de couches basses comme les sockets : on utilise des abtractions comme urllib et consort. 
+
+Même quand on doit communique directement des paquets de données, on préférera utiliser des solutions comme <a href="http://www.zeromq.org/bindings:python">zeroMQ</a>, bien plus fiables et faciles à mettre en œuvre. 
+
+Cela étant dit, pour la culture G, ça ne fait pas de mal d'avoir un petit hello world des sockets en Python.
+]]></description>
+				<content:encoded><![CDATA[<p>Python est un langage de haut niveau, ce qui fait qu&#8217;on a rarement besoin de taper directement dans les interface de couches basses comme les sockets : on utilise des abstractions comme urllib et consort. </p>
+<p>Même quand on doit communiquer directement des paquets de données, on préférera utiliser des solutions comme <a href="http://www.zeromq.org/bindings:python">ZeroMQ</a>, bien plus fiables et faciles à mettre en œuvre. </p>
+<p>Cela étant dit, pour la culture G, ça ne fait pas de mal d&#8217;avoir un petit hello world des sockets en Python.</p>
+<p>Client :</p>
+<pre lang="python">
+import socket
+
+# cette fonction n'est pas très performante puisqu'elle
+# ouvre et ferme la socket pour chaque message,
+# mais vous voyez le principe.
+def envoyer_message(ip, port, message):
+
+    # on ouvre une socket TCP / IP, en IP V4
+    # la doc contient une liste de constantes avec
+    # les protocoles de base supportés
+    # (http://docs.python.org/2/library/socket.html)
+    # on peut aussi ouvrir des sockets unix, des datagrames...
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect((ip, port))
+    try:
+        # on broadcast le message
+        sock.sendall(message)
+        # et on lit la réponse cash pistache
+        # Tout ça est synchrone, car si on veut
+        # faire de l'asynchrone, l'exemple serait
+        # vachement moins simple
+        response = sock.recv(1024)
+        print "Received: {}".format(response)
+    except Exception as e:
+        print "Impossible de se connecter au serveur: {}".format(e)
+    finally:
+        # toujours fermer sa socket, même si dans notre cas
+        # on a pas besoin de la fermer pour chaque message
+        # On pourrait aussi utiliser le context manager closing()
+        # pour cette tâche
+        sock.close()
+
+# petit test qui envoit trois messages
+if __name__ == "__main__":
+
+    ip, port = "127.0.0.1", 7777
+
+    envoyer_message(ip, port, "Hello World 1")
+    envoyer_message(ip, port, "Hello World 2")
+    envoyer_message(ip, port, "Hello World 3")</pre>
+<p>Serveur:</p>
+<pre lang="python">
+
+
+import threading
+import SocketServer
+
+from datetime import datetime
+
+
+# Python vient avec ses serveurs socket tout prêts.
+# Tout ce qu'il y a faire c'est créer une classe 
+# de handler, c'est à dire l'objet qui va s'occuper
+# des messages quand ils arrivent. On hérite du 
+# handler de la lib standard, et on redéfinit juste
+# handle() qui est la méthode qui va être appelée
+# à chaque message.
+class RequestHandler(SocketServer.BaseRequestHandler):
+
+    def handle(self):
+        # on récupère des requêtes, et on répond avec
+        # exactement le même message + un timestamp
+        data = self.request.recv(1024)
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
+        response = "{}: {}".format(now, data)
+        self.request.sendall(response)
+
+# Pour le serveur, pas grand chose à faire à part le définir
+# Ici je fais un serveur threadé pour le Lulz car ça
+# ne sert pas à grand chose pour un client avec 3 messages
+# synchrones
+class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
+    pass
+
+
+
+if __name__ == "__main__":
+
+    # on instancie notre server et on lui passe le gestionnaire de
+    # requêtes
+    server = ThreadedTCPServer(('127.0.0.1', 7777), RequestHandler)
+    ip, port = server.server_address
+
+    # on start le thread pour le serveur et on le daemonise
+    server_thread = threading.Thread(target=server.serve_forever)
+
+    server_thread.daemon = True
+    server_thread.start()
+
+    # si on appuie sur "enter", raw_input() s'arrête et le serveur
+    # est stoppé
+    raw_input("Hit enter to stop the server")
+
+    server.shutdown()
+</pre>
+<p>Je suis d&#8217;un niveau pathétique en réseau, alors je vous pond ça vraiment pour le plaisir de partager mes moments bac à sable. Il y a peu de chance que ça vous serve, mais qui sait ?</p>
+<p>P.S: je ne suis pas sur mon OS, donc je mettrai les outputs et le code en ligne plus tard.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/socket-en-python/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">5809</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/05/yAfv2Yz.jpg" length="37808" type="image/jpg" />	</item>
+	</channel>
+</rss>

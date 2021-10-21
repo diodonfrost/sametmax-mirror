@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>sysadmin &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/sysadmin/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Le bulletin sécu : https pour 0bin et leak de mots de passe</title>
+		<link>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/</link>
+		<comments>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/#comments</comments>
+		<pubDate>Sun, 10 Jan 2016 12:42:33 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[0bin]]></category>
+		<category><![CDATA[chiffrement]]></category>
+		<category><![CDATA[hash]]></category>
+		<category><![CDATA[https]]></category>
+		<category><![CDATA[meta]]></category>
+		<category><![CDATA[password]]></category>
+		<category><![CDATA[sécurité]]></category>
+		<category><![CDATA[sysadmin]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=17638</guid>
+		<description><![CDATA[Bon, soit.]]></description>
+				<content:encoded><![CDATA[<p>Quand letsencrypt est passé live, on m&#8217;a gentiment signalé qu&#8217;on avait plus d&#8217;excuses pour faire tourner 0bin en clair.</p>
+<p>Bon, soit.</p>
+<p>J&#8217;ai mis en place ça hier à titre de test : <a href="https://0bin.net/">https://0bin.net/</a>.</p>
+<p>Pour le moment je vais pas faire de redirection car j&#8217;attends de voir si le truc tient. </p>
+<p>La bonne nouvelle, c&#8217;est que comme l&#8217;installation est juste nginx + zerobin, il n&#8217;y a pas eut grand chose à faire : lancer un script, le laisser nous identifier et installer les dependances pour qu&#8217;il génère le certificat et faire pointer le dit certificat par nginx.</p>
+<p>La moins bonne nouvelle c&#8217;est que notre archi pour <a href="http://sametmax.com">sametmax.com</a> et <a href="http://indexerror.net">indexerror.net</a> est basé sur client => varnish => nginx => worker => site.</p>
+<p>Il faut donc mettre le certif au niveau de varnish.</p>
+<p>Mais comme vous vous en doutez bien, il fallait que ça couille : support de https est un truc récent sur varnish et notre version ne le supporte pas. Donc il reste à :</p>
+<ul>
+<li>Up varnish. Compiler à la main, chercher un mec qui l’a fait, up le serveur ou autre.</li>
+<li>Ou passer varnish derrière nginx et réécrire tout le VLC.</li>
+<li>Ou mettre uniquement HTTPS pour les formulaires de connexions. C’est mieux que rien, mais ça laisse le cookie d’identification en clair et ça va demander de faire des règles milimétriaques.</li>
+<li>Mettre <a href="https://github.com/varnish/hitch">un autre truc</a> en face de varnish juste pour le port 443. </li>
+</ul>
+<p>Oh, du boulot en plus, je ne m’y attendais tellement pas&#8230;</p>
+<p>Merci à tous ceux qui ont proposé et fourni de l’aide néanmoins. C’est cool d’avoir du soutien parmi ses lecteurs.</p>
+<p>Pendant ce temps, et ça n’a rien à voir, un lecteur s’est amusé à brute forcer des hashs de mots de passe qu’on avait leakés connement et a trouvé celui de max au bout de quelques jours. Il nous a gentiment envoyé le résultat de ses recherches par mail. Ce n’est pas ironique, hein. J’apprécie que quand quelqu’un trouve que tu es à poil il te le fasse savoir avec précision et honnêteté.</p>
+<p>Du coup va falloir aussi changer tous les mots de passe du blog et de indexerror. </p>
+<p>Comme ce n’est pas une question de sécurité nationale, je ne suis pas en mode bersek à vouloir faire ça dans la minute, mais sachez-le : changez vos mots de passe à l’occasion. Personne ne va violer votre sœur demain si vous ne le faites pas, mais mieux vaut prévenir que guérir.</p>
+<p>Oh, du boulot en plus, je ne m’y attendais tellement pas&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-bulletin-secu-https-pour-0bin-et-leak-de-mot-de-passe/feed/</wfw:commentRss>
+		<slash:comments>18</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">17638</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/01/g3i4LZQ.jpg" length="28901" type="image/jpg" />	</item>
+		<item>
+		<title>Remplacer sed, awk, cut et Perl par Python (= orgasme pour sysadmin)</title>
+		<link>http://sametmax.com/remplacer-sed-awk-cut-et-perl-par-python-orgasme-pour-sysadmin/</link>
+		<comments>http://sametmax.com/remplacer-sed-awk-cut-et-perl-par-python-orgasme-pour-sysadmin/#comments</comments>
+		<pubDate>Sat, 14 Dec 2013 08:28:41 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[awk]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[perl]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sed]]></category>
+		<category><![CDATA[sysadmin]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8261</guid>
+		<description><![CDATA[La force de perl c'est qu'il permettait de piper des données directement via la ligne de commande pour faire des manipulations rapides.
+
+C'est pour cela que c'était devenu les choix des sysadmins. Parce que jusqu'ici, le choix c'était soit de faire un truc simple en connaissant par coeur la tool box GNU, soit ouvrir un fichier et faire un script.
+
+Python ne permet pas de piper des données directement dans la commande, mais des projets ont vu le jour pour le faire.]]></description>
+				<content:encoded><![CDATA[<p>La force de Perl c&#8217;est qu&#8217;il permettait de piper des données directement via la ligne de commande pour faire des manipulations rapides.</p>
+<p>C&#8217;est pour cela que c&#8217;était devenu les choix des sysadmins. Parce que jusqu&#8217;ici, le choix c&#8217;était soit de faire un truc simple en connaissant par coeur la tool box GNU, soit ouvrir un fichier et faire un script.</p>
+<p>Python ne permet pas de piper des données directement dans la commande, mais des projets ont vu le jour pour le faire.</p>
+<p>Il y a le projet <a href="http://code.google.com/p/pyp/">pyp</a>, que l&#8217;on doit à Sony Pictures Imageworks qui avait besoin de se simplifier l&#8217;automatisation des tâches de build pour ses films.</p>
+<p>Et il y a <a href="https://pypi.python.org/pypi/Pyped/1.0">pyped</a>, dont j&#8217;avais brièvement parlé <a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">ici</a> (article qui mérite d&#8217;être mis à jour vu que j&#8217;ai remplace dateutils par <a href="http://sametmax.com/les-time-zones-en-python/">arrow</a>).</p>
+<p>Les deux étaient sympas, mais avait des syntaxes alambiquées, n&#8217;étaient pas compatibles python 3 et manquaient d&#8217;imports auto. Cependant, pyped est récemment passé en v1.0, donc stable, et a une toute nouvelle approche de syntaxe qui rend la bestiole super agréable à utiliser.</p>
+<p>Présentation.</p>
+<h2>Stdin, ligne à ligne</h2>
+<p>L&#8217;installation est bateau, c&#8217;est du <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> :</p>
+<pre lang="bash">pip install --user pyped</pre>
+<p>Et derrière, on obtient la commande <code>pyp</code>. Elle s&#8217;utilise essentiellement à la suite d&#8217;une autre commande. Typiquement :</p>
+<pre lang="bash">cat /etc/fsta | pyp "un truc"</pre>
+<p>L&#8217;astuce, c&#8217;est que &#8220;un truc&#8221; peut être n&#8217;importe quelle expression Python. Généralement une expression qui <code>print()</code> quelque chose.</p>
+<p>Or, Pyped met automatiquement à disposition de cette expression deux variables :</p>
+<ul>
+<li>La ligne en cours, dans la variable <code>x</code>.</li>
+<li>Le numéro de la ligne en cours, dans la variable <code>i</code>.</li>
+</ul>
+<p>L&#8217;expression Python est appelée une fois pour chaque ligne.</p>
+<p>Par exemple, supposons que j&#8217;ai un fichier &#8220;fortune.txt&#8221; contenant :</p>
+<pre lang="bash">bitcoin (btc) : 5
+euros (€) : 100
+dollars ($) : 80</pre>
+<p>Si je veut tout mettre en majuscule, je fais :</p>
+<pre lang="bash">$ cat fortune.txt | pyp "print(x.upper())"
+BITCOIN (BTC) : 5
+EUROS (€) : 100
+DOLLARS ($) : 80</pre>
+<p>On peut mettre plusieurs expressions d&#8217;affilé. Ainsi, si je veux récupérer la somme et le symbole uniquement :</p>
+<pre lang="bash">$ cat fortune.txt | pyp "devise, sign, _, value = x.split()" "sign = sign.strip('()')" "print('%s%s' % (value, sign))"
+5btc
+100€
+80$</pre>
+<p>Ok, c&#8217;est plus long que perl, mais vachement plus facile à écrire et à relire. Et j&#8217;utilise un langage que je connais déjà. Et pas besoin de faire un mix incompréhensible de sed, awk et autre cut.</p>
+<p>Si j&#8217;ai vraiment besoin de lisibilité, je peux même le mettre sur plusieurs lignes :</p>
+<pre lang="bash">$ cat fortune.txt | pyp "                                                                                                 
+devise, sign, _, value = x.split() 
+sign = sign.strip('()') 
+print('%s%s' % (value, sign))  
+"
+5btc
+100€
+80$</pre>
+<p>Vous aurez noté que j&#8217;utilise <code>print()</code> et que je semble ne pas me soucier de l&#8217;unicode. C&#8217;est parceque pyped fait ça au début du script :</p>
+<pre lang="python">from __future__ import print_function, unicode_literals, division, absolute_imports</pre>
+<p>Du coup, on est bien en Python 2.7, mais on bénéficie de la division améliorée, de la fonction pour printer, des imports absolus et surtout, de l&#8217;unicode partout. D&#8217;ailleurs pyped vous transforme <code>x</code> pour que ce soit un objet unicode. </p>
+<p>Dans tous les cas, pyped est compatible Python 3.</p>
+<h2>Tout traiter d&#8217;un coup</h2>
+<p>Parfois, on a besoin d&#8217;avoir accès à toutes les lignes, pas juste les lignes une à une. pyped permet cela avec l&#8217;option <code>-i</code>. Les variables <code>x</code> et <code>i</code> disparaissent au profit de la variable <code>l</code>, qui contient un itérable sur toutes les lignes.</p>
+<p>Par exemple, envie de trier tout ça ?</p>
+<pre lang="python">cat fortune.txt | pyp -i "
+lignes = (x.split() for x in l)
+lignes = sorted((v, s.strip('()')) for d, s, _, v in lignes)
+for ligne in lignes: print('%s%s' % ligne)
+"
+100€
+5btc
+80$</pre>
+<h2>Moar options</h2>
+<p>Lisez la doc, car il y a d&#8217;autres options du genre éviter que pyped vous strip automatiquement le ligne break, forcer l&#8217;encoding, etc.</p>
+<p>Parmi les trucs les plus utiles, il y a l&#8217;option <code>-b</code> qui permet de lancer un code avant la boucle. Pratique pour importer des trucs genre le module <code>tarfile</code> pour extraire une archive avant d&#8217;utiliser son contenu.</p>
+<p>Néanmoins la plupart du temps on a rien besoin d&#8217;importer car pyped importe déjà automatiquement les modules les plus utiles : maths, datetime, re, json, hashlib, uuid, etc. </p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/remplacer-sed-awk-cut-et-perl-par-python-orgasme-pour-sysadmin/feed/</wfw:commentRss>
+		<slash:comments>27</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8261</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/12/hsmFx9T.jpg" length="182812" type="image/jpg" />	</item>
+	</channel>
+</rss>

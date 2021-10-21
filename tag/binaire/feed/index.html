@@ -1,0 +1,828 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>binaire &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/binaire/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Le type bytes n&#8217;est pas du texte</title>
+		<link>http://sametmax.com/le-type-bytes-nest-pas-du-texte/</link>
+		<pubDate>Fri, 11 Jan 2019 11:30:10 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[binaire]]></category>
+		<category><![CDATA[bits]]></category>
+		<category><![CDATA[bytes]]></category>
+		<category><![CDATA[encodage]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[octets]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sharset]]></category>
+		<category><![CDATA[str]]></category>
+		<category><![CDATA[string]]></category>
+		<category><![CDATA[texte]]></category>
+		<category><![CDATA[unicode]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=25125</guid>
+		<description><![CDATA[J'ai beau essayer très fort de ne pas répondre en ligne, des fois <a href="https://news.ycombinator.com/item?id=18874232">je craque</a>. Mais je me soigne, globalement j'ai récupéré plein de temps, et ça se voit sur mon quotidien.
+
+Et ce craquage, et bien il est cette fois dû à une totale mécompréhension des types de texte en Python 3.]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;ai beau essayer très fort de ne pas répondre en ligne, des fois <a href="https://news.ycombinator.com/item?id=18874232">je craque</a>. Mais je me soigne, globalement j&#8217;ai récupéré plein de temps, et ça se voit sur mon quotidien.</p>
+<p>Et ce craquage, et bien il est cette fois dû à une totale mécompréhension des types de texte en Python 3.</p>
+<p>Mais c&#8217;est bien normal: Python 3 ne gère pas le texte de la même manière que la grande majorité des langages de programmation, justement à cause de la débâcle qu&#8217;on a eue en Python 2. Du coup, de nombreux programmeurs arrivent avec leur expérience d&#8217;ailleurs, et tentent de l&#8217;appliquer tel un utilisateur de SVN migrant sur git. En surface ça semble coller, malheuseuement à l&#8217;usage, ça fait faire des erreurs.</p>
+<p>Donc un peu d&#8217;explications.</p>
+<p>En informatique, tout est une histoire de convention. On dit que tel mot clé a tel effet. Que tel nom suppose telle chose. Que tel code de retour implique telle erreur. Que tel schéma XML représente tel type de document.</p>
+<p>Essentiellement, tout cela est arbitraire: des gens ont décidé qu&#8217;il en serait ainsi. Impossible de deviner que ce que fait <code>yield</code> ou <code>with</code> si vous n&#8217;avez pas d&#8217;expérience similaire avant. Impossible de savoir que le code <code>0</code> en bash ou <code>200</code> en HTTP signifie tout va bien sans qu&#8217;on vous transmette l&#8217;information, ou faire de nombreux tests.</p>
+<p>Quand je dis arbitrairement, évidemment je ne veux pas dire complètement sans raison. Il y a des raisons techniques, politiques, économiques, et parfois esthétiques à ces conventions. Cela n&#8217;en retire en rien l&#8217;aspect parfaitement artificiel de ces choix.</p>
+<p>La convention la plus omniprésente, et pourtant aujourd&#8217;hui la plus masquée dans un monde où on utilise massivement des langages de haut niveau comme Javascript, Ruby, PHP et Python, est celle de l&#8217;organisation des octets.</p>
+<p>Musique !</p>
+<p><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/SBjQ9tuuTJQ?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<h2>   &#8230;je vois même plus le code : tout ce que je vois, c&#8217;est des blondes, des brunes, des rousses.<br />
+</h2>
+<p>Tout ce qui passe par nos ordinateurs n&#8217;est qu&#8217;une suite de zéros et de uns, que nous avons groupés par paquets de 8:</p>
+<p>Seulement la grande révélation, le &#8220;aaaaaaahhhhh okayyyyyyy&#8221; qui arrive un jour dans toute vie de dev, c&#8217;est que <strong>ces paquets de 8 ne veulent rien dire.</strong> Rien. C&#8217;est nous qui avons décidé, arbitrairement encore une fois, de leur signification.</p>
+<p>Vous voyez ce moment dans les films et séries où un personnage arrive à &#8220;lire du binaire&#8221; ?</p>
+<div id="attachment_25161" style="width: 560px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2019/01/IS1.png" class="grouped_elements" rel="tc-fancybox-group25125"><img src="http://sametmax.com/wp-content/uploads/2019/01/IS1.png" alt="Evidement, &quot;c&#039;est une representation binaire ASCII de coordonnées WGS 84 Web Mercator&quot; est plus dur à caser dans un dialogue" width="550" height="281" class="size-full wp-image-25161" /></a><p class="wp-caption-text">Evidement, &#8220;c&#8217;est une representation binaire ASCII de coordonnées WGS 84 Web Mercator&#8221; est plus dur à caser dans un dialogue</p></div>
+<p>C&#8217;est de <a href="https://youtu.be/FvHHlKp923A?t=1132">l&#8217;enculage de dauphin</a>.</p>
+<p>Le binaire n&#8217;est pas un langage, pas plus que les lettres &#8220;abcdefghijklmnopqrstuvwxyz&#8221;. Vous pouvez utiliser ces lettres pour représenter certains mots italiens, français, anglais, un nom propre (sans langue), le label d&#8217;un immeuble (sans langue encore) ou un chiffre latin. </p>
+<p>Que veut dire &#8220;les gosses&#8221; ? Pour la même combinaisons de lettres, cela signifie &#8220;les enfants&#8221; avec la convention française européenne, et &#8220;les couilles&#8221; avec la convention québéquoise.</p>
+<p>Pour le binaire c&#8217;est pareil, ce que veut dire un octet dépend de la convention que vous avez choisie.</p>
+<p>Par exemple, que signifie cette suite d&#8217;octets ?</p>
+<p><code>1100001 1100010 1100011 1100100</code></p>
+<p>Bah rien. Mais <a href="https://www.youtube.com/watch?v=3c-irSUdij4">on peut lui donner un sens</a> en lui appliquant une convention.</p>
+<p>Je peux lui appliquer la convention ASCII, et donc supposer que c&#8217;est un texte dans un certain format. Voici ce que ça donne en Python:</p>
+<pre lang="python">     
+>>> data = bytearray([0b1100001, 0b1100010, 0b1100011, 0b1100100])     
+>>> print(data.decode('ascii'))     
+abcd </pre>
+<div id="attachment_25162" style="width: 310px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2019/01/binary_mock.jpg" class="grouped_elements" rel="tc-fancybox-group25125"><img src="http://sametmax.com/wp-content/uploads/2019/01/binary_mock.jpg" alt="Les processeurs modernes ne comprenent pas nativement l&#039;american apparel" width="300" height="448" class="size-full wp-image-25162" /></a><p class="wp-caption-text">Les processeurs modernes ne comprenent pas nativement l&#8217;american apparel</p></div>
+<p>Ou je peux lui appliquer une autre convention, et decider de lire ces octets comme si ils étaient le dump d&#8217;une structure C. Interprettons en Python ces octets comme un entier non signé en big-endian:</p>
+<pre lang="python">     
+>>> data = bytearray([0b1100001, 0b1100010, 0b1100011, 0b1100100])     
+>>> import struct     
+>>> struct.unpack('>I', data)     
+(1633837924,)
+</pre>
+<p>Même suite de bits, mais selon la convention choisie, elle veut dire les lettres &#8220;abcd&#8221; ou le nombre &#8220;1633837924&#8221;. Et oui, comme il n&#8217;y a pas une infinité de combinaisons de 0 et de 1 qui tiennent dans un espace mémoire limité, différentes conventions vont utiliser les mêmes octets mais décider que ça veut dire quelque chose de différent.</p>
+<p>En fait, même des conventions pour le même type usage ne veulent pas forcément dire la même chose. Par exemple, prenez l&#8217;octet:</p>
+<p><code>11101001</code></p>
+<p>Un octet somme toute sympathique, de bonne famille. Il ne paie pas de mine, mais c&#8217;est un membre utile de la société.</p>
+<p>Et maintenant, quelqu&#8217;un vous donne un indice, il vous dit que cet octet représente&#8230; du texte.</p>
+<p>Super !</p>
+<p>Oui, mais du texte avec quelle convention ? Car les pays du monde entier ont créé leur propre convention pour représenter du texte.</p>
+<p>Avec la convention &#8220;latin-1&#8221;, <a href="https://en.wikipedia.org/wiki/Windows-1252">utilisé par 0.7% de tous les sites Web du monde</a> ?</p>
+<pre lang="python"> 
+>>> bytearray([0b11101001]).decode('latin-1') 
+'é' </pre>
+<p>Avec la convention &#8220;cp850&#8221;, utilisé par la console DOS ?</p>
+<pre lang="python"> 
+>>> bytearray([0b11101001]).decode('cp850')
+'Ú'
+</pre>
+<p>Vous voulez rire ? Le premier à remplacé presque partout le second parce qu&#8217;<a href="https://en.wikipedia.org/wiki/Code_page_850">ils contiennent les mêmes lettres</a>. Elles ne sont juste pas représentées par la même combinaison d&#8217;octets.</p>
+<p>Et cet octet, que veut-il dire avec la convention &#8220;utf8&#8221;, qui est aujourd&#8217;hui le standard international recommandé pour représenter du texte ?</p>
+<pre lang="python"> 
+>>> bytearray([0b11101001]).decode('utf8')
+Traceback (most recent call last):
+File "<stdin>", line 1, in <module>
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe9 in position 0: unexpected end of data </pre>
+<p>Il n&#8217;a pas de correspondance. Cet octet n&#8217;est pas de l&#8217;utf8 valide.</p>
+<p>Si vous voulez représenter ces lettres en utf8, il faut utiliser une convention différente, en utilisant non pas un seul octet, mais une séquence d&#8217;octets:</p>
+<pre lang="python"> 
+>>> list(map(bin, 'é'.encode('utf8')))
+['0b11000011', '0b10101001']
+>>> list(map(bin, 'Ú'.encode('utf8')))
+['0b11000011', '0b10011010']
+</pre>
+<p>Vous pourriez croire que puisque le texte est particulièrement compliqué, c&#8217;est normal d&#8217;avoir des conventions qui divergent. Mais non, c&#8217;est juste la nature des conventions. Puisqu&#8217;elles sont arbitraires, l&#8217;une n&#8217;est pas plus &#8220;la vérité&#8221; qu&#8217;une autre. On retrouve la même chose avec les nombres:</p>
+<pre lang="python">
+>>> struct.unpack("h", bytearray([0b11101001, 0b11101001]))
+(-5655,)
+>>> struct.unpack("H", bytearray([0b11101001, 0b11101001])) 
+(59881,)
+</pre>
+<p>La même suite d&#8217;octets peut représenter deux nombres totalement différents, selon que je décide de les lire comme des &#8220;short&#8221;, ou des &#8220;unsigned short&#8221;.</p>
+<p>Et l&#8217;inverse est aussi vrai.</p>
+<p>Ben oui, si quelque chose peut être interprété de plusieurs façons, on a aussi le fait que deux représentations <em>différentes</em> peuvent être interprétées &#8230; pour aboutir au même résultat.</p>
+<p>Par exemple, le nombre des doigts de ma main peut être représenté de plein de façons différentes:</p>
+<ul>
+<li>         <strong>décimal</strong>: 5     </li>
+<li>         <strong>français écrit</strong>: cinq     </li>
+<li>         <strong>chiffre latin</strong>: V     </li>
+<li>         <strong>anglais écrit</strong>: five     </li>
+<li>         <strong>espagnol écrit</strong>: cinco     </li>
+<li>         <strong>base deux</strong>: 101     </li>
+<li>         <strong>structure C d&#8217;un signed short en little-endian avec Python</strong>: bytearray([0b101, 0b0])     </li>
+</ul>
+<p>Que de manières différentes, pour le même concept ! En plus, il y a confusion possible: V est une lettre également. cinq, five et cinco utilisent le même alphabet, mais pas les mêmes symboles spécifiques, pour représenter la même chose. Et le plus confusionant, 101 est une représentation binaire, mais <code>bytearray([0b101, 0b0])</code> aussi.</p>
+<p>Bref, voilà toute la complexité de la différence entre la donnée, un concept abstrait qui n&#8217;existe pas, et sa représentation, une convention humaine concrète qui nous permet de communiquer entre nous.</p>
+<p>Donc, pour lire &#8220;du binaire&#8221;, ou faire n&#8217;importe quoi en informatique, il faut connaitre la convention utilisée. Mais pas juste en informatique: pour lire le journal, il faut connaitre la convention des symboles imprimés sur les pages, pour conduire sans se faire tuer, il faut connaitre la convention des panneaux, et pour parler, il faut connaitre la convention de la compression des molécules d&#8217;air émise par l&#8217;appareil buccal et respiratoire d&#8217;un individu qui vient rencontrer votre système auditif.</p>
+<p>Vous êtes un être très conventionnel au fond.</p>
+<p>Évidemment on trouve la même chose en Python. Par exemple vous pouvez utiliser plusieurs conventions pour demander à Python de créer le même nombre en mémoire:</p>
+<pre lang="python">
+>>> 245 # base 10
+245
+>>> 0xF5 # hexadecimal
+245
+>>> 0b11110101 # binaire
+245
+>>> 245 == 0xF5 == 0b11110101
+True     
+>>> type(245)     
+<class 'int'>     
+>>> type(0xF5)     
+<class 'int'>     
+>>> type(0b11110101)     
+<class 'int'> </pre>
+<p>Inversement, <code>"1"</code> et <code>1</code> paraissent similaire, mais ils ont différents buts. Le premier est un outil destiné à l&#8217;affichage, qui matérialise le caractère représentant le chiffre arabe après le zéro. Il est stocké en interne avec une séquence d&#8217;octets similaire à:</p>
+<pre lang="python">
+>>> bin(ord("1"))
+'0b110001'
+</pre>
+<p>Tandis que que le second est un outil fait pour faire des calculs avec la plus petite valeur positive entière non nulle. Il est stocké en interne avec une séquence d&#8217;octets similaire à:</p>
+<pre lang="python">
+>>> list(map(bin, struct.pack('l', 1)))
+['0b1', '0b0', '0b0', '0b0', '0b0', '0b0', '0b0', '0b0']
+</pre>
+<p>Je simplifie bien entendu, en vérité la representation interne des nombres et du texte en Python est plus complexe que cela, et dépend de l&#8217;implémentation choisie, du type de processeur, de la taille de la donnée et de votre configuration.</p>
+<h2>
+Retour sur le type bytes </h2>
+<p>J&#8217;ai soigneusement évité d&#8217;utiliser le type <code>bytes</code> durant cette démonstration, le remplaçant techniquement inutilement (mais pédagogiquement brillamment, car je suis génial) par <code>bytearray</code>.</p>
+<p>En effet, toute cette leçon est là pour arriver à la conclusion que <code>bytes</code> ne représente pas du texte, mais si je vous avais montré tout ça avec lui, voilà qui vous aurait interloqué:</p>
+<pre lang="python">     
+>>> bytes([0b1100001, 0b1100010, 0b1100011, 0b1100100])     
+b'abcd' </pre>
+<p>&#8220;Heu, mais c&#8217;est du texte !&#8221; me dirait alors un lecteur ayant diagonalisé l&#8217;article.</p>
+<p>Mais bien entendu que non.</p>
+<p><code>bytes</code> ne présente pas du texte, c&#8217;est une structure de données dont le but est de permettre de manipuler une séquence d&#8217;octets ordonnée, et ce manuellement. N&#8217;importe laquelle.</p>
+<p>Or, il se trouve que beaucoup de langages de programmation représentent le texte comme un array d&#8217;octets, et y attachent quelques opérations de manipulation. C&#8217;est le cas du C, ou de Python 2 par exemple. Les gens ayant eu cette expérience pensent donc que <code>b'abcd'</code> représente du texte, allant parfois jusqu&#8217;à aller lui donner l&#8217;appellation de &#8220;byte string&#8221;.</p>
+<p>Il n&#8217;existe rien de tel en Python 3.</p>
+<p>En Python 3, vous avez deux types pour manipuler des séquences d&#8217;octets: <code>bytes</code> et <code>bytearray</code>. Ils sont équivalents, à ceci près que <code>bytes</code> est non mutable (non modifiable) alors que <code>bytearray</code> est mutable (modifiable).</p>
+<p>Ces types peuvent contenir n&#8217;importe quels octets, et nous avons vu ensemble qu&#8217;une même séquence d&#8217;octets pouvait être interprétée différemment selon la convention choisie pour la lire. Évidemment il est préférable de la lire avec la même convention qui a été utilisée pour la produire, sans quoi on ne comprendra pas ce que le producteur de la donnée à voulu dire.</p>
+<p>Sauf que&#8230;</p>
+<p>Beaucoup d&#8217;outils en informatique utilisent les conventions ASCII et hexadécimale pour symboliser les valeurs des octets. Si vous lancez <a href="https://www.wireshark.org/docs/wsug_html_chunked/ChapterIntroduction.html#ChIntroFeatures">Wireshark</a> pour regarder les paquets d&#8217;un protocole réseau ou si vous ouvrez un PNG avec <code>xxd</code>, on va vous représenter le contenu avec un mélange de ces conventions. </p>
+<p>Pour des raisons pratiques, Python fait donc la même chose, et permet ainsi de visualiser (ou produire) le type <code>bytes</code> à l&#8217;aide d&#8217;une notation ASCII:</p>
+<pre lang="python">    
+>>> print(b'abcd'.decode('ascii'))     
+abcd     
+>>> struct.unpack('>I', b'abcd')     
+(1633837924,)
+</pre>
+<p>Ou d&#8217;une notation héxa (ironiquement, l&#8217;héxa est representé par une combinaison de caractères ASCII \o/) si les valeurs ne tiennent pas dans la table ASCII:</p>
+<pre lang="python">     
+>>> "é".encode('utf8')  # hexa C3 A9   
+b'\xc3\xa9'     
+>>> struct.unpack('h', b'\xc3\xa9')    
+(-22077,)
+</pre>
+<p>Donc <code>bytes</code>, bien qu&#8217;il puisse contenir des octets interprétables comme du texte, n&#8217;est pas particulièrement fait pour manipuler du texte. Il peut contenir n&#8217;importe quoi. Mais pour des raisons pratiques, sa représentation dans le terminal est faite avec une convention familière. Après tout, il faut bien l&#8217;écrire en quelque chose pour l&#8217;affiquer à l&#8217;écran.</p>
+<p>Si on veut manipuler du texte en Python 3, il faut utiliser le type <code>str</code>, qui est l&#8217;outil spécialisé dans la representation et la manipulation textuelle. Si vous savez qu&#8217;un type <code>bytes</code> contient des octets qui representent du texte, alors utilisez la méthode <code>décode()</code> avec la bonne convention (appelée &#8220;charset&#8221;), pour récupérer un <code>str</code>:</p>
+<pre lang="python">     
+>>> print(b'P\xc3\xa8re No\xc3\xabl'.decode('utf8'))
+Père Noël </pre>
+<p>On a <a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/ ">un très bon article sur l&#8217;encoding en Python</a> sur le blog, d&#8217;ailleurs.</p>
+<p>Toute cela n&#8217;était bien entendu pas vrai en Python 2. En Python 2, le type <code>str</code> était un array d&#8217;octets, rendant tout cela bien confus, et amenant à plein d&#8217;erreurs. L&#8217;introduction lors de la version 2.0 de l&#8217;objet <code>unicode</code> pour pallier le problème, bien que très utile, n&#8217;a fait que rajouter à l&#8217;incomprehension des nouveaux venus.</p>
+<p>Or le monde extérieur, lui, n&#8217;a pas d&#8217;abstraction pour le texte. Faire des abstractions, c&#8217;est le rôle du langage de programmation. Si vous écrivez dans un terminal, ou lisez depuis un terminal, un nom de fichier, le contenu d&#8217;une base de données, une requête AJAX, etc., ce sont évidemment des octets qui sont échangés, et il vous faut la bonne convention pour faire partie de la discussion.</p>
+<p>Le type bas niveau <code>bytes</code> est un outil qui sert donc à communiquer avec le monde extérieur, tandis que les types haut niveau (<code>str</code>, <code>int</code>, <code>list</code>, etc.) sont des outils qui font l&#8217;abstraction de ces conventions, pour vous permettre de manipuler confortablement un concept général (du texte, un nombre, une collection ordonnée) à l&#8217;interieur des murs de votre programme.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">25125</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2019/01/definitionwrong.jpg" length="60849" type="image/jpg" />	</item>
+		<item>
+		<title>Lire un format binaire en Python avec struct</title>
+		<link>http://sametmax.com/lire-un-format-binaire-en-python-avec-struct/</link>
+		<comments>http://sametmax.com/lire-un-format-binaire-en-python-avec-struct/#comments</comments>
+		<pubDate>Fri, 26 Jun 2015 06:51:28 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[binaire]]></category>
+		<category><![CDATA[c]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16503</guid>
+		<description><![CDATA[Une suite de valeurs ne veut rien dire en soit, et même le sacro-saint binaire supposé être le socle de toute l'informatique n'a aucun sens si on ne connaît pas le format de ce qu'il doit représenter.
+
+Pour autant, cela ne veut pas dire qu'il n'existe pas des formats prépondérant, et en informatique, beaucoup de données binaires sont organisées pour correspondre aux structures de données du langage C.]]></description>
+				<content:encoded><![CDATA[<p>Une suite de valeurs ne veut rien dire en soi, et même le sacro-saint binaire supposé être le socle de toute l&#8217;informatique n&#8217;a aucun sens si on ne connaît pas le format utilisé pour ce qu&#8217;il doit représenter.</p>
+<p>Toujours la même opposition entre données et représentation.</p>
+<p>Par exemple, le binaire peut représenter <a href="http://sametmax.com/la-fin-du-mystere-du-binaire-nananere/">un chiffre en base 2</a> ou <a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/">un texte encodé</a>.</p>
+<p>Pour autant, cela ne veut pas dire qu&#8217;il n&#8217;existe pas des formats prépondérant. En informatique, beaucoup de données binaires sont organisées pour correspondre aux structures de données du langage C, ces dernières étant une implémentation du standard <a href="https://fr.wikipedia.org/wiki/IEEE_754">IEEE 754</a> (en effet les strings sont des arrays d&#8217;int en C, donc le texte et les nombres sont des suites de chiffres).</p>
+<p>Par exemple, si vous créez un array numpy contenant des nombres de 0 à 1000 stockés en int32 et sauvegardez son contenu dans un fichier :</p>
+<pre lang="python">>>> import numpy
+>>> numpy.arange(0, 1000, dtype=np.int32).tofile('/tmp/data')</pre>
+<p>Le fichier va ici contenir une suite de 1 et de 0 représentant 1000 entiers, chacun comme un paquet de 4 octets organisés selon la sémantique que comprend le langage C.</p>
+<p>Pour avoir une idée de l&#8217;organisation du contenu, on peut prendre un éditeur hexa qui vous affichera :</p>
+<pre>0000 0000 0100 0000 0200 0000 0300 0000 0400 0000 0500 0000 0600 0000 0700 0000 0800 0000 0900 0000 0a00 0000 0b00 0000 0c00 0000 0d00 0000 0e00 0000 0f00 0000 1000 0000 1100 0000 1200 0000 1300 0000</pre>
+<p>Ça se lit ainsi :</p>
+<pre>
+0000 0000 => 0
+0100 0000 => 1
+0200 0000 => 2
+0300 0000 => 3
+0400 0000 => 4
+0500 0000 => 5
+0600 0000 => 6
+0700 0000 => 7
+0800 0000 => 8
+0900 0000 => 9
+0a00 0000 => 10
+0b00 0000 => 11
+0c00 0000 => 12
+0d00 0000 => 13
+0e00 0000 => 14
+0f00 0000 => 15
+1000 0000 => 16
+1100 0000 => 17
+1200 0000 => 18
+1300 0000 => 19
+...</pre>
+<p>Numpy étant codé en C, cela semble plutôt logique qu&#8217;il dump tout ça dans ce format.</p>
+<p>Mais c&#8217;est une représentation tellement courante que de nombreux formats standards l&#8217;utilisent. Par exemple, les archives et les images stockent souvent leurs données ainsi.</p>
+<p>Prenez le format d&#8217;image PNG, la <a href="https://tools.ietf.org/html/rfc2083">RFC indique</a> que la taille de l&#8217;image est stockée dans le fichier sous la forme de deux entiers représentés par 4 octets chacun, ordonnés en <a href="https://fr.wikipedia.org/wiki/Endianness">big-endian</a>, entre l&#8217;octet 16 et l&#8217;octet 24.</p>
+<p>On peut donc récupérer ces informations en lisant son fichier image :</p>
+<pre lang="python">with open('image.png', 'rb') as f:
+    taille = f.read(24)[16:24]</pre>
+<p>Le problème étant : comment lire cette info ? C&#8217;est un blob binaire qui ne veut rien dire pour Python :</p>
+<pre lang="python">print(taille)
+b'\x00\x00\x07\x80\x00\x00\x048'</pre>
+<p>Le module <a href="https://docs.python.org/3.4/library/struct.html">struct</a> est fait pour ça, on lui passe une donnée au format structure C, et il la convertit en type Python. Cela marche <del datetime="2015-06-26T06:29:30+00:00">ansi</del>, pardon, ainsi :</p>
+<pre lang="python">struct.unpack('motif_du_format_a_convertir', donnee)</pre>
+<p>Le format à convertir est une chaîne de caractères qui contient des symboles décrivant la structure de la donnée qu&#8217;on souhaite récupérer. Little-endian ou big-endian ? String, Int, Bool ?</p>
+<p>Pour la taille de la photo, on sait qu&#8217;il y a deux entiers, non signés (une taille ne va pas être négative), en big-endian. D&#8217;après la doc de <code>struct</code>, on peut lui désigner un entier non signé avec &#8216;I&#8217;, et il faut les qualifier avec &#8216;>&#8217; pour l&#8217;ordre big-endian. Du coup:</p>
+<pre lang="python">taille = struct.unpack('>II', taille)
+print(taille)
+(1920, 1080)</pre>
+<p>Il se trouve que mon image de test est un screenshot et que mon écran a une résolution de 1920&#215;1080 :)</p>
+<p>On peut faire l&#8217;opération inverse avec <code>struct.pack</code>, et bien entendu manipuler des formats plus complexes : il suffit de changer le motif qui représente le format à convertir.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/lire-un-format-binaire-en-python-avec-struct/feed/</wfw:commentRss>
+		<slash:comments>24</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">16503</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/06/a.gif" length="743276" type="image/jpg" />	</item>
+		<item>
+		<title>La fin du mystère du binaire (nananère)</title>
+		<link>http://sametmax.com/la-fin-du-mystere-du-binaire-nananere/</link>
+		<comments>http://sametmax.com/la-fin-du-mystere-du-binaire-nananere/#comments</comments>
+		<pubDate>Tue, 21 Jan 2014 15:01:56 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[base 10]]></category>
+		<category><![CDATA[base 2]]></category>
+		<category><![CDATA[binaire]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8808</guid>
+		<description><![CDATA[Le binaire c'est simple. Tout le monde peut le comprendre. Par contre, il y a beaucoup de choses à savoir.]]></description>
+				<content:encoded><![CDATA[<p>Quand mon voisin de table en cours de SVT a commencé à m&#8217;expliquer le binaire (il programmait en assembleur sur sa TI89), j&#8217;ai pas bien pigé. Des années plus tard, en cours d&#8217;archi, un prof nous a fait un cours magistral sur la question. Je n&#8217;ai définitivement rien pigé. J&#8217;ai regardé des tutos sur le net. RIEN P-I-G-É.</p>
+<p>J&#8217;ai mis presque 10 ans (littéralement) avant que mon cerveau tilte. Non pas que je n&#8217;avais pas compris le principe, mais le détails, comment on faisait la conversion, ce qu&#8217;on pouvait faire avec, etc&#8230; Ca me passait au dessus de la tête.</p>
+<p>Je râle beaucoup sur le manque de pédagogie d’autrui, et après tout, d&#8217;autres ont compris le truc à partir de ces explications. Mais je vais me répéter : leurs explications étaient merdiques.</p>
+<p>Le binaire c&#8217;est simple. Tout le monde peut le comprendre.</p>
+<p>Si vous ne pigez pas, c&#8217;est que le mec en face de vous est une grosse pine.</p>
+<p>Par contre, il y a beaucoup de choses à savoir, alors à long article, loooooooooooongue musique :</p>
+<p><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/MSEQZ8reJA4?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<p>Long article car j&#8217;ai vu des connards mélanger tout et n&#8217;importe quoi dans leurs explications du binaire, et je vais devoir démêler le sac de nœuds qu&#8217;ils ont fait dans votre tête.</p>
+<h2>Pourquoi apprendre le binaire ?</h2>
+<p>Pour le sport, essentiellement. La culture G. Parce qu&#8217;en toute honnêteté, aujourd&#8217;hui, ça ne sert plus à grand chose, tellement vous avez de couches d&#8217;abstraction entre les manipulations binaires et vous.</p>
+<p>Il y a toujours quelques grincheux qui vous diront des trucs de grincheux comme &#8220;oui, mais pour comprendre les erreurs de flottant en arithmétique, il faut comprendre le binaire&#8221; comme mon père qui me disait qu&#8217;il fallait apprendre le latin au lycée. Meh.</p>
+<p>D&#8217;abord, on a pas plus besoin d&#8217;apprendre le binaire pour comprendre les erreurs de flottant qu&#8217;on a besoin de comprendre la composition moléculaire de l&#8217;essence pour savoir pourquoi une voiture tombe en panne quand il y en a plus. Ensuite, vous n&#8217;avez même pas besoin de comprendre pourquoi il y a des erreurs de flottant, juste à savoir comment les éviter (ce que des tas de gens &#8220;qui les comprennent&#8221; ne sont pas foutu de faire).</p>
+<p>Bref, c&#8217;est l&#8217;éternel bataille de l&#8217;arrière garde qui veut défendre le savoir aujourd&#8217;hui obsolète &#8211; qu&#8217;il a accumulé parce qu&#8217;a son époque c&#8217;était indispensable &#8211; à grand renfort de pédanterie. On voit ça dans tous les domaines. Généralement avec  force exemples de niches et enculage de mouche.</p>
+<p>Mais au delà de ça, le binaire est encore utilisé dans certains domaines, comme la programmation de micro-contrôleurs (si vous planifiez de bosser chez Intel, Nvidia ou la NASA, ça peut servir), la cryptographie ou la programmation de calculatrices en cours de bio. Ce dernier point étant semble-t-il, un sujet intemporel qui ne se démode jamais.</p>
+<p>Néanmoins ça reste 0.00001 % de l&#8217;informatique actuelle. Vous n&#8217;aurez pas besoin du binaire pour vos tâches de Sys Admin, vos GUI, votre app mobile, votre site Web, votre algo de simulation, etc. Bref, les trucs pour lesquels les gens sont payés dans les années 2000.</p>
+<p>Maintenant que j&#8217;ai bien été désagréable avec une partie du lectorat, précisons tout de même que savoir 2, 3 trucs sur le binaire, ça ne fait pas de mal. Vous êtes informaticiens, ça fait un peu partie du folklore.</p>
+<h2>Valeur et représentation</h2>
+<p>En informatique, il y a le problème sans fond de la dualité valeur / représentation. L&#8217;écriture des nombres est un exemple parfait de cela.</p>
+<p>Par exemple, j&#8217;ai ce nombre d&#8217;étoiles :</p>
+<pre>* * * * *</pre>
+<p>Il y a la valeur du nombre d&#8217;étoiles. Cette valeur ne peut pas être manipulée, elle existe, c&#8217;est tout. On ne peut que constater le nombre d&#8217;étoiles en interprétant ce que l&#8217;on voit.</p>
+<p>Si on veut manipuler cette valeur (parler d&#8217;une valeur, c&#8217;est déjà manipuler la valeur), il faut lui donner une représentation.</p>
+<p>Les arabes nous ont donné une représentation : 5.</p>
+<p>Les romains avaient une autre représentation : V.</p>
+<p>La valeur derrière ces deux représentations est strictement la même.</p>
+<p>Le binaire est juste une autre représentation. Il n&#8217;y a rien de magique derrière le binaire.</p>
+<p>Par exemple, la valeur que l&#8217;on représentante par 5, se représente ainsi en binaire : 101.</p>
+<p>C&#8217;est la même valeur de nombre d&#8217;étoiles. Juste écrit différemment. Cela n&#8217;a aucun impact sur la réalité, ne change rien sur la nature des étoiles ou la valeur manipulée. C&#8217;est une manière de transmettre une information.</p>
+<h2>A la base de la base</h2>
+<p>La raison pour laquelle on s&#8217;embrouille facilement avec le binaire, c&#8217;est que la plupart d&#8217;entre nous ont appris à lire les nombres par cœur. On lit un nombre comme un tout.</p>
+<p>En vérité, un nombre est une notation qui obéit à des règles très strictes, et non seulement chaque chiffre donne une information, mais <strong>sa place</strong> dans le nombre donne une information. Ce qu&#8217;on appelle &#8220;centaine&#8221;, &#8220;millier&#8221;, etc, sont des notions qu&#8217;on manipule sans y penser, mais derrière, il y a en fait un système.</p>
+<p>Le système des bases.</p>
+<p>Quand on utilise les chiffres arabes pour écrire un nombre, on utilise une série de symboles, et on les aligne dans un ordre précis. <strong>Selon la base utilisée, l&#8217;ordre implique une valeur différente.</strong></p>
+<p>On ne s&#8217;en rend pas compte, mais on utilise tous les jours l&#8217;ordre de la base 10. On pense en base 10. On a tellement l&#8217;habitude de tout calculer en base 10 qu&#8217;on ne se rend pas compte qu&#8217;on suit une règle précise pour cela.</p>
+<p>Que signifie le fait d&#8217;utiliser une base 10 ?</p>
+<p>Deux choses.</p>
+<p>La première, c&#8217;est que l&#8217;on a DIX symboles pour représenter DIX valeurs. On ne sait représenter directement que ces DIX valeurs là.</p>
+<pre>
+          0
+*         1
+**        2
+***       3
+****      4
+*****     5
+******    6
+*******   7
+********  8
+********* 9</pre>
+<p>On a des valeurs (un nombre d&#8217;étoiles), et on fait correspondre <strong>complètement arbitrairement</strong> dix symboles pour ces valeurs. On connait ces symboles par cœur, ce sont des conventions. Ils ne signifient rien par eux-même, nous leur avons donné cette signification.</p>
+<p>Ça c&#8217;est la première règle. La deuxième règle, c&#8217;est que quand on tombe à cours de symboles parceque la valeur est trop grande, on utilise <strong>la position</strong> des symboles pour dire combien de groupes de dizaines de symboles il y a.</p>
+<p>Par exemple avec ce nombre :</p>
+<pre>10</pre>
+<p>10 veut dire (en lisant de droite à gauche, ce sont des chiffres arabes, je le rappelle), 0 unité, et 1 groupe d&#8217;une dizaine.</p>
+<p>Si on a 587, on dit (toujours de droite à gauche) : il y a 7 unités et 8 groupes d&#8217;une dizaine et 5 groupes d&#8217;une <strong>dizaine de dizaines</strong>.</p>
+<p>La position du chiffre dit si l&#8217;on parle d&#8217;un groupe de 1, de 10, de 10 groupes de 10 (cent), de 10 groupes de 10 groupes de 10 (1000), etc.</p>
+<p>C&#8217;est pour ça qu&#8217;on parle de base 10. Tout est en groupe de 10. On fait des paquets de 10. Puis des paquets de 10 paquets de 10. Puis des paquets de 10 paquets de 10 paquets de 10&#8230;</p>
+<p>Exemple avec le nombre 1982 :</p>
+<pre>
+[1][9][8][2]
+ |  |  |  |
+ |  |  |  2 unités
+ |  |  8 groupes de 10
+ |  9 groupes de 10 groupes de 10 (10 x 10 = 100)
+1 groupe de 10 groupes de 10 groupes de 10 (10 x 10 x 10 = 1000)</pre>
+<p>Si on lit un chiffre comme un tableau en informatique (donc en commençant par 0), mais de droite à gauche, on peut utiliser les puissances pour noter ça de manière propre :</p>
+<pre>
+[1][9][8][2]
+ |  |  |  |
+ |  |  |  2 est à la place 0, sa "valeur" est 2 x 10^0 = 2 * 1 = 2
+ |  |  8 est à la place 1, sa "valeur" est 8 x 10^1 = 8 * 10 = 80
+ |  9 est à la place 2, sa "valeur" est 9 x 10^2 = 9 x 10 x 10 = 9 x 100 = 900
+1 est à la place 3, sa "valeur" est 1 x 10^3 = 1 x 10 x 10 x 10 = 1 x 1000 = 1000</pre>
+<p>Ça vous parait évident sans avoir à faire le calcul ? C&#8217;est parce que vous êtes tellement habitué à compter en base 10 que c&#8217;est automatique pour vous. Pourtant, en base 2, c&#8217;est <strong>exactement la même chose.</strong></p>
+<p>On a DEUX symboles pour représenter DEUX valeurs. On ne sait représenter que ces DEUX valeurs là.</p>
+<pre>
+  0
+* 1</pre>
+<p>Quand on tombe à cours de symbole parce qu&#8217;une valeur est trop grande, on utilise <strong>la position</strong> des symboles pour dire combien de groupes de deux symboles il y a.</p>
+<p>Par exemple avec ce nombre :</p>
+<pre>10</pre>
+<p>10, <strong>qui ne se prononce PAS dix</strong>, veut dire (en lisant de droite à gauche), 0 unité, et 1 groupe d&#8217;une paire. Donc deux en base 10 :-).</p>
+<p>Pour les chiffres plus longs, c&#8217;est kiff, kiff :</p>
+<pre>
+[1][1][1][0]
+ |  |  |  |
+ |  |  |  0 unité
+ |  |  1 groupes de 2
+ |  1 groupes de 2 groupes de 2 (2 x 2 = 4 en base 10)
+1 groupe de 2 groupes de 2 groupes de 2 (2 x 2 x 2 = 8 en base 10)</pre>
+<p>Donc en base 10 : 8 + 4 + 2, soit 14.</p>
+<p>Si on le représente en puissance de 2 :</p>
+<pre>
+[1][1][1][0]
+ |  |  |  |
+ |  |  |  0 est à la place 0, sa "valeur" est 0 x 2^0 = 0 * 1 = 0
+ |  |  1 est à la place 1, sa "valeur" est 1 x 2^1 = 1 * 2 = 2
+ |  1 est à la place 2, sa "valeur" est 1 x 2^2 = 1 x 2 x 2 = 1 x 4 = 4
+1 est à la place 3, sa "valeur" est 1 x 2^3 = 1 x 2 x 2 x 2 = 1 x 8 = 8</pre>
+<p>En gros pour convertir du binaire en base 10, il suffit de réciter les puissances de deux dans sa tête :</p>
+<p>2, 4, 8, 16, 32&#8230; (2 fois 2 = 4, 2 fois 4 = 8, 2 fois 8 = 16, 2 fois 16 = 32&#8230;)</p>
+<p>Et les appliquer de droite à gauche :</p>
+<pre>[1][0][1][1][1][0] => [1 * 32] + [0 * 16] + [1 * 8] + [1 * 4] + [1 * 2] + [O * 1] => 46 en base 10</pre>
+<p>Une illustration graphique ?</p>
+<p>Voici quarante-six étoiles :</p>
+<pre>**********************************************</pre>
+<p>Si je les représente en base 10, je noterais ça 46, soit 4 groupes de dizaines, et 6 unités :</p>
+<pre>
+    4          6
+
+**********   ******
+**********
+**********
+**********
+</pre>
+<p>Si je le représente en base 2, je le note 101110: soit 1 groupe de trente-deux, 0 groupe de seize, 1 groupe de huit, 1 groupe de quatre, 1 groupe de deux, et 0 unité.</p>
+<pre>
+                1                  0      1        1     1    0
+
+********************************   -   ********   ****   **   -</pre>
+<p>On peut faire ça avec n&#8217;importe quelle base. On peut compter en base 3 (ternaire) ou en base 4, 5, 6&#8230; On utilise notamment parfois en informatique la base 8 (octale) et la base 16 (hexadécimale). Pour cette base, il y a 16 symboles : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F, représentant chacun une valeur, puis, quand on a plus de symbole, on utilise la position pour signaler un paquet de 16.</p>
+<h2>Passons au code</h2>
+<p>En Python on peut écrire un nombre en binaire en le préfixant de &#8216;0b&#8217;:</p>
+<pre lang="python">>>> 0b101110
+46
+</pre>
+<p>Mais par défaut Python <strong>représente</strong> toujours à l&#8217;affichage ce nombre en base 10. La valeur derrière est la même de toute façon (qui, de manière amusante, est sockée en binaire).</p>
+<p>Si vous voulez forcer <strong>l&#8217;affichage</strong> du nombre en binaire, vous pouvez utilisez <code>bin()</code> ou <code>format()</code> :</p>
+<pre lang="python">>>> 'Le nombre {0} en binaire donne : {0:b}'.format(46)
+u'Le nombre 46 en binaire donne : 101110'
+
+>>> bin(46)
+'0b101110'
+</pre>
+<p>A l&#8217;inverse, si vous avez une représentation textuelle d&#8217;un chiffre binaire, vous pouvez préciser la base via le second paramètre de <code>int()</code> :</p>
+<pre lang="python">>>> int('101110') # la base 10 est le réglage par défaut...
+101110
+>>> int('101110', 10) # ...donc on récupère cent un mille cent dix.
+101110
+>>> int('101110', 2) # si on précise la base 2, on récupère quarante-six.
+46</pre>
+<p>Mais si on n&#8217;a pas codé sa petite fonction pour faire pareil à la main à 50 ans, on a raté sa vie. Donc, voici un exemple simple d&#8217;une fonction qui convertit une représentation textuelle d&#8217;un chiffre binaire en int Python :</p>
+<pre lang="python">def bin2dec(s):
+
+    # on rejette les chaînes vides
+    if not s:
+        raise ValueError('The string cannot be empty')
+
+    total = 0
+
+    # on itère sur la chaîne, de droite à gauche
+    reversed_number = s[::-1]
+    for pos, num in enumerate(reversed_number):
+
+        # on multiplie le chiffre en cours par la puissance de 2
+        # qui correspond à sa position
+        total += int(num) * (2 ** pos)
+
+    return total
+
+print(bin2dec('0'))
+print(bin2dec('1'))
+print(bin2dec('10'))
+print(bin2dec('101'))
+print(bin2dec('10011100'))
+
+## 0
+## 1
+## 2
+## 5
+## 156
+</pre>
+<p>Et la fonction inverse :</p>
+<pre lang="python">
+
+from __future__ import division # pour être tous d'accord sur la division entière
+
+def dec2bin(i):
+
+    numbers = []
+
+    if i == 0:
+        return i
+
+    # On divise (avec la division entière) par deux jusqu'à ce qu'il ne reste
+    # plus rien à diviser (on fait des paquets de 2, quoi).
+    # Avant chaque division par deux, on regarde si il y aura un reste
+    # pour la prochaine division. Si oui, on met 1 pour le paquet de 2 actuel,
+    # sinon on met 0.
+    # C'est comme pour la multiplication à la main ("je met 2 et je retiens 1"),
+    # mais à l'envers.
+    while i != 0:
+        numbers.append(str(i % 2))
+        i = i // 2
+
+    # Ensuite on inverse tout ça et on join() tout en une belle string
+    return (''.join(numbers[::-1]))
+
+print(dec2bin(0))
+print(dec2bin(1))
+print(dec2bin(2))
+print(dec2bin(5))
+print(dec2bin(156))
+
+## 0
+## 1
+## 10
+## 101
+## 10011100</pre>
+<h2>Et les opérateurs bitwise ?</h2>
+<p>Dans les tutos on voit souvent mélanger la notion de binaire, avec la représentation des nombres, du texte, et les opérateurs spécialisés dans la manipulation du binaire : </p>
+<pre>|, ^, ~, >>, <<, >>>, &, etc</pre>
+<p>C&#8217;est le bordel.</p>
+<p>On les appelle ces opérateurs &#8220;bitwise&#8221;, et ils sont essentiellement de deux types : les shifts, et les opérateurs logiques.</p>
+<p>Les shifts, souvent notés <code>&gt;&gt;</code>, <code>&lt;&lt;</code>, etc, décalent d&#8217;un bit. Un bit, c&#8217;est une case dans un nombre binaire, une d&#8217;un chiffre position, qui prend donc la valeur 0 ou 1.</p>
+<p>Ex: 1010 est un nombre de 4 bits. 10100 est un nombre de 5 bits.</p>
+<p>Par décaler, j&#8217;entends qu&#8217;ils poussent littéralement les bits dans un sens ou dans l&#8217;autre :</p>
+<p>1010 &gt;&gt; 1 va donner 101 (les bits se sont décalés vers la droite d&#8217;un cran, c&#8217;est le rshift). Ca fait disparaitre un bit à droite.<br />
+1010 &lt;&lt; 1 va donner 10100 (les bits se sont décalés vers la gauche d&#8217;un cran, c&#8217;est le lshift). Ca rajoute un bit à droite.</p>
+<p>Si on met un plus grand nombre, on décale de plusieurs bits :</p>
+<p>1010 &lt;&lt; 3 va donner 1010000 (les bits se sont décalés vers la gauche de 3 crans)</p>
+<p>C&#8217;est une opération très rapide, puisqu&#8217;il suffit de décaler les chiffres, sans faire de calculs complexes. Pourtant, c&#8217;est l&#8217;équivalent de certaines opérations mathématiques.</p>
+<p>Par exemple, un lshift peut être équivalent à une multiplication par une puissance de 2.</p>
+<p>Ainsi, si je prends le chiffre 10 en (binaire 1010), et que je lui applique un lshift de 3, c&#8217;est comme si je le multipliais par 2^3 (soit 8). Démo en Python :</p>
+<pre lang="python">>>> 0b1010
+10
+>>> 0b1010 << 3
+80</pre>
+<p>Mais l'opération prend beaucoup moins de cycles CPU qu'une multiplication. C'est une astuce d'optimisation qui a été beaucoup utilisée au paléolithique et qui reste en vigueur chez les cryptonerds. Néanmoins ne l'utilisez pas en Python, les gains sont minimes. C'est surtout utile pour les codes C ou assembleur qui sont déjà sur optimisés et ont besoin de ce petit coup de pouce supplémentaire.</p>
+<p>Ensuite il y a les opérateurs logiques. Ils appliquent tout simplement la logique booléenne à chaque bit d'un nombre avec chaque bit d'un autre nombre dont la position correspond. Par exemple :</p>
+<p>Si je fais "1101 ET (représenté souvent par '&') 110", je vais obtenir :</p>
+<pre>
+[1][1][0][1]
+ |  |  |  |
+ &  &  &  &
+ |  |  |  |
+[ ][1][1][0]
+ |  |  |  |
+ v  v  v  v
+ 0  1  0  0
+
+1 et rien => vrai ET faux ? => faux => 0
+1 et 1 => vrai ET vrai ? => vrai => 1
+0 et 1 => faux ET vrai ? => faux => 0
+1 et 0 => faux ET vrai ? => faux => 0
+</pre>
+<p>C'est de la logique booléenne de base, vous pouvez la tester avec <code>True</code>, <code>False</code>, <code>and</code> et <code>or</code> dans votre shell si ça ne vous parle pas.</p>
+<p>En code Python :</p>
+<pre lang="python">>>> bin(0b1101 & 0b100)
+'0b100'</pre>
+<p>On l'utilise parfois pour faire ce qu'on appelle des "masques", c'est à dire représenter une série d'états sous forme de grille de bits, et changer un état de cette grille en appliquant une opération logique avec une autre grille.</p>
+<p>Je sais, ça fait flou comme ça. Un exemple peut-être ?</p>
+<p>Les permissions d'un fichiers Unix sont Read (lire), Write (écrire) et Execute (exécuter). Soit "rwx". Elles s'appliquent à User (utilisateur), Group (groupe), Other (autre), soit "ugo".</p>
+<p>Cela est peut être représenté par 3 groupes de 3 bits, soit 9 bits :</p>
+<pre>
+    U         G         O
+[r][w][x] [r][w][x] [r][w][x]</pre>
+<p>1 veut dire que la permission est donnée, 0 veut dire qu'elle n'est pas donnée.</p>
+<p>Ainsi :</p>
+<pre>
+[1][1][1] [1][0][1] [1][0][1]</pre>
+<p>Veut dire que l'utilisateur à le droit de lire, écrire et exécuter le fichier. Le groupe et les autres n'ont que le droit de le lire et exécuter le fichier.</p>
+<p>Si vous mettez ça en base 10, ça donne 7/5/5 (et NON sept-cent-cinquante-cinq car il y a 3 valeurs). Cela  explique le fameux <code>chmod 755</code> que vous voyez dans tous les tutos bash.</p>
+<p>Si vous faites :</p>
+<pre lang="bash">
+chmod g+w fichier
+</pre>
+<p>Le programme va rajouter la permission d'écrire au groupe. On peut représenter cette opération par l'application d'une opération "OU" (représentée par '|') :</p>
+<p>En effet on a 101 pour les permissions du groupe et on veut obtenir 111. Il suffit d'appliquer le masque 010 (qui correspond pile poil à un 1 à la case de la permission voulue) :</p>
+<pre lang="python">>>> bin(0b101 | 0b010)
+'0b111'</pre>
+<h2>Représentation des nombres dans un ordinateur</h2>
+<p>Cette partie c'est vraiment pour vos beaux yeux hein, ne vous en faites pas si vous ne pigez pas tout. Je ne vais pas dans le détail car ça demanderait un autre article complet, plus un comparatif des archis, des notions, des systèmes de typages des langages, etc. Et j'ai vraiment pas envie de le faire.</p>
+<p>Bon, déjà, la représentation des nombres dans un ordi, c'est une grande source de confusion : en effet, <strong>l’ordinateur ne stocke pas la représentation binaire directe d'un nombre</strong>.</p>
+<p>On pourrait se dire : l’ordinateur manipule du binaire, on traduit nos nombres en binaire, on fout tout tel quel dedans, et yala.</p>
+<p>Mais un ordinateur a des limitations techniques. Notamment, il possède des plages de mémoires d'un nombre de bits limité. Il faut donc faire tenir la représentation de la valeur sur cet espace limité.</p>
+<p>Si votre espace de mémoire pour représenter une valeur est limité à 16 bits et que vous devez stocker un nombre entier dedans, il pourra être au maximum 2^16 - 1 = 65535.</p>
+<p>C'est pour cela qu'en C on déclare le type d'une variable qui va contenir un nombre qu'on va manipuler. On dit clairement, "alloue moi cet espace mémoire, mon nombre ne sera jamais plus grand que ça". En Python, c'est automatiquement et transparent.</p>
+<p>(C'est aussi pour ça qu'on parle de processeur 16bits, 32bits, 64bits, etc. C'est la taille des jeux d'instructions qu'ils sont capables de traiter en un cycle.)</p>
+<p>Mais il se rajoute une autre complexité : un entier peut avoir un signe plus ou un signe moins. Il faut bien le représenter quelque part. On peut le faire en utilisant le premier bit, mais aussi avec un format appelé "le complément à deux". Comme cet article est déjà super long, je vais pas me lancer dans l'explication. J'ai mal aux doigts. Sachez juste qu'on utilise en quelque sorte "l'inverse" du nombre.</p>
+<p>Encore une fois, en C, on déclare que l'on va utiliser un "signed int" ou un "unsigned int" à l'initialisation d'une variable.</p>
+<p>Enfin, il y a les nombres à virgule, aussi appelés "flottants" (d'où le type "float" en Python).</p>
+<p>On pourrait se dire qu'on utilise les puissances de deux négatives :</p>
+<p>0.92 se lit en base 10 "0 x 1 + 9 x 10^-1 + 2 x 10^-2"</p>
+<p>On garderait la logique des positions.</p>
+<p>Donc :</p>
+<p>0.11 se lit en base 2 "0 x 1 + 1 x 2^-1 + 1 x 2^-1 + 1 x 2^-2"</p>
+<p>A priori on pourrait stocker le nombre en utilisant ce principe. Mais ça ne permet pas de présenter les nombres très grands (tendant vers l'infini) ou très petit (tendant vers zéro). Alors on utilise un autre principe : on représente un nombre avec la formule <code>m x 2^n</code>, très couramment sur 64 bits (ce que fait le type float Python, mais on peut avoir <a href="http://docs.scipy.org/doc/numpy/user/basics.types.html">plus de choix</a> de manoeuvre en utilisant numpy).</p>
+<p><code>m</code> est un nombre à virgule compris entre 1 et 2 (ce dernier étant exclus). On appelle ça la mantisse. Ce sera stocké sur 52 bits en utilisant une représentation binaire littérale.</p>
+<p><code>n</code> est l'exposant, c'est un nombre entier compris entre -1022 et 1023, stocké sur 11 bits.</p>
+<p>On garde le premier bit pour le signe.</p>
+<p>Et il y a des exceptions pour 0, l'infini et NaN.</p>
+<p>(et je n'ai pas la moindre putain d'idée de comment sont représentés les complexes)</p>
+<p>Si vous êtes en manque d'aspirine, tout ça est codifié dans la norme <a href="http://fr.wikipedia.org/wiki/IEEE_754">IEEE 754</a>, que Python respecte scrupuleusement.</p>
+<p>Mais ça vous fait une belle jambe pas vrai ?</p>
+<p>Tout ça pour dire que même avec une belle précision, le nombre de chiffres stockés après la virgule est limité. Du coup, on a une valeur <strong>approximative</strong> stockée dans l'ordi, ce qui fait que les calculs se font sur des approximations :</p>
+<pre lang="python">>>> "{0:.35f}".format(0.9999999999999999999999999999999999999999999999999999999 + 0.000000000000000000001)
+u'1.00000000000000000000000000000000000'</pre>
+<p>En Python on peut gagner en précision en utilisant le module <code>decimal</code>:</p>
+<pre lang="python">>>> from decimal import Decimal
+>>> Decimal("0.9999999999999999999999999999999999999999999999999999999") + Decimal("0.000000000000000000001")
+Decimal('1.000000000000000000001000000')</pre>
+<p>C'est plus lent, mais plus intuitif. Quand on manipule des sous, du temps, des unités de poids, de température, de longueur, etc, c'est utile.</p>
+<h2>Représentation du texte</h2>
+<p>Pour le texte, c'est encore autre chose. Et là je vous renvoie à l'<a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/">article sur les encodings</a>.</p>
+<p>En résumé, le stockage du texte n'a rien à avoir avec l'arithmétique binaire, c'est juste qu'on fait correspondre un nombre (on montre souvent sa représentation binaire pour l'ASCII et sa représentation hexa pour l'unicode, mais ça reste un nombre, point) à un caractère. Il y a un grand tableau en mémoire qui fait cette correspondance de manière totalement arbitraire. </p>
+<p><strong>C'est une norme arbitraire de correspondance, c'est tout.</strong></p>
+<p>Donc quand on vous dit "ecrivez les mots 'glory hole' en binaire", <strong>ça ne veut rien dire</strong>.</p>
+<p>Une bonne consigne serait de dire : "donnez moi la suite de nombres, représentés sous forme binaire, qui corresponde aux caractères qui compose les mots 'glory hole' selon l'encoding ASCII".</p>
+<p>On peut obtenir la valeur numérique ASCII en utilisant <code>ord()</code> en Python :</p>
+<pre lang="python">>>> for x in 'glory hole':
+    print(ord(x))
+...
+103
+108
+111
+114
+121
+32
+104
+111
+108
+101</pre>
+<p>Après, c'est juste du formatage pour afficher le binaire :</p>
+<pre lang="python">>>> for x in 'glory hole':
+...     print("{:b}".format(ord(x)))
+...
+1100111
+1101100
+1101111
+1110010
+1111001
+100000
+1101000
+1101111
+1101100
+1100101</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-fin-du-mystere-du-binaire-nananere/feed/</wfw:commentRss>
+		<slash:comments>52</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8808</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/01/JQXdcds.gif" length="511572" type="image/jpg" />	</item>
+		<item>
+		<title>plist, pickle, hdf5, protocol buffers&#8230; : les formats binaires</title>
+		<link>http://sametmax.com/plist-pickle-hdf5-protocol-buffer-les-formats-binaires/</link>
+		<comments>http://sametmax.com/plist-pickle-hdf5-protocol-buffer-les-formats-binaires/#comments</comments>
+		<pubDate>Mon, 15 Jul 2013 19:24:18 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[binaire]]></category>
+		<category><![CDATA[bson]]></category>
+		<category><![CDATA[format]]></category>
+		<category><![CDATA[hdf5]]></category>
+		<category><![CDATA[json]]></category>
+		<category><![CDATA[msgpack]]></category>
+		<category><![CDATA[pickle]]></category>
+		<category><![CDATA[plist]]></category>
+		<category><![CDATA[protocol buffer]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[serialisation]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6654</guid>
+		<description><![CDATA[Dans un article précédent, on avait fait un petit tour des formats texte, et j'avais promis qu'on verrait les formats binaires.
+
+Contrairement à cette fois là, je vais faire un peu plus technique, et donc <strong>il est probable que ça ne parle pas aux non informaticiens</strong>.]]></description>
+				<content:encoded><![CDATA[<p>Dans <a href="http://sametmax.com/yaml-xml-json-csv-ini-quest-ce-que-cest-et-a-quoi-ca-sert/">un article précédent</a>, on avait fait un petit tour des formats texte, et j&#8217;avais promis qu&#8217;on verrait les formats binaires.</p>
+<p>Contrairement à cette fois là, je vais faire un peu plus technique, et donc <strong>il est probable que ça ne parle pas aux non informaticiens</strong>.</p>
+<p>Avant toute chose, il faut faire un peu de ménage. En effet, tous les formats de données sont des formats binaires, même les formats texte. Quand bien même on retire les formats texte par convention, tout le reste sont des formats binaires.</p>
+<p>tar.gz, zip, 7zip, rar, iso, dmg et compagnie sont des formats binaires. Il servent à l&#8217;archivage.</p>
+<p>doc, xls, ppt, pps, etc. sont des formats binaires. Ils servent à sauvegarder un document édité sous une suite Microsoft Office.</p>
+<p>jpg, tiff, png, gif ou webp sont des formats binaires. Ils servent à représenter des images.</p>
+<p>wav, mp3, ogg, acc, opus et monkey sont des formats binaires. Ils servent à stocker des données sonores.</p>
+<p>mkv, avi, mov, mp4, ogm, webm&#8230; sont des formats binaires. Ils servent à contenir des informations vidéos.</p>
+<p>Bref, tout fichier est un format binaire, toute donnée transmise d&#8217;un système informatique à un autre est un format binaire.</p>
+<p>Alors qu&#8217;est-ce qu&#8217;on entend ici par &#8220;format binaire&#8221; ?</p>
+<p>Principalement, format de <strong>sérialisation</strong> binaire.</p>
+<p>En effet JSON, XML ou CSV sont avant tout, bien que pas uniquement, des formats de sérialisation, et nous allons donc voir des équivalents dans le monde du binaire. Attention cependant, il existe de centaines de formats, et beaucoup sont très utilisés même si je n&#8217;en ai jamais entendu parler. Les formats de sérialisation binaires sont en effet moins universels, c&#8217;est à dire qu&#8217;on les retrouve plus souvent liés à un usage ou un corps de métier. Les scientifiques ont les leurs, les industriels les leurs, les concepteurs d&#8217;OS les leurs, les constructeur de matériel les leurs, etc. Le fait que je ne les connaisse pas ne veut pas du tout dire qu&#8217;ils ne sont pas massivement utilisés. Cela veut juste dire que je ne les ai jamais croisés dans mon activité.</p>
+<p>Par ailleurs je ne présenterai pas tous ceux que j&#8217;ai effectivement croisés. Voyez l&#8217;article comme une base de travail qui va vous permettre d&#8217;évaluer les autres formats binaires plutôt qu&#8217;un listing exhaustif.</p>
+<p>En théorie, on distingue des données binaires, et des données encodées en binaire. En pratique, on s&#8217;en branle.</p>
+<h2>Séria-quoi ?</h2>
+<p>A la conception d&#8217;un programme se pose la question de savoir comment stocker ses données dans un fichier ou les transmettre par le réseau. Vous avez vos données sous forme de code, par exemple en Python une collections d&#8217;instances de vos propres classes, des dictionnaires, des listes, des entiers, des chaînes, etc. Ces objets, il va falloir les transformer en quelque chose qui puisse sauvegardé dans un fichier. Ou envoyé sur le réseau.</p>
+<p>Cette opération de transformation, c&#8217;est ce qu&#8217;on appelle la sérialisation.</p>
+<p>Quand on lit le fichier ou que l&#8217;on récupère la donnée via un réseau, on doit la transformer pour obtenir des objets manipulables sous forme de code : les collections d&#8217;instances de vos propres classes, des dictionnaires, des listes, des entiers, des chaînes qui étaient là à l&#8217;origine.</p>
+<p>Cette opération de transformation, c&#8217;est ce qu&#8217;on appelle la dé-sérialisation.</p>
+<p>Prenons un exemple en Python. J&#8217;ai une classe <code>Personne()</code> :</p>
+<pre lang="python">>>> class Personne(object):
+...    def __init__(nom, age):
+...         self.nom = nom
+...         self.age = age</pre>
+<p>Et j&#8217;ai un calendrier qui liste les personnes présentes selon les jours de la semaine :</p>
+<pre lang="python">>>> gertrude = Personne("Gertrude", 18)
+>>> monique = Personne("Monique", 12)
+>>> jenifer = Personne("Jenifer", 97)
+>>> cal = {
+"lundi": [gertrude],
+"mardi": [gertrude, monique],
+"mercredi": [],
+"jeudi": [monique],
+"vendredi": [gertrude, jenifer],
+"samedi": [gertrude, monique, jenifer],
+"dimanche": [gertrude]
+}
+</pre>
+<p>On a donc un format riche ici, avec plusieurs types imbriqués : du dico, de la liste, de l&#8217;instance de classe perso, de l&#8217;entier et des strings. On a donc des primitives, des données associatives, des séquences ordonnées et un structure complexe.</p>
+<p>Pour sauvegarder ça dans un fichier ou le faire passer sur un réseau, il va falloir écrire un sacré bout de code. Par exemple si vous voulez le transformer en XML ou en JSON, il n&#8217;y a pas de type &#8220;Personne&#8221; dans ces formats. Il va donc falloir vous mettre d&#8217;accord sur une convention, écrire le code qui génère les données formatées selon cette convention, et également le code qui permet de lire ces données formatées et recréer les bons objets derrière. Sans parler du fait que la techno qui écrit ne va peut être pas être celle qui lit. C&#8217;est ça, la problématique de la sérialisation.</p>
+<p>Les formats binaires se prêtent bien au jeu de la sérialisation, bien qu&#8217;ils puissent, eux aussi, servir à bien d&#8217;autre chose. Il sont compacts, et non limités par un besoin de lisibilité, ils contiennent souvent des moyens de contenir des données au format complexe. Ils sont aussi en général rapides à traiter, et prennent peu de place.</p>
+<h2>Pickle</h2>
+<p><a href="http://docs.python.org/2/library/pickle.html?highlight=pickle#pickle">Pickle</a> est un format de sérialisation spécialisé pour Python. Seul un programme Python peut écrire et lire du Pickle, même si <a href="https://github.com/terryf/Phpickle">des projets existent</a> pour faire le pont avec d&#8217;autres langages.</p>
+<p>Voilà ce que ça donne à l&#8217;usage, en reprenant notre calendrier précédent :</p>
+<pre lang="python">>>> import pickle
+>>> pickle.dumps(cal)
+"(dp0\nVmardi\np1\n(lp2\nccopy_reg\n_reconstructor\np3\n(c__main__\nPersonne\np4\nc__builtin__\nobject\np5\nNtp6\nRp7\n(dp8\nS'nom'\np9\nVGertrude\np10\nsS'age'\np11\nI18\nsbag3\n(g4\ng5\nNtp12\nRp13\n(dp14\ng9\nVMonique\np15\nsg11\nI12\nsbasVsamedi\np16\n(lp17\ng7\nag13\nag3\n(g4\ng5\nNtp18\nRp19\n(dp20\ng9\nVJenifer\np21\nsg11\nI97\nsbasVvendredi\np22\n(lp23\ng7\nag19\nasVjeudi\np24\n(lp25\ng13\nasVlundi\np26\n(lp27\ng7\nasVdimanche\np28\n(lp29\ng7\nasVmercredi\np30\n(lp31\ns."</pre>
+<p>Ce blougi blouga est une représentation sérialisée de notre calendrier. Si vous le sauvegardez dans un fichier ou que vous l&#8217;envoyez à un autre programme Python, il peut récupérer les objets initiaux :</p>
+<pre lang="python">>>> cal2 = pickle.loads("(dp0\nVmardi\np1\n(lp2\nccopy_reg\n_reconstructor\np3\n(c__main__\nPersonne\np4\nc__builtin__\nobject\np5\nNtp6\nRp7\n(dp8\nS'nom'\np9\nVGertrude\np10\nsS'age'\np11\nI18\nsbag3\n(g4\ng5\nNtp12\nRp13\n(dp14\ng9\nVMonique\np15\nsg11\nI12\nsbasVsamedi\np16\n(lp17\ng7\nag13\nag3\n(g4\ng5\nNtp18\nRp19\n(dp20\ng9\nVJenifer\np21\nsg11\nI97\nsbasVvendredi\np22\n(lp23\ng7\nag19\nasVjeudi\np24\n(lp25\ng13\nasVlundi\np26\n(lp27\ng7\nasVdimanche\np28\n(lp29\ng7\nasVmercredi\np30\n(lp31\ns.")
+>>> type(cal2)
+<type 'dict'>
+>>> for jour, personnes in cal2.items():
+...     print(jour)
+...     for personne in personnes:
+...         print("\t- {}".format(personne.nom))
+...
+mardi
+    - Gertrude
+    - Monique
+samedi
+    - Gertrude
+    - Monique
+    - Jenifer
+vendredi
+    - Gertrude
+    - Jenifer
+jeudi
+    - Monique
+lundi
+    - Gertrude
+dimanche
+    - Gertrude
+mercredi</pre>
+<p>On utilisera Pickle essentiellement par fainéantise, quand on veut sauvegarder des objets Python et qu&#8217;on souhaite les récupérer plus tard, mais qu&#8217;on ne veut pas coder un code de sérialisation. Il existe des formes hybrides de cette approche, comme <a href="http://jsonpickle.github.io/">cette lib</a> qui essaye de mélanger JSON et une forme de sérialisation d&#8217;objets complexes.</p>
+<p>Quel que soit l&#8217;approche choisit, restaurer des objets complets, et non juste des primitives, comporte sont lot de risques de sécurité. En effet, un fichier Pickle malicieux sera exécuté comme code Python valide sans aucune vérification.</p>
+<p>A noter que Python vient avec un autre format de sérialisation : <a href="http://docs.python.org/2/library/marshal.html">marshall</a>. Il est utilisé par Python en interne pour les fichiers .pyc et n&#8217;est pas recommandé pour un usage de persistance de données car le format évolue avec les versions de Python.</p>
+<h2>plist</h2>
+<p>Il existe de nombreux formats binaires qu&#8217;utilisent les OS comme .DS_store ou Thumbs.db. plist est l&#8217;un deux, et on va le voir parce qu&#8217;il est relativement simple à comprendre par rapport aux autres. Le principe est le même pour tous : on a des données, on les stock dans le fichier.</p>
+<p>plist est un format qui existe aujourd&#8217;hui en XML, preuve que le même rôle peut très bien être rempli par deux formats différents. Il sert à stocker les réglages qu&#8217;on effectue dans le finder de Mac OS X, et ceux pour chaque dossier. Il sait représenter les types suivant : string, nombre, boolean, date, array, dictionnaire et des données arbitraires en base64 (un encodage binaire représentable sous forme de texte. Qu&#8217;est-ce qu&#8217;on se marre ^^).</p>
+<p>Ce qui signifie par exemple, qu&#8217;il n&#8217;est pas capable de représenter un objet <strong>Personne()</strong> tel quel. Par contre il a des équivalents des types list, int, str, etc, ce qui en fait un format facile à manipuler en Python, surtout étant donné que la lib standard contient <a href="http://docs.python.org/2/library/plistlib.html?highlight=plist#plistlib">un module pour ça</a> :</p>
+<pre lang="python">gertrude = ("Gertrude", 18)
+monique = ("Monique", 12)
+jenifer = ("Jenifer", 97)
+cal = {
+"lundi": [gertrude],
+"mardi": [gertrude, monique],
+"mercredi": [],
+"jeudi": [monique],
+"vendredi": [gertrude, jenifer],
+"samedi": [gertrude, monique, jenifer],
+"dimanche": [gertrude]
+}
+
+>>> gertrude = ("Gertrude", 18)
+>>> monique = ("Monique", 12)
+>>> jenifer = ("Jenifer", 97)
+>>> cal = {
+... "lundi": [gertrude],
+... "mardi": [gertrude, monique],
+... "mercredi": [],
+... "jeudi": [monique],
+... "vendredi": [gertrude, jenifer],
+... "samedi": [gertrude, monique, jenifer],
+... "dimanche": [gertrude]
+... }
+>>> plistlib.writePlistToString(cal)
+'<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0">\n<dict>\n\t<key>dimanche</key>\n\t<array>\n\t\t<array>\n\t\t\t<string>Gertrude</string>\n\t\t\t<integer>18</integer>\n\t\t</array>\n\t</array>\n\t<key>jeudi</key>\n\t<array>\n\t\t<array>\n\t\t\t<string>Monique</string>\n\t\t\t<integer>12</integer>\n\t\t</array>\n\t</array>\n\t<key>lundi</key>\n\t<array>\n\t\t<array>\n\t\t\t<string>Gertrude</string>\n\t\t\t<integer>18</integer>\n\t\t</array>\n\t</array>\n\t<key>mardi</key>\n\t<array>\n\t\t<array>\n\t\t\t<string>Gertrude</string>\n\t\t\t<integer>18</integer>\n\t\t</array>\n\t\t<array>\n\t\t\t<string>Monique</string>\n\t\t\t<integer>12</integer>\n\t\t</array>\n\t</array>\n\t<key>mercredi</key>\n\t<array>\n\t</array>\n\t<key>samedi</key>\n\t<array>\n\t\t<array>\n\t\t\t<string>Gertrude</string>\n\t\t\t<integer>18</integer>\n\t\t</array>\n\t\t<array>\n\t\t\t<string>Monique</string>\n\t\t\t<integer>12</integer>\n\t\t</array>\n\t\t<array>\n\t\t\t<string>Jenifer</string>\n\t\t\t<integer>97</integer>\n\t\t</array>\n\t</array>\n\t<key>vendredi</key>\n\t<array>\n\t\t<array>\n\t\t\t<string>Gertrude</string>\n\t\t\t<integer>18</integer>\n\t\t</array>\n\t\t<array>\n\t\t\t<string>Jenifer</string>\n\t\t\t<integer>97</integer>\n\t\t</array>\n\t</array>\n</dict>\n</plist>\n'</pre>
+<p>Bon, là j&#8217;ai un peu foiré mon exemple parce que la lib standard, elle pond la version XML (puisque la version binaire est obsolète), pas la version binaire de plist, et maintenant que j&#8217;ai écris tout ça, ça me fait chier de tout refaire. Heureusement j&#8217;ai trouvé <a href="https://github.com/wooster/biplist">une lib sur le net</a> qui va sauver mon honneur :</p>
+<pre lang="python">>>> biplist.writePlistToString(cal)
+'bplist00bybiplist1.0\x00\xd7\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0ee\x00m\x00a\x00r\x00d\x00if\x00s\x00a\x00m\x00e\x00d\x00ih\x00v\x00e\x00n\x00d\x00r\x00e\x00d\x00ie\x00j\x00e\x00u\x00d\x00ie\x00l\x00u\x00n\x00d\x00ih\x00d\x00i\x00m\x00a\x00n\x00c\x00h\x00eh\x00m\x00e\x00r\x00c\x00r\x00e\x00d\x00i\xa2\x0f\x10\xa2\x11\x12h\x00G\x00e\x00r\x00t\x00r\x00u\x00d\x00e\x10\x12\xa2\x13\x14g\x00M\x00o\x00n\x00i\x00q\x00u\x00e\x10\x0c\xa3\x15\x16\x17\xa2\x11\x12\xa2\x13\x14\xa2\x18\x19g\x00J\x00e\x00n\x00i\x00f\x00e\x00r\x10a\xa2\x1a\x1b\xa2\x11\x12\xa2\x18\x19\xa1\x1c\xa2\x13\x14\xa1\x1d\xa2\x11\x12\xa1\x1e\xa2\x11\x12\xa0\x15$/<MXct\x85\xb2\xd0\xd9\xde\xe3\xe8\x88\x9e\x8b\x9c\xa1\xb0\xb6\xb9\xbc\xbf\xce\xd3\xd6\xdb\xe0\xe5\x00\x00\x00\x00\x00\x00\x01\x01\x00\x00\x00\x00\x00\x00\x00\x1f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xe9'
+>>> biplist.readPlistFromString(r'bplist00bybiplist1.0\x00\xd7\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0ee\x00m\x00a\x00r\x00d\x00if\x00s\x00a\x00m\x00e\x00d\x00ih\x00v\x00e\x00n\x00d\x00r\x00e\x00d\x00ie\x00j\x00e\x00u\x00d\x00ie\x00l\x00u\x00n\x00d\x00ih\x00d\x00i\x00m\x00a\x00n\x00c\x00h\x00eh\x00m\x00e\x00r\x00c\x00r\x00e\x00d\x00i\xa2\x0f\x10\xa2\x11\x12h\x00G\x00e\x00r\x00t\x00r\x00u\x00d\x00e\x10\x12\xa2\x13\x14g\x00M\x00o\x00n\x00i\x00q\x00u\x00e\x10\x0c\xa3\x15\x16\x17\xa2\x11\x12\xa2\x13\x14\xa2\x18\x19g\x00J\x00e\x00n\x00i\x00f\x00e\x00r\x10a\xa2\x1a\x1b\xa2\x11\x12\xa2\x18\x19\xa1\x1c\xa2\x13\x14\xa1\x1d\xa2\x11\x12\xa1\x1e\xa2\x11\x12\xa0\x15$/<MXct\x85\xb2\xd0\xd9\xde\xe3\xe8\x88\x9e\x8b\x9c\xa1\xb0\xb6\xb9\xbc\xbf\xce\xd3\xd6\xdb\xe0\xe5\x00\x00\x00\x00\x00\x00\x01\x01\x00\x00\x00\x00\x00\x00\x00\x1f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xe9')
+{u'mardi': [('Gertrude', 18), ('Monique', 12)], 'samedi': [('Gertrude', 18), ('Monique', 12), ('Jenifer', 97)], 'vendredi': [('Gertrude', 18), ('Jenifer', 97)], 'jeudi': [('Monique', 12)], 'lundi': [('Gertrude', 18)], 'dimanche': [('Gertrude', 18)], 'mercredi': []}</pre>
+<p>Pourquoi utiliser plist ? A part quand on est en Objectif-C où c'est le format le plus simple à parser ou si on veut communiquer avec finder, il n'y a pas vraiment de raison. C'est le cas typique d'un format qui a été créé parce qu'à l'époque il n'y avait rien d'aussi bien, les parsers XML étaient alors trop lents pour scanner toutes les plist de tous les dossiers récursivement.</p>
+<h2>hdf5</h2>
+<p>hdf5 est très intéressant, c'est le cas typique d'un format qui existe pour un usage très très particulier, et que des formats ordinaires ne comblent pas, ne peuvent pas par nature combler. C'est un format cross-plateforme qui peut contenir de très grosses quantités de données numériques (un fichier peut avoir une taille virtuellement illimitée), et les manipuler pour faire des calculs complexes. Cela ressemble à un système de fichiers... qui tient dans un fichier. En effet, il peut contenir une arborescence de données, et gère la compression transparente, mais les données sont essentiellement des arrays à plusieurs dimensions, appelés ici datasets.</p>
+<p>On peut y mettre des arrays, des labels, des attributs, organiser tout ça par groupe et même avoir des références vers des données extérieures. L'avantage c'est qu'on peut bosser dessus presque de manière transparente, comme si c'était en RAM. Tout ce qui est array est stocké tel quel, et donc très rapide d'accès (bien plus qu'une colonne de base SQL), pour le reste, c'est indexé avec arbre binaire, donc facilement triable.</p>
+<p>Pour manipuler ce format avec Python, on va utiliser la lib <a href="http://www.h5py.org">h5py</a> :</p>
+<pre lang="python">sudo apt-get install libhdf5-serial-dev python-dev # sur ubuntu en tout cas
+pip install numpy
+pip install h5py</pre>
+<p>La normalement, ça compile à mort pendant 10 minutes.</p>
+<p>Et pif paf pouf :</p>
+<p>>>> import numpy # hdf5 s'utilise beaucoup avec les libs scientifiques type numpy<br />
+>>> import h5py<br />
+>>> array = numpy.ones((1000000000, 1000000000)) # une grosse matrice<br />
+>>> f = h5py.File('data.hdf5')<br />
+>>> dset = f.create_dataset("Nom du dataset", data=array)<br />
+>>> dset<br />
+<HDF5 dataset "Nom du dataset": shape (100, 100), type "<i8"><br />
+>>> f.close()</p>
+<p>Et voilà, on vient de créer array contenant 1000000000 lignes de 1000000000 de 1000000000 de int ayant pour valeur "1", et stocké tout ça dans un fichier au format hdf5. Ca prend quelques secondes, et le fichier fait quand même 800 Mo !</p>
+<p>On le voit ici, hdf5 est entre le format de sérialisation et la base de données, et il est très orienté chiffre. Il existe tout un tas de formats binaires spécialisés pour un usage en particulier comme hdf5, à votre charge, donc, de chercher si il en existe un pour le votre. Ou même si vous en avez besoin d'un.</p>
+<p>Des libs de haut niveau ont été construite en utilisant hdf5, telles que <a href="http://www.pytables.org/">pytables</a>, qui permettent de traiter très facilement d'énormes jeux de données tabulaires.</p>
+<h2>Protocol Buffers</h2>
+<p>Aussi appelé protobuf par ses amis, c'est un format de sérialisation <a href="https://developers.google.com/protocol-buffers/">inventé par Google</a> qu'il utilise pour communiquer entre ses machines. On a donc vu un format de sérialisation orienté persistance avec Pickle, un orienté configuration, un orienté "grosse quantité de données" et voilà un dernier orienté communication réseau.</p>
+<p>Protocol Buffers est un espèce d'hybride, puisqu'il utilise une description du schéma pour générer du code qui va sérialiser les donner en binaire. Vous suivez ? Non ?</p>
+<p>Attendez ça va devenir plus clair.</p>
+<p>Reprenons notre bonne vielle personne. Pour utiliser protobuf, vous allez décrire à quoi ressemble votre personne, dans un <strong>format texte</strong> spécialement conçu :</p>
+<pre lang="java">message Personne {
+  required string nom = 1;
+  required int32 age = 2;
+}</pre>
+<p>Vous constatez qu'on décrit ici un message, qui va devoir contenir au minimum un nom et un age, de type string et entier. Les chiffres représentent des identifiants uniques de champs qui seront utilisés dans le message binaire.</p>
+<p>Ceci n'est pas du code d'un langage particulier, c'est la syntaxe de modèle de protobuf.</p>
+<p>On sauvegarde tout ça dans un fichier <em>personne.proto</em>, et on utilise la commande <code>protoc</code> pour transformer cette description en code dans le langage de son choix. C++ et Java sont supportés, nous on va utiliser Python :</p>
+<pre lang="bash">protoc personne.proto --python_out=.</pre>
+<p>Et il va nous pondre un fichier <em>personne_pb2.py</em>, qui est un module Python valide qui va contenir une classe <code>Personne</code> :</p>
+<pre lang="python">>>> from personne_pb2 import Personne
+>>> p = Personne(nom="Gertrude", age=12)
+>>> p.SerializeToString()
+'\n\x08Gertrude\x10\x0c'</pre>
+<p>Il vous suffit d'envoyer ça par un socket, et de l'autre côté, une machine qui possède le même fichier .proto peut le lire et récupérer la donnée sous forme d'un objet Python, Java ou C++. Il a donc l'avantage d'un pickle, multi langages.</p>
+<p>Parmi les bénéfices de protobuf, il y a que sa sortie est assez courte :</p>
+<pre lang="python">>>> json.dumps({"nom":"Gertrude", "age":12})
+'{"nom": "Gertrude", "age": 12}'
+>>> pickle.dumps({"nom":"Gertrude", "age":12})
+'(dp0\nVnom\np1\nVGertrude\np2\nsVage\np3\nI12\ns.'</pre>
+<p>Ca fait moins de données à envoyer par le réseau.</p>
+<p>Et en prime on a la validation des données :</p>
+<pre lang="python">>>> p.age = "12"
+Traceback (most recent call last):
+  File "<ipython-input-4-d897accc3848>", line 1, in <module>
+    p.age = "12"
+  File "/usr/lib/python2.7/dist-packages/google/protobuf/internal/python_message.py", line 435, in setter
+    type_checker.CheckValue(new_value)
+  File "/usr/lib/python2.7/dist-packages/google/protobuf/internal/type_checkers.py", line 104, in CheckValue
+    raise TypeError(message)
+TypeError: u'12' has type <type 'unicode'>, but expected one of: (<type 'int'>, <type 'long'>)</pre>
+<p>Du coup on peut utiliser protobuf en lieu et place d'un XML + DTD, en tout cas pour les cas simples.</p>
+<p>Normalement, c'est aussi un format très rapide à parser.</p>
+<p>Bref, Google a voulu le format pour les utilisations industrielles : c'est un peu chiant à mettre en place, mais c'est performant, robuste et ça marche avec les 3 langages qu'ils utilisent en interne.</p>
+<p>Néanmoins ce n'est pas le seul à avoir pensé à ça : <a lang="http://msgpack.org/">msgpack</a> est une sorte de JSON binaire plus rapide à parser et qui prend moins de place. Il est assez utilisé avec les outils de file d'attente genre celery ou de communication type ZeroMq. Mais il perd un intérêt fort du JSON : sa transparence pour javascript, et n'a pas la vérification des données comme protobuf. <a href="http://bsonspec.org/">BSON</a> existe aussi dans le même genre, et sert de format de stockage pour mongodb, en supportant nativement des types avancées comme les dates.</p>
+<p>Comme je vous le disais, des formats binaire, il y en a <a href="http://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Pastiches/Pifom%C3%A8tre#Les_unit.C3.A9s_du_syst.C3.A8me_pifom.C3.A8trique">une bonne chiée</a>.</p>
+<p>La prochaine et dernière session, on se fera un petit tour des bases de données SQL et NoSQL.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/plist-pickle-hdf5-protocol-buffer-les-formats-binaires/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">6654</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/07/xzGrVLH.png" length="466059" type="image/jpg" />	</item>
+	</channel>
+</rss>

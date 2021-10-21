@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>filter &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/filter/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>map(), filter() et reduce () ?</title>
+		<link>http://sametmax.com/map-filter-et-reduce/</link>
+		<comments>http://sametmax.com/map-filter-et-reduce/#comments</comments>
+		<pubDate>Thu, 14 Nov 2013 09:44:58 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[comprehension-lists]]></category>
+		<category><![CDATA[filter]]></category>
+		<category><![CDATA[lambda]]></category>
+		<category><![CDATA[map]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[reduce]]></category>
+		<category><![CDATA[yield]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7791</guid>
+		<description><![CDATA[<code>map()</code>, <code>filter()</code> et <code>reduce()</code> sont des fonctions de traitement d'itérables typiques de la programmation fonctionnelle, qui <a href="http://www.artima.com/weblogs/viewpost.jsp?thread=98196">ont été marquées comme à retirer des builtins</a> pour Python 3. Finalement, seule <code>reduce()</code> sera déplacée dans le module <code>functools</code> pour Python 3.]]></description>
+				<content:encoded><![CDATA[<p><code>map()</code>, <code>filter()</code> et <code>reduce()</code> sont des fonctions de traitement d&#8217;itérables typiques de la programmation fonctionnelle, qui <a href="http://www.artima.com/weblogs/viewpost.jsp?thread=98196">ont été marquées comme à retirer des builtins</a> pour Python 3. Finalement, seule <code>reduce()</code> sera déplacée dans le module <code>functools</code> pour Python 3.</p>
+<p>Les opérations que font ces fonctions sont typiquement quelque chose que l&#8217;ont peut faire sans elles, et nous allons les passer en revue pour voir dans quels cas elles sont pertinentes, dans quel cas une alternative est meilleure. L&#8217;alternative étant, dans 90% des cas, une <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">liste en intention</a>.</p>
+<h2>filter()</h2>
+<p><code>filter()</code> prend une fonction en paramètre, souvent une <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">lambda</a>, comme ses deux soeurs puisqu&#8217;on est dans le paradigme fonctionnel. Elle doit renvoyer <code>True</code> si on garde un élément, et <code>False</code> sinon.</p>
+<p>L&#8217;usage typique est celui-ci :</p>
+<pre lang="python">ages = range(30)
+majeurs = filter(lambda x: x > 18, ages)
+print(majeurs)
+## [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
+</pre>
+<p>Typiquement, ce code peut être remplacé par une liste en intention dans le pur style Python :</p>
+<pre lang="python">majeurs = [a for a in ages if a > 18]</pre>
+<p>Le code est plus court, et fait usage d&#8217;une des fonctionalités les plus importantes du langage. On peut en plus ajouter une transformation à <code>a</code> facilement si on le désire, au lieu de devoir coller un <code>map()</code> derrière.</p>
+<p><code>filter()</code> est vraiment la moins utile des 3, et sera une question de style, surtout pour les nostalgiques de Lisp. Je répète souvent que quand on code avec un autre langage, on doit essayer de se tenir au style du nouveau et pas faire un mix avec ses anciennes habitudes. Quand je code en Java, je fais des getter et setter, même si j&#8217;ai horreur de ça.</p>
+<p>Il existe quand même UNE astuce pour laquelle filter est utile : garder uniquement les éléments vrais d&#8217;une liste.</p>
+<p>Typiquement :</p>
+<pre lang="python">
+l = [1, 0, None, [], True]
+print filter(bool, l)
+[1, True]
+</pre>
+<p>Ca marche si la fonction pre-existe et qu&#8217;on a pas à faire une lambda, mais c&#8217;est vraiment le seul usage potable. Un peu plus court qu&#8217;une liste en intention.</p>
+<h2>map()</h2>
+<p>Si <code>filter()</code> est l&#8217;équivalent de la partie de droite d&#8217;une liste en intention, <code>map()</code> est l&#8217;équivalent de la partie de gauche. La fonction passée retourne un résultat qui permet de transformer la liste.</p>
+<p>Typiquement :</p>
+<pre lang="python">memes = ["It's over 9000 !", "All your base are belong to us."]
+print(map(unicode.upper, memes))</pre>
+<p>Ce qui peut se traduire par :</p>
+<pre lang="python">print(s.upper() for s in memes)</pre>
+<p><code>map()</code> est un peu plus utile, dans le sens où sa syntaxe peut être plus concise dans certains cas, comme le casting de types. Par exemple si je reçois une heure sous forme de string :</p>
+<pre lang="python">h, m, s = map(int, '8:19:22'.split(':'))</pre>
+<p>sera plus court et plus concis, et plus clair que :</p>
+<pre lang="python">h, m, s = (int(i) for i in '8:19:22'.split(':'))</pre>
+<p>Mais bon, la différence n&#8217;est pas non plus incroyable au point d&#8217;en faire une fonctionnalitéé clé. Je l&#8217;utilise de temps à autre par soucis de brièveté, mais vraiment c&#8217;est tout.</p>
+<h2>reduce()</h2>
+<p><code>reduce()</code> est plus tordu. La fonction doit prendre deux paramètres en entrée, et retourner une valeur. Au  premier appel, les deux premiers éléments de l&#8217;itérable sont passés en paramètres. Ensuite, le résultat de cet appel et l&#8217;élément suivant sont passés en paramètre, et ainsi de suite.</p>
+<p>Vous n&#8217;avez rien pigé ? C&#8217;est normal. <code>reduce()</code> est parfaitement cryptique. Voici ce que ça donne en pratique :</p>
+<pre lang="python">def afficher(a, b):
+    print("Entrée :", a, b)
+    print("Sortie :", a + b)
+    return a + b
+
+res = reduce(afficher, range(10))
+print("Résultat final", res)
+
+## Entrée : 0 1
+## Sortie : 1
+## Entrée : 1 2
+## Sortie : 3
+## Entrée : 3 3
+## Sortie : 6
+## Entrée : 6 4
+## Sortie : 10
+## Entrée : 10 5
+## Sortie : 15
+## Entrée : 15 6
+## Sortie : 21
+## Entrée : 21 7
+## Sortie : 28
+## Entrée : 28 8
+## Sortie : 36
+## Entrée : 36 9
+## Sortie : 45
+## Résultat final 45</pre>
+<p>Vous allez me dire, à quoi ça sert ? Et bien par exemple à appliquer des opérateurs commutatifs, ici nous l&#8217;avons fait avec <code>+</code>, nous avons fait la somme de tous les éléments retournés par <code>range(10)</code>. La preuve :</p>
+<pre lang="python">print(sum(range(10)))
+## 45</pre>
+<p>Il n&#8217;y a pas, en Python, de fonction équivalent à <code>sum()</code> pour la multiplication. Donc on ferait :</p>
+<pre lang="python">print(reduce(lambda a, b: a * b, range(1, 11)))
+## 3628800</pre>
+<p>Ce qui multiplie tous les éléments entre eux. Comme l&#8217;ordre dans lequel les éléments sont multipliés n&#8217;a pas d&#8217;important (d&#8217;où le &#8216;commutatif&#8217;), ça fonctionne.</p>
+<p><code>reduce()</code> peut prendre un troisième paramètre, <code>initial</code>, qui sera la valeur passée en premier au premier appel de la fonction. Cela permet de travailler sur des calculs en cascade qui ne fonctionneraient sinon pas. Revenons à notre exemple de temps :</p>
+<pre lang="python">temps = map(int, '8:19:22'.split(':'))
+print(reduce(lambda a, b: a * 60 + b, temps, 0))
+## 29962</pre>
+<p>Ce qui peut se traduire par :</p>
+<pre lang="python">h, m, s = map(int, '8:19:22'.split(':'))
+print(h * 3600 + m * 60 + s)
+## 29962</pre>
+<p>Bien sûr, cette conversion ne fonctionnerait pas si le calcul était sur un itérable plus long. Mais une version itérative est facile à faire :</p>
+<pre lang="python">res = 0
+for i in map(int, '8:19:22'.split(':')):
+    res = res * 60 + i
+print(res)
+## 29962</pre>
+<p>Maintenant, autant les deux dernières versions sont faciles à comprendre, autant la première prend quelques secondes. Et c&#8217;est la raison pour laquelle <code>reduce()</code> a été retirée des builtins, pour encourager l&#8217;usage des alternatives. En effet, cette fonction donne toujours un résultat très peu lisible. Je cite et approuve Guido là dessus:</p>
+<blockquote><p>C&#8217;est en fait celle que je déteste le plus, car, à part pour quelques exemples impliquant + ou *, presque chaque fois que je vois un appel à reduce() avec une fonction non-triviale passée en argument, j&#8217;ai besoin de prendre un crayon et un papier pour faire le diagramme de ce qui est effectivement entrée dans la fonction avant que je comprenne ce qu&#8217;est supposé faire reduce(). Donc à mes yeux, l&#8217;application de reduce() est plutôt limitée à des opérateurs associatifs, et <strong>dans d&#8217;autres cas il est mieux d&#8217;écrire une boucle d&#8217;accumulation explicitement.</strong>
+</p></blockquote>
+<p>Graissage maison.</p>
+<p>Bref, <code>reduce()</code> est dur à lire, et une boucle ne l&#8217;est pas. Écrivez 3 lignes de plus, ça ne va pas vous tuer. Relire votre one-liner dans un mois par contre&#8230;</p>
+<p>Cette fonction a été beaucoup utilisée avec les opérateurs <code>or</code> et <code>and</code> pour savoir si tous les éléments étaient vrais au moins un élément vrai dans une liste :</p>
+<pre lang="python">tout_est_vrai = [1, 1, 1, 1]
+certains_sont_vrais = [1, 0, 1, 0]
+tout_est_faux = [0, 0, 0, 0]
+
+# Retourne True si tout est vrai
+print(bool(reduce(lambda a, b: a and b, tout_est_vrai)))
+## True
+print(bool(reduce(lambda a, b: a and b, certains_sont_vrais)))
+## False
+print(bool(reduce(lambda a, b: a and b, tout_est_faux)))
+## False
+ 
+# Retourne True si au moins un élément est vrai
+print(bool(reduce(lambda a, b: a or b, tout_est_vrai)))
+## True
+print(bool(reduce(lambda a, b: a or b, certains_sont_vrais)))
+## True
+print(bool(reduce(lambda a, b: a or b, tout_est_faux)))
+## False</pre>
+<p>Mais aujourd&#8217;hui, c&#8217;est parfaitement inutile puisque nous avons les fonctions built-in <strong>all()</strong> et <strong>any()</strong>, qui font ça en plus court et plus rapide :</p>
+<pre lang="python"># Retourne True si tout est vrai
+print(all(tout_est_vrai))
+## True
+print(all(certains_sont_vrais))
+## False
+print(all(tout_est_faux))
+## False
+ 
+# Retourne True si au moins un élément est vrai
+print(any(tout_est_vrai))
+## True
+print(any(certains_sont_vrais))
+## True
+print(any(tout_est_faux))
+## False</pre>
+<h2>Petite astuce finale</h2>
+<p>Souvenez-vous également que les fonctions Python peuvent être déclarées n&#8217;importe où à la volée, même dans une autre fonction, une classe, une méthode, un context manager, etc. Or une fonction peut retourner un générateur grâce à <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">yield</a>, ce qui vous permet de déclarer des gros bouts de logique, et de les plugger dans votre process itérative a posteriori :</p>
+<pre lang="python">def traitement_complexe(iterable):
+    for x in iterable:
+        if x not in (1, 3, 7) and x % 2 != 0:
+            if x + x < 13 :
+                yield x
+            else: 
+                yield x - 2
+
+print("-".join(map(str, traitement_complexe(range(20)))))
+## 5-7-9-11-13-15-17</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/map-filter-et-reduce/feed/</wfw:commentRss>
+		<slash:comments>22</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">7791</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/11/Bl18TZa.gif" length="66881" type="image/jpg" />	</item>
+	</channel>
+</rss>

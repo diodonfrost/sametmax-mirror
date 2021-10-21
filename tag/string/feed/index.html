@@ -1,0 +1,962 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>string &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/string/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Le type bytes n&#8217;est pas du texte</title>
+		<link>http://sametmax.com/le-type-bytes-nest-pas-du-texte/</link>
+		<pubDate>Fri, 11 Jan 2019 11:30:10 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[binaire]]></category>
+		<category><![CDATA[bits]]></category>
+		<category><![CDATA[bytes]]></category>
+		<category><![CDATA[encodage]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[octets]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sharset]]></category>
+		<category><![CDATA[str]]></category>
+		<category><![CDATA[string]]></category>
+		<category><![CDATA[texte]]></category>
+		<category><![CDATA[unicode]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=25125</guid>
+		<description><![CDATA[J'ai beau essayer très fort de ne pas répondre en ligne, des fois <a href="https://news.ycombinator.com/item?id=18874232">je craque</a>. Mais je me soigne, globalement j'ai récupéré plein de temps, et ça se voit sur mon quotidien.
+
+Et ce craquage, et bien il est cette fois dû à une totale mécompréhension des types de texte en Python 3.]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;ai beau essayer très fort de ne pas répondre en ligne, des fois <a href="https://news.ycombinator.com/item?id=18874232">je craque</a>. Mais je me soigne, globalement j&#8217;ai récupéré plein de temps, et ça se voit sur mon quotidien.</p>
+<p>Et ce craquage, et bien il est cette fois dû à une totale mécompréhension des types de texte en Python 3.</p>
+<p>Mais c&#8217;est bien normal: Python 3 ne gère pas le texte de la même manière que la grande majorité des langages de programmation, justement à cause de la débâcle qu&#8217;on a eue en Python 2. Du coup, de nombreux programmeurs arrivent avec leur expérience d&#8217;ailleurs, et tentent de l&#8217;appliquer tel un utilisateur de SVN migrant sur git. En surface ça semble coller, malheuseuement à l&#8217;usage, ça fait faire des erreurs.</p>
+<p>Donc un peu d&#8217;explications.</p>
+<p>En informatique, tout est une histoire de convention. On dit que tel mot clé a tel effet. Que tel nom suppose telle chose. Que tel code de retour implique telle erreur. Que tel schéma XML représente tel type de document.</p>
+<p>Essentiellement, tout cela est arbitraire: des gens ont décidé qu&#8217;il en serait ainsi. Impossible de deviner que ce que fait <code>yield</code> ou <code>with</code> si vous n&#8217;avez pas d&#8217;expérience similaire avant. Impossible de savoir que le code <code>0</code> en bash ou <code>200</code> en HTTP signifie tout va bien sans qu&#8217;on vous transmette l&#8217;information, ou faire de nombreux tests.</p>
+<p>Quand je dis arbitrairement, évidemment je ne veux pas dire complètement sans raison. Il y a des raisons techniques, politiques, économiques, et parfois esthétiques à ces conventions. Cela n&#8217;en retire en rien l&#8217;aspect parfaitement artificiel de ces choix.</p>
+<p>La convention la plus omniprésente, et pourtant aujourd&#8217;hui la plus masquée dans un monde où on utilise massivement des langages de haut niveau comme Javascript, Ruby, PHP et Python, est celle de l&#8217;organisation des octets.</p>
+<p>Musique !</p>
+<p><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/SBjQ9tuuTJQ?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<h2>   &#8230;je vois même plus le code : tout ce que je vois, c&#8217;est des blondes, des brunes, des rousses.<br />
+</h2>
+<p>Tout ce qui passe par nos ordinateurs n&#8217;est qu&#8217;une suite de zéros et de uns, que nous avons groupés par paquets de 8:</p>
+<p>Seulement la grande révélation, le &#8220;aaaaaaahhhhh okayyyyyyy&#8221; qui arrive un jour dans toute vie de dev, c&#8217;est que <strong>ces paquets de 8 ne veulent rien dire.</strong> Rien. C&#8217;est nous qui avons décidé, arbitrairement encore une fois, de leur signification.</p>
+<p>Vous voyez ce moment dans les films et séries où un personnage arrive à &#8220;lire du binaire&#8221; ?</p>
+<div id="attachment_25161" style="width: 560px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2019/01/IS1.png" class="grouped_elements" rel="tc-fancybox-group25125"><img src="http://sametmax.com/wp-content/uploads/2019/01/IS1.png" alt="Evidement, &quot;c&#039;est une representation binaire ASCII de coordonnées WGS 84 Web Mercator&quot; est plus dur à caser dans un dialogue" width="550" height="281" class="size-full wp-image-25161" /></a><p class="wp-caption-text">Evidement, &#8220;c&#8217;est une representation binaire ASCII de coordonnées WGS 84 Web Mercator&#8221; est plus dur à caser dans un dialogue</p></div>
+<p>C&#8217;est de <a href="https://youtu.be/FvHHlKp923A?t=1132">l&#8217;enculage de dauphin</a>.</p>
+<p>Le binaire n&#8217;est pas un langage, pas plus que les lettres &#8220;abcdefghijklmnopqrstuvwxyz&#8221;. Vous pouvez utiliser ces lettres pour représenter certains mots italiens, français, anglais, un nom propre (sans langue), le label d&#8217;un immeuble (sans langue encore) ou un chiffre latin. </p>
+<p>Que veut dire &#8220;les gosses&#8221; ? Pour la même combinaisons de lettres, cela signifie &#8220;les enfants&#8221; avec la convention française européenne, et &#8220;les couilles&#8221; avec la convention québéquoise.</p>
+<p>Pour le binaire c&#8217;est pareil, ce que veut dire un octet dépend de la convention que vous avez choisie.</p>
+<p>Par exemple, que signifie cette suite d&#8217;octets ?</p>
+<p><code>1100001 1100010 1100011 1100100</code></p>
+<p>Bah rien. Mais <a href="https://www.youtube.com/watch?v=3c-irSUdij4">on peut lui donner un sens</a> en lui appliquant une convention.</p>
+<p>Je peux lui appliquer la convention ASCII, et donc supposer que c&#8217;est un texte dans un certain format. Voici ce que ça donne en Python:</p>
+<pre lang="python">     
+>>> data = bytearray([0b1100001, 0b1100010, 0b1100011, 0b1100100])     
+>>> print(data.decode('ascii'))     
+abcd </pre>
+<div id="attachment_25162" style="width: 310px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2019/01/binary_mock.jpg" class="grouped_elements" rel="tc-fancybox-group25125"><img src="http://sametmax.com/wp-content/uploads/2019/01/binary_mock.jpg" alt="Les processeurs modernes ne comprenent pas nativement l&#039;american apparel" width="300" height="448" class="size-full wp-image-25162" /></a><p class="wp-caption-text">Les processeurs modernes ne comprenent pas nativement l&#8217;american apparel</p></div>
+<p>Ou je peux lui appliquer une autre convention, et decider de lire ces octets comme si ils étaient le dump d&#8217;une structure C. Interprettons en Python ces octets comme un entier non signé en big-endian:</p>
+<pre lang="python">     
+>>> data = bytearray([0b1100001, 0b1100010, 0b1100011, 0b1100100])     
+>>> import struct     
+>>> struct.unpack('>I', data)     
+(1633837924,)
+</pre>
+<p>Même suite de bits, mais selon la convention choisie, elle veut dire les lettres &#8220;abcd&#8221; ou le nombre &#8220;1633837924&#8221;. Et oui, comme il n&#8217;y a pas une infinité de combinaisons de 0 et de 1 qui tiennent dans un espace mémoire limité, différentes conventions vont utiliser les mêmes octets mais décider que ça veut dire quelque chose de différent.</p>
+<p>En fait, même des conventions pour le même type usage ne veulent pas forcément dire la même chose. Par exemple, prenez l&#8217;octet:</p>
+<p><code>11101001</code></p>
+<p>Un octet somme toute sympathique, de bonne famille. Il ne paie pas de mine, mais c&#8217;est un membre utile de la société.</p>
+<p>Et maintenant, quelqu&#8217;un vous donne un indice, il vous dit que cet octet représente&#8230; du texte.</p>
+<p>Super !</p>
+<p>Oui, mais du texte avec quelle convention ? Car les pays du monde entier ont créé leur propre convention pour représenter du texte.</p>
+<p>Avec la convention &#8220;latin-1&#8221;, <a href="https://en.wikipedia.org/wiki/Windows-1252">utilisé par 0.7% de tous les sites Web du monde</a> ?</p>
+<pre lang="python"> 
+>>> bytearray([0b11101001]).decode('latin-1') 
+'é' </pre>
+<p>Avec la convention &#8220;cp850&#8221;, utilisé par la console DOS ?</p>
+<pre lang="python"> 
+>>> bytearray([0b11101001]).decode('cp850')
+'Ú'
+</pre>
+<p>Vous voulez rire ? Le premier à remplacé presque partout le second parce qu&#8217;<a href="https://en.wikipedia.org/wiki/Code_page_850">ils contiennent les mêmes lettres</a>. Elles ne sont juste pas représentées par la même combinaison d&#8217;octets.</p>
+<p>Et cet octet, que veut-il dire avec la convention &#8220;utf8&#8221;, qui est aujourd&#8217;hui le standard international recommandé pour représenter du texte ?</p>
+<pre lang="python"> 
+>>> bytearray([0b11101001]).decode('utf8')
+Traceback (most recent call last):
+File "<stdin>", line 1, in <module>
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe9 in position 0: unexpected end of data </pre>
+<p>Il n&#8217;a pas de correspondance. Cet octet n&#8217;est pas de l&#8217;utf8 valide.</p>
+<p>Si vous voulez représenter ces lettres en utf8, il faut utiliser une convention différente, en utilisant non pas un seul octet, mais une séquence d&#8217;octets:</p>
+<pre lang="python"> 
+>>> list(map(bin, 'é'.encode('utf8')))
+['0b11000011', '0b10101001']
+>>> list(map(bin, 'Ú'.encode('utf8')))
+['0b11000011', '0b10011010']
+</pre>
+<p>Vous pourriez croire que puisque le texte est particulièrement compliqué, c&#8217;est normal d&#8217;avoir des conventions qui divergent. Mais non, c&#8217;est juste la nature des conventions. Puisqu&#8217;elles sont arbitraires, l&#8217;une n&#8217;est pas plus &#8220;la vérité&#8221; qu&#8217;une autre. On retrouve la même chose avec les nombres:</p>
+<pre lang="python">
+>>> struct.unpack("h", bytearray([0b11101001, 0b11101001]))
+(-5655,)
+>>> struct.unpack("H", bytearray([0b11101001, 0b11101001])) 
+(59881,)
+</pre>
+<p>La même suite d&#8217;octets peut représenter deux nombres totalement différents, selon que je décide de les lire comme des &#8220;short&#8221;, ou des &#8220;unsigned short&#8221;.</p>
+<p>Et l&#8217;inverse est aussi vrai.</p>
+<p>Ben oui, si quelque chose peut être interprété de plusieurs façons, on a aussi le fait que deux représentations <em>différentes</em> peuvent être interprétées &#8230; pour aboutir au même résultat.</p>
+<p>Par exemple, le nombre des doigts de ma main peut être représenté de plein de façons différentes:</p>
+<ul>
+<li>         <strong>décimal</strong>: 5     </li>
+<li>         <strong>français écrit</strong>: cinq     </li>
+<li>         <strong>chiffre latin</strong>: V     </li>
+<li>         <strong>anglais écrit</strong>: five     </li>
+<li>         <strong>espagnol écrit</strong>: cinco     </li>
+<li>         <strong>base deux</strong>: 101     </li>
+<li>         <strong>structure C d&#8217;un signed short en little-endian avec Python</strong>: bytearray([0b101, 0b0])     </li>
+</ul>
+<p>Que de manières différentes, pour le même concept ! En plus, il y a confusion possible: V est une lettre également. cinq, five et cinco utilisent le même alphabet, mais pas les mêmes symboles spécifiques, pour représenter la même chose. Et le plus confusionant, 101 est une représentation binaire, mais <code>bytearray([0b101, 0b0])</code> aussi.</p>
+<p>Bref, voilà toute la complexité de la différence entre la donnée, un concept abstrait qui n&#8217;existe pas, et sa représentation, une convention humaine concrète qui nous permet de communiquer entre nous.</p>
+<p>Donc, pour lire &#8220;du binaire&#8221;, ou faire n&#8217;importe quoi en informatique, il faut connaitre la convention utilisée. Mais pas juste en informatique: pour lire le journal, il faut connaitre la convention des symboles imprimés sur les pages, pour conduire sans se faire tuer, il faut connaitre la convention des panneaux, et pour parler, il faut connaitre la convention de la compression des molécules d&#8217;air émise par l&#8217;appareil buccal et respiratoire d&#8217;un individu qui vient rencontrer votre système auditif.</p>
+<p>Vous êtes un être très conventionnel au fond.</p>
+<p>Évidemment on trouve la même chose en Python. Par exemple vous pouvez utiliser plusieurs conventions pour demander à Python de créer le même nombre en mémoire:</p>
+<pre lang="python">
+>>> 245 # base 10
+245
+>>> 0xF5 # hexadecimal
+245
+>>> 0b11110101 # binaire
+245
+>>> 245 == 0xF5 == 0b11110101
+True     
+>>> type(245)     
+<class 'int'>     
+>>> type(0xF5)     
+<class 'int'>     
+>>> type(0b11110101)     
+<class 'int'> </pre>
+<p>Inversement, <code>"1"</code> et <code>1</code> paraissent similaire, mais ils ont différents buts. Le premier est un outil destiné à l&#8217;affichage, qui matérialise le caractère représentant le chiffre arabe après le zéro. Il est stocké en interne avec une séquence d&#8217;octets similaire à:</p>
+<pre lang="python">
+>>> bin(ord("1"))
+'0b110001'
+</pre>
+<p>Tandis que que le second est un outil fait pour faire des calculs avec la plus petite valeur positive entière non nulle. Il est stocké en interne avec une séquence d&#8217;octets similaire à:</p>
+<pre lang="python">
+>>> list(map(bin, struct.pack('l', 1)))
+['0b1', '0b0', '0b0', '0b0', '0b0', '0b0', '0b0', '0b0']
+</pre>
+<p>Je simplifie bien entendu, en vérité la representation interne des nombres et du texte en Python est plus complexe que cela, et dépend de l&#8217;implémentation choisie, du type de processeur, de la taille de la donnée et de votre configuration.</p>
+<h2>
+Retour sur le type bytes </h2>
+<p>J&#8217;ai soigneusement évité d&#8217;utiliser le type <code>bytes</code> durant cette démonstration, le remplaçant techniquement inutilement (mais pédagogiquement brillamment, car je suis génial) par <code>bytearray</code>.</p>
+<p>En effet, toute cette leçon est là pour arriver à la conclusion que <code>bytes</code> ne représente pas du texte, mais si je vous avais montré tout ça avec lui, voilà qui vous aurait interloqué:</p>
+<pre lang="python">     
+>>> bytes([0b1100001, 0b1100010, 0b1100011, 0b1100100])     
+b'abcd' </pre>
+<p>&#8220;Heu, mais c&#8217;est du texte !&#8221; me dirait alors un lecteur ayant diagonalisé l&#8217;article.</p>
+<p>Mais bien entendu que non.</p>
+<p><code>bytes</code> ne présente pas du texte, c&#8217;est une structure de données dont le but est de permettre de manipuler une séquence d&#8217;octets ordonnée, et ce manuellement. N&#8217;importe laquelle.</p>
+<p>Or, il se trouve que beaucoup de langages de programmation représentent le texte comme un array d&#8217;octets, et y attachent quelques opérations de manipulation. C&#8217;est le cas du C, ou de Python 2 par exemple. Les gens ayant eu cette expérience pensent donc que <code>b'abcd'</code> représente du texte, allant parfois jusqu&#8217;à aller lui donner l&#8217;appellation de &#8220;byte string&#8221;.</p>
+<p>Il n&#8217;existe rien de tel en Python 3.</p>
+<p>En Python 3, vous avez deux types pour manipuler des séquences d&#8217;octets: <code>bytes</code> et <code>bytearray</code>. Ils sont équivalents, à ceci près que <code>bytes</code> est non mutable (non modifiable) alors que <code>bytearray</code> est mutable (modifiable).</p>
+<p>Ces types peuvent contenir n&#8217;importe quels octets, et nous avons vu ensemble qu&#8217;une même séquence d&#8217;octets pouvait être interprétée différemment selon la convention choisie pour la lire. Évidemment il est préférable de la lire avec la même convention qui a été utilisée pour la produire, sans quoi on ne comprendra pas ce que le producteur de la donnée à voulu dire.</p>
+<p>Sauf que&#8230;</p>
+<p>Beaucoup d&#8217;outils en informatique utilisent les conventions ASCII et hexadécimale pour symboliser les valeurs des octets. Si vous lancez <a href="https://www.wireshark.org/docs/wsug_html_chunked/ChapterIntroduction.html#ChIntroFeatures">Wireshark</a> pour regarder les paquets d&#8217;un protocole réseau ou si vous ouvrez un PNG avec <code>xxd</code>, on va vous représenter le contenu avec un mélange de ces conventions. </p>
+<p>Pour des raisons pratiques, Python fait donc la même chose, et permet ainsi de visualiser (ou produire) le type <code>bytes</code> à l&#8217;aide d&#8217;une notation ASCII:</p>
+<pre lang="python">    
+>>> print(b'abcd'.decode('ascii'))     
+abcd     
+>>> struct.unpack('>I', b'abcd')     
+(1633837924,)
+</pre>
+<p>Ou d&#8217;une notation héxa (ironiquement, l&#8217;héxa est representé par une combinaison de caractères ASCII \o/) si les valeurs ne tiennent pas dans la table ASCII:</p>
+<pre lang="python">     
+>>> "é".encode('utf8')  # hexa C3 A9   
+b'\xc3\xa9'     
+>>> struct.unpack('h', b'\xc3\xa9')    
+(-22077,)
+</pre>
+<p>Donc <code>bytes</code>, bien qu&#8217;il puisse contenir des octets interprétables comme du texte, n&#8217;est pas particulièrement fait pour manipuler du texte. Il peut contenir n&#8217;importe quoi. Mais pour des raisons pratiques, sa représentation dans le terminal est faite avec une convention familière. Après tout, il faut bien l&#8217;écrire en quelque chose pour l&#8217;affiquer à l&#8217;écran.</p>
+<p>Si on veut manipuler du texte en Python 3, il faut utiliser le type <code>str</code>, qui est l&#8217;outil spécialisé dans la representation et la manipulation textuelle. Si vous savez qu&#8217;un type <code>bytes</code> contient des octets qui representent du texte, alors utilisez la méthode <code>décode()</code> avec la bonne convention (appelée &#8220;charset&#8221;), pour récupérer un <code>str</code>:</p>
+<pre lang="python">     
+>>> print(b'P\xc3\xa8re No\xc3\xabl'.decode('utf8'))
+Père Noël </pre>
+<p>On a <a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/ ">un très bon article sur l&#8217;encoding en Python</a> sur le blog, d&#8217;ailleurs.</p>
+<p>Toute cela n&#8217;était bien entendu pas vrai en Python 2. En Python 2, le type <code>str</code> était un array d&#8217;octets, rendant tout cela bien confus, et amenant à plein d&#8217;erreurs. L&#8217;introduction lors de la version 2.0 de l&#8217;objet <code>unicode</code> pour pallier le problème, bien que très utile, n&#8217;a fait que rajouter à l&#8217;incomprehension des nouveaux venus.</p>
+<p>Or le monde extérieur, lui, n&#8217;a pas d&#8217;abstraction pour le texte. Faire des abstractions, c&#8217;est le rôle du langage de programmation. Si vous écrivez dans un terminal, ou lisez depuis un terminal, un nom de fichier, le contenu d&#8217;une base de données, une requête AJAX, etc., ce sont évidemment des octets qui sont échangés, et il vous faut la bonne convention pour faire partie de la discussion.</p>
+<p>Le type bas niveau <code>bytes</code> est un outil qui sert donc à communiquer avec le monde extérieur, tandis que les types haut niveau (<code>str</code>, <code>int</code>, <code>list</code>, etc.) sont des outils qui font l&#8217;abstraction de ces conventions, pour vous permettre de manipuler confortablement un concept général (du texte, un nombre, une collection ordonnée) à l&#8217;interieur des murs de votre programme.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">25125</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2019/01/definitionwrong.jpg" length="60849" type="image/jpg" />	</item>
+		<item>
+		<title>Le formatage des strings en long et en large</title>
+		<link>http://sametmax.com/le-formatage-des-strings-en-long-et-en-large/</link>
+		<comments>http://sametmax.com/le-formatage-des-strings-en-long-et-en-large/#comments</comments>
+		<pubDate>Mon, 16 Jan 2017 14:53:04 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[format]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[string]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=21963</guid>
+		<description><![CDATA[Un problème qui se retrouve souvent, c'est le besoin d'afficher un message qui contient des valeurs de variables. Or, si en Python on privilégie généralement "il y a une seule manière de faire quelque chose", cela ne s'applique malheureusement pas au formatage de chaînes qui a accumulé bien des outils au fil des années.
+]]></description>
+				<content:encoded><![CDATA[<p>Un bon article bien long. Je sens que ça vous avait manqué :) Musique ?</p>
+<p><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/DOF_3WwzF8E?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<p>Un problème qui se retrouve souvent, c&#8217;est le besoin d&#8217;afficher un message qui contient des valeurs de variables. Or, si en Python on privilégie généralement &#8220;il y a une seule manière de faire quelque chose&#8221;, cela ne s&#8217;applique malheureusement pas au formatage de chaînes qui a accumulé bien des outils au fil des années.</p>
+<h2>TL;DR</h2>
+<p>Si c&#8217;est juste pour afficher 2, 3 bricoles dans le terminal, utilisez <code>print()</code> directement:</p>
+<pre lang="python">>>> print("J'ai", 3, "ans")
+J'ai 3 ans
+>>> print(3, 2, 1, sep='-')
+3-2-1</pre>
+<p>Si vous avez besoin d&#8217;un formatage plus complexe ou que le texte n&#8217;est pas que pour afficher dans le terminal&#8230;</p>
+<p>Python 3.6+, utilisez les f-strings:</p>
+<pre lang="python">>>> produit = "nipple clamps"
+>>> prix = 13
+>>> print(f"Les {produit} coûtent {prix:.2f} euros")
+Les nipple clamps coûtent 13.00 euros</pre>
+<p>Sinon utilisez <code>format()</code>:</p>
+<pre lang="python">>>> produit = "nipple clamps"
+>>> prix = 13
+>>> print("Les {} coûtent {:.2f} euros".format(produit, prix))
+Les nipple clamps coûtent 13.00 euros</pre>
+<p>Si vous êtes dans le shell, que vous voulez aller vite, ou que vous manipulez des bytes, vous pouvez utiliser &#8220;%&#8221;, mais si ça ne vous arrive jamais, personne ne vous en voudra:</p>
+<pre lang="python">>>> produit = "nipple clamps"
+>>> prix = 13
+>>> print("Les %s coûtent %.2f euros" % (produit, prix))
+Les nipple clamps coûtent 13.00 euros</pre>
+<p>N&#8217;utilisez jamais <code>string.Template</code>.</p>
+<p>Si vous avez un gros morceau de texte ou besoin de logique avancée, utilisez un moteur de template comme <a href="http://jinja.pocoo.org/">jinja2</a> ou <a href="http://www.makotemplates.org/">mako</a>. Pour l&#8217;i18n et la l10n, choisissez une lib comme <a href="http://babel.pocoo.org/en/latest/">babel</a>.</p>
+<h2>Avec print()</h2>
+<p>Par exemple, si j&#8217;ai :</p>
+<pre lang="python">produit = "nipple clamps"
+prix = 13</pre>
+<p>Et je veux afficher :</p>
+<pre>"Les nipple clamps coûtent 13 euros"</pre>
+<p>La manière la plus simple de faire cela est d&#8217;utiliser <code>print()</code>:</p>
+<pre lang="python">>>> print("Les", produit, "coûtent", prix, "euros")
+Les nipple clamps coûtent 13 euros</pre>
+<p>Mais déjà un problème se pose : cette fonction insère des espaces entre chaque argument qu&#8217;elle affiche. Cela est ennuyeux si par exemple je veux utiliser le signe <code>€</code> et le coller pour obtenir :</p>
+<pre lang="python">Les nipple clamps coûtent 13€</pre>
+<p><code>print()</code> possède un paramètre spécial pour cela : <code>sep</code>. Il contient le séparateur, c&#8217;est à dire le caractère qui va être utilisé pour séparer les différents arguments affichés. Par défaut, <code>sep</code> est égal à un espace.</p>
+<p>Si je change ma phrase et que j&#8217;ai besoin d&#8217;espaces à certains endroits et pas à d&#8217;autres, il me faut définir un séparateur &#8211; ici une chaîne vide &#8211; et jouer un peu avec le texte :</p>
+<pre lang="python">>>> print("Les ", produit, " coûtent ", prix, "€", sep="")
+Les nipple clamps coûtent 13€</pre>
+<p>C&#8217;est mieux. Mais, ça commence à devenir moins lisible.</p>
+<p>Maintenant que se passe-t-il si je veux utiliser une valeur numérique mais que j&#8217;ai besoin de la formater ?</p>
+<p>Par exemple :</p>
+<pre lang="python">produit = "nipple clamps"
+prix = 13
+exo_taxe = 0.011</pre>
+<p>Et je veux tronquer le prix au centime de telle sorte que j&#8217;obtienne :</p>
+<pre lang="python">Les nipple clamps coûtent 13.01€</pre>
+<p>Arf, ça va demander un peu plus de travail.</p>
+<pre lang="python">>>> total = round(prix + exo_taxe, 2)
+>>> print("Les ", produit, " coûtent ", total, "€", sep="")
+</pre>
+<p>Bon, mais admettons que je veuille sauvegarder ce texte dans une variable ? Par exemple pour le passer à une fonction qui vérifie l&#8217;orthographe ou met la phrase en jaune fluo&#8230;</p>
+<p>Dans ce cas ça devient burlesque, il faut intercepter <code>stdout</code> et récupérer le résultat :</p>
+<pre lang="python">>>> faux_terminal = io.StringIO()
+>>> print("Les ", produit, " coûtent ", total, "€", sep="", file=faux_terminal)
+>>> faux_terminal.seek(0)
+>>> msg = faux_terminal.read()
+>>> print(msg)
+Les nipple clamps coûtent 13.01€</pre>
+<p>Vous l&#8217;avez compris, <code>print()</code> est fantastique pour les cas simples, mais devient rapidement peu pratique pour les cas complexes : <strong>son rôle est d&#8217;être bon à afficher, pas à formater.</strong></p>
+<h2>Avec +</h2>
+<p>A ce stade, un débutant va généralement taper &#8220;concaténation string python&#8221; sur son moteur de recherche et tomber sur l&#8217;opérateur <code>+</code>. Il essaye alors ça :</p>
+<pre lang="python">>>> "Les " + produit + " coûtent " + total + "€"
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-19-126b156e23bd> in <module>()
+----> 1 "Les " + produit + " coûtent " + total + "€"
+
+TypeError: Can't convert 'float' object to str implicitly</pre>
+<p>Et il apprend par la même occasion que Python est fortement typé. On ne peut pas additionner des choux et des carottes disait ma prof de CE1, et donc on ne peut pas additionner <code>"coûtent"</code> (type <code>str</code>) et <code>total</code> (type <code>float</code>).</p>
+<p>Il faut donc convertir <code>total</code> :</p>
+<pre lang="python">>>> "Les " + produit + " coûtent " + str(total) + "€"
+'Les nipple clamps coûtent 13.01€'</pre>
+<p>C&#8217;est mieux que notre version avec <code>print()</code>, d&#8217;autant qu&#8217;on peut sauvegarder facilement tout ça dans une variable :</p>
+<pre lang="python">>>> total = round(prix + exo_taxe, 2)
+>>> msg = "Les " + produit + " coûtent " + str(total) + "€"
+>>> print(msg)
+Les nipple clamps coûtent 13.01€</pre>
+<p>Mais ça reste chiant à taper, et encore plus à modifier. Si je veux insérer quelque chose là dedans, il me faut faire très attention en déplaçant mes <code>+</code> et mes <code>"</code> sans compter calculer ma gestion des espaces.</p>
+<p>La raison est simple : il est difficile de voir la phrase que j&#8217;essaye d&#8217;afficher sans bien étudier mon expression.</p>
+<p>Par ailleurs, je suis toujours obligé de faire mon arrondi.</p>
+<p>Pour cette raison, je recommande de ne pas utiliser <code>+</code> pour formater son texte, car il existe de bien meilleurs outils en Python.</p>
+<h2>Avec %</h2>
+<p>Là, on arrive à quelque chose de plus sympa !</p>
+<p>L&#8217;opérateur <code>%</code> appliqué aux chaînes de caractères permet de définir un texte à trous, et ensuite de dire quoi mettre dans les trous. C&#8217;est une logique de template.</p>
+<p>Elle est courte et pratique : c&#8217;est la méthode que j&#8217;utilise le plus actuellement dans un shell ou sur les chaînes courtes.</p>
+<p>Par exemple, si je veux créer la chaîne:</p>
+<pre>Les nipple clamps coûtent 13€</pre>
+<p>Alors mon texte à trou va ressembler à :</p>
+<pre>Les [insérer ici le nom du produit] coûtent [insérer ici le prix du produit]€</pre>
+<p>Avec l&#8217;opérateur <code>%</code>, le texte à trous s&#8217;écrit :</p>
+<pre>Les %s coûtent %s€</pre>
+<p><code>%s</code> marque les trous.</p>
+<p>Pour remplir, on met les variables à droite, dans l&#8217;ordre des trous à remplir :</p>
+<pre lang="python">>>> total = round(prix + exo_taxe, 2)
+>>> "Les %s coûtent %s€" % (produit, total)
+'Les nipple clamps coûtent 13.01€'</pre>
+<p>Pas besoin de convertir total en <code>str</code>, et la phrase qu&#8217;on souhaite obtenir est facile à deviner en lisant l&#8217;expression.</p>
+<p><code>%s</code> veut dire &#8220;met moi ici la conversion en <code>str</code> de cet objet&#8221;. C&#8217;est comme si on appelait <code>str(total)</code>.</p>
+<p>Il existe d&#8217;autres marqueurs :</p>
+<ul>
+<li><code>%d</code> est comme si faisait <code>int()</code> sur la valeur.</li>
+<li><code>%f</code> est comme si faisait <code>float()</code> sur la valeur.</li>
+<li><code>%x</code> est comme si on faisait <code>hex()[2:]</code></li>
+<li>etc</li>
+</ul>
+<p>Ex:</p>
+<pre lang="python">>>> "%d" % 28.01
+    '28'
+>>> "%f" % 28
+    '28.000000'
+>>> "%x" % 28
+    '1c'</pre>
+<p>La liste des marqueurs est disponible <a href="https://docs.python.org/3.1/library/string.html#formatspec">sur cette page de la doc</a>.</p>
+<p>En plus des marqueurs qui permettent de savoir où insérer la valeur et quel format lui donner, on peut aussi donner des précisions sur l&#8217;opération de formatage. On peut ainsi décider combien de chiffres après la virgule on souhaite, ou obliger la valeur à avoir une certaine taille :</p>
+<pre lang="python">>>> "%4d" % 28 # au moins 4 caractères
+    '  28'
+>>> "%04d" % 28 # au moins 4 chiffres
+    '0028'
+>>> "%.2f" % 28 # 2 chiffres après la virgule
+    '28.00'</pre>
+<p>Ainsi notre exemple:</p>
+<pre lang="python">>>> total = round(prix + exo_taxe, 2)
+>>> "Les %s coûtent %s€" % (produit, total)
+    'Les nipple clamps coûtent 13.01€'</pre>
+<p>peut maintenant être réduit à :</p>
+<pre lang="python">>>> total = prix + exo_taxe
+>>> "Les %s coûtent %.2f€" % (produit, total)
+    'Les nipple clamps coûtent 13.01€'</pre>
+<p>Néanmoins un des défauts de <code>%</code> est qu&#8217;il n&#8217;accepte qu&#8217;un tuple, ou une valeur seule. Impossible de passer un itérable arbitraire :</p>
+<pre lang="python">>>> "Les %s coûtent %.2f€" % [produit, total]
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-5-bb9b7acda392> in <module>()
+----> 1 "Les %s coûtent %.2f€" % [produit, total]
+
+TypeError: not enough arguments for format string</pre>
+<p>Et si vous voulez formater un tuple, il faut le mettre dans un tuple d&#8217;un seul élément, source de plantage :</p>
+<pre lang="python">>>> "Les données sont %s" % data
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-10-4e21e97b8a3f> in <module>()
+----> 1 "Les données sont %s" % data
+
+TypeError: not all arguments converted during string formatting
+
+>>> "Les données sont %s" % (data, )
+    "Les données sont ('nipple clamps', 13.01)"</pre>
+<p>Tout codeur Python s&#8217;est retrouvé un jour devant ce cas et s&#8217;est gratté la tête.</p>
+<p>Par ailleurs, dès qu&#8217;il y a beaucoup de trous à combler dans le texte, ça devient vite difficile de savoir ce qui va où :</p>
+<pre lang="python"> "[%s] %s%s %s(%s) - %s%s%s"  % (
+        datetime.datetime.now(),
+        res,
+        unit,
+        type,
+        variant,
+        testers[0],
+        testers[1],
+        testers[2]
+  )</pre>
+<p>Pour pallier ce problème, <code>%</code> peut accepter aussi un dictionnaire et avoir des trous nommés :</p>
+<pre lang="python"> "[%(date)s] %(value)s%(unit)s %(type)s(%(variant)s) - %(tester1)s%(tester2)s%(tester3)s"  % {
+        "date": datetime.datetime.now(),
+        "value": res,
+        "unit": "m",
+        "type": "3",
+        "variant": "beta",
+        "tester1": testers[0],
+        "tester2": testers[1],
+        "tester3": testers[2]
+  }</pre>
+<p>On peut voir néanmoins que le pari n&#8217;est pas tout à fait gagné. Et on ne gagne pas tant que ça en lisibilité. Pour cette raison, les formatages complexes sont plus intéressants à faire avec <code>format()</code> que nous verrons plus loin.</p>
+<p>Rappelez-vous néanmoins que depuis Python 3, <code>format()</code> ne fonctionne plus sur les bytes. <code>%</code> reste donc la seule option pour formater des paquets réseaux, des headers de jpeg et tout autre format binaire.</p>
+<h2>Formater les dates</h2>
+<p>Même si il est toujours recommandé d&#8217;utiliser <a href="https://pendulum.eustace.io/docs/#string-formatting">une bonne lib</a> pour manipuler les dates, Python permet déjà de faire pas mal de choses avec la lib standard.</p>
+<p>En effet, certaines notions, comme le temps, ont une forme très différente entre celle utilisée pour les manipuler, et celles utilisées pour les représenter.</p>
+<p>Pour cette raison, l&#8217;objet <code>date</code> de Python propose deux méthodes, <code>strptime</code> et <code>strftime</code>, pour gérer le format des dates.</p>
+<p>La procédure pour gérer les dates se fait donc toujours en 3 parties, un peu comme l&#8217;encoding d&#8217;un texte :</p>
+<ol>
+<li>Créer une nouvelle date, soit à la main, soit à partir de données existantes.</li>
+<li>Manipuler les dates pour obtenir ce qu&#8217;on souhaite (un autre date, un durée, un intervalle, etc.</li>
+<li>Formater le résultat pour le présenter à l&#8217;utilisateur ou le sauvegarder à nouveau.</li>
+</ol>
+<p>Pour récupérer une date existante, on va utiliser <code>strptime</code> (&#8220;str&#8221; pour string, &#8220;p&#8221; pour parse) :</p>
+<pre lang="python">>>> from datetime import datetime
+>>> date = datetime.strptime("1/4/2017", "%d/%m/%Y")
+>>> date.year
+    2017
+>>> date.day
+    1</pre>
+<p>Le deuxième paramètre contient le motif à extraire de la chaîne de gauche : c&#8217;est l&#8217;inverse d&#8217;un texte à trous ! On dit &#8220;dans la chaîne de gauche, j&#8217;ai le jour là, le mois là et l&#8217;année là, maintenant extrais les&#8221;.</p>
+<p>Pour formater une date, c&#8217;est la même chose, mais dans l&#8217;autre sens, avec <code>strftime</code> (&#8220;f&#8221; pour format) :</p>
+<pre lang="python">>>> date = datetime.now()
+>>> date.strftime('%m-%d-%y')
+    '04-01-17'</pre>
+<p>Le mini-langage pour formater les dates est <a href="https://docs.python.org/3/library/datetime.html#strftime-strptime-behavior">documenté ici</a>, et vous pouvez en apprendre plus sur les dates sur <a href="http://sametmax.com/manipuler-les-dates-et-les-durees-en-python/">une petite intro dédiée</a>.</p>
+<h2>Avec format()</h2>
+<p><code>%</code> a ses limites. C&#8217;est un opérateur pratique pour les petites chaînes et les cas de tous les jours, mais si on a beaucoup de valeurs à formater, cela peut devenir vite un problème. Il possède aussi quelques cas d&#8217;utilisation qui causent des erreurs inattendues puisqu&#8217;il n&#8217;accepte que les tuples.</p>
+<p><code>format()</code> a été créé pour remédier à cela. Dans sa forme la plus simple, il s&#8217;utilise presque comme <code>%</code>, mais les marqueurs sont des <code>{}</code> et non des <code>%s</code> :</p>
+<pre lang="python">>>> "Les {} coûtent {}€".format(produit, prix)
+    'Les nipple clamps coûtent 13€'</pre>
+<p>Mais déjà, <code>format()</code> se distingue du lot car il permet de choisir l&#8217;ordre d&#8217;insertion :</p>
+<pre lang="python">>>> "Les {1} coûtent {0}€".format(prix, produit)
+    'Les nipple clamps coûtent 13€'</pre>
+<p>La méthode accepte également n&#8217;importe quel itérable grâce à l&#8217;unpacking :</p>
+<pre lang="python">>>> "Les {} coûtent {}€".format(*[produit, prix])
+    'Les nipple clamps coûtent 13€'</pre>
+<p>Formater un tuple seul est aussi très simple :</p>
+<pre lang="python">>>> "Les données sont {}".format(data)
+    "Les données sont ('nipple clamps', 13.01)"</pre>
+<p>Mais là où <code>format()</code> est bien plus pratique, c&#8217;est quand on a beaucoup de données et qu&#8217;on veut nommer ses trous :</p>
+<pre lang="python"> "[{date}] {value}{unit} {type}({variant}) - {testers[0]}{testers[1]}{testers[2]}".format(
+        date=datetime.datetime.now(),
+        value=res,
+        unit="m",
+        type="3",
+        variant="beta",
+        testers=testers
+  )</pre>
+<p>Le texte à trous est plus clair, et on peut utiliser l&#8217;index d&#8217;une liste directement dedans.</p>
+<p>Un autre avantage non négligeable, est que <code>format()</code> n&#8217;utilise pas de nombreux marqueurs différents comme <code>%f</code>, <code>%d</code>, <code>%s</code>&#8230;</p>
+<p>A la place, il n&#8217;y a que <code>{}</code>, et <code>format()</code> appelle en fait pour chaque valeur sa méthode &#8230; <code>__format__</code>, ou en l&#8217;absence de celle-ci appelle <code>str()</code>.</p>
+<pre lang="python">>>> a = 42
+>>> a.__format__("")
+    '42'</pre>
+<p>Chaque objet peut définir <code>__format__</code>, et accepter ses propres options:</p>
+<pre lang="python">>>> a.__format__(".2f")
+    '42.00'
+>>> from datetime import datetime
+>>> datetime.now().__format__('%d %h')  # pas besoin de strftime !
+    '20 Sep'</pre>
+<p>Et <code>format()</code> utilise tout ce qui est après <code>:</code> dans un trou pour le passer à <code>__format__</code>:</p>
+<pre lang="python">>>> "{foo:.2f} {bar:%d %h}".format(foo=42, bar=datetime.now())</pre>
+<p>Cela permet des formatages très poussés.</p>
+<h2>Les f-strings</h2>
+<p>Les f-strings sont une nouvelle fonctionnalité de Python 3.6, et elles sont merveilleuses, combinant les avantages de <code>.format()</code> et <code>%</code>, sans les inconvénients :</p>
+<pre lang="python">>>> produit = "nipple clamps"
+>>> prix = 13
+>>> print(f"Les {produit} coûtent {prix:.2f} euros")
+Les nipple clamps coûtent 13.00 euros</pre>
+<p>En gros, c&#8217;est la syntaxe de <code>format()</code>, mais sans sa verbosité.</p>
+<p>En prime, on peut utiliser des expressions arbitraires dedans:</p>
+<pre lang="python">>>> print(f"Les {produit.upper()} coûtent {prix:.2f} euros")
+Les NIPPLE CLAMPS coûtent 13.00 euros</pre>
+<p>A première vue, ça ressemble à du <code>exec</code>, et donc à un parsing lent, doublé d&#8217;une grosse faille de sécurité.</p>
+<p>Et bien non !</p>
+<p>C&#8217;est en fait du sucre syntaxique, et au parsing du code, Python va transformer l&#8217;expression en un truc du genre:</p>
+<pre lang="python">"Les " + "{}".format(produit.upper()) + " coûtent " + "{:.2f}".format(prix) + " euros"</pre>
+<p>Mais en bytecode. Pas d&#8217;injection de code Python possible, et en prime, les f-strings sont aujourd&#8217;hui la méthode de formatage <a href="https://cito.github.io/blog/f-strings/">la plus performante</a>.</p>
+<p>En clair, si vous êtes en 3.6+, vous pouvez oublier toutes les autres.</p>
+<h2>Méthodes de l&#8217;objet str</h2>
+<p>Parfois, on ne veut pas remplir un texte à trous. Parfois on a déjà le texte et on veut le transformer. Pour cela, l&#8217;objet <code>str</code> possède de nombreuses méthodes qui permettent de créer une nouvelle chaîne, qui possède des traits différents :</p>
+<pre lang="python">>>> "    strip() retire les caractères en bouts de chaîne   ".strip() # espace par défaut
+    'strip() retire les caractères en bouts de chaîne'
+>>> "##strip() retire les caractères en bouts de chaîne##".strip("#")
+    'strip() retire les caractères en bouts de chaîne'
+>>> "##strip() retire les caractères en bouts de chaîne##".lstrip("#")
+    'strip() retire les caractères en bouts de chaîne##'
+>>> "##strip() retire les caractères en bouts de chaîne##".rstrip("#")
+    '##strip() retire les caractères en bouts de chaîne'
+>>> "wololo".replace('o', 'i') # remplacer des lettres
+    'wilili'
+>>> "WOLOLO".lower() # changer la casse
+    'wololo'
+>>> "wololo".upper()
+    'WOLOLO'
+>>> "wololo".title()
+    'Wololo'
+</pre>
+<p>Notez bien que ces méthodes créent de nouvelles chaînes. L&#8217;objet initial n&#8217;est pas modifié, puisque les strings sont immutables en Python.</p>
+<p>Parmi les plus intéressantes, il y a <code>split()</code> et <code>join()</code>, qui ont une caractéristique particulière : elles ne transforment pas une chaîne en une autre.</p>
+<p><code>split()</code> prend une chaîne, et retourne&#8230; une liste !</p>
+<pre lang="python">>>> "split() découpe une chaîne en petits bouts".split() # défaut sur espaces
+    ['split()', 'découpe', 'une', 'chaîne', 'en', 'petits', 'bouts']
+>>> "split() découpe une chaîne en petits bouts".split("e")
+    ['split() découp', ' un', ' chaîn', ' ', 'n p', 'tits bouts']
+</pre>
+<p><code>join()</code> fait l&#8217;inverse, et prend un <a href="http://sametmax.com/les-trucmuchables-en-python/">itérable</a> (comme une liste), pour retourner&#8230; une chaîne :)</p>
+<pre lang="python">>>> "-".join(['join()', 'recolle', 'une', 'chaîne', 'DEPUIS', 'des', 'petits', 'bouts'])
+    'join()-recolle-une-chaîne-DEPUIS-des-petits-bouts'</pre>
+<p>Avec juste ces méthodes, on peut s&#8217;autoriser pas mal de fantaisies avec le texte, et le nombre de méthodes disponibles est assez large :</p>
+<pre lang="python">>>> dir(str)
+    [...
+ 'capitalize',
+ 'casefold',
+ 'center',
+ 'count',
+ 'encode',
+ 'endswith',
+ 'expandtabs',
+ 'find',
+ 'format',
+ 'format_map',
+ 'index',
+ 'isalnum',
+ 'isalpha',
+ 'isdecimal',
+ 'isdigit',
+ 'isidentifier',
+ 'islower',
+ 'isnumeric',
+ 'isprintable',
+ 'isspace',
+ 'istitle',
+ 'isupper',
+ 'join',
+ 'ljust',
+ 'lower',
+ 'lstrip',
+ 'maketrans',
+ 'partition',
+ 'replace',
+ 'rfind',
+ 'rindex',
+ 'rjust',
+ 'rpartition',
+ 'rsplit',
+ 'rstrip',
+ 'split',
+ 'splitlines',
+ 'startswith',
+ 'strip',
+ 'swapcase',
+ 'title',
+ 'translate',
+ 'upper',
+ 'zfill']</pre>
+<p> Donc référez-vous <a href="https://docs.python.org/3/library/stdtypes.html#string-methods">à la doc</a>.</p>
+<h2>Caractères spéciaux</h2>
+<p>On vous a menti !</p>
+<p>Quand on écrit <code>""</code> en Python on ne crée pas une chaîne. En fait, on écrit une instruction qui dit à Python comment créer une chaîne.</p>
+<p>La différence est subtile, mais importante. <code>""</code> n&#8217;est PAS la chaîne, <code>""</code> est une instruction, une indication pour Python de comment il doit procéder pour créer une chaîne.</p>
+<p>Et on peut donner des instructions plus précises à Python. Par exemple on peut dire, &#8220;insère moi ici un saut de ligne&#8221;. Cela se fait avec le marqueur <code>"\n"</code>.</p>
+<pre lang="python">>>> print('un saut\n de ligne')
+un saut
+ de ligne</pre>
+<p><code>\n</code> n&#8217;est PAS un saut de ligne. C&#8217;est juste une indication donnée à Python pour lui dire qu&#8217;ici, il doit insérer un saut de ligne quand il créera la chaîne en mémoire.</p>
+<p>Il existe plusieurs marqueurs de ce genre, les plus importants étant <code>\n</code> (saut de ligne) et <code>\t</code> (tabulation).</p>
+<p>Pour rentrer les caratères <code>\t\n</code>, il faut donc dire à Python explicitement qu&#8217;on ne veut pas qu&#8217;il insère un saut de ligne ou une tabulation, mais plutôt ces caractères.</p>
+<p>Cela peut se faire, soit avec le caractère d&#8217;échappement <code>\</code> :</p>
+<pre lang="python">>>> print('pas un saut\\n de ligne')
+pas un saut\n de ligne</pre>
+<p>Soit en désactivant cette fonctionalité avec le préfixe <code>r</code>, pour <a href="http://sametmax.com/comment-marchent-les-raw-strings-en-python/">raw string</a>:</p>
+<pre lang="python">>>> print(r'pas un saut\n de ligne')
+pas un saut\n de ligne</pre>
+<p>Cette fonctionalité est très utilisée pour les noms de fichiers Windows et les expressions rationnelles car ils contiennent souvent <code>\t\n</code>.</p>
+<h2>Bytes, strings et encoding</h2>
+<p>Python fait une distinction très forte entre les octets (type <code>bytes</code>) et le texte (type <code>str</code>). La raison est qu&#8217;il n&#8217;existe pas de texte brut dans la vraie vie, et que tout ce que vous lisez : fichiers, base de données, socket réseau, et même votre code source (!) est un flux d&#8217;octets encodés dans un certain ordre pour représenter du texte.</p>
+<p>En Python, on a donc le type <code>str</code> pour représenter du texte, une forme d&#8217;abstraction de toute forme d&#8217;encodage qui permet de manipuler ses données textuelles sans se soucier de comment il est représenté en mémoire.</p>
+<p>En revanche, quand on importe du texte (lire, télécharger, parser, etc) ou qu&#8217;on exporte du texte (écrire, afficher, uploader, etc), il faut explicitement convertir son texte vers le type <code>bytes</code>, qui lui a un encoding en particulier.</p>
+<p>Ce principe mérite un article à lui tout seul, et je vous renvoie donc à la <a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/">page dédiée du blog.</a></p>
+<h2>Templating</h2>
+<p>Parfois on a beaucoup de texte à gérer. Par exemple, si vous faites un site Web, vous aurez beaucoup de HTML. Dans ce cas, faire tout le formatage dans son fichier Python n&#8217;est pas du tout pragmatique.</p>
+<p>Pour cet usage particulier, on utilise ce qu&#8217;on appelle un moteur de template, c&#8217;est à dire une bibliothèque qui va vous permettre de mettre votre texte à trous dans un fichier à part. Les moteurs de templates sophistiqués vous permettent de faire quelques opérations logiques comme des boucles ou des conditions dans votre texte.</p>
+<p>La première chose à savoir, c&#8217;est de ne PAS utiliser <a href="https://docs.python.org/3.4/library/string.html#string.Template">string.Template</a>. Cette classe ne permet d&#8217;utiliser aucune logique, et n&#8217;a aucun avantage par rapport à <code>.format()</code>.</p>
+<p>Pour le templating, il vaut mieux se pencher vers une lib tièrce partie. Les deux principaux concurrents sont <a href="http://jinja.pocoo.org/">Jinja2</a>, le moteur de templating le plus populaire en Python, créé par l&#8217;auteur de Flask. Et <a href="https://docs.djangoproject.com/en/1.10/topics/templates/">le moteur de Django</a>, fourni par défaut par le framework.</li>
+<p>Depuis Django 1.10, le framework supporte aussi jinja2, donc je vais vous donner un exemple avec ce dernier. Sachez qu&#8217;il existe bien d&#8217;autres moteurs (mako, cheetah, templite, TAL&#8230;) mais jinja2 a plus ou moins gagné la guerre.</p>
+<p>Un coup de <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> :</p>
+<pre lang="bash">pip install jinja2</pre>
+<p>On fait son template dans un fichier à part, par exemple <em>wololo.txt</em>:</p>
+<pre>Regardez je sais compter :
+  {% for number in numbers %}
+    - {{number}}
+  {% endfor %}
+</pre>
+<p>Puis en Python:</p>
+<pre lang="python">
+import jinja2
+
+# On définit où trouver les fichiers de template. Ex. le dossier courant:
+jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader('.'))
+
+# On dit à jinja de charger le template à partir de son chemin relatif
+template = jinja_env.get_template('wololo.txt')
+
+# On crée un contexte, c'est à dire une collection d'objects qu'on veut rendre
+# accessibles dans le template. Généralement, c'est un dictionnaire dont les
+# clés sont les noms des variables telles qu'elle apparaîtront dans le template
+# et les valeurs ce que contiendront ces variables.
+ctx = {"numbers": [1, 2, 3]}
+
+# On demande le "rendu" du template, c'est à dire le mélange du template
+# et du contexte.
+resultat = template.render(ctx)
+
+print(resultat)
+
+# Ce qui donne :
+# - 1
+# - 2
+# - 3
+</pre>
+<h2>i18n et l10n</h2>
+<p>L&#8217;i18n, pour &#8216;internationalisation&#8217; (soit 18 lettres entre le i et le n) est le fait d&#8217;organiser votre code de telle sorte que son interface puisse s&#8217;adapter à plusieurs cultures. La l10n, pour &#8216;localisation&#8217; (soit 10 lettres entre le l et le n), est le fait de fournir avec son code les données nécessaires pour une culture en particulier.</p>
+<p>Par exemple, marquer toutes vos chaînes de caractères comme étant traductibles et fournir un mécanisme de substitution de la chaîne est de l&#8217;i18n. Fournir un fichier de traduction pour l&#8217;espagnol pour ces chaînes est de la l10n.</p>
+<p>La combinaison des deux est parfois nommée g11n pour &#8220;globalization&#8221;.</p>
+<p>La g11n peut inclure:</p>
+<ul>
+<li>La gestion de l&#8217;UI (traduction, sens de la lecture, formatage des nombres, devise&#8230;).</li>
+<li>La gestion des dates (formatage, différences de types de calendriers, événements locaux, ordres des jours&#8230;). </li>
+<li>La gestion du temps (zones horaires, heure d&#8217;été&#8230;).</li>
+<li>La gestion de la géolocation (fournir des informations autour de soi, filtrer par la distance&#8230;).</li>
+<li>La gestion politique et culturelle (symbolisme des couleurs, adaptation du contenu aux moeurs&#8230;).</li>
+<li>La gestion légale (services et contenus selon la loi en vigueur, warnings obligatoires&#8230;).</li>
+</ul>
+<p>Plus qu&#8217;un article, c&#8217;est un dossier qu&#8217;il faudrait faire sur ces sujets car c&#8217;est très, très vaste.</p>
+<p>La traduction de texte peut être faite directement avec le module <a href="https://docs.python.org/dev/library/gettext.html">gettext</a> fourni en Python. Certains formatages de nombres et de dates sont aussi faisables avec la stdlib grâce au module <a href="https://docs.python.org/2/library/locale.html">locale</a>.</p>
+<p>Néanmoins dès que vous voulez faire quelque chose de plus gros avec la g11n, je vous invite à vous tourner vers des libs externes. </p>
+<p><a href="http://babel.pocoo.org/en/latest/">Babel</a> est la référence en Python pour le formatage du texte et des nombres, et il existe <a href="http://jinja.pocoo.org/docs/2.9/extensions/#i18n-extension">des extensions</a> pour les moteurs de template les plus populaires. La lib inclut une base de données aussi à jour que possible sur les devises, les noms de pays, les langues&#8230;</p>
+<p><a href="https://pendulum.eustace.io/">pendulum</a> est idéal pour la manipulation des dates en général, et des fuseaux horaires en particulier, y compris pour le formatage. Et ça évite de manipuler <a href="http://pytz.sourceforge.net/">pytz</a> à la main.</p>
+<p>Et pour le reste&#8230; bonne chance !</p>
+<h2>Programmation orientée objet</h2>
+<p>Souvenez-vous, Python <a href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-1/">a des méthodes magiques</a>. 3 sont dédiées au formatage.</p>
+<p><strong>__repr__</strong> est utilisée quand on appelle <code>repr()</code> sur un objet. Typiquement, c&#8217;est ce qui s&#8217;affiche dans le shell si on utilise pas <code>print()</code>. C&#8217;est aussi ce qui détermine la représentation d&#8217;un objet quand on affiche une collection qui le contient.</p>
+<p><strong>__str__</strong> est utilisée quand on appelle <code>str()</code> sur un objet. Quand on fait <code>print()</code> dessus par exemple. Si <code>__str__</code> n&#8217;existe pas, <code>__repr__</code> est appelée.</p>
+<p><strong>__format__</strong> est utilisée quand on passe cet objet à <code>format()</code>, ou que cet objet est utilisé dans une f-string.</p>
+<p>Ex :</p>
+<pre lang="python">class Foo:
+    def __repr__(self):
+        return "<Everybody's kung foo fighting>"
+    def __str__(self):
+        return "C'est l'histoire d'un foo qui rentre dans un bar"
+    def __format__(self, age):
+        if int(age or 0) > 18:
+            return "On s'en bat les couilles avec une tarte tatin. Tiède."
+        return "On s'en foo"</pre>
+<p>Ce qui donne :</p>
+<pre lang="python">>>> Foo()
+<Everybody's kung foo fighting>
+>>> print(Foo())
+C'est l'histoire d'un foo qui rentre dans un bar
+>>> print([Foo(), Foo()])
+[<Everybody's kung foo fighting>, <Everybody's kung foo fighting>]
+>>> "J'ai envie de dire: {}".format(Foo())
+"J'ai envie de dire: On s'en foo"
+>>> f"J'ai envie de dire: {Foo():19}"
+"J'ai envie de dire: On s'en bat les couilles avec une tarte tatin. Tiède."</pre>
+<h2>Astuce de dernière minute</h2>
+<p>Enfin pour conclure cet article dont la longueur n&#8217;a d&#8217;égale que celle de la période entre deux publications sur le blog, une petite remarque.</p>
+<p>S&#8217;il est certes courant de formater une string, il est aussi possible de déformer un string. Ce sont des pièces plus résistantes qu&#8217;il n&#8217;y parait, et en cas d&#8217;empressement, le retrait total n&#8217;est pas nécessaire :</p>
+<div id="attachment_21965" style="width: 650px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2017/01/CmNgtKeXIAAhU1z.jpg" class="grouped_elements" rel="tc-fancybox-group21963"><img src="http://sametmax.com/wp-content/uploads/2017/01/CmNgtKeXIAAhU1z.jpg" alt="String en levrette" width="640" height="853" class="size-full wp-image-21965" /></a><p class="wp-caption-text">Ne pas porter de strings du tout évite aussi tout une classe de bugs</p></div>
+<p>Assurez-vous juste que la partie ficelle soit suffisament éloignée pour éviter les frictions fort désagréables quand on entame un algo avec une grosse boucle.</p>
+<p>Sinon, moins intéressant, mais toujours utile, les strings en Python peuvent êtres écrites sur plusieurs lignes de plusieurs manières:</p>
+<pre lang="python">>>> s = ("Ceci est une chaine qui n'a pas " 
+...      "de saut de ligne mais qui est "
+...      "écrite sur plusieurs lignes")
+>>> print(s)
+Ceci est une chaine qui n'a pas de saut de ligne mais qui est écrite sur plusieurs lignes</pre>
+<p>Cela fonctionne car deux chaînes littérales côte à côte en Python sont automatiquement concaténées au démarrage du programme. Cela évite les <code>+ \</code> à chaque fin de ligne, pourvu qu&#8217;on ait des parenthèses de chaque côté de la chaîne.</p>
+<p>L&#8217;alternative des triples quotes est assez connue:</p>
+<pre lang="python">>>> s = """
+...    Ceci est une chaine avec des sauts de lignes
+...    écrite sur plusieurs lignes.   
+... """
+>>> print(s)
+
+    Ceci est une chaine avec des sauts de lignes
+    écrite sur plusieurs lignes.</pre>
+<p>Pour éviter l&#8217;indentation et les espaces inutiles:</p>
+<pre lang="python">>>> from textwrap import dedent
+>>> print(dedent(s).strip())
+Ceci est une chaine avec des sauts de lignes
+écrite sur plusieurs lignes.
+</pre>
+<p>Perso j&#8217;ai un wrapper pour ça.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-formatage-des-strings-en-long-et-en-large/feed/</wfw:commentRss>
+		<slash:comments>19</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">21963</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/01/t6jluly.jpg" length="22464" type="image/jpg" />	</item>
+		<item>
+		<title>Article retiré pour cause de grosse merde</title>
+		<link>http://sametmax.com/nested-format-expansion-thats-a-swag-title-cracker/</link>
+		<comments>http://sametmax.com/nested-format-expansion-thats-a-swag-title-cracker/#comments</comments>
+		<pubDate>Thu, 19 Dec 2013 08:10:32 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[format]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[string]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8158</guid>
+		<description><![CDATA[Désolé pour ceux qui ont reçu l'article via RSS ou email. Je le retire. C'était de la merde.]]></description>
+				<content:encoded><![CDATA[<p>Désolé pour ceux qui ont reçu l&#8217;article via RSS ou email. Je le retire. C&#8217;était de la merde.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/nested-format-expansion-thats-a-swag-title-cracker/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8158</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/12/boinkday2012_gord-ad.jpg" length="85203" type="image/jpg" />	</item>
+		<item>
+		<title> Les expressions rationnelles en Python, parfois overkill</title>
+		<link>http://sametmax.com/les-expressions-rationnelles-en-python-parfois-overkill/</link>
+		<comments>http://sametmax.com/les-expressions-rationnelles-en-python-parfois-overkill/#comments</comments>
+		<pubDate>Wed, 07 Aug 2013 11:40:11 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[regex]]></category>
+		<category><![CDATA[string]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7042</guid>
+		<description><![CDATA[J'adore les regex, et d'ailleurs il faudra que je fasse une série d'articles sur le sujet, un peu comme le guide de la POO.
+
+Mais dans un langage comme Python, il y a de nombreuses solutions à mettre en oeuvre avant d'utiliser les regex.]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;adore les regex, et d&#8217;ailleurs il faudra que je fasse une série d&#8217;articles sur le sujet, un peu comme le guide de la POO.</p>
+<p>Mais dans un langage comme Python, il y a de nombreuses solutions à mettre en oeuvre avant d&#8217;utiliser les regex.</p>
+<p>Pour vérifier si une chaîne est dans une autre, utilisez <code>in</code> :</p>
+<pre lang="python">>>> 'a' in 'chat'
+True
+>>> 'a' in 'chien'
+False
+>>> 'a' in 'CHAT'.lower() # ignorer la casse
+True</pre>
+<p>Pour savoir si un chaîne est au début ou à la fin, utilisez <code>startswith()</code> et <code>endswith()</code> :</p>
+<pre lang="python">>>> 'achat'.startswith('a')
+True
+>>> 'chat'.startswith('a')
+False
+>>> 'acheta'.endswith('a')
+True</pre>
+<p>Pour savoir si la chaîne est d&#8217;un type particulier, utiliser les méthodes <code>is*</code> :</p>
+<pre lang="python">>>> '555'.isdigit()
+True
+>>> ''.isdigit()
+False
+>>> '⑦'.isdigit()
+True
+>>> '444'.isdecimal()
+True
+>>> '444.55'.isdecimal()
+False
+>> '⑦'.isdecimal()
+False
+>>> '879fds'.isalpha()
+False
+>>> 'fsdqfsqd'.isalpha()
+True
+>>> 'fsdqfsqd'.islower()
+True
+>>> 'fsdqFFsqd'.islower()
+False
+>>> '879fds'.isalnum()
+True
+>>> '879fds-'.isalnum()
+False
+>>> ' \t\n'.isspace()
+True
+>>> ' \t\n fdsfd'.isspace()
+False</pre>
+<p>Si vous voulez manipuler la chaîne pour en extraire une partie, utilisez <code>split()</code> (ou <code>rsplit()</code>, <code>lsplit()</code> pour travailler sur la droite ou la gauche de la chaîne) :</p>
+<pre lang="python">>>> s = """Mais, vous savez, moi je ne crois pas qu'il y ait de bonne ou de mauvaise situation. Moi, si je devais résumer ma vie aujourd'hui avec vous, je dirais que c'est d'abord des rencontres, des gens qui m'ont tendu la main, peut-être à un moment où je ne pouvais pas, où j'étais seul chez moi. Et c'est assez curieux de se dire que les hasards, les rencontres forgent une destinée... Parce que quand on a le goût de la chose, quand on a le goût de la chose bien faite, le beau geste, parfois on ne trouve pas l'interlocuteur en face, je dirais, le miroir qui vous aide à avancer. Alors ce n'est pas mon cas, comme je le disais là, puisque moi au contraire, j'ai pu ; et je dis merci à la vie, je lui dis merci et je chante la vie, je danse la vie... Je ne suis qu'amour ! Et finalement, quand beaucoup de gens aujourd'hui me disent "Mais comment fais-tu pour avoir cette humanité ?", et bien je leur réponds très simplement, je leur dis que c'est ce goût de l'amour, ce goût donc qui m'a poussé aujourd'hui à entreprendre une construction mécanique, mais demain, qui sait, peut-être simplement à me mettre au service de la communauté, à faire le don... le don de soi."""
+>>> s.split()
+[u'Mais,', u'vous', u'savez,', u'moi', u'je', u'ne', u'crois', u'pas', u"qu'il", u'y', u'ait', u'de', u'bonne', u'ou', u'de', u'mauvaise', u'situation.', u'Moi,', u'si', u'je', u'devais', u'r\xe9sumer', u'ma', u'vie', u"aujourd'hui", u'avec', u'vous,', u'je', u'dirais', u'que', u"c'est", u"d'abord", u'des', u'rencontres,', u'des', u'gens', u'qui', u"m'ont", u'tendu', u'la', u'main,', u'peut-\xeatre', u'\xe0', u'un', u'moment', u'o\xf9', u'je', u'ne', u'pouvais', u'pas,', u'o\xf9', u"j'\xe9tais", u'seul', u'chez', u'moi.', u'Et', u"c'est", u'assez', u'curieux', u'de', u'se', u'dire', u'que', u'les', u'hasards,', u'les', u'rencontres', u'forgent', u'une', u'destin\xe9e...', u'Parce', u'que', u'quand', u'on', u'a', u'le', u'go\xfbt', u'de', u'la', u'chose,', u'quand', u'on', u'a', u'le', u'go\xfbt', u'de', u'la', u'chose', u'bien', u'faite,', u'le', u'beau', u'geste,', u'parfois', u'on', u'ne', u'trouve', u'pas', u"l'interlocuteur", u'en', u'face,', u'je', u'dirais,', u'le', u'miroir', u'qui', u'vous', u'aide', u'\xe0', u'avancer.', u'Alors', u'ce', u"n'est", u'pas', u'mon', u'cas,', u'comme', u'je', u'le', u'disais', u'l\xe0,', u'puisque', u'moi', u'au', u'contraire,', u"j'ai", u'pu', u';', u'et', u'je', u'dis', u'merci', u'\xe0', u'la', u'vie,', u'je', u'lui', u'dis', u'merci', u'et', u'je', u'chante', u'la', u'vie,', u'je', u'danse', u'la', u'vie...', u'Je', u'ne', u'suis', u"qu'amour", u'!', u'Et', u'finalement,', u'quand', u'beaucoup', u'de', u'gens', u"aujourd'hui", u'me', u'disent', u'"Mais', u'comment', u'fais-tu', u'pour', u'avoir', u'cette', u'humanit\xe9', u'?",', u'et', u'bien', u'je', u'leur', u'r\xe9ponds', u'tr\xe8s', u'simplement,', u'je', u'leur', u'dis', u'que', u"c'est", u'ce', u'go\xfbt', u'de', u"l'amour,", u'ce', u'go\xfbt', u'donc', u'qui', u"m'a", u'pouss\xe9', u"aujourd'hui", u'\xe0', u'entreprendre', u'une', u'construction', u'm\xe9canique,', u'mais', u'demain,', u'qui', u'sait,', u'peut-\xeatre', u'simplement', u'\xe0', u'me', u'mettre', u'au', u'service', u'de', u'la', u'communaut\xe9,', u'\xe0', u'faire', u'le', u'don...', u'le', u'don', u'de', u'soi.']
+>>> s.split()[0]
+u'Mais,'
+>>> s.split()[5:7]
+[u'ne', u'crois']
+>>> s.split(',')
+[u'Mais', u' vous savez', u" moi je ne crois pas qu'il y ait de bonne ou de mauvaise situation. Moi", u" si je devais r\xe9sumer ma vie aujourd'hui avec vous", u" je dirais que c'est d'abord des rencontres", u" des gens qui m'ont tendu la main", u' peut-\xeatre \xe0 un moment o\xf9 je ne pouvais pas', u" o\xf9 j'\xe9tais seul chez moi. Et c'est assez curieux de se dire que les hasards", u' les rencontres forgent une destin\xe9e... Parce que quand on a le go\xfbt de la chose', u' quand on a le go\xfbt de la chose bien faite', u' le beau geste', u" parfois on ne trouve pas l'interlocuteur en face", u' je dirais', u" le miroir qui vous aide \xe0 avancer. Alors ce n'est pas mon cas", u' comme je le disais l\xe0', u' puisque moi au contraire', u" j'ai pu ; et je dis merci \xe0 la vie", u' je lui dis merci et je chante la vie', u" je danse la vie... Je ne suis qu'amour ! Et finalement", u' quand beaucoup de gens aujourd\'hui me disent "Mais comment fais-tu pour avoir cette humanit\xe9 ?"', u' et bien je leur r\xe9ponds tr\xe8s simplement', u" je leur dis que c'est ce go\xfbt de l'amour", u" ce go\xfbt donc qui m'a pouss\xe9 aujourd'hui \xe0 entreprendre une construction m\xe9canique", u' mais demain', u' qui sait', u' peut-\xeatre simplement \xe0 me mettre au service de la communaut\xe9', u' \xe0 faire le don... le don de soi.']
+>>> s.split('.')
+[u"Mais, vous savez, moi je ne crois pas qu'il y ait de bonne ou de mauvaise situation", u" Moi, si je devais r\xe9sumer ma vie aujourd'hui avec vous, je dirais que c'est d'abord des rencontres, des gens qui m'ont tendu la main, peut-\xeatre \xe0 un moment o\xf9 je ne pouvais pas, o\xf9 j'\xe9tais seul chez moi", u" Et c'est assez curieux de se dire que les hasards, les rencontres forgent une destin\xe9e", u'', u'', u" Parce que quand on a le go\xfbt de la chose, quand on a le go\xfbt de la chose bien faite, le beau geste, parfois on ne trouve pas l'interlocuteur en face, je dirais, le miroir qui vous aide \xe0 avancer", u" Alors ce n'est pas mon cas, comme je le disais l\xe0, puisque moi au contraire, j'ai pu ; et je dis merci \xe0 la vie, je lui dis merci et je chante la vie, je danse la vie", u'', u'', u' Je ne suis qu\'amour ! Et finalement, quand beaucoup de gens aujourd\'hui me disent "Mais comment fais-tu pour avoir cette humanit\xe9 ?", et bien je leur r\xe9ponds tr\xe8s simplement, je leur dis que c\'est ce go\xfbt de l\'amour, ce go\xfbt donc qui m\'a pouss\xe9 aujourd\'hui \xe0 entreprendre une construction m\xe9canique, mais demain, qui sait, peut-\xeatre simplement \xe0 me mettre au service de la communaut\xe9, \xe0 faire le don', u'', u'', u' le don de soi', u'']</pre>
+<p>Et n&#8217;oubliez pas que vous pouvez appeler <code>join()</code> derrière.</p>
+<p>Si vous devez altérer la chaîne, utilisez <code>strip()</code> (et <code>rstrip()</code>, <code>lstrip()</code>) ou <code>replace()</code> :</p>
+<pre lang="python">>>> "Les nouilles cuisent au jus de canne".replace('noui', 'coui').replace('cui', 'nui').replace('jus', 'cul').replace('canne', 'jeanne')
+u'Les couilles nuisent au cul de jeanne'
+>>> "                               .                       ".strip()
+u'.'
+>>> "===                               .                       ======".strip("= ")
+u'.'</pre>
+<p>En plus, les chaînes sont itérables, indexables et sliceables, donc :</p>
+<pre lang="python">>>> s = """And I will strike down upon thee with great vengeance and furious anger those who attempt to poison and destroy my brothers. And you will know my name is the Lord when I lay my vengeance upon you!"""
+>>> s[3:30:3]
+u' wltkdnp '
+>>> s.split()
+[u'And', u'I', u'will', u'strike', u'down', u'upon', u'thee', u'with', u'great', u'vengeance', u'and', u'furious', u'anger', u'those', u'who', u'attempt', u'to', u'poison', u'and', u'destroy', u'my', u'brothers.', u'And', u'you', u'will', u'know', u'my', u'name', u'is', u'the', u'Lord', u'when', u'I', u'lay', u'my', u'vengeance', u'upon', u'you!']
+>>> s[0]
+u'A'
+>>> ''.join([(l.upper() if i % 2 else l) for i, l in enumerate(s)])
+u'ANd I wIlL StRiKe dOwN UpOn tHeE WiTh gReAt vEnGeAnCe aNd fUrIoUs aNgEr tHoSe wHo aTtEmPt tO PoIsOn aNd dEsTrOy mY BrOtHeRs. AnD YoU WiLl kNoW My nAmE Is tHe LOrD WhEn I lAy mY VeNgEaNcE UpOn yOu!'</pre>
+<p>Bref, avant de sortir le bazooka, souvenez-vous que vous avez un arsenal déjà très approprié pour traiter les strings, dont les perfs seront en plus probablement meilleures.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-expressions-rationnelles-en-python-parfois-overkill/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">7042</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/08/40375599.jpg" length="107260" type="image/jpg" />	</item>
+		<item>
+		<title>% ou format() en Python ?</title>
+		<link>http://sametmax.com/ou-format-en-python/</link>
+		<comments>http://sametmax.com/ou-format-en-python/#comments</comments>
+		<pubDate>Fri, 21 Jun 2013 10:47:41 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[format]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[string]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6416</guid>
+		<description><![CDATA[Les mails, source d'inspiration.]]></description>
+				<content:encoded><![CDATA[<aside style="text-align:center; font-size:60%"><em>Cet article a été mis à jour et contient maintenant du code Python en version 3</em></aside>
+<p>On a reçu un mail du genre :</p>
+<blockquote><p> Salut les mecs!</p>
+<p> Je me demandais si il valait mieux utiliser format() ou % quand on veut insérer une variable dans une chaîne?<br />
+ Je comprend pas vraiment quelle est la différence entre les deux&#8230;l’un est-il plus rapide? Plus fiable?</p>
+<p> Merci les mecs!</p></blockquote>
+<p>Je suppose que d’autres personnes se posent la même question, du coup je poste ça là une bonne fois pour toutes.</p>
+<p>En résumé : avec le recul, il n’y en a pas de meilleur. C’est une question de facilité d’usage et de lisibilité.</p>
+<p>En effet, <code>%</code> était parti pour être déprécié en Python 3, mais ce n’est jamais arrivé, pour plusieurs raisons :</p>
+<ul>
+<li><code>%</code> est souvent plus court à taper.</li>
+<li><code>le module</code> <code>logging</code> utilise toujours ce format.</li>
+<li>avec Python 3.5, le type <code>bytes</code> va de nouveau utiliser cet opérateur pour le formatage.</li>
+</ul>
+<p>Si votre formatage est simple ou si vous utilisez des bytes ou le module <code>logging</code>, utilisez <code>%</code>:</p>
+<pre lang="python">>>> "je suis hyper %s. Brouuuuahhh" % "content"
+    'je suis hyper content. Brouuuuahhh'</pre>
+<p>L’équivalent avec <code>format()</code> serait :</p>
+<pre lang="python">>>>  "je suis hyper {}. Brouuuuahhh".format("content")
+    'je suis hyper content. Brouuuuahhh'</pre>
+<p>On y gagne pas, c’est plus long à taper car il y a plus de lettres mais aussi parce que qu’il y a beaucoup plus de caractères spéciaux à atteindre sur son clavier : <code>{}.()</code> contre <code>%</code>.</p>
+<p>On table ici sur la facilité et la rapidité d’usage.</p>
+<p>Si votre formatage a beaucoup de variables, que vos variables sont déjà dans un dictionnaire, que votre texte est long ou que vous avez besoin de formats avancés, utilisez <code>format()</code>:</p>
+<pre lang="python">"{value}{unit} ({time:%H:%M:%S})".format(value=3, unit="ppm", time=datetime.now())
+'3ppm (10:53:04)'</pre>
+<p>L’équivalent avec % serait:</p>
+<pre lang="python">date = datetime.now().strftime("%H:%M:%S")
+"%(value)s%(unit)s (%(time)s)" % {"value": 3, "unit": "ppm", "time": date}</pre>
+<p>Moins lisible, plus verbeux. <code>format()</code> gagne toujours dès qu’on a un message complexe. Mais ça n’arrive pas aussi souvent qu’on ne le pense, du coup <code>%</code> a encore de beaux jours devant lui.</p>
+<p>Avec Python 3.6 arrivera une nouvelle manière de faire, les f-strings. Si vous avez la chance d’utiliser la 3.6, les f-strings peuvent remplacer avantageusement la plupart des formes ci-dessus :</p>
+<pre lang="python">>>> value = 3
+>>> unit = "ppm"
+>>> f'{value}{unit} ({datetime.now():%H:%M:%S})'
+'3ppm (10:53:54)'</pre>
+<p>Mais il faudra attendre 2016&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ou-format-en-python/feed/</wfw:commentRss>
+		<slash:comments>26</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">6416</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/06/28-manipulations-photographiques-brillantes-qui-vous-feront-rever8.jpg" length="62178" type="image/jpg" />	</item>
+		<item>
+		<title>Le piège de la méthode strip() des chaînes en Python</title>
+		<link>http://sametmax.com/le-piege-de-la-methode-strip-des-chaines-en-python/</link>
+		<comments>http://sametmax.com/le-piege-de-la-methode-strip-des-chaines-en-python/#comments</comments>
+		<pubDate>Mon, 01 Oct 2012 13:27:45 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[string]]></category>
+		<category><![CDATA[strip]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2309</guid>
+		<description><![CDATA[<a href="http://docs.python.org/library/stdtypes.html?highlight=strip#str.strip">strip()</a>, et ses acolytes <code>lstrip()</code> et <code>rstrip()</code>, ne retirent pas la chaîne de caractères aux extrémités d'une autre chaîne de caractères.]]></description>
+				<content:encoded><![CDATA[<p><a href="http://docs.python.org/library/stdtypes.html?highlight=strip#str.strip">strip()</a>, et ses acolytes <code>lstrip()</code> et <code>rstrip()</code>, ne retirent pas la chaîne de caractères aux extrémités d&#8217;une autre chaîne de caractères.</p>
+<p>Elles retirent des extrémités toutes lettres qui sont dans la chaînes passée en paramètre. La nuance est subtile, mais c&#8217;est la différence entre ça:</p>
+<pre lang="python">>>> "# ##  # test ".strip('# ') # comportement attendu mais faux
+'##  # test '</pre>
+<p>Et ça:</p>
+<pre lang="python">
+>>> "# ##  # test ".strip('# ') # comportement réel
+'test'</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-piege-de-la-methode-strip-des-chaines-en-python/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">2309</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/10/strip-tease.jpg" length="42797" type="image/jpg" />	</item>
+		<item>
+		<title>Comment marchent les &#8220;raw strings&#8221; en Python ?</title>
+		<link>http://sametmax.com/comment-marchent-les-raw-strings-en-python/</link>
+		<comments>http://sametmax.com/comment-marchent-les-raw-strings-en-python/#comments</comments>
+		<pubDate>Tue, 06 Mar 2012 16:13:04 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[string]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=241</guid>
+		<description><![CDATA[Dans certains tutos, notamment ceux sur les expressions rationelles, on recommande d'utiliser les "raw strings", en mettant un "r" devant la déclaration de la chaîne de caractères. Que cela fait-il exactement ?]]></description>
+				<content:encoded><![CDATA[<aside style="text-align:center; font-size:60%"><em>Cet article a été mis à jour et contient maintenant du code Python en version 3</em></aside>
+<p>Dans certains tutos, notamment ceux sur les expressions rationnelles, on recommande d&#8217;utiliser les &#8220;raw strings&#8221;, en mettant un &#8220;r&#8221; devant la déclaration de la chaîne de caractères. </p>
+<p>Par exemple :</p>
+<pre lang="python">
+'1?\d\d?'
+</pre>
+<p>Devient :</p>
+<pre lang="python">
+r'1?\d\d?'
+</pre>
+<p>À quoi cela sert-il ?</p>
+<h2>Voyons d&#8217;abord à quoi cela ne sert pas</h2>
+<ul>
+<li>Créer un type de string particulier. Il n&#8217;y a rien de tel qu&#8217;un type &#8220;raw string&#8221; en Python. La chaîne résultante est une chaîne ordinaire</li>
+<li>Créer une chaîne destinée aux regexes. On utilise particulièrement la notation &#8216;r&#8217; avec les regexs, <strong>mais ce n&#8217;est pas un type dédié</strong></li>
+</ul>
+<p>&#8216;r&#8217; est juste un modificateur, une sorte de paramètre. En effet, quand vous écrivez <code>'Salut !\n'</code>, vous n&#8217;écrivez PAS la chaîne &#8220;Salut ![LB]&#8221;. Vous dites à Python de créer un objet chaîne, de la même manière que vous lui demanderiez une instanciation en faisant <code>MaClasse()</code>.</p>
+<p><strong><code>'Salut !\n'</code> est juste une notation demandant de créer une chaîne, pas la chaîne elle-même</strong>. Cette notation dit à Python : <q>À partir de cet instant dans le programme, tu vas créer un objet chaîne en mémoire, et voici les paramètres que je te donne pour le créer</q>. La notation étant différente, on a l&#8217;illusion d&#8217;écrire la chaîne soi-même, mais en fait ce n&#8217;est pas différent d&#8217;un appel de fonction.</p>
+<p>Quand vous faites <code>'Salut !\n'</code>, vous dites plus précisément à Python : <q>Instancie un objet de type string, met les caractères S, a, l, u, t, espace et point d&#8217;exclamation dedans, suivi d&#8217;un saut de ligne</q>. Cette notation, pour se faciliter la vie, permet de décrire &#8220;saut de ligne&#8221; en écrivant <code>'\n'</code>. Python analyse donc votre chaîne, cherche toutes les combinaisons de caractères spéciaux comme <code>'\n'</code>, <code>'\t'</code>, etc, et quand il crée l&#8217;objet en mémoire, il ajoute un saut de ligne ou une tabulation, et pas les caractères &#8216;\&#8217; puis &#8216;n&#8217; ou &#8216;t&#8217;.</p>
+<h2>Que se passe-t-il si vous voulez réellement ajouter &#8216;\&#8217; et &#8216;n&#8217; ?</h2>
+<p>Il faut utiliser une autre notation, l&#8217;échappement. On utilise un &#8216;\&#8217; pour dire à Python: <q>créer cet objet en mémoire, mais à cet endroit, ne tient pas compte de la combinaison de caractères spéciaux.</q></p>
+<p>Ceci affiche un saut de ligne : <code>print('\n est le caractère de saut de ligne')</code></p>
+<p>Ceci affiche &#8216;\&#8217;, &#8216;n&#8217; puis la phrase :<code> print('\\n est le caractère de saut de ligne')</code></p>
+<p>Mais il existe des cas où c&#8217;est très fastidieux et illisible. Notamment les expressions rationnelles, où les &#8216;\&#8217; font partie intégrante du système.</p>
+<p>Un exemple simple, vous voulez &#8220;C:\Program Files&#8221; dans une phrase :</p>
+<p>Votre regex devra contenir &#8216;\P&#8217;. Sauf qu&#8217;en regex, &#8216;\P&#8217; est un symbole spécial, donc il faut l&#8217;échapper, vous aurez donc &#8216;\\P&#8217;. Sauf qu&#8217;en Python, il faut échapper les &#8216;\&#8217; pour qu&#8217;ils ne soient pas considérés comme caractères spéciaux, vous aurez donc &#8216;\\\\P&#8217;. Sur une regex complexe, ça devient vite très moche, et très dur à déboguer.</p>
+<p>C&#8217;est là qu&#8217;intervient le modificateur &#8216;r&#8217;, qui précise à Python : <q>quand tu vas créer cette chaîne en mémoire, met ces caractères dedans littéralement et considère qu&#8217;il n&#8217;y a aucune combinaison de caractères spéciaux</q>.</p>
+<p>En clair <code>r'\n'</code> sera &#8216;\&#8217; puis &#8216;n&#8217;. Python ne va tout simplement par parser la chaîne, il va l&#8217;utiliser littéralement, d&#8217;où le &#8220;raw&#8221; string.</p>
+<p>Il n&#8217;y a donc rien de spécial dans une chaîne créée avec le modificateur &#8216;r&#8217;, c&#8217;est une chaîne normale, qui est instanciée sans réfléchir par Python, sans chercher à être malin et comprendre des notations spéciales.</p>
+<p>Ça ne veut pas dire qu&#8217;on ne peut pas avoir des sauts de ligne dans une chaîne créée avec &#8216;r&#8217; :</p>
+<pre lang="python">
+>>> print(r"""1 + 1 = 
+... 42""")
+1 + 1
+42
+</pre>
+<p>Ça veut juste dire que les notations spéciales ne seront pas analysées :</p>
+<pre lang="python">
+>>> print('1 + 1 =\n 42')
+1 + 1 =
+42
+>>> print(r'1 + 1 =\n 42')
+1 + 1 =\n 42
+</pre>
+<p>Il est facile de s&#8217;embrouiller les pinceaux à cause du shell Python :</p>
+<pre lang="python">
+>>> 'test\n'
+'test\n'
+>>> r'test\n'
+'test\\n'
+>>> print('test\n')
+test
+
+>>> print(r'test\n')
+test\n
+</pre>
+<p>Il faut savoir que quand on affiche un objet sans utiliser <code>print()</code> dans le shell, ce dernier essaye de vous afficher une représentation de l&#8217;objet de telle sorte qu&#8217;il puisse être copié et collé par un dev, et recréer le même objet. En revanche, <code>print()</code> va afficher du texte formaté pour être lisible par un utilisateur final.</p>
+<p>Enfin, les combinaisons de préfixes peuvent ou non être compatibles:</p>
+<pre lang="python">>>> ur'test\n' 
+  File "<ipython-input-6-334281889b3a>", line 1
+    ur'test\n'
+           ^
+SyntaxError: invalid syntax
+>>> rb'test\n'
+    b'test\\n'</pre>
+<p>Donc si vous faites un code compatible Python 2 et 3 en même temps, faites gaffe.</p>
+<p>Si les <a href="https://www.python.org/dev/peps/pep-0498/">fstrings</a> sont acceptées, &#8216;f&#8217; sera compatible avec &#8216;r&#8217;.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comment-marchent-les-raw-strings-en-python/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">241</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/03/R-6.jpg" length="73934" type="image/jpg" />	</item>
+	</channel>
+</rss>

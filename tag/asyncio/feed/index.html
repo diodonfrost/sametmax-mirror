@@ -1,0 +1,1524 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>asyncio &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/asyncio/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>La débâcle de async en 3.7</title>
+		<link>http://sametmax.com/la-debacle-de-async-en-3-7/</link>
+		<comments>http://sametmax.com/la-debacle-de-async-en-3-7/#comments</comments>
+		<pubDate>Tue, 07 Aug 2018 13:14:40 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[3.7]]></category>
+		<category><![CDATA[async]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=24891</guid>
+		<description><![CDATA[Quand les nouveaux mots clés <code>async</code> et <code>await</code> ont été introduits en Python 3.5, tout le monde a trouvé l'idée formidable. D'ailleurs, ça a été intégré à JavaScript.
+
+Malheureusement, introduire des mots clés dans un langage est une opération très délicate.]]></description>
+				<content:encoded><![CDATA[<p>Quand les nouveaux mots clés <code>async</code> et <code>await</code> ont été introduits en Python 3.5, tout le monde a trouvé l&#8217;idée formidable. D&#8217;ailleurs, ça a été intégré à JavaScript.</p>
+<p>Malheureusement, introduire des mots clés dans un langage est une opération très délicate.</p>
+<h2>Limites et contournements des mots clés</h2>
+<p>En Python les mots clés ont une caractéristique importante : on ne peut pas les utiliser pour quoi que ce soit d&#8217;autre.</p>
+<p>Par exemple, <code>class</code> est un mot clé, donc je ne peux pas créer une variable, un attribut, ou une fonction appelé <code>class</code>. Ceci lève une  erreur:</p>
+<pre lang="python">>>> class = 1
+  File "<stdin>", line 1
+    class = 1
+          ^
+SyntaxError: invalid syntax
+>>> class Foo: pass
+... 
+>>> Foo.class = 1
+  File "<stdin>", line 1
+    Foo.class = 1
+            ^
+SyntaxError: invalid syntax
+>>> </pre>
+<p>Pour cette raison, quand on veut qu&#8217;une variable contienne une classe en Python, on la nomme <code>cls</code>:</p>
+<pre lang="python">>>> class Bar:
+...     @classmethod
+...     def wololo(cls):
+...         print(cls, 'wololo')
+... 
+>>> 
+>>> Bar.wololo()
+<class '__main__.Bar'> wololo
+>>> </pre>
+<p>C&#8217;est aussi pour cela que vous voyez parfois des variables nommées <code>truc_</code>. Souvent <code>from_</code> par exemple, parce que <code>from</code> est un mot clé.</p>
+<p>(pro tip: plutôt que <code>from</code> et <code>to</code>, utilisez <code>src</code> et <code>dest</code>)</p>
+<p>Quand en Python 2 on a introduit <code>True</code> et <code>False</code>, un gros problème s&#8217;ensuivit: soit on en faisait des mots clés, et on pétait tout le code précédent qui utilisait ces mots, soit on en faisait des variables globales.</p>
+<p>Le choix a été de garder la stabilité jusqu&#8217;à la prochaine version majeure, et c&#8217;est pour cela que:</p>
+<ul>
+<li>On peut faire <code>True = False</code> en Python 2. Ouch.</li>
+<li>Python 3 casse ce comportement, et donc ça fait une chose de plus à laquelle il faut penser quand on migre.</li>
+</ul>
+<p>Pour la 3.5, on avait donc ce même problème, avec une cerise sur le gâteau: la lib standard utilisait elle-même la fonction <code>asyncio.async</code>.</p>
+<p>Le choix a donc de faire de <code>async</code> / <code>await</code> des variables globales, et de les transformer en mot clé en 3.7.</p>
+<p>En 3.6, un warning a été ajouté pour rappeler aux gens de migrer leur code.</p>
+<p>C&#8217;est un sacré taf, et ça comporte des risques comme nous allons le voir plus loin. C&#8217;est pour cette raison que l&#8217;ajout d&#8217;un mot clé dans Python est une des choses les plus difficiles à faire passer sur la mailling list python-idea.</p>
+<h2>Arrive la 3.7</h2>
+<p>La 3.7 est sortie avec <a href="http://sametmax.com/python-3-7-sort-de-sa-coquille/">tout un tas de goodies</a>. Youpi. Mais aussi avec le passage de <code>async/await</code> de variables globales à mots clés, cassant la compatibilité ascendante. Quelque chose de rare en Python, et que personnellement j&#8217;aurais réservé pour Python 4, ne serait-ce que pour respecter semver.</p>
+<p>Le résultat, tout un tas de systèmes ont pété: des linux en rolling release, des gens qui ont fait l&#8217;update de Python à la main, des gens qui maintiennent des libs compatibles 3.5 a 3.7&#8230;</p>
+<p>D&#8217;autant que la 3.5 a <code>asyncio.async</code>, mais 3.7 considère ça une erreur.</p>
+<p>Petit exemple avec <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=902788">l&#8217;impact sur debian</a>.</p>
+<h2>Comment on aurait pu éviter ce merdier ?</h2>
+<p>D&#8217;abord, il aurait fallu ne pas introduire asyncio à l&#8217;arrache. Dans mon <a href="http://sametmax.com/guido-van-rossum-soffre-des-vacances-permanentes/">&#8220;au revoir&#8221; à Guido</a>, je disais que je trouvais que les dernières fonctionnalités majeures de Python avaient été mises en oeuvre de manière précipitée.</p>
+<p>Cela se vérifie encore et encore avec asyncio, dont il faudra que je fasse un article pour dire tout ce qui a mal tourné.</p>
+<p>Casser la compatibilité ascendante dans une version mineure n&#8217;est pas acceptable, même si les dégâts sont limités et qu&#8217;on y survivra très bien. </p>
+<p>Le fait qu&#8217;asyncio soit une API marquée comme &#8220;provisional&#8221; n&#8217;a jamais empêché quelqu&#8217;un d&#8217;appeler ses variables <code>async</code>. Après tout on utilise les threads depuis bien longtemps.</p>
+<p>L&#8217;autre problème vient de l&#8217;amateurisme qui se glisse de plus en plus dans le dev. </p>
+<p>C&#8217;est une bonne chose, parce que ça veut dire que la programmation est de plus en plus accessible et accueille de plus en plus de monde. </p>
+<p>Mais cela veut dire aussi qu&#8217;une grosse part la population de programmeurs est aujourd&#8217;hui constituée de personnes qui n&#8217;ont ni les connaissances, compétences ou ressources pour faire les choses correctement.</p>
+<p>On le voit particulièrement dans le monde JavaScript, ou c&#8217;est l&#8217;explosion (là encore, ça mérite un nouvel article). Mais l&#8217;exemple de la 3.7 nous montre que la communauté Python n&#8217;est pas immunisée, et je pense que le problème va s&#8217;amplifier.</p>
+<p>Que veux-je dire par là ?</p>
+<p>Et bien il y a 30 ans, cela ne serait pas venu à l&#8217;esprit de la plupart des devs de compiler quelques choses sans mettre les flags en mode parano pour voir ce qui allait péter. Après tout, quand on code en C, on sait que tout peut imploser à tout moment, alors la prudence est une question de culture.</p>
+<p>Aujourd&#8217;hui par contre, la majorité des devs des langages haut niveau écrivent du code, font quelques tests à la main, et publient ça. D&#8217;autres les utilisent. Font des mises à jour en masse. Aucun ne prennent le temps ne serait-ce que d&#8217;activer les warnings les plus basiques.</p>
+<p>Comme tout est facile à première vue, et c&#8217;est quelque chose dont on fait la promotion pédagogiquement parlant, car ça incite les gens à se lancer, on oublie la complexité inhérente à la programmation.</p>
+<p>Mais il y a une différence colossale entre avoir un code qui marche une fois sur sa machine, et un code prêt pour la production.</p>
+<p>Par exemple en Python, vous pouvez demander l&#8217;activation des <a href="http://sametmax.com/warning-technique-a-un-autre-developpeur-en-python/">warning</a> pour chaque appel avec:</p>
+<pre lang="bash">python -Wd</pre>
+<p>En 3.6, ça implique ceci:</p>
+<pre lang="python">>>> def async():
+...     pass
+... 
+<stdin>:1: DeprecationWarning: 'async' and 'await' will become reserved keywords in Python 3.7</pre>
+<p>L&#8217;info a toujours été là. Prête à être utilisée.</p>
+<p>Mais alors pourquoi ne pas afficher tous les warnings, tout le temps ?</p>
+<p>Et bien si je le fais:</p>
+<pre lang="bash">python -Wa</pre>
+<p>Voilà ce que ça donne quand je lance juste le shell de python 3.6:</p>
+<p><a href="https://0bin.net/paste/ArazA4+bjJ4V06Ql#8A0m+PI7EJcVhN6rwp76HwDbOQ2MWLRayO8IeArGr2N">Voir le code sur 0bin.</a></p>
+<p>Vous comprenez donc bien que ce n&#8217;est PAS activé par défaut. En fait, originalement le message était dans le corps de l&#8217;article, mais j&#8217;ai du le mettre sur 0bin parce que ça faisait planter WordPress. Si.</p>
+<p>A chaque upgrade, il est important de vérifier les warnings pour préparer ses migrations futures.</p>
+<p>Oui, c&#8217;est du boulot.</p>
+<p>En fait&#8230;</p>
+<h2>La programmation, c&#8217;est BEAUCOUP de boulot</h2>
+<p>Même si on arrive maintenant à extraire une frame vidéo en gif en une ligne de commande. </p>
+<p>Surtout maintenant qu&#8217;on y arrive en fait, car on multiplie les agencements hétérogènes de boites noires pour créer nos merveilleux programmes qui font le café.</p>
+<p>Alors on prend des raccourcis. </p>
+<p>Et puis aussi, parce qu&#8217;on ne sait pas. Qui parmi les lecteurs du blog, pourtant du coup appartenant à la toute petite bulle des gens très intéressés par la technique, connaissaient le rôle des warnings et comment les activer ?</p>
+<p>Mais ce n&#8217;est pas le seul problème. Il y a clairement une question d&#8217;attentes et de moyen. </p>
+<p>L&#8217;utilisateur (ou le client) final veut toujours plus, pour moins cher, et plus vite !</p>
+<p>Et le programmeur veut se faire chier le moins possible.</p>
+<p>Comme la complexité des empilements d&#8217;abstractions augmente, cela conduit à ignorer ce sur quoi on se base pour créer ce qui doit combler notre satisfaction immédiate.</p>
+<p>J&#8217;ai parlé d&#8217;amateurs plus haut.</p>
+<p>Mais je ne parle pas simplement de mes élèves. De mes lecteurs.</p>
+<p>Je parle aussi de moi.</p>
+<p>Prenez <a href="https://github.com/sametmax/0bin">0bin</a> par exemple.</p>
+<p>Il n&#8217;est plus à jour. Il n&#8217;a pas de tests unitaires. Il a des bugs ouverts depuis <stong>des années</stong>.</p>
+<p>Ce n&#8217;est pas pro du tout.</p>
+<p>Sauf que je ne suis pas payé pour m&#8217;en occuper, et c&#8217;est bien une partie du problème: nous sommes de nombreux bénévoles à faire tourner la machine a produire du logiciel aujourd&#8217;hui. Donc si je n&#8217;ai pas envie, fuck it !</p>
+<p>Vous imaginez si l&#8217;industrie du bâtiment ou celle de l&#8217;automobile tournaient sur les mêmes principes ?</p>
+<p>La moitié des dessins industriels faits par des bloggers, des étudiants, des retraités, des profs de lycées, des géographes, de biologistes et des postes administratifs ?</p>
+<p>Des immeubles et des voitures dont des pièces sont fabriquées par des potes qui chattent sur IRC et s&#8217;en occupent quand ils ont le temps ? Gratuitement. Y compris le service après-vente.</p>
+<p>Alors que les usagers veulent toujours plus: des normes sismiques et de la conduite autonome. Tout le monde le fait, alors la maison de campagne et la fiat punto, c&#8217;est mort, personne ne l&#8217;utilisera. </p>
+<p>Difficile de maintenir la qualité à cette échelle. </p>
+<p>Il y a tellement de demandes de dev, jamais assez d&#8217;offres, de ressources toujours limitées. </p>
+<p>Et ça grossit. Ça grossit !</p>
+<h2>Aides techniques</h2>
+<p>Ceci dit, à l&#8217;échelle de la PSF, ça aurait dû être évité.</p>
+<p>Avant d&#8217;aborder les aides techniques, il serait bon d&#8217;arrêter les conneries. Je me répète, mais c&#8217;était une vaste dauberie de faire passer <code>async/await</code> en mot clé avant Python 4.</p>
+<p>J&#8217;ai parfaitement conscience du besoin de faire progresser un langage pour ne pas rester coincé dans le passé. Je suis pour <code>async/await</code>, très bonne idée, superbe ajout. Mettre un warning ? Parfait ! Mais on respecte semver s&#8217;il vous plait. Si vous avez envie de faciliter la transition, mettre un import <code>__future__</code>, et inciter les linters à faire leur taff.</p>
+<p>En attendant, pour la suite, Python va faciliter le debuggage.</p>
+<p>Par exemple, depuis la 3.7, les <code>DeprecationWarning</code> sont activés par défaut au moins dans le module <code>__main__</code>. Donc un développeur verra ses conneries bien plus rapidement.</p>
+<p>E.G:</p>
+<p>Imp est déprécié en 3.6, mais sans -Wd, on ne le voit pas:</p>
+<pre lang="bash">$ python3.6
+Python 3.6.5 (default, May  3 2018, 10:08:28) 
+[GCC 5.4.0 20160609] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import imp</pre>
+<p>En 3.7, plein de modules importent <code>imp</code>, mais les <code>DeprecationWarning</code> ne sont pas montrés, car ça arrive dans des codes importés. En revanche, si dans le module principal, vous importez <code>imp</code>:</p>
+<pre lang="bash">$ python3.7 
+Python 3.7.0+ (default, Jun 28 2018, 14:08:14) 
+[GCC 5.4.0 20160609] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import imp
+__main__:1: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses
+</pre>
+<p>Ça donne une info importante, sans foutre un mur de warnings à chaque lancement.</p>
+<p>Une autre aide est l&#8217;apparition, toujours en 3.7, du mode développement de Python avec <code>-X dev</code> qui active tout un tas de comportements aidant au développement:</p>
+<ul>
+<li>active <code>-Wd</code></li>
+<li>appelle <code>PyMem_SetupDebugHooks</code></li>
+<li>active <code>faulthandler</code></li>
+<li>active le mode debug de asyncio</li>
+<li>met <code>sys.flags.dev_mode</code> sur <code>True</code></li>
+</ul>
+<p>Évidemment, tout ça ne sert pas à grand-chose si on ne sait pas ce qu&#8217;il faut en faire. Et ça demande du temps et du travail, ce que l&#8217;amateurisme ne permet pas forcément.</p>
+<p>Enfin je dis ça. La plupart des employeurs s&#8217;attendent à tout, tout de suite également. Donc au final, n&#8217;est-ce pas la culture générale de notre industrie qui est en train de virer dangereusement vers le vite fait mal fait ?</p>
+<p>Même si il y a clairement une question de compétence (un prof de maths est généralement compétent en maths, alors que j&#8217;attends toujours de rencontrer un prof d&#8217;info qui est capable de mettre quelque chose en prod), la pression du marché a créé des attentes impossibles&#8230;</p>
+<p>L&#8217;informatique n&#8217;existe comme secteur économique que depuis quelques décennies, contre des siècles pour la plupart des autres disciplines scientifiques. Pourtant on exige d&#8217;elle le même niveau de productivité. Il a bien fallut rogner quelque part, et c&#8217;est la fiabilité qu&#8217;on a choisit.</p>
+<p>Quand il y 20 ans, on rigolait en comparant le debuggage de Windows a la réparation d&#8217;une voiture, et la punchline sur le redémarrage, ce n&#8217;était pas grave: un peu de virtuel dans un monde plein d&#8217;encyclopédies papier, de cabines ou bottins téléphoniques et autres cartes routières.</p>
+<p>Aujourd&#8217;hui que notre monde entier dépend du fonctionnement de nos conneries codées à l&#8217;arrache, c&#8217;est plus emmerdant. Et ça explique aussi pourquoi le téléphone de ma grand mère fonctionne toujours mieux pour faire des appels que mon putain de smartphone a 600 euros. Mais je peux draguer une meuf par texto en faisant caca à l&#8217;aéroport. Tout a un prix.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-debacle-de-async-en-3-7/feed/</wfw:commentRss>
+		<slash:comments>27</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">24891</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/08/WSwts2q.jpg" length="25573" type="image/jpg" />	</item>
+		<item>
+		<title>Super article invité sur Trio que l&#8217;auteur a oublié de titrer</title>
+		<link>http://sametmax.com/super-article-invite-sur-trio-que-lauteur-a-oublie-de-titrer/</link>
+		<comments>http://sametmax.com/super-article-invite-sur-trio-que-lauteur-a-oublie-de-titrer/#comments</comments>
+		<pubDate>Thu, 14 Jun 2018 07:39:52 +0000</pubDate>
+		<dc:creator><![CDATA[touilleMan]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[async]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[await]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[trio]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=24605</guid>
+		<description><![CDATA[C'est bon vous avez cédé à la hype ?]]></description>
+				<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/touilleMan">touilleMan</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<p>C&#8217;est bon vous avez cédé à la hype ?</p>
+<p>Après un n-ème talk sur asyncio vous avez été convaincu que tout vos sites webs doivent être recodé dans cette techno ? Oui, surtout celui de la mairie de Gaudriole-sur-Gironde avec ses 50 visiteurs/jour, Django ça scalera pas et vous aurez sûrement besoin de websockets à l&#8217;avenir.</p>
+<p>Et puis là pan ! En commençant à utiliser asyncio on se rend compte que ça va pas être aussi marrant que ce que vous a vendu l&#8217;enfoiré de hipster dans son talk avec son exemple de crawler web en 20 lignes :</p>
+<ul>
+<li>la doc de asyncio fait 50 putain de pages, <a href="http://lucumr.pocoo.org/2016/10/30/i-dont-understand-asyncio/">même les plus grands déclarent ne rien y comprendre</a></li>
+<li>pdb est aux fraises, un step-over sur un <code>await</code> vous envoi à perpet&#8217; dans l&#8217;event loop</li>
+<li>il faut passer l&#8217;event loop en tant qu&#8217;argument à chaque fonction, évidemment vous n&#8217;allez pas le faire et utiliser <code>get_event_loop()</code> à la place. Et ça va merder sévère à un moment (typiquement quand vous ajouterez des tests non triviaux), et vous allez devoir corriger tout votre code.</li>
+<li>régulièrement une stacktrace d&#8217;une coroutine ayant crashé dégueule de stdout sans que le programme ne bronche, autant de je m&#8217;en foutisme on se croirait revenu en PHP !</li>
+<li>parlons-en de la stacktrace ! Impossible de savoir d&#8217;où vient la coroutine, encore une fois on nous renvoi dans les méandres de l&#8217;event loop.</li>
+<li>Et pour initialiser/finaliser proprement votre système alors là c&#8217;est la fête totale</li>
+</ul>
+<p>Je ne parle même pas des soucis ceinture-noir-2ème-dan du genre high-water mark qui vous tomberons dessus une fois l&#8217;appli en prod.</p>
+<p>Lourd est le parpaing de la réalité sur la tartelette aux fraises de nos illusions&#8230;</p>
+<h2>1 &#8211; Pourquoi c&#8217;est (de) la merde ?</h2>
+<p>Pour faire simple asyncio a été pensé à la base comme une tentative de standardisation de l&#8217;écosystème asynchrone Python où chaque framework (Twisted et Tornado principalement) était incompatible avec les autres et devait re-créer son écosystème de zéro.</p>
+<p>C&#8217;était la bonne chose à faire à l&#8217;époque, ça a eu beaucoup de succès (Twisted et Tornado sont maintenant compatible asyncio), ça a donné une killer-feature pour faire taire les rageux au sujet de Python 3 et ça a créé une émulsion formidable concernant la programmation asynchrone en Python.<br />
+Mais dans le même temps ça a obligé cette nouvelle lib à hériter des choix historiques des anciennes libs : les callbacks.</p>
+<p>Pour faire simple un framework asynchrone c&#8217;est deux choses :</p>
+<ul>
+<li>une grosse boucle infinie (la fameuse « event loop ») qui a configuré les appels d&#8217;IO au kernel en mode non-bloquant et qui poll ceux-ci en continu</li>
+<li>un mécanisme pour garder trace de quel bout de code exécuter quand une IO donnée aura été terminée</li>
+</ul>
+<p>Concernant le 2ème point, cela veut dire que si on a une fonction synchrone comme ceci :</p>
+<pre lang="python">def listen_and_answer(sock):
+    print('start')
+    data = sock.read()
+    print('working with %s' % data)
+    sock.write('ok')
+    print('done')
+</pre>
+<p>Il faut trouver un moyen pour la découper en une série de morceaux de codes et d&#8217;IO.</p>
+<p>Il y la façon « javascript », où on découpe à la main comme un compilo déroulerai une boucle :</p>
+<pre lang="python">def listen_and_answer(sock):
+    print('start')
+
+    def on_listen(data):
+        print('working with %s' % data)
+
+        def on_write(ret):
+            print('done')
+
+        sock.write('ok', on_write)
+
+    sock.read(on_listen)
+</pre>
+<p>Et là j&#8217;ai fait la version simple sans chercher à gérer les exceptions et autres joyeusetés. Autant dire que quand un vieux dev Twisted vous dit le regard vide et la voix chevrotante qu&#8217;il a connu l&#8217;enfer, ne prenez pas ses déclarations à la légère.</p>
+<p>Sinon la façon async/await si chère à asyncio :</p>
+<pre lang="python">async def listen_and_answer(sock):
+    print('start')
+    data = await sock.read()
+    print('working with %s' % data)
+    await sock.write('ok')
+    print('done')
+</pre>
+<p>C&#8217;est clair, c&#8217;est propre, la gestion des exceptions est totalement naturelle, bref c&#8217;est du Python dans toute sa splendeur.<br />
+Sauf que non, tout ça n&#8217;est qu&#8217;un putain d&#8217;écran de fumée : pour être compatible avec Twisted&amp;co sous le capot asyncio fonctionne avec des callbacks.</p>
+<p>Vous vous souvenez de cette sensation de détresse mêlée d’hilarité devant une stacktrace d&#8217;un projet Javascript lambda d&#8217;où vous ne reconnaissez que la première ligne ? C&#8217;est ça les callbacks, et c&#8217;est ça que vous avez dans asyncio.</p>
+<p>Concrètement le soucis vient du fait qu&#8217;une callback n&#8217;est rien d&#8217;autre qu&#8217;une fonction passée telle qu&#8217;elle sans aucune information quant à d&#8217;où elle vient. De fait impossible pour l&#8217;event loop asynchrone de reconstruire une callstack complète à partir de cela.<br />
+Heureusement async/await permettent à python de conserver ces informations de fonction appelante ce qui limite un peu le problème avec asyncio.<br />
+Toutefois en remontant suffisamment haut on finira toujours avec une callback quelque part. Et vous savez qui a l&#8217;habitude de remonter aussi haut que nécessaire ? Les exceptions.</p>
+<pre lang="python">import asyncio
+import random
+
+async def succeed(client_writer):
+    print('Lucky guy...')
+    # Googlez "ayncio high water mark" pour comprender pourquoi c'est
+    # une idée à la con de ne pas avoir cette methode asynchrone
+    client_writer.write(b'Lucky guy...')
+
+async def fail(client_writer):
+    raise RuntimeError('Tough shit...')
+
+async def handle_request_russian_roulette_style(client_reader, client_writer):
+    handlers = (
+        succeed,
+        succeed,
+        succeed,
+        fail,
+    )
+    await handlers[random.randint(0, 3)](client_writer)
+    client_writer.close()
+
+async def start_server():
+    server = await asyncio.start_server(
+        handle_request_russian_roulette_style,
+        host='localhost', port=8080)
+    await server.wait_closed()
+
+asyncio.get_event_loop().run_until_complete(start_server())
+</pre>
+<p>Maintenant si on lance tout ça et qu&#8217;on envoie des <code>curl localhost:8080</code> on va finir avec:</p>
+<pre lang="bash">$ python3 russian_roulette_server.py
+Lucky guy...
+Lucky guy...
+Task exception was never retrieved
+future:  exception=RuntimeError('Tough shit...',)&gt;
+Traceback (most recent call last):
+  File "ex.py", line 18, in handle_request_russian_roulette_style
+    await handlers[random.randint(0, 3)](client_writer)
+  File "ex.py", line 9, in fail
+    raise RuntimeError('Tough shit...')
+RuntimeError: Tough shit...
+Lucky guy...
+Task exception was never retrieved
+future:  exception=RuntimeError('Tough shit...',)&gt;
+Traceback (most recent call last):
+  File "ex.py", line 18, in handle_request_russian_roulette_style
+    await handlers[random.randint(0, 3)](client_writer)
+  File "ex.py", line 9, in fail
+    raise RuntimeError('Tough shit...')
+RuntimeError: Tough shit...
+</pre>
+<p>Le problème saute aux yeux: <code>asyncio.start_server</code> gère sa tambouille avec des callbacks et se retrouve bien embêté quand notre code remonte une exception. Du coup il fait au mieux en affichant la stacktrace et en faisant comme si de rien n&#8217;était. C&#8217;est peut-être le comportement qu&#8217;on attend d&#8217;un serveur web (encore que&#8230; si aviez configuré logging pour envoyer dans un fichier vous êtes bien baïzay) mais il existe des tonnes de usecases pour lesquels ça pose problème (et de toute façon on n&#8217;a vu que la partie émergée de l&#8217;iceberg d&#8217;emmerdes qu&#8217;est la programmation asynchrone).</p>
+<p>Bref, si vous voulez en savoir plus, allez lire <a href="https://vorpus.org/blog/some-thoughts-on-asynchronous-api-design-in-a-post-asyncawait-world/">ce post</a>, d&#8217;ailleurs allez lire tous les posts du blog, ce mec est un génie.</p>
+<h2>2 &#8211; Trio, une façon de faire de l&#8217;asynchrone</h2>
+<p>Ce mec en question, c&#8217;est Nathaniel J. Smith et il a eu la très cool idée de créer sa propre lib asynchrone pour Python: <a href="https://trio.readthedocs.io/">Trio</a></p>
+<p>L&#8217;objectif est simple: rendre la programmation asynchrone (presque) aussi simple que celle synchrone en s&#8217;appuyant sur les nouvelles fonctionnalités offertes par les dernières versions de Python ainsi qu&#8217;un paradigme de concurrence innovant. Cette phrase est digne d&#8217;un marketeux, vous avez le droit de me cracher à la gueule.</p>
+<p>Concrètement ce que ça donne:</p>
+<pre lang="python"># pip install trio asks beautifulsoup4
+import trio
+import asks
+import bs4
+import re
+
+
+# Asks est un grosso modo requests en asynchrone, vu qu'il supporte trio et curio
+# (une autre lib asynchrone dans le même style), il faut donc lui dire lequel utiliser
+asks.init('trio')
+
+
+async def recursive_find(url, on_found, depth=0):
+    # On fait notre requête HTTP en asynchrone
+    rep = await asks.get(url)
+    print(f'depth {depth}, try {url}...')
+
+    # On retrouve le corps de l'article grace à beautiful soup
+    soup = bs4.BeautifulSoup(rep.text, 'html.parser')
+    body = soup.find('div', attrs={"id": 'mw-content-text'})
+
+    # On cherche notre point Godwin
+    if re.search(r'(?i)hitler|nazi|adolf', body.text):
+        on_found(url, depth)
+
+    else:
+        async with trio.open_nursery() as nursery:
+            # On retrouve tous les liens de l'article et relance le recherche
+            # de manière récursive
+            for tag in body.find_all('a'):
+                if tag.has_attr('href') and tag.attrs['href'].startswith('/wiki/'):
+                    child_link = 'https://en.wikipedia.org' + tag.attrs['href']
+                    # On créé une nouvelle coroutine par lien à crawler
+                    nursery.start_soon(recursive_find, child_link, on_found, depth+1)
+
+
+async def godwin_find(url):
+    results = []
+
+    with trio.move_on_after(10) as cancel_scope:
+        def on_found(found_url, depth):
+            results.append((found_url, depth))
+            cancel_scope.cancel()
+
+        await recursive_find(url, on_found)
+
+    if results:
+        found_url, depth = results[0]
+        print(f'Found Godwin point in {found_url} (depth: {depth})')
+    else:
+        print('No point for this article')
+
+
+trio.run(godwin_find, 'https://en.wikipedia.org/wiki/My_Little_Pony')
+</pre>
+<p>L&#8217;idée de ce code est, partant d&#8217;un article wikipedia, de crawler ses liens récursivement jusqu&#8217;à ce qu&#8217;on trouve un article contenant des mots clés.</p>
+<p>Au niveau des trucs intéressants:</p>
+<pre lang="python">async with trio.open_nursery() as nursery:
+    for tag in body.find_all('a'):
+        if tag.has_attr('href') and tag.attrs['href'].startswith('/wiki/'):
+            child_link = 'https://en.wikipedia.org' + tag.attrs['href']
+            nursery.start_soon(recursive_find, child_link, on_found, depth+1)
+</pre>
+<p>En trio, une coroutine doit forcément être connectée à une nurserie. Cela permet deux choses:</p>
+<ul>
+<li>Rattacher la coroutine à sa coroutine parente, de cette façon (et vu que trio est implémenté intégralement en utilisant async/await au lieu de callbacks), on a donc une stacktrace claire et une exception sera toujours propagée jusqu&#8217;à la racine du programme si il le faut.</li>
+<li>Borner la durée de vie de la coroutine. La nurserie est un context manager asynchrone, une fois qu&#8217;on arrive à la fin du <code>async with</code>, la nursery bloque tant que toutes les coroutines qu&#8217;elle gère n&#8217;ont pas terminé. Si une coroutine raise une exception, la nursery va pouvoir cancel les autres coroutines avant de re-raise l&#8217;exception en question (cf. le point précédent)</li>
+</ul>
+<p>Quel intérêt à borner la durée de vie des coroutines ? Si on avait voulu écrire un truc équivalent en asyncio on aurait sans doute utilisé <code>asyncio.gather</code>:</p>
+<pre lang="python">coroutines = [recursive_find(link) for link in links]
+await asyncio.gather(coroutines)
+</pre>
+<p>Maintenant on fait tourner ce code avec une connection internet un peu faiblarde (au hasard sur la box Orange de Sam ces temps ci&#8230;) les ennuis auraient commencé dès qu&#8217;une requête http aurait timeout.<br />
+L&#8217;exception de timeout aurait été récupérée par <code>asyncio.gather</code> qui l&#8217;aurait relancé sans pour autant fermer les autres coroutines qui auraient continué à crawler wikipedia en créant des centaines de coroutines (oui <code>recursive_find</code> est un peu bourrin).<br />
+De fait si on se place dans le cas d&#8217;un code tournant longtemps (typiquement on a un serveur web qui a lancé notre code dans le cadre du traitement d&#8217;une requête entrante) on va avoir bien du mal à retrouver l&#8217;état ayant mené à ce bordel.</p>
+<p>Du coup en trio la seule solution pour avoir une coroutine qui survit à son parent c&#8217;est de lui passer une nursery en paramètre:</p>
+<pre lang="python">async def work(sleep_time, nursery):
+    await trio.sleep(sleep_time)
+    print('work done !')
+    # Je vous ai dit qu'une nurserie contient automatiquement un cancel scope ?
+    nursery.cancel_scope.cancel()
+
+async def work_generator(nursery):
+    print('bootstrapping...')
+    await trio.sleep(1)
+    for sleep_time in range(10):
+        nursery.start_soon(work, sleep_time, nursery)
+
+async def stop_a_first_work_done():
+    async with trio.open_nursery() as nursery:
+        await work_generator(nursery)
+        print('Waiting for a work to finish...')
+</pre>
+<p>Un autre truc cool:</p>
+<pre lang="python">with trio.move_on_after(10) as cancel_scope:
+    def on_found(found_url, depth):
+        results.append((found_url, depth))
+        cancel_scope.cancel()
+
+    await recursive_find(url, on_found)
+</pre>
+<p>Vu qu&#8217;en trio on se retrouve avec un arbre de coroutines, il est très facile d&#8217;appliquer des conditions sur un sous-ensemble de l&#8217;arbre. C&#8217;est le rôle des cancel scope.<br />
+Comme pour les nursery, les cancel scope sont des contexts managers (mais synchrone ceux-ci). On peut les configurer avec un timeout, une deadline, ou bien tout simplement les annuler manuellement via <code>cancel_scope.cancel()</code>.</p>
+<p>Dans notre exemple, on définit un scope dont on sortira obligatoirement au bout de 10s. Pour éviter d&#8217;attendre pour rien, on annule le scope explicitement dans la closure appelée quand un résultat est trouvé.<br />
+Vu que les nurseries définies à chaque appel de <code>recursive_find</code> se trouvent englobées par notre cancel scope, elles seront automatiquement détruites (et toutes les coroutines qu&#8217;elles gèrent avec).</p>
+<p>Pour faire la même chose avec asyncio bonne chance:</p>
+<ul>
+<li>soit on passe un argument de timeout à notre appel pour récupérer la requête HTTP, mais dans ce cas pour peu que chaque requête soit individuellement plus courte que le timeout on ne s&#8217;arrêtera jamais</li>
+<li>soit on gère à la mano le temps à coup de <code>time.monotonic()</code> en passant le temps restant autorisé aux coroutines filles. Bonjour la gueule du code.</li>
+</ul>
+<p>En plus <a href="https://vorpus.org/blog/timeouts-and-cancellation-for-humans/">comme en parlait un mec</a> (décidemment !), la gestion du timeout dans une socket tcp est foireuse, il suffit de recevoir un paquet (et une requête entière peut contenir beaucoup de paquets !) pour que le timeout soit remis à zéro. Donc encore une fois pas de garanties fortes quant à quand le code s&#8217;arrêtera.</p>
+<h2>3 &#8211; <strong>Eeeeet c&#8217;est tout !</strong></h2>
+<p>Au final la doc de l&#8217;api de trio pourrait tenir sur l&#8217;étiquette de mon slip: pas de promise, de futurs, de tasks, de pattern Protocol/Transport legacy. On se retrouve juste avec la sainte trinité (j&#8217;imagine que c&#8217;est de là que vient le nom) async/await, nursery, cancel scope.</p>
+<p>Et évidemment maintenant, l&#8217;enfoiré de hipster qui vous vend une techno à coup de whao effect avec un crawler asynchrone de 20 lignes c&#8217;est moi&#8230;</p>
+<p>Remarquez si vous préférez la version longue je vous conseil <a href="https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-considered-harmful/">cet excellent article</a> de Nathaniel (je vous ai dit que ce mec était un génie ?).</p>
+<h2>4 &#8211; L&#8217;écosystème</h2>
+<p>C&#8217;est là où on se rend compte que asyncio est malgré ses lacunes une super idée: il a suffit d&#8217;écrire une <a href="https://github.com/python-trio/trio-asyncio">implémentation de l&#8217;event loop asyncio en trio</a> pour pouvoir utiliser tout l&#8217;écosystème asyncio (ce qui inclus donc Twisted et Tornado, snif c&#8217;est beau !).</p>
+<p>Allez pour le plasir un exemple d&#8217;utilisation de asyncpg depuis trio:</p>
+<pre lang="python">import trio_asyncio
+import asyncpg
+
+
+class TrioConnProxy:
+    # Le décorateur permet de marquer la frontière entre trio et asyncio
+    @trio_asyncio.trio2aio
+    async def init(self, url):
+        # Ici on est donc dans asyncio
+        self.conn = await asyncpg.connect(url)
+
+    @trio_asyncio.trio2aio
+    async def execute(self, *args):
+        return await self.conn.execute(*args)
+
+    @trio_asyncio.trio2aio
+    async def fetch(self, *args):
+        return await self.conn.fetch(*args)
+
+
+async def main():
+    # Ici on est dans trio, c'est la fête
+
+    conn = TrioConnProxy()
+    await conn.init('postgresql:///')
+
+    await conn.execute('CREATE TABLE IF NOT EXISTS users(name text primary key)')
+
+    for name in ('Riri', 'Fifi', 'Loulou'):
+        await conn.execute('INSERT INTO users(name) VALUES ($1)', name)
+
+    users = await conn.fetch('SELECT * FROM users')
+    print('users:', [user[0] for user in users])
+
+
+# trio_asyncio s'occupe de configurer l'event loop par défaut de asyncio
+# puis lance le <code>trio.run</code> classique trio_asyncio.run(main)</pre>
+<p>En plus de ça trio vient avec son module pytest (avec gestion des fixtures asynchrones s&#8217;il vous plait) et Keneith Reitz a promis que la prochain version de requests supporterait async/await et <a href="https://gist.github.com/kennethreitz/fab0f200f47cfa7926607043aed2b483">trio nativement</a>, elle est pas belle la vie !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/super-article-invite-sur-trio-que-lauteur-a-oublie-de-titrer/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">24605</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/06/0ivzB23.jpg" length="28055" type="image/jpg" />	</item>
+		<item>
+		<title>Go to (in asyncio) considered harmful</title>
+		<link>http://sametmax.com/go-to-in-asyncio-considered-harmful/</link>
+		<comments>http://sametmax.com/go-to-in-asyncio-considered-harmful/#comments</comments>
+		<pubDate>Thu, 07 Jun 2018 07:31:29 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[goto]]></category>
+		<category><![CDATA[nursery]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[trio]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=24534</guid>
+		<description><![CDATA[Dijkstra était un intellectuel pédant mais quand il a écrit cette lettre célèbre, il a comme souvent mis le doigt sur un truc fondamental. Et quand l'auteur de <a href="https://github.com/python-trio/trio">Trio</a>, une stack toute neuve concurrente d'<code>asyncio</code>, <a href="https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-considered-harmful/">lui a fait écho</a> 50 ans plus tard, ça a beaucoup discuté sur les mailing lists et les bugs trackers.]]></description>
+				<content:encoded><![CDATA[<p>Dijkstra était un intellectuel pédant, mais quand il a écrit cette lettre célèbre, il a comme souvent mis le doigt sur un truc fondamental. Et quand l&#8217;auteur de <a href="https://github.com/python-trio/trio">Trio</a>, une stack toute neuve concurrente d&#8217;<code>asyncio</code>, <a href="https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-considered-harmful/">lui a fait écho</a> 50 ans plus tard, ça a beaucoup discuté sur les mailing lists et les bugs trackers.</p>
+<p>Nathaniel J. Smith, le dev susnommé, en a profité pour introduire une nouvelle primitive, actuellement surnommée <a href="http://trio.readthedocs.io/en/latest/reference-core.html#nurseries-and-spawning">la nursery</a>, pour répondre au problème. Une idée visiblement tellement bonne que notre Yury préféré <a href="https://twitter.com/1st1/status/989198832910192640">a décidé</a> de la porter à <code>asyncio</code>. La boucle d&#8217;événements est bouclée, si je puis dire.</p>
+<p>Mais une autre chose intéressante en découle : on a mis en lumière la présence d&#8217;un <a href="https://en.wikipedia.org/wiki/Goto">goto</a> dans asyncio, et qu&#8217;il y a de bonnes pratiques, <a href="https://github.com/python/asyncio/issues/477#issuecomment-269038238">validées par Guido himself</a>, pour coder avec cette lib pour éviter les douleurs.</p>
+<h2>What the fuck are you talking about ?</h2>
+<p>Le problème du <code>goto</code>, c&#8217;est que l&#8217;instruction permet d&#8217;aller de n&#8217;importe où à n&#8217;importe où. Cela rend le flux du programme très dur à suivre. Pour éviter cela, on a catégorisé les usages clean du <code>goto</code>: répéter une action, changer de comportement en fonction d&#8217;un test, sortir d&#8217;un algo en cas de problème, etc. Et on en a fait des primitives : les <code>if</code>, les <code>while</code>, les exceptions&#8230; Dans les langages les plus modernes, on a carrément viré le <code>goto</code> pour éviter les abus et erreurs. Joie.</p>
+<p>Dans <code>asyncio</code>, le &#8220;goto&#8221; en question se trouve quand on veut lancer des tâches en arrière plan, comme ceci :</p>
+<pre lang="python">import asyncio as aio
+loop = aio.get_event_loop()
+aio.ensure_future(foo())  # GOTO !
+aio.ensure_future(bar())  # GOTO !
+loop.run_forever()</pre>
+<p>Le problème d&#8217;<code>ensure_future()</code> est multiple:</p>
+<ul>
+<li>Comme son nom l&#8217;indique, cette fonction retourne un objet&#8230; <code>Task</code>. Ca n&#8217;a rien à voir, mais je tenais à dire à quel point c&#8217;était con de l&#8217;avoir nommé ainsi (même si techniquement, <code>Task</code> hérite de <code>Future</code>).</li>
+<li>Cette ligne ne garantit en aucun cas que <code>foo()</code> ou <code>bar()</code> seront terminées à une zone précise du code. Tout au plus que tuer la boucle tue les taches. Leur flux d’exécution est complètement freestyle et décorrélé de tout le reste du programme, ainsi que de l&#8217;une de l’autres. Si ces coroutines font des <code>await</code>, on peut basculer de n&#8217;importe où du programme vers elles et inversement à tout moment. <code>goto</code></li>
+<li>Cette ligne schedule le démarrage de <code>foo()</code> et <code>bar()</code> dès que la boucle peut les lancer. Ici la boucle ne tourne pas encore. Plus le programme est complexe, plus il va devenir difficile de savoir à quelle étape logique les coroutines vont démarrer.</li>
+</ul>
+<p>En prime <code>run_forever()</code> est un piège à con, car les exceptions qui arrivent dans la boucle sont logguées, mais ne font pas crasher le programme, ce qui rend le debuggage super rude, même avec <a href="https://docs.python.org/3/library/asyncio-dev.html#debug-mode-of-asyncio">debug mode</a> activé (dont de toute façon personne ne soupçonne l&#8217;existence).</p>
+<h2>La solution asyncio</h2>
+<pre lang="python">
+import asyncio as aio
+loop = aio.get_event_loop()
+loop.run_until_complete(aio.gather(foo(), bar())
+</pre>
+<p>En plus d&#8217;être plus court, les exceptions vont faire planter le programme, la loop s&#8217;arrêtera quand les coroutines auront fini leur taff, leur flux a un début et une fin encapsulés par le <code>gather()</code>. Ceci est encore plus visible si on met le même code à l&#8217;intérieur d&#8217;une coroutine à l&#8217;intérieur d&#8217;une coroutine à l&#8217;intérieur d&#8217;une coroutine plutôt qu&#8217;à la racine du programme. En effet dans un exemple si simple, on se borne au démarrage et à l&#8217;arrêt de la boucle. Mais je suis paresseux.</p>
+<p>Donc, c&#8217;est la bonne pratique, mais tout le monde ne le sait pas.</p>
+<p>Pardon, correction.</p>
+<p>Tous les devs Python ne connaissent pas <code>asyncio</code>. Parmi ceux qui connaissent <code>asyncio</code>, une petite partie comprend comme ça marche.</p>
+<p>Dans ce lot rikiki, un pouillième sait que c&#8217;est la bonne pratique.</p>
+<p>En fait, <code>gather()</code> est probablement la fonction la plus importante d&#8217;<code>asyncio</code>, et pourtant elle apparaît à peine dans la doc. C&#8217;est la malédiction d&#8217;<code>asyncio</code>, une lib que tout le monde attendait pour propulser Python dans la league des langages avec frameworks modernes, mais qui commence à peine à devenir utilisable par le commun des mortel en 2018. Et encore.</p>
+<p>Il ne faut jamais utiliser <code>ensure_future()</code> à moins de vouloir attacher un callback à la main dessus, ce qui n&#8217;est probablement jamais ce que vous voulez à cette époque merveilleuse ou existe <code>async/await</code>. <code>ensure_future()</code> est un <code>goto</code>, <code>gather()</code> est un concept de plus haut niveau.</p>
+<p>Mais deux problèmes demeurent&#8230;</p>
+<p>Contrairement au <code>goto</code> banni de Python, <code>ensure_future()</code> est là, et va rester. Donc n&#8217;importe quel connard peut dans un code ailleurs vous niquer profond, et en tâche de fond.</p>
+<p><code>ensure_future()</code> (ou son petit frère <code>EventLoop.create_task()</code>) reste le seul moyen valable pour lancer une tâche, faire quelque chose, lancer une autre tâche, puis enfin faire un <code>gather()</code> sur les deux tâches:</p>
+<pre lang="python">
+async def grrr():
+    task1 = aio.ensure_future(foo())
+    # faire un truc pendant que task1 tourne
+    task2 = aio.ensure_future(bar())
+    # faire un truc pendant que task1 et task2 tournent
+    # On s'assure que tout se rejoint à la fin:
+    await aio.gather(task1, task2)
+</pre>
+<p>Et puis, faire une pyramide de <code>gather()</code> dans tout son code pour s&#8217;assurer que tout va bien de haut en bas, c&#8217;est facile à rater.</p>
+<h2>La nursery : la solution de trio</h2>
+<p>Une nursery agit comme un scope qui pose les limites du cycle de vie des tâches qui lui sont attachées. C&#8217;est un <code>gather()</code>, sous stéroide, et avec une portée visuellement claire:</p>
+<pre lang="python">
+async def grrr():
+    async with trio.open_nursery() as nursery:
+        task1 = nursery.start_soon(foo)
+        # faire un truc pendant que task1 tourne
+        task2 = nursery.start_soon(bar)
+        # faire un truc pendant que task1 et task2 tournent
+</pre>
+<p>Les taches sont garanties, à la sortie du <code>with</code>, de se terminer. Le <code>ensure_future()</code> n&#8217;a pas d&#8217;équivalent en trio, et donc aucun moyen de lancer un truc dans le vent sans explicitement lui passer au moins une nursery à laquelle on souhaite l&#8217;attacher.</p>
+<p>Résultat, on ne peut plus faire de <code>goto</code>, et le flux du program est clair et explicite.</p>
+<p>Notez que, tout comme <code>if</code> et <code>while</code> ne permettaient rien qu&#8217;un utilisateur soigneux de <code>goto</code> ne pouvait faire, la nursery ne permet rien qu&#8217;un utilisateur soigneux de <code>ensure_future()</code> ne peut faire. Mais ça force un ensemble de bonnes pratiques.</p>
+<p>Évidemment, on peut ouvrir une nursery dans un bloc d&#8217;une autre nursery, ce qui permet d&#8217;imbriquer différentes portées, comme on le ferait avec un <code>begin()</code> de transaction de base de données. Or, une exception à l&#8217;intérieur d&#8217;une nursery <a href="http://sametmax.com/gestion-des-erreurs-en-python/">bubble</a> naturellement comme toute exception Python, et stoppe toutes les tâches de la nursery encore en train de tourner. Alors qu&#8217;avec <asyncio>asyncio</asyncio> vous l&#8217;avez dans le cul.</p>
+<p>En définitive, c&#8217;était la pièce manquante. La moitié du boulot avait était faite quand on a introduit un moyen de gérer des tâches asynchrones qui dépendent les unes des autres, en remplaçant les callbacks par un truc de haut niveau : <code>async/await</code>. Il restait la gestion des tâches en parallèle qui se faisait encore selon les goûts et compétences de chacun, mais la nursery va remplir ce vide. </p>
+<p>Cela devrait être intégré à <code>asyncio</code> en Python 3.8, soit une bonne année et demie pour ceux qui ont la chance de pouvoir faire du bleeding edge.</p>
+<p>Comme certains ne voudront pas attendre, je vous ai fait un <a href="https://0bin.net/paste/V5KyhAg-2i5EOyoK#dzBvhdCVeFy8Q2xNcxXyqwtyQFgkxlKI3u5QG0buIcT">POC</a> qui vous montre comment ça pourrait marcher. Mais cette version ne sera jamais utilisée. En effet, elle intercepte <code>ensure_future()</code> (en fait le  <code>create_task()</code> sous-jacent) pour attacher son résultat à la nursery en cours, évitant tout effet <code>goto</code>, et ça péterait trop de code existant. Mon pognon est plutôt sur un gros warning émis par Python quand on fait une gotise.</p>
+<p>Dernier mot: s&#8217;il vous plaît, <strong><a href="https://github.com/python-trio/trio/issues/504">allez voter</a> pour change le nom de nursery</strong>. C&#8217;est beaucoup trop long à taper pour un truc qu&#8217;on va utiliser tout le temps.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/go-to-in-asyncio-considered-harmful/feed/</wfw:commentRss>
+		<slash:comments>26</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">24534</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/06/juY3qQy.jpg" length="120442" type="image/jpg" />	</item>
+		<item>
+		<title>Se faciliter la vie quand on utilise asyncio dans le shell</title>
+		<link>http://sametmax.com/se-faciliter-la-vie-quand-on-utilise-asyncio-dans-le-shell/</link>
+		<comments>http://sametmax.com/se-faciliter-la-vie-quand-on-utilise-asyncio-dans-le-shell/#comments</comments>
+		<pubDate>Mon, 07 Mar 2016 14:03:08 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=18526</guid>
+		<description><![CDATA[Dernièrement j&#8217;ai mis les fonctions suivantes dans mon script PYTHONSTARTUP&#8230; Toujours choper une event loop toute fraiche, et ouverte: import asyncio def aloop(*args, **kargs): """ Ensure there is an opened event loop available and return it""" loop = asyncio.get_event_loop() if loop.is_closed(): policy = asyncio.get_event_loop_policy() loop = policy.new_event_loop(*args, **kargs) policy.set_event_loop(loop) return loop Lancer une coroutine dans [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Dernièrement j&#8217;ai mis les fonctions suivantes dans mon <a href="http://sametmax.com/nouveau-fichier-de-start-up-python/">script PYTHONSTARTUP</a>&#8230;</p>
+<p>Toujours choper une event loop toute fraiche, et ouverte:</p>
+<pre lang="python">import asyncio
+
+def aloop(*args, **kargs):
+    """ Ensure there is an opened event loop available and return it"""
+    loop = asyncio.get_event_loop()
+    if loop.is_closed():
+        policy = asyncio.get_event_loop_policy()
+        loop = policy.new_event_loop(*args, **kargs)
+        policy.set_event_loop(loop)
+    return loop</pre>
+<p>Lancer une coroutine dans une event loop jusqu&#8217;à ce qu&#8217;elle se termine:</p>
+<pre lang="python">import inspect
+
+def arun(coro):
+    """ Run this in a event loop """
+    loop = aloop()
+    if not inspect.isawaitable(coro):
+        if not inspect.iscoroutinefunction(coro):
+            coro = asyncio.coroutine(coro)
+        coro = coro()
+    future = asyncio.ensure_future(coro)
+    return loop.run_until_complete(future)</pre>
+<p>Et ça s&#8217;utilise comme ça:</p>
+<pre lang="python">async def foo():
+    await asyncio.sleep(1)
+    print('bar')
+
+arun(foo)
+</pre>
+<p>Ça me fait gagner pas mal de temps.</p>
+<p>J&#8217;utilise aussi <a href="https://github.com/ipython/ipython/issues/9166#issuecomment-174483773">cette commande magique</a> dans iPython qui permet de balancer des <code>await</code> en plein milieu du shell. Je suis <a href="https://github.com/jonathanslenders/ptpython/issues/99#issuecomment-187417579">en train de voir</a> pour ajouter un truc similaire à ptpython.</p>
+<p>Je me suis fait aussi un petit script pour lancer vite fait n&#8217;importe quel script dans une boucle asyncio de manière transparente, mais j&#8217;ai pas le temps de poster ça aujourd&#8217;hui donc ça sera pour la prochaine fois.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/se-faciliter-la-vie-quand-on-utilise-asyncio-dans-le-shell/feed/</wfw:commentRss>
+		<slash:comments>19</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">18526</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/03/tumblr_o21ty722nE1r539hzo1_500.jpg" length="57500" type="image/jpg" />	</item>
+		<item>
+		<title>Open bar sur asyncio</title>
+		<link>http://sametmax.com/open-bar-sur-asyncio/</link>
+		<comments>http://sametmax.com/open-bar-sur-asyncio/#comments</comments>
+		<pubDate>Mon, 29 Feb 2016 13:04:41 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=18443</guid>
+		<description><![CDATA[Plus je fais joujou avec asyncio, plus j'apprécie la lib. Mais je tombe aussi sur des tas de petits trucs qui me font dire qu'il va falloir créer quelques couches d'abstraction pour rendre tout ça plus miam.]]></description>
+				<content:encoded><![CDATA[<p>Plus je fais joujou avec asyncio, plus j&#8217;apprécie la lib. Mais je tombe aussi sur des tas de petits trucs qui me font dire qu&#8217;il va falloir créer quelques couches d&#8217;abstraction pour rendre tout ça plus miam.</p>
+<p>Par exemple, lire de manière asynchrone les données pipées sur stdin:</p>
+<pre lang="python">    
+async def main(loop):
+
+    reader = asyncio.StreamReader()
+    def get_reader():
+        return asyncio.StreamReaderProtocol(reader)
+
+    await loop.connect_read_pipe(get_reader, sys.stdin)
+
+    while True:
+        line = await reader.readline()
+        if not line:
+            break
+        print(line)
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main(loop))</pre>
+<p>C&#8217;est assez verbeux, pas très Pythonique (une factory qui instancie un classe a qui on passe une autre instance, c&#8217;est très java), ça n’exploite pas toute la force de <code>async</code>/<code>await</code> (le <code>while</code> qui pourrait être un <code>async for</code>), et il faut se soucier de lancer la boucle. </p>
+<p>En prime, c&#8217;est pas encore évident de trouver qu&#8217;il faut faire ça dans la doc.</p>
+<p>Pareil, pour lire de manière asynchrone les données écrites par un utilisateur sur stdin:</p>
+<pre lang="python">def on_stdin(*args):
+    print("Somebody wrote:", sys.stdin.readline())
+
+loop = asyncio.get_event_loop()
+loop.add_reader(sys.stdin.fileno(), on_stdin)
+loop.run_forever()</pre>
+<p>Bon, là on a du callback, clairement on peut faire mieux. </p>
+<p>La bonne nouvelle, c&#8217;est que ça veut dire qu&#8217;on a un champ entier où on peut être le premier à écrire une lib, et donc devenir une implémentation de référence, un outil connu, etc. Si vous avez envie de faire votre trou, c&#8217;est une opportunité, et en plus, c&#8217;est rigolo :)</p>
+<p>En effet, avec un peu d&#8217;enrobage, on peut rapidement faire des trucs choupinets:</p>
+<pre lang="python">class AioStdinPipe:
+
+    def __init__(self, loop=None):
+
+        self.loop = loop or asyncio.get_event_loop()
+        self.reader = asyncio.StreamReader()
+
+    def get_reader(self):
+        return asyncio.StreamReaderProtocol(self.reader)
+
+    async def __aiter__(self):
+        await self.loop.connect_read_pipe(self.get_reader, sys.stdin)
+        return self
+
+    async def __anext__(self):
+        while True:
+            val = await self.reader.readline()
+            if val == b'':
+                raise StopAsyncIteration
+            return val
+
+
+def run_in_loop(coro):
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(coro())</pre>
+<p>Et ainsi réduire le premier code à un truc très simple, très clair, très Python:</p>
+<pre lang="python">@run_in_loop
+async def main():
+    async for line in AioStdinPipe():
+        print(line)
+</pre>
+<p>J&#8217;aime 2016, c&#8217;est une année pleine de possibilités.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/open-bar-sur-asyncio/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">18443</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/02/fTWl03f.png" length="579642" type="image/jpg" />	</item>
+		<item>
+		<title>Le piège d&#8217;écrire du code couplé à une implémentation</title>
+		<link>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/</link>
+		<comments>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/#comments</comments>
+		<pubDate>Wed, 03 Feb 2016 09:17:15 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[gevent]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[twisted]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=18044</guid>
+		<description><![CDATA[On a reproché à la communauté de Twisted que c’était un silo fermé. Une lib écrite pour Twisted ne marchait que pour Twisted.
+
+Puis on a reproché à la communauté de gevent la même chose.
+
+Et maintenant la communauté d’asyncio recommence à faire la même erreur.]]></description>
+				<content:encoded><![CDATA[<p>On a reproché à la communauté de Twisted que c’était un silo fermé. Une lib écrite pour Twisted ne marchait que pour Twisted.</p>
+<p>Puis on a reproché à la communauté de gevent la même chose.</p>
+<p>Et maintenant la communauté d’asyncio recommence à faire la même erreur.</p>
+<p>Regardez, <a href="https://github.com/aio-libs">pleins de libs compatibles asyncio</a>, c’est génial non ?</p>
+<p>Je ne vais pas dire non. Ça boost l’utilisabilité, l’adoption, etc.</p>
+<p>Mais c’est aussi un énorme travail qui passe à côté de toute l’expérience (bugs, cas extrêmes, best practices, perfs&#8230;) des communautés précédentes. Et qui a une date de péremption, qui sera foutu à la poubelle à la prochaine vague.</p>
+<p>Pourquoi ?</p>
+<p>Parce que toutes ces libs se concentrent sur l’implémentation.</p>
+<p>Vous ne pouvez pas réutiliser le code d’une lib SMTP Twisted, car elle est liée au reactor. Pourtant cette lib contient des milliers d’infos utiles, la gestion de ce serveur bizarre, la correction de cette erreur de calcul de date, qui n’ont rien à voir avec Twisted.</p>
+<p>C’est la même chose avec ces libs pour asyncio.</p>
+<p>Que faire alors ?</p>
+<p>Et bien d’abord écrire une lib neutre. Qui contient des choses comme :</p>
+<ul>
+<li>Le parsing des packets.</li>
+<li>Le workflow.</li>
+<li>Les constantes.</li>
+<li>Les convertisseurs de données.</li>
+<li>Les vérificateurs de données.</li>
+<li>Les bases de connaissances sur le monde extérieur.</li>
+</ul>
+<p>Il faut écrire cette lib de manière à ce qu’elle puisse être réutilisée dans tout contexte. À base de callbacks simples, de hooks, de points d’entrées.</p>
+<p>Puis, vous rajoutez dans un sous-module, le support pour votre plateforme favorite. Un adaptateur qui utilise ces hooks pour Twisted, ou asyncio, ou gevent.</p>
+<p>Cela a de multiples bénéfices:</p>
+<ul>
+<li>Quand vous changez de plateforme ou que le nouveau joujou à la mode sort, une grande partie du travail peut être réutilisé.</li>
+<li>Toute la partie neutre de la lib peut être réutilisée par toute la communauté Python, pas juste celle qui utilise la même plateforme.</li>
+<li>Cela encourage les contributions à votre lib, puisque n’importe qui peut rajouter un module pour une plateforme et l’enrichir, et corriger des bugs sur la partie neutre.</li>
+<li>Votre lib est beaucoup plus facile à tester.</li>
+<li>Votre lib va cumuler du savoir sur la problématique qu’elle résout pendant bien plus de temps, puisqu’elle traverse les modes des implémentations. Au long terme, ce sera la lib la plus stable et complète.</li>
+</ul>
+<p>Toutes les plateformes ont une manière ou un autre pour attaquer ce problème. Twisted par exemple a une classe protocole qui est indépendante du reactor. Oui, mais elle est dépendante de la manière de penser en Twisted. Personne ne documente ces protocoles de manière neutre. Personne n’utilise ces protocoles de manière neutre.</p>
+<p>gevent utilise carrément le monkey patching pour essayer de se rendre transparent. Évidemment ça veut dire que c’est très dépendant de l’implémentation. Si CPython change, ça casse. Si on utilise une implémentation différente de Python, ça ne marche pas. Si on fait des expérimentations comme actuellement sur le JIT, les résultats sont imprévisibles.</p>
+<p><code>async</code>/<code>await</code> a l’énorme bénéfice de proposer une interface commune à tout travail asynchrone. Fut-ce de l’IO, du thread, du multi-processing, du sous-processing, du multi-interpretteur ou des callbacks ordinaires&#8230; Cela va donc énormément gommer ces problèmes de compatibilité, même si la séparation des responsabilités que je recommande n’est pas suivie. Mais pour le moment tout le monde n’implémente pas <code>__await__</code>. Et si <code>__await__</code> lance le code sur l’autre plateforme, ça fait un truc en plus à gérer. Ce n’est pas tout à faire neutre.</p>
+<p>Attention, je comprends très bien que cette séparation que je recommande ne soit pas suivie.</p>
+<p>C’est très difficile de faire une API agnostique par rapport à la plateforme. Ça demande beaucoup plus de taf, de connaissance, etc. Je suis le premier à ne pas le faire pas fainéantise ou ignorance. </p>
+<p>Mais il faut bien comprendre qu’à chaque fois, on réinvente la roue, une roue jetable par ailleurs.</p>
+<p>Bien entendu, je dis ça pour l’async, mais c’est vrai pour tout.</p>
+<p>Par exemple, des centaines de code ont leur propre moyen de définir un schéma et valider les données en entrée. Les ORM sont particulièrement coupable de cela, les libs de form aussi, mais on a tous codé ce genre de truc. C’est idiot, c’est un code qui n’a pas à être lié à une plateforme.</p>
+<p>Des centaines de libs ont leur code de persistance lié à une plateforme. Même celles qui utilisent un ORM, au final, se lient à certaines bases de données (raison pour laquelle je suis <a href="https://facebook.github.io/react/blog/2015/05/01/graphql-introduction.html">GraphQL</a> de très près).</p>
+<p>La généricité a ses limites, et c’est toujours un compromis entre le coût immédiat, et le bénéfice futur. Si on fait tout générique, on se retrouve avec un truc qui évolue à 2 à l’heure et qui a 15 surcouches pour faire un print. On se retrouve avec Zope. Dont personne, et c’est ironique, ne réutilise les composants parce que c’est devenu trop compliqué de les comprendre.</p>
+<p>Car évidemment, qui dit découplage, dit doc bien faite, qui explique clairement comment bénéficier de ce découplage. Mais dit aussi que le code utilisant les adapteurs doit être aussi simple que si on avait un fort couplage, ce qui est dur à faire.</p>
+<p>Et on tombe ici sur un autre problème : la compétence pour faire ce genre de code. Si il faut 10 ans d’expérience pour faire une lib propre, alors on va réduire considérablement le nombre de personnes qui vont oser coder des libs.</p>
+<p>Aussi cet article n’est en aucun cas un savon que je souhaite passer aux auteurs. Merci de coder ces libs. Merci de donner de votre temps. </p>
+<p>Non, cet article est juste là pour dire : <em>dans la mesure du possible, il est très bénéfique sur le long terme de se découpler de la plateforme</em>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">18044</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/02/XYdAlhh.jpg" length="35788" type="image/jpg" />	</item>
+		<item>
+		<title>Comment mocker une coroutine ?</title>
+		<link>http://sametmax.com/comment-mocker-une-coroutine/</link>
+		<comments>http://sametmax.com/comment-mocker-une-coroutine/#comments</comments>
+		<pubDate>Mon, 25 Jan 2016 10:34:23 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[mock]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unittest]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=17976</guid>
+		<description><![CDATA[Dans <a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-5/">le guide sur les tests</a> en python (que je dois toujours terminer, je sais...), je vous parle des objets mocks.
+
+Si vous avez eu le plaisir de jouer avec asyncio, vous avez du noter que unittest.mock n'a aucun outil pour gérer gérer les coroutines.]]></description>
+				<content:encoded><![CDATA[<p>Dans <a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-5/">le guide sur les tests</a> en python (que je dois toujours terminer, je sais&#8230;), je vous parle des objets mocks.</p>
+<p>Si vous avez eu le plaisir de jouer avec <code>asyncio</code>, vous avez du noter que <code>unittest.mock</code> n&#8217;a aucun outil pour gérer gérer les coroutines.</p>
+<p>En attendant que ce soit intégré à la stdlib, voici une petite recette :</p>
+<pre lang="python">import asyncio
+from unittest.mock import Mock
+
+# on utilise toute la machinerie du Mock original
+class AMock(Mock):
+
+
+    def __call__(self, *args, **kwargs):
+        # la référence du parent doit se récupérer hors
+        # hors de la closure
+        parent = super(AMock, self) 
+        # sauf qu'à l'appel on créé une fonction coroutine
+        @asyncio.coroutine
+        def coro():
+            # Qui fait le vrai Mock.__call__ (et donc popule l'historique 
+            # des appels), mais seulement après l'évent loop l'ait éxécuté
+            return parent.__call__(*args, **kwargs)
+
+        # On appelle la fonction coroutine pour générer une coroutine
+        # (les coroutines marchent comme les générateurs)
+        return coro()
+
+
+</pre>
+<p>Je propose qu&#8217;en l&#8217;honneur de ce bidouillage, on l&#8217;appelle&#8230; mockoroutine !</p>
+<p>Ca va s&#8217;utiliser comme ça:</p>
+<pre lang="python">mockorourine = AMock()
+yield from mockorourine()</pre>
+<p>Après le <code>yield from</code>, <code>mockorourine.call_count == 1</code>, et <code>mockorourine.assert_called_once_with()</code>passe. </p>
+<p>Si vous êtes en 3.5+, on peut même faire:</p>
+<pre lang="python">class AMock(Mock):
+
+    def __call__(self, *args, **kwargs):
+        parent = super(AMock, self)
+        async def coro():
+            return parent.__call__(*args, **kwargs)
+        return coro()
+
+    def __await__(self):
+        # on delegue le await à la couroutine créée par __call__
+        return self().__await__()</pre>
+<p>Puis:</p>
+<pre lang="python">await AMock()</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comment-mocker-une-coroutine/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">17976</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/01/SRxfAmq.jpg" length="87995" type="image/jpg" />	</item>
+		<item>
+		<title>En Python, les threads et l&#8217;asyncio s&#8217;utilisent ensemble</title>
+		<link>http://sametmax.com/en-python-les-threads-et-lasyncio-sutilisent-ensemble/</link>
+		<comments>http://sametmax.com/en-python-les-threads-et-lasyncio-sutilisent-ensemble/#comments</comments>
+		<pubDate>Wed, 13 Jan 2016 12:11:12 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[thread]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=17796</guid>
+		<description><![CDATA[Je vois beaucoup dans les tutos ici et là des gens qui opposent asyncio avec l’ancienne manière de faire de l’IO non bloquante : les threads.
+
+C’est une erreur : les deux méthodes ne sont pas opposées, elles sont complémentaires.]]></description>
+				<content:encoded><![CDATA[<p>En Python, les threads et l’asyncio s’utilisent ensemble</p>
+<p>Je vois beaucoup dans les tutos ici et là des gens qui opposent asyncio avec l’ancienne manière de faire de l’IO non bloquante : les threads.</p>
+<p>C’est une erreur : les deux méthodes ne sont pas opposées, elles sont complémentaires.</p>
+<h2>Faire des requêtes pendant que ça bloque</h2>
+<p>En effet, asyncio ne peut être non bloquant que sur le réseau : ça ne gère pas l’IO sur les fichiers. Par ailleurs, toute opération CPU bloque également la boucle d’évènement.</p>
+<p>C’est très bien de ne pas bloquer sur le réseau, mais encore faut-il pouvoir faire la requête réseau.</p>
+<p>Si votre programme est bloqué à attendre une compression zip qui dure 3 secondes, pendant ce temps, les opérations réseaux déjà lancées tournent bien. </p>
+<p>MAIS IL N’EN LANCERA PAS DE NOUVELLES.</p>
+<p>Pendant 3 secondes, aucune nouvelle requête ne sera faite puisque le programme ne fait qu’une chose : ziper. Ca marche pour d’autres choses hein : copie de fichier, gros calcul matheux, traverser une grande liste, etc.</p>
+<p>Donc si vous avez fini toutes vos requêtes à la seconde 1, pendant 2 secondes, votre programme n’est pas utilisé à son plein potentiel.</p>
+<p>Les threads ne permettent pas d’avancer plus vite, mais ils permettent de faire 2 travaux en parallèle. Par exemple, de lancer pendant ces 2 secondes des requêtes supplémentaires sur le réseau.</p>
+<h2>Asyncio a de l’overhead</h2>
+<p>On a vendu asyncio comme plus léger que les threads. <a href="http://techspot.zzzeek.org/2015/02/15/asynchronous-python-and-databases/">Ce n’est pas tout à fait exact</a>. asyncio a les avantages suivants :</p>
+<ul>
+<li>Pas besoin de préallouer des threads. Ca scale toujours pile poil, et ça bouffe moins de mémoire.</li>
+<li>asyncio est plus performant quand la charge de travail demande de très nombreux threads.</li>
+<li>un algo asyncio est plus facile à conceptualiser.</li>
+<li>il est plus difficile d’introduire des erreurs de concurrence.</li>
+<li>asyncio est plus facile à débugger.</li>
+</ul>
+<p>Mais si on a quelques threads, le changement de contexte entre les threads est moins important que ce que coûte asyncio à faire tourner.</p>
+<p>Pour certains travaux où le coût d’une opération réseau est faible, mais que cumulativement toutes les opérations ralentissent votre programme, un thread sera plus performant. </p>
+<p>Par exemple, beaucoup d’opérations sur les bases de données tombent dans cette catégorie, à moins d’avoir des très longues requêtes.</p>
+<p>Dans ce cas, avoir un thread dédié aux opérations de la base de données peut être une bonne décision.</p>
+<h2>Quoi faire ?</h2>
+<p>Si vous avez des opérations sur des fichiers ou de grosses opérations CPU, les faire travailler dans un thread peut booster votre programme. Ca tombe bien <a href="https://github.com/Tinche/aiofiles/">il y a une lib pour ça</a>.</p>
+<p>Si vous avez beaucoup de petites opérations réseau, les grouper, dans un thread à part, peut booster votre programme. </p>
+<p>Et asyncio pour le reste, par exemple des requêtes HTTPs, DNS, SMTP, FTP, SSH, etc.</p>
+<p>On peut donc copieusement utiliser les deux en parallèle. La bonne nouvelle, c’est que Guido a designé asyncio pour ça:</p>
+<pre lang="python">
+import asyncio
+import aiohttp
+
+async def main(loop):
+    
+    # ça c’est fait avec asyncio
+    await aiohttp.get('http://bidule.com')
+
+    # ça c’est fait dans un thread
+    await loop.run_in_executor(None, gros_calcul, params)
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main(loop))</pre>
+<p>Notez bien :</p>
+<ul>
+<li>Faites des tests pour voir si vous y gagner vraiment.</li>
+<li>Ecrivez un petit wrapper sur tout ça car là c’est verbeux.</li>
+<li>Vous pouvez passer un <code>ProcessPoolExecutor</code> ou un <code>ThreadPoolExecutor</code> pour choisir la stratégie de parallélisme à adapter : process, thread, nombres de workers, etc.</li>
+</ul>
+<p>Bien entendu, chaque fois que vous ajoutez un mécanisme de concurrence, vous ajoutez de la complexité, donc ne le faites que si c&#8217;est nécessaire.</p>
+<p>Commencez avec un programme synchrone simple. Si c&#8217;est trop lent, ajouter les threads ou l&#8217;asyncio, si ça ne suffit pas, utilisez les deux.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/en-python-les-threads-et-lasyncio-sutilisent-ensemble/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">17796</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/01/Wgt7GeB.jpg" length="190639" type="image/jpg" />	</item>
+		<item>
+		<title>Jouons un peu avec Python 3.5</title>
+		<link>http://sametmax.com/jouons-un-peu-avec-python-3-5/</link>
+		<comments>http://sametmax.com/jouons-un-peu-avec-python-3-5/#comments</comments>
+		<pubDate>Wed, 16 Sep 2015 16:31:38 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[async]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[numpy]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[wamp]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16918</guid>
+		<description><![CDATA[Zeste de savoir a fait un <a href="http://zestedesavoir.com/articles/264/sortie-de-python-35/">fantastique article</a> présentant Python 3.5, je ne vais donc pas pas répéter inutilement ce qu’ils ont dit. Le but de ce post est plutôt de faire mumuse avec le nouveau joujou.]]></description>
+				<content:encoded><![CDATA[<p>Zeste de savoir a fait un <a href="http://zestedesavoir.com/articles/264/sortie-de-python-35/">fantastique article</a> présentant Python 3.5, je ne vais donc pas répéter inutilement ce qu’ils ont dit. Le but de ce post est plutôt de faire mumuse avec le nouveau joujou.</p>
+<p>La release est récente, mais fort heureusement on peut facilement l’installer. Sous Windows et Mac, il y a des <a href="https://www.python.org/downloads/release/python-350/">builds</a> tout chauds.</p>
+<p>Pour linux, en attendant un repo tierce partie ou l’upgrade du système, on peut l’installer quelques commandes depuis les sources. Par exemple pour les distros basées sur Debian comme Ubuntu, ça ressemble à :</p>
+<pre lang="bash">$ # dependances pour compiler python
+$ sudo apt-get install build-essential libreadline-dev tk8.4-dev libsqlite3-dev libgdbm-dev libreadline6-dev liblzma-dev libbz2-dev libncurses5-dev libssl-dev python3-dev tk-dev
+$ sudo apt-get build-dep python3 # juste pour etre sur :)
+
+$ # téléchargement des sources
+$ cd /tmp
+$ wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tar.xz
+$ tar -xvf Python-3.5.0.tar.xz
+$ cd Python-3.5.0
+
+$ # et on build
+$ ./configure
+$ make
+$ sudo make altinstall 
+# pas 'make install' qui écrase le python du système !
+
+$ python3.5 # ahhhhhh
+Python 3.5.0 (default, Sep 16 2015, 10:44:14) 
+[GCC 4.9.2] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
+</pre>
+<p>Sur les centos-likes, c’est grosso merdo la même chose, sans le build-dep (mais plutôt un truc genre <code>sudo yum groupinstall 'Development Tools'</code>), et en remplaçant les <code>-dev</code> par <code>-devel</code>.</p>
+<p><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/TsgQdzzXEnY?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<h2>Nouvel opérateur</h2>
+<p><code>@</code> est maintenant le nouvel opérateur de produit matriciel, mais il ne fait officiellement rien.</p>
+<p>Comprenez par là que Python implémente l’opérateur, mais pas le produit en lui-même, la feature ayant été spécialement incluse pour faire plaisir aux utilisateurs de libs scientifiques type numpy.</p>
+<p>On va donc tester ça sur le terrain. On se fait un petit env temporaire avec <a href="http://sametmax.com/mieux-que-python-virtualenvwrapper-pew/">pew</a> et on s’installe numpy :</p>
+<pre lang="bash">pew mktmpenv -p python3.5
+pip install pip setuptools --upgrade
+pip install numpy 
+# encore un peu de compilation
+</pre>
+<p>Testons mon bon. L’ancienne manière de faire :</p>
+<pre lang="python">>>> a = np.array([[1, 0], [0, 1]])
+>>> b = np.array([[4, 1], [2, 2]])
+>>> np.dot(a, b)
+array([[4, 1],
+       [2, 2]])</pre>
+<p>Et la nouvelle :</p>
+<pre lang="python">>>> a @ b
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-10-3d41f06f59bb> in <module>()
+----> 1 a @ b
+
+TypeError: unsupported operand type(s) for @: 'numpy.ndarray' and 'numpy.ndarray'</pre>
+<p>Woops, apparemment numpy n’a pas encore implémenté le truc.</p>
+<p>Bon. Bon, bon, bon. Comment on va tester alors&#8230; Ah, oui, y a une magic method :</p>
+<pre lang="python">class Array(np.ndarray):
+    def __matmul__(self, other):
+        return np.dot(self, other)
+
+>>> a = a.view(Array)
+>>> b = b.view(Array)
+>>> a @ b
+Array([[4, 1],
+       [2, 2]])</pre>
+<p>Bon, voilà ce que ça donnera quand les devs de numpy auront implémenté le bouzin (la dernière ligne hein, pas tout le bordel avant). </p>
+<p>Apparemment ça fait bander les matheux, donc je suppose que c’est une super nouvelle.</p>
+<h2>% is back on bytes</h2>
+<p>En python 2, on pouvait faire <code>"truc %s" % "bidule"</code> et <code>u"truc %s" % u"bidule"</code> et <code>b"truc %s" % u"bidule"</code> et ça a été viré en python 3 qui ne garde <code>%</code> que pour <code>str</code> et pas pour <code>bytes</code>.</p>
+<p>Ca n’aurait pas été un problème si ce n’est que Python est très utilisé pour le réseau, et que construire un paquet qui mélange de la sémantique binaire et textuelle devient soudainement une grosse soupe de <code>decode()</code> et <code>encode()</code>.</p>
+<p>Jour 1, test 3, suspense&#8230;</p>
+<pre lang="python">>>> bytearray([66, 108, 117, 101, 32, 112, 114, 105, 101, 115, 116, 32, 115, 97, 121, 115, 58, 32, 37, 115]) % b"wololo"
+bytearray(b'Blue priest says: wololo')
+</pre>
+<p>Voilà ça c’est fait !</p>
+<h2>os.scandir()</h2>
+<p><code>os.path.walk()</code> est dans mon top 10 des APIs que je déteste le plus en Python, juste à côté de la gestion timezone. Avoir <code>os.walk()</code> en Python 3 qui retourne un générateur me ravit. Avoir une version 10 X plus rapide avec <code>scandir</code>, n’est-ce pas choupinet ?</p>
+<pre lang="python">>>> import os
+>>> list(os.scandir('/tmp/'))
+                       [<DirEntry 'systemd-private-316509818ceb41488a4721c78dabb603-colord.service-eXUfPo'>,
+ <DirEntry 'unity_support_test.0'>,
+ <DirEntry 'config-err-7UpWeO'>,
+ <DirEntry '.ICE-unix'>,
+ <DirEntry 'pip-rw_63q0_-unpack'>,
+ <DirEntry 'systemd-private-316509818ceb41488a4721c78dabb603-systemd-timesyncd.service-eZumpq'>]</pre>
+<p>C’est très dommage que ça ne retourne pas des objets <code>Path</code> de <code>pathlib</code>, mais bon, les perfs, tout ça&#8230;</p>
+<h2>Zipapp, le grand inaperçu</h2>
+<p>Le saviez-vous ? Python peut exécuter un zip, ce qui permet de créer un script en plusieurs fichiers et de le partager comme un seul fichier. Non vous ne le saviez-vous-te-pas car personne n’en parle jamais. </p>
+<p>La 3.5 vient avec un outil en ligne de commande pour faciliter la création de tels zip et une nouvelle extension (que l’installeur fera reconnaitre à Windows) pour cesdits fichiers : .pyz.</p>
+<p>Je fais mon script :</p>
+<pre lang="bash">foo
+├── bar.py
+├── __init__.py
+└── __main__.py 
+</pre>
+<p>__main__.py est obligatoire, c’est ce qui sera lancé quand on exécutera notre script. Dedans je mets <code>import bar</code> et dans bar <code>print('wololo again')</code>.</p>
+<p>Ensuite je fusionne tout ça :</p>
+<pre lang="bash">python -m zipapp foo</pre>
+<p>Et pouf, j’ai mon fichier foo.pyz :</p>
+<pre lang="bash">$ python3.5  foo.pyz
+wololo again</pre>
+<p>Attention aux imports dedans, ils sont assez chiants à gérer.</p>
+<h2>L’unpacking généralisé</h2>
+<p>J’adore cette feature. J’adore toutes les features de la 3.5. Cette release est fantastique. Depuis la 3.3 chaque release est fantastique.</p>
+<p>Mais bon, zeste de savoir l’a traité en long et en large donc rien à dire de plus, si ce n’est que j’avais raté un GROS truc :</p>
+<ul>
+<li>On peut faire de l’unpacking sur n’importe quel itérable.</li>
+<li>On peut faire de l’unpacking dans les tuples.</li>
+<li>Les parenthèses des tuples sont facultatives.</li>
+</ul>
+<p>Donc ces syntaxes sont valides :</p>
+<pre lang="python">>>> *range(2), *[1, 3], *'ea'
+(0, 1, 1, 3, 'e', 'a')
+>>> *[x * x for x in range(3)], *{"a": 1}.values()
+(0, 1, 4, 1)</pre>
+<p>Ce qui peut être très chouette et aussi la porte ouverte à l’implémentation d’un sous-ensemble de Perl en Python. C’est selon l’abruti qui code.</p>
+<h2>Type hints</h2>
+<p>Ce qu’il faut bien comprendre avec les types hints, c’est que Python ne s’en sert pas. Il n’en fait rien. Que dalle. Nada. Peau de balle. Zob. Niet. Zero. La bulle. Néant. Null. None. Réforme gouvernementale.</p>
+<p>Les types hints sont disponibles, mais Python ne va pas les traiter différemment d’autres annotations. Le but est de permettre à des outils externes (linter, IDE, etc) de se baser sur ces informations pour ajouter des fonctionnalités.</p>
+<p>Pour l’instant, un seul le fait : <a href="http://mypy.readthedocs.org">mypy</a>.</p>
+<p>Et là on sent bien que tout ça est tout neuf car si on fait <code>pip install mypy-lang</code>, on tombe sur une version buggée. Il faut donc l’installer directement depuis le repo, soit :</p>
+<pre lang="python">pip install https://github.com/JukkaL/mypy/archive/master.zip</pre>
+<p>Puis écriture d’une fonction annotée avec des types hints :</p>
+<pre lang="python">
+
+from typing import Iterable, Tuple
+
+PixelArray = Iterable[Tuple[int, int, int]]
+
+def rgb2hex(pixels: PixelArray) -> list:
+    pattern = "#{0:02x}{1:02x}{2:02x}"
+    return [pattern.format(r, g, b) for r, g, b in pixels]
+
+
+# ça marche :
+rgb2hex([(1, 2, 3), (1, 2, 3)])
+# ['#010203', '#010203']
+</pre>
+<p>La preuve que Python n’en fait rien :</p>
+<pre lang="python">>>> hex("fjdkls")
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-2-be62b8f062fe> in <module>()
+----> 1 hex("fjdkls")
+
+TypeError: 'str' object cannot be interpreted as an integer
+</pre>
+<p>Même la doc profite peu du typage :</p>
+<pre>Help on function rgb2hex in module __main__:
+
+rgb2hex(pixels:typing.Iterable) -> list
+</pre>
+<p>Mais si on met ça dans un fichier foo.py :</p>
+<pre lang="python">from essai import rgb2hex
+
+print(rgb2hex("fdjksl"))
+res = rgb2hex([(1, 2, 3), (3, 4, 5)])
+print(res + 1)</pre>
+<p>Et qu&#8217;on le passe à la moulinette :</p>
+<pre lang="python">$ mypy foo.py 
+foo.py:3: error: Argument 1 to "rgb2hex" has incompatible type "str"; expected Iterable[...]
+foo.py:5: error: Unsupported operand types for + (List[Any] and "int")
+</pre>
+<p>Ensuite j’ai essayé de créer un stub file, c’est-à-dire de mettre les hints dans un fichier à part plutôt que directement dans le code. Ma fonction redevient :</p>
+<pre lang="python">
+def rgb2hex(pixels):
+    pattern = "#{0:02x}{1:02x}{2:02x}"
+    return [pattern.format(r, g, b) for r, g, b in pixels]
+</pre>
+<p>Et mon fichier stub (même nom, mais avec extension .pyi) contient :</p>
+<pre lang="python">from typing import Iterable, Tuple
+
+PixelArray = Iterable[Tuple[int, int, int]]
+
+def rgb2hex(pixels: PixelArray) -> list:...</pre>
+<p>Les stubs sont donc bien des fichiers Python valides, mais avec une extension différente, et juste les signatures des fonctions (le corps du bloc est une <code>Ellipsis</code>).</p>
+<p>Et poof, ça marche pareil :</p>
+<pre lang="python">$ mypy foo.py 
+foo.py:3: error: Argument 1 to "rgb2hex" has incompatible type "str"; expected Iterable[...]
+foo.py:5: error: Unsupported operand types for + (List[Any] and "int")</pre>
+<p>Il y a <a href="https://github.com/python/typeshed/tree/master/3">un repo</a> qui contient des fichiers stubs pour la stdlib. Vous pouvez y participer, c’est un moyen simple de contribuer à Python.</p>
+<p>Bref, pour le moment ça demande encore un peu de maturité, mais je pense que d’ici quelques mois on aura des outils bien rodés pour faire tout ça automatiquement.</p>
+<h2>Async/await</h2>
+<p>La feature pub. Techniquement le truc qui a fait dire à tous ceux qui voulaient de l’asyncrone que Python en fait, c’était trop cool. Sauf que Python pouvait faire ça avec <code>yield from</code> avant, mais c’est sur que c’était super confusionant.</p>
+<p>Maintenant on a un truc propre : pas de décorateur <code>@coroutine</code>, pas de syntaxe semblable aux générateurs, mais des méthodes magiques comme <code>__await__</code>  et de jolis mots-clés <code>async</code> et <code>await</code>.</p>
+<p>Vu que Crossbar est maintenant compatible Python 3, et qu’il supporte asyncio pour les clients&#8230; Si on s’implémentait un petit wrapper WAMP pour s’amuser à voir ce que ressemblerait une API moderne pour du Websocket en Python ?</p>
+<pre lang="bash">
+pip install crossbar
+crossbar init
+crossbar start
+</pre>
+<p>(Ouhhhh, plein de zolies couleurs apparaissent dans ma console ! Ils ont fait des efforts cosmétiques chez Tavendo)</p>
+<p>Bien, voici maintenant l’exemple d’un client WAMP de base codé avec asyncio selon l’ancienne API :</p>
+<pre lang="python">import asyncio
+from autobahn.asyncio.wamp import ApplicationSession, ApplicationRunner
+
+class MyComponent(ApplicationSession):
+
+    @asyncio.coroutine
+    def onJoin(self, details):
+        
+        # on marque cette fonction comme appelable
+        # a distance en RPC
+        def add(a, b):
+            return a + b
+        self.register(add, "add")
+
+        # et on triche en l'appelant cash. J'ai
+        # la flemme de coder un deuxième client
+        # et ça passe quand même par le routeur
+        # donc merde
+        res = yield from self.call("add", 2, 3)
+        print("Got result: {}".format(res))
+
+
+if __name__ == '__main__':
+    runner = ApplicationRunner("ws://127.0.0.1:8080/ws",
+        u"crossbardemo",
+        debug_wamp=False,  # optional; log many WAMP details
+        debug=False,  # optional; log even more details
+    )
+    runner.run(MyComponent)</pre>
+<p>Et ça marche nickel en 3.5. Mais qu’est-ce que c’est moche ! </p>
+<p>On est <a href="https://github.com/tavendo/AutobahnPython/issues/472">en train de bosser</a> sur l’amélioration de l’API, mais je pense que ça va reste plus bas niveau que je le voudrais. </p>
+<p>Donc, amusons-nous un peu à coder un truc plus sexy. Je vous préviens, le code du wrapper est velu, j’avais envie de me marrer un peu après les exemples ballots plus haut :</p>
+<pre lang="python">import asyncio
+from autobahn.asyncio.wamp import ApplicationSession, ApplicationRunner
+
+class App:
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.procedures = []
+        self.subscriptions = []
+        self.event_handlers  = {}
+
+    def run(self, url="ws://127.0.0.1:8080/ws",
+                realm="realm1", debug_wamp=False, debug=False):
+        runner = ApplicationRunner(url, realm,
+                                                     debug_wamp=debug_wamp,
+                                                     debug=debug)
+        runner.run(self)
+
+    def run_cmd(self, *args, **kwargs):
+        # et on pourrait même ici mettre du parsing d'argument
+        # et de os.environ, mais j'ai la flemme
+        if __name__ == '__main__':
+            self.run(*args, **kwargs)
+
+    # quelques décorateurs pour faire du déclaratif
+    # et remettre les paramètres dans le bon ordre
+    def register(self, name, *args, **kwargs):
+            def wrapper(proc):
+                self.procedures.append([name, proc, args, kwargs])
+                return proc
+            return wrapper
+
+    def subscribe(self, topic, *args, **kwargs):
+            def wrapper(callback):
+                self.procedures.append([topic, callback, args, kwargs])
+                return callback
+            return wrapper
+
+    # un système d'event interne
+    def on(self, event):
+            def wrapper(callback):
+                self.event_handlers.setdefault(event, []).append(callback)
+                return callback
+            return wrapper
+
+    async def trigger(self, event):
+        for callback in self.event_handlers.get(event, ()):
+            await callback(self.session)
+
+    # un peu de code de compatibilité avec l'API initiale
+    def __call__(self, *args):
+        class CustomeSession(ApplicationSession):
+            async def onJoin(session_self, details):
+
+                # on joint on fait tous les registers et tous les
+                # subscribes
+                for name, proc, args, kwargs in self.procedures:
+                     session_self.register(proc, name, *args, **kwargs)
+
+                for topic, callback, args, kwargs in self.subscriptions:
+                     session_self.subscribe(proc, topic, *args, **kwargs)
+
+                # on appelle les handlers de notre event
+                await self.trigger('joined')
+        self.session = CustomeSession(*args)
+        return self.session
+</pre>
+<p>Évidement la coloration syntaxique ne suit pas sur nos <code>async</code>/<code>await</code>.</p>
+<p>Bon, vous allez me dire, mais ça quoi ça sert tout ça ? Et bien, c’est une version tronquée et codée à l’arrache de l’<a href="https://github.com/tavendo/AutobahnPython/blob/master/autobahn/twisted/wamp.py#L322">API Application</a> pour Twisted&#8230; mais version asyncio.</p>
+<p>C’est-à-dire que c’est une lib qui permet de faire le même exemple que le tout premier qu’on a vu dans cette partie &#8211; qui souvenez-vous était fort moche -, mais comme ça :</p>
+<pre lang="python">app = App()
+
+@app.register('add')
+async def add(a, b):
+    return a + b
+
+@app.on('joined')
+async def _(session):
+    res = await session.call("add", 2, 3)
+    print("Got result: {}".format(res))
+
+app.run_cmd()</pre>
+<p>Des jolis décorateurs ! Des jolis async ! Des jolis await !</p>
+<p>Et tout ça tourne parfaitement sur 3.5 messieurs-dames.</p>
+<p>Bref, on peut faire du WAMP avec une syntaxe claire et belle, il faut juste se bouger le cul pour coder une abstraction un peu propre. </p>
+<p>Je pense que autobahn restera toujours un peu bas niveau. Donc il va falloir que quelqu’un se colle à faire une lib pour wrapper tout ça.</p>
+<p>Des volontaires ?</p>
+<p>Arf, je savais bien que ça allait me retomber sur la gueule.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/jouons-un-peu-avec-python-3-5/feed/</wfw:commentRss>
+		<slash:comments>27</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">16918</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/09/AE2pJJl.gif" length="429970" type="image/jpg" />	</item>
+		<item>
+		<title>Deferred, Future et Promise : le pourquoi, le comment, et quand est-ce qu&#8217;on mange</title>
+		<link>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/</link>
+		<comments>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/#comments</comments>
+		<pubDate>Wed, 04 Jun 2014 13:19:22 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asynchrone]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[deferred]]></category>
+		<category><![CDATA[future]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[jquery]]></category>
+		<category><![CDATA[promise]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[twisted]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10418</guid>
+		<description><![CDATA[Les promesses sont une des manières de rendre un code asynchrone plus facile à gérer. On dit : ce groupe de fonctions doit s'exécuter dans un ordre. Elles sont dépendantes les unes des autres.]]></description>
+				<content:encoded><![CDATA[<p>Si vous avez plongé dans le monde de la programmation asynchrone non bloquante, vous avez du vous heurter aux <a href="http://sametmax.com/quest-ce-quun-callback/">callbacks</a>. Si ce n&#8217;est pas le cas, aller lire l&#8217;article, et faites vos armes sur jQuery, je vais m&#8217;en servir en exemple.</p>
+<p>Signalement de rigueur que l&#8217;article est long :</p>
+
+<!-- iframe plugin v.4.3 wordpress.org/plugins/iframe/ -->
+<iframe width="560" height="315" src="//www.youtube.com/embed/E8b4xYbEugo" frameborder="0" 0="allowfullscreen" scrolling="yes" class="iframe-class"></iframe>
+
+<p>Un callback, ça va.</p>
+<p>Deux callbacks, pour un seul appel, ça commence à être chiant, mais c&#8217;est compréhensible.</p>
+<p>Quand les callbacks appellent eux aussi des callbacks, ça donne des codes imbitables :</p>
+<pre lang="javascript">$(function(){
+  $.post('/auth/token', function(token){
+    saveToken(token);
+    $.get('/sessions/last', function(session){
+      if (session.device != currentDevice){
+        $.get('/session/ ' + session.id + '/context', function(context){
+          loadContext(function(){
+            startApp(function(){
+              initUi()
+            })
+          })}
+        )}
+      else {
+        startApp(function(){
+          initUi()
+        })
+      }}
+    )
+  })
+});</pre>
+<p>Il y a pire que de lire ce code : le modifier ! Retirez un bloc, pour voir. Oh, et histoire de vous faire partager l&#8217;expérience complète, j&#8217;ai volontairement déplacé l&#8217;indentation d&#8217;une parenthèse et de deux brackets.</p>
+<p>Or les codes asynchrones ont besoin de callback afin d’enchainer certaines opérations dans le bon ordre, sinon on ne peut pas récupérer le résultat d&#8217;une fonction et l&#8217;utiliser dans une autre, puisqu&#8217;on ne sait pas quand l&#8217;opération se termine.</p>
+<p>Dans notre exemple, <code>$.post</code> et <code>$.get</code> font des requêtes POST et GET, et comme on ne sait pas quand le serveur va répondre, il faut mettre un callback pour gérer la réponse quand elle arrive. C&#8217;est plus performant que de bloquer jusqu&#8217;à ce que la première requête soit terminée car pendant ce temps, notre programme peut faire autre chose. Mais c&#8217;est aussi super relou à écrire et comprendre.</p>
+<p>Entrent en jeu les promesses (promises). Ou les deferred. Ou les futures.</p>
+<p>Typiquement, on retrouve des deferreds dans <a href="https://twistedmatrix.com/trac/">Twisted</a>, des promises pour <a href="http://api.jquery.com/jquery.ajax/">l&#8217;AJAX avec jQuery,</a> des futures pour <a href="http://docs.python.org/3.4/library/asyncio-protocol.html">asyncio</a>&#8230; Mais il y en a un peu partout de nos jours, et une lib peut utiliser plusieurs de ces concepts.</p>
+<p>En fait c&#8217;est la même chose, un nom différent donné au même concept, par des gens qui l&#8217;ont réinventé dans leur coin. Les puristes vous diront qu&#8217;il y a des différences dans l&#8217;implémentation, ou alors que la promesse est l&#8217;interface tandis que le deferred est l&#8217;objet retourné, bla, bla, bla.</p>
+<p>Fuck it, on va considérer que c&#8217;est tout pareil.</p>
+<p>Les promesses sont une des manières de rendre un code asynchrone plus facile à gérer. On dit : ce groupe de fonctions doit s&#8217;exécuter dans un ordre car elles sont dépendantes les unes des autres.</p>
+<p>Il y a d&#8217;autres moyens de gérer le problème de l&#8217;asynchrone: des événements, des queues, etc. L&#8217;avantage des promesses c&#8217;est que c&#8217;est assez simple, et ça marche là où on utilisait des callbacks avant, donc on a pu les rajouter aux libs qui étaient blindées de callbacks.</p>
+<h2>Le principe</h2>
+<p>La promesse est un moyen de dire que certaines fonctions, bien que non bloquantes et asynchrones, sont liées entre elles, et doivent s&#8217;exécuter les unes à la suite des autres. Cela permet de donner un ordre d&#8217;exécution à un groupe de fonctions, et surtout, que chaque fonction puisse accéder au résultat de la fonction précédente. Tout ceci sans bloquer le reste du système asynchrone.</p>
+<p>En résumé, <strong>cela donne un gout de programmation synchrone, à quelque chose qui ne l&#8217;est pas.</strong></p>
+<p>Cela se passe ainsi :</p>
+<ul>
+<li>La fonction asynchrone retourne un objet immédiatement : la promesse.</li>
+<li>On ne passe pas de callback à la fonction. On rajoute un callback à la promesse.</li>
+<li>Le callback prend en paramètre le résultat de la fonction asynchrone.</li>
+<li>Le callback retourne le résultat de son traitement.</li>
+<li>On peut rajouter autant de callbacks qu&#8217;on veut à la promesse, chacun devant accepter le résultat du callback précédent et retourner son propre résultat.</li>
+<li>Si un des callbacks retourne une promesse, elle est fusionnée avec la promesse initiale, et c&#8217;est son résultat que le prochain callback va récupérer</li>
+</ul>
+<p>Voilà un exemple :</p>
+<pre lang="javascript">// $.get est asynchrone. On a pas le résultat tout de suite, mais en attendant
+// on a une promesse tout de suite.
+var $promesse = $.get('/truc/machin');
+
+// premier callback. Il sera appelé quand $.get aura récupéré son
+// résultat
+$promesse.then(function(resultat){
+  // faire un truc avec le résultat
+  // puis on retourne le nouveau résultat
+  return nouveau_resultat;
+});
+
+// deuxième callback. Il sera appelé quand le premier callback
+// aura retourné son résultat.
+$promesse.then(function(nouveau_resultat){
+  // faire un truc
+});</pre>
+<p>Notez bien que c&#8217;est TRES différent de ça (en Python):</p>
+<pre lang="python">resultat = request.get('/truc/marchin')
+
+def function(resultat):
+  # faire un truc
+  return nouveau_resultat
+nouveau_resultat = function(resultat)
+
+def autre_function(nouveau_resultat):
+  # faire un truc
+autre_function(nouveau_resultat)</pre>
+<p>En Python, le code est bloquant par défaut. Ça va marcher, mais pendant que le code attend la réponse du serveur, votre ordinateur est en pause et ne travaille pas.</p>
+<h2>Un plus beau code</h2>
+<p>On se retrouve avec un code asynchrone, mais qui s&#8217;exécute dans l&#8217;ordre de lecture. Et comme on peut chainer les <code>then()</code> et donc ne pas réécrire <code>$promesse</code> à chaque fois, on obtient quelque chose de beaucoup plus lisible :</p>
+<pre lang="javascript">$.get('/truc/machin')
+.then(function(resultat){
+  // faire un truc
+  return nouveau_resultat;
+})
+.then(function(nouveau_resultat){
+  // faire un truc
+});</pre>
+<p>Si on reprend notre premier exemple, ça donne ça :</p>
+<pre lang="javascript">
+$(function(){
+
+// create new token
+$.post('/auth/token')
+
+// then save token and get last session
+.then(function(token){
+  saveToken(token);
+  return $.get('/sessions/last');
+})
+
+// then init session
+.then(function(session){
+  if (session.device != currentDevice){
+    
+    $.get('/session/ ' + session.id + '/context')
+    .then(function(context){
+      loadContext(function(){
+        startApp(function(){
+          initUi()
+        })
+      })
+    })
+
+  }
+  else {
+    startApp(function(){
+      initUi()
+    })
+  }}
+})
+
+});
+</pre>
+<p>Tout ça s’exécute de manière non bloquante (d&#8217;autres fonctions ailleurs dans le programme peuvent s&#8217;exécuter pendant qu&#8217;on attend la réponse du serveur), mais dans l&#8217;ordre de lecture, donc on comprend bien ce qui se passe. Si on veut retirer un bloc, c&#8217;est beaucoup plus facile.</p>
+<h2>Comment ça marche à l&#8217;intérieur ?</h2>
+<p>Histoire d&#8217;avoir une idée de comment une promise marche, on va faire une implémentation, simpliste et naïve, mais compréhensible, d&#8217;une promesse en Python. Pour rendre l&#8217;API un peu sympa,je vais utiliser <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">les décorateurs.</a></p>
+<pre lang="python">class Promise:
+
+    # La promesse contient une liste de callbacks, donc une liste de fonctions.
+    # Pas le résultat des fonctions, mais bien les fonctions elles mêmes,
+    # puisque les fonctions sont manipulables en Python.
+    def __init__(self):
+        self.callbacks = []
+
+    # Point d'entrée pour ajouter un callback à la promesse
+    def then(self, callback):
+        self.callbacks.append(callback)
+
+    # Cette méthode est celle qui sera appelée par le code asynchrone
+    # quand il reçoit son résultat.
+    def resolve(self, resultat):
+
+        # Ici, on obtient le résultat du code asycnhrone, donc on boucle
+        # sur les callbacks pour les appeler
+        while self.callbacks:
+            # On retire le premier callback de la liste, et on l'appelle
+            # avec le résultat
+            resultat = self.callbacks.pop(0)(resultat)
+
+            # Si le resultat est une promesse, on dit à cette nouvelle promesse
+            # de nous rappeler quand elle a reçu ses résultats à elle avant
+            # d'aller le reste de nos callbacks à nous : on fusionne les deux
+            # promesses :
+            # Promesse 1
+            #  - callback1
+            #  - callback2
+            #  - Promesse 2
+            #      * callback 1
+            #      * callback 2
+            #  - callback 3
+            if isinstance(resultat, Promise):
+                resultat.then(self.resolve)
+                break</pre>
+<p>Maintenant, créons un code asynchrone:</p>
+<pre lang="python">from threading import Timer
+
+def func1(v1):
+    # On dit complètement artificiellement d'afficher le résultat
+    # de la fonction dans 3 secondes, sans bloquer histoire d'avoir
+    # un peu de nonbloquitude dans notre code et justifier l'asynchrone.
+    def callback1():
+        print(v1)
+    t = Timer(3, callback1)
+    t.start()
+
+def func2(v2):
+    # Le même, mais pour 2 secondes
+    def callback2():
+        print(v2)
+    t = Timer(2, callback2)
+    t.start()
+
+# Deux fonctions normales
+def func3(v3):
+    print(v3)
+
+def func4(v4):
+    print(v4)
+
+# Et si on les enchaines...
+print('Je commence')
+func1(1)
+print('Juste après')
+func2(2)
+func3(3)
+func4(4)
+
+# ... le résultat est bien désordonné :
+
+## Je commence
+## Juste après
+## 3
+## 4
+## 2
+## 1</pre>
+<p>Parfois c&#8217;est ce que l&#8217;on veut, que les choses s’exécutent dans le désordre, sans bloquer.</p>
+<p>Mais quand on a des fonctions qui dépendent les unes des autres, au milieu d&#8217;un code asynchrone, on veut qu&#8217;elles se transmettent le résultat les unes aux autres au bon moment. Pour cela, utilisons notre promesse :</p>
+<pre lang="python">
+from threading import Timer
+
+
+# La mise en place de promesses suppose que le code 
+# écrit en fasse explicitement usage. Notre code est
+# définitivement lié à cette manière de faire.
+
+def func1(v1):
+    # Notre fonction doit créer la promesse et la retourner
+    p = Promise()
+    def callback1():
+        print(v1)
+        # Dans le callback, elle doit dire quand la promesse est tenue
+        p.resolve(v1)
+    t = Timer(3, callback1)
+    t.start()
+    return p
+
+# On lance la première fonction.
+print('Je commence')
+promise = func1(1)
+print('Juste après')
+
+# On ajoute des callbacks à notre promesse.
+
+@promise.then
+def func2(v2):
+    p = Promise()
+    def callback2():
+        # Pour justifier l’enchainement des fonctions, on fait en sorte que
+        # chaque fonction attend le résultat de la précédente, et
+        # l'incrémente de 1.
+        print(v2 + 1)
+        p.resolve(v2 + 1)
+    t = Timer(2, callback2)
+    t.start()
+    # Ce callback retourne lui-même une promesse, qui sera fusionnée
+    return p
+
+# Ces callbacks ne retournent pas de promesses, et seront chainés
+# normalement
+@promise.then
+def func3(v3):
+    print(v3 + 1)
+    return v3 + 1
+
+@promise.then
+def func4(v4):
+    print(v4 + 1)
+
+# Nos fonctions s'exécutent dans le bon ordre, mais bien de manière
+# asynchrone par rapport au reste du programme.
+
+## Je commence
+## Juste après
+## 1
+## 2
+## 3
+## 4
+</pre>
+<p>Notez bien :</p>
+<ul>
+<li>Le résultat &#8220;1&#8221; n&#8217;apparait que trois secondes après &#8220;Juste après&#8221;. Les fonctions sont donc bien non bloquantes.</li>
+<li>Le resultat &#8220;2&#8221; apparait deux secondes après &#8220;1&#8221;: c&#8217;est aussi asynchrone, MAIS, n&#8217;est lancé que quand la première fonction a terminé son travail.</li>
+<li>La deuxième fonction retourne une promesse, qui est fusionnée: tous ses callbacks vont s&#8217;exécuter en file avant que <code>func3</code> soit lancé. </li>
+</ul>
+<p>Évidement, n&#8217;utilisez pas cette implémentation de promise à la maison, c&#8217;est pédagogique. Ça ne gère pas les erreurs, ni le cas où le callback est enregistré après l&#8217;arrivée du résultat, et tout un tas d&#8217;autres cas tordus.</p>
+<h2>Syntaxe alternative</h2>
+<p>En Python, beaucoup de frameworks ont une approche plus agréable pour gérer les promesses à grand coup de <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">yield</a>. Twisted fait ça avec son <code>@inlineCallback</code>, <code>asyncio</code> avec <code>@coroutine</code>. C&#8217;est juste du sucre syntaxique pour vous rendre la vie plus facile.</p>
+<p>Il s&#8217;agit de transformer une fonction en générateur, et à chaque fois qu&#8217;on appelle <code>yield</code> sur une promesse, elle est fusionnée avec la précédente. Ça donne presque l&#8217;impression d&#8217;écrire un code bloquant normal :</p>
+<pre lang="python"># un appel de fonction asyncrone typique de twisted
+@inlineCallback
+def une_fonction(data):
+  data = yield func1(data)
+  data = yield func2(data)
+  data = yield func3(data)
+
+une_fonction(truc)</pre>
+<p>Les fonctions 1, 2 et 3 vont ainsi être appelées de manière asynchrone par rapport au reste du programme, mais bien s’enchainer les unes à la suite des autres.</p>
+<p>Ouai, tout ce bordel parce que l&#8217;asynchrone, c&#8217;est dur, donc on essaye de le faire ressembler à du code synchrone, qui lui est facile.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/feed/</wfw:commentRss>
+		<slash:comments>19</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">10418</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/06/D8GwE.png" length="222229" type="image/jpg" />	</item>
+	</channel>
+</rss>

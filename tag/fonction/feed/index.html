@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>fonction &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/fonction/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Introduction au currying </title>
+		<link>http://sametmax.com/introduction-au-currying/</link>
+		<comments>http://sametmax.com/introduction-au-currying/#comments</comments>
+		<pubDate>Fri, 12 Dec 2014 19:37:00 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[comprehension-lists]]></category>
+		<category><![CDATA[currying]]></category>
+		<category><![CDATA[fonction]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[lambda]]></category>
+		<category><![CDATA[listes en intention]]></category>
+		<category><![CDATA[programmation functionelle]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12693</guid>
+		<description><![CDATA[Le currying (ou Curryfication pour les frencofans) est le nom donné à une technique de programmation qui consiste à créer une fonction à partir d'une autre fonction et d'une liste partielle de paramètres destinés à celle-ci. On retrouve massivement cette technique en programmation fonctionnelle puisqu'elle permet de créer une fonction pure à partir d'une autre fonction pure. C'est une forme de réutilisabilité de code.]]></description>
+				<content:encoded><![CDATA[<p>Le currying (ou Curryfication pour les frencofans) est le nom donné à une technique de programmation qui consiste à créer une fonction à partir d&#8217;une autre fonction et d&#8217;une liste partielle de paramètres destinés à celle-ci. On retrouve massivement cette technique en programmation fonctionnelle puisqu&#8217;elle permet de créer une fonction pure à partir d&#8217;une autre fonction pure. C&#8217;est une forme de réutilisabilité de code.</p>
+<p>La forme la plus simple de currying est de réécrire une fonction appelant l&#8217;autre. Par exemple, soit une fonction pour multiplier tous les éléments d&#8217;un itérable :</p>
+<pre lang="python">def multiply(iterable, number):
+    """ Multiplie tous les éléments d'un itérable par un nombre.
+
+        Exemple :
+
+            >>> list(multiply([1, 2, 3], 2))
+            [2, 4, 6]
+    """
+    return (x * number for x in iterable)</pre>
+<p>On peut ensuite créer une fonction qui multipliera par 2 tous les éléments d&#8217;un itérable :</p>
+<pre lang="python">def doubled(iterable):
+    """ Multiplie tous les éléments d'un itérable par un 2.
+
+        Exemple :
+
+            >>> list(doubled([1, 2, 3]))
+            [2, 4, 6]
+    """
+    return multiply(iterable, 2)</pre>
+<p>C&#8217;est une forme de currying. On créé une fonction qui fait ce que fait une autre fonction, mais avec des arguments par défaut.</p>
+<p>Python possède une fonction pour faire ça automatiquement avec n&#8217;importe quelle fonction :</p>
+<pre lang="python">>>> from functools import partial 
+>>> tripled = partial(multiply, number=3) # on curryfie ici
+>>> list(tripled([1, 2, 3])) # nouvelle fonction avec un seul argument
+[3, 6, 9]</pre>
+<p>Cela marche car, je vous le rappelle, les fonctions sont des objets en Python. On peut mettre une fonction (je ne parle pas de son résultat) dans une variable, passer une fonction en paramètre ou retourner une fonction dans une autre fonction. <strong>Les fonctions sont manipulables</strong>.</p>
+<p>Il n&#8217;est pas rare d&#8217;utiliser les fonctions anonymes comme outils curryfication. En Python, on ferait ça avec une <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">lambda</a> :</p>
+<pre lang="python">
+>>> tripled = lambda x: multiple(x, 3) 
+>>> list(tripled([1, 2, 3]))
+[3, 6, 9]</pre>
+<p>Certains outils, comme <a href="http://buzzdecafe.github.io/code/2014/05/16/introducing-ramda/">Ramda</a> en Javascript, vont plus loin, et exposent des fonctions qui se curryfient automatiquement.</p>
+<p>Pour ce faire, il faut inverser l&#8217;ordre qu&#8217;on mettrait intuitivement aux arguments dans la déclaration d&#8217;une fonction :</p>
+<pre lang="python">
+# au lieu de multiply(iterable, number), on a :
+def multiply(number, iterable=None):
+    # Si on a pas d'itérable passé, on curryfie
+    if iterable is None:
+        return partial(multiply, number=number)
+    return (x * number for x in iterable)</pre>
+<p>Ainsi :</p>
+<pre lang="python">>>> list(multiply(2, [1, 2, 3])) # pas de currying
+[2, 4, 6]
+>>> quintuple = multiply(5) # currying automatique
+>>> list(quintuple([1, 2, 3]))
+[5, 10, 15]
+</pre>
+<p>L’intérêt de ce style, c&#8217;est qu&#8217;on peut composer des traitements à partir de plusieurs sous traitements, presque déclarativement :</p>
+<pre lang="python">
+def remove(filter, iterable=None):
+    """ Retire tous les éléments d'un itérable correspondant au filtre.
+
+        Exemple :
+
+            >>> list(remove(lambda x: x >= 4, [1, 2, 3, 4, 5]))
+            [1, 2, 3]
+    """
+    if iterable is None:
+        return partial(remove, filter)
+
+    return (x for x in iterable if not filter(x))
+
+>>> smalls = remove(lambda x: x >= 4)
+>>> list(smalls(tripled([0, 1, 2, 3, 4]))) # le traitement est auto descriptif
+[0, 3]
+</pre>
+<p>Néanmoins, il faut savoir que ce style n&#8217;est pas pythonique. En effet, en Python on préférera généralement utiliser des suites suite de générateurs. Soit par <a href="http://sametmax.com/python-love-les-listes-en-intention-partie-2/">intention</a>, soit via <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">yield</a>.</p>
+<p>Notre exemple serait alors :</p>
+<pre lang="python">>>> tripled = (x * 3 for x in [0, 1, 2, 3, 4])
+>>> smalls = (x for x in tripled if x <= 4)
+>>> list(smalls)
+[0, 3]</pre>
+<p>De plus, cette technique suppose qu&#8217;on ne profitera pas de certaines fonctionnalités, comme les paramètres par défaut des fonctions Python.</p>
+<p>C&#8217;est toutefois une bonne chose à connaître. C&#8217;est occasionnellement utile en Python et peut produire des solutions très élégantes. C&#8217;est également une bonne chose à comprendre pour aborder d&#8217;autres langages plus fonctionnels qui les utilisent bien plus comme le Javascript, le Lisp, ou carrément le Haskell.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/introduction-au-currying/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">12693</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/12/tumblr_n5zg0woqTQ1r539hzo1_500.jpg" length="68286" type="image/jpg" />	</item>
+		<item>
+		<title>Mettez des fonctions dans vos structures de données</title>
+		<link>http://sametmax.com/mettez-des-fonctions-dans-vos-structures-de-donnees/</link>
+		<comments>http://sametmax.com/mettez-des-fonctions-dans-vos-structures-de-donnees/#comments</comments>
+		<pubDate>Sat, 15 Feb 2014 09:50:04 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[fonction]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9154</guid>
+		<description><![CDATA[En Python les fonctions sont des objets de premier ordre. On peut les manipuler, copier les références, les supprimer...]]></description>
+				<content:encoded><![CDATA[<p>En Python les fonctions sont des objets de premier ordre. On peut les manipuler, copier les références, les supprimer&#8230;</p>
+<p>Exemple :</p>
+<pre lang="python"># On definit une fonction.
+# Jusqu'ici tout va bien...
+def pizza():
+    return "miam"
+
+
+print(pizza())
+## miam
+
+# On peut assigner la référence de
+# la fonction à une variable.
+delice = pizza
+
+# Et utiliser la fonction depuis la variable
+print(delice())
+## miam
+
+# On peut même supprimer la variable
+# originale.
+del pizza
+print(delice())
+## miam
+
+pizza()
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-3-dc0f1f08233f> in <module>()
+----> 1 pizza()
+
+NameError: name 'pizza' is not defined</pre>
+<p>La fonction est un objet ordinaire qui peut donc se mettre dans une variable, mais aussi se passer en paramètre, se retourner comme valeur, etc. J&#8217;ai déjà expliqué ça dans <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">le tuto sur les décorateurs</a> plus en détail, mais un rappel ne fait pas de mal.</p>
+<p>Cela veut dire que l&#8217;on peut mettre la référence d&#8217;une fonction dans une structure de données.</p>
+<p>Par exemple dans une liste :</p>
+<pre lang="python">def pizza():
+    return "miam"
+
+def epinard():
+    return "miam aussi"
+
+def arepas():
+    return "decidement tout est miam"
+
+# On met les fonctions dans la liste :
+liste_de_fonctions = [pizza, epinard, arepas]
+
+# Et du coup on peut boucler sur les fonctions
+for func in liste_de_fonctions:
+    print(func())
+
+## miam
+## miam aussi
+## decidement tout est miam
+
+# Le monde des listes s'ouvre à vous
+
+print(liste_de_fonctions[-1]())
+## decidement tout est miam
+
+f1, f2 = liste_de_fonctions[:2]
+print(f2())
+## miam aussi
+
+</pre>
+<p>Mais aussi dans un dictionnaire :</p>
+<pre lang="python">dico_de_fonction = {
+    "choix1": pizza,
+    "choix2": epinard,
+    "choix3": arepas
+}
+
+print(dico_de_fonction["choix2"]())
+## miam aussi
+
+for key, func in dico_de_fonction.items():
+    print("%s: %s" % (key, func()))
+
+## choix1: miam
+## choix3: decidement tout est miam
+## choix2: miam aussi</pre>
+<p>En fait, ça marche avec tout (les fonctions sont hashables) : les sets, les tuples, les <a href="http://sametmax.com/implementer-une-fenetre-glissante-en-python-avec-un-deque/">deques</a>&#8230;</p>
+<p>On peut même faire un générateur qui yield des fonctions :</p>
+<pre lang="python">import random
+
+def fonctions_aleatoires(nombre, fonctions=liste_de_fonctions):
+    for x in range(nombre):
+        yield random.choice(liste_de_fonctions)
+
+for func in fonctions_aleatoires(5):
+    print(func())
+
+## miam aussi
+## miam
+## decidement tout est miam
+## miam
+## miam aussi</pre>
+<p>Python n&#8217;a certes pas les capacités de Lisp ou même Javascript pour faire de la programmation fonctionnelle, mais les fonctions restent des objets très puissants dans ce langage.</p>
+<p>D&#8217;ailleurs, cet article est valable aussi pour les classes et les modules :)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/mettez-des-fonctions-dans-vos-structures-de-donnees/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">9154</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/02/tumblr_n0zopk9yFh1r539hzo1_500.jpg" length="45753" type="image/jpg" />	</item>
+		<item>
+		<title>Le module operator en Python</title>
+		<link>http://sametmax.com/le-module-operator-en-python/</link>
+		<comments>http://sametmax.com/le-module-operator-en-python/#comments</comments>
+		<pubDate>Sat, 12 Jan 2013 10:17:33 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[fonction]]></category>
+		<category><![CDATA[operator]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4102</guid>
+		<description><![CDATA[Le module <code>operator</code> contient des fonctions qui font ce que font les opérateurs. ]]></description>
+				<content:encoded><![CDATA[<p>Le module <code>operator</code> contient des fonctions qui font ce que font les opérateurs. Exemple :</p>
+<pre lang="python">>>> from operator import add, gt
+>>> add(1, 1) # fait en fonction ce que ferait 1 + 1
+>>> gt(1, 2) # fait en fonction ce que ferait 1 > 2</pre>
+<p>On a donc dans le module <code>operator</code> de quoi remplacer les opérateurs <code>+</code>, <code><</code>, <code>not</code>, etc. par des fonctions.</p>
+<p>Les opérateurs <code>or</code> et <code>and</code> n'ont pas de fonctions équivalentes car ils short circuitent, ce que ne peut pas faire une fonction. <code>operator.and_</code> et <code>operator.or_</code> sont des fonctions pour <code>&</code> et <code>|</code>, par pour <code>or</code> et <code>and</code>.</p>
+<p>Il y a des opérateurs qu'on oublie souvent, comme l'opérateur <code>[]</code>. Le module <code>operator</code> contient des fonctions pour lui également.</p>
+<pre lang="python">>>> from operator import getitem, getslice
+>>> lst = [1, 2, 3]
+>>> lst[0]
+1
+>>> getitem(lst, 0)
+1
+>>> lst[:2]
+[1, 2]
+>>> getslice(lst, 0, 2)
+[1, 2]</pre>
+<p>On oublie parfois l'opérateur ".". Il y a une fonction builtin pour ça:</p>
+<pre lang="python">>>> class Classe(object):
+...     def __init__(self, type):
+...         self.type = type
+...         
+>>> c = Classe('cm2')
+>>> c.type
+'cm2'
+>>> getattr(c, 'type')
+'cm2'</pre>
+<p>Mais le plus étonnant dans le module <code>operator</code>, c'est qu'il a des fonctions qui retournent... des fonctions.</p>
+<pre lang="python">>>> from operator import itemgetter
+>>> getfirst = itemgetter(0)
+>>> getfirst([1, 2, 3])
+1
+>>> getfirst('abc')
+'a'
+>>> getsecond = itemgetter(1)
+>>> getsecond([1, 2, 3])
+2
+>>> getsecond("abc")
+'b'
+>>> getlast = itemgetter(-1)
+>>> getlast(range(100))
+99
+</pre>
+<p>Ici on créer des fonctions qui ont pour seul triste but dans la vie de retourner l'élément à l'index donné. <code>getfirst</code> retournera l'élément <code>0</code>. <code>getsecond</code> retournera l'élément à l'index <code>1</code>. <code>getlast</code> retournera l'élément à l'index <code>-1</code>. <code>itemgetter(</code>) est un créateur de fonction qui ne font que ça: retourner un seul élément.</p>
+<p>On pourrait aussi le faire avec une <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">lambda</a>:</p>
+<pre lang="python">>>> getfirst = lambda x: x[0]
+>>> getfirst([1, 2, 3])
+1</pre>
+<p>On a le même chose de chose pour les attributs. <code>attrgetter</code> est une fonction qui crée une fonction. La fonction créée retourne toujour la valeur du même attribut.</p>
+<pre lang="python">>>> from operator import attrgetter
+>>> gettype = attrgetter('type') # crée une fonction qui ...
+>>> gettype(Classe('cm2')) # ... retourne la valeur de l'attribut 'type'
+'cm2'
+>>> gettype(Classe('6eme'))
+'6eme'</pre>
+<p>On pourrait aussi le faire avec une <code>lambda</code>:</p>
+<pre lang="python">>>> gettype = lambda x: x.type
+>>> gettype(Classe('6eme'))
+'6eme'</pre>
+<p>Ces fonctions n'ont pas l'air utile comme ça, mais en Python les fonctions peuvent être passées en paramètres. Cela permet donc de faire des choses intéressante comme de <a href="http://sametmax.com/quest-ce-quun-callback/">l'injection de dépendance</a>. C'est notamment ainsi que fonctionne <code>key</code> dans <a href="http://docs.python.org/2/library/functions.html?highlight=sorted#sorted">sorted()</a>.</p>
+<p>Bref, jetez un coup d'oeil à operator, il est plein comme un oeuf:</p>
+<pre lang="python">>>> from operator import <tab>
+abs               delitem           getslice          ilshift           ior               isSequenceType    le                neg               sequenceIncludes
+add               delslice          gt                imod              ipow              is_               lshift            not_              setitem
+and_              div               iadd              imul              irepeat           is_not            lt                or_               setslice
+attrgetter        eq                iand              index             irshift           isub              methodcaller      pos               sub
+concat            floordiv          iconcat           indexOf           isCallable        itemgetter        mod               pow               truediv
+contains          ge                idiv              inv               isMappingType     itruediv          mul               repeat            truth
+countOf           getitem           ifloordiv         invert            isNumberType      ixor              ne                rshift            xor
+</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-module-operator-en-python/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">4102</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/01/02486902-photo-logo-orange.jpg" length="44293" type="image/jpg" />	</item>
+	</channel>
+</rss>

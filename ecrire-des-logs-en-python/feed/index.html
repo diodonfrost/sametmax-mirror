@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Écrire des logs en Python</title>
+	<atom:link href="http://sametmax.com/ecrire-des-logs-en-python/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/ecrire-des-logs-en-python/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/ecrire-des-logs-en-python/#comment-195806</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Fri, 15 Jun 2018 10:28:56 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5267#comment-195806</guid>
+		<description><![CDATA[&lt;p&gt;Bien vu !&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Bien vu !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: ian0delond</title>
+		<link>http://sametmax.com/ecrire-des-logs-en-python/#comment-195803</link>
+		<dc:creator><![CDATA[ian0delond]]></dc:creator>
+		<pubDate>Fri, 15 Jun 2018 08:52:47 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5267#comment-195803</guid>
+		<description><![CDATA[Je crois qu&#039;il y a un problème avec l&#039;article.
+
+Tu l&#039;as écrasé en le remplaçant par la question de Poil. C&#039;est dommage car l&#039;article était bien rédigé.
+]]></description>
+		<content:encoded><![CDATA[<p>Je crois qu&#8217;il y a un problème avec l&#8217;article.</p>
+<p>Tu l&#8217;as écrasé en le remplaçant par la question de Poil. C&#8217;est dommage car l&#8217;article était bien rédigé.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/ecrire-des-logs-en-python/#comment-195607</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 06 Jun 2018 10:06:42 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5267#comment-195607</guid>
+		<description><![CDATA[&lt;p&gt;Pose la question sur indexerror.net, le blog c&#039;est pourri pour debugger.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Pose la question sur indexerror.net, le blog c&#8217;est pourri pour debugger.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Poil</title>
+		<link>http://sametmax.com/ecrire-des-logs-en-python/#comment-195606</link>
+		<dc:creator><![CDATA[Poil]]></dc:creator>
+		<pubDate>Wed, 06 Jun 2018 09:33:27 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5267#comment-195606</guid>
+		<description><![CDATA[&lt;p&gt;Hello,&lt;/p&gt;
+
+&lt;p&gt;Un truc que je ne pige pas avec le logger Python&lt;/p&gt;
+
+&lt;p&gt;J&#039;ai une appli Flask :&lt;/p&gt;
+
+&lt;p&gt;run.py&lt;/p&gt;
+
+&lt;pre lang=&quot;python&gt;
+
+import os
+
+import logging
+
+import logging.config
+
+from flask import Flask
+
+from flask.logging import default_handler
+
+from testlog.bp_api_v1 import api_v1_bp
+
+app = Flask(__name__)
+
+logging.config.fileConfig(os.path.join(&#039;conf&#039;, &#039;logger.conf&#039;))
+
+app.register_blueprint(api_v1_bp)
+
+app.logger.removeHandler(default_handler)
+
+celery = make_celery(app)
+
+if __name__ == &quot;__main__&quot;:
+
+app.run(&#039;0.0.0.0&#039;, debug=True)
+
+&lt;/pre&gt;
+
+&lt;pre lang=&quot;python&gt;
+
+testlog/bp_api_v1.py
+
+-*- coding: utf8 -*-
+
+pylint: disable=too-few-public-methods
+
+from flask import Blueprint
+
+from flask import current_app as app
+
+from flask_restplus import Api, Resource
+
+from testlog.mymod import MyMod
+
+api_v1_bp = Blueprint(&#039;api_v1&#039;, __name__)
+
+api_v1 = Api(api_v1_bp, contact=&quot;ssl.eng@orange.com&quot;,
+
+doc=&#039;/doc/&#039;, version=&#039;3.10.0&#039;, title=&#039;BVPNEU Backend Api&#039;)
+
+@api_v1.route(&#039;/test&#039;)
+
+class Test(Resource):
+
+&quot;&quot;&quot; toto &quot;&quot;&quot;
+
+def get(self):
+
+&quot;&quot;&quot; toto &quot;&quot;&quot;
+
+app.logger.debug(&#039;log api&#039;)
+
+m = MyMod()
+
+return &quot;Success&quot;
+
+&lt;/pre&gt;
+
+&lt;p&gt;testlog/mymod/&lt;strong&gt;init&lt;/strong&gt;.py&lt;/p&gt;
+
+&lt;pre lang=&quot;python&gt;
+
+from .mymod import MyMod
+
+&lt;/pre&gt;
+
+V1 : (logger global)
+
+testlog/mymod/mymod.py
+
+&lt;pre lang=&quot;python&gt;
+
+import logging
+
+logger = logging.getLogger(__name__)
+
+class MyMod(object):
+
+def __init__(self):
+
+logger.debug(&#039;kikoo&#039;)
+
+from logging_tree import printout
+
+printout()
+
+&lt;/pre&gt;
+
+&lt;p&gt;V2 : (logger self.logger)&lt;/p&gt;
+
+&lt;p&gt;testlog/mymod/mymod.py&lt;/p&gt;
+
+&lt;pre lang=&quot;python&gt;
+
+import logging
+
+class MyMod(object):
+
+def __init__(self):
+
+self.logger = logging.getLogger(__name__)
+
+self.logger.debug(&#039;kikoo&#039;)
+
+from logging_tree import printout
+
+printout()
+
+&lt;/pre&gt;
+
+Dans le cas de la V1 : je n&#039;ai pas de log a arriver dans mon syslog
+
+Dans le cas de la V2 : ça marche
+
+Si je dump mon objet logger via
+
+&lt;pre lang=&quot;python&gt;
+
+from logging_tree import printout
+
+printout()
+
+&lt;/pre&gt;
+
+&lt;p&gt;J&#039;ai en V1:&lt;/p&gt;
+
+&lt;pre lang=&quot;python&gt;
+
+o&#060;--[testlog]
+
+&#124;   &#124;
+
+&#124;   o&#060;--[testlog.mymod]
+
+&#124;       &#124;
+
+&#124;       o&#060;--&quot;testlog.mymod.mymod&quot;
+
+&#124;           Level NOTSET so inherits level DEBUG
+
+&#124;           Disabled
+
+&lt;/pre&gt;
+
+Et en V2
+
+&lt;pre lang=&quot;python&gt;
+
+o&#060;--[testlog]
+
+&#124;   &#124;
+
+&#124;   o&#060;--[testlog.mymod]
+
+&#124;       &#124;
+
+&#124;       o&#060;--&quot;testlog.mymod.mymod&quot;
+
+&#124;           Level NOTSET so inherits level DEBUG
+
+&lt;/pre&gt;
+
+&lt;p&gt;Notez que je n&#039;ai pas le Disabled ce qui semble faire que ça tombe en marche, je ne comprend pas pourquoi ...&lt;/p&gt;
+
+&lt;p&gt;Note ma conf de logger&lt;/p&gt;
+
+&lt;p&gt;&#060;&lt;/p&gt;
+
+&lt;p&gt;pre lang=&quot;python&gt;&lt;/p&gt;
+
+&lt;p&gt;[loggers]&lt;/p&gt;
+
+&lt;p&gt;keys = root&lt;/p&gt;
+
+&lt;p&gt;[handlers]&lt;/p&gt;
+
+&lt;p&gt;keys=syslog&lt;/p&gt;
+
+&lt;p&gt;[formatters]&lt;/p&gt;
+
+&lt;p&gt;keys=generic&lt;/p&gt;
+
+&lt;p&gt;[logger_root]&lt;/p&gt;
+
+&lt;p&gt;level=DEBUG&lt;/p&gt;
+
+&lt;p&gt;handlers=syslog&lt;/p&gt;
+
+&lt;p&gt;[handler_syslog]&lt;/p&gt;
+
+&lt;p&gt;class=logging.handlers.SysLogHandler&lt;/p&gt;
+
+&lt;p&gt;formatter=generic&lt;/p&gt;
+
+&lt;p&gt;args = (&#039;/dev/log&#039;, handlers.SysLogHandler.LOG_USER)&lt;/p&gt;
+
+&lt;p&gt;[formatter_generic]&lt;/p&gt;
+
+&lt;p&gt;format=%(name)s: [%(module)s:%(pathname)s:%(filename)s:%(lineno)s] [%(levelname)s] %(message)s&lt;/p&gt;
+
+&lt;p&gt;class=logging.Formatter&lt;/p&gt;
+
+&lt;p&gt;&#060;/&gt;&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Hello,</p>
+<p>Un truc que je ne pige pas avec le logger Python</p>
+<p>J&#8217;ai une appli Flask :</p>
+<p>run.py</p>
+<pre lang="python>
+
+import os
+
+import logging
+
+import logging.config
+
+from flask import Flask
+
+from flask.logging import default_handler
+
+from testlog.bp_api_v1 import api_v1_bp
+
+app = Flask(__name__)
+
+logging.config.fileConfig(os.path.join('conf', 'logger.conf'))
+
+app.register_blueprint(api_v1_bp)
+
+app.logger.removeHandler(default_handler)
+
+celery = make_celery(app)
+
+if __name__ == "__main__":
+
+app.run('0.0.0.0', debug=True)
+
+</pre>
+<pre lang="python>
+
+testlog/bp_api_v1.py
+
+-*- coding: utf8 -*-
+
+pylint: disable=too-few-public-methods
+
+from flask import Blueprint
+
+from flask import current_app as app
+
+from flask_restplus import Api, Resource
+
+from testlog.mymod import MyMod
+
+api_v1_bp = Blueprint('api_v1', __name__)
+
+api_v1 = Api(api_v1_bp, contact="ssl.eng@orange.com",
+
+doc='/doc/', version='3.10.0', title='BVPNEU Backend Api')
+
+@api_v1.route('/test')
+
+class Test(Resource):
+
+""" toto """
+
+def get(self):
+
+""" toto """
+
+app.logger.debug('log api')
+
+m = MyMod()
+
+return "Success"
+
+</pre>
+<p>testlog/mymod/<strong>init</strong>.py</p>
+<pre lang="python>
+
+from .mymod import MyMod
+
+</pre>
+<p>V1 : (logger global)</p>
+<p>testlog/mymod/mymod.py</p>
+<pre lang="python>
+
+import logging
+
+logger = logging.getLogger(__name__)
+
+class MyMod(object):
+
+def __init__(self):
+
+logger.debug('kikoo')
+
+from logging_tree import printout
+
+printout()
+
+</pre>
+<p>V2 : (logger self.logger)</p>
+<p>testlog/mymod/mymod.py</p>
+<pre lang="python>
+
+import logging
+
+class MyMod(object):
+
+def __init__(self):
+
+self.logger = logging.getLogger(__name__)
+
+self.logger.debug('kikoo')
+
+from logging_tree import printout
+
+printout()
+
+</pre>
+<p>Dans le cas de la V1 : je n&#8217;ai pas de log a arriver dans mon syslog</p>
+<p>Dans le cas de la V2 : ça marche</p>
+<p>Si je dump mon objet logger via</p>
+<pre lang="python>
+
+from logging_tree import printout
+
+printout()
+
+</pre>
+<p>J&#8217;ai en V1:</p>
+<pre lang="python>
+
+o&lt;--[testlog]
+
+|   |
+
+|   o&lt;--[testlog.mymod]
+
+|       |
+
+|       o&lt;--"testlog.mymod.mymod"
+
+|           Level NOTSET so inherits level DEBUG
+
+|           Disabled
+
+</pre>
+<p>Et en V2</p>
+<pre lang="python>
+
+o&lt;--[testlog]
+
+|   |
+
+|   o&lt;--[testlog.mymod]
+
+|       |
+
+|       o&lt;--"testlog.mymod.mymod"
+
+|           Level NOTSET so inherits level DEBUG
+
+</pre>
+<p>Notez que je n&#8217;ai pas le Disabled ce qui semble faire que ça tombe en marche, je ne comprend pas pourquoi &#8230;</p>
+<p>Note ma conf de logger</p>
+<p>&lt;</p>
+<p>pre lang=&#8221;python></p>
+<p>[loggers]</p>
+<p>keys = root</p>
+<p>[handlers]</p>
+<p>keys=syslog</p>
+<p>[formatters]</p>
+<p>keys=generic</p>
+<p>[logger_root]</p>
+<p>level=DEBUG</p>
+<p>handlers=syslog</p>
+<p>[handler_syslog]</p>
+<p>class=logging.handlers.SysLogHandler</p>
+<p>formatter=generic</p>
+<p>args = (&#8216;/dev/log&#8217;, handlers.SysLogHandler.LOG_USER)</p>
+<p>[formatter_generic]</p>
+<p>format=%(name)s: [%(module)s:%(pathname)s:%(filename)s:%(lineno)s] [%(levelname)s] %(message)s</p>
+<p>class=logging.Formatter</p>
+<p>&lt;/></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/ecrire-des-logs-en-python/#comment-188536</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Fri, 28 Jul 2017 11:56:53 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5267#comment-188536</guid>
+		<description><![CDATA[&lt;p&gt;Fixed.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Fixed.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Bob</title>
+		<link>http://sametmax.com/ecrire-des-logs-en-python/#comment-188532</link>
+		<dc:creator><![CDATA[Bob]]></dc:creator>
+		<pubDate>Fri, 28 Jul 2017 09:16:07 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5267#comment-188532</guid>
+		<description><![CDATA[Après plusieurs utilisation du snippet je me suis rendu compte d&#039;un petite typo:
+
+il faut remplacer  steam_handler par stream_handler
+
+My 2 cents
+]]></description>
+		<content:encoded><![CDATA[<p>Après plusieurs utilisation du snippet je me suis rendu compte d&#8217;un petite typo:</p>
+<p>il faut remplacer  steam_handler par stream_handler</p>
+<p>My 2 cents</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/ecrire-des-logs-en-python/#comment-186772</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 13 Apr 2017 13:23:21 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5267#comment-186772</guid>
+		<description><![CDATA[&lt;p&gt;Ce n&#039;est pas un problème de logging là, c&#039;est un problème de base de programmation Python. Pour éviter de remplir les commentaires de l&#039;article avec ce debuggage, ouvre un post sur indexerror.net.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Ce n&#8217;est pas un problème de logging là, c&#8217;est un problème de base de programmation Python. Pour éviter de remplir les commentaires de l&#8217;article avec ce debuggage, ouvre un post sur indexerror.net.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: MaxL</title>
+		<link>http://sametmax.com/ecrire-des-logs-en-python/#comment-186758</link>
+		<dc:creator><![CDATA[MaxL]]></dc:creator>
+		<pubDate>Wed, 12 Apr 2017 10:09:00 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5267#comment-186758</guid>
+		<description><![CDATA[Merci de la réponse. J&#039;ai essayé de rajouter cette ligne dans mon fichier de fonctions, puis dans une fonction, mais toujours la même chose, il n&#039;arrive pas à accéder au logger défini plus haut ...
+
+Ma construction de fichiers est la suivante :
+
+fichier_principal.py contenant :
+
+&lt;code&gt;import logging
+
+logger = logging.getLogger()&lt;/code&gt;
+
+puis la définition comme proposé plus haut dans ce post.
+
+Et mon fichier de fonctions et classes :
+
+functions.py :
+
+&lt;code&gt;import logging
+
+def mafonction():
+
+log = logging.getLogger(logger)
+
+etc..&lt;/code&gt;
+
+J&#039;obtiens la même chose (NameError) que je définisse &quot;log&quot; avant ou dans ma définition de fonction.
+
+Merci de ton aide !
+]]></description>
+		<content:encoded><![CDATA[<p>Merci de la réponse. J&#8217;ai essayé de rajouter cette ligne dans mon fichier de fonctions, puis dans une fonction, mais toujours la même chose, il n&#8217;arrive pas à accéder au logger défini plus haut &#8230;</p>
+<p>Ma construction de fichiers est la suivante :</p>
+<p>fichier_principal.py contenant :</p>
+<p><code>import logging</p>
+<p>logger = logging.getLogger()</code></p>
+<p>puis la définition comme proposé plus haut dans ce post.</p>
+<p>Et mon fichier de fonctions et classes :</p>
+<p>functions.py :</p>
+<p><code>import logging</p>
+<p>def mafonction():</p>
+<p>log = logging.getLogger(logger)</p>
+<p>etc..</code></p>
+<p>J&#8217;obtiens la même chose (NameError) que je définisse &#8220;log&#8221; avant ou dans ma définition de fonction.</p>
+<p>Merci de ton aide !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/ecrire-des-logs-en-python/#comment-186757</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 12 Apr 2017 08:30:36 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5267#comment-186757</guid>
+		<description><![CDATA[&lt;p&gt;Il faut faire dans tous les fichiers:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;import logging
+
+log = logging.getLogger(nom)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Pour obtenir une référence au logger portant ce nom.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Il faut faire dans tous les fichiers:</p>
+<pre><code>import logging
+
+log = logging.getLogger(nom)
+</code></pre>
+<p>Pour obtenir une référence au logger portant ce nom.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: MaxL</title>
+		<link>http://sametmax.com/ecrire-des-logs-en-python/#comment-186756</link>
+		<dc:creator><![CDATA[MaxL]]></dc:creator>
+		<pubDate>Wed, 12 Apr 2017 07:45:36 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5267#comment-186756</guid>
+		<description><![CDATA[Bonjour,
+
+Tout d&#039;abord, merci pour tout ces articles, ma foi bien instructifs ! J&#039;utilise régulièrement la routine de log proposée en début d&#039;article, mais aujourd&#039;hui je me heurte à un problème : je la définit dans mon script, et j&#039;utilise l&#039;objet logger dans des fonctions et classes qui sont définis dans un fichier annexe. Et là, c&#039;est le drame : &quot;name error:: global name logger is not defined&quot;. Comme forcer logger à être global ? Il semble être local et ne pas passer dans les fonctions et classes, ce qui m&#039;étonne un peu. Alors certes, il y a la possibilité de le passer en argument de mes fonctions et constructeurs, mais je ne trouve pas cela très propre...
+
+J&#039;aimerai pouvoir passer un warning quand certaines exceptions sont levées (je fais du traitement de données qui a un fort taux de corruption, d&#039;où des erreurs régulièrement)
+
+(j&#039;ai aussi le même problème pour d&#039;autres variables, mais c&#039;est plus facilement contournable)
+
+Merci de votre aide !
+]]></description>
+		<content:encoded><![CDATA[<p>Bonjour,</p>
+<p>Tout d&#8217;abord, merci pour tout ces articles, ma foi bien instructifs ! J&#8217;utilise régulièrement la routine de log proposée en début d&#8217;article, mais aujourd&#8217;hui je me heurte à un problème : je la définit dans mon script, et j&#8217;utilise l&#8217;objet logger dans des fonctions et classes qui sont définis dans un fichier annexe. Et là, c&#8217;est le drame : &#8220;name error:: global name logger is not defined&#8221;. Comme forcer logger à être global ? Il semble être local et ne pas passer dans les fonctions et classes, ce qui m&#8217;étonne un peu. Alors certes, il y a la possibilité de le passer en argument de mes fonctions et constructeurs, mais je ne trouve pas cela très propre&#8230;</p>
+<p>J&#8217;aimerai pouvoir passer un warning quand certaines exceptions sont levées (je fais du traitement de données qui a un fort taux de corruption, d&#8217;où des erreurs régulièrement)</p>
+<p>(j&#8217;ai aussi le même problème pour d&#8217;autres variables, mais c&#8217;est plus facilement contournable)</p>
+<p>Merci de votre aide !</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

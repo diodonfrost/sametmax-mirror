@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>nice &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/nice/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Diminuer la charge cpu d&#8217;un process avec renice</title>
+		<link>http://sametmax.com/diminuer-la-charge-cpu-dun-process-avec-renice/</link>
+		<comments>http://sametmax.com/diminuer-la-charge-cpu-dun-process-avec-renice/#comments</comments>
+		<pubDate>Tue, 29 May 2012 08:44:10 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[cpu]]></category>
+		<category><![CDATA[load average]]></category>
+		<category><![CDATA[nice]]></category>
+		<category><![CDATA[process]]></category>
+		<category><![CDATA[renice]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=780</guid>
+		<description><![CDATA[Si vous avez un process qui consomme pas mal de cpu vous pouvez changer sa priorite à l'aide la commande renice.
+]]></description>
+				<content:encoded><![CDATA[<p>Il arrive que l&#8217;on ai a executer certains scripts sur un serveur de prod deja pas mal encombré, je prends comme exemple mon cas ou j&#8217;ai du reencoder des vidéos, le load average est monté à 6, les perfs en sont du coup devenues execrables.<br />
+Sous linux on a heureusement plein d&#8217;outils sympas, <strong>renice</strong> en fait partie.</p>
+<p>La commande <strong>renice</strong> permet d&#8217;assigner une priorite a un process en cours qui va de -20 (tres elevee) à 20 (tres bas), 0 etant la valeur par défaut. La commande est &#8220;renice priorite id_process&#8221;, dans mon cas:</p>
+<p><strong>Note: On peut connaitre l&#8217;id du process avec un top ou <a href="http://sametmax.com/htop-un-visualiseur-interactif-de-process/" title="htop – un visualiseur interactif de process">htop</a></strong></p>
+<pre lang="bash">
+PID USER        PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND          
+14378 max 	35  15  129m  12m 4632 R 99.4  0.2   0:03.22 ffmpeg       
+22959 max       20  15  101m  79m  924 S  1.7  1.3   8:51.85 python encode.py                
+22958 nginx     20   0  105m  83m  924 S  1.0  1.4   8:51.44 nginx     </pre>
+<p>Ici ffmpeg à un nice (NI) de 15 qu&#8217;il a herité de mon script Python <em>encode.py</em> a qui j&#8217;ai fais un renice de 15 avec la commande &#8220;renice 15 22959&#8221;. Les process heritent automatiquement du nice des parents qui les ont lancés.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/diminuer-la-charge-cpu-dun-process-avec-renice/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">780</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/05/traffic-jam.jpg" length="63310" type="image/jpg" />	</item>
+	</channel>
+</rss>

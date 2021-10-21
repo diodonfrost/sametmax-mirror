@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>random hasard &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/random-hasard/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Récupérer des éléments d&#8217;une liste au hasard avec pondération en python</title>
+		<link>http://sametmax.com/recuperer-des-elements-dune-liste-au-hasard-avec-ponderation-en-python/</link>
+		<comments>http://sametmax.com/recuperer-des-elements-dune-liste-au-hasard-avec-ponderation-en-python/#comments</comments>
+		<pubDate>Fri, 07 Sep 2012 12:46:22 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[liste]]></category>
+		<category><![CDATA[pondération]]></category>
+		<category><![CDATA[random hasard]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2034</guid>
+		<description><![CDATA[Comment récupérer des éléments d'une liste au hasard mais avec une pondération.]]></description>
+				<content:encoded><![CDATA[<p>Une méthode qui vaut ce qu&#8217;elle vaut mais qui sert pas mal.</p>
+<p>Cas de figure, on veut uploader du contenu qui sera mis à disposition d&#8217;utilisateurs sur 3 serveurs sur lesquels il ne reste pas la même place&#8230;<br />
+on peut utiliser une commande ssh pour <a title="Executer une commande sur un serveur distant via ssh avec Python" href="http://sametmax.com/executer-une-commande-sur-un-serveur-distant-via-ssh/">récupérer la place sur les serveurs</a> par exemple et mettre le résultat dans une liste:</p>
+<pre lang="python">[[place_restante, nom_du_serveur]]
+
+servers = [['10','server1'],['45','server2'],['34','server3']]</pre>
+<p>La logique voudrait qu&#8217;on balance le contenu sur tous les serveurs mais surtout sur le 1 car il a beaucoup de place le salop mais qu&#8217;il faut pas tout mettre dessus car on va bouffer toute sa bande passante lors des downloads du contenu alors qu&#8217;on a 2 autres serveurs qui branlent rien ou presque&#8230;</p>
+<pre lang="python">def w_choice(lst, nb=2):
+    """
+        weighted choice give it a list as this:
+        [[45, 'item1'], [12, 'item2'],[88, 'item3']]
+        nb= Number of items to return
+    """
+    items = []
+    w_items = []
+
+    # on récupère tous les serveurs de la liste et leur "poids" (place restante en % par ex)
+    for weight, item in lst:
+        # on créé une liste dans laquelle on multiplie le nom du serveur par son poids, ex si server1 a 4 de poids on aura 4 éléménts server1
+        for x in xrange(100-weight):
+            items.append(item)
+
+    # on secoue mais on frappe pas
+    random.shuffle(items)
+
+    # on récupère x serveurs sur lesquel on uploadera le contenu
+    for item in items:
+        if item not in w_items:
+            w_items.append(item)
+            if len(w_items)==nb:
+                break
+
+    return w_items</pre>
+<p><strong>ci-dessous un petit test pour voir que ça marche:</strong></p>
+<pre lang="python">servers = [['10','server1'],['45','server2'],['34','server3']]
+
+items = {}
+for i in xrange(1000):
+    lst = w_choice(servers)
+    for item in lst:
+        items.update({item:items.get(item, 0)+1} )
+print items</pre>
+<p><strong>On obtient:<br />
+</strong><code>{'server1': 414, 'server2': 273, 'server3': 313}</code></p>
+<p>Ici server1 sort le plus souvent(414 fois) car la place occupée sur son disque est de 10%, logique qu&#8217;on lui envoie plus souvent du contenu histoire de le remplir.</p>
+<p>Je ne trouve pas ma fonction spécialement élégante ceci-dit, si certains ont mieux à proposer qu&#8217;ils se fassent entendre ;)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/recuperer-des-elements-dune-liste-au-hasard-avec-ponderation-en-python/feed/</wfw:commentRss>
+		<slash:comments>12</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">2034</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/09/86random-f1.1.gif" length="23404" type="image/jpg" />	</item>
+	</channel>
+</rss>

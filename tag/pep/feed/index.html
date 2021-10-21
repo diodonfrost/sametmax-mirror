@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>pep &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/pep/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>L&#8217;expression d&#8217;assignation vient d&#8217;être acceptée</title>
+		<link>http://sametmax.com/lexpression-dassignation-vient-detre-acceptee/</link>
+		<comments>http://sametmax.com/lexpression-dassignation-vient-detre-acceptee/#comments</comments>
+		<pubDate>Tue, 03 Jul 2018 09:15:47 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[assignation]]></category>
+		<category><![CDATA[pep]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[variable]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=24766</guid>
+		<description><![CDATA[Après des mois de débats sur <a href="https://mail.python.org/mailman/listinfo/python-ideas">python-idea</a> (mailing list sur laquelle, je vous le rappelle, tout le monde a le droit de participer), Guido <a href="https://groups.google.com/forum/#!topic/dev-python/egS7A22oJgE%5B151-175%5D">a validé</a> la <a href="https://www.python.org/dev/peps/pep-0572/">PEP 572</a>. <code>(foo := bar)</code> sera donc un code valide en Python 3.8.]]></description>
+				<content:encoded><![CDATA[<p>Après des mois de débats sur <a href="https://mail.python.org/mailman/listinfo/python-ideas">python-idea</a> (mailing list sur laquelle, je vous le rappelle, tout le monde a le droit de participer), Guido <a href="https://groups.google.com/forum/#!topic/dev-python/egS7A22oJgE%5B151-175%5D">a validé</a> la <a href="https://www.python.org/dev/peps/pep-0572/">PEP 572</a>. <code>(foo := bar)</code> sera donc un code valide en Python 3.8.</p>
+<p>Je n&#8217;avais pas vu de feature plus controversée depuis les <a href="http://sametmax.com/le-formatage-des-strings-en-long-et-en-large/">f-strings</a>. Et je gage que, comme les f-strings, après un temps d&#8217;adaptation, la communauté va se demander comment on a vécu sans auparavant.</p>
+<h2>Un peu d&#8217;histoire</h2>
+<p>Il existe deux grandes catégories d&#8217;instructions dans les langages de programmation. Les déclarations et les expressions.</p>
+<p>La déclaration, en anglais &#8220;statement&#8221;, est une action indépendante formulée sur une ligne. C&#8217;est une unité syntaxique, et une déclaration ne peut être contenue dans une autre déclaration sur la même ligne.</p>
+<p>Ex:</p>
+<pre lang="python">
+import os
+</pre>
+<p>est une déclaration. Un import est tout seul sur sa ligne et ne se combine pas avec d&#8217;autres instructions.</p>
+<p>L&#8217;expression, elle, est une combinaison de littéraux, variables, d&#8217;opérateurs et d&#8217;appels de fonctions qui retournent un résultat. Les expressions peuvent contenir d&#8217;autres expressions, et elles peuvent être contenues dans une déclaration.</p>
+<p>Ex:</p>
+<pre lang="python">1 + 1 </pre>
+<p>est une expression. On peut, en effet, assigner le résultat de ce code à une variable, le passer à une fonction en paramètre ou le tester dans une condition.</p>
+<p>Les langages, comme le COBOL, qui privilégient le style impératif utilisent majoritairement des déclarations. Les langages, comme LISP, qui privilégient le style fonctionnel, utilisent majoritairement des expressions.</p>
+<p>Très souvent néanmoins, les langages populaires font largement usage des deux. L&#8217;expression est plus flexible et plus puissante. La déclaration force une opinion sur la structure du programme et évite les divergences de style. Selon la philosophie que l&#8217;on souhaite donner à son bébé, un créateur de langage va donc s&#8217;orienter plus vers l&#8217;une ou l&#8217;autre.</p>
+<p>Python est multiparadigme et soutient le style impératif, fonctionnel et orienté objet. Il possède donc non seulement des expressions et des déclarations, mais également souvent les deux versions pour une même instruction.</p>
+<p>Ex, les déclarations:</p>
+<pre lang="python">squares = []
+for x in numbers:
+    squares.append(x * x)
+
+def mean(x):
+    return x * x / 2
+
+if is_ok:
+    print(welcome)
+else:
+    print(error)</pre>
+<p>ont des expressions équivalentes:</p>
+<pre lang="python">
+
+squares = [x * x for x in number]
+
+mean = lambda x: x * x / 2
+
+print(welcome if is_ok else error)
+</pre>
+<p>Parfois Python choisit d&#8217;orienter le style du programmeur, non pas évitant de fournir des expressions, mais par le biais de la grammaire imposée. Ainsi il oblige à indenter, et n&#8217;autorise pas les lambdas à contenir de déclaration. C&#8217;est une autre stratégie pour imposer une philosophie au langage. Pour Python, la philosophie est que la capacité à s&#8217;exprimer doit rester riche, mais pas au détriment de la capacité à comprendre le code.</p>
+<p>Une particularité de Python, c&#8217;est que l&#8217;assignation, c&#8217;est-à-dire le fait d&#8217;associer une valeur à une variable, est une déclaration. Ex:</p>
+<pre lang="python">a = 1</pre>
+<p>Comme les déclarations ne peuvent contenir d&#8217;autres déclarations, cette syntaxe interdit:</p>
+<pre lang="python">if a = 1:  </pre>
+<p>Ce n&#8217;est pas le cas dans de nombreux langages populaires, comme le C, PHP, le JS&#8230; Exemple en Ruby:</p>
+<pre lang="ruby">if (value = Settings.get('test_setting'))
+  perform_action(value)
+end</pre>
+<p>Ici, non seulement on assigne le résultat du <code>get()</code> à la variable <code>value</code>, mais en plus, on teste le résultat du <code>get()</code> avec le <code>if</code>.</p>
+<p>Actuellement ceci est impossible en Python, et le même code serait:</p>
+<pre lang="python">value = Settings.get('test_setting')
+if value:
+  perform_action(value)</pre>
+<p>Ce n&#8217;est pas une erreur, c&#8217;est un choix de design. En effet une source de bug très courante en programmation est de vouloir faire une comparaison, mais de taper une assignation.</p>
+<p>Ainsi, quelqu&#8217;un voudrait faire:</p>
+<pre lang="python">while reponse == "oui":
+    ...
+    reponse = input('Voulez-vous continuer ?')</pre>
+<p>Mais ferait:</p>
+<pre lang="python">while reponse = "oui": # erreur subtile et difficile à voir
+    ...
+    reponse = input('Voulez-vous continuer ?')</pre>
+<p>Ce qui ne compare pas DU TOUT la variable. Et en plus change son contenu. Dans ce cas précis, le résultat est une boucle infinie, mais parfaitement valide et qui ne provoquera pas d&#8217;erreur.</p>
+<p>Pour éviter ce genre de bug que même les programmeurs aguerris font un jour de fatigue, la syntaxe a tout simplement été interdite en stipulant que l&#8217;assignation était toujours une déclaration.</p>
+<h2>La PEP 572</h2>
+<p>L&#8217;absence de cette fonctionnalité a eu d&#8217;excellents bénéfices. Je le vois régulièrement dans mes salles de classe, ce bug. La <code>SyntaxError</code> qui résulte de cette faute en Python permet de l&#8217;attraper avant qu&#8217;il ne fasse le moindre dégât.</p>
+<p>Car c&#8217;est tout le problème de cette erreur: si la syntaxe est valide, le bug est silencieux, le code tourne, il ne fait juste pas du tout ce qu&#8217;on lui demande. C&#8217;est la plus pernicieuse des situations, avec des conséquences qui peuvent ne se déclarer que bien plus loin dans le code et une séance de débuggage des plus irritantes.</p>
+<p>A mon sens, c&#8217;était une excellente décision de design.</p>
+<p>Pourtant la PEP 572 revient dessus, en proposant, comme pour <code>lambda</code>, la boucle <code>for</code> ou la condition, un équivalent sous forme d&#8217;expression.</p>
+<p>Pourquoi ?</p>
+<p>Et bien Python doit aussi satisfaire les programmeurs chevronnés, qui en ont marre de se retrouver avec des situations comme :</p>
+<pre lang="python">match1 = pattern1.match(data)
+if match1:
+    print(match1.group(1))
+else:
+    match2 = pattern2.match(data)
+    if match2:
+        print(match2.group(2))</pre>
+<p>Certes, ce code est clair et facile à comprendre, mais il est très verbeux. On doit faire avec une indentation artificiellement induite par la limite de la syntaxe, et non par la logique du raisonnement qui est ici parfaitement linéaire.</p>
+<p>Comment donc réconcilier le désir d&#8217;éviter le fameux bug tout en satisfaisant les besoins d&#8217;expressivité, légitimes une fois qu&#8217;on quitte le nid des débutants ?</p>
+<p>La solution proposée est triple :</p>
+<ul>
+<li>Ajouter un nouvel opérateur dédié, permettant l&#8217;assignation sous forme d&#8217;expression.</li>
+<li>Forcer l&#8217;usage des parenthèses pour encadrer cette expression.</li>
+<li>Rendre les deux opérateurs d&#8217;assignation mutuellement exclusifs.</li>
+</ul>
+<p>Le nouvel opérateur choisi est <code>:=</code> et il ne peut exister qu&#8217;entre parenthèses. Il peut être utilisé là où un simple <code>=</code> ne serait pas autorisé. Mais, il ne peut PAS être utilisé là où on peut utiliser <code>=</code>. Le but est de ne jamais mettre ces deux opérateurs en concurrence: une situation permet l&#8217;un ou l&#8217;autre, jamais les deux.</p>
+<p><code>=</code> ne change pas. La seule différence, c&#8217;est qu&#8217;à partir de Python 3.8, vous aurez le droit de faire:</p>
+<pre lang="python">
+if (match1 := pattern1.match(data)):
+    print(match1.group(1))
+elif (match2 := pattern2.match(data)):
+    print(match2.group(2))</pre>
+<p>L&#8217;opérateur <code>:=</code> permet donc bien, dans des situations très précises, d&#8217;obtenir un code plus cours et élégant, sans introduire pourtant d’ambiguïté et donc de bug potentiel. Il autorise une nouvelle forme d&#8217;expressivité, mais sa syntaxe est très marquée: impossible de le confondre avec son frère, et les parenthèses l&#8217;isolent du reste du code.</p>
+<p>On ne se pose pas non plus la question de quand choisir <code>=</code> et <code>:=</code> puisque:</p>
+<pre lang="python">a = 1</pre>
+<p>est valide, mais pas:</p>
+<pre lang="python">a := 1</pre>
+<p>Bien que:</p>
+<pre lang="python">(a := 1)</pre>
+<p>soit valide, personne n&#8217;aura envie d&#8217;utiliser vainement cette forme plus lourde.</p>
+<p>L&#8217;usage de <code>:=</code> est donc marginal, et cantonné à des cas particuliers.</p>
+<h2>Une opinion, c&#8217;est comme un trou du cul&#8230;</h2>
+<p>Personnellement j&#8217;étais mitigé sur l&#8217;idée. De plus, j&#8217;aurais préféré l&#8217;usage du mot clé <code>as</code>, puisqu&#8217;on l&#8217;utilisait déjà dans les imports, les context managers et la gestion des exceptions. </p>
+<p>Chaque ajout d&#8217;expression rajoute également la possibilité d&#8217;abus. Si vous avez déjà vu ces horreurs à base de lambdas imbriquées ou d&#8217;intensions sans fin, vous savez de quoi je parle.</p>
+<p>Avec <code>:=</code>, on peut vraiment se lancer dans du grand n&#8217;importe quoi:</p>
+<p>Pour reprendre l&#8217;exemple de la PEP:</p>
+<pre lang="python">while True:
+    old = total
+    total += term
+    if old == total:
+        return total
+    term *= mx2 / (i*(i+1))
+    i += 2</pre>
+<p>est très clair. </p>
+<p>En revanche:</p>
+<pre lang="python">while total != (total := total + term):
+    term *= mx2 / (i*(i+1))
+    i += 2
+return total</pre>
+<p>Est une abomination qu&#8217;il faut purger par le feu.</p>
+<p>Mais par expérience, j&#8217;ai rarement vu en 15 ans de Python beaucoup d&#8217;abus de ses fonctionnalités avancées. Les bénéfices ont toujours dépassé le coût d&#8217;une large marge. Pourtant entre les décorateurs, les dunder methods et les meta classes, il y a matière à messe noire.</p>
+<p>Par ailleurs j&#8217;avoue que je suis ravi de pouvoir enfin faire:</p>
+<pre lang="python">while (data := io.get(x)):</pre>
+<p>Et:</p>
+<pre lang="python">[bar(x) for z in stuff if (x := foo(z))]</pre>
+<p>La PEP mentionne aussi un exemple que je n&#8217;avais pas prévu, et qui souffle le chaud et le froid:</p>
+<pre lang="python">diff = x - x_base
+if diff:
+    g = gcd(diff, n)
+    if g > 1:
+        return g</pre>
+<p>Peut devenir:</p>
+<pre lang="python">if (diff := x - x_base) and (g := gcd(diff, n)) > 1:
+    return g
+</pre>
+<p>Comme l&#8217;auteur, j&#8217;approuve le fait que la première version est inutilement verbeuse, mais contrairement à lui, je trouve que la seconde est bien trop complexe pour être scannée d&#8217;un coup d’œil.</p>
+<p>En revanche:</p>
+<pre lang="python">diff = x - x_base
+if diff and (g := gcd(diff, n)) > 1:
+    return g</pre>
+<p>est tout à fait à mon goût.</p>
+<p>Ceci démontre bien qu&#8217;il va falloir un temps d&#8217;adaptation avant que la communauté trouve l&#8217;équilibre entre Perl et BASIC. Quoi qu&#8217;il en soit, on n’aura pas à s&#8217;en soucier avant l&#8217;année prochaine, et même d&#8217;ici là, peu de code pourra en faire usage avant que la 3.8 soit largement installée.</p>
+<p>De mon côté je m&#8217;attends à ce qu&#8217;on ignore majoritairement cette fonctionnalité, jusqu&#8217;au moment où elle apparaîtra dans un coin de l&#8217;esprit le temps d&#8217;un besoin ponctuel et local, pour être oubliée à nouveau jusqu&#8217;à l&#8217;occasion suivante. Comme <del datetime="2018-07-03T09:40:56+00:00">Dieu</del> Guido l&#8217;aura voulu. D&#8217;ailleurs, côté enseignement, je ne compte pas introduire l&#8217;opérateur dans mes cours, ou alors dans une section bonus, à moins qu&#8217;un participant ne pose la question.</p>
+<p>Aller, vous pouvez râler en commentaire maintenant :)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/lexpression-dassignation-vient-detre-acceptee/feed/</wfw:commentRss>
+		<slash:comments>20</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">24766</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/07/jsgGSg0.jpg" length="47619" type="image/jpg" />	</item>
+	</channel>
+</rss>

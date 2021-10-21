@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>orderedidct &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/orderedidct/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Récupérer le premier et le dernier élément d&#8217;un OrderedDict</title>
+		<link>http://sametmax.com/recuperer-le-premier-et-le-dernier-element-dun-ordereddict/</link>
+		<comments>http://sametmax.com/recuperer-le-premier-et-le-dernier-element-dun-ordereddict/#comments</comments>
+		<pubDate>Tue, 22 Mar 2016 18:18:11 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[collections]]></category>
+		<category><![CDATA[dict]]></category>
+		<category><![CDATA[orderedidct]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=18724</guid>
+		<description><![CDATA[<code>collections.OrderedDict</code> est une structure de données que j'utilise de plus en plus, surtout que sa réécriture en C en 3.5 lui donne des performances décentes.]]></description>
+				<content:encoded><![CDATA[<p><code>collections.OrderedDict</code> est une structure de données que j&#8217;utilise de plus en plus, surtout que sa réécriture en C en 3.5 lui donne des performances décentes.</p>
+<p>Néanmoins, il n&#8217;y a pas dans l&#8217;API de moyen de récupérer le premier ou le dernier élément inséré dans dico. Il y a bien <code>popitem()</code>, mais ça retire l&#8217;élément du dictionnaire, et c&#8217;est pas forcément ce qu&#8217;on veut.</p>
+<p>Heureusement <code>OrderedDict</code> est un itérable, et implémente <code>__reversed__</code>, et on peut donc utiliser les outils suivant our récupérer les extrémités avec une perf 0(1):</p>
+<pre lang="python">>>> from collections import OrderedDict
+>>> d = OrderedDict.fromkeys('azerty')
+>>> next(iter(d.items())) # premier élément
+'a'
+>>> next(reversed(d.items())) # dernier élément
+'y'</pre>
+<p>Après l&#8217;implémentation de <code>OrderedDict</code> reste une liste doublement chainée, et on ne peut donc pas récupérer un élément à un index arbitraire sans le parcourir à la main&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/recuperer-le-premier-et-le-dernier-element-dun-ordereddict/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">18724</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2016/03/7SiQSD1.jpg" length="22422" type="image/jpg" />	</item>
+	</channel>
+</rss>

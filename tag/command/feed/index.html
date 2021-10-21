@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>command &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/command/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Executer une commande sur un serveur distant via ssh avec Python</title>
+		<link>http://sametmax.com/executer-une-commande-sur-un-serveur-distant-via-ssh/</link>
+		<pubDate>Thu, 21 Jun 2012 23:07:28 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[command]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[remote]]></category>
+		<category><![CDATA[ssh]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=970</guid>
+		<description><![CDATA[Executer une commande shell sur un serveur distant peut s'avérer très utile, par exemple avoir le load average du serveur distant à monitorer.]]></description>
+				<content:encoded><![CDATA[<p>Executer une commande shell sur un serveur distant peut s&#8217;avérer très utile, par exemple avoir le load average du serveur distant à monitorer, rebooter un serveur à distance, récupérer l&#8217;espace disque restant, etc.</p>
+<p>Il y a plusieurs manières d&#8217;executer une commande shell sur un serveur distant, on peut utiliser <a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/" title="Sept petites libs qui changent la vie d’un dev Python">paramiko</a> ou un simple popen comme suit:</p>
+<p><strong><br />
+Pour connaitre le load average du serveur skynet:</strong></p>
+<pre lang="python">
+
+from subprocess import Popen, call, PIPE
+
+user= arnold
+server = skynet.com
+ 
+process = Popen(['ssh', '-t', user + '@' + server ,'cat', '/proc/loadavg'], bufsize=4096, stdout=PIPE)
+output = process.communicate()[0]
+
+</pre>
+<p>Ce procédé implique d&#8217;avoir des clefs <a href="http://sametmax.com/copier-ses-clefs-ssh-facilement-avec-ssh-copy-id/" title="Copier ses clefs SSH facilement avec ssh-copy-id">ssh configurées</a></p>
+<p>Note: J&#8217;ai eu quelques problèmes de blocage lors du login au serveur distant jusqu&#8217;à ce que j&#8217;ajoute l&#8217;option -t à ssh<br />
+<strong><br />
+Edit:</p>
+<p>En bash ça donne:</strong></p>
+<pre lang="bash">
+ssh arnold@skynet.com cat /proc/loadavg
+</pre>
+<p>ou pour avoir l&#8217;espace disque</p>
+<pre lang="bash">
+ssh arnold@skynet.com df -h
+etc.
+</pre>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">970</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/06/a.aaa-crazy-remote.jpg" length="35746" type="image/jpg" />	</item>
+	</channel>
+</rss>

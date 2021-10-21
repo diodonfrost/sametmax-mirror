@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Ouvrir un fichier avec le bon programme en Python</title>
+	<atom:link href="http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/#comment-169248</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 02 Dec 2015 09:01:29 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7469#comment-169248</guid>
+		<description><![CDATA[&lt;p&gt;Plutôt utiliser realpath(), qui fait pareil mais vire les liens symboliques et retourne un chemin absolu.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Plutôt utiliser realpath(), qui fait pareil mais vire les liens symboliques et retourne un chemin absolu.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: GeoJulien</title>
+		<link>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/#comment-169177</link>
+		<dc:creator><![CDATA[GeoJulien]]></dc:creator>
+		<pubDate>Tue, 01 Dec 2015 16:04:38 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7469#comment-169177</guid>
+		<description><![CDATA[Merci pour ce bout de code que j&#039;utilise régulièrement et qui d&#039;ailleurs aurait toute sa place dans la bat-belt voire minibel ;)
+
+Sur Windows, je recommande d&#039;ajouter normpath pour pouvoir accéder à des fichiers stockés sur le réseau local et éviter l&#039;erreur :
+
+&lt;pre&gt;Traceback (most recent call last):
+  File &quot;&quot;, line 1, in 
+    startfile(target)
+WindowsError: [Error 2] Le fichier spécifié est introuvable: &#039;//disque_reseau/mon_amour_de_dossier/ma_maitresse_de_sousdossier/mon_petit_fichier.sexy&#039;&lt;/pre&gt;
+
+Ce qui donne :
+
+&lt;code&gt;# open the directory or the file according to the os
+
+if opersys == &#039;win32&#039;:  # Windows
+
+proc = startfile(path.normpath(target)&lt;/code&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Merci pour ce bout de code que j&#8217;utilise régulièrement et qui d&#8217;ailleurs aurait toute sa place dans la bat-belt voire minibel ;)</p>
+<p>Sur Windows, je recommande d&#8217;ajouter normpath pour pouvoir accéder à des fichiers stockés sur le réseau local et éviter l&#8217;erreur :</p>
+<pre>Traceback (most recent call last):
+  File "", line 1, in 
+    startfile(target)
+WindowsError: [Error 2] Le fichier spécifié est introuvable: '//disque_reseau/mon_amour_de_dossier/ma_maitresse_de_sousdossier/mon_petit_fichier.sexy'</pre>
+<p>Ce qui donne :</p>
+<p><code># open the directory or the file according to the os</p>
+<p>if opersys == 'win32':  # Windows</p>
+<p>proc = startfile(path.normpath(target)</code></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/#comment-15032</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sat, 19 Oct 2013 11:43:02 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7469#comment-15032</guid>
+		<description><![CDATA[Et il faut aussi que le test de détection de l&#039;OS fonctionne.]]></description>
+		<content:encoded><![CDATA[<p>Et il faut aussi que le test de détection de l&#8217;OS fonctionne.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: GuilOooo</title>
+		<link>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/#comment-15026</link>
+		<dc:creator><![CDATA[GuilOooo]]></dc:creator>
+		<pubDate>Sat, 19 Oct 2013 05:56:38 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7469#comment-15026</guid>
+		<description><![CDATA[Salut,
+
+XDG (et notamment xdg-open) existe aussi sous FreeBSD, et probablement sous NetBSD et OpenBSD. Les interfaces POSIX sont implémentées par ces trois OS. Donc, théoriquement, le code pour Linux devrait marcher sous BSD. Malheureusement, j&#039;ai pas de machine avec  FreeBSD sous la main pour tester…]]></description>
+		<content:encoded><![CDATA[<p>Salut,</p>
+<p>XDG (et notamment xdg-open) existe aussi sous FreeBSD, et probablement sous NetBSD et OpenBSD. Les interfaces POSIX sont implémentées par ces trois OS. Donc, théoriquement, le code pour Linux devrait marcher sous BSD. Malheureusement, j&#8217;ai pas de machine avec  FreeBSD sous la main pour tester…</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/#comment-15014</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Fri, 18 Oct 2013 16:26:56 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7469#comment-15014</guid>
+		<description><![CDATA[I think I will add it to batbelt.]]></description>
+		<content:encoded><![CDATA[<p>I think I will add it to batbelt.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Natim</title>
+		<link>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/#comment-15005</link>
+		<dc:creator><![CDATA[Natim]]></dc:creator>
+		<pubDate>Fri, 18 Oct 2013 11:46:44 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7469#comment-15005</guid>
+		<description><![CDATA[You need to release that on pypi.]]></description>
+		<content:encoded><![CDATA[<p>You need to release that on pypi.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Baronsed</title>
+		<link>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/#comment-14973</link>
+		<dc:creator><![CDATA[Baronsed]]></dc:creator>
+		<pubDate>Thu, 17 Oct 2013 17:47:47 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7469#comment-14973</guid>
+		<description><![CDATA[Commentaire tronqué après &quot;erreu&quot;
+Bon si ça se trouve, il y a juste un &#039;r&#039;. Mais peut-être que c&#039;est une note essentielle pour la gestion des erreurs sous windaub.]]></description>
+		<content:encoded><![CDATA[<p>Commentaire tronqué après &#8220;erreu&#8221;<br />
+Bon si ça se trouve, il y a juste un &#8216;r&#8217;. Mais peut-être que c&#8217;est une note essentielle pour la gestion des erreurs sous windaub.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/#comment-14968</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 17 Oct 2013 15:15:33 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7469#comment-14968</guid>
+		<description><![CDATA[Ca peut se faire, oui.]]></description>
+		<content:encoded><![CDATA[<p>Ca peut se faire, oui.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Guts</title>
+		<link>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/#comment-14964</link>
+		<dc:creator><![CDATA[Guts]]></dc:creator>
+		<pubDate>Thu, 17 Oct 2013 14:25:20 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7469#comment-14964</guid>
+		<description><![CDATA[Niquel, c&#039;est un truc que je cherchais depuis un moment, surtout pour les dossiers. A intégrer dans la batbelt, non ?]]></description>
+		<content:encoded><![CDATA[<p>Niquel, c&#8217;est un truc que je cherchais depuis un moment, surtout pour les dossiers. A intégrer dans la batbelt, non ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Syl</title>
+		<link>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/#comment-14959</link>
+		<dc:creator><![CDATA[Syl]]></dc:creator>
+		<pubDate>Thu, 17 Oct 2013 13:44:26 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=7469#comment-14959</guid>
+		<description><![CDATA[Cool!
+Bon ben je vais commencer par les décorateurs alors! ;)]]></description>
+		<content:encoded><![CDATA[<p>Cool!<br />
+Bon ben je vais commencer par les décorateurs alors! ;)</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

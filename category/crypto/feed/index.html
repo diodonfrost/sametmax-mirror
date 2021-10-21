@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>Crypto &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/category/crypto/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Monter son master node Interzone (ITZ)</title>
+		<link>http://sametmax.com/monter-son-master-node-interzone-itz/</link>
+		<comments>http://sametmax.com/monter-son-master-node-interzone-itz/#comments</comments>
+		<pubDate>Thu, 21 Dec 2017 12:52:47 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Crypto]]></category>
+		<category><![CDATA[cryptocurrency]]></category>
+		<category><![CDATA[cryptomonnaie]]></category>
+		<category><![CDATA[interzone]]></category>
+		<category><![CDATA[masternode]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=23944</guid>
+		<description><![CDATA[Acheter et vendre des cryptomonnaies, tout le monde comprend le principe. J&#8217;achète un truc, j&#8217;attends, je le revends. Si le prix a monté, je gagne du pognon, s’il est descendu, j&#8217;en perds. Mais il existe d&#8217;autres formes d&#8217;investissement. L&#8217;une d&#8217;elles est le master node, et on va apprendre à en monter un. Attention, ça demande [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Acheter et vendre <a href="http://sametmax.com/le-point-sur-les-cryptos/">des cryptomonnaies</a>, tout le monde comprend le principe. J&#8217;achète un truc, j&#8217;attends, je le revends. Si le prix a monté, je gagne du pognon, s’il est descendu, j&#8217;en perds.</p>
+<p>Mais il existe d&#8217;autres formes d&#8217;investissement. L&#8217;une d&#8217;elles est le master node, et on va apprendre à en monter un.</p>
+<p>Attention, ça demande de savoir administrer un serveur linux. Le tutoriel n&#8217;explique pas <code>bash</code>, <code>apt</code>, <code>ssh</code> ou <code>make</code> et suppose que vous êtes à l&#8217;aise avec ces outils. Si ce n&#8217;est pas la cas&#8230; pas de bol.</p>
+<h2>C&#8217;est quoi déjà ?</h2>
+<p>Bitcoin n&#8217;est plus la seule crypto, il y en a maintenant des centaines, et certaines essayent de se distinguer technologiquement.</p>
+<p>Quelques-unes ont le concept de master node, des machines dont les propriétaires ont acheté un certains nombre de coins, et les bloquent. En échange de quoi, le réseau donne à la machine le droit de faire certaines opérations en plus, opérations qui rendent service au réseau (rendre les exchanges anonymes, accélérer les transactions, etc).</p>
+<p>Le but des master nodes est double:</p>
+<ul>
+<li>Avoir toujours plein de wallets répartis dans le monde et avec plein de propriétaires différents. Ça renforce le réseau.</li>
+<li>Forcer les gens a acheter plein de coins et donc faire monter le cours, faisant gagner du pognon aux créateurs de la monnaie qui en ont généralement préminé une partie.</li>
+</ul>
+<p>Mais pour le propriétaire du master node, qu&#8217;est-ce qu&#8217;on y gagne ? </p>
+<p>Et bien tous les jours, une cagnotte est répartie équitablement entre tous les masternodes en récompense de leur service. </p>
+<p>Par exemple, j&#8217;ai monté la semaine dernière un master node <a href="https://www.cryptopia.co.nz/Exchange/?market=VIVO_BTC">Vivo</a>. Il a couté a l&#8217;achat 3200 euros. Tous les jours, il génère 5 vivos, soit actuellement 20 euros. En plus de cela, le vivo a augmenté de prix depuis l&#8217;achat, et le master node vaut maintenant 5000 euros si je décide de revendre les coins qui sont bloquées. Mais ça voudrait dire fermer mon master node.</p>
+<h2>Choisir un master node</h2>
+<p>Tous les master nodes ont des coûts et une rentabilité différents. Il existe <a href="https://masternodes.online/">des listing</a> qui permettent de se faire une idée de la question.</p>
+<p>Aujourd&#8217;hui je vais vous faire un tuto sur le master node <a href="https://masternodes.online/currencies/ITZ/">Interzone</a>, car il est très peu cher à l&#8217;achat: moins de 300 euros. Évidemment, il ne rapporte que 2 euros par jour.</p>
+<p>Mais si vous voulez apprendre à faire des master nodes, c&#8217;est plus simple que de débloquer 5000 balles pour du vivo.  Ou pire, un million pour un node dash :)</p>
+<p>Interzone est aussi un wallet très basique, et donc simple à monter.</p>
+<h2>Acheter les coins</h2>
+<p>D&#8217;abord, il faut acheter les coins. Le nombre de coins à acheter est différent pour chaque type de node. Pour Interzone, c&#8217;est 5000 à bloquer, et donc on va en acheter 5001 pour les frais de transaction.</p>
+<p>Pour se faire, il faut d&#8217;abord acheter une monnaie plus populaire sur une plateforme d&#8217;achat. Par exemple, vous pouvez acheter du Bitcoin sur <a href="http://bitstamp.net/">Bitstamp</a>. </p>
+<p>Ensuite, faite un virement (withdrawal) vers une plateforme d&#8217;échange.</p>
+<p>Tout ça se fait en plusieurs étapes.</p>
+<p>D&#8217;abord, ouvrir des comptes sur ces sites, et faire les putains de vérifications de sécurité. Ouai, si vous vouliez trader anonymement c&#8217;est raté. Et parfois c&#8217;est long. Très long. Par exemple pour les achats par carte bancaire, Bitstamp m&#8217;avait demandé une photo de moi tenant mon passeport. Je sais pas si ils le font toujours, mais c&#8217;est over chiant.</p>
+<p>&#8230;</p>
+<p>Je vous laisse vous occupez de tous ça, on se revoit dans quelques jours.</p>
+<p>&#8230;</p>
+<p>Ça y est, de retour ?</p>
+<p>Ok.</p>
+<p>D&#8217;une part on va aller sur un exchange voir <a href="https://coinsmarkets.com/trade-BTC-ITZ.htm">le cours de l&#8217;Interzone</a> pour savoir combien de BTC acheter.</p>
+<p>Par exemple à cet instant je vois que je peux acheter un ITZ pour entre 0.000002699 et 0.000007300 BTC. En regardant les cours, je vois que j&#8217;ai suffisamment de vendeurs pour avoir 5001 ITZ à 0.000002990 BTC, donc 0.0149529900 BTC. On rajoute les fees de l&#8217;exchange (0.0000373824750 BTC) et on prend en compte les <a href="https://estimatefee.com/">fees de transactions</a> de la block chain bitcoin (0.00265914 BTC).</p>
+<p>Total: 0.017649512 BTC, soit 281.57 euros sur Bitstamp. </p>
+<p>Parfois c&#8217;est plus, parfois c&#8217;est moins. Ça fluctue beaucoup.</p>
+<p>On achète ça. Ça prend encore du temps&#8230;</p>
+<p>Quand on a tout, on fait le virement sur son autre wallet, celui sur l&#8217;exchange.</p>
+<p>Depuis l&#8217;exchange, on achète enfin son Interzone.</p>
+<h2>Monter son master node</h2>
+<p>En théorie on peut faire ça avec <a href="https://interzone.space/#service">un client</a>, mais en pratique ils ne marchent jamais. En plus il faut que ça reste allumé tout le temps et il faut avoir une IP statique. </p>
+<p>Donc on va le faire sur son propre serveur linux.</p>
+<p>Le plus pratique est d&#8217;avoir un serveur à soi qui tourne quelque part, ou de louer un <a href="http://online.net/">VPS</a> au prix minimal. En effet un master node, ça consomme que dalle en ressource et vous pouvez le mettre sur un raspberry pi si ça vous chante.</p>
+<p>Parce que je suis pas maso, je vais expliquer que pour une distro, car il va falloir compiler. On va donc faire ça pour une Ubuntu 16.04.</p>
+<p>D&#8217;abord on s&#8217;assure d&#8217;être toujours à l&#8217;heure:</p>
+<pre lang="bash">sudo apt-get install ntp ntpdate
+sudo update-rc.d ntp enable</pre>
+<p>On installe la tetrachiée de dépendances:</p>
+<pre lang="bash">sudo apt-get install build-essential software-properties-common nano libboost-all-dev libzmq3-dev libminiupnpc-dev libssl-dev libevent-dev   libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils libboost-all-dev  </pre>
+<p>Ensuite, on a besoin de downgrader une lib, donc, ppa:</p>
+<pre lang="bash">sudo add-apt-repository ppa:bitcoin/bitcoin
+sudo apt-get update
+sudo apt-get install libdb4.8-dev libdb4.8++-dev
+</pre>
+<p>On download les sources:</p>
+<pre lang="bash">wget https://github.com/projectinterzone/ITZ/archive/master.zip
+unzip master.zip</pre>
+<p>Et on compile:</p>
+<pre lang="bash">cd ITZ-master 
+./autogen.sh
+./configure
+make</pre>
+<p>Vous pouvez aller boire un coup, pisser, faire la sieste. Ça prend pas mal de RAM, donc si vous serveur en a pas assez, faites les sur un ordi local avec la même version de linux.</p>
+<p>Une fois tout ça terminé, le résultat est que dans le dossier ITZ-master/src vous avez deux executable:</p>
+<ul>
+<li>interzoned (le daemon qui va servir de master node)</li>
+<li>interzone-cli (le client qui va vous permettre d&#8217;envoyer des ordres au master node)</li>
+</ul>
+<p>C&#8217;est ce qu&#8217;on va utiliser. Si vous avez compilé en local, uploadez les n&#8217;importe où sur votre serveur.</p>
+<p>Maintenant, on se place sur le serveur, dans le dossier qui contient interzoned et interzone-cli, et on va créer un fichier de config.</p>
+<p>Pour le fichier de config, il vous faut l&#8217;adresse IP du serveur. On peut la choper avec:</p>
+<pre lang="bash">$ dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}'
+xxx.xxx.xxx.xxx</pre>
+<p>Le port, lui, est toujours 55675 (soyez sur de pas le bloquer).</p>
+<p>Puis on choisit un mot de passe pour le client:</p>
+<pre lang="bash">$ tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1
+BjHQ2T95Og2VNxsVDQ5qcFBU1eVNHP</pre>
+<p>On ouvre le fichier:</p>
+<pre lang="bash">mkdir .interzone
+vi .interzone/interzone.conf</pre>
+<p>Et on écrit dedans:</p>
+<pre>
+bind=<L'ip du serveur>:55675
+rpcuser=interzone
+rpcpassword=BjHQ2T95Og2VNxsVDQ5qcFBU1eVNHP</pre>
+<p>Puis on lance le daemon:</p>
+<pre lang="bash">./interzoned -daemon -reindex</pre>
+<p>Si vous êtes consciencieux, ajoutez un service qui le démarre quand votre machine boot.</p>
+<p>Au premier lancement, il va télécharger toute la block chain, mais ici c'est seulement 140Mo car interzone est tout jeune encore. Donnez-lui 30 minutes pour être tranquille.</p>
+<p>Au bout de quelques minutes, votre client pourra déjà se connecter au master node et voir le progrès avec:</p>
+<pre lang="bash">$ ./interzone-cli getinfo 
+{
+...
+    "blocks" : 92477,
+...
+}</pre>
+<p>Il est temps de loader votre master node avec du pognon ! On se fait une adresse:</p>
+<pre lang="bash">./interzoned getnewaddress MN1
+1MKDs1yNze7VEr4zWHTKbiV3T3fBTwtxZ4</pre>
+<p>Et là vous allez sur votre exchange où vous avez acheté vos coins, et vous faite un transfert d'EXACTEMENT 5000 coins sur cette adresse (la votre, pas 1MKDs1yNze7VEr4zWHTKbiV3T3fBTwtxZ4, bande de moules). Pas un sou de moins. Pas un sou de plus.</p>
+<p>Vous attendez que les coins arrivent. Ça peut prendre quelques minutes. Vérifiez avec:</p>
+<pre lang="bash">./interzone-cli getbalance
+5000.00</pre>
+<p>Si ça dit 5000, c'est bon.</p>
+<p>Il est temps de démarrer notre master node.</p>
+<p>D'abord, on arrête le daemon:</p>
+<pre lang="bash">./interzone-cli stop</pre>
+<p>Ensuite, on se génère une clé privée pour notre master node:</p>
+<pre lang="bash">./interzone-cli masternode genkey
+EHLKJHoYfNaeziVMAtLs5678G9Em861r3456xtYh1TEotpY1</pre>
+<p>Ensuite on rouvre notre fichier de config, et on le met à jour pour contenir ça:</p>
+<pre>bind=<L'ip du serveur>:55675
+rpcuser=interzone
+rpcpassword=BjHQ2T95Og2VNxsVDQ5qcFBU1eVNHP
+masternode=1
+masternodeprivkey=EHLKJHoYfNaeziVMAtLs5678G9Em861r3456xtYh1TEotpY1</pre>
+<p>Ne soyez pas con, n'utilisez pas la clé que je poste dans ce tuto.</p>
+<p>On va aussi chiffrer son waller, maintenant qu'on a des sous dessus, pour éviter de se le faire tirer. On génère un nouveau mot de passe, et on encrypt:</p>
+<pre lang="bash">$ tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1
+efFMgBGFpVhlQ0j8o8N4TaC5XdASyG
+$ ./interzone-cli encryptwallet "efFMgBGFpVhlQ0j8o8N4TaC5XdASyG"
+</pre>
+<p><strong>Faites un backup de votre wallet avant et du mot de passe. Si vous perdez ça, vous êtes niqué de chez niqué.</strong></p>
+<p>Vous pouvez déverrouiller le wallet avec:</p>
+<pre lang="bash">./interzone-cli walletpassphrase efFMgBGFpVhlQ0j8o8N4TaC5XdASyG 120</pre>
+<p>efFMgBGFpVhlQ0j8o8N4TaC5XdASyG étant à remplacer avec votre mot de passe fraichement généré et 120 est le nombre de secondes pour le garder débloqué.</p>
+<p>Il est temps de relancer le daemon:</p>
+<pre lang="bash">./interzoned -daemon</pre>
+<p>Et finalement, le passer en master node:</p>
+<pre lang="bash">./interzone-cli masternode start</pre>
+<p>C'est good.</p>
+<p>Vous pouvez vérifier que ça a été accepté par le réseau avec:</p>
+<pre lang="bash">./interzone-cli masternodelist | grep PUBLIC_IP </pre>
+<p>Toutes les 24h, vous pourrez joyeusement contempler le chiffre fourni par <code>./interzone-cli getbalance</code> qui augmente. Et vous pouvez envoyer vos coins où vous le souhaitez (par exemple pour les revendre) avec un joli:</p>
+<pre lang="bash">./interzone-cli walletpassphrase <votre password> 120
+./interzone-cli sendtoaddress </pre>
+<h2>Sécurité</h2>
+<p>Votre master node est ici configuré en mode "hot wallet", c'est-à-dire que vos coins sont sur le serveur. Il existe une méthode, plus complexe, plus longue, mais plus sure, qui permet de le configurer en "cold wallet". Vos coins sont alors sur votre machine, et un lien est fait enter votre machine et votre master node.</p>
+<p>Si la sécurité vous importe, je vous invite donc à étudier la question.</p>
+<p>Renforcer la configuration du firewall aussi est une bonne idée, puisque maintenant vous êtes une cible d'attaque potentielle.</p>
+<p>Enfin, n'oubliez pas de vider tout l'historique bash en partant, histoire de pas avoir tous les trucs en clair dedans:</p>
+<pre lang="bash">cat /dev/null > ~/.bash_history && history -c && exit</pre>
+<p>Et backupez comme des porcs aussi.</p>
+<h2>Profit ?</h2>
+<p>J'espère pour vous que tout ça va fructifier (et pour moi aussi). Si c'est le cas, vous savez ce qu'il vous reste à faire: envoyez-nous une carte postale de votre ile deserte. Ou des ITZ à 1AChuSLWAHQgmkGa84AHqBRCs1Z1cxHjnU. Ça marche aussi.</p>
+<p>Si vous avez tout perdu, sachez que c'est la faute de Max. Je peux vous donner son adresse. </p>
+<p>Et pour tous ceux qui n'ont pas la foi de faire tout ça, je pense que je vais monter un service qui permet de cliquer et acheter des masternodes automatiquement. </p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/monter-son-master-node-interzone-itz/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">23944</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/12/step-1-cut-a-hole-in-a-box.jpg" length="47308" type="image/jpg" />	</item>
+		<item>
+		<title>GoldenShower sera coupé, faute de miners</title>
+		<link>http://sametmax.com/goldenshower-sera-coupe-faute-de-miners/</link>
+		<comments>http://sametmax.com/goldenshower-sera-coupe-faute-de-miners/#comments</comments>
+		<pubDate>Thu, 07 Dec 2017 14:43:53 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Crypto]]></category>
+		<category><![CDATA[crypto]]></category>
+		<category><![CDATA[goldenshower]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=23894</guid>
+		<description><![CDATA[Slt les gens, &#160; On va couper le pool Goldenshower, car ça coûte en hébergement et qu&#8217;il n&#8217;y a plus de miners pour espérer choper un block. C&#8217;est la loi du &#8220;transvasationnagement&#8221; des liquides. Si vous voulez continuer l&#8217;aventure essayez les pool btgpool ou suprnova. Je vous encourage d&#8217;ailleurs à vous intéresser aux crypto-monnaies dans [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Slt les gens,</p>
+<p>&nbsp;</p>
+<p>On va couper le pool <a title="Tutorial pour Miner du Bitcoin GOLD – BTG" href="http://sametmax.com/tutorial-pour-miner-du-bitcoin-gold-btg/">Goldenshower</a>, car ça coûte en hébergement et qu&#8217;il n&#8217;y a plus de miners pour espérer choper un block. C&#8217;est la loi du &#8220;transvasationnagement&#8221; des liquides. Si vous voulez continuer l&#8217;aventure essayez les pool btgpool ou suprnova. Je vous encourage d&#8217;ailleurs à vous intéresser aux crypto-monnaies dans l&#8217;ensemble, ça fait pas de mal ^^</p>
+<p>&nbsp;</p>
+<p>On remercie tous ceux qui ont participé à l&#8217;aventure en espérant que vous aurez appris au moins autant que nous. Pour info on a rien gagné, les coms de la pool ayant payé l&#8217;hébergement du serveur et quelques NiceHash (qui s&#8217;est fait hacker au passage&#8230;)</p>
+<p>Possible qu&#8217;on monte un autre pool mais l&#8217;expérience nous a appris que c&#8217;est pas facile sans une forte concentration de miners.</p>
+<p>Je pense vous faire un tuto sur les Masternodes bientôt pour voir les cryptos sous un autre angle.</p>
+<p>Passez de bonnes fêtes!</p>
+<p>Max,</p>
+<p>&nbsp;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/goldenshower-sera-coupe-faute-de-miners/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">23894</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/12/gas-tank.png" length="19668" type="image/jpg" />	</item>
+		<item>
+		<title>NiceHash &#8211; Pump up your power, à quoi ça sert et comment ça marche ?</title>
+		<link>http://sametmax.com/nicehash-pump-up-your-power-a-quoi-ca-sert-et-comment-ca-marche/</link>
+		<comments>http://sametmax.com/nicehash-pump-up-your-power-a-quoi-ca-sert-et-comment-ca-marche/#comments</comments>
+		<pubDate>Tue, 14 Nov 2017 11:05:59 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Crypto]]></category>
+		<category><![CDATA[crypto]]></category>
+		<category><![CDATA[mining]]></category>
+		<category><![CDATA[nicehash]]></category>
+		<category><![CDATA[pool]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=23832</guid>
+		<description><![CDATA[Alors c’est quoi ce « gentil hachis » dont vous parlez sur Telegram, c’est un truc de cuisine ? « Nicehash » c’est un service de location de puissance de « hash », en gros avoir le plaisir de posséder l’équivalent de 25000 cartes graphiques pendant un moment pour miner de la cryptomonnaie. C’est un peu la Smartbox (vous savez celle où [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Alors c’est quoi ce « gentil hachis » dont vous parlez sur Telegram, c’est un truc de cuisine ?</p>
+<p>« Nicehash » c’est un service de location de puissance de « hash », en gros avoir le plaisir de posséder l’équivalent de 25000 cartes graphiques pendant un moment pour miner de la cryptomonnaie.<br />
+C’est un peu la Smartbox (vous savez celle où on peut faire 200 bornes pour conduire un R8 pendant ¼ d’heure) de la crypto, mais sans sortir de chez soi, moins de plaisir, mais plus de rendement.</p>
+<p>D’un côté Nicehash propose aux mineurs (ceux qui ont des machines qui chauffent leur maison toute la journée) de mettre ces machines en location, et d’un autre on peut participier à des enchères pour louer la puissance (additionnée) de plein de mineurs d’un coup pour devenir un moment un gros mineur bien velu.<br />
+On voit bien sur ce graphe ce que ça donne là quand un gars s’est un peu énervé pendant ½ heure</p>
+<p><img class="aligncenter size-full wp-image-23834" src="http://sametmax.com/wp-content/uploads/2017/11/photo_2017-11-14_10-47-47.jpg" alt="un ptit coup de nicehash ?" width="1128" height="422" /><br />
+Sur le <a href="https://t.me/goldenshowio">chan de Goldenshow</a>er.io on a l’histoire d’un gars qui a réussi à lancer ¼ d’heure de nNicehash au tout départ du BitcoinGold et en a ramassé une bonne grosse poignée à ce moment là, mais sinon de notre expérience avec le service, il est possible de faire un 10-25% de bénéfice (on achète du hashpower en BTC, on mine une monnaie, qu’on revend ensuite, et ça fait 10-25% de BTC en plus pour recommencer ).</p>
+<h4>
+Allons-y &#8220;gayment&#8221;! Rendez-vous sur <a href="https://www.nicehash.com/register">https://www.nicehash.com/ </a></h4>
+<p>&nbsp;</p>
+<p>On créer un compte, on valide tout ça et on passe aux choses sérieuses. Le tuto suivant décrit la méthode pour lancer un NiceHash sur la crypto Bitcoin Gold, qui est basé sur l&#8217;algo Equihash, pour d&#8217;autres cryptos il faudra choisir l&#8217;algo approprié mais pour le reste il n&#8217;y a rien à changer.</p>
+<p>&nbsp;</p>
+<ol>
+<li>On va dans le marketplace (place de marché)<br />
+<img class="aligncenter size-full wp-image-23835" src="http://sametmax.com/wp-content/uploads/2017/11/1_Goto_marketplace.png" alt="On sélectionne  market place" width="1052" height="532" /></li>
+<li>On sélectionne l&#8217;algo approprié à la crypto que l&#8217;on va miner, ici pour BTG (Bitcoin Gold) on sélectionne Equihash.<br />
+<img class="aligncenter size-full wp-image-23836" src="http://sametmax.com/wp-content/uploads/2017/11/2_SelectAlgo.png" alt="Equihash est l'algo que l'on va utiliser pour miner du BTG (Bitcoin Gold)" width="1376" height="879" /></li>
+<li>La partie la plus importante, Il va falloir envoyer notre puissance de calcul louée sur un pool, ici sur goldenshower.io. Pourquoi celui-là et pas un autre ?<br />
+Parce que c&#8217;est celui de Sam&amp;Max (et des potes) , qu&#8217;on est les plus beaux et qu&#8217;on a besoin de tunes pour aller aux putes régulièrement et vous mijoter de jolis articles tous mignons.<br />
+<img class="aligncenter size-full wp-image-23837" src="http://sametmax.com/wp-content/uploads/2017/11/3_SetupPool.png" alt="PArtie la plus important, setup du pool " width="589" height="622" /><strong>Pool Name:</strong> Golden Show (le nom de votre pool, mettez ce que vous voulez, c&#8217;est pour le reconnaître par la suite dans la liste.)<br />
+<strong>Stratum hostname ou IP:</strong> btg.goldenshow.io<br />
+<strong>port:</strong> 3870<br />
+<strong>User:</strong> là il faut mettre votre addresse de Wallet BTG que vous <a href="http://sametmax.com/tutorial-pour-miner-du-bitcoin-gold-btg/">aurez créé en suivant notre tuto précédent ici</p>
+<p></a></li>
+<li>On place son Order (et oui comme à la bourse) qui va consister à acheter de la puissance de Hash à un prix fixé par vous.<br />
+<span style="color: #ff0000;">ATTENTION!</span> Avant de placer un order il faut créditer son compte Nicehash avec des BTC (Bitcoins), car tout se paie en BTC.<br />
+Sur la figure suivante j&#8217;ai placé un order à 0.01258 BTC.</p>
+<p><strong>PRICE: </strong>par défaut un prix est suggéré , il faut regarder dans la liste des ordres à côté que vous êtes dans les bonnes valeurs, un prix trop bas et votre ordre ne passera jamais.<br />
+<strong>LIMIT: </strong>sert à limiter la puissance de calcul envoyée dans le temps, pour les premiers essais il vaut mieux mettre une faible valeur (attention si vous mettez 0 nicehash va envoyer toute la puissance d&#8217;un coup) en cas de mauvaise configuration du pool, ça serait con d&#8217;envoyer toute la puissance sur un truc qui mine pas :)<br />
+<strong>AMOUNT: </strong>le budget que vous voulez allouer, là aussi au départ une petite somme pour tester l&#8217;artillerie, une fois que vous êtes sûr que ça marche, vous pouvez placez un ordre plus important.</p>
+<p><img class="aligncenter size-full wp-image-23838" src="http://sametmax.com/wp-content/uploads/2017/11/4_SetupOrder.png" alt="on achète des gigoWatts Doc !!" width="603" height="401" /></li>
+<li>Et C&#8217;est tout ! La puissance de calcul louée sur Nicehash va être transmise au pool goldenshow.io et c&#8217;est comme si vous aviez une ferme de GPU qui mine. Elle est pas belle la vie ?<br />
+<img class="aligncenter size-full wp-image-23840" src="http://sametmax.com/wp-content/uploads/2017/11/6_MiningStart.png" alt="6_MiningStart" width="1257" height="809" /></li>
+</ol>
+<p style="text-align: left;">Si vous voulez racheter de la puissance de calcul vous éditez votre order dans la liste et vous changez les valeurs appropriées.<br />
+<img class="aligncenter size-full wp-image-23842" src="http://sametmax.com/wp-content/uploads/2017/11/8_If_Need_Change_Price_or_refill.png" alt="8_If_Need_Change_Price_or_refill" width="708" height="464" /><br />
+Vous l&#8217;aurez compris, Nicehash permet d&#8217;avoir l&#8217;équivalent d&#8217;une immense ferme de GPUs sans les inconvenients. Pratique pour miner à la sortie d&#8217;une crypto sans avoir à setup grand chose et pour se rendre compte immédiatement de la rentabilité de minage de la monnaie concernée.<br />
+A savoir qu&#8217;en général quand une monnaie sort la difficulté est faible donc ça vaut le coup de se lancer dessus et le Nicehash est la solution la plus rapide.</p>
+<p>Rendez-vous sur <a title="Mining Pool" href="http://goldenshow.io">goldenshow.io</a>, votre pool préféré pour miner (pas exclu qu&#8217;on rajoute d&#8217;autres cryptos soon ^^ )</p>
+<p><strong>Les précédents Tutos:</strong></p>
+<p><a href="http://sametmax.com/de-la-thune-avec-un-mining-pool-de-btg/"><strong>http://sametmax.com/de-la-thune-avec-un-mining-pool-de-btg/</strong></a></p>
+<p><a title="miner du BTG" href="http://sametmax.com/tutorial-pour-miner-du-bitcoin-gold-btg/"><strong>http://sametmax.com/tutorial-pour-miner-du-bitcoin-gold-btg/</strong></a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/nicehash-pump-up-your-power-a-quoi-ca-sert-et-comment-ca-marche/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">23832</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2017/11/boooobs.png" length="619791" type="image/jpg" />	</item>
+	</channel>
+</rss>

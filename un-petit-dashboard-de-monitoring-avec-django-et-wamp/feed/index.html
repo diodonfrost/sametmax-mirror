@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Un petit dashboard de monitoring avec Django et WAMP</title>
+	<atom:link href="http://sametmax.com/un-petit-dashboard-de-monitoring-avec-django-et-wamp/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/un-petit-dashboard-de-monitoring-avec-django-et-wamp/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/un-petit-dashboard-de-monitoring-avec-django-et-wamp/#comment-183873</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Fri, 23 Dec 2016 11:26:34 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=15872#comment-183873</guid>
+		<description><![CDATA[&lt;p&gt;Arf, le 3eme qui vient ici me dire que le tuto est dépassé. Putain faut que je me motive pour le mettre à jour.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Arf, le 3eme qui vient ici me dire que le tuto est dépassé. Putain faut que je me motive pour le mettre à jour.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: JC</title>
+		<link>http://sametmax.com/un-petit-dashboard-de-monitoring-avec-django-et-wamp/#comment-183722</link>
+		<dc:creator><![CDATA[JC]]></dc:creator>
+		<pubDate>Mon, 19 Dec 2016 19:17:23 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=15872#comment-183722</guid>
+		<description><![CDATA[Bonsoir à tous,
+
+J&#039;apprends Python et Django, je suis très intéressé par le temps réel dans les pages web pour pour animer les entrées/sorties du Raspberry :
+
+N’ayant pas su reproduire ce tuto (retrouvé en Anglais dans l’exemple de crossbar.io ;-) )
+
+je reprends les exemples d’Autobahn pour y comprendre les bases :
+
+Rien de mieux qu’un bon vieux ‘Hello world’ !!
+
+Donc go github récupérer ‘autobahn-python-master’ et voici ce que je voudrais faire tourner :
+
+‘autobahn-python-master/examples/twisted/wamp/app/hello/’ avec ‘hello.html’ et ‘hello.py’.
+
+En lançant brut de fonderie ‘python hello.py’ j’ai un message d’erreur :
+
+‘2016-12-19T19:07:42+0100 twisted.internet.error.ConnectionRefusedError: Connection was refused by other side: 111: Connection refused.’
+
+oups !
+
+Dans le ‘README.md’ ça parle de :
+
+- ‘wamp.Application objects’,  ‘ApplicationSession’
+
+- ‘Flask-esque API to WAMP’
+
+- il y a un exemple de code source, que je ne sais pas l’utiliser :
+
+&lt;code&gt;
+
+app = Application()
+
+@app.register(&#039;com.example.add2&#039;)
+
+def add2(a, b):
+
+return a + b
+
+&lt;/code&gt;
+
+Si vous avez 2 minutes, auriez-vous une petite idée de ce qu’il faut faire pour exécuter cet exemple ?
+
+PS : j’ai tester sous Python 2.7.12 et 3.5.2 du pc et 2.7.9 et 3.4.2 du raspberry (j’utilise virtualenv) l&#039;erreur est la même.
+
+PS2 : Pour ce tuto, je pense que la structure des dossiers projet et app de Django ont changés, je suis tout neuf dans le domaine donc pas de recul, j’ai tenté une ré-organisation des fichiers pour la 1.10.3 sans succès.
+
+C’est pas grave, je voudrais déjà faire des TP avec les exemples Autobahn/Twisted/WAMP  pour comprendre.
+
+PS3 : Grand merci pour vos articles c’est super !!  ;-)
+
+Jean-Christophe
+]]></description>
+		<content:encoded><![CDATA[<p>Bonsoir à tous,</p>
+<p>J&#8217;apprends Python et Django, je suis très intéressé par le temps réel dans les pages web pour pour animer les entrées/sorties du Raspberry :</p>
+<p>N’ayant pas su reproduire ce tuto (retrouvé en Anglais dans l’exemple de crossbar.io ;-) )</p>
+<p>je reprends les exemples d’Autobahn pour y comprendre les bases :</p>
+<p>Rien de mieux qu’un bon vieux ‘Hello world’ !!</p>
+<p>Donc go github récupérer ‘autobahn-python-master’ et voici ce que je voudrais faire tourner :</p>
+<p>‘autobahn-python-master/examples/twisted/wamp/app/hello/’ avec ‘hello.html’ et ‘hello.py’.</p>
+<p>En lançant brut de fonderie ‘python hello.py’ j’ai un message d’erreur :</p>
+<p>‘2016-12-19T19:07:42+0100 twisted.internet.error.ConnectionRefusedError: Connection was refused by other side: 111: Connection refused.’</p>
+<p>oups !</p>
+<p>Dans le ‘README.md’ ça parle de :</p>
+<p>&#8211; ‘wamp.Application objects’,  ‘ApplicationSession’</p>
+<p>&#8211; ‘Flask-esque API to WAMP’</p>
+<p>&#8211; il y a un exemple de code source, que je ne sais pas l’utiliser :</p>
+<p><code></p>
+<p>app = Application()</p>
+<p>@app.register('com.example.add2')</p>
+<p>def add2(a, b):</p>
+<p>return a + b</p>
+<p></code></p>
+<p>Si vous avez 2 minutes, auriez-vous une petite idée de ce qu’il faut faire pour exécuter cet exemple ?</p>
+<p>PS : j’ai tester sous Python 2.7.12 et 3.5.2 du pc et 2.7.9 et 3.4.2 du raspberry (j’utilise virtualenv) l&#8217;erreur est la même.</p>
+<p>PS2 : Pour ce tuto, je pense que la structure des dossiers projet et app de Django ont changés, je suis tout neuf dans le domaine donc pas de recul, j’ai tenté une ré-organisation des fichiers pour la 1.10.3 sans succès.</p>
+<p>C’est pas grave, je voudrais déjà faire des TP avec les exemples Autobahn/Twisted/WAMP  pour comprendre.</p>
+<p>PS3 : Grand merci pour vos articles c’est super !!  ;-)</p>
+<p>Jean-Christophe</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/un-petit-dashboard-de-monitoring-avec-django-et-wamp/#comment-182051</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Fri, 21 Oct 2016 22:00:21 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=15872#comment-182051</guid>
+		<description><![CDATA[&lt;p&gt;Le tutorial est bien vieux maintenant et mérite d&#039;être réécrit.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Le tutorial est bien vieux maintenant et mérite d&#8217;être réécrit.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: spoutnik16</title>
+		<link>http://sametmax.com/un-petit-dashboard-de-monitoring-avec-django-et-wamp/#comment-182024</link>
+		<dc:creator><![CDATA[spoutnik16]]></dc:creator>
+		<pubDate>Thu, 20 Oct 2016 18:03:11 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=15872#comment-182024</guid>
+		<description><![CDATA[Hello,
+
+Je suis dessus depuis plusieurs heures, et pas moyen de faire que ma page affiche autre chose que &quot;Monitoring&quot;.
+
+Est-ce que à tout hasard, la machine qui affiche la page doit être la même que celle sur laquelle crossbar et django tournent ?
+]]></description>
+		<content:encoded><![CDATA[<p>Hello,</p>
+<p>Je suis dessus depuis plusieurs heures, et pas moyen de faire que ma page affiche autre chose que &#8220;Monitoring&#8221;.</p>
+<p>Est-ce que à tout hasard, la machine qui affiche la page doit être la même que celle sur laquelle crossbar et django tournent ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/un-petit-dashboard-de-monitoring-avec-django-et-wamp/#comment-178477</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Tue, 31 May 2016 10:47:50 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=15872#comment-178477</guid>
+		<description><![CDATA[&lt;p&gt;Putain j&#039;ai toujours pas répondu à Nasjo depuis 5 mois. La honte.&lt;/p&gt;
+
+&lt;p&gt;@.mobo: ça dépend. Tu ne lanceras jamais django comme ça, en prod il a toujours un truc devant comme uwsgi ou gunicorn, qui va créer plein de workers django. Du coup tu n&#039;as pas qu&#039;un process, mais plein. Le bridge HTTP utilise le routing de Django, donc gunicorn/uwsgi va envoyer le message vers seulement un worker. Le thread de autobahn-sync/crochet lui va se lancer dans tous les workers.&lt;/p&gt;
+
+&lt;p&gt;Donc:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Si tu veux que l&#039;appel soit fait dans un seul des workers django, le bridge HTTP.&lt;/li&gt;
+&lt;li&gt;Si tu veux pouvoir faire un sub dans tous les workers django, autobahn-sync/crochet.&lt;/li&gt;
+&lt;/ul&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Putain j&#8217;ai toujours pas répondu à Nasjo depuis 5 mois. La honte.</p>
+<p>@.mobo: ça dépend. Tu ne lanceras jamais django comme ça, en prod il a toujours un truc devant comme uwsgi ou gunicorn, qui va créer plein de workers django. Du coup tu n&#8217;as pas qu&#8217;un process, mais plein. Le bridge HTTP utilise le routing de Django, donc gunicorn/uwsgi va envoyer le message vers seulement un worker. Le thread de autobahn-sync/crochet lui va se lancer dans tous les workers.</p>
+<p>Donc:</p>
+<ul>
+<li>Si tu veux que l&#8217;appel soit fait dans un seul des workers django, le bridge HTTP.</li>
+<li>Si tu veux pouvoir faire un sub dans tous les workers django, autobahn-sync/crochet.</li>
+</ul>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: .mobo</title>
+		<link>http://sametmax.com/un-petit-dashboard-de-monitoring-avec-django-et-wamp/#comment-178475</link>
+		<dc:creator><![CDATA[.mobo]]></dc:creator>
+		<pubDate>Tue, 31 May 2016 09:29:03 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=15872#comment-178475</guid>
+		<description><![CDATA[Salut Sam et merci pour le tuto.
+
+Actuellement, pour faire du rpc entre crossbar et django, tu conseillerai plutôt de passer par autobahn-sync/crochet ou par le http bridge callee ? En sachant que que la réponse json peut être assez importante. Merci et bonne continuation !
+]]></description>
+		<content:encoded><![CDATA[<p>Salut Sam et merci pour le tuto.</p>
+<p>Actuellement, pour faire du rpc entre crossbar et django, tu conseillerai plutôt de passer par autobahn-sync/crochet ou par le http bridge callee ? En sachant que que la réponse json peut être assez importante. Merci et bonne continuation !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Nasjo</title>
+		<link>http://sametmax.com/un-petit-dashboard-de-monitoring-avec-django-et-wamp/#comment-174036</link>
+		<dc:creator><![CDATA[Nasjo]]></dc:creator>
+		<pubDate>Wed, 13 Jan 2016 14:19:16 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=15872#comment-174036</guid>
+		<description><![CDATA[&lt;p&gt;Hello.&lt;/p&gt;
+
+&lt;p&gt;Merci pour ce tuto bien clair. Je cherchais une solution similaire et m&#039;etais préalablement tourné vers &lt;a href=&quot;http://swampdragon.net/&quot; title=&quot;swampdragon&quot; rel=&quot;nofollow&quot;&gt;swampdragon&lt;/a&gt; qui aide a faire du wamp avec Django aussi. Mais un peu plus usine a gaz même s&#039;il est assez bien documenté. Et il n&#039;a plus l&#039;air mis a jour depuis un bail.&lt;/p&gt;
+
+&lt;p&gt;Du coup j&#039;ai suivi ce tuto à la lettre pour tester. Je fais tout tourner dans un Docker avec un -p 8080:8080.&lt;/p&gt;
+
+&lt;p&gt;Le client.py étant lancé dans le Docker aussi, j&#039;ai remplacé la variable SERVER par 127.0.0.1 .&lt;/p&gt;
+
+&lt;p&gt;J&#039;avais une &lt;a href=&quot;https://github.com/crossbario/crossbarexamples/issues/38&quot; title=&quot;&quot; rel=&quot;nofollow&quot;&gt;AssertionError&lt;/a&gt;  au lancement de ce dernier avant d&#039;écrire en unipre la string url :&lt;/p&gt;
+
+&lt;pre lang=&quot;python&quot;&gt;app.run(url=u&quot;ws://%s:80/ws&quot; % SERVER, debug=False, debug_wamp=False)&lt;/pre&gt;
+
+&lt;p&gt;Mais je me retrouve au lancement de ce client.py avec ceci :&lt;/p&gt;
+
+&lt;pre lang=&quot;python&quot;&gt;
+
+2016-01-13T14:14:13+0000 Starting factory &#060;autobahn.twisted.websocket.WampWebSocketClientFactory object at 0x7f65806a6090&#062;
+
+2016-01-13T14:14:13+0000 Stopping factory &#060;autobahn.twisted.websocket.WampWebSocketClientFactory object at 0x7f65806a6090&#062;
+
+2016-01-13T14:14:13+0000 Main loop terminated.
+
+2016-01-13T14:14:13+0000 Traceback (most recent call last):
+
+2016-01-13T14:14:13+0000   File &quot;client.py&quot;, line 130, in 
+
+2016-01-13T14:14:13+0000     app.run(url=u&quot;ws://%s:80/ws&quot; % SERVER, debug=False, debug_wamp=False)
+
+2016-01-13T14:14:13+0000   File &quot;/usr/local/lib/python2.7/dist-packages/autobahn/twisted/wamp.py&quot;, line 395, in run
+
+2016-01-13T14:14:13+0000     runner.run(self.&lt;strong&gt;call&lt;/strong&gt;, start_reactor)
+
+2016-01-13T14:14:13+0000   File &quot;/usr/local/lib/python2.7/dist-packages/autobahn/twisted/wamp.py&quot;, line 272, in run
+
+2016-01-13T14:14:13+0000     raise connect_error.exception
+
+2016-01-13T14:14:13+0000 twisted.internet.error.ConnectionRefusedError: Connection was refused by other side: 111: Connection refused.
+
+&lt;/pre&gt;
+
+&lt;p&gt;Si vous avez une idée, je prend.&lt;/p&gt;
+
+&lt;p&gt;Je vais continuer à creuser :)&lt;/p&gt;
+
+&lt;p&gt;Merci !&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Hello.</p>
+<p>Merci pour ce tuto bien clair. Je cherchais une solution similaire et m&#8217;etais préalablement tourné vers <a href="http://swampdragon.net/" title="swampdragon" rel="nofollow">swampdragon</a> qui aide a faire du wamp avec Django aussi. Mais un peu plus usine a gaz même s&#8217;il est assez bien documenté. Et il n&#8217;a plus l&#8217;air mis a jour depuis un bail.</p>
+<p>Du coup j&#8217;ai suivi ce tuto à la lettre pour tester. Je fais tout tourner dans un Docker avec un -p 8080:8080.</p>
+<p>Le client.py étant lancé dans le Docker aussi, j&#8217;ai remplacé la variable SERVER par 127.0.0.1 .</p>
+<p>J&#8217;avais une <a href="https://github.com/crossbario/crossbarexamples/issues/38" title="" rel="nofollow">AssertionError</a>  au lancement de ce dernier avant d&#8217;écrire en unipre la string url :</p>
+<pre lang="python">app.run(url=u"ws://%s:80/ws" % SERVER, debug=False, debug_wamp=False)</pre>
+<p>Mais je me retrouve au lancement de ce client.py avec ceci :</p>
+<pre lang="python">
+
+2016-01-13T14:14:13+0000 Starting factory &lt;autobahn.twisted.websocket.WampWebSocketClientFactory object at 0x7f65806a6090&gt;
+
+2016-01-13T14:14:13+0000 Stopping factory &lt;autobahn.twisted.websocket.WampWebSocketClientFactory object at 0x7f65806a6090&gt;
+
+2016-01-13T14:14:13+0000 Main loop terminated.
+
+2016-01-13T14:14:13+0000 Traceback (most recent call last):
+
+2016-01-13T14:14:13+0000   File "client.py", line 130, in 
+
+2016-01-13T14:14:13+0000     app.run(url=u"ws://%s:80/ws" % SERVER, debug=False, debug_wamp=False)
+
+2016-01-13T14:14:13+0000   File "/usr/local/lib/python2.7/dist-packages/autobahn/twisted/wamp.py", line 395, in run
+
+2016-01-13T14:14:13+0000     runner.run(self.<strong>call</strong>, start_reactor)
+
+2016-01-13T14:14:13+0000   File "/usr/local/lib/python2.7/dist-packages/autobahn/twisted/wamp.py", line 272, in run
+
+2016-01-13T14:14:13+0000     raise connect_error.exception
+
+2016-01-13T14:14:13+0000 twisted.internet.error.ConnectionRefusedError: Connection was refused by other side: 111: Connection refused.
+
+</pre>
+<p>Si vous avez une idée, je prend.</p>
+<p>Je vais continuer à creuser :)</p>
+<p>Merci !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/un-petit-dashboard-de-monitoring-avec-django-et-wamp/#comment-171217</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sun, 20 Dec 2015 09:32:38 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=15872#comment-171217</guid>
+		<description><![CDATA[&lt;p&gt;Bon, désolé j&#039;ai mis du temps à répondre.&lt;/p&gt;
+
+&lt;p&gt;Je vais regarder le problème quand j&#039;ai un moment.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Bon, désolé j&#8217;ai mis du temps à répondre.</p>
+<p>Je vais regarder le problème quand j&#8217;ai un moment.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: chris</title>
+		<link>http://sametmax.com/un-petit-dashboard-de-monitoring-avec-django-et-wamp/#comment-168076</link>
+		<dc:creator><![CDATA[chris]]></dc:creator>
+		<pubDate>Fri, 20 Nov 2015 17:10:35 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=15872#comment-168076</guid>
+		<description><![CDATA[Super tuto, on apprend beaucoup en le lisant et cela permet d&#039;imaginer plein de choses
+
+faire son propre monitoring ... un reve
+
+par contre des que l&#039;on teste c&#039;est plus difficile
+
+j&#039;ai bien &#039;git clone&#039; le truc
+
+sync_db toussa
+
+lancé le crossbar start avec le python path qu&#039;il faut
+
+sur le navigateur je vois bien &#039;Monitoring&#039; quand je pointe
+
+j&#039;ai bien mis des clients dans la base de données
+
+je lance client.py qui ne dis rien (j&#039;ai remplacé SERVER par 127.0.0.1)
+
+et puis c&#039;est tout
+
+rien ne bouge même pas un log
+
+le coté django repond
+
+mais coté crossbar rien ne bouge,
+
+pas de log
+
+je piges pas ce qu&#039;il me manque pour que cela fonctionne
+
+bon ok je fais ça depuis une VM sous virtualbox (serveur + client )
+
+j&#039;interroge avec firefox depuis l&#039;hote (en redirigeant les ports 8000 8080 et 111)
+
+je dois pas être loin, mais le manque de log me perturbe
+]]></description>
+		<content:encoded><![CDATA[<p>Super tuto, on apprend beaucoup en le lisant et cela permet d&#8217;imaginer plein de choses</p>
+<p>faire son propre monitoring &#8230; un reve</p>
+<p>par contre des que l&#8217;on teste c&#8217;est plus difficile</p>
+<p>j&#8217;ai bien &#8216;git clone&#8217; le truc</p>
+<p>sync_db toussa</p>
+<p>lancé le crossbar start avec le python path qu&#8217;il faut</p>
+<p>sur le navigateur je vois bien &#8216;Monitoring&#8217; quand je pointe</p>
+<p>j&#8217;ai bien mis des clients dans la base de données</p>
+<p>je lance client.py qui ne dis rien (j&#8217;ai remplacé SERVER par 127.0.0.1)</p>
+<p>et puis c&#8217;est tout</p>
+<p>rien ne bouge même pas un log</p>
+<p>le coté django repond</p>
+<p>mais coté crossbar rien ne bouge,</p>
+<p>pas de log</p>
+<p>je piges pas ce qu&#8217;il me manque pour que cela fonctionne</p>
+<p>bon ok je fais ça depuis une VM sous virtualbox (serveur + client )</p>
+<p>j&#8217;interroge avec firefox depuis l&#8217;hote (en redirigeant les ports 8000 8080 et 111)</p>
+<p>je dois pas être loin, mais le manque de log me perturbe</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/un-petit-dashboard-de-monitoring-avec-django-et-wamp/#comment-166156</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Fri, 06 Nov 2015 19:28:51 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=15872#comment-166156</guid>
+		<description><![CDATA[&lt;p&gt;Ca c&#039;est pour Python &#060; 3.3.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Ca c&#8217;est pour Python &lt; 3.3.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

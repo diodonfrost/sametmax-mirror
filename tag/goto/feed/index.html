@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>goto &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/goto/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Go to (in asyncio) considered harmful</title>
+		<link>http://sametmax.com/go-to-in-asyncio-considered-harmful/</link>
+		<comments>http://sametmax.com/go-to-in-asyncio-considered-harmful/#comments</comments>
+		<pubDate>Thu, 07 Jun 2018 07:31:29 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[goto]]></category>
+		<category><![CDATA[nursery]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[trio]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=24534</guid>
+		<description><![CDATA[Dijkstra était un intellectuel pédant mais quand il a écrit cette lettre célèbre, il a comme souvent mis le doigt sur un truc fondamental. Et quand l'auteur de <a href="https://github.com/python-trio/trio">Trio</a>, une stack toute neuve concurrente d'<code>asyncio</code>, <a href="https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-considered-harmful/">lui a fait écho</a> 50 ans plus tard, ça a beaucoup discuté sur les mailing lists et les bugs trackers.]]></description>
+				<content:encoded><![CDATA[<p>Dijkstra était un intellectuel pédant, mais quand il a écrit cette lettre célèbre, il a comme souvent mis le doigt sur un truc fondamental. Et quand l&#8217;auteur de <a href="https://github.com/python-trio/trio">Trio</a>, une stack toute neuve concurrente d&#8217;<code>asyncio</code>, <a href="https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-considered-harmful/">lui a fait écho</a> 50 ans plus tard, ça a beaucoup discuté sur les mailing lists et les bugs trackers.</p>
+<p>Nathaniel J. Smith, le dev susnommé, en a profité pour introduire une nouvelle primitive, actuellement surnommée <a href="http://trio.readthedocs.io/en/latest/reference-core.html#nurseries-and-spawning">la nursery</a>, pour répondre au problème. Une idée visiblement tellement bonne que notre Yury préféré <a href="https://twitter.com/1st1/status/989198832910192640">a décidé</a> de la porter à <code>asyncio</code>. La boucle d&#8217;événements est bouclée, si je puis dire.</p>
+<p>Mais une autre chose intéressante en découle : on a mis en lumière la présence d&#8217;un <a href="https://en.wikipedia.org/wiki/Goto">goto</a> dans asyncio, et qu&#8217;il y a de bonnes pratiques, <a href="https://github.com/python/asyncio/issues/477#issuecomment-269038238">validées par Guido himself</a>, pour coder avec cette lib pour éviter les douleurs.</p>
+<h2>What the fuck are you talking about ?</h2>
+<p>Le problème du <code>goto</code>, c&#8217;est que l&#8217;instruction permet d&#8217;aller de n&#8217;importe où à n&#8217;importe où. Cela rend le flux du programme très dur à suivre. Pour éviter cela, on a catégorisé les usages clean du <code>goto</code>: répéter une action, changer de comportement en fonction d&#8217;un test, sortir d&#8217;un algo en cas de problème, etc. Et on en a fait des primitives : les <code>if</code>, les <code>while</code>, les exceptions&#8230; Dans les langages les plus modernes, on a carrément viré le <code>goto</code> pour éviter les abus et erreurs. Joie.</p>
+<p>Dans <code>asyncio</code>, le &#8220;goto&#8221; en question se trouve quand on veut lancer des tâches en arrière plan, comme ceci :</p>
+<pre lang="python">import asyncio as aio
+loop = aio.get_event_loop()
+aio.ensure_future(foo())  # GOTO !
+aio.ensure_future(bar())  # GOTO !
+loop.run_forever()</pre>
+<p>Le problème d&#8217;<code>ensure_future()</code> est multiple:</p>
+<ul>
+<li>Comme son nom l&#8217;indique, cette fonction retourne un objet&#8230; <code>Task</code>. Ca n&#8217;a rien à voir, mais je tenais à dire à quel point c&#8217;était con de l&#8217;avoir nommé ainsi (même si techniquement, <code>Task</code> hérite de <code>Future</code>).</li>
+<li>Cette ligne ne garantit en aucun cas que <code>foo()</code> ou <code>bar()</code> seront terminées à une zone précise du code. Tout au plus que tuer la boucle tue les taches. Leur flux d’exécution est complètement freestyle et décorrélé de tout le reste du programme, ainsi que de l&#8217;une de l’autres. Si ces coroutines font des <code>await</code>, on peut basculer de n&#8217;importe où du programme vers elles et inversement à tout moment. <code>goto</code></li>
+<li>Cette ligne schedule le démarrage de <code>foo()</code> et <code>bar()</code> dès que la boucle peut les lancer. Ici la boucle ne tourne pas encore. Plus le programme est complexe, plus il va devenir difficile de savoir à quelle étape logique les coroutines vont démarrer.</li>
+</ul>
+<p>En prime <code>run_forever()</code> est un piège à con, car les exceptions qui arrivent dans la boucle sont logguées, mais ne font pas crasher le programme, ce qui rend le debuggage super rude, même avec <a href="https://docs.python.org/3/library/asyncio-dev.html#debug-mode-of-asyncio">debug mode</a> activé (dont de toute façon personne ne soupçonne l&#8217;existence).</p>
+<h2>La solution asyncio</h2>
+<pre lang="python">
+import asyncio as aio
+loop = aio.get_event_loop()
+loop.run_until_complete(aio.gather(foo(), bar())
+</pre>
+<p>En plus d&#8217;être plus court, les exceptions vont faire planter le programme, la loop s&#8217;arrêtera quand les coroutines auront fini leur taff, leur flux a un début et une fin encapsulés par le <code>gather()</code>. Ceci est encore plus visible si on met le même code à l&#8217;intérieur d&#8217;une coroutine à l&#8217;intérieur d&#8217;une coroutine à l&#8217;intérieur d&#8217;une coroutine plutôt qu&#8217;à la racine du programme. En effet dans un exemple si simple, on se borne au démarrage et à l&#8217;arrêt de la boucle. Mais je suis paresseux.</p>
+<p>Donc, c&#8217;est la bonne pratique, mais tout le monde ne le sait pas.</p>
+<p>Pardon, correction.</p>
+<p>Tous les devs Python ne connaissent pas <code>asyncio</code>. Parmi ceux qui connaissent <code>asyncio</code>, une petite partie comprend comme ça marche.</p>
+<p>Dans ce lot rikiki, un pouillième sait que c&#8217;est la bonne pratique.</p>
+<p>En fait, <code>gather()</code> est probablement la fonction la plus importante d&#8217;<code>asyncio</code>, et pourtant elle apparaît à peine dans la doc. C&#8217;est la malédiction d&#8217;<code>asyncio</code>, une lib que tout le monde attendait pour propulser Python dans la league des langages avec frameworks modernes, mais qui commence à peine à devenir utilisable par le commun des mortel en 2018. Et encore.</p>
+<p>Il ne faut jamais utiliser <code>ensure_future()</code> à moins de vouloir attacher un callback à la main dessus, ce qui n&#8217;est probablement jamais ce que vous voulez à cette époque merveilleuse ou existe <code>async/await</code>. <code>ensure_future()</code> est un <code>goto</code>, <code>gather()</code> est un concept de plus haut niveau.</p>
+<p>Mais deux problèmes demeurent&#8230;</p>
+<p>Contrairement au <code>goto</code> banni de Python, <code>ensure_future()</code> est là, et va rester. Donc n&#8217;importe quel connard peut dans un code ailleurs vous niquer profond, et en tâche de fond.</p>
+<p><code>ensure_future()</code> (ou son petit frère <code>EventLoop.create_task()</code>) reste le seul moyen valable pour lancer une tâche, faire quelque chose, lancer une autre tâche, puis enfin faire un <code>gather()</code> sur les deux tâches:</p>
+<pre lang="python">
+async def grrr():
+    task1 = aio.ensure_future(foo())
+    # faire un truc pendant que task1 tourne
+    task2 = aio.ensure_future(bar())
+    # faire un truc pendant que task1 et task2 tournent
+    # On s'assure que tout se rejoint à la fin:
+    await aio.gather(task1, task2)
+</pre>
+<p>Et puis, faire une pyramide de <code>gather()</code> dans tout son code pour s&#8217;assurer que tout va bien de haut en bas, c&#8217;est facile à rater.</p>
+<h2>La nursery : la solution de trio</h2>
+<p>Une nursery agit comme un scope qui pose les limites du cycle de vie des tâches qui lui sont attachées. C&#8217;est un <code>gather()</code>, sous stéroide, et avec une portée visuellement claire:</p>
+<pre lang="python">
+async def grrr():
+    async with trio.open_nursery() as nursery:
+        task1 = nursery.start_soon(foo)
+        # faire un truc pendant que task1 tourne
+        task2 = nursery.start_soon(bar)
+        # faire un truc pendant que task1 et task2 tournent
+</pre>
+<p>Les taches sont garanties, à la sortie du <code>with</code>, de se terminer. Le <code>ensure_future()</code> n&#8217;a pas d&#8217;équivalent en trio, et donc aucun moyen de lancer un truc dans le vent sans explicitement lui passer au moins une nursery à laquelle on souhaite l&#8217;attacher.</p>
+<p>Résultat, on ne peut plus faire de <code>goto</code>, et le flux du program est clair et explicite.</p>
+<p>Notez que, tout comme <code>if</code> et <code>while</code> ne permettaient rien qu&#8217;un utilisateur soigneux de <code>goto</code> ne pouvait faire, la nursery ne permet rien qu&#8217;un utilisateur soigneux de <code>ensure_future()</code> ne peut faire. Mais ça force un ensemble de bonnes pratiques.</p>
+<p>Évidemment, on peut ouvrir une nursery dans un bloc d&#8217;une autre nursery, ce qui permet d&#8217;imbriquer différentes portées, comme on le ferait avec un <code>begin()</code> de transaction de base de données. Or, une exception à l&#8217;intérieur d&#8217;une nursery <a href="http://sametmax.com/gestion-des-erreurs-en-python/">bubble</a> naturellement comme toute exception Python, et stoppe toutes les tâches de la nursery encore en train de tourner. Alors qu&#8217;avec <asyncio>asyncio</asyncio> vous l&#8217;avez dans le cul.</p>
+<p>En définitive, c&#8217;était la pièce manquante. La moitié du boulot avait était faite quand on a introduit un moyen de gérer des tâches asynchrones qui dépendent les unes des autres, en remplaçant les callbacks par un truc de haut niveau : <code>async/await</code>. Il restait la gestion des tâches en parallèle qui se faisait encore selon les goûts et compétences de chacun, mais la nursery va remplir ce vide. </p>
+<p>Cela devrait être intégré à <code>asyncio</code> en Python 3.8, soit une bonne année et demie pour ceux qui ont la chance de pouvoir faire du bleeding edge.</p>
+<p>Comme certains ne voudront pas attendre, je vous ai fait un <a href="https://0bin.net/paste/V5KyhAg-2i5EOyoK#dzBvhdCVeFy8Q2xNcxXyqwtyQFgkxlKI3u5QG0buIcT">POC</a> qui vous montre comment ça pourrait marcher. Mais cette version ne sera jamais utilisée. En effet, elle intercepte <code>ensure_future()</code> (en fait le  <code>create_task()</code> sous-jacent) pour attacher son résultat à la nursery en cours, évitant tout effet <code>goto</code>, et ça péterait trop de code existant. Mon pognon est plutôt sur un gros warning émis par Python quand on fait une gotise.</p>
+<p>Dernier mot: s&#8217;il vous plaît, <strong><a href="https://github.com/python-trio/trio/issues/504">allez voter</a> pour change le nom de nursery</strong>. C&#8217;est beaucoup trop long à taper pour un truc qu&#8217;on va utiliser tout le temps.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/go-to-in-asyncio-considered-harmful/feed/</wfw:commentRss>
+		<slash:comments>26</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">24534</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2018/06/juY3qQy.jpg" length="120442" type="image/jpg" />	</item>
+		<item>
+		<title>Goto en Python</title>
+		<link>http://sametmax.com/goto-en-python/</link>
+		<comments>http://sametmax.com/goto-en-python/#comments</comments>
+		<pubDate>Thu, 04 Apr 2013 20:03:03 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[goto]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5600</guid>
+		<description><![CDATA[La bonne vieille époque du BASIC vous manque ? Vous voulez retrouver le pouvoir d'aller et venir n'importe où dans votre code et faire des scripts spaghetti bien dégueulasses ?]]></description>
+				<content:encoded><![CDATA[<p>La bonne vieille époque du BASIC vous manque ? Vous voulez retrouver le pouvoir d&#8217;aller et venir n&#8217;importe où dans votre code et faire des scripts spaghetti bien dégueulasses ?</p>
+<p><a href="http://entrian.com/goto/download.html">Téléchargez Go To pour Python</a>.</p>
+<p>Le 1 avril est bien passé, et cette lib existe pour de vrai. Elle vous permet de retomber en enfance où on dirait que toi tu peux poser un label et moi je peux y aller directement :</p>
+<pre lang="python">from goto import goto, label
+
+label .start
+
+print "C'est pas du jeu"
+
+for i in range(1, 4):
+    print i
+    if i == 2:
+        try:
+            output = message
+        except NameError:
+            print "T'as oublié le message."
+            message = "Salut"
+            goto .start
+
+print output, "\n"</pre>
+<p>Si vous regardez le code souce, vous verrez que l&#8217;implémentation est une bouillie immonde qui sauvegarde les frames dans un cache et les rebalancent quand on gotouse.</p>
+<p>Merci à l&#8217;auteur d&#8217;avoir pondu cette lib indispensable, si elle n&#8217;avait pas existé, je l&#8217;aurais codé.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/goto-en-python/feed/</wfw:commentRss>
+		<slash:comments>17</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">5600</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2013/04/tvcb1KC.jpg" length="70063" type="image/jpg" />	</item>
+	</channel>
+</rss>

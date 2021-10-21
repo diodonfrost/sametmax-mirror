@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>erreur &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/erreur/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Virtualenv EnvironmentError: mysql_config not found sous MAC OSX</title>
+		<link>http://sametmax.com/virtualenv-environmenterror-mysql_config-not-found-sous-mac-osx/</link>
+		<comments>http://sametmax.com/virtualenv-environmenterror-mysql_config-not-found-sous-mac-osx/#comments</comments>
+		<pubDate>Tue, 04 Feb 2014 10:56:18 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[config]]></category>
+		<category><![CDATA[erreur]]></category>
+		<category><![CDATA[mysql-python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8963</guid>
+		<description><![CDATA[Des fois il y a des petites choses comme ça qui devraient s'installer comme un rien et passer innaperçues mais non, ça vous fait une belle erreur et vous passez des heures à vous demander pourquoi ça ne veut pas s'installer. Restons zen...]]></description>
+				<content:encoded><![CDATA[<p>Comme le post précédent est inutile j&#8217;en fais un autre qui doit concerner au moins 0.00001% de la population.</p>
+<p>A vous qui essayez depuis 2 heures de configurer MySQL-python sous votre virtualenv, cet article vous est dédié.</p>
+<p>Cette erreur vicieuse m&#8217;arrive à chaque fois que j&#8217;installe MySQL-python dans un nouvel environnement virtuel. Ceci dit vous l&#8217;aurez peut-être sous un autre OS. Sur CentOS j&#8217;avais qu&#8217;à faire un <em>yum install mysql-devel</em> mais sous Mac c&#8217;est autre chose. Plus de puissance engendre plus de responsabilités&#8230;</p>
+<pre lang="bash">
+
+Max $  pip install MySQL-python
+Downloading/unpacking MySQL-python
+  Downloading MySQL-python-1.2.5.zip (108Kb): 108Kb downloaded
+  Running setup.py egg_info for package MySQL-python
+    sh: mysql_config: command not found
+    Traceback (most recent call last):
+      File "<string>", line 14, in <module>
+      File "/Users/Max/.virtualenvs/zooscator/build/MySQL-python/setup.py", line 17, in <module>
+        metadata, options = get_config()
+      File "setup_posix.py", line 43, in get_config
+        libs = mysql_config("libs_r")
+      File "setup_posix.py", line 25, in mysql_config
+        raise EnvironmentError("%s not found" % (mysql_config.path,))
+    EnvironmentError: mysql_config not found
+    Complete output from command python setup.py egg_info:
+    sh: mysql_config: command not found
+
+Traceback (most recent call last):
+
+  File "<string>", line 14, in <module>
+
+  File "/Users/Max/.virtualenvs/zooscator/build/MySQL-python/setup.py", line 17, in <module>
+
+    metadata, options = get_config()
+
+  File "setup_posix.py", line 43, in get_config
+
+    libs = mysql_config("libs_r")
+
+  File "setup_posix.py", line 25, in mysql_config
+
+    raise EnvironmentError("%s not found" % (mysql_config.path,))
+
+EnvironmentError: mysql_config not found
+
+----------------------------------------
+Command python setup.py egg_info failed with error code 1
+Storing complete log in /Users/Max/.pip/pip.log
+
+</pre>
+<p>Il faut éditer votre fichier <strong>activate</strong> qui se trouve dans le répertoire bin de votre environnement virtuel: ex &#8220;/Users/Max/.virtualenvs/zooscator/bin/activate&#8221;</p>
+<pre lang="bash">
+vi /Users/Max/.virtualenvs/zooscator/bin
+</pre>
+<p><strong>Trouvez les lignes suivantes et ajoutez:</strong></p>
+<blockquote><p>PATH=&#8221;$PATH:/opt/local/lib/mysql5/bin/&#8221;
+</p></blockquote>
+<pre lang="bash">
+...
+_OLD_VIRTUAL_PATH="$PATH"
+PATH="$VIRTUAL_ENV/bin:$PATH"
+PATH="$PATH:/opt/local/lib/mysql5/bin/"
+export PATH
+...
+</pre>
+<p>Chez moi le chemin vers mysql est /opt/local/lib/mysql5/bin/, si vous ne connaissez pas le vôtre utilisez la commande <em>locate</em>: ex <em>locate mysql</em></p>
+<p><strong>Une fois le fichier <em>activate</em> édité il faut le resourcer:<br />
+</strong></p>
+<pre lang="bash">
+source /Users/Max/.virtualenvs/zooscator/bin/activate
+</pre>
+<p><strong>Et vous pourrez alors installer MySQL-python tranquillou billou:<br />
+</strong></p>
+<pre lang="bash">
+Max $  pip install MySQL-python
+
+Downloading/unpacking MySQL-python
+  Running setup.py egg_info for package MySQL-python
+
+Installing collected packages: MySQL-python
+  Running setup.py install for MySQL-python
+[....................]
+Successfully installed MySQL-python
+Cleaning up...
+</pre>
+<p>Je vais nourrir mon cochon d&#8217;Inde.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/virtualenv-environmenterror-mysql_config-not-found-sous-mac-osx/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">8963</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2014/02/burn_out_1086894409_sato_kronik0405.jpg" length="49452" type="image/jpg" />	</item>
+		<item>
+		<title>Quelques erreurs tordues et leurs solutions en Python</title>
+		<link>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/</link>
+		<comments>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/#comments</comments>
+		<pubDate>Sun, 24 Jun 2012 02:29:56 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[encodage]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[erreur]]></category>
+		<category><![CDATA[error]]></category>
+		<category><![CDATA[generator]]></category>
+		<category><![CDATA[import]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=995</guid>
+		<description><![CDATA[Bien que Python soit un langage dont l'une des grandes qualités est la cohérence, voici une liste d'erreurs et leurs solutions qui ont tendance à énerver.
+]]></description>
+				<content:encoded><![CDATA[<p>Quand vous débuggez, rappelez-vous que <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">pdb est votre ami</a>, et qu&#8217;il est souvent bon de <a href="http://sametmax.com/purger-les-fichiers-pyc-et-un-hook-git-en-bonus/">supprimer tous les fichiers <code>.pyc</code></a> pour éviter la confusion. Mais parfois l&#8217;erreur semble n&#8217;avoir aucun sens. Bien que Python soit un langage dont l&#8217;une des grandes qualités soit la cohérence, voici une liste d&#8217;erreurs et leurs solutions qui ont tendance à énerver (les erreurs hein, pas les solutions).</p>
+<h2><code>NameError: name 'x' is not defined</code></h2>
+<p>Python plante en annonçant que la variable n&#8217;est pas définie. Vous allez à la ligne donnée, et elle est là. Vous vérifiez qu&#8217;il n&#8217;y a pas de faute de frappe (genre un zéro mélangé avec la lettre O), ni une majuscule ou une minuscule échangée quelque part (Python est sensible à la casse).</p>
+<p>Et rien.</p>
+<p>Tout est niquel.</p>
+<p>Alors pourquoi ça plante bordel de merde ?</p>
+<p>Et bien ce message qui n&#8217;aide absolument pas peut venir du fait que <a href="http://sametmax.com/closure-en-python-et-javascript/">les closures sont en lecture seule en Python</a>. En résumé, vous avez essayé de faire un truc comme ça:</p>
+<pre lang="python">chose = 'truc'
+def fonction():
+    chose = 'machin'
+    # ou chose += machin ou une variante</pre>
+<p>La solution est simple: ne modifiez pas <code>chose</code>. Si vous avez besoin de modifier son contenu, utilisez une variable intermédiaire:</p>
+<pre lang="python">chose = 'truc'
+def fonction():
+    bidule = chose
+    bidule += 'machin' # je sais c'est bidon, c'est pour l'exemple</pre>
+<p>En Python 3.0, vous pouvez utiliser le mot clé <code>nonlocal</code> pour y palier: vous modifierez alors la variable du scope du dessus. </p>
+<pre lang="python">chose = 'truc'
+def fonction():
+    nonlocal chose
+    chose += 'machin' # je sais c'est bidon, c'est pour l'exemple</pre>
+<p>Évitez d&#8217;utiliser <code>global</code>, qui a un fort potentiel d&#8217;effet de bord.</p>
+<h2><code>ImportError: cannot import name bidule</code> et <code>ImportError: No module named truc</code></h2>
+<p>Une fois que vous avez vérifié qu&#8217;un module existe bien avec ce nom (regardez de près, parfois c&#8217;est subtile), voici 3 possibilités:</p>
+<h3>Pas de fichier __init__.py</h3>
+<p>Un dossier n&#8217;est pas un module importable si il ne contient pas de fichier <code>__init__.py</code>. Vérifiez qu&#8217;il y en a un, et dans le cas contraire, créez en un vide.</p>
+<p><H3>Erreur de Python Path</H3></p>
+<p>Quand vous faites <code>import bidule</code>, <code>bidule</code> ne peut être importé que si le dossier qui le contient est dans le <strong>Python Path</strong>. Le Python Path est une variable qui contient une liste de dossiers dans lesquels chercher les modules à importer.</p>
+<p>Le dossier courrant, le dossier contenant la bibliothèque standard de Python et le dossier où sont installés les bibliotèques Python de votre système d&#8217;exploitation sont automatiquement présents dans le Python Path.</p>
+<p>Première chose: assurez-vous d&#8217;être à la racine du projet que vous lancez (erreur typique quand on utilise la commande <code>./manage.py</code> avec Django par exemple).</p>
+<p>Deuxième chose: si vous utilisez une bibliothèque qui n&#8217;est pas dans le Python Path (ça arrive assez souvent avec les tests unitaires: on éxécute les tests depuis le dossier de test, et le projet est dans un dossier à côté, donc pas dans le Python Path), vous pouvez ajouter manuellement un chemin dans le Python Path.</p>
+<p>Pour se faire, avant l&#8217;import qui va foirer:</p>
+<pre lang="python">import sys
+sys.path.append('/chemin/vers/le/dossier/parent/du/module/a/importer')</pre>
+<p>On peut tout à fait spécifier un dossier relativement au dossier courant. Il n&#8217;est pas rare d&#8217;ajouter le dossier parent du dossier courrant au Python Path:</p>
+<pre lang="python">import sys
+import os
+
+DOSSIER_COURRANT = os.path.dirname(os.path.abspath(__file__))
+DOSSIER_PARENT = os.path.dirname(DOSSIER_COURRANT)
+sys.path.append(DOSSIER_PARENT)
+</pre>
+<p>Par exemple, souvent dans le dossier d&#8217;un projet Django je fais un sous-dossier &#8216;apps&#8217;, puis je rajoute ceci au fichier <code>settings.py</code>:</p>
+<pre lang="python">import sys
+import os
+
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(PROJECT_DIR, 'apps'))</pre>
+<p>Il y a deux avantages à cela:</p>
+<ul>
+<li>Mes applications sont regroupées dans un dossier et pas en vrac à la racine du projet, mais je peux quand même les importer en faisant <code>import nom</code> et pas <code>import apps.nom</code>.</li>
+<li> J&#8217;ai maintenant une variable <code>PROJECT_DIR</code> que je peux utiliser partout, notamment pour définir où sont certains dossiers comme le dossiers des fichiers statiques:</li>
+</ul>
+<pre lang="python">STATIC = os.path.join(PROJECT_DIR, 'static')</pre>
+<h3>Imports circulaires</h3>
+<p>Si vous importez <code>poisson.rouge</code> dans <code>force.py</code>, et <code>force.bleu</code> dans <code>poisson.py</code>, vous aurez aussi ce message d&#8217;erreur (qui n&#8217;aide pas beaucoup, on est d&#8217;accord).</p>
+<p>Il n&#8217;y a pas vraiment de façon élégante de s&#8217;en sortir, c&#8217;est une des plus grosses couillasses en Python.</p>
+<p>Solution 1: vous refactorez votre code pour avoir <code>bleu</code> et <code>rouge</code> dans un fichier <code>couleur.py</code>, lequel est importé dans <code>poisson.py</code> et <code>force.py</code>. C&#8217;est propre, mais parfois ça n&#8217;a aucun sens, et parfois ce n&#8217;est juste pas possible.<br />
+Solution 2: vous mettez l&#8217;import dans une fonctions ou une méthode dans un des deux modules (n&#8217;importe lequel):</p>
+<pre lang="python">def make_bouillabaisse():
+    from poisson import rouge</pre>
+<p>C&#8217;est moche, mais c&#8217;est facile. Et je le répète, je n&#8217;ai jamais vu quelqu&#8217;un en 10 ans de Python proposer une solution élégante à ce problème. C&#8217;est un What The Fuck d&#8217;or.</p>
+<h2><code>UnicodeDecodeError: 'ascii' codec can't decode byte 0xc3 in position 0: ordinal not in range(128)</code></h2>
+<p>Arf. L&#8217;erreur à la con. Parce que généralement elle vient du fait que l&#8217;on ne comprend pas vraiment ce qu&#8217;on fait. Or difficile de résoudre un problème quand on ne comprend pas de quoi il est question. Ne vous sentez pas mal, on s&#8217;est tous retrouvé comme un demeuré devant un problème d&#8217;encodage.</p>
+<p>A noter que ce n&#8217;est pas une erreur spécifique à Python, mais si vous venez d&#8217;un langage comme PHP qui passe silencieusement ce genre d&#8217;erreur et affiche en prod des texts illisibles, voire une grosse erreur à l&#8217;écran peut surprendre.</p>
+<p>Voici des causes très fréquentes:</p>
+<h3>Encodage du fichier.py</h3>
+<p>Comme il peut y avoir 1 million de possibilités, forcez vous à:</p>
+<p>&#8211; TOUJOURS avoir votre éditeur de texte réglé pour utiliser UTF-8. Surtout sur Windows. Si votre chef vous l&#8217;interdit parce que &#8220;ça pose des problèmes d&#8217;encodage&#8221; (sic), quittez votre job (meilleur choix) ou faites vous former pour comprendre comment marchent les encodages et travailler dans cet environnement hostile.<br />
+&#8211; TOUJOURS avoir votre encodage (UTF-8 j&#8217;ai dis !) déclaré en haut du <code>fichier.py</code>: <code># -*- coding: utf-8 -*-</code></p>
+<h3>Vérifiez que les textes en entrée sont dans l&#8217;encodage prévu</h3>
+<p>Le contenu des bases de données ne sont parfois pas dans l&#8217;encodage déclaré de la table ou de la base. Le contenu d&#8217;une page HTML n&#8217;est parfois pas encodé dans l&#8217;encodage déclaré dans le HEAD. Le contenu d&#8217;un fichier n&#8217;est parfois pas encodé dans l&#8217;encodage par défaut de votre OS.</p>
+<p>Il n&#8217;y a pas de secret. Pas de moyen infaillible de détection automatique. Il faut vérifier.</p>
+<h3>Vous confondez encodage et décodage (Python 2.7 et moins)</h3>
+<p>En Python, on DECODE pour passer d&#8217;un texte en encodé (UTF8, ISO-8859, CP1552, etc) et donc de type &#8216;str&#8217; c&#8217;est à dire un flux de bits, à un texte unicode, une représentation interne, un objet non imprimable. Il est recommandé de décoder tout texte venant d&#8217;une source extérieur à votre programme, pour tout uniformiser.</p>
+<p>A l&#8217;inverse, on ENCODE pour passer du type &#8216;unicode&#8217; à un type &#8216;str&#8217;. Il <strong>obligatoire</strong> d&#8217;encoder un texte pour le communiquer au monde extérieur. Si vous ne le faites pas manuellement, Python le fera automatiquement, en essayant de deviner. Il n&#8217;est pas excellent à deviner.</p>
+<p>En résumé:</p>
+<pre lang="python">In [7]: texte = open('/etc/fstab').read() # ou un téléchargement, ou une requete SQL...
+In [8]: type(texte)
+Out[8]: str
+In [9]: texte = texte.decode('UTF8')
+In [10]: type(texte)
+Out[10]: unicode
+In [11]: print texte # encode automatiquement le texte car votre terminal ne comprend qu'un text encodé
+# /etc/fstab: static file system information.
+#
+[.............]
+In [12]: type(texte.encode('UTF8')) # à faire avant de faire un write
+Out[12]: str</pre>
+<p>Si ça continue de foirer, prenez tous les fichiers de votre application un par un: changez toutes les strings en unicode (les précéder d&#8217;un &#8220;u&#8221;), assurez vous que tout ce qui entre est converti en unicode (unicode() après urllib, open, etc) et tout ce qui sort est converti dans un encodage adapté (souvent UTF8) (encode(&#8216;UTF-8&#8217;) avant send(), write() ou print).</p>
+<p>Si ça ne marche toujours pas, embauchez un mec comme moi qui est payé cher pour se taper la tête contre les murs à la place des autres.</p>
+<h2>TypeError: &#8216;int&#8217; object has no attribute &#8216;__getitem__&#8217; et autres erreurs sur les tuples</h2>
+<h3>Tuples d&#8217;un seul élément</h3>
+<p>CECI N&#8217;EST PAS UN TUPLE: (1)</p>
+<p>Ceci est un tuple: (1,)</p>
+<pre lang="python">>>> type((1))
+<type 'int'>
+>>> type((1,))
+<type 'tuple'>
+>>> t = (1,)
+>>> t[0]
+1
+>>> t = (1)
+>>> t[0]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'int' object has no attribute '__getitem__'</pre>
+<p>Et il y a plus vicieux:</p>
+<pre lang="python">
+>>> a = ("12345")
+>>> b = ("12345",)
+>>> a[0]
+'1'
+>>> b[0]
+'12345'
+</pre>
+<p>C&#8217;est très dur à débugguer car on dans les deux cas il n&#8217;y a pas d&#8217;erreur étant donné que c&#8217;est une opération tout à fait légitime.</p>
+<h3>Concaténation automatique</h3>
+<p>Python vient avec une fonctionnalité qui concatène automatiquement les descriptions littérales de chaînes de caractères:</p>
+<pre lang="python">>>> "Ceci est un"                                  " test"
+'Ceci est un test'</pre>
+<p>C&#8217;est très pratique pour les chaînes longues:</p>
+<pre lang="python">>>> print ("Ceci est une chaîne longue "
+... "et je peux la diviser sur plusieurs lignes"
+... " sans me fouler")
+'Ceci est une chaîne longue et je peux la diviser sur plusieurs lignes sans me fouler'</pre>
+<p>Mais si vous oubliez une virgule dans un tuple (par exemple dans <code>INSTALLED_APPS</code> dans le fichier de <code>settings.py</code> de Django):</p>
+<pre lang="python">>>> REGLES = (
+...     "Ne jamais parler du fight club",
+...     "Ne jamais croiser les effluves",
+...     "Ne jamais appuyer sur le petit bouton rouge" # <===== virgule oubliée !
+...     "Ne jamais goûter"
+... )
+>>> print REGLES[3]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+IndexError: tuple index out of range
+>>> print REGLES[-1]
+Ne jamais appuyer sur le petit bouton rougeNe jamais goûter</pre>
+<h2>Le fichier/la liste est vide</h2>
+<p><a href="http://sametmax.com/python-love-les-listes-en-intention-partie-2/">On ne peut lire qu&#8217;une seule fois les générateurs en Python</a>.</p>
+<p>Si vous faites:</p>
+<pre lang="python">toto = (blague.title() for blague in histoire)</pre>
+<p>ou</p>
+<pre lang="python">toto = open('histoire.txt')</pre>
+<p>Et ensuite:</p>
+<pre lang="python">for blague in toto:
+    print toto
+
+len(list(toto))</pre>
+<p>La dernière ligne ne marchera pas. Toto aura été vidé par la première boucle for. Si vous souhaitez utiliser plusieurs fois le résultat de votre générateur, il faut le transformer en liste:</p>
+<pre lang="python">toto = list(toto)
+for blague in toto:
+    print toto
+
+len(list(toto))</pre>
+<p>Attention, car vous avez maintenant l&#8217;intégralité des données chargées en RAM.</p>
+<h2>TypeError: ma_function() takes exactly x argument (y given)</h2>
+<p>Cette erreur est très explicite, et la plupart du temps ne pose aucun problème: vérifiez que vous passez le bon nombre d&#8217;arguments à la fonction. Faites particulièrement attention si vous utilisez <a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">l&#8217;opérateur splat</a>.</p>
+<p>Il existe néanmoins un cas particulier un peu taquin:</p>
+<pre lang="python">
+>>> class Americaine(object):
+...     def dernier_mot(mot):
+...         print mot
+... 
+>>> homme_le_plus_classe_du_monde = Americaine()
+>>> homme_le_plus_classe_du_monde.dernier_mot("Monde de merde !")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: dernier_mot() takes exactly 1 argument (2 given)
+</pre>
+<p>On définie une seul argument (<code>mot</code>) et on en passe un seul (<code>"Monde de merdes !"</code>), alors pourquoi Python n&#8217;est pas d&#8217;accord ?</p>
+<p>C&#8217;est parce que l&#8217;on déclare une méthode sans <code>self</code> dans la signature. Or Python va passer automatiquement (et de manière invisible) la référence à l&#8217;objet courrant en premier argument, du coup la méthode reçoit deux arguments: la référence à <code>homme_le_plus_classe_du_monde</code> et <code>"Monde de merde !"</code>. Ca ne marche pas puisque la méthode est déclarée pour n&#8217;accepter qu&#8217;un seul argument.</p>
+<p>Il y a deux solutions. La plus simple, ajoutez <code>self</code>:</p>
+<pre lang="python">
+>>> class Americaine(object):
+...     def dernier_mot(self, mot):
+...         print mot
+... 
+>>> homme_le_plus_classe_du_monde = Americaine()
+>>> homme_le_plus_classe_du_monde.dernier_mot("Monde de merde !")
+Monde de merde !
+</pre>
+<p>Une seconde solution consiste à déclarer une méthode statique. Du coup on a plus besoin d&#8217;instance:</p>
+<pre lang="python">
+>>> class Americaine(object):
+...     @staticmethod
+...     def dernier_mot(mot):
+...         print mot
+... 
+>>> Americaine.dernier_mot("Monde de merde !")
+Monde de merde !
+</pre>
+<h2>Ma structure de données par défaut n&#8217;est pas la bonne</h2>
+<p>Piège classique en Python, qu&#8217;il est important de répéter encore et encore tant il est la source de frustration chez les personnes qui ne le connaissent pas.</p>
+<pre lang="python">
+>>> from random import choice
+>>> def bioman(forces=['rouge', 'bleu', 'vert', 'rose', 'jaune devant, marron derriere'], invite=None):
+...     if invite is not None:
+...         forces.append(invite)
+...     return choice(forces)
+... 
+>>> bioman()
+'rose'
+>>> bioman()
+'rouge'
+>>> bioman(invite='magenta a pois gris')
+'vert'
+>>> bioman()
+'jaune devant, marron derriere'
+>>> bioman() # WTF ??????????
+'magenta a pois gris'
+</pre>
+<p>Dans le dernier appel &#8216;magenta a pois gris&#8217; est tiré au sort alors qu&#8217;on ne l&#8217;a pas passé en paramètre. Comment cela est-il possible ?</p>
+<p>Cela vient du fait que les paramètres par défaut sont initialisés <strong>une seule fois</strong> pour tout le programme: dès que le module est chargé.</p>
+<p>Si vous utilisez un objet mutable (liste, set, dico) et que vous le modifiez (ici avec <code>append</code>), le prochain appel de la fonction utilisera toujours la référence de cet objet, et donc de sa versio modifiée.</p>
+<p>La solution est soit de ne pas utiliser d&#8217;objet mutable (tuple, strings, int, etc), soit de ne pas modifier l&#8217;objet:</p>
+<pre lang="python">
+>>> def bioman(forces=('rouge', 'bleu', 'vert', 'rose', 'jaune devant, marron derriere'), invite=None):
+...     if invite is not None:
+...         forces += (invite,) # ne modifie pas l'ancien objet
+...     return choice(forces)
+</pre>
+<p>Ou alors (et ceci est souvent utilisé même si c&#8217;est moche):</p>
+<pre lang="python">
+>>> def bioman(forces=None, invite=None):
+...     if forces is None:
+...        forces = ['rouge', 'bleu', 'vert', 'rose', 'jaune devant, marron derriere']
+...     if invite is not None:
+...         forces.append(invite)
+...     return choice(forces)
+</pre>
+<p>Toutes les parties qui sont éxécutées à l&#8217;inialisation du code (en opposition à celles qui le sont à l&#8217;appel du code) sont concernées par ce problème: les paramètres par défaut, les variables à la racine des modules, les attributs de classe déclarés <strong>en dehors</strong> d&#8217;une méthode, etc.</p>
+<p><strong>ItZ naute a beuhgue, Itse fitiure</strong></p>
+<p>Néanmoins cela a aussi son utilité. On peut en effet l&#8217;utiliser pour partager des états:</p>
+<pre lang="python">
+class Model(object):
+    _pool = {
+        'mysql': MySQL().connect('test'),
+        'sqlite': Sqlite.open('test.db')
+    }
+    default_connection = 'mysql'
+
+    def query(self, connection=default_connection, *params):
+        connection.super_query(*params)
+</pre>
+<p>Et vous avez maintenant une classe de modèle qui gère plusieurs connections. Si vous l&#8217;étendez, les enfants de la classe et toutes les instances partageront le même objet connection, mais tout le reste sera unique à chacun d&#8217;eux. Cela évite un effet de bord du singleton qui oblige à partager un état et une identité. Ici on ne partage que la partie de l&#8217;état que l&#8217;on souhaite, et pas l&#8217;identité.</p>
+<p>On gagne sur les deux tableaux: si on update la connection MySQL (par exemple parcequ&#8217;on a détecté qu&#8217;elle était stale), toutes les instances ont accès à l&#8217;objet modifé. Mais si on veut overrider la connection pour une seule classe, on peut le faire sans affecter les autres simplement en remplaçant l&#8217;objet à la déclaration de la classe.</p>
+<p>On peut aussi utiliser cette fonctionnalité pour créer un cache. On appelle ça &#8220;mémoiser&#8221;:</p>
+<pre lang="python">
+def fonction_lente(param1, param2, _cache={}):
+    # les tuples peuvent être des clés de dico \o/
+    key = (param1, param2)
+    if key not in _cache:
+        _cache[key] = process_lent(param1, param2)
+    return _cache[key]
+</pre>
+<p>Tous les résultats sont alors stockés en mémoire vive.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/feed/</wfw:commentRss>
+		<slash:comments>23</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">995</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/06/Funny-Batman-Pictures-103.jpg" length="69437" type="image/jpg" />	</item>
+	</channel>
+</rss>

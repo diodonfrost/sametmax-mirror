@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: Le piège d&#8217;écrire du code couplé à une implémentation</title>
+	<atom:link href="http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/#comment-175518</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sat, 06 Feb 2016 13:36:27 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=18044#comment-175518</guid>
+		<description><![CDATA[&lt;p&gt;Pour zeromq ? Oui mais comme c&#039;est écrit en C, on y a pas accès. On peut pas reprocher aux gens d&#039;asyncio de ne pas le faire.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Pour zeromq ? Oui mais comme c&#8217;est écrit en C, on y a pas accès. On peut pas reprocher aux gens d&#8217;asyncio de ne pas le faire.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Ludovic Gasc</title>
+		<link>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/#comment-175508</link>
+		<dc:creator><![CDATA[Ludovic Gasc]]></dc:creator>
+		<pubDate>Sat, 06 Feb 2016 10:51:43 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=18044#comment-175508</guid>
+		<description><![CDATA[@Sam: splitter le parsing du protocole avec la partie réseau me paraît par contre une bonne idée pour mutualiser des ressources.
+]]></description>
+		<content:encoded><![CDATA[<p>@Sam: splitter le parsing du protocole avec la partie réseau me paraît par contre une bonne idée pour mutualiser des ressources.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/#comment-175506</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sat, 06 Feb 2016 10:01:01 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=18044#comment-175506</guid>
+		<description><![CDATA[&lt;p&gt;@yoshi120 : pour zeromq l&#039;implémentation est en C, et on a des wrappers autour, donc la question ne se pose pas car la séparation existe déjà de facto. Il n&#039;y a pas d&#039;implémentation en Python. Mais prenons par exemple une implémentation d&#039;un client redis. Une grosse partie du boulot c&#039;est la validation des paramètres, leur sérialisation, la gestion des erreurs, la création des packets, etc. Se connecter à redis et envoyer les messages n&#039;est qu&#039;une petite partie du boulot. La bonne pratique serait donc de faire cette partie de manière neutre, et de proposer des hooks pour la partie connection / envoie de message, puis de faire des modules séparés spécifiques à twisted/tornado/asyncio qui utilisent ses hooks pour gérer la partie IO.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>@yoshi120 : pour zeromq l&#8217;implémentation est en C, et on a des wrappers autour, donc la question ne se pose pas car la séparation existe déjà de facto. Il n&#8217;y a pas d&#8217;implémentation en Python. Mais prenons par exemple une implémentation d&#8217;un client redis. Une grosse partie du boulot c&#8217;est la validation des paramètres, leur sérialisation, la gestion des erreurs, la création des packets, etc. Se connecter à redis et envoyer les messages n&#8217;est qu&#8217;une petite partie du boulot. La bonne pratique serait donc de faire cette partie de manière neutre, et de proposer des hooks pour la partie connection / envoie de message, puis de faire des modules séparés spécifiques à twisted/tornado/asyncio qui utilisent ses hooks pour gérer la partie IO.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: touilleMan</title>
+		<link>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/#comment-175452</link>
+		<dc:creator><![CDATA[touilleMan]]></dc:creator>
+		<pubDate>Fri, 05 Feb 2016 10:09:27 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=18044#comment-175452</guid>
+		<description><![CDATA[Je suis tout à fait d&#039;accord avec cet article, c&#039;est même le gros problème que je vois avec asyncio : son aspect explicite le rend de base incompatible avec une programmation synchrone classique.
+
+Du coup que faire ? Pour migrer de Python2 vers Python3 ont été mis en place des outils et des best practices, ne serait-ce pas une solution que de faire de même pour ce nouveau problème.
+
+Je verrais bien un projet expliquant comment faire en sorte qu&#039;une bibliothèque synchrone soit compatible
+
+- On considère une bibliothèque de basique utilisant les sockets python standard
+
+- On présente comment abstraire les implémentations bas niveau
+
+- On fourni des implémentations de base pour la version synchrone, asynchrone avec gevent et celle asynchrone avec asyncio
+
+- On explique comment faire pour garder les choses compatible Python2/3 (notamment avec les &quot;yield from&quot; qui n&#039;existent pas en python&#060;3)
+
+Je pense qu&#039;une démo par l&#039;exemple de cette forme fournirait une guideline très pratique, toutefois je reste dubitatif sur la faisabilité même d&#039;une bibliothèque compatible synchrone/asyncio vu que le second oblige à penser toute sa pile d&#039;appel avec des &quot;async&quot;...
+]]></description>
+		<content:encoded><![CDATA[<p>Je suis tout à fait d&#8217;accord avec cet article, c&#8217;est même le gros problème que je vois avec asyncio : son aspect explicite le rend de base incompatible avec une programmation synchrone classique.</p>
+<p>Du coup que faire ? Pour migrer de Python2 vers Python3 ont été mis en place des outils et des best practices, ne serait-ce pas une solution que de faire de même pour ce nouveau problème.</p>
+<p>Je verrais bien un projet expliquant comment faire en sorte qu&#8217;une bibliothèque synchrone soit compatible</p>
+<p>&#8211; On considère une bibliothèque de basique utilisant les sockets python standard</p>
+<p>&#8211; On présente comment abstraire les implémentations bas niveau</p>
+<p>&#8211; On fourni des implémentations de base pour la version synchrone, asynchrone avec gevent et celle asynchrone avec asyncio</p>
+<p>&#8211; On explique comment faire pour garder les choses compatible Python2/3 (notamment avec les &#8220;yield from&#8221; qui n&#8217;existent pas en python&lt;3)</p>
+<p>Je pense qu&#8217;une démo par l&#8217;exemple de cette forme fournirait une guideline très pratique, toutefois je reste dubitatif sur la faisabilité même d&#8217;une bibliothèque compatible synchrone/asyncio vu que le second oblige à penser toute sa pile d&#8217;appel avec des &#8220;async&#8221;&#8230;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: yoshi120</title>
+		<link>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/#comment-175423</link>
+		<dc:creator><![CDATA[yoshi120]]></dc:creator>
+		<pubDate>Fri, 05 Feb 2016 01:01:43 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=18044#comment-175423</guid>
+		<description><![CDATA[Je ne suis pas sur d&#039;avoir compris le propos de l&#039;article.
+
+Si je prend l&#039;exemple de http://zeromq.org/ . C&#039;est une lib qui repose sur un protocole qui fait que zeromq ne parle qu&#039;avec zeromq.
+
+Ce protocole n&#039;a été extrait que récemment et il me semble que c&#039;est beta :  http://zmtp.org/
+
+Qu&#039;est ce que ça veut dire : dépendre de l&#039;implémentation ? Quel contre exemple positif à donner ?
+
+Je crois sans te vexer Sam que tu confond ou plutôt que tu n&#039;explicite pas le flou qu&#039;il existe entre :
+
+
+Paradigme de programmation
+Théorie informatiques pure (Un truc con) (1)
+Théorie informatiques des OS (pipe en Shell) (2)
+Concepts first class (goroutine en Go, Erlang, monade Haskell) dans un langage
+
+
+(Pour ZeroMQ, le fait qu&#039;elle est codé en C++ rend le bindings simple
+alors qu&#039;une lib python dépend du langage et est difficile à inclure, intégrer dans un autre ou pire un sous langage.
+
+designs patterns
+bibliothèques
+frameworks
+toolkit
+
+
+(1) (2) Je pose la question à 1 000 000  de dollars en jouant au candide. Comment cela ce fait il que les pipes shell bash n&#039;existe que shell et pas dans tout les langages ? C&#039;est bizarre, tous les langages possède des fonctions (subroutine) ?
+
+Pourquoi ?
+]]></description>
+		<content:encoded><![CDATA[<p>Je ne suis pas sur d&#8217;avoir compris le propos de l&#8217;article.</p>
+<p>Si je prend l&#8217;exemple de <a href="http://zeromq.org/" rel="nofollow">http://zeromq.org/</a> . C&#8217;est une lib qui repose sur un protocole qui fait que zeromq ne parle qu&#8217;avec zeromq.</p>
+<p>Ce protocole n&#8217;a été extrait que récemment et il me semble que c&#8217;est beta :  <a href="http://zmtp.org/" rel="nofollow">http://zmtp.org/</a></p>
+<p>Qu&#8217;est ce que ça veut dire : dépendre de l&#8217;implémentation ? Quel contre exemple positif à donner ?</p>
+<p>Je crois sans te vexer Sam que tu confond ou plutôt que tu n&#8217;explicite pas le flou qu&#8217;il existe entre :</p>
+<p>Paradigme de programmation<br />
+Théorie informatiques pure (Un truc con) (1)<br />
+Théorie informatiques des OS (pipe en Shell) (2)<br />
+Concepts first class (goroutine en Go, Erlang, monade Haskell) dans un langage</p>
+<p>(Pour ZeroMQ, le fait qu&#8217;elle est codé en C++ rend le bindings simple<br />
+alors qu&#8217;une lib python dépend du langage et est difficile à inclure, intégrer dans un autre ou pire un sous langage.</p>
+<p>designs patterns<br />
+bibliothèques<br />
+frameworks<br />
+toolkit</p>
+<p>(1) (2) Je pose la question à 1 000 000  de dollars en jouant au candide. Comment cela ce fait il que les pipes shell bash n&#8217;existe que shell et pas dans tout les langages ? C&#8217;est bizarre, tous les langages possède des fonctions (subroutine) ?</p>
+<p>Pourquoi ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Ludovic Gasc</title>
+		<link>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/#comment-175393</link>
+		<dc:creator><![CDATA[Ludovic Gasc]]></dc:creator>
+		<pubDate>Thu, 04 Feb 2016 11:43:48 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=18044#comment-175393</guid>
+		<description><![CDATA[Avec ma casquette d&#039;ingénieur, je serais d&#039;accord avec toi.
+
+Mais, ceci n&#039;engage que mon expérience, les avantages que tu y vois sont, de mon point de vue, fortement contrebalancés par les coûts de maintenance et le ticket d&#039;entrée des contributeurs.
+
+3615 my life pour illustrer: Exemple qui m&#039;est arrivé au début que j&#039;utilisais AsyncIO, outre Crossbar qui est multi async framework, il y a également Obulus, un binding Asterisk écrit par Antoine Pitrou (coucou Antoine): https://bitbucket.org/optiflowsrd/obelus
+
+Antoine a fait un gros travail d&#039;abstraction pour justement supporter différents frameworks async.
+
+Je suis surement très bête, mais j&#039;ai eu beaucoup de mal à comprendre comment ça fonctionnait en dessous pour pouvoir l&#039;enrichir.
+
+Pour finir, j&#039;ai pris Panoramisk, https://github.com/gawel/panoramisk qui sur le papier était moins avancé à l&#039;époque mais où j&#039;arrivais à rajouter des fonctionnalités mais surtout à être autonome pour debugger par moi-même.
+
+Autant je suis partisan pour lire du code d&#039;implémentation d&#039;autres librairies pour récupérer des idées, autant vouloir une abstraction dans tous les sens me paraît augmenter les coûts de maintenance et d&#039;ajout de fonctionnalités de manière exponentielle.
+
+L&#039;async est déjà assez compliqué à gérer par lui-même, vouloir en plus être multi async framework dont chacun n&#039;a pas forcément la même stratégie de scheduling, c&#039;est un peu comme vouloir être ami avec tout le monde: à un moment, il faut faire des choix sinon on risque de manquer de cohérence ;-)
+
+Concrètement, quand tu vas avoir un bug en production dans la couche d&#039;abstraction, vas-tu être capable de corriger rapidement ? Chaque librairie que tu rajoutes avec cette surcouche, es-tu capable de plonger dedans au prochain problème ?
+
+Si oui, tant mieux, mais quelle est la probalité que d&#039;autres vont également y arriver ?
+
+Sans parler du fait que tous les frameworks async ne sont pas égaux, et donc ça va être un sous ensemble qui sera utilisé, un peu comme les ORMs avec les DBs.
+
+Mais après, vous faites comme vous voulez les gens, c&#039;est votre temps libre/votre stress à gérer quand il y aura un problème ;-)
+
+
+tu auras quelque chose de simple, + ça sera facile d&#039;accès aux développeurs.
+
+
+Pour moi, les approches à la Java/Zope avec beaucoup d&#039;abstractions me semblent avoir déjà montré par le passé que cela n&#039;est pas la silver bullet pour faire du développement.
+]]></description>
+		<content:encoded><![CDATA[<p>Avec ma casquette d&#8217;ingénieur, je serais d&#8217;accord avec toi.</p>
+<p>Mais, ceci n&#8217;engage que mon expérience, les avantages que tu y vois sont, de mon point de vue, fortement contrebalancés par les coûts de maintenance et le ticket d&#8217;entrée des contributeurs.</p>
+<p>3615 my life pour illustrer: Exemple qui m&#8217;est arrivé au début que j&#8217;utilisais AsyncIO, outre Crossbar qui est multi async framework, il y a également Obulus, un binding Asterisk écrit par Antoine Pitrou (coucou Antoine): <a href="https://bitbucket.org/optiflowsrd/obelus" rel="nofollow">https://bitbucket.org/optiflowsrd/obelus</a></p>
+<p>Antoine a fait un gros travail d&#8217;abstraction pour justement supporter différents frameworks async.</p>
+<p>Je suis surement très bête, mais j&#8217;ai eu beaucoup de mal à comprendre comment ça fonctionnait en dessous pour pouvoir l&#8217;enrichir.</p>
+<p>Pour finir, j&#8217;ai pris Panoramisk, <a href="https://github.com/gawel/panoramisk" rel="nofollow">https://github.com/gawel/panoramisk</a> qui sur le papier était moins avancé à l&#8217;époque mais où j&#8217;arrivais à rajouter des fonctionnalités mais surtout à être autonome pour debugger par moi-même.</p>
+<p>Autant je suis partisan pour lire du code d&#8217;implémentation d&#8217;autres librairies pour récupérer des idées, autant vouloir une abstraction dans tous les sens me paraît augmenter les coûts de maintenance et d&#8217;ajout de fonctionnalités de manière exponentielle.</p>
+<p>L&#8217;async est déjà assez compliqué à gérer par lui-même, vouloir en plus être multi async framework dont chacun n&#8217;a pas forcément la même stratégie de scheduling, c&#8217;est un peu comme vouloir être ami avec tout le monde: à un moment, il faut faire des choix sinon on risque de manquer de cohérence ;-)</p>
+<p>Concrètement, quand tu vas avoir un bug en production dans la couche d&#8217;abstraction, vas-tu être capable de corriger rapidement ? Chaque librairie que tu rajoutes avec cette surcouche, es-tu capable de plonger dedans au prochain problème ?</p>
+<p>Si oui, tant mieux, mais quelle est la probalité que d&#8217;autres vont également y arriver ?</p>
+<p>Sans parler du fait que tous les frameworks async ne sont pas égaux, et donc ça va être un sous ensemble qui sera utilisé, un peu comme les ORMs avec les DBs.</p>
+<p>Mais après, vous faites comme vous voulez les gens, c&#8217;est votre temps libre/votre stress à gérer quand il y aura un problème ;-)</p>
+<p>tu auras quelque chose de simple, + ça sera facile d&#8217;accès aux développeurs.</p>
+<p>Pour moi, les approches à la Java/Zope avec beaucoup d&#8217;abstractions me semblent avoir déjà montré par le passé que cela n&#8217;est pas la silver bullet pour faire du développement.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: ultra</title>
+		<link>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/#comment-175373</link>
+		<dc:creator><![CDATA[ultra]]></dc:creator>
+		<pubDate>Wed, 03 Feb 2016 23:02:36 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=18044#comment-175373</guid>
+		<description><![CDATA[Ce post est une parfaite illustration des design patterns.
+
+Un des design patterns le plus recommandé et de créer un maximum de classes abstraites / interfaces et laisser à la fin l&#039;implémentation.
+
+Le hic dans python c&#039;est qu&#039;il n&#039;y pas de classes abstraites et encore moins d&#039;interfaces.
+
+Forcément le dèv s&#039;attaque directement à l&#039;implémentation.
+
+Autre point, faire du design avant d&#039;implémenter, c&#039;est après quelques années de galères à découpler dans tous les sens les travaux des autres qu&#039;on en voit l’intérêt.
+
+Donc oui, faut de l&#039;expérience + pas mal de connaissances théoriques sur les design patterns =&#062; ça limite le nombre de contributeurs.
+
+Après, comme tu le dis si bien, faut pas tomber dans le piège du design pour le design à la zope mais en général, il est facile d&#039;identifier ce qui est spécifique au générique.
+]]></description>
+		<content:encoded><![CDATA[<p>Ce post est une parfaite illustration des design patterns.</p>
+<p>Un des design patterns le plus recommandé et de créer un maximum de classes abstraites / interfaces et laisser à la fin l&#8217;implémentation.</p>
+<p>Le hic dans python c&#8217;est qu&#8217;il n&#8217;y pas de classes abstraites et encore moins d&#8217;interfaces.</p>
+<p>Forcément le dèv s&#8217;attaque directement à l&#8217;implémentation.</p>
+<p>Autre point, faire du design avant d&#8217;implémenter, c&#8217;est après quelques années de galères à découpler dans tous les sens les travaux des autres qu&#8217;on en voit l’intérêt.</p>
+<p>Donc oui, faut de l&#8217;expérience + pas mal de connaissances théoriques sur les design patterns =&gt; ça limite le nombre de contributeurs.</p>
+<p>Après, comme tu le dis si bien, faut pas tomber dans le piège du design pour le design à la zope mais en général, il est facile d&#8217;identifier ce qui est spécifique au générique.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Nioub</title>
+		<link>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/#comment-175371</link>
+		<dc:creator><![CDATA[Nioub]]></dc:creator>
+		<pubDate>Wed, 03 Feb 2016 22:38:24 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=18044#comment-175371</guid>
+		<description><![CDATA[D&#039;une manière générale, c&#039;est ce qu&#039;on appelle l&#039;architecture logicielle. Ça me rappelle l&#039;article &lt;a href=&quot;http://blog.cleancoder.com/uncle-bob/2016/01/04/ALittleArchitecture.html&quot; rel=&quot;nofollow&quot;&gt;A Little Architecture&lt;/a&gt; par le vénérable Uncle Bob.
+]]></description>
+		<content:encoded><![CDATA[<p>D&#8217;une manière générale, c&#8217;est ce qu&#8217;on appelle l&#8217;architecture logicielle. Ça me rappelle l&#8217;article <a href="http://blog.cleancoder.com/uncle-bob/2016/01/04/ALittleArchitecture.html" rel="nofollow">A Little Architecture</a> par le vénérable Uncle Bob.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sytoka</title>
+		<link>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/#comment-175342</link>
+		<dc:creator><![CDATA[Sytoka]]></dc:creator>
+		<pubDate>Wed, 03 Feb 2016 13:50:11 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=18044#comment-175342</guid>
+		<description><![CDATA[C&#039;est normalement tout à fait la philosophie du CPAN de Perl est de lib sur la couche AnyEvent. Ceci dis, Python a le problème de ne pas avoir de CPAN, les espaces de noms ne se construisent pas de manière aussi collective que dans Perl.
+]]></description>
+		<content:encoded><![CDATA[<p>C&#8217;est normalement tout à fait la philosophie du CPAN de Perl est de lib sur la couche AnyEvent. Ceci dis, Python a le problème de ne pas avoir de CPAN, les espaces de noms ne se construisent pas de manière aussi collective que dans Perl.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: cym13</title>
+		<link>http://sametmax.com/le-piege-decrire-du-code-couple-a-une-implementation/#comment-175335</link>
+		<dc:creator><![CDATA[cym13]]></dc:creator>
+		<pubDate>Wed, 03 Feb 2016 11:33:14 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=18044#comment-175335</guid>
+		<description><![CDATA[Bon article, il me rappelle &lt;a href=&quot;http://tomasp.net/blog/2015/library-frameworks/&quot; rel=&quot;nofollow&quot;&gt;celui-ci&lt;/a&gt; sur la différence entre librairie et framework. En anglais+F#, désolé.
+]]></description>
+		<content:encoded><![CDATA[<p>Bon article, il me rappelle <a href="http://tomasp.net/blog/2015/library-frameworks/" rel="nofollow">celui-ci</a> sur la différence entre librairie et framework. En anglais+F#, désolé.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

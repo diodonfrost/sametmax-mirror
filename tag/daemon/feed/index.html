@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>daemon &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/daemon/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Désactiver un service dans Ubuntu 14.04</title>
+		<link>http://sametmax.com/desactiver-un-service-dans-ubuntu-14-04/</link>
+		<comments>http://sametmax.com/desactiver-un-service-dans-ubuntu-14-04/#comments</comments>
+		<pubDate>Tue, 25 Aug 2015 11:25:59 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[daemon]]></category>
+		<category><![CDATA[linux]]></category>
+		<category><![CDATA[service]]></category>
+		<category><![CDATA[ubuntu]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16801</guid>
+		<description><![CDATA[Quand on installe un service, Ubuntu le lance automatiquement, et installe de quoi le faire démarer à chaque boot de la machine. Si c&#8217;est votre machine de dev, vous ne voulez peut être pas qu&#8217;Apache, Nginx, Redis, MySQL, ElasticSearch, Solr, Supervisor, Postgres, Docker, et MongoDB soient up à chaque fois tous en même temps alors [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Quand on installe un service, Ubuntu le lance automatiquement, et installe de quoi le faire démarer à chaque boot de la machine.</p>
+<p>Si c&#8217;est votre machine de dev, vous ne voulez peut être pas qu&#8217;Apache, Nginx, Redis, MySQL, ElasticSearch, Solr, Supervisor, Postgres, Docker, et MongoDB soient up à chaque fois tous en même temps alors que vous voulez juste vous palucher sur youjizz.</p>
+<p>La plupart des scripts de démarrage sont dans /etc/initd.d:</p>
+<pre lang="bash">ls /etc/init.d
+acpid           brltty             grub-common  lpd         pppd-dns      resolvconf   skeleton           unattended-upgrades
+anacron         console-setup      halt...</pre>
+<p>Mais ces scripts sont lancés parce qu&#8217;ils sont symlinkés dans un des répertoires <code>/etc/rcX</code>: </p>
+<pre lang="bash">ls /etc/rc*.d/*apache*
+/etc/rc0.d/K80apache2  /etc/rc5.d/K80apache2  /etc/rc6.d/K80apache2</pre>
+<p>Ouai, j&#8217;ai encore des clients qui utilisent apache. Certains utilisent même Tomcat.</p>
+<p>Pour désactiver le démarrage automatique, vous pouvez essayer bourinement la suppression des liens :</p>
+<pre lang="bash">sudo rm $(ls /etc/rc*.d/*apache*) </pre>
+<p>Ça marche. </p>
+<p>Solution plus pratique, utiliser la commande <code>update-rc.d</code>, qui n&#8217;est pas faite pour l&#8217;utilisation par les humains, mais fuck it :</p>
+<pre lang="bash">sudo update-rc.d -f apache2 remove</pre>
+<p>Ça supprime aussi tous les liens. <code>sudo update-rc.d -f apache2 disable</code> devrait le faire moins bourinement mais ne marche pas sur ma machine.</p>
+<p>Pour inverser la tendance :</p>
+<pre lang="bash">sudo update-rc.d apache2 defaults</pre>
+<p>(ou enable si par miracle ça marche pour vous)</p>
+<p>Enfin, si le cœur vous en dit:</p>
+<pre lang="bash">sudo update-rc.d -f apache2 remove
+sudo sysv-rc-conf</pre>
+<p>Vous donnera une joli interface curse pour le faire plus visuellement.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/desactiver-un-service-dans-ubuntu-14-04/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">16801</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2015/08/JkC3vWe.gif" length="963671" type="image/jpg" />	</item>
+	</channel>
+</rss>

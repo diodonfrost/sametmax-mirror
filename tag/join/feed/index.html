@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>join &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/join/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Pourquoi &#039;,&#039;.join en Python ?</title>
+		<link>http://sametmax.com/pourquoi-join-en-python/</link>
+		<comments>http://sametmax.com/pourquoi-join-en-python/#comments</comments>
+		<pubDate>Thu, 02 Aug 2012 14:30:09 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[join]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1467</guid>
+		<description><![CDATA[Mais pourquoi, mon Dieu, pourquoi ?]]></description>
+				<content:encoded><![CDATA[<p>PHP:</p>
+<pre lang="php">implode(" ",  array("Fulguro", "Poing"))</pre>
+<p>Perl:</p>
+<pre lang="perl">join(" ", qw(Astero Hache))      </pre>
+<p>Ruby:</p>
+<pre lang="ruby">%w(Planitron Cornofulgur).join(' ')  </pre>
+<p>Et&#8230;</p>
+<p>Python:</p>
+<pre lang="python">' '.join(['pouet', 'pouet'])  </pre>
+<div id="attachment_1469" style="width: 170px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2012/08/Preview.jpeg" class="grouped_elements" rel="tc-fancybox-group1467"><img src="http://sametmax.com/wp-content/uploads/2012/08/Preview.jpeg" alt="Rage comic : &quot;Python, Y NO MAKE SENSE&quot;" title="C&#039;est un des rares rage comics qui me fasse marrer" width="160" height="120" class="size-full wp-image-1469" /></a><p class="wp-caption-text">C&#039;est un des rares rage comics qui me fasse marrer</p></div>
+<h2>Mais pourquoi, mon Dieu, pourquoi ?</h2>
+<p>A cause du duck typing: on se branle du type et de sa capacité à joiner, on est juste intéressé par le fait qu&#8217;il soit itérable.</p>
+<p>Ainsi, <code>join()</code> accepte n&#8217;importe quel <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">itérable</a>:</p>
+<pre lang="python">>>> '-'.join('azerty') # une string
+'a-z-e-r-t-y'
+>>> '-'.join(['a', 'b', 'c']) # une liste/un dico/un tuple/un set
+'a-b-c'
+</pre>
+<pre lang="python">
+>>> '-'.join((str(x ** x) for x in range(10))) # un expression génératrice
+'1-1-4-27-256-3125-46656-823543-16777216-387420489'
+</pre>
+<pre lang="python">
+>>> '-'.join(open('/etc/fstab'))[:100] # un fichier (et tout file like object)
+"# /etc/fstab: static file system information.\n-#\n-# Use 'blkid -o value -s UUID' to print the univer"
+</pre>
+<pre lang="python">
+>>> def generator(l): # et n'importe quel générateur custo
+    count = 1
+    for x in l:
+        yield x * count
+        count = count * (count + 1)
+...         
+>>> '-'.join(generator('pouet'))[:100]
+'p-oo-uuuuuu-eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ttttttttttttttttttttttttttttttttttttttttttttt'
+</pre>
+<pre lang="python">
+>>> class LaClasse(object): # VRAIMENT n'importe quel itérable
+    def __iter__(self):
+        import datetime
+        for x in xrange(10):
+            yield datetime.datetime.now().strftime('%f')
+...             
+>>> '-'.join(LaClasse())
+'902564-902628-902641-902650-902659-902667-902674-902682-902692-902710'</pre>
+<pre lang="python">
+>>> # et même une chaîne batarde d'itérables improbables :-)
+>>> list(iter(chain(LaClasse(), (str(x) for x in xrange(10))).next, '5'))
+['043498', '043546', '043557', '043567', '043575', '043584', '043592', '043600', '043608', '043616', '0', '1', '2', '3', '4']
+</pre>
+<p>Et accessoirement ça permet de faire des trucs comme ça:</p>
+<pre lang="python">>>> join_coma = ",".join
+>>> join_dash = "-".join
+>>> join_coma('pouet')
+'p,o,u,e,t'
+>>> join_dash('pouet')
+'p-o-u-e-t'
+</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/pourquoi-join-en-python/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1467</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/08/why-god-why1.jpg" length="29956" type="image/jpg" />	</item>
+	</channel>
+</rss>

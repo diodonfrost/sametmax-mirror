@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>form &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/form/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Exclure un champ d&#8217;un formulaire parent avec Django</title>
+		<link>http://sametmax.com/exclure-un-champ-dun-formulaire-parent-avec-django/</link>
+		<comments>http://sametmax.com/exclure-un-champ-dun-formulaire-parent-avec-django/#comments</comments>
+		<pubDate>Sun, 15 Jul 2012 13:14:41 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[form]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1130</guid>
+		<description><![CDATA[Cas simple: vous héritez d'un formulaire, mais il y a une champ que vous ne souhaitez pas utiliser. Malheureusement, il n'y a aucun hook dans Django permettant d'exclure ce champ.
+]]></description>
+				<content:encoded><![CDATA[<p>Cas simple: vous héritez d&#8217;un formulaire, mais il y a un champ que vous ne souhaitez pas utiliser. Malheureusement, il n&#8217;y a aucun hook dans Django permettant d&#8217;exclure ce champ.</p>
+<p>Mais bonne nouvelle, il suffit de retirer le champ du dictionnaire <code>self.field</code>.</p>
+<p>Exemple, la lib <a href="https://github.com/clones/django-contact-form">django-contact-form</a> me donne:</p>
+<pre lang="python">class ContactForm(forms.Form):
+
+    name = forms.CharField(max_length=100,
+                           widget=forms.TextInput(attrs=attrs_dict),
+                           label=u'Your name')
+    email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict,
+                                                               maxlength=200)),
+                             label=u'Your email address')
+    body = forms.CharField(widget=forms.Textarea(attrs=attrs_dict),
+                              label=u'How can we improve %s?' % (Site.objects.get_current().name))</pre>
+<p>Et je veux le même formulaire, sans le champ <code>name</code>:</p>
+<pre lang="python">
+class SimpleContactForm(ContactForm):
+    def __init__(self, *args, **kwargs):
+        super(SimpleContactForm, self).__init__(*args, **kwargs)
+        self.fields.pop('name')
+</pre>
+<p>Il faut bien sur s&#8217;assurer que <code>name</code> n&#8217;est utilisé nul part dans une des méthodes de <code>ConctactForm</code>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/exclure-un-champ-dun-formulaire-parent-avec-django/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1130</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/07/Asterix.jpg" length="41785" type="image/jpg" />	</item>
+	</channel>
+</rss>

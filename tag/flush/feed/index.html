@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>flush &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/flush/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Effacer le cache DNS sous Mac Os</title>
+		<link>http://sametmax.com/effacer-le-cache-dns-sous-mac-os/</link>
+		<pubDate>Thu, 22 Nov 2012 21:17:30 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[dns]]></category>
+		<category><![CDATA[flush]]></category>
+		<category><![CDATA[mac]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3257</guid>
+		<description><![CDATA[Effacer le cache dns de votre Mac si vous avez encore l'ancienne IP en pinguant un site.]]></description>
+				<content:encoded><![CDATA[<p>Si vous avez encore l&#8217;ancienne IP lorsque vous faites un ping sur un site c&#8217;est que votre cache DNS l&#8217;a mémorisée. Il faut parfois le réinitialiser (si vous changez votre site de serveur ou que vous ne pouvez plus accéder à un site en particulier).</p>
+<p><strong>Ouvrez un Terminal:</strong><br />
+<em>Dans <strong>Applications > Utilitaires > Terminal </strong></em></p>
+<p>et tapez:</p>
+<pre lang="python">
+lookupd -flushcache
+</pre>
+<p>Si ça ne marche pas  essayez (pour les Mac plus récents):</p>
+<pre lang="python">
+dscacheutil -flushcache
+</pre>
+<p><strong>Rappel:</strong><br />
+la commande ping est toujours utile, c&#8217;est un outil qui sert à tester la conneciton entre 2 IPs. </p>
+<pre lang="python">
+ping yahoo.com
+PING yahoo.com (72.30.38.140): 56 data bytes
+64 bytes from 72.30.38.140: icmp_seq=0 ttl=42 time=275.592 ms
+64 bytes from 72.30.38.140: icmp_seq=1 ttl=42 time=212.991 ms
+64 bytes from 72.30.38.140: icmp_seq=2 ttl=42 time=255.605 ms
+</pre>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">3257</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/11/terminator-main.jpg" length="181338" type="image/jpg" />	</item>
+	</channel>
+</rss>

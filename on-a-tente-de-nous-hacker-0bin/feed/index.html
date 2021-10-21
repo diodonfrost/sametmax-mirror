@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" 
+	>
+<channel>
+	<title>Comments on: On a tenté de nous hacker 0bin</title>
+	<atom:link href="http://sametmax.com/on-a-tente-de-nous-hacker-0bin/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/on-a-tente-de-nous-hacker-0bin/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Fri, 06 Sep 2019 09:34:15 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+	<item>
+		<title>By: windows_user</title>
+		<link>http://sametmax.com/on-a-tente-de-nous-hacker-0bin/#comment-192619</link>
+		<dc:creator><![CDATA[windows_user]]></dc:creator>
+		<pubDate>Tue, 27 Feb 2018 18:30:07 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17160#comment-192619</guid>
+		<description><![CDATA[&lt;p&gt;J&#039;ai vu que ca à été corrigé depuis, que tu gènère l&#039;uuid coté serveur et non plus coté client. En revanche, à l&#039;époque, os.mkdirs ne sécurisait pas tout, voici un exmple avec le code actuel, même si le kwarg uuid est présent sans être utilisé:&lt;/p&gt;
+
+&lt;pre lang=&quot;python&quot;&gt;
+
+p = Paste(uuid=&quot;yoyo/../../../views/ya&quot;, content=&quot;code&quot;)  # écrit un fichier dans views, et peut probablement écraser le html présent si au lieu de mettre &quot;ya&quot; on met base.tpl...
+
+&lt;/pre&gt;
+
+&lt;pre lang=&quot;python&quot;&gt;p.save()
+
+
+&lt;/pre&gt;
+
+&lt;p&gt;Il va sans dire que ca peut aussi marche pour n&#039;importe quel fichier de n&#039;importe quelle dir qui se trouve en static.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>J&#8217;ai vu que ca à été corrigé depuis, que tu gènère l&#8217;uuid coté serveur et non plus coté client. En revanche, à l&#8217;époque, os.mkdirs ne sécurisait pas tout, voici un exmple avec le code actuel, même si le kwarg uuid est présent sans être utilisé:</p>
+<pre lang="python">
+
+p = Paste(uuid="yoyo/../../../views/ya", content="code")  # écrit un fichier dans views, et peut probablement écraser le html présent si au lieu de mettre "ya" on met base.tpl...
+
+</pre>
+<pre lang="python">p.save()
+
+
+</pre>
+<p>Il va sans dire que ca peut aussi marche pour n&#8217;importe quel fichier de n&#8217;importe quelle dir qui se trouve en static.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Dominique</title>
+		<link>http://sametmax.com/on-a-tente-de-nous-hacker-0bin/#comment-172981</link>
+		<dc:creator><![CDATA[Dominique]]></dc:creator>
+		<pubDate>Tue, 05 Jan 2016 08:24:43 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17160#comment-172981</guid>
+		<description><![CDATA[Merci pour le lien John... c&#039;est vachement intéressant comme contenu.
+
+Je pense que je vais essayer le soir à la maison
+
+Dominique
+]]></description>
+		<content:encoded><![CDATA[<p>Merci pour le lien John&#8230; c&#8217;est vachement intéressant comme contenu.</p>
+<p>Je pense que je vais essayer le soir à la maison</p>
+<p>Dominique</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: John</title>
+		<link>http://sametmax.com/on-a-tente-de-nous-hacker-0bin/#comment-171291</link>
+		<dc:creator><![CDATA[John]]></dc:creator>
+		<pubDate>Sun, 20 Dec 2015 22:43:08 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17160#comment-171291</guid>
+		<description><![CDATA[Ok, en regardant rapidement je dirai que ce code n&#039;est pas vulnérable.
+
+Par contre regardez quand même de manière un peu plus large (l&#039;attaquant a peut être trouvé d&#039;autres pistes) : https://8ack.de/dontpanic/linsacheatsheet.pdf
+]]></description>
+		<content:encoded><![CDATA[<p>Ok, en regardant rapidement je dirai que ce code n&#8217;est pas vulnérable.</p>
+<p>Par contre regardez quand même de manière un peu plus large (l&#8217;attaquant a peut être trouvé d&#8217;autres pistes) : <a href="https://8ack.de/dontpanic/linsacheatsheet.pdf" rel="nofollow">https://8ack.de/dontpanic/linsacheatsheet.pdf</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/on-a-tente-de-nous-hacker-0bin/#comment-171233</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sun, 20 Dec 2015 12:50:23 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17160#comment-171233</guid>
+		<description><![CDATA[&lt;p&gt;Zerobin est owné par zerobin et non root:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; # ps aux &#124; grep zerobin
+root      4967  0.0  0.0  11292   972 pts/0    S+   07:46   0:00 grep --color=auto zerobin
+zerobin  18993  0.0  0.6 895720 19436 ?        Sl   Oct20   8:42 python /home/zerobin/zerobin.py --settings-file /home/zerobin/zerobin/settings.py
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Et on crée le chemin avec os.makedirs, os.mkdir and open: https://github.com/sametmax/0bin/blob/master/zerobin/paste.py#L143&lt;/p&gt;
+
+&lt;p&gt;. D&#039;ailleurs ça me fait remarqué qu&#039;on a une optimisation inutile dans cette partie du code qu&#039;on devrait virer.&lt;/p&gt;
+
+&lt;p&gt;Normalement on est bon, mais il y a peut être eu d&#039;autres essais qu&#039;on a pas vu ^^&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Zerobin est owné par zerobin et non root:</p>
+<pre><code> # ps aux | grep zerobin
+root      4967  0.0  0.0  11292   972 pts/0    S+   07:46   0:00 grep --color=auto zerobin
+zerobin  18993  0.0  0.6 895720 19436 ?        Sl   Oct20   8:42 python /home/zerobin/zerobin.py --settings-file /home/zerobin/zerobin/settings.py
+</code></pre>
+<p>Et on crée le chemin avec os.makedirs, os.mkdir and open: <a href="https://github.com/sametmax/0bin/blob/master/zerobin/paste.py#L143" rel="nofollow">https://github.com/sametmax/0bin/blob/master/zerobin/paste.py#L143</a></p>
+<p>. D&#8217;ailleurs ça me fait remarqué qu&#8217;on a une optimisation inutile dans cette partie du code qu&#8217;on devrait virer.</p>
+<p>Normalement on est bon, mais il y a peut être eu d&#8217;autres essais qu&#8217;on a pas vu ^^</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: John</title>
+		<link>http://sametmax.com/on-a-tente-de-nous-hacker-0bin/#comment-171229</link>
+		<dc:creator><![CDATA[John]]></dc:creator>
+		<pubDate>Sun, 20 Dec 2015 11:41:34 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17160#comment-171229</guid>
+		<description><![CDATA[Comment faites-vous pour la création du dossier ?
+
+makedirs() ? subprocess() avec shell=True ? os.system() ? os.popen() ?
+
+Si c&#039;est makedirs vous ne craignez rien (amha) par contre si l&#039;une des 3 suivantes vous pouvez continuer votre analyse, ça sent le pwnage.
+]]></description>
+		<content:encoded><![CDATA[<p>Comment faites-vous pour la création du dossier ?</p>
+<p>makedirs() ? subprocess() avec shell=True ? os.system() ? os.popen() ?</p>
+<p>Si c&#8217;est makedirs vous ne craignez rien (amha) par contre si l&#8217;une des 3 suivantes vous pouvez continuer votre analyse, ça sent le pwnage.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: thican</title>
+		<link>http://sametmax.com/on-a-tente-de-nous-hacker-0bin/#comment-171227</link>
+		<dc:creator><![CDATA[thican]]></dc:creator>
+		<pubDate>Sun, 20 Dec 2015 11:20:59 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17160#comment-171227</guid>
+		<description><![CDATA[&lt;blockquote cite=&quot;Sam&quot;&gt;Hum, voilà qui n’est pas pratique à analyser depuis le bash.&lt;/blockquote&gt;
+
+Pourtant, si, il est très facile de lire un fichier ou dossier de ce type, que ce soit Bash ou tout autre programme :
+
+- soit utiliser le chemin complet,
+
+- ou le chemin relatif en rajoutant &quot;./&quot; (ce qui donne ls ./--, pareil pour les jokers, ls ./*)
+
+my_2_cts
+]]></description>
+		<content:encoded><![CDATA[<blockquote cite="Sam"><p>Hum, voilà qui n’est pas pratique à analyser depuis le bash.</p></blockquote>
+<p>Pourtant, si, il est très facile de lire un fichier ou dossier de ce type, que ce soit Bash ou tout autre programme :</p>
+<p>&#8211; soit utiliser le chemin complet,</p>
+<p>&#8211; ou le chemin relatif en rajoutant &#8220;./&#8221; (ce qui donne ls ./&#8211;, pareil pour les jokers, ls ./*)</p>
+<p>my_2_cts</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: foxmask</title>
+		<link>http://sametmax.com/on-a-tente-de-nous-hacker-0bin/#comment-171226</link>
+		<dc:creator><![CDATA[foxmask]]></dc:creator>
+		<pubDate>Sun, 20 Dec 2015 10:54:37 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17160#comment-171226</guid>
+		<description><![CDATA[et eviter que le process qui a demarré 0bin ne soit pas owné by root
+]]></description>
+		<content:encoded><![CDATA[<p>et eviter que le process qui a demarré 0bin ne soit pas owné by root</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Fred</title>
+		<link>http://sametmax.com/on-a-tente-de-nous-hacker-0bin/#comment-171218</link>
+		<dc:creator><![CDATA[Fred]]></dc:creator>
+		<pubDate>Sun, 20 Dec 2015 10:02:30 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=17160#comment-171218</guid>
+		<description><![CDATA[Non, aucun impact. A condition bien entendu que la commande &quot;os&quot; pour fabriquer le fichier ne soit pas &quot;os.system()&quot; ;)
+
+Sinon analyser un fichier/dossier nommé &quot;--&quot; depuis le bash ne pose aucun souci: suffit de rajouter &quot;--&quot; entre la commande et le nom du fichier
+
+Exemple: ls -l -- &quot;--&quot;
+
+Le premier &quot;--&quot; indique au bash que ce qui suit n&#039;est plus de l&#039;option et qu&#039;il doit alors le gérer comme un argument normal.
+]]></description>
+		<content:encoded><![CDATA[<p>Non, aucun impact. A condition bien entendu que la commande &#8220;os&#8221; pour fabriquer le fichier ne soit pas &#8220;os.system()&#8221; ;)</p>
+<p>Sinon analyser un fichier/dossier nommé &#8220;&#8211;&#8221; depuis le bash ne pose aucun souci: suffit de rajouter &#8220;&#8211;&#8221; entre la commande et le nom du fichier</p>
+<p>Exemple: ls -l &#8212; &#8220;&#8211;&#8221;</p>
+<p>Le premier &#8220;&#8211;&#8221; indique au bash que ce qui suit n&#8217;est plus de l&#8217;option et qu&#8217;il doit alors le gérer comme un argument normal.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

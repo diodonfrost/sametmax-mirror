@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" >
+
+<channel>
+	<title>encodage &#8211; Sam &amp; Max</title>
+	<atom:link href="http://sametmax.com/tag/encodage/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Thu, 05 Sep 2019 08:22:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.7</generator>
+<site xmlns="com-wordpress:feed-additions:1">32490438</site>	<item>
+		<title>Le type bytes n&#8217;est pas du texte</title>
+		<link>http://sametmax.com/le-type-bytes-nest-pas-du-texte/</link>
+		<pubDate>Fri, 11 Jan 2019 11:30:10 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[binaire]]></category>
+		<category><![CDATA[bits]]></category>
+		<category><![CDATA[bytes]]></category>
+		<category><![CDATA[encodage]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[octets]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sharset]]></category>
+		<category><![CDATA[str]]></category>
+		<category><![CDATA[string]]></category>
+		<category><![CDATA[texte]]></category>
+		<category><![CDATA[unicode]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=25125</guid>
+		<description><![CDATA[J'ai beau essayer très fort de ne pas répondre en ligne, des fois <a href="https://news.ycombinator.com/item?id=18874232">je craque</a>. Mais je me soigne, globalement j'ai récupéré plein de temps, et ça se voit sur mon quotidien.
+
+Et ce craquage, et bien il est cette fois dû à une totale mécompréhension des types de texte en Python 3.]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;ai beau essayer très fort de ne pas répondre en ligne, des fois <a href="https://news.ycombinator.com/item?id=18874232">je craque</a>. Mais je me soigne, globalement j&#8217;ai récupéré plein de temps, et ça se voit sur mon quotidien.</p>
+<p>Et ce craquage, et bien il est cette fois dû à une totale mécompréhension des types de texte en Python 3.</p>
+<p>Mais c&#8217;est bien normal: Python 3 ne gère pas le texte de la même manière que la grande majorité des langages de programmation, justement à cause de la débâcle qu&#8217;on a eue en Python 2. Du coup, de nombreux programmeurs arrivent avec leur expérience d&#8217;ailleurs, et tentent de l&#8217;appliquer tel un utilisateur de SVN migrant sur git. En surface ça semble coller, malheuseuement à l&#8217;usage, ça fait faire des erreurs.</p>
+<p>Donc un peu d&#8217;explications.</p>
+<p>En informatique, tout est une histoire de convention. On dit que tel mot clé a tel effet. Que tel nom suppose telle chose. Que tel code de retour implique telle erreur. Que tel schéma XML représente tel type de document.</p>
+<p>Essentiellement, tout cela est arbitraire: des gens ont décidé qu&#8217;il en serait ainsi. Impossible de deviner que ce que fait <code>yield</code> ou <code>with</code> si vous n&#8217;avez pas d&#8217;expérience similaire avant. Impossible de savoir que le code <code>0</code> en bash ou <code>200</code> en HTTP signifie tout va bien sans qu&#8217;on vous transmette l&#8217;information, ou faire de nombreux tests.</p>
+<p>Quand je dis arbitrairement, évidemment je ne veux pas dire complètement sans raison. Il y a des raisons techniques, politiques, économiques, et parfois esthétiques à ces conventions. Cela n&#8217;en retire en rien l&#8217;aspect parfaitement artificiel de ces choix.</p>
+<p>La convention la plus omniprésente, et pourtant aujourd&#8217;hui la plus masquée dans un monde où on utilise massivement des langages de haut niveau comme Javascript, Ruby, PHP et Python, est celle de l&#8217;organisation des octets.</p>
+<p>Musique !</p>
+<p><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/SBjQ9tuuTJQ?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<h2>   &#8230;je vois même plus le code : tout ce que je vois, c&#8217;est des blondes, des brunes, des rousses.<br />
+</h2>
+<p>Tout ce qui passe par nos ordinateurs n&#8217;est qu&#8217;une suite de zéros et de uns, que nous avons groupés par paquets de 8:</p>
+<p>Seulement la grande révélation, le &#8220;aaaaaaahhhhh okayyyyyyy&#8221; qui arrive un jour dans toute vie de dev, c&#8217;est que <strong>ces paquets de 8 ne veulent rien dire.</strong> Rien. C&#8217;est nous qui avons décidé, arbitrairement encore une fois, de leur signification.</p>
+<p>Vous voyez ce moment dans les films et séries où un personnage arrive à &#8220;lire du binaire&#8221; ?</p>
+<div id="attachment_25161" style="width: 560px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2019/01/IS1.png" class="grouped_elements" rel="tc-fancybox-group25125"><img src="http://sametmax.com/wp-content/uploads/2019/01/IS1.png" alt="Evidement, &quot;c&#039;est une representation binaire ASCII de coordonnées WGS 84 Web Mercator&quot; est plus dur à caser dans un dialogue" width="550" height="281" class="size-full wp-image-25161" /></a><p class="wp-caption-text">Evidement, &#8220;c&#8217;est une representation binaire ASCII de coordonnées WGS 84 Web Mercator&#8221; est plus dur à caser dans un dialogue</p></div>
+<p>C&#8217;est de <a href="https://youtu.be/FvHHlKp923A?t=1132">l&#8217;enculage de dauphin</a>.</p>
+<p>Le binaire n&#8217;est pas un langage, pas plus que les lettres &#8220;abcdefghijklmnopqrstuvwxyz&#8221;. Vous pouvez utiliser ces lettres pour représenter certains mots italiens, français, anglais, un nom propre (sans langue), le label d&#8217;un immeuble (sans langue encore) ou un chiffre latin. </p>
+<p>Que veut dire &#8220;les gosses&#8221; ? Pour la même combinaisons de lettres, cela signifie &#8220;les enfants&#8221; avec la convention française européenne, et &#8220;les couilles&#8221; avec la convention québéquoise.</p>
+<p>Pour le binaire c&#8217;est pareil, ce que veut dire un octet dépend de la convention que vous avez choisie.</p>
+<p>Par exemple, que signifie cette suite d&#8217;octets ?</p>
+<p><code>1100001 1100010 1100011 1100100</code></p>
+<p>Bah rien. Mais <a href="https://www.youtube.com/watch?v=3c-irSUdij4">on peut lui donner un sens</a> en lui appliquant une convention.</p>
+<p>Je peux lui appliquer la convention ASCII, et donc supposer que c&#8217;est un texte dans un certain format. Voici ce que ça donne en Python:</p>
+<pre lang="python">     
+>>> data = bytearray([0b1100001, 0b1100010, 0b1100011, 0b1100100])     
+>>> print(data.decode('ascii'))     
+abcd </pre>
+<div id="attachment_25162" style="width: 310px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2019/01/binary_mock.jpg" class="grouped_elements" rel="tc-fancybox-group25125"><img src="http://sametmax.com/wp-content/uploads/2019/01/binary_mock.jpg" alt="Les processeurs modernes ne comprenent pas nativement l&#039;american apparel" width="300" height="448" class="size-full wp-image-25162" /></a><p class="wp-caption-text">Les processeurs modernes ne comprenent pas nativement l&#8217;american apparel</p></div>
+<p>Ou je peux lui appliquer une autre convention, et decider de lire ces octets comme si ils étaient le dump d&#8217;une structure C. Interprettons en Python ces octets comme un entier non signé en big-endian:</p>
+<pre lang="python">     
+>>> data = bytearray([0b1100001, 0b1100010, 0b1100011, 0b1100100])     
+>>> import struct     
+>>> struct.unpack('>I', data)     
+(1633837924,)
+</pre>
+<p>Même suite de bits, mais selon la convention choisie, elle veut dire les lettres &#8220;abcd&#8221; ou le nombre &#8220;1633837924&#8221;. Et oui, comme il n&#8217;y a pas une infinité de combinaisons de 0 et de 1 qui tiennent dans un espace mémoire limité, différentes conventions vont utiliser les mêmes octets mais décider que ça veut dire quelque chose de différent.</p>
+<p>En fait, même des conventions pour le même type usage ne veulent pas forcément dire la même chose. Par exemple, prenez l&#8217;octet:</p>
+<p><code>11101001</code></p>
+<p>Un octet somme toute sympathique, de bonne famille. Il ne paie pas de mine, mais c&#8217;est un membre utile de la société.</p>
+<p>Et maintenant, quelqu&#8217;un vous donne un indice, il vous dit que cet octet représente&#8230; du texte.</p>
+<p>Super !</p>
+<p>Oui, mais du texte avec quelle convention ? Car les pays du monde entier ont créé leur propre convention pour représenter du texte.</p>
+<p>Avec la convention &#8220;latin-1&#8221;, <a href="https://en.wikipedia.org/wiki/Windows-1252">utilisé par 0.7% de tous les sites Web du monde</a> ?</p>
+<pre lang="python"> 
+>>> bytearray([0b11101001]).decode('latin-1') 
+'é' </pre>
+<p>Avec la convention &#8220;cp850&#8221;, utilisé par la console DOS ?</p>
+<pre lang="python"> 
+>>> bytearray([0b11101001]).decode('cp850')
+'Ú'
+</pre>
+<p>Vous voulez rire ? Le premier à remplacé presque partout le second parce qu&#8217;<a href="https://en.wikipedia.org/wiki/Code_page_850">ils contiennent les mêmes lettres</a>. Elles ne sont juste pas représentées par la même combinaison d&#8217;octets.</p>
+<p>Et cet octet, que veut-il dire avec la convention &#8220;utf8&#8221;, qui est aujourd&#8217;hui le standard international recommandé pour représenter du texte ?</p>
+<pre lang="python"> 
+>>> bytearray([0b11101001]).decode('utf8')
+Traceback (most recent call last):
+File "<stdin>", line 1, in <module>
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe9 in position 0: unexpected end of data </pre>
+<p>Il n&#8217;a pas de correspondance. Cet octet n&#8217;est pas de l&#8217;utf8 valide.</p>
+<p>Si vous voulez représenter ces lettres en utf8, il faut utiliser une convention différente, en utilisant non pas un seul octet, mais une séquence d&#8217;octets:</p>
+<pre lang="python"> 
+>>> list(map(bin, 'é'.encode('utf8')))
+['0b11000011', '0b10101001']
+>>> list(map(bin, 'Ú'.encode('utf8')))
+['0b11000011', '0b10011010']
+</pre>
+<p>Vous pourriez croire que puisque le texte est particulièrement compliqué, c&#8217;est normal d&#8217;avoir des conventions qui divergent. Mais non, c&#8217;est juste la nature des conventions. Puisqu&#8217;elles sont arbitraires, l&#8217;une n&#8217;est pas plus &#8220;la vérité&#8221; qu&#8217;une autre. On retrouve la même chose avec les nombres:</p>
+<pre lang="python">
+>>> struct.unpack("h", bytearray([0b11101001, 0b11101001]))
+(-5655,)
+>>> struct.unpack("H", bytearray([0b11101001, 0b11101001])) 
+(59881,)
+</pre>
+<p>La même suite d&#8217;octets peut représenter deux nombres totalement différents, selon que je décide de les lire comme des &#8220;short&#8221;, ou des &#8220;unsigned short&#8221;.</p>
+<p>Et l&#8217;inverse est aussi vrai.</p>
+<p>Ben oui, si quelque chose peut être interprété de plusieurs façons, on a aussi le fait que deux représentations <em>différentes</em> peuvent être interprétées &#8230; pour aboutir au même résultat.</p>
+<p>Par exemple, le nombre des doigts de ma main peut être représenté de plein de façons différentes:</p>
+<ul>
+<li>         <strong>décimal</strong>: 5     </li>
+<li>         <strong>français écrit</strong>: cinq     </li>
+<li>         <strong>chiffre latin</strong>: V     </li>
+<li>         <strong>anglais écrit</strong>: five     </li>
+<li>         <strong>espagnol écrit</strong>: cinco     </li>
+<li>         <strong>base deux</strong>: 101     </li>
+<li>         <strong>structure C d&#8217;un signed short en little-endian avec Python</strong>: bytearray([0b101, 0b0])     </li>
+</ul>
+<p>Que de manières différentes, pour le même concept ! En plus, il y a confusion possible: V est une lettre également. cinq, five et cinco utilisent le même alphabet, mais pas les mêmes symboles spécifiques, pour représenter la même chose. Et le plus confusionant, 101 est une représentation binaire, mais <code>bytearray([0b101, 0b0])</code> aussi.</p>
+<p>Bref, voilà toute la complexité de la différence entre la donnée, un concept abstrait qui n&#8217;existe pas, et sa représentation, une convention humaine concrète qui nous permet de communiquer entre nous.</p>
+<p>Donc, pour lire &#8220;du binaire&#8221;, ou faire n&#8217;importe quoi en informatique, il faut connaitre la convention utilisée. Mais pas juste en informatique: pour lire le journal, il faut connaitre la convention des symboles imprimés sur les pages, pour conduire sans se faire tuer, il faut connaitre la convention des panneaux, et pour parler, il faut connaitre la convention de la compression des molécules d&#8217;air émise par l&#8217;appareil buccal et respiratoire d&#8217;un individu qui vient rencontrer votre système auditif.</p>
+<p>Vous êtes un être très conventionnel au fond.</p>
+<p>Évidemment on trouve la même chose en Python. Par exemple vous pouvez utiliser plusieurs conventions pour demander à Python de créer le même nombre en mémoire:</p>
+<pre lang="python">
+>>> 245 # base 10
+245
+>>> 0xF5 # hexadecimal
+245
+>>> 0b11110101 # binaire
+245
+>>> 245 == 0xF5 == 0b11110101
+True     
+>>> type(245)     
+<class 'int'>     
+>>> type(0xF5)     
+<class 'int'>     
+>>> type(0b11110101)     
+<class 'int'> </pre>
+<p>Inversement, <code>"1"</code> et <code>1</code> paraissent similaire, mais ils ont différents buts. Le premier est un outil destiné à l&#8217;affichage, qui matérialise le caractère représentant le chiffre arabe après le zéro. Il est stocké en interne avec une séquence d&#8217;octets similaire à:</p>
+<pre lang="python">
+>>> bin(ord("1"))
+'0b110001'
+</pre>
+<p>Tandis que que le second est un outil fait pour faire des calculs avec la plus petite valeur positive entière non nulle. Il est stocké en interne avec une séquence d&#8217;octets similaire à:</p>
+<pre lang="python">
+>>> list(map(bin, struct.pack('l', 1)))
+['0b1', '0b0', '0b0', '0b0', '0b0', '0b0', '0b0', '0b0']
+</pre>
+<p>Je simplifie bien entendu, en vérité la representation interne des nombres et du texte en Python est plus complexe que cela, et dépend de l&#8217;implémentation choisie, du type de processeur, de la taille de la donnée et de votre configuration.</p>
+<h2>
+Retour sur le type bytes </h2>
+<p>J&#8217;ai soigneusement évité d&#8217;utiliser le type <code>bytes</code> durant cette démonstration, le remplaçant techniquement inutilement (mais pédagogiquement brillamment, car je suis génial) par <code>bytearray</code>.</p>
+<p>En effet, toute cette leçon est là pour arriver à la conclusion que <code>bytes</code> ne représente pas du texte, mais si je vous avais montré tout ça avec lui, voilà qui vous aurait interloqué:</p>
+<pre lang="python">     
+>>> bytes([0b1100001, 0b1100010, 0b1100011, 0b1100100])     
+b'abcd' </pre>
+<p>&#8220;Heu, mais c&#8217;est du texte !&#8221; me dirait alors un lecteur ayant diagonalisé l&#8217;article.</p>
+<p>Mais bien entendu que non.</p>
+<p><code>bytes</code> ne présente pas du texte, c&#8217;est une structure de données dont le but est de permettre de manipuler une séquence d&#8217;octets ordonnée, et ce manuellement. N&#8217;importe laquelle.</p>
+<p>Or, il se trouve que beaucoup de langages de programmation représentent le texte comme un array d&#8217;octets, et y attachent quelques opérations de manipulation. C&#8217;est le cas du C, ou de Python 2 par exemple. Les gens ayant eu cette expérience pensent donc que <code>b'abcd'</code> représente du texte, allant parfois jusqu&#8217;à aller lui donner l&#8217;appellation de &#8220;byte string&#8221;.</p>
+<p>Il n&#8217;existe rien de tel en Python 3.</p>
+<p>En Python 3, vous avez deux types pour manipuler des séquences d&#8217;octets: <code>bytes</code> et <code>bytearray</code>. Ils sont équivalents, à ceci près que <code>bytes</code> est non mutable (non modifiable) alors que <code>bytearray</code> est mutable (modifiable).</p>
+<p>Ces types peuvent contenir n&#8217;importe quels octets, et nous avons vu ensemble qu&#8217;une même séquence d&#8217;octets pouvait être interprétée différemment selon la convention choisie pour la lire. Évidemment il est préférable de la lire avec la même convention qui a été utilisée pour la produire, sans quoi on ne comprendra pas ce que le producteur de la donnée à voulu dire.</p>
+<p>Sauf que&#8230;</p>
+<p>Beaucoup d&#8217;outils en informatique utilisent les conventions ASCII et hexadécimale pour symboliser les valeurs des octets. Si vous lancez <a href="https://www.wireshark.org/docs/wsug_html_chunked/ChapterIntroduction.html#ChIntroFeatures">Wireshark</a> pour regarder les paquets d&#8217;un protocole réseau ou si vous ouvrez un PNG avec <code>xxd</code>, on va vous représenter le contenu avec un mélange de ces conventions. </p>
+<p>Pour des raisons pratiques, Python fait donc la même chose, et permet ainsi de visualiser (ou produire) le type <code>bytes</code> à l&#8217;aide d&#8217;une notation ASCII:</p>
+<pre lang="python">    
+>>> print(b'abcd'.decode('ascii'))     
+abcd     
+>>> struct.unpack('>I', b'abcd')     
+(1633837924,)
+</pre>
+<p>Ou d&#8217;une notation héxa (ironiquement, l&#8217;héxa est representé par une combinaison de caractères ASCII \o/) si les valeurs ne tiennent pas dans la table ASCII:</p>
+<pre lang="python">     
+>>> "é".encode('utf8')  # hexa C3 A9   
+b'\xc3\xa9'     
+>>> struct.unpack('h', b'\xc3\xa9')    
+(-22077,)
+</pre>
+<p>Donc <code>bytes</code>, bien qu&#8217;il puisse contenir des octets interprétables comme du texte, n&#8217;est pas particulièrement fait pour manipuler du texte. Il peut contenir n&#8217;importe quoi. Mais pour des raisons pratiques, sa représentation dans le terminal est faite avec une convention familière. Après tout, il faut bien l&#8217;écrire en quelque chose pour l&#8217;affiquer à l&#8217;écran.</p>
+<p>Si on veut manipuler du texte en Python 3, il faut utiliser le type <code>str</code>, qui est l&#8217;outil spécialisé dans la representation et la manipulation textuelle. Si vous savez qu&#8217;un type <code>bytes</code> contient des octets qui representent du texte, alors utilisez la méthode <code>décode()</code> avec la bonne convention (appelée &#8220;charset&#8221;), pour récupérer un <code>str</code>:</p>
+<pre lang="python">     
+>>> print(b'P\xc3\xa8re No\xc3\xabl'.decode('utf8'))
+Père Noël </pre>
+<p>On a <a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/ ">un très bon article sur l&#8217;encoding en Python</a> sur le blog, d&#8217;ailleurs.</p>
+<p>Toute cela n&#8217;était bien entendu pas vrai en Python 2. En Python 2, le type <code>str</code> était un array d&#8217;octets, rendant tout cela bien confus, et amenant à plein d&#8217;erreurs. L&#8217;introduction lors de la version 2.0 de l&#8217;objet <code>unicode</code> pour pallier le problème, bien que très utile, n&#8217;a fait que rajouter à l&#8217;incomprehension des nouveaux venus.</p>
+<p>Or le monde extérieur, lui, n&#8217;a pas d&#8217;abstraction pour le texte. Faire des abstractions, c&#8217;est le rôle du langage de programmation. Si vous écrivez dans un terminal, ou lisez depuis un terminal, un nom de fichier, le contenu d&#8217;une base de données, une requête AJAX, etc., ce sont évidemment des octets qui sont échangés, et il vous faut la bonne convention pour faire partie de la discussion.</p>
+<p>Le type bas niveau <code>bytes</code> est un outil qui sert donc à communiquer avec le monde extérieur, tandis que les types haut niveau (<code>str</code>, <code>int</code>, <code>list</code>, etc.) sont des outils qui font l&#8217;abstraction de ces conventions, pour vous permettre de manipuler confortablement un concept général (du texte, un nombre, une collection ordonnée) à l&#8217;interieur des murs de votre programme.</p>
+]]></content:encoded>
+		<post-id xmlns="com-wordpress:feed-additions:1">25125</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2019/01/definitionwrong.jpg" length="60849" type="image/jpg" />	</item>
+		<item>
+		<title>Quelques erreurs tordues et leurs solutions en Python</title>
+		<link>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/</link>
+		<comments>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/#comments</comments>
+		<pubDate>Sun, 24 Jun 2012 02:29:56 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[encodage]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[erreur]]></category>
+		<category><![CDATA[error]]></category>
+		<category><![CDATA[generator]]></category>
+		<category><![CDATA[import]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=995</guid>
+		<description><![CDATA[Bien que Python soit un langage dont l'une des grandes qualités est la cohérence, voici une liste d'erreurs et leurs solutions qui ont tendance à énerver.
+]]></description>
+				<content:encoded><![CDATA[<p>Quand vous débuggez, rappelez-vous que <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">pdb est votre ami</a>, et qu&#8217;il est souvent bon de <a href="http://sametmax.com/purger-les-fichiers-pyc-et-un-hook-git-en-bonus/">supprimer tous les fichiers <code>.pyc</code></a> pour éviter la confusion. Mais parfois l&#8217;erreur semble n&#8217;avoir aucun sens. Bien que Python soit un langage dont l&#8217;une des grandes qualités soit la cohérence, voici une liste d&#8217;erreurs et leurs solutions qui ont tendance à énerver (les erreurs hein, pas les solutions).</p>
+<h2><code>NameError: name 'x' is not defined</code></h2>
+<p>Python plante en annonçant que la variable n&#8217;est pas définie. Vous allez à la ligne donnée, et elle est là. Vous vérifiez qu&#8217;il n&#8217;y a pas de faute de frappe (genre un zéro mélangé avec la lettre O), ni une majuscule ou une minuscule échangée quelque part (Python est sensible à la casse).</p>
+<p>Et rien.</p>
+<p>Tout est niquel.</p>
+<p>Alors pourquoi ça plante bordel de merde ?</p>
+<p>Et bien ce message qui n&#8217;aide absolument pas peut venir du fait que <a href="http://sametmax.com/closure-en-python-et-javascript/">les closures sont en lecture seule en Python</a>. En résumé, vous avez essayé de faire un truc comme ça:</p>
+<pre lang="python">chose = 'truc'
+def fonction():
+    chose = 'machin'
+    # ou chose += machin ou une variante</pre>
+<p>La solution est simple: ne modifiez pas <code>chose</code>. Si vous avez besoin de modifier son contenu, utilisez une variable intermédiaire:</p>
+<pre lang="python">chose = 'truc'
+def fonction():
+    bidule = chose
+    bidule += 'machin' # je sais c'est bidon, c'est pour l'exemple</pre>
+<p>En Python 3.0, vous pouvez utiliser le mot clé <code>nonlocal</code> pour y palier: vous modifierez alors la variable du scope du dessus. </p>
+<pre lang="python">chose = 'truc'
+def fonction():
+    nonlocal chose
+    chose += 'machin' # je sais c'est bidon, c'est pour l'exemple</pre>
+<p>Évitez d&#8217;utiliser <code>global</code>, qui a un fort potentiel d&#8217;effet de bord.</p>
+<h2><code>ImportError: cannot import name bidule</code> et <code>ImportError: No module named truc</code></h2>
+<p>Une fois que vous avez vérifié qu&#8217;un module existe bien avec ce nom (regardez de près, parfois c&#8217;est subtile), voici 3 possibilités:</p>
+<h3>Pas de fichier __init__.py</h3>
+<p>Un dossier n&#8217;est pas un module importable si il ne contient pas de fichier <code>__init__.py</code>. Vérifiez qu&#8217;il y en a un, et dans le cas contraire, créez en un vide.</p>
+<p><H3>Erreur de Python Path</H3></p>
+<p>Quand vous faites <code>import bidule</code>, <code>bidule</code> ne peut être importé que si le dossier qui le contient est dans le <strong>Python Path</strong>. Le Python Path est une variable qui contient une liste de dossiers dans lesquels chercher les modules à importer.</p>
+<p>Le dossier courrant, le dossier contenant la bibliothèque standard de Python et le dossier où sont installés les bibliotèques Python de votre système d&#8217;exploitation sont automatiquement présents dans le Python Path.</p>
+<p>Première chose: assurez-vous d&#8217;être à la racine du projet que vous lancez (erreur typique quand on utilise la commande <code>./manage.py</code> avec Django par exemple).</p>
+<p>Deuxième chose: si vous utilisez une bibliothèque qui n&#8217;est pas dans le Python Path (ça arrive assez souvent avec les tests unitaires: on éxécute les tests depuis le dossier de test, et le projet est dans un dossier à côté, donc pas dans le Python Path), vous pouvez ajouter manuellement un chemin dans le Python Path.</p>
+<p>Pour se faire, avant l&#8217;import qui va foirer:</p>
+<pre lang="python">import sys
+sys.path.append('/chemin/vers/le/dossier/parent/du/module/a/importer')</pre>
+<p>On peut tout à fait spécifier un dossier relativement au dossier courant. Il n&#8217;est pas rare d&#8217;ajouter le dossier parent du dossier courrant au Python Path:</p>
+<pre lang="python">import sys
+import os
+
+DOSSIER_COURRANT = os.path.dirname(os.path.abspath(__file__))
+DOSSIER_PARENT = os.path.dirname(DOSSIER_COURRANT)
+sys.path.append(DOSSIER_PARENT)
+</pre>
+<p>Par exemple, souvent dans le dossier d&#8217;un projet Django je fais un sous-dossier &#8216;apps&#8217;, puis je rajoute ceci au fichier <code>settings.py</code>:</p>
+<pre lang="python">import sys
+import os
+
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(PROJECT_DIR, 'apps'))</pre>
+<p>Il y a deux avantages à cela:</p>
+<ul>
+<li>Mes applications sont regroupées dans un dossier et pas en vrac à la racine du projet, mais je peux quand même les importer en faisant <code>import nom</code> et pas <code>import apps.nom</code>.</li>
+<li> J&#8217;ai maintenant une variable <code>PROJECT_DIR</code> que je peux utiliser partout, notamment pour définir où sont certains dossiers comme le dossiers des fichiers statiques:</li>
+</ul>
+<pre lang="python">STATIC = os.path.join(PROJECT_DIR, 'static')</pre>
+<h3>Imports circulaires</h3>
+<p>Si vous importez <code>poisson.rouge</code> dans <code>force.py</code>, et <code>force.bleu</code> dans <code>poisson.py</code>, vous aurez aussi ce message d&#8217;erreur (qui n&#8217;aide pas beaucoup, on est d&#8217;accord).</p>
+<p>Il n&#8217;y a pas vraiment de façon élégante de s&#8217;en sortir, c&#8217;est une des plus grosses couillasses en Python.</p>
+<p>Solution 1: vous refactorez votre code pour avoir <code>bleu</code> et <code>rouge</code> dans un fichier <code>couleur.py</code>, lequel est importé dans <code>poisson.py</code> et <code>force.py</code>. C&#8217;est propre, mais parfois ça n&#8217;a aucun sens, et parfois ce n&#8217;est juste pas possible.<br />
+Solution 2: vous mettez l&#8217;import dans une fonctions ou une méthode dans un des deux modules (n&#8217;importe lequel):</p>
+<pre lang="python">def make_bouillabaisse():
+    from poisson import rouge</pre>
+<p>C&#8217;est moche, mais c&#8217;est facile. Et je le répète, je n&#8217;ai jamais vu quelqu&#8217;un en 10 ans de Python proposer une solution élégante à ce problème. C&#8217;est un What The Fuck d&#8217;or.</p>
+<h2><code>UnicodeDecodeError: 'ascii' codec can't decode byte 0xc3 in position 0: ordinal not in range(128)</code></h2>
+<p>Arf. L&#8217;erreur à la con. Parce que généralement elle vient du fait que l&#8217;on ne comprend pas vraiment ce qu&#8217;on fait. Or difficile de résoudre un problème quand on ne comprend pas de quoi il est question. Ne vous sentez pas mal, on s&#8217;est tous retrouvé comme un demeuré devant un problème d&#8217;encodage.</p>
+<p>A noter que ce n&#8217;est pas une erreur spécifique à Python, mais si vous venez d&#8217;un langage comme PHP qui passe silencieusement ce genre d&#8217;erreur et affiche en prod des texts illisibles, voire une grosse erreur à l&#8217;écran peut surprendre.</p>
+<p>Voici des causes très fréquentes:</p>
+<h3>Encodage du fichier.py</h3>
+<p>Comme il peut y avoir 1 million de possibilités, forcez vous à:</p>
+<p>&#8211; TOUJOURS avoir votre éditeur de texte réglé pour utiliser UTF-8. Surtout sur Windows. Si votre chef vous l&#8217;interdit parce que &#8220;ça pose des problèmes d&#8217;encodage&#8221; (sic), quittez votre job (meilleur choix) ou faites vous former pour comprendre comment marchent les encodages et travailler dans cet environnement hostile.<br />
+&#8211; TOUJOURS avoir votre encodage (UTF-8 j&#8217;ai dis !) déclaré en haut du <code>fichier.py</code>: <code># -*- coding: utf-8 -*-</code></p>
+<h3>Vérifiez que les textes en entrée sont dans l&#8217;encodage prévu</h3>
+<p>Le contenu des bases de données ne sont parfois pas dans l&#8217;encodage déclaré de la table ou de la base. Le contenu d&#8217;une page HTML n&#8217;est parfois pas encodé dans l&#8217;encodage déclaré dans le HEAD. Le contenu d&#8217;un fichier n&#8217;est parfois pas encodé dans l&#8217;encodage par défaut de votre OS.</p>
+<p>Il n&#8217;y a pas de secret. Pas de moyen infaillible de détection automatique. Il faut vérifier.</p>
+<h3>Vous confondez encodage et décodage (Python 2.7 et moins)</h3>
+<p>En Python, on DECODE pour passer d&#8217;un texte en encodé (UTF8, ISO-8859, CP1552, etc) et donc de type &#8216;str&#8217; c&#8217;est à dire un flux de bits, à un texte unicode, une représentation interne, un objet non imprimable. Il est recommandé de décoder tout texte venant d&#8217;une source extérieur à votre programme, pour tout uniformiser.</p>
+<p>A l&#8217;inverse, on ENCODE pour passer du type &#8216;unicode&#8217; à un type &#8216;str&#8217;. Il <strong>obligatoire</strong> d&#8217;encoder un texte pour le communiquer au monde extérieur. Si vous ne le faites pas manuellement, Python le fera automatiquement, en essayant de deviner. Il n&#8217;est pas excellent à deviner.</p>
+<p>En résumé:</p>
+<pre lang="python">In [7]: texte = open('/etc/fstab').read() # ou un téléchargement, ou une requete SQL...
+In [8]: type(texte)
+Out[8]: str
+In [9]: texte = texte.decode('UTF8')
+In [10]: type(texte)
+Out[10]: unicode
+In [11]: print texte # encode automatiquement le texte car votre terminal ne comprend qu'un text encodé
+# /etc/fstab: static file system information.
+#
+[.............]
+In [12]: type(texte.encode('UTF8')) # à faire avant de faire un write
+Out[12]: str</pre>
+<p>Si ça continue de foirer, prenez tous les fichiers de votre application un par un: changez toutes les strings en unicode (les précéder d&#8217;un &#8220;u&#8221;), assurez vous que tout ce qui entre est converti en unicode (unicode() après urllib, open, etc) et tout ce qui sort est converti dans un encodage adapté (souvent UTF8) (encode(&#8216;UTF-8&#8217;) avant send(), write() ou print).</p>
+<p>Si ça ne marche toujours pas, embauchez un mec comme moi qui est payé cher pour se taper la tête contre les murs à la place des autres.</p>
+<h2>TypeError: &#8216;int&#8217; object has no attribute &#8216;__getitem__&#8217; et autres erreurs sur les tuples</h2>
+<h3>Tuples d&#8217;un seul élément</h3>
+<p>CECI N&#8217;EST PAS UN TUPLE: (1)</p>
+<p>Ceci est un tuple: (1,)</p>
+<pre lang="python">>>> type((1))
+<type 'int'>
+>>> type((1,))
+<type 'tuple'>
+>>> t = (1,)
+>>> t[0]
+1
+>>> t = (1)
+>>> t[0]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'int' object has no attribute '__getitem__'</pre>
+<p>Et il y a plus vicieux:</p>
+<pre lang="python">
+>>> a = ("12345")
+>>> b = ("12345",)
+>>> a[0]
+'1'
+>>> b[0]
+'12345'
+</pre>
+<p>C&#8217;est très dur à débugguer car on dans les deux cas il n&#8217;y a pas d&#8217;erreur étant donné que c&#8217;est une opération tout à fait légitime.</p>
+<h3>Concaténation automatique</h3>
+<p>Python vient avec une fonctionnalité qui concatène automatiquement les descriptions littérales de chaînes de caractères:</p>
+<pre lang="python">>>> "Ceci est un"                                  " test"
+'Ceci est un test'</pre>
+<p>C&#8217;est très pratique pour les chaînes longues:</p>
+<pre lang="python">>>> print ("Ceci est une chaîne longue "
+... "et je peux la diviser sur plusieurs lignes"
+... " sans me fouler")
+'Ceci est une chaîne longue et je peux la diviser sur plusieurs lignes sans me fouler'</pre>
+<p>Mais si vous oubliez une virgule dans un tuple (par exemple dans <code>INSTALLED_APPS</code> dans le fichier de <code>settings.py</code> de Django):</p>
+<pre lang="python">>>> REGLES = (
+...     "Ne jamais parler du fight club",
+...     "Ne jamais croiser les effluves",
+...     "Ne jamais appuyer sur le petit bouton rouge" # <===== virgule oubliée !
+...     "Ne jamais goûter"
+... )
+>>> print REGLES[3]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+IndexError: tuple index out of range
+>>> print REGLES[-1]
+Ne jamais appuyer sur le petit bouton rougeNe jamais goûter</pre>
+<h2>Le fichier/la liste est vide</h2>
+<p><a href="http://sametmax.com/python-love-les-listes-en-intention-partie-2/">On ne peut lire qu&#8217;une seule fois les générateurs en Python</a>.</p>
+<p>Si vous faites:</p>
+<pre lang="python">toto = (blague.title() for blague in histoire)</pre>
+<p>ou</p>
+<pre lang="python">toto = open('histoire.txt')</pre>
+<p>Et ensuite:</p>
+<pre lang="python">for blague in toto:
+    print toto
+
+len(list(toto))</pre>
+<p>La dernière ligne ne marchera pas. Toto aura été vidé par la première boucle for. Si vous souhaitez utiliser plusieurs fois le résultat de votre générateur, il faut le transformer en liste:</p>
+<pre lang="python">toto = list(toto)
+for blague in toto:
+    print toto
+
+len(list(toto))</pre>
+<p>Attention, car vous avez maintenant l&#8217;intégralité des données chargées en RAM.</p>
+<h2>TypeError: ma_function() takes exactly x argument (y given)</h2>
+<p>Cette erreur est très explicite, et la plupart du temps ne pose aucun problème: vérifiez que vous passez le bon nombre d&#8217;arguments à la fonction. Faites particulièrement attention si vous utilisez <a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">l&#8217;opérateur splat</a>.</p>
+<p>Il existe néanmoins un cas particulier un peu taquin:</p>
+<pre lang="python">
+>>> class Americaine(object):
+...     def dernier_mot(mot):
+...         print mot
+... 
+>>> homme_le_plus_classe_du_monde = Americaine()
+>>> homme_le_plus_classe_du_monde.dernier_mot("Monde de merde !")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: dernier_mot() takes exactly 1 argument (2 given)
+</pre>
+<p>On définie une seul argument (<code>mot</code>) et on en passe un seul (<code>"Monde de merdes !"</code>), alors pourquoi Python n&#8217;est pas d&#8217;accord ?</p>
+<p>C&#8217;est parce que l&#8217;on déclare une méthode sans <code>self</code> dans la signature. Or Python va passer automatiquement (et de manière invisible) la référence à l&#8217;objet courrant en premier argument, du coup la méthode reçoit deux arguments: la référence à <code>homme_le_plus_classe_du_monde</code> et <code>"Monde de merde !"</code>. Ca ne marche pas puisque la méthode est déclarée pour n&#8217;accepter qu&#8217;un seul argument.</p>
+<p>Il y a deux solutions. La plus simple, ajoutez <code>self</code>:</p>
+<pre lang="python">
+>>> class Americaine(object):
+...     def dernier_mot(self, mot):
+...         print mot
+... 
+>>> homme_le_plus_classe_du_monde = Americaine()
+>>> homme_le_plus_classe_du_monde.dernier_mot("Monde de merde !")
+Monde de merde !
+</pre>
+<p>Une seconde solution consiste à déclarer une méthode statique. Du coup on a plus besoin d&#8217;instance:</p>
+<pre lang="python">
+>>> class Americaine(object):
+...     @staticmethod
+...     def dernier_mot(mot):
+...         print mot
+... 
+>>> Americaine.dernier_mot("Monde de merde !")
+Monde de merde !
+</pre>
+<h2>Ma structure de données par défaut n&#8217;est pas la bonne</h2>
+<p>Piège classique en Python, qu&#8217;il est important de répéter encore et encore tant il est la source de frustration chez les personnes qui ne le connaissent pas.</p>
+<pre lang="python">
+>>> from random import choice
+>>> def bioman(forces=['rouge', 'bleu', 'vert', 'rose', 'jaune devant, marron derriere'], invite=None):
+...     if invite is not None:
+...         forces.append(invite)
+...     return choice(forces)
+... 
+>>> bioman()
+'rose'
+>>> bioman()
+'rouge'
+>>> bioman(invite='magenta a pois gris')
+'vert'
+>>> bioman()
+'jaune devant, marron derriere'
+>>> bioman() # WTF ??????????
+'magenta a pois gris'
+</pre>
+<p>Dans le dernier appel &#8216;magenta a pois gris&#8217; est tiré au sort alors qu&#8217;on ne l&#8217;a pas passé en paramètre. Comment cela est-il possible ?</p>
+<p>Cela vient du fait que les paramètres par défaut sont initialisés <strong>une seule fois</strong> pour tout le programme: dès que le module est chargé.</p>
+<p>Si vous utilisez un objet mutable (liste, set, dico) et que vous le modifiez (ici avec <code>append</code>), le prochain appel de la fonction utilisera toujours la référence de cet objet, et donc de sa versio modifiée.</p>
+<p>La solution est soit de ne pas utiliser d&#8217;objet mutable (tuple, strings, int, etc), soit de ne pas modifier l&#8217;objet:</p>
+<pre lang="python">
+>>> def bioman(forces=('rouge', 'bleu', 'vert', 'rose', 'jaune devant, marron derriere'), invite=None):
+...     if invite is not None:
+...         forces += (invite,) # ne modifie pas l'ancien objet
+...     return choice(forces)
+</pre>
+<p>Ou alors (et ceci est souvent utilisé même si c&#8217;est moche):</p>
+<pre lang="python">
+>>> def bioman(forces=None, invite=None):
+...     if forces is None:
+...        forces = ['rouge', 'bleu', 'vert', 'rose', 'jaune devant, marron derriere']
+...     if invite is not None:
+...         forces.append(invite)
+...     return choice(forces)
+</pre>
+<p>Toutes les parties qui sont éxécutées à l&#8217;inialisation du code (en opposition à celles qui le sont à l&#8217;appel du code) sont concernées par ce problème: les paramètres par défaut, les variables à la racine des modules, les attributs de classe déclarés <strong>en dehors</strong> d&#8217;une méthode, etc.</p>
+<p><strong>ItZ naute a beuhgue, Itse fitiure</strong></p>
+<p>Néanmoins cela a aussi son utilité. On peut en effet l&#8217;utiliser pour partager des états:</p>
+<pre lang="python">
+class Model(object):
+    _pool = {
+        'mysql': MySQL().connect('test'),
+        'sqlite': Sqlite.open('test.db')
+    }
+    default_connection = 'mysql'
+
+    def query(self, connection=default_connection, *params):
+        connection.super_query(*params)
+</pre>
+<p>Et vous avez maintenant une classe de modèle qui gère plusieurs connections. Si vous l&#8217;étendez, les enfants de la classe et toutes les instances partageront le même objet connection, mais tout le reste sera unique à chacun d&#8217;eux. Cela évite un effet de bord du singleton qui oblige à partager un état et une identité. Ici on ne partage que la partie de l&#8217;état que l&#8217;on souhaite, et pas l&#8217;identité.</p>
+<p>On gagne sur les deux tableaux: si on update la connection MySQL (par exemple parcequ&#8217;on a détecté qu&#8217;elle était stale), toutes les instances ont accès à l&#8217;objet modifé. Mais si on veut overrider la connection pour une seule classe, on peut le faire sans affecter les autres simplement en remplaçant l&#8217;objet à la déclaration de la classe.</p>
+<p>On peut aussi utiliser cette fonctionnalité pour créer un cache. On appelle ça &#8220;mémoiser&#8221;:</p>
+<pre lang="python">
+def fonction_lente(param1, param2, _cache={}):
+    # les tuples peuvent être des clés de dico \o/
+    key = (param1, param2)
+    if key not in _cache:
+        _cache[key] = process_lent(param1, param2)
+    return _cache[key]
+</pre>
+<p>Tous les résultats sont alors stockés en mémoire vive.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/feed/</wfw:commentRss>
+		<slash:comments>23</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">995</post-id><enclosure url="http://sametmax.com/wp-content/uploads/2012/06/Funny-Batman-Pictures-103.jpg" length="69437" type="image/jpg" />	</item>
+	</channel>
+</rss>
